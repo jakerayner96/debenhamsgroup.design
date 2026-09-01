@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B — Editorial · Debenhams Group Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,560;1,9..144,340&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#101413;--card:#171C1A;--card-2:#1D2422;--line:rgba(235,255,248,.09);
+--ink:#F4F7F4;--ink-2:#ADB8B2;--ink-3:#6F7A75;--pop:#9FFFE0;--pop-deep:#123B31;--warm:#F1C59E}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.65 'Inter',sans-serif;letter-spacing:-.008em;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 36px}
+/* nav */
+nav{border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;height:70px;gap:34px}
+.wm{font-family:'Fraunces',serif;font-weight:560;font-size:20px;letter-spacing:-.01em}
+.wm em{font-style:italic;color:var(--pop);font-weight:340}
+nav a.i{font-size:14.5px;color:var(--ink-2)}
+nav a.i:hover{color:var(--ink)}
+nav .go{margin-left:auto;background:var(--pop);color:#0B231C;border-radius:99px;padding:9px 20px;font-weight:600;font-size:14px}
+/* hero */
+.hero{padding:110px 0 90px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-160px;top:-160px;width:520px;height:520px;border-radius:50%;background:radial-gradient(closest-side,rgba(159,255,224,.09),transparent)}
+h1{font-family:'Fraunces',serif;font-weight:340;font-size:clamp(52px,7.4vw,96px);line-height:1.0;letter-spacing:-.022em;max-width:12ch}
+h1 em{font-style:italic;color:var(--pop)}
+.hero p{margin-top:30px;font-size:19px;color:var(--ink-2);max-width:520px}
+.hero .row{margin-top:40px;display:flex;align-items:center;gap:22px}
+.big{background:var(--pop);color:#0B231C;border:none;border-radius:99px;padding:15px 30px;font:600 15.5px 'Inter';cursor:pointer}
+.quiet{color:var(--ink-2);font-size:15px;border-bottom:1px solid var(--line);padding-bottom:2px}
+.quiet:hover{color:var(--ink);border-color:var(--ink-2)}
+.ticker{margin-top:78px;display:flex;gap:44px;overflow:hidden;white-space:nowrap;color:var(--ink-3);font-size:13.5px;letter-spacing:.14em;text-transform:uppercase;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.ticker div{display:flex;gap:44px;animation:tk 30s linear infinite}
+@keyframes tk{to{transform:translateX(-50%)}}
+/* pillars — offset editorial grid */
+.pillars{padding:96px 0}
+.kick{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--pop);margin-bottom:16px}
+.pillars h2{font-family:'Fraunces',serif;font-weight:340;font-size:44px;letter-spacing:-.02em;max-width:16ch;margin-bottom:56px}
+.pgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.pc{border-radius:22px;padding:34px 30px;background:var(--card);border:1px solid var(--line)}
+.pc h3{font-family:'Fraunces',serif;font-weight:560;font-size:26px;margin-bottom:10px;letter-spacing:-.01em}
+.pc p{color:var(--ink-2);font-size:15px;max-width:42ch}
+.pc .n{font-family:'Fraunces',serif;font-style:italic;color:var(--ink-3);font-size:18px;display:block;margin-bottom:22px}
+.pc.a{grid-column:1/7;background:linear-gradient(150deg,var(--pop-deep),var(--card));min-height:300px}
+.pc.a h3{font-size:32px}
+.pc.b{grid-column:7/13;transform:translateY(34px)}
+.pc.c{grid-column:1/5;margin-top:20px}
+.pc.d{grid-column:5/13;margin-top:54px;background:var(--card-2);display:flex;align-items:flex-end;gap:30px}
+.pc.d .txt{flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.chips span{border:1px solid var(--line);border-radius:99px;padding:7px 15px;font-size:13px;color:var(--ink-2)}
+.chips span i{display:inline-block;width:9px;height:9px;border-radius:99px;margin-right:8px}
+/* work */
+.work{padding:60px 0 110px;border-top:1px solid var(--line)}
+.work .head{display:flex;align-items:baseline;gap:24px;margin-bottom:44px}
+.work h2{font-family:'Fraunces',serif;font-weight:340;font-size:44px;letter-spacing:-.02em}
+.work .head a{margin-left:auto;color:var(--pop);font-size:15px}
+.wrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.wc{border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--card);transition:transform .18s}
+.wc:hover{transform:translateY(-4px)}
+.wc .art{height:170px;position:relative}
+.wc .art.g1{background:linear-gradient(140deg,#123B31,#0F1512 60%),radial-gradient(80% 90% at 80% 10%,rgba(159,255,224,.25),transparent)}
+.wc .art.g2{background:linear-gradient(140deg,#3A1220,#151013 60%),radial-gradient(80% 90% at 20% 0%,rgba(248,181,204,.28),transparent)}
+.wc .art.g3{background:linear-gradient(140deg,#2E1608,#14100C 60%),radial-gradient(80% 90% at 80% 0%,rgba(241,197,158,.28),transparent)}
+.wc .art b{position:absolute;left:22px;bottom:16px;font-family:'Fraunces',serif;font-style:italic;font-weight:340;font-size:22px;letter-spacing:-.01em}
+.wc .meta{padding:20px 22px 24px}
+.wc .meta p{font-size:14px;color:var(--ink-2)}
+.wc .meta .st{display:inline-block;margin-top:14px;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--pop)}
+.wc .meta .st.done{color:var(--ink-3)}
+footer{border-top:1px solid var(--line);padding:44px 0;color:var(--ink-3);font-size:13.5px}
+footer .wrap{display:flex;gap:30px}
+footer em{margin-left:auto;font-family:'Fraunces',serif;font-style:italic;color:var(--ink-2)}
+@media(max-width:920px){.pgrid{grid-template-columns:1fr}.pc{grid-column:1/-1!important;transform:none!important;margin:0!important}.wrow{grid-template-columns:1fr}nav a.i{display:none}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="wm" href="#">Group<em>Design</em></a>
+  <a class="i" href="#">System</a><a class="i" href="#">Projects</a><a class="i" href="#">Brand centre</a><a class="i" href="#">Requests</a>
+  <a class="go" href="#">Open the system</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <h1>Sixteen brands. One <em>living</em> system.</h1>
+  <p>The home of Debenhams Group UX — components you can touch, projects you can trace, brands you can browse. Built in code first, so what you see is what ships.</p>
+  <div class="row"><button class="big">Explore components</button><a class="quiet" href="#">or see what shipped this week ↗</a></div>
+  <div class="ticker"><div>
+    <span>Debenhams</span><span>boohoo</span><span>boohooMAN</span><span>PrettyLittleThing</span><span>Karen Millen</span><span>Warehouse</span><span>Coast</span><span>Oasis</span><span>Burton</span><span>Dorothy Perkins</span><span>Wallis</span><span>Nasty Gal</span><span>Misspap</span><span>Principles</span><span>The Brand Room</span><span>DSGN Studio</span>
+    <span>Debenhams</span><span>boohoo</span><span>boohooMAN</span><span>PrettyLittleThing</span><span>Karen Millen</span><span>Warehouse</span><span>Coast</span><span>Oasis</span><span>Burton</span><span>Dorothy Perkins</span><span>Wallis</span><span>Nasty Gal</span><span>Misspap</span><span>Principles</span><span>The Brand Room</span><span>DSGN Studio</span>
+  </div></div>
+</div></header>
+
+<section class="pillars"><div class="wrap">
+  <div class="kick">What lives here</div>
+  <h2>A system, an archive, a brand library — and the front door to all of it.</h2>
+  <div class="pgrid">
+    <div class="pc a"><span class="n">No. 1</span><h3>The System</h3><p>Tokens and components rendered live, themed to any fascia in one click. If it's on this site, it's in production.</p></div>
+    <div class="pc b"><span class="n">No. 2</span><h3>The Archive</h3><p>Every project as a story: the brief, the options explored, the route chosen and why. Old work stays findable; new work starts from it.</p></div>
+    <div class="pc c"><span class="n">No. 3</span><h3>Requests</h3><p>Ask, track, receive. One board from intake to delivery.</p></div>
+    <div class="pc d"><div class="txt"><span class="n">No. 4</span><h3>The Brand Centre</h3><p>Guidelines, palettes, voices and type for every fascia in the estate.</p>
+      <div class="chips"><span><i style="background:#7BE7D8"></i>Debenhams</span><span><i style="background:#F8B5CC"></i>boohoo</span><span><i style="background:#fff"></i>boohooMAN</span><span><i style="background:#C77E75"></i>PLT</span><span><i style="background:#DB4E11"></i>Karen Millen</span><span><i style="background:#F1C59E"></i>+ 11 more</span></div></div></div>
+  </div>
+</div></section>
+
+<section class="work"><div class="wrap">
+  <div class="head"><h2>Recent work</h2><a href="#">All projects →</a></div>
+  <div class="wrow">
+    <a class="wc" href="#"><div class="art g1"><b>PLP Alignment</b></div><div class="meta"><p>Five fascias onto one core template — fonts, cards and grids become configuration.</p><span class="st">In progress · w/c 08 Sep</span></div></a>
+    <a class="wc" href="#"><div class="art g2"><b>Colour Alignment</b></div><div class="meta"><p>Signed-off styling across five screens and five brands, plus the golden-truth state matrix.</p><span class="st done">Merged · Aug 26</span></div></a>
+    <a class="wc" href="#"><div class="art g3"><b>Checkout 2026</b></div><div class="meta"><p>One smart field for promo codes and gift cards — it works out which it's been given.</p><span class="st done">Shipped · Aug 26</span></div></a>
+  </div>
+</div></section>
+
+<footer><div class="wrap"><span>Debenhams Group</span><span>System</span><span>Projects</span><span>Brands</span><em>debenhamsgroup.design — direction B, editorial</em></div></footer>
+</body>
+</html>

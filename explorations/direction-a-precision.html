@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A — Precision · Debenhams Group Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08090A;--panel:#0E0F11;--panel-2:#121316;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);
+--ink:#F7F8F8;--ink-2:#B4B8BD;--ink-3:#6E7278;--accent:#7BE7D8;--mono:'IBM Plex Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:450 15px/1.6 'Inter',sans-serif;letter-spacing:-.011em;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+/* nav */
+nav{position:sticky;top:0;z-index:10;backdrop-filter:blur(14px);background:rgba(8,9,10,.72);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:28px;height:56px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;letter-spacing:-.01em}
+.logo i{width:16px;height:16px;border-radius:4px;background:conic-gradient(from 210deg,var(--accent),#3E6D66 60%,#12211F);display:block}
+nav a.item{font-size:13.5px;color:var(--ink-2);padding:5px 2px}
+nav a.item:hover{color:var(--ink)}
+nav .k{margin-left:auto;display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:7px;padding:5px 10px;font-size:12.5px;color:var(--ink-3)}
+nav .k kbd{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line-2);border-radius:4px;padding:1px 5px}
+/* hero */
+.hero{padding:104px 0 72px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:-40% -20% auto;height:130%;background:radial-gradient(52% 46% at 62% 18%,rgba(123,231,216,.10),transparent 68%),radial-gradient(40% 40% at 30% 8%,rgba(90,140,255,.05),transparent 70%);pointer-events:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:5px 12px;font-size:12.5px;color:var(--ink-2);margin-bottom:26px;background:rgba(255,255,255,.02)}
+.eyebrow b{color:var(--accent);font-weight:500}
+h1{font-size:58px;line-height:1.04;letter-spacing:-.034em;font-weight:600;max-width:760px}
+h1 span{color:var(--ink-3)}
+.sub{margin-top:20px;max-width:560px;color:var(--ink-2);font-size:16.5px}
+.cta{margin-top:34px;display:flex;gap:12px}
+.b1{background:var(--ink);color:#0A0A0B;font-weight:600;font-size:14px;border-radius:8px;padding:10px 18px;border:none;cursor:pointer}
+.b2{background:transparent;color:var(--ink-2);font-weight:500;font-size:14px;border-radius:8px;padding:10px 16px;border:1px solid var(--line-2);cursor:pointer}
+.b2:hover{color:var(--ink);border-color:rgba(255,255,255,.25)}
+/* spec hero visual */
+.spec{margin-top:64px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--panel),#0B0C0E);overflow:hidden;position:relative}
+.spec .bar{display:flex;gap:8px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.spec .bar i{width:9px;height:9px;border-radius:99px;background:#26282B;display:inline-block}
+.spec .bar span{margin-left:8px}
+.spec .body{display:grid;grid-template-columns:220px 1fr 260px;min-height:340px}
+.spec .rail{border-right:1px solid var(--line);padding:18px 14px;font-size:13px;color:var(--ink-3)}
+.spec .rail div{padding:6px 10px;border-radius:6px}
+.spec .rail div.on{background:rgba(255,255,255,.05);color:var(--ink)}
+.spec .stage{display:grid;place-items:center;position:relative}
+.fig{position:absolute;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.03em}
+.fig.tl{top:14px;left:18px}.fig.br{bottom:14px;right:18px;color:#3E5F5A}
+.chip{background:#00787D;color:#fff;font:600 14px 'Inter';padding:13px 26px;border-radius:6px;position:relative}
+.chip::after,.chip::before{content:'';position:absolute;border:1px dashed rgba(123,231,216,.4)}
+.chip::before{inset:-14px -34px;border-radius:10px}
+.mark{position:absolute;font-family:var(--mono);font-size:10px;color:var(--accent)}
+.mark.t{top:calc(50% - 52px);left:50%;transform:translateX(-50%)}
+.mark.r{left:calc(50% + 110px);top:50%;transform:translateY(-50%)}
+.spec .props{border-left:1px solid var(--line);padding:18px;font-family:var(--mono);font-size:11.5px;color:var(--ink-2)}
+.spec .props h5{font:600 11px 'Inter';color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.spec .props .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)}
+.spec .props .row b{color:var(--accent);font-weight:400}
+/* bento */
+.sect{padding:84px 0 20px}
+.sect h2{font-size:28px;letter-spacing:-.025em;font-weight:600;margin-bottom:8px}
+.sect .d{color:var(--ink-3);font-size:15px;margin-bottom:32px;max-width:520px}
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cell{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:24px;min-height:180px;position:relative;transition:border-color .15s}
+.cell:hover{border-color:var(--line-2)}
+.cell.w2{grid-column:span 2}
+.cell h3{font-size:15.5px;font-weight:600;margin-bottom:6px}
+.cell p{font-size:13.5px;color:var(--ink-3);max-width:38ch}
+.cell .fig2{position:absolute;top:20px;right:20px;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.swatches{display:flex;gap:6px;margin-top:22px}
+.swatches i{height:34px;flex:1;border-radius:6px;border:1px solid rgba(255,255,255,.06)}
+.brandrow{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap}
+.brandrow span{border:1px solid var(--line);border-radius:99px;padding:5px 12px;font-size:12px;color:var(--ink-2)}
+.brandrow span i{display:inline-block;width:8px;height:8px;border-radius:99px;margin-right:7px;vertical-align:0}
+/* changelog */
+.log{border-top:1px solid var(--line);margin-top:80px;padding:64px 0 100px}
+.log .row{display:grid;grid-template-columns:130px 1fr auto;gap:22px;padding:18px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.log time{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+.log .t{font-size:15px;font-weight:500}
+.log .t small{display:block;font-weight:400;color:var(--ink-3);font-size:13px;margin-top:3px}
+.st{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:99px;border:1px solid var(--line-2);color:var(--ink-2)}
+.st.m{color:var(--accent);border-color:rgba(123,231,216,.35)}
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--ink-3);font-size:12.5px;display:flex}
+footer .wrap{display:flex;gap:26px;width:100%}
+footer span:last-child{margin-left:auto;font-family:var(--mono);font-size:11px}
+@media(max-width:900px){h1{font-size:38px}.spec .body{grid-template-columns:1fr}.spec .rail,.spec .props{display:none}.bento{grid-template-columns:1fr}.cell.w2{grid-column:span 1}.log .row{grid-template-columns:1fr;gap:6px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="#"><i></i>Debenhams Group Design</a>
+  <a class="item" href="#">System</a><a class="item" href="#">Projects</a><a class="item" href="#">Brands</a><a class="item" href="#">Requests</a>
+  <div class="k">Search<kbd>⌘K</kbd></div>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow"><b>v1</b> Warehouse relaunch tokens shipping w/c 08 Sep →</div>
+  <h1>The design system behind sixteen storefronts. <span>Built in code, mirrored in Figma.</span></h1>
+  <p class="sub">One component library, five brand modes and counting. Every project, every option explored, every decision — indexed and live.</p>
+  <div class="cta"><button class="b1">Browse components</button><button class="b2">View projects</button></div>
+
+  <div class="spec">
+    <div class="bar"><i></i><i></i><i></i><span>system / components / button — rendered from tokens.css</span></div>
+    <div class="body">
+      <div class="rail">
+        <div>Foundations</div><div class="on">Button</div><div>Product card</div><div>Input</div><div>Badge</div><div>Modal</div>
+      </div>
+      <div class="stage">
+        <span class="fig tl">FIG 01 — PRIMARY / DEFAULT</span>
+        <span class="mark t">height 44</span>
+        <span class="mark r">radius 4</span>
+        <div class="chip">Add to bag</div>
+        <span class="fig br">DEBENHAMS MODE</span>
+      </div>
+      <div class="props">
+        <h5>Props</h5>
+        <div class="row">variant<b>primary</b></div>
+        <div class="row">state<b>default</b></div>
+        <div class="row">brand<b>debenhams</b></div>
+        <div class="row">surface/cta<b>#00787D</b></div>
+        <div class="row">text/on-cta<b>#FFFFFF</b></div>
+        <div class="row">radius<b>4px</b></div>
+      </div>
+    </div>
+  </div>
+</div></header>
+
+<section class="sect"><div class="wrap">
+  <h2>Everything, indexed.</h2>
+  <p class="d">Four surfaces, one source of truth. The system themes itself to any fascia; the archive keeps every route that was ever explored.</p>
+  <div class="bento">
+    <div class="cell w2"><span class="fig2">01</span><h3>System</h3><p>Tokens, components and usage — rendered live per brand, never screenshotted.</p>
+      <div class="swatches"><i style="background:#7BE7D8"></i><i style="background:#00787D"></i><i style="background:#F8B5CC"></i><i style="background:#BB305F"></i><i style="background:#550503"></i><i style="background:#DB4E11"></i><i style="background:#101010"></i></div></div>
+    <div class="cell"><span class="fig2">02</span><h3>Projects</h3><p>Every brief with its options and the chosen route. Nothing rebuilt twice.</p></div>
+    <div class="cell"><span class="fig2">03</span><h3>Brand Centre</h3><p>Guidelines, palettes, type per fascia — sixteen and counting.</p>
+      <div class="brandrow"><span><i style="background:#7BE7D8"></i>Debenhams</span><span><i style="background:#BB305F"></i>boohoo</span><span><i style="background:#550503"></i>PLT</span><span><i style="background:#DB4E11"></i>KM</span></div></div>
+    <div class="cell w2"><span class="fig2">04</span><h3>Requests</h3><p>Intake to delivery on one board — wired to the existing request worker, statuses visible to everyone who asked.</p></div>
+  </div>
+</div></section>
+
+<section class="log"><div class="wrap">
+  <h2 style="font-size:22px;letter-spacing:-.02em;font-weight:600;margin-bottom:26px">Shipping</h2>
+  <div class="row"><time>2026-09-01</time><div class="t">PLP Alignment opened<small>boohoo · boohooMAN · PLT · Warehouse · Brand Room → one core template</small></div><span class="st">open</span></div>
+  <div class="row"><time>2026-08-26</time><div class="t">Colour Alignment merged<small>Signed-off styling, five brands × five screens, post-KM review</small></div><span class="st m">merged</span></div>
+  <div class="row"><time>2026-08-26</time><div class="t">Group tokens extracted<small>brands.ts → tokens.css, five-brand live switching</small></div><span class="st m">merged</span></div>
+  <div class="row"><time>2026-08-24</time><div class="t">Checkout 2026 · smart promo field<small>One field, two payment instruments, zero user decisions</small></div><span class="st">shipped</span></div>
+</div></section>
+
+<footer><div class="wrap"><span>Debenhams Group</span><span>System</span><span>Projects</span><span>Brands</span><span>debenhamsgroup.design — direction A / precision</span></div></footer>
+</body>
+</html>

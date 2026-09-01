@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Debenhams Group Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Archivo+Black&family=Geist+Mono:wght@400;500&family=Geologica:wght@300;600&family=Montserrat:wght@500;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090A;--panel:#0D0E10;--panel-2:#111216;--raise:#15161A;
+  --line:rgba(255,255,255,.07);--line-2:rgba(255,255,255,.13);
+  --ink:#F7F8F8;--ink-2:#AEB3B8;--ink-3:#686D73;
+  --aq:#7BE7D8;--aq-dim:rgba(123,231,216,.14);--warn:#F5A623;--ok:#50E3C2;
+  --mono:'Geist Mono',monospace;--disp:'Archivo Black',sans-serif;
+}
+/* brand demo tokens */
+[data-brand="debenhams"]{--b-cta:#00787D;--b-cta-down:#00565A;--b-on:#FFF;--b-l1:#9DEDE2;--b-l3:#D6FFF9;--b-paper:#FFF;--b-font:'Geologica';--b-wr:300;--b-wb:600;--b-r:4px;--b-caps:none;--b-name:'Debenhams'}
+[data-brand="boohoo"]{--b-cta:#BB305F;--b-cta-down:#A82A55;--b-on:#FFF;--b-l1:#FBC7D8;--b-l3:#FEE0EA;--b-paper:#FFF;--b-font:'Montserrat';--b-wr:500;--b-wb:700;--b-r:4px;--b-caps:none;--b-name:'boohoo'}
+[data-brand="boohooman"]{--b-cta:#000;--b-cta-down:#242424;--b-on:#FFF;--b-l1:#B5B5B5;--b-l3:#E7E7E7;--b-paper:#FFF;--b-font:'Montserrat';--b-wr:500;--b-wb:700;--b-r:4px;--b-caps:none;--b-name:'boohooMAN'}
+[data-brand="plt"]{--b-cta:#550503;--b-cta-down:#360502;--b-on:#FFFDF7;--b-l1:#C77E75;--b-l3:#FFD5CD;--b-paper:#FFFDF7;--b-font:'Roboto';--b-wr:400;--b-wb:700;--b-r:0px;--b-caps:uppercase;--b-name:'PrettyLittleThing'}
+[data-brand="karenmillen"]{--b-cta:#8E330B;--b-cta-down:#5E2207;--b-on:#FFF;--b-l1:#E88A5B;--b-l3:#F3C1A7;--b-paper:#FFF;--b-font:'Jost';--b-wr:400;--b-wb:600;--b-r:4px;--b-caps:none;--b-name:'Karen Millen'}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:450 14px/1.6 'Inter',sans-serif;letter-spacing:-.008em;-webkit-font-smoothing:antialiased;overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#222;border-radius:9px;border:2px solid var(--bg)}
+
+/* ================= TOPBAR ================= */
+.top{height:52px;display:flex;align-items:center;gap:14px;padding:0 14px;border-bottom:1px solid var(--line);background:var(--panel);position:relative;z-index:30}
+.wm{display:flex;align-items:center;gap:9px;font-weight:600;font-size:13.5px;padding:0 6px;white-space:nowrap}
+.wm i{width:15px;height:15px;border-radius:4px;background:conic-gradient(from 210deg,var(--aq),#2E5750 55%,#0E1B19)}
+.wm span{color:var(--ink-3);font-weight:400}
+.crumbs{font-size:12.5px;color:var(--ink-3);display:flex;gap:7px;align-items:center;min-width:0;white-space:nowrap;overflow:hidden}
+.crumbs b{color:var(--ink-2);font-weight:450}
+.searchbtn{margin-left:auto;display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--bg);border-radius:7px;padding:6px 11px;font-size:12.5px;color:var(--ink-3);min-width:220px}
+.searchbtn:hover{border-color:var(--line-2)}
+.searchbtn kbd{margin-left:auto;font-family:var(--mono);font-size:10px;border:1px solid var(--line-2);border-radius:4px;padding:1px 5px;color:var(--ink-3)}
+.brandsel{display:flex;gap:3px;border:1px solid var(--line);border-radius:8px;padding:3px;background:var(--bg)}
+.brandsel button{width:24px;height:24px;border-radius:5px;display:grid;place-items:center;opacity:.55;transition:opacity .12s}
+.brandsel button i{width:12px;height:12px;border-radius:4px;border:1px solid rgba(255,255,255,.18)}
+.brandsel button:hover{opacity:.85}
+.brandsel button.on{opacity:1;background:var(--raise);outline:1px solid var(--line-2)}
+.status{font-family:var(--mono);font-size:10.5px;color:var(--ok);display:flex;gap:6px;align-items:center;padding:0 6px;white-space:nowrap}
+.status i{width:6px;height:6px;border-radius:99px;background:var(--ok);box-shadow:0 0 7px var(--ok)}
+
+/* ================= SHELL ================= */
+.shell{display:grid;grid-template-columns:256px 1fr;height:100vh}
+/* sidebar header (Finder-style) */
+.shead{padding:12px 8px 10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.shead .rowa{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.shead .wm{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;min-width:0}
+.shead .wm i{width:14px;height:14px;border-radius:4px;background:conic-gradient(from 210deg,var(--aq),#2E5750 55%,#0E1B19);flex:none}
+.shead .wm span{color:var(--ink-3);font-weight:400}
+.brandsel{display:flex;gap:3px;border:1px solid var(--line);border-radius:8px;padding:3px;background:var(--bg)}
+.brandsel button{width:23px;height:23px;border-radius:5px;display:grid;place-items:center;opacity:.55;transition:opacity .12s}
+.brandsel button i{width:11px;height:11px;border-radius:3px;border:1px solid rgba(255,255,255,.18)}
+.brandsel button:hover{opacity:.85}
+.brandsel button.on{opacity:1;background:var(--raise);outline:1px solid var(--line-2)}
+.shead .searchbtn{width:100%;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--bg);border-radius:7px;padding:6px 10px;font-size:12px;color:var(--ink-3)}
+.shead .searchbtn:hover{border-color:var(--line-2)}
+.shead .searchbtn kbd{margin-left:auto;font-family:var(--mono);font-size:10px;border:1px solid var(--line-2);border-radius:4px;padding:1px 5px}
+/* plain home */
+.home-title{font-family:var(--disp);font-size:34px;line-height:1.08;text-transform:uppercase;font-weight:400;margin:6px 0 8px}
+.home-sub{color:var(--ink-3);font-size:13.5px;margin-bottom:30px;font-family:var(--mono)}
+.quick{border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden;margin-bottom:38px}
+.quick a{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);font-size:14px;font-weight:500;transition:background .1s}
+.quick a:last-child{border:none}
+.quick a:hover{background:var(--panel-2)}
+.quick a .ic{width:16px;text-align:center;color:var(--aq);font-size:12px}
+.quick a small{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);font-weight:400}
+
+/* ---------- sidebar ---------- */
+.side{border-right:1px solid var(--line);background:var(--panel);overflow-y:auto;padding:12px 8px 40px}
+.grp{margin-bottom:4px}
+.grp>button{width:100%;display:flex;align-items:center;gap:7px;padding:6px 10px;font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);border-radius:6px}
+.grp>button:hover{color:var(--ink-2)}
+.grp>button .car{transition:transform .15s;font-size:9px}
+.grp.closed .car{transform:rotate(-90deg)}
+.grp.closed .items{display:none}
+.items a{display:flex;align-items:center;gap:9px;padding:6px 10px 6px 14px;border-radius:6px;font-size:13px;color:var(--ink-2);margin:1px 0;border-left:2px solid transparent}
+.items a:hover{background:var(--panel-2);color:var(--ink)}
+.items a.on{background:var(--raise);color:var(--ink);border-left-color:var(--aq)}
+.items a .ic{width:14px;text-align:center;color:var(--ink-3);font-size:11px;flex:none}
+.items a.on .ic{color:var(--aq)}
+.items a .tag{margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:4px;padding:1px 5px;color:var(--ink-3)}
+.items a .tag.ok{color:var(--ok);border-color:#1E463D}
+.items a .tag.wip{color:var(--warn);border-color:#4A3A16}
+
+/* ---------- main ---------- */
+.main{overflow-y:auto;scroll-behavior:smooth}
+.page{display:none;padding:40px 48px 120px;max-width:1060px}
+.page.on{display:block}
+.page.rail{display:none;grid-template-columns:1fr 190px;gap:48px;max-width:1250px}
+.page.rail.on{display:grid}
+.kick{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.kick b{color:var(--aq);font-weight:400}
+h1{font-family:var(--disp);font-size:40px;line-height:1;letter-spacing:.005em;text-transform:uppercase;font-weight:400;margin-bottom:14px}
+h1 .dim{color:transparent;-webkit-text-stroke:1px var(--ink-3)}
+.lede{font-size:15.5px;color:var(--ink-2);max-width:600px;margin-bottom:34px}
+h2{font-size:16px;font-weight:600;letter-spacing:-.02em;margin:44px 0 14px;display:flex;align-items:center;gap:10px}
+h2 code{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);font-weight:400}
+p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
+
+/* right rail */
+.toc{position:sticky;top:40px;align-self:start;font-size:12.5px;border-left:1px solid var(--line);padding-left:16px}
+.toc h6{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+.toc a{display:block;color:var(--ink-3);padding:4px 0}
+.toc a:hover{color:var(--ink)}
+
+/* stat strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+.stat{padding:18px 20px;border-right:1px solid var(--line)}
+.stat:last-child{border:none}
+.stat b{display:block;font-family:var(--disp);font-size:26px;font-weight:400;letter-spacing:.01em}
+.stat span{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+
+/* index table (D) */
+.tbl{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+.tr{display:grid;grid-template-columns:52px 1.2fr 1.6fr 110px 84px;align-items:center;padding:0 16px;height:48px;border-bottom:1px solid var(--line);font-size:13px;transition:background .1s;cursor:pointer}
+.tr:last-child{border:none}
+.tr:hover{background:var(--panel-2)}
+.tr.h{height:36px;background:var(--panel-2);font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);cursor:default}
+.tr .id{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.tr .nm{font-weight:500}
+.tr .d{color:var(--ink-3);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:14px}
+.pill{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:4px;border:1px solid var(--line-2);color:var(--ink-2);justify-self:start;white-space:nowrap}
+.pill.ok{color:var(--ok);border-color:#1E463D}
+.pill.wip{color:var(--warn);border-color:#4A3A16}
+.dots{display:flex;gap:4px}
+.dots i{width:11px;height:11px;border-radius:3px;border:1px solid rgba(255,255,255,.14)}
+
+/* feed */
+.feed{border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden}
+.fr{display:flex;gap:16px;align-items:baseline;padding:13px 16px;border-bottom:1px solid var(--line);font-size:13px}
+.fr:last-child{border:none}
+.fr time{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);width:78px;flex:none}
+.fr .t b{font-weight:500}
+.fr .t small{display:block;color:var(--ink-3);font-size:12px;margin-top:1px}
+.fr .pill{margin-left:auto}
+
+/* demo surface (spec-hero, from A) */
+.demo{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden;margin:20px 0}
+.demo .hd{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.demo .hd i{width:8px;height:8px;border-radius:99px;background:#232527}
+.demo .hd span{margin-left:6px}
+.demo .hd .bn{margin-left:auto;color:var(--aq)}
+.canvas{background:var(--b-paper);padding:44px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:center;position:relative;font-family:var(--b-font)}
+.fig{position:absolute;font-family:var(--mono);font-size:9.5px;color:#9AA;letter-spacing:.04em}
+.fig.tl{top:12px;left:14px}.fig.br{bottom:12px;right:14px}
+.bd{font-family:var(--b-font);font-weight:var(--b-wb);font-size:14px;padding:13px 26px;border-radius:var(--b-r);text-transform:var(--b-caps);letter-spacing:.02em;border:none;cursor:pointer}
+.bd.pri{background:var(--b-cta);color:var(--b-on)}
+.bd.pri:active{background:var(--b-cta-down)}
+.bd.sec{background:var(--b-paper);color:var(--b-cta);box-shadow:inset 0 0 0 1.5px var(--b-cta)}
+.bd.dis{background:#E7E7E7;color:#767676;cursor:not-allowed}
+.bd.spn{background:var(--b-cta);color:var(--b-on);min-width:110px}
+.bd.spn i{display:inline-block;width:13px;height:13px;border:2px solid var(--b-on);border-right-color:transparent;border-radius:99px;animation:sp .7s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(1turn)}}
+/* props table */
+.props{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);font-size:13px}
+.pr{display:grid;grid-template-columns:1fr 1fr 1.4fr;padding:10px 16px;border-bottom:1px solid var(--line)}
+.pr:last-child{border:none}
+.pr.h{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--panel-2)}
+.pr code{font-family:var(--mono);font-size:11.5px;color:var(--aq)}
+.pr span{color:var(--ink-2)}
+
+/* token table */
+.tok{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);font-size:13px}
+.tk{display:grid;grid-template-columns:46px 1fr 120px 1fr;align-items:center;padding:9px 16px;border-bottom:1px solid var(--line)}
+.tk:last-child{border:none}
+.tk.h{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--panel-2);padding:8px 16px}
+.tk i{width:26px;height:26px;border-radius:6px;border:1px solid rgba(255,255,255,.12)}
+.tk code{font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+.tk .role{color:var(--ink-3);font-size:12px}
+
+/* options (project) */
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.opt{border:1px solid var(--line);border-radius:10px;padding:16px;background:var(--panel);position:relative}
+.opt.win{border-color:#1E463D;background:linear-gradient(180deg,rgba(80,227,194,.05),var(--panel))}
+.opt b{font-size:13.5px;font-weight:600}
+.opt p{font-size:12.5px;color:var(--ink-3);margin:6px 0 0}
+.opt .ch{position:absolute;top:-9px;right:12px;background:#0E2A24;border:1px solid #1E463D;color:var(--ok);font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px}
+.meta{display:flex;gap:22px;font-size:12px;color:var(--ink-3);margin-bottom:26px;font-family:var(--mono)}
+.meta b{color:var(--ink-2);font-weight:400}
+
+/* brand wall (C) */
+.wall{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.f{border-right:1px solid var(--line);border-bottom:1px solid var(--line);aspect-ratio:16/9;display:flex;align-items:flex-end;padding:14px;font-size:12.5px;color:var(--ink-2);position:relative;overflow:hidden;background:var(--panel)}
+.f i{position:absolute;inset:0;opacity:0;transition:opacity .2s}
+.f:hover{color:#fff}.f:hover i{opacity:1}
+.f:nth-child(4n){border-right:none}
+.f span{position:relative}
+
+/* board */
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.col h4{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;display:flex;gap:8px}
+.col h4 b{color:var(--ink-2);font-weight:400}
+.card{border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:10px;background:var(--panel);font-size:13px;cursor:grab}
+.card:hover{border-color:var(--line-2)}
+.card .who{font-family:var(--mono);font-size:10px;color:var(--ink-3);margin-top:8px}
+
+/* home hero number (C) */
+.bignum{position:absolute;right:30px;top:6px;font-family:var(--disp);font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1px #1B1D20;pointer-events:none;user-select:none;z-index:0}
+.hero-home{position:relative}
+
+/* ================= SEARCH OVERLAY ================= */
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);display:none;z-index:100;padding-top:14vh}
+.ovl.on{display:block}
+.pal{width:min(600px,92vw);margin:0 auto;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.pal input{width:100%;background:transparent;border:none;outline:none;color:var(--ink);font:450 15px 'Inter';padding:16px 18px;border-bottom:1px solid var(--line)}
+.pal .res{max-height:320px;overflow-y:auto;padding:6px}
+.ri{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:7px;font-size:13.5px;cursor:pointer}
+.ri:hover,.ri.sel{background:var(--raise)}
+.ri .ic{width:16px;text-align:center;color:var(--ink-3);font-size:11px}
+.ri small{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.pal .ft{display:flex;gap:14px;padding:9px 14px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+
+@media(max-width:920px){.shell{grid-template-columns:1fr}.side{display:none}.page{padding:26px 18px 100px}.page.rail.on{display:block}.toc{display:none}.stats,.opts,.board{grid-template-columns:1fr 1fr}.wall{grid-template-columns:repeat(2,1fr)}.tr{grid-template-columns:1fr 84px}.tr .id,.tr .d,.tr .dots{display:none}.crumbs{display:none}.searchbtn{min-width:0}}
+</style>
+</head>
+<body>
+
+<div class="shell">
+<!-- ============ SIDEBAR ============ -->
+<aside class="side">
+  <div class="shead">
+    <div class="rowa">
+      <div class="brandsel" id="bsel" title="Demo brand">
+        <button data-b="debenhams" class="on"><i style="background:#7BE7D8"></i></button>
+        <button data-b="boohoo"><i style="background:#F8B5CC"></i></button>
+        <button data-b="boohooman"><i style="background:#0A0A0A"></i></button>
+        <button data-b="plt"><i style="background:#550503"></i></button>
+        <button data-b="karenmillen"><i style="background:#DB4E11"></i></button>
+      </div>
+      <a class="wm" href="#home"><span>dg/design</span></a>
+    </div>
+    <button class="searchbtn" onclick="openPal()">Search… <kbd>⌘K</kbd></button>
+  </div>
+  <div class="grp">
+    <button onclick="tg(this)"><span class="car">▾</span>Overview</button>
+    <div class="items">
+      <a href="#home" class="on"><span class="ic">⌂</span>Home</a>
+      <a href="#shipping"><span class="ic">↗</span>Shipping</a>
+    </div>
+  </div>
+  <div class="grp">
+    <button onclick="tg(this)"><span class="car">▾</span>System</button>
+    <div class="items">
+      <a href="#colour"><span class="ic">◈</span>Colour <span class="tag ok">live</span></a>
+      <a href="#type"><span class="ic">Aa</span>Typography <span class="tag wip">wip</span></a>
+      <a href="#components"><span class="ic">▦</span>Components</a>
+      <a href="#prototypes"><span class="ic">▣</span>Master prototypes <span class="tag wip">wip</span></a>
+      <a href="#button"><span class="ic">▢</span>Button <span class="tag ok">live</span></a>
+      <a href="#product-card"><span class="ic">▢</span>Product card <span class="tag ok">live</span></a>
+    </div>
+  </div>
+  <div class="grp">
+    <button onclick="tg(this)"><span class="car">▾</span>Projects</button>
+    <div class="items">
+      <a href="#projects"><span class="ic">☰</span>All projects</a>
+      <a href="#p-plp"><span class="ic">▸</span>PLP Alignment <span class="tag wip">open</span></a>
+      <a href="#p-colour"><span class="ic">▸</span>Colour Alignment</a>
+      <a href="#p-checkout"><span class="ic">▸</span>Checkout 2026</a>
+    </div>
+  </div>
+  <div class="grp">
+    <button onclick="tg(this)"><span class="car">▾</span>Brand Centre</button>
+    <div class="items">
+      <a href="#brands"><span class="ic">✦</span>All fascias</a>
+    </div>
+  </div>
+  <div class="grp">
+    <button onclick="tg(this)"><span class="car">▾</span>Requests</button>
+    <div class="items">
+      <a href="#requests"><span class="ic">▤</span>Board</a>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<main class="main" id="main">
+
+  <!-- HOME -->
+  <section class="page on" id="home" data-crumb="Home">
+    <div class="home-title">Debenhams Group<br>Design System</div>
+    <div class="home-sub">code first · figma downstream · 16 fascias · 4 markets</div>
+    <div class="quick">
+      <a href="#projects"><span class="ic">☰</span>Projects<small>briefs, options, chosen routes</small></a>
+      <a href="#components"><span class="ic">▦</span>Component library<small>rendered live per brand</small></a>
+      <a href="#prototypes"><span class="ic">▣</span>Master prototypes<small>canonical core pages</small></a>
+    </div>
+    <h2 style="margin-top:0">Latest work <code>/changelog</code></h2>
+    <div class="feed">
+      <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP Alignment opened</b><small>boohoo · boohooMAN · PLT · Warehouse · Brand Room → one core template</small></div><span class="pill wip">open</span></div>
+      <div class="fr"><time>2026-08-26</time><div class="t"><b>Colour Alignment merged</b><small>Signed-off styling · five brands × five screens · post-KM review</small></div><span class="pill ok">merged</span></div>
+      <div class="fr"><time>2026-08-26</time><div class="t"><b>Group tokens extracted</b><small>brands.ts → tokens.css · five-brand live switching</small></div><span class="pill ok">merged</span></div>
+      <div class="fr"><time>2026-08-24</time><div class="t"><b>Checkout 2026 · smart promo field</b><small>One field, two payment instruments</small></div><span class="pill">shipped</span></div>
+    </div>
+  </section>
+
+  <!-- SHIPPING (alias page) -->
+  <section class="page" id="shipping" data-crumb="Overview / Shipping">
+    <div class="kick">overview <b>· shipping</b></div>
+    <h1>Shipping</h1>
+    <p class="lede">Everything that merged, shipped or opened — newest first. Every row links to the project page with its options and decision.</p>
+    <div class="feed">
+      <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP Alignment opened</b><small>Target w/c 08 Sep · Scott's brief</small></div><span class="pill wip">open</span></div>
+      <div class="fr"><time>2026-08-26</time><div class="t"><b>Colour Alignment merged</b><small>KM review complete</small></div><span class="pill ok">merged</span></div>
+      <div class="fr"><time>2026-08-24</time><div class="t"><b>Checkout 2026 promo field shipped</b><small>Figma WChEtDPH… · 3990:58406</small></div><span class="pill">shipped</span></div>
+      <div class="fr"><time>2026-08-20</time><div class="t"><b>VTO first-use journey shipped</b><small>Asset-embed pattern introduced</small></div><span class="pill">shipped</span></div>
+    </div>
+  </section>
+
+  <!-- COLOUR -->
+  <section class="page" id="colour" data-crumb="System / Foundations / Colour">
+    <div class="kick">system / foundations <b>· rendering <span class="bn">Debenhams</span></b></div>
+    <h1>Colour</h1>
+    <p class="lede">Semantic roles resolved live from the current demo brand — switch it in the top bar. Values are the signed-off set from the Colour Alignment review.</p>
+    <div class="tok">
+      <div class="tk h"><span></span><span>Token</span><span>Value</span><span>Role</span></div>
+      <div class="tk"><i style="background:var(--b-cta)"></i><code>surface/cta/primary</code><code class="val" data-v="--b-cta"></code><span class="role">Primary action fill</span></div>
+      <div class="tk"><i style="background:var(--b-cta-down)"></i><code>surface/cta/pressed</code><code class="val" data-v="--b-cta-down"></code><span class="role">Touch-down state</span></div>
+      <div class="tk"><i style="background:var(--b-on)"></i><code>text/on-cta</code><code class="val" data-v="--b-on"></code><span class="role">Label on primary fill</span></div>
+      <div class="tk"><i style="background:var(--b-l1)"></i><code>accent/light-1</code><code class="val" data-v="--b-l1"></code><span class="role">Tinted surfaces, badges</span></div>
+      <div class="tk"><i style="background:var(--b-l3)"></i><code>accent/light-3</code><code class="val" data-v="--b-l3"></code><span class="role">Wash backgrounds</span></div>
+      <div class="tk"><i style="background:var(--b-paper)"></i><code>surface/page</code><code class="val" data-v="--b-paper"></code><span class="role">Page background</span></div>
+    </div>
+  </section>
+
+  <!-- TYPE -->
+  <section class="page" id="type" data-crumb="System / Foundations / Typography">
+    <div class="kick">system / foundations</div>
+    <h1>Typography <span class="dim">wip</span></h1>
+    <p class="lede">Text styles are being ported from the Checkout-2026 file — the best current source. Scale, roles and line-heights land here once locked.</p>
+  </section>
+
+  <!-- COMPONENTS INDEX -->
+  <section class="page" id="components" data-crumb="System / Components">
+    <div class="kick">system <b>· packages/components</b></div>
+    <h1>Components</h1>
+    <p class="lede">The library index. Brand chips show themed coverage; status is live in production or in build.</p>
+    <div class="tbl">
+      <div class="tr h"><span></span><span>Name</span><span>Description</span><span>Brands</span><span>Status</span></div>
+      <div class="tr" onclick="location.hash='button'"><span class="id">C-01</span><span class="nm">Button</span><span class="d">Primary · secondary · disabled · spinner — golden-truth state matrix</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
+      <div class="tr" onclick="location.hash='product-card'"><span class="id">C-02</span><span class="nm">Product card</span><span class="d">The PLP unit — brand label, was-price, badge, favourite as config</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
+      <div class="tr"><span class="id">C-03</span><span class="nm">Smart promo field</span><span class="d">Promo code or gift card — detects which it's given</span><span class="dots"><i style="background:#00787D"></i></span><span class="pill ok">live</span></div>
+      <div class="tr"><span class="id">C-04</span><span class="nm">PLP template</span><span class="d">One core template · five brand configs · Sep brief</span><span class="dots"><i style="background:#26282B"></i></span><span class="pill wip">wip</span></div>
+    </div>
+  </section>
+
+  <!-- MASTER PROTOTYPES -->
+  <section class="page" id="prototypes" data-crumb="System / Master prototypes">
+    <div class="kick">system <b>· the canonical core pages — briefs branch from these, chosen routes merge back</b></div>
+    <h1>Master prototypes</h1>
+    <p class="lede">The latest agreed version of every core page, built from system components. New briefs load the master, build options on a branch, and merge the winner back — nothing gets rebuilt from memory.</p>
+    <div class="tbl">
+      <div class="tr h"><span></span><span>Page</span><span>Source</span><span>Updated</span><span>Status</span></div>
+      <div class="tr"><span class="id">M-01</span><span class="nm">PLP</span><span class="d">Seeding from plt-app-prototype + Sep alignment brief</span><span class="id">—</span><span class="pill wip">building</span></div>
+      <div class="tr"><span class="id">M-02</span><span class="nm">PDP</span><span class="d">To seed from colour-alignment signed-off screens</span><span class="id">—</span><span class="pill">queued</span></div>
+      <div class="tr"><span class="id">M-03</span><span class="nm">Bag</span><span class="d">To seed from colour-alignment signed-off screens</span><span class="id">—</span><span class="pill">queued</span></div>
+      <div class="tr"><span class="id">M-04</span><span class="nm">Checkout</span><span class="d">Promo/gift-card section shipped · rest to assemble</span><span class="id">Aug 26</span><span class="pill">queued</span></div>
+      <div class="tr"><span class="id">M-05</span><span class="nm">Home</span><span class="d">To spec</span><span class="id">—</span><span class="pill">queued</span></div>
+    </div>
+  </section>
+
+  <!-- BUTTON (with right rail) -->
+  <section class="page rail" id="button" data-crumb="System / Components / Button">
+    <div>
+      <div class="kick">system / components / C-01 <b>· rendering <span class="bn">Debenhams</span></b></div>
+      <h1>Button</h1>
+      <p class="lede">Four states, one component, every fascia. Switch the demo brand in the top bar — colour, type, radius and case all follow the tokens.</p>
+      <div class="demo" id="d-states">
+        <div class="hd"><i></i><i></i><i></i><span>canvas — button / all states</span><span class="bn">Debenhams</span></div>
+        <div class="canvas">
+          <span class="fig tl">FIG 01 — STATES</span>
+          <button class="bd pri">Add to bag</button>
+          <button class="bd sec">Save for later</button>
+          <button class="bd dis">Out of stock</button>
+          <button class="bd spn"><i></i></button>
+          <span class="fig br">H 44 · R <span class="rv"></span></span>
+        </div>
+      </div>
+      <h2 id="b-props">Props <code>ButtonProps</code></h2>
+      <div class="props">
+        <div class="pr h"><span>Prop</span><span>Type</span><span>Notes</span></div>
+        <div class="pr"><code>variant</code><span>primary · secondary</span><span>One primary per view</span></div>
+        <div class="pr"><code>state</code><span>default · pressed · disabled · loading</span><span>Pressed maps to touch-down token</span></div>
+        <div class="pr"><code>brand</code><span>inherited from mode</span><span>Never set per-instance</span></div>
+        <div class="pr"><code>size</code><span>md · sm</span><span>sm = tertiary-xs replacement</span></div>
+      </div>
+      <h2 id="b-usage">Usage</h2>
+      <p>Secondary carries the CTA colour as a keyline, never a second fill. PLT renders square with uppercase labels; every other fascia 4px radius, sentence case — that difference is brand config, not a component fork.</p>
+      <h2 id="b-src">Source</h2>
+      <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">packages/components/src/button</code> · Figma mirror: DS file → BUTTONS (new)</p>
+    </div>
+    <nav class="toc"><h6>On this page</h6><a href="#d-states">States</a><a href="#b-props">Props</a><a href="#b-usage">Usage</a><a href="#b-src">Source</a></nav>
+  </section>
+
+  <!-- PRODUCT CARD -->
+  <section class="page" id="product-card" data-crumb="System / Components / Product card">
+    <div class="kick">system / components / C-02 <b>· rendering <span class="bn">Debenhams</span></b></div>
+    <h1>Product card</h1>
+    <p class="lede">The PLP unit. Brand label, was-price, badge and favourite icon are per-brand toggles on one component — the open PLP brief resolves each fascia's config.</p>
+    <div class="demo">
+      <div class="hd"><i></i><i></i><i></i><span>canvas — product card</span><span class="bn">Debenhams</span></div>
+      <div class="canvas">
+        <div style="width:190px">
+          <div style="aspect-ratio:3/4;border-radius:var(--b-r);background:linear-gradient(160deg,var(--b-l3),var(--b-l1));position:relative">
+            <span style="position:absolute;top:8px;right:8px;width:29px;height:29px;border-radius:99px;background:var(--b-paper);display:grid;place-items:center;color:var(--b-cta);font-size:13px;box-shadow:0 4px 10px rgba(22,19,20,.12)">♥</span>
+          </div>
+          <div style="font-size:12px;margin-top:8px;font-weight:var(--b-wr);color:#242424">Ribbed knit midi dress</div>
+          <div style="font-size:13px;font-weight:var(--b-wb);color:#242424;margin-top:3px">£28.00 <s style="color:#767676;font-weight:400;margin-left:5px">£40.00</s></div>
+        </div>
+        <div style="width:190px">
+          <div style="aspect-ratio:3/4;border-radius:var(--b-r);background:linear-gradient(200deg,var(--b-l3),var(--b-l1));position:relative">
+            <span style="position:absolute;top:8px;right:8px;width:29px;height:29px;border-radius:99px;background:var(--b-paper);display:grid;place-items:center;color:var(--b-cta);font-size:13px;box-shadow:0 4px 10px rgba(22,19,20,.12)">♡</span>
+          </div>
+          <div style="font-size:12px;margin-top:8px;font-weight:var(--b-wr);color:#242424">Oversized denim jacket</div>
+          <div style="font-size:13px;font-weight:var(--b-wb);color:#242424;margin-top:3px">£45.00</div>
+        </div>
+      </div>
+    </div>
+    <h2>Config</h2>
+    <div class="props">
+      <div class="pr h"><span>Toggle</span><span>Default</span><span>Brief (Sep 26)</span></div>
+      <div class="pr"><code>showBrand</code><span>true</span><span>false — PLT, Warehouse</span></div>
+      <div class="pr"><code>imageFullWidth</code><span>false</span><span>true — BHW, Warehouse (PLT pattern)</span></div>
+      <div class="pr"><code>favouriteIcon</code><span>default</span><span>km — Warehouse</span></div>
+      <div class="pr"><code>columnsDesktop</code><span>5</span><span>4 — Warehouse</span></div>
+    </div>
+  </section>
+
+  <!-- PROJECTS INDEX -->
+  <section class="page" id="projects" data-crumb="Projects">
+    <div class="kick">projects <b>· options + chosen route, always</b></div>
+    <h1>Projects</h1>
+    <p class="lede">Every brief as a record: what was explored, what won, and where it lives now. Delivered work merges to the master prototype.</p>
+    <div class="tbl">
+      <div class="tr h"><span></span><span>Project</span><span>Scope</span><span>When</span><span>Status</span></div>
+      <div class="tr" onclick="location.hash='p-plp'"><span class="id">P-05</span><span class="nm">PLP Alignment</span><span class="d">5 fascias → 1 core template · fonts, cards, grid as config</span><span class="id">Sep 26</span><span class="pill wip">open</span></div>
+      <div class="tr" onclick="location.hash='p-colour'"><span class="id">P-04</span><span class="nm">Colour Alignment</span><span class="d">Signed-off styling · 5 brands × 5 screens · golden-truth matrix</span><span class="id">Aug 26</span><span class="pill ok">merged</span></div>
+      <div class="tr" onclick="location.hash='p-checkout'"><span class="id">P-03</span><span class="nm">Checkout 2026 · Promo</span><span class="d">Smart promo / gift-card field</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
+      <div class="tr"><span class="id">P-02</span><span class="nm">Virtual Try-On</span><span class="d">First-use journey · asset-embed pattern</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
+      <div class="tr"><span class="id">P-01</span><span class="nm">AI-Gen Labelling</span><span class="d">Estate-wide labelling policy deck</span><span class="id">Aug 26</span><span class="pill">delivered</span></div>
+    </div>
+  </section>
+
+  <!-- PROJECT: PLP -->
+  <section class="page" id="p-plp" data-crumb="Projects / PLP Alignment">
+    <div class="kick">projects / P-05</div>
+    <h1>PLP Alignment</h1>
+    <div class="meta"><span>status <b>open</b></span><span>brief <b>Scott · 01 Sep</b></span><span>target <b>w/c 08 Sep</b></span><span>fascias <b>5</b></span></div>
+    <p class="lede">Align boohoo, boohooMAN, PLT, Warehouse and The Brand Room onto one core PLP template. Differences become configuration, not forks. PLT is the reference implementation.</p>
+    <h2>Options</h2>
+    <div class="opts">
+      <div class="opt"><b>A — Strict PLT clone</b><p>All five run PLT's exact card and grid; only tokens differ.</p></div>
+      <div class="opt"><b>B — PLT + toggles</b><p>PLT base; brand label, was-price, badges and grid density per fascia.</p></div>
+      <div class="opt"><b>C — Density variants</b><p>B plus a compact / comfortable density switch per market.</p></div>
+    </div>
+    <h2>Requirements <code>from the brief</code></h2>
+    <div class="props">
+      <div class="pr h"><span>Change</span><span>Fascias</span><span>Detail</span></div>
+      <div class="pr"><code>imageFullWidth</code><span>BHW · Warehouse</span><span>Match PLT full-width imagery</span></div>
+      <div class="pr"><code>fontScale → plt</code><span>BHW · Warehouse</span><span>Site-wide reduction to PLT sizes</span></div>
+      <div class="pr"><code>columnsDesktop 5→4</code><span>Warehouse</span><span>Match other brands</span></div>
+      <div class="pr"><code>showBrand → false</code><span>Warehouse</span><span>Like PLT</span></div>
+      <div class="pr"><code>favouriteIcon → km</code><span>Warehouse</span><span>Adopt KM heart</span></div>
+    </div>
+  </section>
+
+  <!-- PROJECT: COLOUR -->
+  <section class="page" id="p-colour" data-crumb="Projects / Colour Alignment">
+    <div class="kick">projects / P-04</div>
+    <h1>Colour Alignment</h1>
+    <div class="meta"><span>status <b>merged</b></span><span>sign-off <b>KM review · Aug 26</b></span><span>screens <b>PDP · Added · Bag · Checkout · Account</b></span></div>
+    <p class="lede">Final signed-off styling per fascia across five core screens, plus the golden-truth button state matrix. The Colour page renders this project's output.</p>
+    <h2>Routes explored</h2>
+    <div class="opts">
+      <div class="opt"><b>Before / After</b><p>Side-by-side with live colour picker for review sessions.</p></div>
+      <div class="opt win"><span class="ch">chosen</span><b>Final set</b><p>Picker and Before states removed post-review; deep-linkable per brand.</p></div>
+      <div class="opt"><b>Per-screen overrides</b><p>Rejected — breaks the token model.</p></div>
+    </div>
+  </section>
+
+  <!-- PROJECT: CHECKOUT -->
+  <section class="page" id="p-checkout" data-crumb="Projects / Checkout 2026">
+    <div class="kick">projects / P-03</div>
+    <h1>Checkout 2026 · Promo</h1>
+    <div class="meta"><span>status <b>shipped</b></span><span>figma <b>WChEtDPH… · 3990:58406</b></span></div>
+    <p class="lede">One smart field between donation and payment that accepts a promo code or a gift card number and works out which it's been given. Single self-contained prototype.</p>
+  </section>
+
+  <!-- BRANDS -->
+  <section class="page" id="brands" data-crumb="Brand Centre">
+    <div class="kick">brand centre <b>· 16 fascias · 4 markets</b></div>
+    <h1>The estate</h1>
+    <p class="lede">Every fascia's palette, type, tone and assets. Hover a cell; click through for the full guideline page.</p>
+    <div class="wall">
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#00787D,#0A2523)"></i><span>Debenhams</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#BB305F,#2A0E18)"></i><span>boohoo</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#2E2E2E,#000)"></i><span>boohooMAN</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#550503,#140100)"></i><span>PrettyLittleThing</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#8E330B,#1E0B03)"></i><span>Karen Millen</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#4A4A46,#111)"></i><span>Warehouse</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#6E5E4E,#141210)"></i><span>Coast</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3E4A42,#0D110E)"></i><span>Oasis</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3A3E4A,#0C0D11)"></i><span>Burton</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#4A3A44,#110C10)"></i><span>Dorothy Perkins</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#443E30,#100F0B)"></i><span>Wallis</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#503A3A,#120D0D)"></i><span>Nasty Gal</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3A4A50,#0C1012)"></i><span>Misspap</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#46503A,#0F110C)"></i><span>Principles</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#2F2F4A,#0B0B12)"></i><span>The Brand Room</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#333,#0A0A0A)"></i><span>DSGN Studio</span></a>
+    </div>
+  </section>
+
+  <!-- REQUESTS -->
+  <section class="page" id="requests" data-crumb="Requests / Board">
+    <div class="kick">requests <b>· intake wired to the existing worker</b></div>
+    <h1>Requests</h1>
+    <p class="lede">Ask, track, receive. Intake runs on the UX Design Request worker; this board is the status view over that data.</p>
+    <div class="board">
+      <div class="col"><h4>New <b>2</b></h4>
+        <div class="card">Warehouse footer — square corners + black CTA<div class="who">SCOTT · ECOMMERCE · SEP 01</div></div>
+        <div class="card">BHW font scale → PLT sizes, full site<div class="who">SCOTT · ECOMMERCE · SEP 01</div></div>
+      </div>
+      <div class="col"><h4>In progress <b>1</b></h4>
+        <div class="card">PLP Alignment — five fascias, one template<div class="who">JAKE · DESIGN · W/C 08 SEP</div></div>
+      </div>
+      <div class="col"><h4>Done <b>2</b></h4>
+        <div class="card">Colour Alignment — KM review complete<div class="who">MERGED AUG 26</div></div>
+        <div class="card">Checkout 2026 — promo / gift-card field<div class="who">SHIPPED AUG 26</div></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<!-- ============ SEARCH ============ -->
+<div class="ovl" id="ovl" onclick="if(event.target===this)closePal()">
+  <div class="pal">
+    <input id="q" placeholder="Search components, projects, brands, requests…" autocomplete="off">
+    <div class="res" id="res"></div>
+    <div class="ft"><span>↑↓ navigate</span><span>↵ open</span><span>esc close</span></div>
+  </div>
+</div>
+
+<script>
+/* ---- registry (drives search + routing) ---- */
+const REG=[
+ {h:'home',t:'Home',k:'overview dashboard',ic:'⌂',s:'Overview'},
+ {h:'shipping',t:'Shipping',k:'changelog merged',ic:'↗',s:'Overview'},
+ {h:'colour',t:'Colour',k:'tokens palette semantic',ic:'◈',s:'System'},
+ {h:'type',t:'Typography',k:'text styles fonts',ic:'Aa',s:'System'},
+ {h:'components',t:'Components',k:'library index',ic:'▦',s:'System'},
+ {h:'prototypes',t:'Master prototypes',k:'plp pdp bag checkout canonical master',ic:'▣',s:'System'},
+ {h:'button',t:'Button',k:'cta primary states c-01',ic:'▢',s:'Component'},
+ {h:'product-card',t:'Product card',k:'plp card favourite c-02',ic:'▢',s:'Component'},
+ {h:'projects',t:'All projects',k:'archive briefs',ic:'☰',s:'Projects'},
+ {h:'p-plp',t:'PLP Alignment',k:'warehouse boohoo template p-05',ic:'▸',s:'Project'},
+ {h:'p-colour',t:'Colour Alignment',k:'signed off km p-04',ic:'▸',s:'Project'},
+ {h:'p-checkout',t:'Checkout 2026 · Promo',k:'gift card p-03',ic:'▸',s:'Project'},
+ {h:'brands',t:'Brand Centre',k:'fascias estate guidelines',ic:'✦',s:'Brands'},
+ {h:'requests',t:'Requests board',k:'intake tickets status',ic:'▤',s:'Requests'},
+];
+
+/* ---- routing ---- */
+const pages=[...document.querySelectorAll('.page')];
+function route(){
+  const h=(location.hash||'#home').slice(1);
+  pages.forEach(p=>p.classList.toggle('on',p.id===h));
+  document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));
+  const pg=document.getElementById(h);
+  const _c=document.getElementById('crumbs'); if(_c)_c.innerHTML=(pg?.dataset.crumb||'Home').split(' / ').map((c,i,a)=>i===a.length-1?`<b>${c}</b>`:c).join(' <span style="opacity:.4">/</span> ');
+  document.getElementById('main').scrollTop=0;
+}
+addEventListener('hashchange',route);
+
+/* ---- sidebar groups ---- */
+function tg(btn){btn.parentElement.classList.toggle('closed')}
+
+/* ---- brand switching ---- */
+function paint(){
+  const cs=getComputedStyle(document.documentElement);
+  document.querySelectorAll('.val').forEach(v=>v.textContent=cs.getPropertyValue(v.dataset.v).trim().toUpperCase());
+  document.querySelectorAll('.rv').forEach(v=>v.textContent=cs.getPropertyValue('--b-r').trim());
+  const n=cs.getPropertyValue('--b-name').replace(/'/g,'').trim();
+  document.querySelectorAll('.bn').forEach(b=>b.textContent=n);
+}
+document.querySelectorAll('#bsel button').forEach(b=>b.onclick=()=>{
+  document.documentElement.setAttribute('data-brand',b.dataset.b);
+  document.querySelectorAll('#bsel button').forEach(x=>x.classList.toggle('on',x===b));
+  paint();
+});
+
+/* ---- search palette ---- */
+const ovl=document.getElementById('ovl'),q=document.getElementById('q'),res=document.getElementById('res');
+let sel=0,hits=[];
+function openPal(){ovl.classList.add('on');q.value='';draw('');q.focus()}
+function closePal(){ovl.classList.remove('on')}
+function draw(v){
+  hits=REG.filter(r=>(r.t+' '+r.k).toLowerCase().includes(v.toLowerCase()));
+  sel=0;
+  res.innerHTML=hits.map((r,i)=>`<div class="ri${i===0?' sel':''}" data-h="${r.h}"><span class="ic">${r.ic}</span>${r.t}<small>${r.s}</small></div>`).join('')||'<div class="ri" style="color:var(--ink-3)">No results</div>';
+  res.querySelectorAll('.ri[data-h]').forEach(el=>el.onclick=()=>{location.hash=el.dataset.h;closePal()});
+}
+q.addEventListener('input',()=>draw(q.value));
+addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();ovl.classList.contains('on')?closePal():openPal();return}
+  if(!ovl.classList.contains('on'))return;
+  if(e.key==='Escape')closePal();
+  if(e.key==='ArrowDown'){sel=Math.min(sel+1,hits.length-1);mark()}
+  if(e.key==='ArrowUp'){sel=Math.max(sel-1,0);mark()}
+  if(e.key==='Enter'&&hits[sel]){location.hash=hits[sel].h;closePal()}
+});
+function mark(){res.querySelectorAll('.ri').forEach((el,i)=>el.classList.toggle('sel',i===sel))}
+
+route();paint();
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C — Monolith · Debenhams Group Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&family=Archivo+Black&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--ink:#EDEDEB;--ink-2:#9A9A96;--ink-3:#5C5C58;--line:#1C1C1A;--hair:#2A2A28}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.6 'Archivo',sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+/* nav */
+nav{position:fixed;inset:0 0 auto;z-index:20;display:flex;align-items:center;padding:0 28px;height:64px;mix-blend-mode:difference}
+.wm{font-family:'Archivo Black';font-size:15px;letter-spacing:.02em;text-transform:uppercase}
+nav .links{margin-left:auto;display:flex;gap:26px;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+nav .links a{opacity:.75}nav .links a:hover{opacity:1}
+/* hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 28px 40px;position:relative;overflow:hidden;border-bottom:1px solid var(--hair)}
+.hero .bgtype{position:absolute;inset:auto -2vw -6vw;font-family:'Archivo Black';font-size:23vw;line-height:.8;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1px #232321;user-select:none;white-space:nowrap;pointer-events:none}
+.hero .glow{position:absolute;width:70vw;height:70vw;right:-25vw;top:-30vw;border-radius:50%;background:radial-gradient(closest-side,rgba(123,231,216,.10),rgba(85,5,3,.06) 55%,transparent 75%);pointer-events:none}
+.hero h1{font-family:'Archivo Black';font-size:clamp(56px,10.5vw,150px);line-height:.9;letter-spacing:-.015em;text-transform:uppercase;position:relative}
+.hero h1 .hollow{color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+.hero .strap{display:flex;align-items:flex-end;gap:40px;margin-top:34px;position:relative}
+.hero .strap p{max-width:420px;color:var(--ink-2);font-size:15.5px}
+.hero .strap .idx{margin-left:auto;text-align:right;font-family:'Space Grotesk';font-size:12px;color:var(--ink-3);letter-spacing:.12em;text-transform:uppercase}
+.hero .strap .idx b{display:block;color:var(--ink);font-size:34px;font-family:'Archivo Black';letter-spacing:0}
+/* chapters */
+.ch{border-bottom:1px solid var(--hair);display:grid;grid-template-columns:90px 1fr;min-height:52vh}
+.ch .no{border-right:1px solid var(--hair);display:flex;align-items:flex-start;justify-content:center;padding-top:34px;font-family:'Space Grotesk';font-size:12px;letter-spacing:.14em;color:var(--ink-3);writing-mode:vertical-rl}
+.ch .body{padding:60px 48px 70px;position:relative;overflow:hidden}
+.ch h2{font-family:'Archivo Black';text-transform:uppercase;font-size:clamp(38px,5.5vw,76px);line-height:.94;letter-spacing:-.01em;margin-bottom:22px}
+.ch p{max-width:480px;color:var(--ink-2);font-size:15.5px}
+.ch .go{display:inline-block;margin-top:30px;font-family:'Space Grotesk';font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--hair);padding:13px 24px;transition:background .15s,color .15s}
+.ch .go:hover{background:var(--ink);color:#050505}
+/* ch1 component strip */
+.strip{position:absolute;right:-30px;top:50%;transform:translateY(-50%) rotate(-4deg);display:flex;flex-direction:column;gap:12px;opacity:.9}
+.strip .b{font:700 13px 'Archivo';padding:13px 26px;text-align:center;min-width:190px}
+.s1{background:#00787D;color:#fff;border-radius:4px}
+.s2{background:#BB305F;color:#fff;border-radius:4px;font-family:'Archivo'}
+.s3{background:#550503;color:#FFFDF7;border-radius:0;text-transform:uppercase;letter-spacing:.06em}
+.s4{background:#8E330B;color:#fff;border-radius:4px}
+.s5{background:#fff;color:#000;border-radius:4px}
+/* ch2 project slab list */
+.slabs{margin-top:36px;border-top:1px solid var(--hair)}
+.slab{display:grid;grid-template-columns:1fr auto auto;gap:26px;align-items:center;padding:22px 0;border-bottom:1px solid var(--hair);transition:padding-left .15s}
+.slab:hover{padding-left:14px}
+.slab b{font-family:'Archivo Black';text-transform:uppercase;font-size:22px;letter-spacing:.01em}
+.slab span{color:var(--ink-3);font-size:13px}
+.slab .tag{font-family:'Space Grotesk';font-size:11px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--hair);padding:5px 12px;color:var(--ink-2)}
+.slab .tag.live{color:#7BE7D8;border-color:#1F3835}
+/* ch3 fascia wall */
+.wall{margin-top:36px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--hair);border-left:1px solid var(--hair)}
+.f{border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);aspect-ratio:16/9;display:flex;align-items:flex-end;padding:16px;font-size:13px;color:var(--ink-2);position:relative;overflow:hidden;transition:color .15s}
+.f i{position:absolute;inset:0;opacity:0;transition:opacity .2s}
+.f:hover{color:#fff}.f:hover i{opacity:1}
+/* marquee footer */
+.mq{overflow:hidden;border-bottom:1px solid var(--hair);padding:26px 0;white-space:nowrap}
+.mq div{display:inline-flex;gap:60px;animation:mq 26s linear infinite;font-family:'Archivo Black';text-transform:uppercase;font-size:26px;letter-spacing:.02em;color:transparent;-webkit-text-stroke:1px #3A3A38}
+@keyframes mq{to{transform:translateX(-50%)}}
+footer{display:flex;gap:28px;padding:34px 28px;color:var(--ink-3);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-family:'Space Grotesk'}
+footer span:last-child{margin-left:auto}
+@media(max-width:860px){.ch{grid-template-columns:1fr}.ch .no{display:none}.strip{display:none}.wall{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:15vw}}
+</style>
+</head>
+<body>
+<nav><span class="wm">DG—Design</span><div class="links"><a href="#">System</a><a href="#">Projects</a><a href="#">Brands</a><a href="#">Requests</a></div></nav>
+
+<header class="hero">
+  <div class="glow"></div>
+  <div class="bgtype">DGDS</div>
+  <h1>One system.<br><span class="hollow">Sixteen fronts.</span></h1>
+  <div class="strap">
+    <p>The production design system of Debenhams Group. Code first. Figma downstream. Every fascia themed from one library — nothing designed twice.</p>
+    <div class="idx"><b>16</b>fascias · 4 markets<br>UK — IE — US — AU</div>
+  </div>
+</header>
+
+<section class="ch">
+  <div class="no">Chapter 01 — System</div>
+  <div class="body">
+    <h2>Built once.<br>Worn by all.</h2>
+    <p>Tokens, components and rules rendered live from production code. Switch the brand and everything — colour, type, radius, case — follows. The strip on the right is one button component, five fascias.</p>
+    <a class="go" href="#">Enter the system</a>
+    <div class="strip">
+      <div class="b s1">Add to bag</div>
+      <div class="b s2">Add to bag</div>
+      <div class="b s3">Add to bag</div>
+      <div class="b s4">Add to bag</div>
+      <div class="b s5">Add to bag</div>
+    </div>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="no">Chapter 02 — Projects</div>
+  <div class="body">
+    <h2>The archive is the asset.</h2>
+    <p>Every brief, the options explored, the route chosen. Delivered work merges into the master prototype; nothing gets rebuilt from memory.</p>
+    <div class="slabs">
+      <a class="slab" href="#"><b>PLP Alignment</b><span>5 fascias → 1 template</span><span class="tag live">Open</span></a>
+      <a class="slab" href="#"><b>Colour Alignment</b><span>Signed off · KM review</span><span class="tag">Merged</span></a>
+      <a class="slab" href="#"><b>Checkout 2026</b><span>Promo + gift card field</span><span class="tag">Shipped</span></a>
+      <a class="slab" href="#"><b>Virtual Try-On</b><span>First-use journey</span><span class="tag">Shipped</span></a>
+      <a class="slab" href="#"><b>AI-Gen Labelling</b><span>Estate-wide policy deck</span><span class="tag">Delivered</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="no">Chapter 03 — Brands</div>
+  <div class="body">
+    <h2>The estate.</h2>
+    <p>Sixteen fascias, four markets, one grid. Hover a cell — each brand centre carries its palette, type, tone and assets.</p>
+    <div class="wall">
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#00787D,#0A2523)"></i>Debenhams</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#BB305F,#2A0E18)"></i>boohoo</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#2E2E2E,#000)"></i>boohooMAN</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#550503,#140100)"></i>PrettyLittleThing</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#8E330B,#1E0B03)"></i>Karen Millen</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#4A4A46,#111)"></i>Warehouse</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#6E5E4E,#141210)"></i>Coast</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3E4A42,#0D110E)"></i>Oasis</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3A3E4A,#0C0D11)"></i>Burton</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#4A3A44,#110C10)"></i>Dorothy Perkins</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#443E30,#100F0B)"></i>Wallis</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#503A3A,#120D0D)"></i>Nasty Gal</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3A4A50,#0C1012)"></i>Misspap</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#46503A,#0F110C)"></i>Principles</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#2F2F4A,#0B0B12)"></i>The Brand Room</a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#333,#0A0A0A)"></i>DSGN Studio</a>
+    </div>
+  </div>
+</section>
+
+<div class="mq"><div>
+  <span>Design once — ship sixteen times —</span><span>Code first — Figma downstream —</span>
+  <span>Design once — ship sixteen times —</span><span>Code first — Figma downstream —</span>
+</div></div>
+
+<footer><span>Debenhams Group Design</span><span>Manchester</span><span>direction C — monolith</span></footer>
+</body>
+</html>

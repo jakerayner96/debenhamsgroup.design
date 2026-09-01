@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>D — Index · Debenhams Group Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--ink:#EDEDED;--ink-2:#A1A1A1;--ink-3:#666;--line:#262626;--line-2:#333;
+--ok:#50E3C2;--warn:#F5A623;--mono:'Geist Mono','JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:400 14px/1.6 'Inter',sans-serif;letter-spacing:-.006em;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.grid-lines{position:fixed;inset:0;pointer-events:none;z-index:0;display:grid;grid-template-columns:1fr min(1100px,92vw) 1fr}
+.grid-lines i{border-left:1px solid #141414;border-right:1px solid #141414;grid-column:2}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+/* nav */
+nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:10}
+nav .wrap{display:flex;align-items:center;height:58px;gap:24px}
+.tri{width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:15px solid #fff}
+.wm{font-weight:600;font-size:14px}
+.wm span{color:var(--ink-3);font-weight:400;margin:0 6px}
+nav a.i{font-size:13.5px;color:var(--ink-2)}nav a.i:hover{color:var(--ink)}
+nav .r{margin-left:auto;display:flex;gap:10px;align-items:center}
+nav .st{font-family:var(--mono);font-size:11px;color:var(--ok);display:flex;gap:7px;align-items:center}
+nav .st i{width:7px;height:7px;border-radius:99px;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+/* hero */
+.hero{padding:88px 0 0;border-bottom:1px solid var(--line)}
+.path{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-bottom:22px}
+.path b{color:var(--ink-2);font-weight:400}
+h1{font-size:52px;font-weight:600;letter-spacing:-.045em;line-height:1.05;max-width:700px}
+.sub{margin-top:16px;color:var(--ink-2);font-size:16px;max-width:540px}
+.cta{margin:30px 0 56px;display:flex;gap:10px}
+.b1{background:#fff;color:#000;font:500 14px 'Inter';padding:9px 16px;border-radius:6px;border:1px solid #fff;cursor:pointer}
+.b1:hover{background:#DDD}
+.b2{background:#000;color:var(--ink);font:500 14px 'Inter';padding:9px 16px;border-radius:6px;border:1px solid var(--line-2);cursor:pointer}
+.b2:hover{border-color:#555}
+/* stat strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.stat{padding:22px 20px;border-right:1px solid var(--line)}
+.stat:first-child{padding-left:0}.stat:last-child{border-right:none}
+.stat b{display:block;font-size:30px;font-weight:600;letter-spacing:-.04em}
+.stat span{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
+/* index table */
+.sec{padding:64px 0}
+.sec .head{display:flex;align-items:baseline;margin-bottom:22px;gap:16px}
+.sec h2{font-size:20px;font-weight:600;letter-spacing:-.03em}
+.sec .head code{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.sec .head a{margin-left:auto;font-size:13px;color:var(--ink-2)}
+.tbl{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.tr{display:grid;grid-template-columns:44px 1.3fr 1fr 120px 90px;align-items:center;border-bottom:1px solid var(--line);padding:0 16px;height:52px;font-size:13.5px;transition:background .1s}
+.tr:last-child{border-bottom:none}
+.tr:hover{background:#0A0A0A}
+.tr.h{background:#0A0A0A;height:40px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.tr .id{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.tr .nm{font-weight:500}
+.tr .d{color:var(--ink-3);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr .br{display:flex;gap:4px}
+.tr .br i{width:12px;height:12px;border-radius:3px;border:1px solid rgba(255,255,255,.12)}
+.pill{font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:4px;border:1px solid var(--line-2);color:var(--ink-2);justify-self:start}
+.pill.ok{color:var(--ok);border-color:#1E4A40}
+.pill.wip{color:var(--warn);border-color:#4A3A16}
+/* split: projects/requests */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding-bottom:90px}
+.panel{border:1px solid var(--line);border-radius:8px}
+.panel .ph{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.panel .ph h3{font-size:14px;font-weight:600}
+.panel .ph code{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);margin-left:auto}
+.li{display:flex;gap:12px;align-items:baseline;padding:13px 16px;border-bottom:1px solid #161616;font-size:13.5px}
+.li:last-child{border:none}
+.li time{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);width:74px;flex:none}
+.li .t b{font-weight:500}
+.li .t small{display:block;color:var(--ink-3);font-size:12px}
+footer{border-top:1px solid var(--line);padding:28px 0 60px;color:var(--ink-3);font-size:12.5px}
+footer .wrap{display:flex;gap:22px}
+footer code{margin-left:auto;font-family:var(--mono);font-size:11px}
+@media(max-width:860px){.stats{grid-template-columns:1fr 1fr}.stat{padding-left:0;border:none}.tr{grid-template-columns:1fr 100px;height:auto;padding:12px 14px;gap:4px}.tr .id,.tr .d{display:none}.duo{grid-template-columns:1fr}h1{font-size:36px}}
+</style>
+</head>
+<body>
+<div class="grid-lines"><i></i></div>
+
+<nav><div class="wrap">
+  <div class="tri"></div><span class="wm">dg<span>/</span>design</span>
+  <a class="i" href="#">System</a><a class="i" href="#">Projects</a><a class="i" href="#">Brands</a><a class="i" href="#">Requests</a>
+  <div class="r"><span class="st"><i></i>All fascias operational</span></div>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="path">debenhamsgroup.design <b>~ the index of everything</b></div>
+  <h1>The source of truth for sixteen storefronts.</h1>
+  <p class="sub">Components, tokens, projects and brands — one queryable index. Code is canonical; Figma mirrors it. If it isn't here, it doesn't ship.</p>
+  <div class="cta"><button class="b1">Browse the system</button><button class="b2">⌘K Search</button></div>
+  <div class="stats">
+    <div class="stat"><b>16</b><span>fascias themed</span></div>
+    <div class="stat"><b>4</b><span>markets — UK IE US AU</span></div>
+    <div class="stat"><b>5</b><span>projects archived</span></div>
+    <div class="stat"><b>1</b><span>open brief — PLP</span></div>
+  </div>
+</div></header>
+
+<section class="sec"><div class="wrap">
+  <div class="head"><h2>Components</h2><code>packages/components</code><a href="#">View all →</a></div>
+  <div class="tbl">
+    <div class="tr h"><span></span><span>Name</span><span>Description</span><span>Brands</span><span>Status</span></div>
+    <div class="tr"><span class="id">C-01</span><span class="nm">Button</span><span class="d">Primary · secondary · disabled · spinner — golden-truth matrix</span>
+      <span class="br"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
+    <div class="tr"><span class="id">C-02</span><span class="nm">Product card</span><span class="d">The PLP unit — brand label, was-price, badge, favourite as toggles</span>
+      <span class="br"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
+    <div class="tr"><span class="id">C-03</span><span class="nm">Smart promo field</span><span class="d">Promo code or gift card — detects which it's given</span>
+      <span class="br"><i style="background:#00787D"></i></span><span class="pill ok">live</span></div>
+    <div class="tr"><span class="id">C-04</span><span class="nm">Typography</span><span class="d">Text styles porting from Checkout-2026</span>
+      <span class="br"><i style="background:#333"></i></span><span class="pill wip">wip</span></div>
+    <div class="tr"><span class="id">C-05</span><span class="nm">PLP template</span><span class="d">One core template, five brand configs — Sep brief</span>
+      <span class="br"><i style="background:#333"></i></span><span class="pill wip">wip</span></div>
+  </div>
+</div></section>
+
+<section class="wrap duo">
+  <div class="panel">
+    <div class="ph"><h3>Projects</h3><code>/projects — options + chosen route</code></div>
+    <div class="li"><time>SEP 01</time><div class="t"><b>PLP Alignment</b><small>5 fascias → one template · target w/c 08 Sep</small></div></div>
+    <div class="li"><time>AUG 26</time><div class="t"><b>Colour Alignment</b><small>merged · signed off post-KM review</small></div></div>
+    <div class="li"><time>AUG 26</time><div class="t"><b>Checkout 2026 — promo</b><small>shipped · single-file prototype</small></div></div>
+    <div class="li"><time>AUG 20</time><div class="t"><b>Virtual Try-On</b><small>shipped · first-use journey</small></div></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><h3>Requests</h3><code>/requests — intake → board</code></div>
+    <div class="li"><time>NEW</time><div class="t"><b>Warehouse footer — square + black CTA</b><small>Scott · Ecommerce</small></div></div>
+    <div class="li"><time>NEW</time><div class="t"><b>BHW font scale → PLT sizes</b><small>Scott · Ecommerce</small></div></div>
+    <div class="li"><time>DOING</time><div class="t"><b>PLP Alignment</b><small>Jake · Design</small></div></div>
+    <div class="li"><time>DONE</time><div class="t"><b>Colour Alignment</b><small>merged Aug 26</small></div></div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>Debenhams Group</span><span>System</span><span>Projects</span><span>Brands</span><code>direction D — index · code-first</code></div></footer>
+</body>
+</html>
