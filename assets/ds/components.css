@@ -179,7 +179,7 @@
 .sf-chip button{background:none;border:none;cursor:pointer;font-size:14px;line-height:1;padding:0;color:var(--icon-secondary)}
 /* mobile floating filter pills — New format (Brand Room Figma 739-92223)
    radius 42 by design on every fascia (explicitly round, even square-radius brands) */
-.sf-float{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:14px 2px 18px;margin:-10px 0 -6px;width:100%} /* padding keeps the soft shadow inside the scroll box (no clipping) */
+.sf-float{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:8px 2px;width:100%} /* 8pt above and below the pills */
 .sf-pill{display:inline-flex;gap:8px;align-items:center;height:34px;padding:8px 12px;background:var(--surface-raised);border:none;border-radius:42px;box-shadow:0 0 16px -4px rgba(0,0,0,.11);font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);white-space:nowrap;flex:none;cursor:pointer}
 .sf-pill i.dn{width:12px;height:12px;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
 .sf-pill img{width:14px;height:14px;object-fit:contain}
