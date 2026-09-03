@@ -99,3 +99,9 @@ Brand Room Figma 739-92223 is the new-format mobile sort & filter: scrolling row
 - MAN roundels: white ground with contained imagery (13003-147021).
 - Floating pills: grey keyline no shadow, 8pt vertical padding, full-bleed with 16pt internal padding — iceberg off the right.
 - Header/footer logos to component sizes (mobile 16 / desktop 141×20 / footer 24); bag count badge always a 1:1 circle; product count line hidden in New; shell defaults to 390 mobile.
+
+## Part 13 — stakeholder comments in the review shell
+- `.pc-offer` now sits 2px under the price line (negative top margin vs the info-stack gap: -6px standard, -4px compact). DS promoted to main.
+- Review shell gains a **💬 Comment** button (black strip) → dark panel: name + comment, fascia/mode/viewport width auto-attached, POST to the existing UX-Design-Request Cloudflare worker (`…workers.dev/log-ticket`), payload keys mapped to the backlog sheet's fixed columns (title/priority=Comment/requester/brands/platforms/pages/description). Sent comments cached in localStorage and listed in the panel.
+- **Blocked last mile:** the deployed worker returns "Backlog logging is not configured" — `SHEETS_WEBHOOK_URL` secret was never set. Jake to do the sheets-logger README steps (Apps Script web-app deploy in his Drive) + `npx wrangler secret put SHEETS_WEBHOOK_URL`. Until then the panel's fallback copies the comment JSON to the clipboard with a "paste it to Jake" note.
+- CORS on the worker allows only `https://jakerayner96.github.io` (+ file://) — comments send from the live Pages URL, not localhost; fallback covers local review.

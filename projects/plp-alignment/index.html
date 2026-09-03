@@ -68,6 +68,7 @@ body.dragging iframe{pointer-events:none}
   </select>
   <span class="sizebox" id="sizebox"></span>
   <a class="openfull" id="openfull" href="plp.html?brand=debenhams&mode=live" target="_blank" rel="noopener">open ↗</a>
+  <button class="chip" id="cbtn" title="Leave a comment">💬 Comment</button>
   <span class="cfg" id="cfg"></span>
 </div>
 
@@ -78,6 +79,30 @@ body.dragging iframe{pointer-events:none}
   </div>
 </div>
 
+<div id="cpanel" hidden>
+  <div class="cp-head">Comments <button id="cclose" aria-label="Close">×</button></div>
+  <div class="cp-ctx" id="cctx"></div>
+  <input id="cname" placeholder="Your name">
+  <textarea id="ctext" rows="4" placeholder="What should change? Reference what you're looking at — the fascia, mode and width are attached automatically."></textarea>
+  <button id="csend">Send comment</button>
+  <div class="cp-note" id="cnote">Comments land in the UX request sheet.</div>
+  <div class="cp-list" id="clist"></div>
+</div>
+<style>
+#cpanel{position:fixed;top:44px;right:12px;width:300px;max-height:calc(100% - 60px);overflow-y:auto;background:#0A0A0A;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px;z-index:500;display:flex;flex-direction:column;gap:8px;font-family:'Google Sans','Montserrat',system-ui,sans-serif;color:#B0B0B0}
+#cpanel[hidden]{display:none}
+.cp-head{display:flex;justify-content:space-between;align-items:center;color:#F7F7F7;font-weight:600;font-size:13px}
+.cp-head button{font-size:18px;color:#B0B0B0;padding:0 4px}
+.cp-ctx{font-size:10.5px;color:#707070}
+#cpanel input,#cpanel textarea{background:#161616;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#F7F7F7;padding:8px 10px;font:inherit;font-size:12.5px;resize:vertical}
+#csend{background:#F7F7F7;color:#000;border:none;border-radius:99px;padding:8px 0;font-weight:600;font-size:12.5px;cursor:pointer}
+#csend:disabled{opacity:.5}
+.cp-note{font-size:10px;color:#707070}
+.cp-list{display:flex;flex-direction:column;gap:6px}
+.cp-item{border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:7px 9px;font-size:11.5px}
+.cp-item b{color:#F7F7F7}
+.cp-item small{display:block;color:#707070;font-size:9.5px;margin-top:2px}
+</style>
 <script>
 let W=390, BRAND='debenhams', MODE='live', CAT='auto'; // defaults to 390 mobile
 const frame=document.getElementById('frame'),stage=document.getElementById('stage'),
@@ -117,6 +142,46 @@ document.getElementById('hr').addEventListener('pointerdown',e=>{
 addEventListener('resize',apply);
 frame.addEventListener('load',send);
 apply();
+
+/* ---- comments → UX-Design-Request worker (rows land in the existing Sheet) ---- */
+const CWORKER='https://ux-design-request-proxy.jakerayner96.workers.dev/log-ticket';
+const cpanel=document.getElementById('cpanel'),cbtn=document.getElementById('cbtn'),clist=document.getElementById('clist'),cnote=document.getElementById('cnote');
+cbtn.onclick=()=>{cpanel.hidden=!cpanel.hidden;drawCtx();drawList();};
+document.getElementById('cclose').onclick=()=>cpanel.hidden=true;
+function drawCtx(){document.getElementById('cctx').textContent=`Attached: ${BRAND} · ${MODE} · ${Math.round(frame.offsetWidth)}px`;}
+function drawList(){
+  const mine=JSON.parse(localStorage.getItem('p05comments')||'[]');
+  clist.innerHTML=mine.slice(-8).reverse().map(c=>`<div class="cp-item"><b>${c.name||'Anonymous'}</b> ${c.comment}<small>${c.brand} · ${c.mode} · ${c.width}px · ${new Date(c.ts).toLocaleString()}</small></div>`).join('');
+}
+document.getElementById('csend').onclick=async()=>{
+  const name=document.getElementById('cname').value.trim(),comment=document.getElementById('ctext').value.trim();
+  if(!comment)return;
+  const w=Math.round(frame.offsetWidth);
+  // keys map to the backlog sheet's fixed columns (sheets-logger Code.gs); extras are local-only
+  const payload={
+    title:`P-05 PLP comment — ${BRAND} · ${MODE}`,
+    priority:'Comment',
+    requester:name||'Anonymous',
+    brands:BRAND,
+    platforms:`${w}px viewport`,
+    pages:`P-05 PLP review · ${location.href}`,
+    description:comment,
+    name,comment,brand:BRAND,mode:MODE,width:w,ts:new Date().toISOString()
+  };
+  const btn=document.getElementById('csend');btn.disabled=true;btn.textContent='Sending…';
+  try{
+    const r=await fetch(CWORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(!r.ok)throw new Error('worker '+r.status);
+    btn.textContent='Sent ✓';cnote.textContent='Sent — lands in the UX backlog sheet as a Comment row.';
+  }catch(e){
+    try{await navigator.clipboard.writeText(JSON.stringify(payload,null,1));}catch(_){}
+    btn.textContent='Copied — send failed';
+    cnote.textContent='Could not reach the sheet from this origin (works on the live Pages URL). Comment copied to clipboard — paste it to Jake.';
+  }
+  const mine=JSON.parse(localStorage.getItem('p05comments')||'[]');mine.push(payload);localStorage.setItem('p05comments',JSON.stringify(mine));
+  document.getElementById('ctext').value='';drawList();
+  setTimeout(()=>{btn.disabled=false;btn.textContent='Send comment'},1600);
+};
 </script>
 </body>
 </html>
