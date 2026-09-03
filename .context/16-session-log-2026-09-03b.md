@@ -27,6 +27,12 @@ Playwright (local, headless Chromium): **7 fascias × 6 locked breakpoints, 84 s
 
 Full seven-fascia PLP from DS components only. `PLPBrandConfig` v2 grounded in brief + Figma + capture (table in the project README). Margins per PLP MASTER: 16px sides → 95px at 1440+. `fontScale` recorded as a no-op-once-aligned (DS sizes = PLT sizes).
 
+## Part 3 (same day) — match-live pass + Live ⇄ New switch (Jake's corrections)
+
+All 14 capture folds studied (390 + 1440 × 7). Fixes: **square card corners** (live + Figma have none); **wishlist variants** — heart-in-circle (Deb/boohoo/WH live), bookmark-in-square (BHM/KM/Brand Room), plain heart (PLT), KM stacks square bookmark + circle quick-add bag; **desktop filter is a bordered strip under the category links** (NDD where live, dropdowns, "Show more filters", sort right); **mobile live pattern is the split Filters | Relevance bar** (+ per-fascia pill row; PLT has none, KM no NDD); header breaks mobile↔desktop at 1024; PLT runs black nav + underline search (`--nav-bg/fg` tokens, `.hd-search--underline`); boohoo's Taggstar is brand-tinted (`.pc-taggstar--brand`); **`.pc--compact`** added — the shorter PLT/Brand-Room format (caps 11px brand, 12px name, tight gaps).
+
+Prototype now has a **Live now ⇄ New format** switch: LIVE replicates each fascia's real site from today's capture (Deb/WH 5-across; Brand Room live is a Debenhams-platform proxy — no distinct live PLP); NEW = compact card everywhere + Scott's brief applied (all 4-across, WH/PLT hide brand, WH adopts KM bookmark, boohoo/PLT/WH full-bleed) + combined sort&filter sheet on mobile. Every state visually verified against the captures via headless Chromium.
+
 ## Also
 
 - Jake's 01 Sep chat transcript banked verbatim → `.context/15-chat-transcript-2026-09-01.md`.

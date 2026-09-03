@@ -26,19 +26,23 @@ One core PLP template for **seven fascias** — Debenhams, boohoo, boohooMAN, PL
 
 DS components only — linked from `../../assets/ds/`: C-05 header (mobile + desktop) → USP a/b → breadcrumbs → centred title + count → category nav (roundels/pills/links per fascia) → C-06 sort & filter (desktop dropdown row · mobile NDD + view toggle + sheet) → C-02 card grid (2-col mobile / 3 tablet / config desktop · full-bleed option) → C-01 load more. Badges + AI banner per C-07.
 
-## PLPBrandConfig (draft v2 — grounded in brief + Figma + capture)
+## PLPBrandConfig v3 — Live now ⇄ New format (the switch in the review strip)
 
-| Fascia | cols | showBrand | fav | quickAdd | fullBleed | catNav | fontScale |
-|---|---|---|---|---|---|---|---|
-| debenhams | 4 | ✓ | heart | icon | — | roundels | ds |
-| boohoo | 4 | ✓ | heart | icon | ✓ | pills | plt* |
-| boohooman | 4 | ✓ | bookmark | button | — | pills | ds |
-| plt (ref) | 4 | ✗ | plain heart | — | ✓ | links | ds |
-| karenmillen | 4 | ✓ | bookmark | icon | — | links | ds |
-| warehouse | 4 | ✗ | bookmark | icon | ✓ | links | plt* |
-| brandroom | 4 | ✓ (supplier) | bookmark | — | — | pills | ds |
+**LIVE** replicates each fascia's real site (03 Sep capture): Debenhams/Warehouse 5-across, heart-in-circle; boohooMAN/KM bookmark-in-square (KM adds a circle quick-add bag); PLT plain hearts, full-bleed, uppercase compact card, black nav, underline search, no mobile pill row; boohoo brand-tinted Taggstar; split Filters | Relevance mobile bar on every fascia. Brand Room live is a **proxy** (no distinct live PLP — runs inside debenhams.com).
 
-\* `fontScale` records the brief's ask; it's a **no-op once aligned** — the DS role sizes are the PLT sizes, so adopting the template is the reduction.
+**NEW** = the shorter PLT/Brand-Room card format (`.pc--compact`) for every fascia + the brief applied:
+
+| Fascia | cols 5→ | brand line | fav | quickAdd | fullBleed | catNav |
+|---|---|---|---|---|---|---|
+| debenhams | 4 | ✓ | heart · circle | icon | — | roundels |
+| boohoo | 4 | ✓ | heart · circle | — | ✓ | pills |
+| boohooman | 4 | ✓ | bookmark · square | Add button | — | pills |
+| plt (ref) | 4 | ✗ | plain heart | — | ✓ | pills |
+| karenmillen | 4 | ✓ | bookmark · square | bag icon | — | pills |
+| warehouse | 4 | ✗ (brief) | bookmark · square (KM icon, brief) | icon | ✓ (brief) | pills |
+| brandroom | 4 | ✓ supplier | bookmark · square | — | — | pills |
+
+Mobile in NEW mode uses the combined Sort & Filter sheet (the A/B/C winner); LIVE keeps the split bar. `fontScale` is retired as a config — the compact card **is** the reduction.
 
 ## Open / next
 

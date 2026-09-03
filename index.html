@@ -768,18 +768,24 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
             <div class="pc-stars"><span class="set"><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-half.svg" alt=""><img src="assets/ds/icons/star-outline.svg" alt=""></span><span>(9)</span></div>
           </div>
         </article>
-        <article class="pc" style="width:210px">
+        <article class="pc pc--compact" style="width:170px">
           <div class="pc-img">
             <div style="position:absolute;inset:0;background:linear-gradient(200deg,var(--brand-light-3),var(--brand-light-1))"></div>
-            <div class="pc-actions"><button class="pc-iconbtn" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button></div>
+            <div class="pc-actions"><button class="pc-iconbtn pc-iconbtn--sq" aria-label="Add to wishlist"><img src="assets/ds/icons/bookmark.svg" alt=""></button></div>
           </div>
           <div class="pc-info">
             <div class="pc-titles"><div class="pc-brand">Brand Name</div><div class="pc-name">Product name product name</div></div>
-            <div class="pc-price"><span class="now">£45.00</span></div>
+            <div class="pc-price sale"><span class="now">£45.00</span><span class="was">£60.00</span></div>
           </div>
         </article>
+        <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;padding-top:6px">
+          <button class="pc-iconbtn" aria-label="heart circle"><img src="assets/ds/icons/heart-16.svg" alt=""></button>
+          <button class="pc-iconbtn pc-iconbtn--sq" aria-label="bookmark square"><img src="assets/ds/icons/bookmark.svg" alt=""></button>
+          <button class="pc-iconbtn pc-fav--plain" aria-label="plain heart"><img src="assets/ds/icons/heart-24.svg" alt=""></button>
+        </div>
       </div>
     </div>
+    <p><b style="color:var(--ink)">Formats:</b> standard, and <code style="font-family:var(--mono);color:var(--aq)">.pc--compact</code> — the shorter PLT / Brand Room format (caps brand 11px, 12px name, tighter gaps) that the alignment rolls out to every fascia. <b style="color:var(--ink)">Wishlist variants:</b> heart-in-circle (Debenhams, boohoo, Warehouse today) · bookmark-in-square (boohooMAN, KM, Brand Room) · plain heart (PLT). Image corners are square — matching live and Figma.</p>
     <h2>Variable layers <code>booleans on one component — the Figma model, kept verbatim</code></h2>
     <div class="props">
       <div class="pr h"><span>Layer</span><span>Element</span><span>Notes</span></div>
@@ -872,8 +878,12 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
           <button class="sf-btn" style="margin-left:auto">Sort &amp; Filter ⚏</button>
         </div>
         <div class="sf-bar"><span class="sf-chip">Women's: 12, 14, XS, M, L <button aria-label="Remove">×</button></span><span class="sf-chip">Men's: XS, M, L <button aria-label="Remove">×</button></span></div>
+        <div style="max-width:390px;margin-top:14px">
+          <div class="sf-split"><button>Filters <span class="fic">⚏</span></button><button>Relevance <i class="ch"></i></button></div>
+        </div>
       </div>
     </div>
+    <p><b style="color:var(--ink)">Desktop</b> is a strip under the category links: optional NDD toggle, dropdown boxes, "Show more filters", sort right. <b style="color:var(--ink)">Mobile (live platform)</b> is the split Filters | Relevance bar above; the combined single-entry sheet is the new-format pattern from the A/B/C file.</p>
     <div class="demo">
       <div class="hd"><i></i><i></i><i></i><span>canvas — mobile filter sheet</span><span class="bn">Debenhams</span></div>
       <div class="canvas" style="padding:24px">

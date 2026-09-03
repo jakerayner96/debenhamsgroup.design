@@ -2,7 +2,7 @@
 <html lang="en" data-brand="plt">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>P-05 · PLP — one template, seven fascias</title>
+<title>P-05 · PLP — live vs new, seven fascias</title>
 <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
 <!-- DS — canonical, linked not copied -->
 <link rel="stylesheet" href="../../assets/ds/tokens.css">
@@ -14,33 +14,44 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 
 /* ---- project review strip (chrome, not DS) ---- */
 .strip{position:sticky;top:0;z-index:400;display:flex;align-items:center;gap:6px;padding:8px 14px;background:#000;color:#B0B0B0;font-family:'Montserrat',sans-serif;font-size:11.5px;overflow-x:auto}
-.strip b{color:#F7F7F7;font-weight:600;margin-right:6px;white-space:nowrap}
+.strip b{color:#F7F7F7;font-weight:600;margin-right:2px;white-space:nowrap}
 .strip button{flex:none;padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px;color:#B0B0B0}
 .strip button.on{background:#F7F7F7;color:#000;border-color:#F7F7F7;font-weight:600}
+.mode{display:inline-flex;flex:none;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin-right:8px}
+.mode button{border:none;border-radius:0;padding:5px 12px}
+.mode button.on{background:#7BE7D8;color:#000;font-weight:700}
 .strip .cfg{margin-left:auto;font-size:10.5px;color:#707070;white-space:nowrap;padding-left:12px}
 
 /* ---- PLP layout — margins per PLP MASTER: 16px to 1439, 95px at 1440+ ---- */
-:root{--plp-margin:16px;--grid-gap:16px 12px}
+:root{--plp-margin:16px}
 @media(min-width:1440px){:root{--plp-margin:95px}}
 .plp{padding:0 var(--plp-margin) 64px}
 .crumbs{padding:14px 0 4px;font-size:12px;color:var(--text-secondary)}
 .crumbs a{color:inherit;text-decoration:none}
 .crumbs a:hover{text-decoration:underline}
-.plp-title{text-align:center;padding:6px 0 2px}
-.plp-title h1{font-size:24px;font-weight:var(--w-strong);text-transform:var(--cta-case);letter-spacing:.01em}
+.plp-title{text-align:left;padding:6px 0 2px}
+.plp-title h1{font-size:22px;font-weight:var(--w-strong);text-transform:var(--cta-case);letter-spacing:.01em}
 .plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
-.cat-wrap{display:flex;justify-content:center}
-.grid{display:grid;gap:var(--grid-gap);margin-top:8px}
-.grid.bleed{margin-left:calc(var(--plp-margin) * -1);margin-right:calc(var(--plp-margin) * -1);gap:12px 2px}
+.seo{color:var(--text-secondary);font-size:13px;max-width:860px;margin:6px 0 2px}
+@media(min-width:768px){.plp-title{text-align:center}.plp-title h1{font-size:26px}.seo{margin:6px auto 2px;text-align:center}}
+.cat-wrap{display:flex;justify-content:flex-start;overflow:hidden}
+@media(min-width:768px){.cat-wrap{justify-content:center}}
+@media(min-width:1024px){.roundel{width:112px}.roundel i{width:96px;height:96px}}
+.grid{display:grid;margin-top:8px}
+.grid.gap-tight{gap:16px 4px}
+.grid.gap-norm{gap:20px 14px}
+.grid.bleed{margin-left:calc(var(--plp-margin) * -1);margin-right:calc(var(--plp-margin) * -1)}
+.grid.bleed.gap-tight{gap:14px 2px}
 .more{display:flex;justify-content:center;margin-top:40px}
 .foot{margin-top:64px;padding:24px var(--plp-margin);background:var(--surface-sunken);border-top:var(--border-w) solid var(--border-subtle);text-align:center;font-size:12px;color:var(--text-secondary)}
 
-/* desktop vs mobile furniture */
+/* desktop vs mobile furniture — the header breaks at 1024 */
 .only-mobile{display:none}
 @media(max-width:1023px){
   .only-desktop{display:none}
   .only-mobile{display:block}
   .sf-bar.only-mobile{display:flex}
+  .sf-split.only-mobile{display:grid}
   .hd-bar--desktop,.hd-nav{display:none}
 }
 @media(min-width:1024px){.hd-bar:not(.hd-bar--desktop){display:none}}
@@ -57,7 +68,8 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 <body>
 
 <div class="strip" id="strip">
-  <b>P-05 · PLP</b>
+  <b>P-05</b>
+  <span class="mode" id="mode"><button data-m="live" class="on">Live now</button><button data-m="new">New format</button></span>
   <button data-b="debenhams">Debenhams</button>
   <button data-b="boohoo">boohoo</button>
   <button data-b="boohooman">boohooMAN</button>
@@ -68,10 +80,10 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
   <span class="cfg" id="cfg"></span>
 </div>
 
-<!-- ============ C-05 HEADER — one template, brand tokens ============ -->
+<!-- ============ C-05 HEADER — one template, brand tokens · breaks mobile↔desktop at 1024 ============ -->
 <header class="hd">
   <div class="hd-bar">
-    <div class="hd-left"><button class="hd-burger" aria-label="Menu"><img src="../../assets/ds/icons/hamburger.svg" alt=""></button><img class="hd-logo" id="logoM" src="../../assets/brands/plt.svg" alt=""></div>
+    <div class="hd-left"><button class="hd-burger" aria-label="Menu"><img src="../../assets/ds/icons/hamburger.svg" alt=""></button><img class="hd-logo logo" src="../../assets/brands/plt.svg" alt=""></div>
     <div class="hd-icons">
       <button aria-label="Search"><img src="../../assets/ds/icons/search.svg" alt=""></button>
       <button aria-label="Account"><img src="../../assets/ds/icons/account.svg" alt=""></button>
@@ -80,8 +92,8 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
     </div>
   </div>
   <div class="hd-bar hd-bar--desktop">
-    <img class="hd-logo" id="logoD" src="../../assets/brands/plt.svg" alt="">
-    <div class="hd-search"><span>Search products and brands…</span><span class="ics"><img src="../../assets/ds/icons/camera.svg" alt=""><img src="../../assets/ds/icons/search.svg" alt=""></span></div>
+    <img class="hd-logo logo" src="../../assets/brands/plt.svg" alt="">
+    <div class="hd-search" id="search"><span>Search products and brands…</span><span class="ics"><img src="../../assets/ds/icons/camera.svg" alt=""><img src="../../assets/ds/icons/search.svg" alt=""></span></div>
     <div class="hd-icons">
       <button aria-label="Account"><img src="../../assets/ds/icons/account.svg" alt=""></button>
       <button aria-label="Wishlist"><img class="favic" src="../../assets/ds/icons/heart-24.svg" alt=""></button>
@@ -96,36 +108,28 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 <main class="plp">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a> / <a href="#">New In</a> / <a href="#">Womens New In</a> / New In Dresses</nav>
   <div class="plp-title"><h1>New In Dresses</h1><div class="count">1,284 styles</div></div>
+  <p class="seo" id="seo" hidden>The search stops here. Pieces that instantly elevate your look — we're constantly curating the most relevant silhouettes, so you're always first to the newest shapes… <u>Read more</u></p>
 
   <!-- category nav — roundels | pills | links per fascia config -->
   <div class="cat-wrap"><div id="catnav"></div></div>
 
-  <!-- C-06 sort & filter — desktop row -->
-  <div class="sf-bar only-desktop">
-    <span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>
-    <button class="sf-dd">Size<i></i></button>
-    <button class="sf-dd">Colour<i></i></button>
-    <button class="sf-dd">Style<i></i></button>
-    <button class="sf-dd">Body Fit<i></i></button>
-    <button class="sf-dd">Price<i></i></button>
-    <button class="sf-dd sf-sort">Relevance<i></i></button>
+  <!-- C-06 sort & filter — desktop: a strip under the links -->
+  <div class="sf-bar sf-bar--strip only-desktop" id="deskbar"></div>
+
+  <!-- mobile — LIVE: split Filters|Relevance + pill row · NEW: NDD + view + combined -->
+  <div class="sf-split only-mobile" id="mobsplit">
+    <button>Filters <span class="fic">⚏</span></button>
+    <button>Relevance <i class="ch"></i></button>
   </div>
-  <!-- mobile: NDD + view toggle + combined sort&filter -->
-  <div class="sf-bar only-mobile">
-    <span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>
-    <span style="margin-left:auto;display:inline-flex;gap:8px;align-items:center">
-      <span class="viewtoggle"><button id="v2" class="on" aria-label="2-column view">▦</button><button id="v1" aria-label="1-column view">▢</button></span>
-      <button class="sf-btn" onclick="document.getElementById('drawer').classList.add('open')">Sort &amp; Filter ⚏</button>
-    </span>
-  </div>
+  <div class="sf-bar only-mobile" id="mobbar"></div>
 
   <div class="grid" id="grid"></div>
   <div class="more"><button class="bd pri">Load more</button></div>
 </main>
 
-<div class="foot">One core PLP template · differences are fascia config, not forks · P-05 PLP Alignment — debenhamsgroup.design</div>
+<div class="foot">One core PLP template · Live now ⇄ New format · P-05 PLP Alignment — debenhamsgroup.design</div>
 
-<!-- C-06 mobile filter sheet -->
+<!-- C-06 mobile filter sheet (combined pattern — New format) -->
 <div class="sf-drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Filters">
   <div class="head">Filters <button aria-label="Close" onclick="document.getElementById('drawer').classList.remove('open')">×</button></div>
   <div class="rows">
@@ -143,22 +147,33 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 
 <script>
 const AST='../../assets';
-/* ================= PLPBrandConfig — the deliverable shape =================
-   Differences are configuration, not forks. Grounded in: Scott's brief (01 Sep),
-   the Figma header/card components, and the 03 Sep live capture (capture/manifest.json).
-   fontScale is recorded for the audit trail but is a NO-OP once aligned — the DS
-   role sizes ARE the PLT sizes, so alignment happens by adoption. */
-const PLP_CONFIG={
-  debenhams:  {cols:4, showBrand:true,  fav:'heart',    quickAdd:'icon',   fullBleed:false, catNav:'roundels', fontScale:'ds'},
-  boohoo:     {cols:4, showBrand:true,  fav:'heart',    quickAdd:'icon',   fullBleed:true,  catNav:'pills',    fontScale:'plt'},
-  boohooman:  {cols:4, showBrand:true,  fav:'bookmark', quickAdd:'button', fullBleed:false, catNav:'pills',    fontScale:'ds'},
-  plt:        {cols:4, showBrand:false, fav:'plain',    quickAdd:'none',   fullBleed:true,  catNav:'links',    fontScale:'ds'},
-  karenmillen:{cols:4, showBrand:true,  fav:'bookmark', quickAdd:'icon',   fullBleed:false, catNav:'links',    fontScale:'ds'},
-  warehouse:  {cols:4, showBrand:false, fav:'bookmark', quickAdd:'icon',   fullBleed:true,  catNav:'links',    fontScale:'plt'},
-  brandroom:  {cols:4, showBrand:true,  fav:'bookmark', quickAdd:'none',   fullBleed:false, catNav:'pills',    fontScale:'ds'},
+/* ================= PLPBrandConfig ================================
+   LIVE = what each fascia runs today (03 Sep capture, capture/manifest.json).
+   NEW  = the aligned template: the shorter PLT/Brand-Room card format for
+   every fascia + Scott's brief applied (cols, brand line, fav icon, bleed).
+   brandroom LIVE is a proxy — it has no distinct live PLP (runs inside
+   debenhams.com), so live = the Debenhams platform furniture. */
+const CFG={
+ live:{
+  debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill', mobPills:'full'},
+  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'brand', seo:false, nddD:false, compact:false, nameCaps:false, search:'pill', mobPills:'full'},
+  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:true,  nddD:true,  compact:false, nameCaps:false, search:'pill', mobPills:'full'},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'tight', cat:'linkspills',ts:'dark',  seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', mobPills:'none'},
+  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:true,  nddD:false, compact:false, nameCaps:false, search:'pill', mobPills:'nondd'},
+  warehouse:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill', mobPills:'full'},
+  brandroom:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill', mobPills:'full'},
+ },
+ new:{
+  debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill'},
+  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill'},
+  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'button',bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill'},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill'},
+  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill'},
+  warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'square', qa:'icon',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill'},
+  brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill'},
+ }
 };
 const CATS=['Dresses','New In','Midi Dresses','Long Sleeve','Satin','Shirt Dresses','White Dresses'];
-/* supplier brands shown on Brand Room (a marketplace); own-brand elsewhere */
 const BR_BRANDS=['Karen Millen','Clarks','DKNY','Ted Baker','Coast','Dune London'];
 const PRODUCTS=[
   {name:'Ribbed knit midi dress',            price:'£28.00', was:'£40.00', pct:'-30%', tag:'Plus',   swatches:4, stars:true},
@@ -178,30 +193,33 @@ const GRADS=[[165,3,1],[200,1,3],[150,3,1],[185,1,3],[160,3,1],[210,1,3],[170,3,
 /* swatches are PRODUCT colours, not brand colours */
 const SWATCH_COLS=['#B97A57','#3B3B3B','#8A9BAE','#C9C2B8','#5C4033'];
 
-const grid=document.getElementById('grid'),catnav=document.getElementById('catnav'),cfgEl=document.getElementById('cfg');
-let view=2;
+const grid=document.getElementById('grid'),catnav=document.getElementById('catnav'),cfgEl=document.getElementById('cfg'),
+      deskbar=document.getElementById('deskbar'),mobsplit=document.getElementById('mobsplit'),mobbar=document.getElementById('mobbar'),
+      seo=document.getElementById('seo'),search=document.getElementById('search');
+let MODE='live',view=2;
 
-function favMarkup(cfg){
-  if(cfg.fav==='plain')  return `<button class="pc-iconbtn pc-fav--plain" aria-label="Add to wishlist"><img src="${AST}/ds/icons/heart-24.svg" alt=""></button>`;
+function favBtn(cfg){
+  if(cfg.favShape==='plain') return `<button class="pc-iconbtn pc-fav--plain" aria-label="Add to wishlist"><img src="${AST}/ds/icons/heart-24.svg" alt=""></button>`;
+  const sq=cfg.favShape==='square'?' pc-iconbtn--sq':'';
   const ic=cfg.fav==='bookmark'?'bookmark':'heart-16';
-  return `<button class="pc-iconbtn" aria-label="Add to wishlist"><img src="${AST}/ds/icons/${ic}.svg" alt=""></button>`;
+  return `<button class="pc-iconbtn${sq}" aria-label="Add to wishlist"><img src="${AST}/ds/icons/${ic}.svg" alt=""></button>`;
 }
 function card(p,i,cfg,brandLabel){
   const g=GRADS[i%GRADS.length];
   const badges=[p.tag?`<span class="badge">${p.tag}</span>`:'',p.badge?`<span class="badge">${p.badge}</span>`:''].join('');
   const ts=p.taggstar?p.taggstar.split('|'):null;
-  return `<article class="pc">
+  return `<article class="pc${cfg.compact?' pc--compact':''}">
     <div class="pc-img">
       <div style="position:absolute;inset:0;background:linear-gradient(${g[0]}deg,var(--brand-light-${g[1]}),var(--brand-light-${g[2]}))"></div>
-      <div class="pc-actions">${favMarkup(cfg)}${cfg.quickAdd==='icon'?`<button class="pc-iconbtn" aria-label="Quick add"><img src="${AST}/ds/icons/quick-add-16.svg" alt=""></button>`:''}</div>
+      <div class="pc-actions">${favBtn(cfg)}${cfg.qa==='icon'?`<button class="pc-iconbtn${cfg.favShape==='square'?'':''}" aria-label="Quick add"><img src="${AST}/ds/icons/quick-add-16.svg" alt=""></button>`:''}</div>
       ${badges?`<div class="pc-badges${p.ai?' has-ai':''}">${badges}</div>`:''}
       ${p.ai?'<div class="badge-ai">AI Generated</div>':''}
     </div>
-    ${cfg.quickAdd==='button'?`<button class="pc-add"><img src="${AST}/ds/icons/quick-add-24.svg" alt="">Add</button>`:''}
-    ${ts?`<div class="pc-taggstar"><img src="${AST}/ds/icons/trophy.svg" alt=""><b>${ts[0]}</b><span>${ts[1]}</span></div>`:''}
+    ${cfg.qa==='button'?`<button class="pc-add"><img src="${AST}/ds/icons/quick-add-24.svg" alt="">Add</button>`:''}
+    ${ts?`<div class="pc-taggstar${cfg.ts==='brand'?' pc-taggstar--brand':''}"><img src="${AST}/ds/icons/trophy.svg" alt=""><b>${ts[0]}</b><span>${ts[1]}</span></div>`:''}
     <div class="pc-info">
       ${p.sponsored?'<div class="pc-sponsored">Sponsored</div>':''}
-      <div class="pc-titles">${cfg.showBrand?`<div class="pc-brand">${brandLabel(i)}</div>`:''}<div class="pc-name">${p.name}</div></div>
+      <div class="pc-titles">${cfg.brand?`<div class="pc-brand">${brandLabel(i)}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>
       <div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>
       ${p.offer?`<div class="pc-offer">${p.offer}</div>`:''}
       ${p.swatches?`<div class="pc-swatches"><span class="set">${SWATCH_COLS.slice(0,p.swatches).map((c,si)=>`<span class="pc-swatch${si===0?' on':''}"><i style="background:${c}"></i></span>`).join('')}</span><span class="pc-more">+${p.swatches}</span></div>`:''}
@@ -211,34 +229,63 @@ function card(p,i,cfg,brandLabel){
 }
 function render(){
   const b=document.documentElement.getAttribute('data-brand');
-  const cfg=PLP_CONFIG[b];
+  const cfg=CFG[MODE][b];
   const cs=getComputedStyle(document.documentElement);
   const name=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
   const brandLabel=b==='brandroom'?(i=>BR_BRANDS[i%BR_BRANDS.length]):(()=>name);
-  // logos + fav icon in header
-  document.getElementById('logoM').src=`${AST}/brands/${b}.svg`;
-  document.getElementById('logoD').src=`${AST}/brands/${b}.svg`;
+  // header: logos, fav icon, search style
+  document.querySelectorAll('.logo').forEach(i=>i.src=`${AST}/brands/${b}.svg`);
   document.querySelectorAll('.favic').forEach(i=>i.src=`${AST}/ds/icons/${cfg.fav==='bookmark'?'bookmark':'heart-24'}.svg`);
-  // category nav style
+  search.classList.toggle('hd-search--underline',cfg.search==='underline');
+  // seo line
+  seo.hidden=!cfg.seo;
+  // category nav
   catnav.className='cat-row';
-  if(cfg.catNav==='roundels'){catnav.innerHTML=CATS.slice(0,5).map(c=>`<a class="roundel" href="#"><i style="background:linear-gradient(150deg,var(--brand-light-3),var(--brand-light-1))"></i><span>${c}</span></a>`).join('');}
-  else if(cfg.catNav==='pills'){catnav.innerHTML=CATS.slice(0,5).map(c=>`<a class="catpill" href="#">${c}</a>`).join('');}
+  const isMobile=matchMedia('(max-width:1023px)').matches;
+  const catStyle=cfg.cat==='linkspills'?(isMobile?'pills':'links'):cfg.cat;
+  if(catStyle==='roundels'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel" href="#"><i style="background:linear-gradient(150deg,var(--brand-light-3),var(--brand-light-1))"></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='pills'){catnav.innerHTML=CATS.slice(0,5).map(c=>`<a class="catpill" href="#">${c}</a>`).join('');}
   else {catnav.className='catlinks';catnav.innerHTML=CATS.map(c=>`<a href="#">${c}</a>`).join('');}
+  // desktop filter strip — under the links, dropdowns + show more + sort right
+  deskbar.innerHTML=`${cfg.nddD?'<span class="sf-ndd" onclick="this.classList.toggle(\'on\')"><span class="track"></span>Next Day Delivery</span>':''}
+    <button class="sf-dd">Style<i></i></button><button class="sf-dd">Size<i></i></button><button class="sf-dd">Colour<i></i></button><button class="sf-dd">Body Fit<i></i></button>
+    <a href="#" style="font-size:14px;color:var(--text-primary)"><u>Show more filters</u></a>
+    <button class="sf-dd sf-sort">Relevance<i></i></button>`;
+  // mobile furniture per mode
+  if(MODE==='live'){
+    mobsplit.style.display='';
+    const pills=`<button class="sf-dd" style="border-radius:var(--radius-pill);min-width:0;height:36px">Size<i></i></button>
+      <button class="sf-dd" style="border-radius:var(--radius-pill);min-width:0;height:36px">Colour<i></i></button>`;
+    mobbar.innerHTML=cfg.mobPills==='none'?'':(cfg.mobPills==='nondd'?pills:`<span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>`+pills);
+    mobbar.style.display=cfg.mobPills==='none'?'none':'';
+  } else {
+    mobbar.style.display='';
+    mobsplit.style.display='none';
+    mobbar.innerHTML=`<span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>
+      <span style="margin-left:auto;display:inline-flex;gap:8px;align-items:center">
+        <span class="viewtoggle"><button id="v2" class="${view===2?'on':''}" aria-label="2-column view">▦</button><button id="v1" class="${view===1?'on':''}" aria-label="1-column view">▢</button></span>
+        <button class="sf-btn" onclick="document.getElementById('drawer').classList.add('open')">Sort &amp; Filter ⚏</button>
+      </span>`;
+    document.getElementById('v1').onclick=()=>{view=1;render()};
+    document.getElementById('v2').onclick=()=>{view=2;render()};
+  }
   // grid
   grid.style.setProperty('--cols',cfg.cols);
-  grid.classList.toggle('bleed',cfg.fullBleed);
-  grid.classList.toggle('view-1',view===1);
+  grid.className=`grid gap-${cfg.gap}${cfg.bleed?' bleed':''}${view===1?' view-1':''}`;
   grid.innerHTML=PRODUCTS.map((p,i)=>card(p,i,cfg,brandLabel)).join('');
-  cfgEl.textContent=`cols ${cfg.cols} · brand ${cfg.showBrand?'on':'off'} · fav ${cfg.fav} · add ${cfg.quickAdd} · ${cfg.fullBleed?'full-bleed':'padded'} · ${cfg.catNav}`;
+  cfgEl.textContent=`${MODE} · cols ${cfg.cols} · brand ${cfg.brand?'on':'off'} · ${cfg.fav}/${cfg.favShape} · add ${cfg.qa} · ${cfg.bleed?'bleed':'padded'} · ${cfg.compact?'compact':'standard'}`;
 }
 document.querySelectorAll('#strip button[data-b]').forEach(btn=>btn.onclick=()=>{
   document.documentElement.setAttribute('data-brand',btn.dataset.b);
   document.querySelectorAll('#strip button[data-b]').forEach(x=>x.classList.toggle('on',x===btn));
   render();
 });
-document.getElementById('v1').onclick=()=>{view=1;vt();render()};
-document.getElementById('v2').onclick=()=>{view=2;vt();render()};
-function vt(){document.getElementById('v1').classList.toggle('on',view===1);document.getElementById('v2').classList.toggle('on',view===2)}
+document.querySelectorAll('#mode button').forEach(btn=>btn.onclick=()=>{
+  MODE=btn.dataset.m;
+  document.querySelectorAll('#mode button').forEach(x=>x.classList.toggle('on',x===btn));
+  render();
+});
+matchMedia('(max-width:1023px)').addEventListener('change',render);
 addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('drawer').classList.remove('open')});
 render();
 </script>

@@ -29,12 +29,13 @@
    child elements. Icons from assets/ds/icons/ (exported from Figma).
    ============================================================ */
 .pc{display:flex;flex-direction:column;gap:12px;font-family:var(--font-family-base);color:var(--text-primary);position:relative;min-width:0}
-.pc-img{aspect-ratio:2/3;background:var(--surface-media);border-radius:var(--radius-default);position:relative;overflow:hidden;width:100%}
+.pc-img{aspect-ratio:2/3;background:var(--surface-media);position:relative;overflow:hidden;width:100%} /* square corners — matches live + Figma */
 .pc-img img.ph{width:100%;height:100%;object-fit:cover;display:block}
 .pc-actions{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:8px;align-items:center}
 .pc-iconbtn{width:32px;height:32px;min-width:32px;border-radius:var(--radius-pill);background:var(--surface-raised);border:none;display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 8px rgba(15,15,15,.14);padding:0}
 .pc-iconbtn img{width:16px;height:16px;display:block}
 .pc-iconbtn:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
+.pc-iconbtn--sq{border-radius:var(--radius-default)} /* boohooMAN / KM / Brand Room run square wishlist buttons */
 .pc-fav--plain{background:none;box-shadow:none;width:28px;height:28px;min-width:28px}
 .pc-fav--plain img{width:22px;height:22px}
 /* badges — bottom-left stack (Petite / Plus / Sale …); AI banner pinned to the image foot */
@@ -53,6 +54,8 @@
 .pc-taggstar img{width:12px;height:12px;filter:invert(1)}
 .pc-taggstar b{font-weight:var(--w-strong)}
 .pc-taggstar span{font-weight:var(--w-regular)}
+.pc-taggstar--brand{background:var(--brand-light-3);color:var(--text-primary)} /* boohoo runs it brand-tinted */
+.pc-taggstar--brand img{filter:none}
 /* info block */
 .pc-info{display:flex;flex-direction:column;gap:8px;font-size:14px;min-width:0}
 .pc-sponsored{color:var(--text-secondary);font-weight:var(--w-mid)} /* Figma uses Grey 4 — lifted to Grey 5 for the AA text floor */
@@ -77,6 +80,22 @@
 .pc-stars .set{display:flex;gap:2px}
 .pc-stars img{width:12px;height:12px;display:block}
 .pc-stars span{font-weight:var(--w-regular)}
+/* compact variant — the shorter PLT / Brand Room format, the target for all fascias */
+.pc--compact{gap:8px}
+.pc--compact .pc-info{gap:6px;font-size:12px}
+.pc--compact .pc-titles{gap:2px}
+.pc--compact .pc-brand{font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.pc--compact .pc-name{font-size:12px}
+.pc--compact .pc-price{font-size:13px}
+.pc--compact .pc-offer,.pc--compact .pc-sponsored{font-size:11px}
+.pc--compact .pc-iconbtn{width:28px;height:28px;min-width:28px}
+.pc--compact .pc-iconbtn img{width:14px;height:14px}
+.pc--compact .badge{height:24px;font-size:11px}
+.pc--compact .pc-add{min-height:36px;font-size:14px}
+.pc--compact .pc-add img{width:20px;height:20px}
+.pc--compact .pc-swatches{height:16px}
+.pc--compact .pc-swatch{width:16px;height:16px}
+.pc-name--caps{text-transform:uppercase;letter-spacing:.02em} /* PLT names run uppercase */
 
 /* ============================================================
    C-03 PLP Header (.hd) — one template, brand tokens style it
@@ -101,8 +120,9 @@
 .hd-search{flex:1;max-width:800px;margin:0 auto;height:52px;background:var(--surface-media);border:none;border-radius:var(--radius-pill);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;font-family:var(--font-family-base);font-size:16px;font-weight:var(--w-regular);color:var(--text-secondary);cursor:text}
 .hd-search .ics{display:flex;gap:20px;align-items:center}
 .hd-search img{width:22px;height:22px;display:block}
-.hd-nav{display:flex;gap:16px;align-items:center;justify-content:center;height:40px;background:var(--brand-light-2);font-size:16px;font-weight:var(--w-mid);text-transform:var(--cta-case);overflow-x:auto;padding:0 16px}
-.hd-nav a{color:var(--text-primary);text-decoration:none;white-space:nowrap}
+.hd-search--underline{background:transparent;border-radius:0;border-bottom:var(--border-w) solid var(--icon-primary);padding:0 4px} /* PLT pattern */
+.hd-nav{display:flex;gap:16px;align-items:center;justify-content:center;height:40px;background:var(--nav-bg);color:var(--nav-fg);font-size:16px;font-weight:var(--w-mid);text-transform:var(--cta-case);overflow-x:auto;padding:0 16px}
+.hd-nav a{color:inherit;text-decoration:none;white-space:nowrap}
 .hd-nav a.sale{color:var(--text-error);font-weight:var(--w-strong)}
 .hd-nav a:hover{text-decoration:underline}
 
@@ -112,6 +132,13 @@
    Desktop = dropdown row · Mobile = NDD toggle + Sort & Filter → sheet
    ============================================================ */
 .sf-bar{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;padding:12px 0;font-family:var(--font-family-base);font-size:14px;color:var(--text-primary)}
+.sf-bar--strip{border-top:var(--border-w) solid var(--border-subtle);border-bottom:var(--border-w) solid var(--border-subtle)} /* desktop: a strip under the category links */
+/* mobile split bar — live platform pattern: Filters ⚏ | Relevance ⌄ */
+.sf-split{display:grid;grid-template-columns:1fr 1fr;border-top:var(--border-w) solid var(--border-subtle);border-bottom:var(--border-w) solid var(--border-subtle);font-family:var(--font-family-base);font-size:15px;color:var(--text-primary)}
+.sf-split button{display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 16px;font-family:inherit;font-size:inherit;color:inherit;text-align:left}
+.sf-split button+button{border-left:var(--border-w) solid var(--border-subtle)}
+.sf-split i.ch{width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px)}
+.sf-split .fic{font-size:16px;letter-spacing:2px}
 .sf-dd{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;min-width:120px;height:40px;padding:0 14px;background:var(--surface-page);border:var(--border-w) solid var(--border-default);border-radius:var(--radius-default);font-family:inherit;font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);cursor:pointer;text-transform:var(--cta-case)}
 .sf-dd:hover{border-color:var(--border-strong)}
 .sf-dd i{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);flex:none}
