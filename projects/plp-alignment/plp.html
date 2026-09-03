@@ -155,30 +155,30 @@ const FASCIA={
  boohoo:{title:'New Season',count:'1,000+ products',crumb:['Home','Womens','Shop By Collection'],
   nav:['New In','Womens','Dresses','Autumn','Shoes','Accessories','Shop By Fit','Occasion','DSGN','Trends','Mens','Beauty','Home','SALE'],
   cats:[],filters:['Category','Style','Size','Colour','Body Fit'],
-  uspCells:[{b:'EXTRA 10% OFF ALMOST EVERYTHING*',s:'USE CODE: EXTRA'},{b:'UP TO 20% OFF NEW SEASON*'},{b:'PREMIER NEXT DAY DELIVERY',s:'ONLY £5.99 FOR 1 YEAR'}]},
+  uspCells:[{b:'EXTRA 10% OFF ALMOST EVERYTHING*',s:'USE CODE: EXTRA'},{b:'UP TO 20% OFF NEW SEASON*'},{b:'PREMIER NEXT DAY DELIVERY',s:'ONLY £5.99 FOR 1 YEAR'}],uspNewB:'Extra 10% off almost everything*&nbsp;·&nbsp;Code: <b>EXTRA</b>'},
  boohooman:{title:'New Season',count:'1,000+ products',crumb:['Home','Mens','Shop By Collection'],
   nav:['SALE','NEW','CLOTHING','BRANDS','ACTIVE','PLUS','TALL','ESSENTIALS','GOING OUT','SUMMER','SETS'],
-  cats:['Tops','Jeans','Joggers','Tracksuits','Hoodies','Jackets'],filters:['Size','Colour','Category','Style'],
+  cats:['Tops','Jeans','Joggers','Tracksuits','Hoodies','Jackets'],filters:['Size','Colour','Category','Style','Brands','Price','Body Fit'],
   seoText:'Get ready to level up your cozy game. Jump headfirst into our men\'s new season drop and uncover ultimate snugness — street-smart oversized fits and zip-ups.',
   uspCells:[{b:'ORDER BY MIDNIGHT TO GET IT TOMORROW'},{b:'STUDENT DISCOUNT!',s:'Extra 20% Off!'},{b:'BRANDS AT MAN',s:'Up To 70% Off!'}],uspB:'20% OFF* + EXTRA 10% OFF · Use Code: <b>EXTRATEN</b>'},
  plt:{title:'Going Out Outfits',count:'1,000+ products',crumb:['Home','Womens','Shop By Collection'],
   nav:['NEW ARRIVALS','SALE','CLOTHING','AUTUMN','DRESSES','CO-ORDS','TOPS','TRENDING','ATHLEISURE','SHOP BY FIT','BEAUTY','LIFESTYLE','BRANDS'],
   cats:[],filters:['Category','Colour','Style','Body Fit','Size'],
   seoText:'The search stops here. Pieces that instantly elevate your look — we\'re constantly curating the most relevant going-out silhouettes, so you\'re always first to the newest shapes.',
-  uspTop:'ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY · 00:12:16:29',uspCells:[{b:'25% OFF ALMOST EVERYTHING*'},{b:'EXTRA 20% OFF* AUTUMN ESSENTIALS, CODE: COSY20'},{b:'£5.99 ROYALTY - FREE NEXT DAY DELIVERY AND FREE RETURNS FOR 12 MONTHS'}]},
+  uspTop:'ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY · 00:12:16:29',uspCells:[{b:'25% OFF ALMOST EVERYTHING*'},{b:'EXTRA 20% OFF* AUTUMN ESSENTIALS, CODE: COSY20'},{b:'£5.99 ROYALTY - FREE NEXT DAY DELIVERY AND FREE RETURNS FOR 12 MONTHS'}],uspNewB:'EXTRA 20% OFF* AUTUMN ESSENTIALS&nbsp;·&nbsp;CODE: <b>COSY20</b>'},
  karenmillen:{title:'Summer Dresses',count:'588 products',crumb:['Home','Womens','Womens Clothing','Dresses'],
   nav:['OUTLET','NEW IN','CLOTHING','DRESSES','OCCASION WEAR','ACCESSORIES','BEAUTY','BRANDS','HOME'],
   cats:[],filters:['Style','Size','Body Fit','Brands','Colour'],seo:1,
   seoText:'Meet your new favourite dress. From desk to dinner to dancefloor, you\'ll discover summer dresses here that you\'ll rely on all-day long — lightweight, breathable fabric.',
-  uspCells:[{b:'extra 10% off*',s:'code: KMEXTRA10'},{b:'30% off dresses*'},{b:'£2.99 express delivery',s:'on orders over £150*'}]},
+  uspCells:[{b:'extra 10% off*',s:'code: KMEXTRA10'},{b:'30% off dresses*'},{b:'£2.99 express delivery',s:'on orders over £150*'}],uspNewB:'extra 10% off*&nbsp;·&nbsp;code: <b>KMEXTRA10</b>'},
  warehouse:{title:'NEW IN',count:'44 products',crumb:['Home','New In','Womens New In'],
   nav:['NEW ARRIVALS','CLOTHING','DRESSES','OUTLET'],
   cats:[],filters:['Category','Size','Colour','Style'],
-  uspCells:[{b:'Extra 20% Off!*',s:'Use Code: WH20'},{b:'Free Delivery*',s:'When you spend over £75'}]},
+  uspCells:[{b:'Extra 20% Off!*',s:'Use Code: WH20'},{b:'Free Delivery*',s:'When you spend over £75'}],uspNewB:'Extra 20% Off!*&nbsp;·&nbsp;Use Code: <b>WH20</b>'},
  brandroom:{title:'New In',count:'1,000+ products',crumb:['Home','New In'],
   nav:['New','Women','Men','Footwear','Accessories','Brands'],marketing:'The Autumn Edit | Shop The Season',
   cats:[],filters:['Brands','Category','Style','Size'],
-  uspCells:[{b:'The Autumn Edit | Shop The Season'}]},
+  uspCells:[{b:'The Autumn Edit | Shop The Season'}],uspNewB:'Free next day delivery over £100'},
 };
 /* ================= PLPBrandConfig — LIVE (before, matches the Figma captures) vs NEW (after, DS) ================= */
 const CFG={
@@ -254,6 +254,7 @@ function render(){
   const b=document.documentElement.getAttribute('data-brand');
   const cfg=CFG[MODE][b];
   const F=FASCIA[b]; F.products=window.PRODUCTS_ALL[b]||[];
+  F.products.forEach((p,i)=>{p.ai=(i%7===2)}); // AI-generated badge scattered down the page
   const IC=icons(cfg);
   const cs=getComputedStyle(document.documentElement);
   const name=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
@@ -268,11 +269,12 @@ function render(){
   document.querySelector('.hd-nav').innerHTML=F.nav.map((n,i)=>`<a${/sale/i.test(n)?' class="sale"':''} href="#">${n}</a>`).join('');
   const usptop=document.getElementById('usptop');usptop.hidden=!F.uspTop;usptop.textContent=F.uspTop||'';
   document.getElementById('uspstrip').innerHTML=(F.uspCells||[]).map((c,ci)=>`<div class="usp-cell${ci===0?' rot-on':''}"><b>${c.b}</b>${c.s?`<u>${c.s}</u>`:''}</div>`).join('');
-  const uspb=document.getElementById('uspb');uspb.hidden=!F.uspB;uspb.innerHTML=F.uspB||'';
+  const uspBText=MODE==='new'?(F.uspB||F.uspNewB||''):(F.uspB||'');
+  const uspb=document.getElementById('uspb');uspb.hidden=!uspBText;uspb.innerHTML=uspBText;
   document.querySelector('.bc').innerHTML=F.crumb.map(c=>`<a href="#">${c}</a><span class="sep">/</span>`).join('')+`<span class="cur">${F.title}</span>`;
   const h1=document.querySelector('.plp-title h1');
   h1.textContent=F.title; h1.style.textTransform=cfg.titleCaps?'uppercase':'';
-  document.querySelector('.plp-title .count').textContent=F.count;
+  const cnt=document.querySelector('.plp-title .count');cnt.textContent=F.count;cnt.style.display=(MODE==='new')?'none':'';
   seo.hidden=!cfg.seo||MODE==='new'; // SEO copy is live-only — dropped from the new format
   document.getElementById('seotext').textContent=F.seoText||'';
   seo.classList.toggle('seo--line',MODE==='new');
@@ -283,23 +285,25 @@ function render(){
   if(CAT_OVERRIDE&&CAT_OVERRIDE!=='auto')catStyle=CAT_OVERRIDE;
   const CATS=(F.cats&&F.cats.length?F.cats:['Dresses','Tops','New In','Knitwear','Denim','Outerwear']);
   const rimg=i=>`${IMG}/${b}/p${(i+3)%12}.jpg`;
+  const rW=b==='boohooman'?' roundel--white':'';const rFit=b==='boohooman'?'contain':'cover';
   const edge=!!cfg.catEdge;
   catnav.classList.toggle('cat-row--edge',edge&&catStyle.startsWith('roundels'));
   catnav.parentElement.classList.toggle('edge',edge&&catStyle.startsWith('roundels'));
   if(catStyle==='none'){catnav.innerHTML='';}
-  else if(catStyle==='roundels'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:cover"></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='roundels'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel${rW}" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:${rFit}"></i><span>${c}</span></a>`).join('');}
   else if(catStyle==='roundels-outline'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--outline" href="#"><i><img src="${rimg(i)}" alt="" style="position:absolute;inset:4px;border-radius:var(--radius-pill);width:calc(100% - 8px);height:calc(100% - 8px);object-fit:cover;z-index:1"></i><span>${c}</span></a>`).join('');}
-  else if(catStyle==='roundels-onimage'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--onimage" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:cover"></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='roundels-onimage'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--onimage${rW}" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:${rFit}"></i><span>${c}</span></a>`).join('');}
   else if(catStyle==='roundels-display'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--onimage roundel--display" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:cover"></i><span>${c}</span></a>`).join('');}
   else if(catStyle==='pills'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="catpill" href="#">${c}</a>`).join('');}
   else if(catStyle==='pills-solid'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="catpill catpill--solid" href="#">${c}</a>`).join('');}
   else {catnav.className='catlinks';catnav.innerHTML=CATS.map(c=>`<a href="#">${c}</a>`).join('');}
   // desktop strip — real filter labels
+  deskbar.classList.remove('expanded');
   deskbar.innerHTML=`${cfg.nddD?'<span class="sf-ndd" onclick="this.classList.toggle(\'on\')"><span class="track"></span>Next Day Delivery</span>':''}
-    ${F.filters.map(f=>`<button class="sf-dd">${f}<i></i></button>`).join('')}
-    ${cfg.moreBelow?'':'<a href="#" style="font-size:14px;color:var(--text-primary)"><u>Show more filters</u></a>'}
+    <div class="sf-filters">${F.filters.map(f=>`<button class="sf-dd">${f}<i></i></button>`).join('')}</div>
+    <a href="#" class="sf-more" onclick="event.preventDefault();const bar=this.closest('.sf-bar');bar.classList.toggle('expanded');this.firstElementChild.textContent=bar.classList.contains('expanded')?'Show fewer filters':'Show more filters'"><u>Show more filters</u></a>
     <button class="sf-dd sf-sort">Relevance<i></i></button>`;
-  showmore.hidden=!cfg.moreBelow;
+  showmore.hidden=true;
   if(MODE==='live'){
     mobsplit.style.display='';
     // live mobile: NDD toggle only — Size/Colour pills removed per review

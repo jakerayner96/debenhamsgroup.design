@@ -57,14 +57,14 @@ body.dragging iframe{pointer-events:none}
     <option value="links">Links</option>
   </select>
   <select id="preset" aria-label="Width preset">
-    <option value="390">390 — mobile</option>
+    <option value="390" selected>390 — mobile</option>
     <option value="402">402</option>
     <option value="440">440</option>
     <option value="768">768 — tablet</option>
     <option value="1024">1024</option>
     <option value="1280">1280</option>
     <option value="1440">1440 — desktop</option>
-    <option value="0" selected>Fit window</option>
+    <option value="0">Fit window</option>
   </select>
   <span class="sizebox" id="sizebox"></span>
   <a class="openfull" id="openfull" href="plp.html?brand=debenhams&mode=live" target="_blank" rel="noopener">open ↗</a>
@@ -79,7 +79,7 @@ body.dragging iframe{pointer-events:none}
 </div>
 
 <script>
-let W=0, BRAND='debenhams', MODE='live', CAT='auto'; // W=0 → fit window
+let W=390, BRAND='debenhams', MODE='live', CAT='auto'; // defaults to 390 mobile
 const frame=document.getElementById('frame'),stage=document.getElementById('stage'),
       preset=document.getElementById('preset'),sizebox=document.getElementById('sizebox'),
       cfg=document.getElementById('cfg'),openfull=document.getElementById('openfull');
