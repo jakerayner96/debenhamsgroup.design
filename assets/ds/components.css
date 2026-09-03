@@ -10,7 +10,7 @@
    ============================================================ */
 
 /* C-01 Button */
-.bd{font-family:var(--font-family-base);font-weight:var(--w-strong);font-size:14px;padding:13px 26px;border-radius:var(--radius-default);text-transform:var(--cta-case);letter-spacing:.02em;border:none;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
+.bd{font-family:var(--font-family-base);font-weight:var(--w-btn,var(--w-strong));font-size:14px;padding:13px 26px;border-radius:var(--radius-default);text-transform:var(--cta-case);letter-spacing:.02em;border:none;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
 .bd.pri{background:var(--surface-action);color:var(--text-on-action)}
 .bd.pri:hover{background:var(--surface-action-hover)}
 .bd.pri:active{background:var(--surface-action-pressed)}

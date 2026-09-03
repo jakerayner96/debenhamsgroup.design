@@ -51,6 +51,8 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .viewtoggle img{width:16px;height:16px;object-fit:contain;opacity:.45}
 .viewtoggle button.on img{opacity:1}
 .viewtoggle button.on{background:var(--surface-sunken)}
+.pc-ndd{display:flex;gap:6px;align-items:center;font-size:12px;font-weight:var(--w-regular);color:var(--text-primary)}
+.pc-ndd img{width:16px;height:16px;object-fit:contain}
 </style>
 </head>
 <body>
@@ -133,54 +135,158 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 </footer>
 
 <script>
-const AST='../../assets';
-/* ================= PLPBrandConfig — LIVE (03 Sep capture) vs NEW (aligned shorter format) ================= */
+const AST='../../assets';const IMG='img';
+/* ================= Real content per fascia — extracted from the html.to.design live captures
+   in the DS Figma (03 Sep 2026). Same data feeds Live (before) and New (after). ================= */
+const FASCIA={
+ debenhams:{title:'Autumn',count:'1,000+ products',crumb:['Home','Campaign','Autumn Shop'],
+  nav:['Sale','New','Women','Men','Kids','Home','Garden','Beauty','Wedding','Gifts','Fragrance','Brands'],
+  cats:['Home Decor','Autumn Fragrance','Halloween'],filters:['Category','Size','Colour','Style'],
+  uspA:'Up To 90% Off Bestsellers · Shop Now',uspB:'Up To 70% Off Top Fashion Brands + Extra 10% Off · Use Code: FASHION',
+  products:[
+   {brand:'Wallis',name:'Navy Oversized Argyle Jumper',price:'£44.00',was:'£55.00',pct:'-20%',ndd:1},
+   {brand:'Coast',name:'Long Sleeve Lace and Pleated Midi Shirt Dress',price:'£70.00',was:'£139.00',pct:'-50%',off:'£63.00 with code FASHION',ndd:1,ai:1},
+   {brand:'Burton',name:'Dark Brown Faux Leather Zip Up Jacket',price:'£80.00',ndd:1},
+   {brand:'Burton',name:'Cotton Rich Ribbed Roll Neck Jumper',price:'£40.00',ndd:1},
+   {brand:'Burton',name:'Blue Black Dark Wash Stretch Slim Fit Jean',price:'£13.33',was:'£34.00',pct:'-61%',off:'£12.00 with code FASHION',ndd:1},
+   {brand:'Wallis',name:'Petite Floral Cape Detail Pencil Dress',price:'£52.00',was:'£65.00',pct:'-20%',tag:'Petite',ndd:1},
+   {brand:'Wallis',name:'Hista Ruched Mid Heel Pointed Knee Boots',price:'£55.30',was:'£79.00',pct:'-30%',rating:12,ndd:1},
+   {brand:'Mantaray',name:'Long Waxed Coat',price:'£59.00',was:'£215.00',pct:'-73%',rating:1},
+   {brand:'Mantaray',name:'Drifter Cotton Relaxed V-neck Cardigan',price:'£23.00',was:'£70.00',pct:'-67%',rating:8},
+   {brand:'Wallis',name:'Wide Fit Darcia Snaffle Detail Pointed Block Heel Slingback Court Shoes',price:'£44.10',was:'£49.00',pct:'-10%',tag:'Wide Fit',rating:1,ndd:1},
+   {brand:'boohoo',name:'Oversized Faux Suede Jacket',price:'£18.00',was:'£55.00',pct:'-67%',off:'£16.20 with code FASHION',ndd:1},
+   {brand:'Regatta',name:'Harriett II Ankle Waterproof Wellies',price:'£28.00',ndd:1}]},
+ boohoo:{title:'New Season',count:'1,000+ products',crumb:['Home','Womens','Shop By Collection'],
+  nav:['New In','Womens','Dresses','Autumn','Shoes','Accessories','Shop By Fit','Occasion','DSGN','Trends','Mens','Beauty','Home','SALE'],
+  cats:[],filters:['Category','Style','Size','Colour','Body Fit'],
+  uspA:'EXTRA 10% OFF ALMOST EVERYTHING* USE CODE: EXTRA',uspB:'PREMIER NEXT DAY DELIVERY · ONLY £5.99 FOR 1 YEAR',
+  products:[
+   {brand:'boohoo',name:'Cinched Waist Peplum Blazer',price:'£33.60',was:'£42.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
+   {brand:'boohoo',name:'Tailored Wide Leg Trousers',price:'£22.40',was:'£28.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA',ai:1},
+   {brand:'boohoo',name:'Balloon Sleeve Plunge Tailored Top',price:'£22.40',was:'£28.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
+   {brand:'boohoo',name:'Tailored Mini Skirt',price:'£16.00',was:'£20.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
+   {brand:'boohoo',name:'Woven Tailored Cinched Blazer',price:'£26.40',was:'£33.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
+   {brand:'boohoo',name:'Double Layer Capri Legging',price:'£15.30',was:'£18.00',pct:'-15%',off:'Extra 10% Off, with code: EXTRA'},
+   {brand:'boohoo',name:'Peached Funnel Neck Button Down Shirt',price:'£21.25',was:'£25.00',pct:'-15%',off:'Extra 10% Off, with code: EXTRA'},
+   {brand:'boohoo',name:'Twill Double Breasted Short Sleeve Shirt',price:'£19.20',was:'£24.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
+   {brand:'boohoo',name:'High Neck Curved Boxy Blazer',price:'£36.00',was:'£40.00',pct:'-10%',off:'Extra 10% Off, with code: EXTRA'},
+   {brand:'boohoo',name:'Funnel Neck Wrap Front Blazer',price:'£37.80',was:'£42.00',pct:'-10%',off:'Extra 10% Off, with code: EXTRA'},
+   {brand:'boohoo',name:'Pocket Flap Wide Leg Tailored Trousers',price:'£27.00',was:'£30.00',pct:'-10%',off:'Extra 10% Off, with code: EXTRA'},
+   {brand:'boohoo',name:'Double Breasted Cinched Blazer',price:'£40.50',was:'£45.00',pct:'-10%',off:'Extra 10% Off, with code: EXTRA'}]},
+ boohooman:{title:'New Season',count:'1,000+ products',crumb:['Home','Mens','Shop By Collection'],
+  nav:['SALE','NEW','CLOTHING','BRANDS','ACTIVE','PLUS','TALL','ESSENTIALS','GOING OUT','SUMMER','SETS'],
+  cats:['Tops','Jeans','Joggers','Tracksuits','Hoodies','Jackets'],filters:['Size','Colour','Category','Style'],
+  uspA:'ORDER BY MIDNIGHT TO GET IT TOMORROW',uspB:'20% OFF* + EXTRA 10% OFF · USE CODE: EXTRATEN',
+  products:[
+   {brand:'boohooMAN',name:'Black Oversized Moto Print Hoodie',price:'£24.00',was:'£30.00',pct:'-20%',off:'£21.60 WITH CODE: EXTRATEN',tag:'Plus Sizes Available'},
+   {brand:'boohooMAN',name:'Baggy Fit Camo Print Twill Trousers',price:'£28.00',was:'£35.00',pct:'-20%',off:'£25.20 WITH CODE: EXTRATEN'},
+   {brand:'boohooMAN',name:'Washed Twill Contrast Cord Collar Worker Jacket',price:'£40.00',was:'£50.00',pct:'-20%',off:'£36.00 WITH CODE: EXTRATEN',tag:'Back In Stock',ai:1},
+   {brand:'boohooMAN',name:'Relaxed Fit Twill Trouser',price:'£20.00',was:'£25.00',pct:'-20%',off:'£18.00 WITH CODE: EXTRATEN',tag:'Plus Sizes Available'},
+   {brand:'boohooMAN',name:'Essential Boxy Fit Midweight Padded Funnel Neck Puffer Jacket',price:'£32.00',was:'£40.00',pct:'-20%',off:'£28.80 WITH CODE: EXTRATEN',tag:'Plus Sizes Available'},
+   {brand:'boohooMAN',name:'Straight Fit Piping Jogger',price:'£20.00',was:'£25.00',pct:'-20%',off:'£18.00 WITH CODE: EXTRATEN'},
+   {brand:'boohooMAN',name:'Black Oversized Boxy Graffiti Print T-Shirt',price:'£12.80',was:'£16.00',pct:'-20%',off:'£11.52 WITH CODE: EXTRATEN',tag:'Back In Stock'},
+   {brand:'boohooMAN',name:'Straight Leg Jogger',price:'£36.00',was:'£45.00',pct:'-20%',off:'£32.40 WITH CODE: EXTRATEN'},
+   {brand:'boohooMAN',name:'Oversized Boxy Waffle Long Sleeve Henley',price:'£12.80',was:'£16.00',pct:'-20%',off:'£11.52 WITH CODE: EXTRATEN'},
+   {brand:'boohooMAN',name:'Washed Barrel Leg Jeans',price:'£22.40',was:'£28.00',pct:'-20%',off:'£20.16 WITH CODE: EXTRATEN'},
+   {brand:'boohooMAN',name:'Oversized Zip Through Hoodie',price:'£24.00',was:'£30.00',pct:'-20%',off:'£21.60 WITH CODE: EXTRATEN'},
+   {brand:'boohooMAN',name:'Slim Fit Stretch Chino',price:'£18.00',was:'£22.00',pct:'-18%',off:'£16.20 WITH CODE: EXTRATEN'}]},
+ plt:{title:'Going Out Outfits',count:'1,000+ products',crumb:['Home','Womens','Shop By Collection'],
+  nav:['NEW ARRIVALS','SALE','CLOTHING','AUTUMN','DRESSES','CO-ORDS','TOPS','TRENDING','ATHLEISURE','SHOP BY FIT','BEAUTY','LIFESTYLE','BRANDS'],
+  cats:[],filters:['Category','Colour','Style','Body Fit','Size'],
+  uspA:'ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY · 00:12:16:29',uspB:'25% OFF ALMOST EVERYTHING*',
+  products:[
+   {name:'Lace Godet Flared Trousers',price:'£27.00',was:'£36.00',pct:'-25%'},
+   {name:'Stretch Woven Pleated Skort Playsuit',price:'£22.50',was:'£30.00',pct:'-25%'},
+   {name:'Woven High Neck Zip Up Jacket',price:'£22.50',was:'£30.00',pct:'-25%',ai:1},
+   {name:'Woven Wide Leg Frill Trousers',price:'£24.00',was:'£32.00',pct:'-25%'},
+   {name:'Satin Contrast Lace Trim Shorts',price:'£18.00',was:'£24.00',pct:'-25%'},
+   {name:'Satin Tie Side Lace Detail Trousers',price:'£30.00',was:'£40.00',pct:'-25%'},
+   {name:'Scarf Printed Satin Dress',price:'£30.00',was:'£40.00',pct:'-25%'},
+   {name:'Brown Multi Print Textured Sheer Floral Lace Corset',price:'£22.50',was:'£30.00',pct:'-25%'},
+   {name:'Button Detail Cropped Jacket',price:'£25.50',was:'£34.00',pct:'-25%'},
+   {name:'Velvet Jacquard Floral Button Detail Jacket',price:'£39.00',was:'£52.00',pct:'-25%'},
+   {name:'Chiffon Frill Detail Velvet Bow Blouse',price:'£28.50',was:'£38.00',pct:'-25%'},
+   {name:'Sheer Lace Frill Sleeve Blouse',price:'£18.00',was:'£24.00',pct:'-25%'}]},
+ karenmillen:{title:'Summer Dresses',count:'588 products',crumb:['Home','Womens','Womens Clothing','Dresses'],
+  nav:['OUTLET','NEW IN','CLOTHING','DRESSES','OCCASION WEAR','ACCESSORIES','BEAUTY','BRANDS','HOME'],
+  cats:[],filters:['Style','Size','Body Fit','Brands','Colour'],seo:1,
+  uspA:'extra 10% off* · code: KMEXTRA10',uspB:'£2.99 express delivery on orders over £150*',
+  products:[
+   {brand:'KarenMillen',name:'Foil Metallic Figure Form Bandage Fringed Knit Maxi Dress',price:'£149.00'},
+   {brand:'KarenMillen',name:'Cotton Cutwork Belted Midi Dress',price:'£209.30',was:'£299.00',ai:1},
+   {brand:'KarenMillen',name:'Petite Essential Techno Shirt Sleeve Woven Shirt Dress With Gold Hardware',price:'£90.30',was:'£129.00',tag:'Petite'},
+   {brand:'KarenMillen',name:'Cotton Collared Halter Neck Woven Midi Shirt Dress With Dropped Waist Detail',price:'£90.30',was:'£129.00',tag:'OUTLET'},
+   {brand:'KarenMillen',name:'Double Cloth Tile Print Contrast Piping Midi Dress',price:'£118.30',was:'£169.00'},
+   {brand:'KarenMillen',name:'Petite Cotton Poplin Tie Neck Midi Dress',price:'£118.30',was:'£169.00',tag:'Petite'},
+   {brand:'KarenMillen',name:'Double Cloth Tile Print Halterneck Midi Dress',price:'£104.30',was:'£149.00'},
+   {brand:'KarenMillen',name:'Pleated Tiered Maxi Dress',price:'£199.00'},
+   {brand:'KarenMillen',name:'Viscose Satin Floral Print Halter Neck Maxi Dress',price:'£125.30',was:'£179.00'},
+   {brand:'KarenMillen',name:'Stripe Strappy Woven Midi Dress',price:'£118.30',was:'£169.00'},
+   {brand:'KarenMillen',name:'Georgette Placed Cutwork Halter Woven Midi Dress',price:'£237.30',was:'£339.00'},
+   {brand:'KarenMillen',name:'Baroque Silk Cotton Strappy Midi Dress',price:'£139.30',was:'£199.00'}]},
+ warehouse:{title:'NEW IN',count:'44 products',crumb:['Home','New In','Womens New In'],
+  nav:['NEW ARRIVALS','CLOTHING','DRESSES','OUTLET'],
+  cats:[],filters:['Category','Size','Colour','Style'],
+  uspA:'Extra 20% Off!* Use Code: WH20',uspB:'Free Delivery* When you spend over £75',
+  products:[
+   {brand:'Warehouse',name:'Real Suede Oversized Blazer',price:'£249.00'},
+   {brand:'Warehouse',name:'Jacquard Blouson Sleeve Mini Dress',price:'£89.00'},
+   {brand:'Warehouse',name:'Viscose Draped Scarf Detail Cut-out Midaxi Dress',price:'£79.00',ai:1},
+   {brand:'Warehouse',name:'Contrast Collar Corded Waist Detail Jacket',price:'£69.00'},
+   {brand:'Warehouse',name:'Self Stripe Chiffon Sheer Layered Maxi Dress',price:'£55.00'},
+   {brand:'Warehouse',name:'Tailored Duster Longline Coat',price:'£99.00'},
+   {brand:'Warehouse',name:'Satin Asymmetric Hem Scarf Neck Top',price:'£49.00'},
+   {brand:'Warehouse',name:'Premium Dispersed Floral Beaded Maxi Dress',price:'£109.00'},
+   {brand:'Warehouse',name:'Asymmetric One Shoulder Tie Neck Mini',price:'£65.00'},
+   {brand:'Warehouse',name:'Print Mix Tie Neck Chiffon Panelled Maxi Dress',price:'£79.00'},
+   {brand:'Warehouse',name:'Premium Satin Draped Cape Mini Dress',price:'£59.00'},
+   {brand:'Warehouse',name:'Petite Premium Fringe Trim One Shoulder Midi Dress',price:'£55.00',was:'£79.00',pct:'-30%',tag:'Petite'}]},
+ brandroom:{title:'New In',count:'1,000+ products',crumb:['Home','New In'],
+  nav:['New','Women','Men','Footwear','Accessories','Brands'],marketing:'The Autumn Edit | Shop The Season',
+  cats:[],filters:['Brands','Category','Style','Size'],
+  uspA:'The Autumn Edit | Shop The Season',uspB:'Free next day delivery over £100',
+  products:[
+   {brand:'Skechers',name:'Summits Mesh Bungee Slip-On Trainers With Memory Foam - Navy',price:'£72.99'},
+   {brand:'Lacoste',name:'Rib Knit Brushed Wool Beanie Navy Blue',price:'£59.00'},
+   {brand:'Lacoste',name:'Rib Knit Brushed Wool Beanie Green',price:'£45.00',ai:1},
+   {brand:'Björn Borg',name:'Barclay 3 Pack Core Trunks Black Grey Red',price:'£45.00'},
+   {brand:'Björn Borg',name:'Misha Sleepwear Set with Wash Bag Peacoat Bright White Black',price:'£30.99'},
+   {brand:'Björn Borg',name:'Charlie Sleepwear Shorts Set Plum/Granite',price:'£40.99'},
+   {brand:'Calvin Klein',name:'Boxer Brief 5-Pack Black / Harbor Mist / Dark Purple',price:'£35.99'},
+   {brand:'Calvin Klein',name:'Trunk 3PK Black/Harbor Mist/Dark Purple',price:'£65.00'},
+   {brand:'Tommy Hilfiger',name:'Core Classic Runner Trainer Navy Blue',price:'£44.00'},
+   {brand:'Sweaty Betty',name:'After Class Cropped Sweatshirt Espresso Brown',price:'£85.00'},
+   {brand:'Sweaty Betty',name:'Ultimate Studio Scoop Sports Bra Brown Soft Dot Print',price:'£45.00'},
+   {brand:'Ted Baker',name:'Crinkle Extra Large Icon Bag Mid Grey',price:'£40.00'}]},
+};
+/* ================= PLPBrandConfig — LIVE (before, matches the Figma captures) vs NEW (after, DS) ================= */
 const CFG={
  live:{
-  debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
-  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'brand', seo:false, nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
-  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:true,  nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
-  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'tight', cat:'pills-solid',ts:'dark',  seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none'},
-  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:true,  nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'nondd'},
-  warehouse:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
-  brandroom:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+  debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:false},
+  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'button',bleed:false, gap:'norm',  cat:'pills',     seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'tight', cat:'none',      seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none'},
+  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'norm',  cat:'none',      seo:true,  nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'nondd'},
+  warehouse:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:true},
+  brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'none',      seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
  },
  new:{
-  debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
-  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
-  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'button',bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
-  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills-solid',ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill',      swatch:'round',  icons:'plt',  moreBelow:true},
-  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
-  warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'square', qa:'icon',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
-  brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
+  debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'button',bleed:false, gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills-solid',seo:true, nddD:true,  compact:true,  nameCaps:true,  search:'pill', swatch:'round',  icons:'plt',  moreBelow:true},
+  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'square', qa:'icon',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
  }
 };
-const CATS=['Dresses','New In','Midi Dresses','Long Sleeve','Satin','Shirt Dresses','White Dresses'];
-const BR_BRANDS=['Karen Millen','Clarks','DKNY','Ted Baker','Coast','Dune London'];
-const PRODUCTS=[
-  {name:'Ribbed knit midi dress',            price:'£28.00', was:'£40.00', pct:'-30%', tag:'Plus',   swatches:4, stars:true},
-  {name:'Satin cowl neck slip dress',        price:'£35.00', badge:'New',  ai:true,    stars:true},
-  {name:'Tailored blazer mini dress',        price:'£45.00', was:'£60.00', pct:'-25%', offer:'Extra 20% Off Applied', swatches:3},
-  {name:'Broderie tiered smock dress',       price:'£32.00', tag:'Petite', stars:true},
-  {name:'Bandeau pleated maxi dress',        price:'£38.00', sponsored:true, swatches:5},
-  {name:'Oversized shirt dress',             price:'£26.00', was:'£34.00', pct:'-24%', taggstar:'No. 3 Bestseller|in Dresses'},
-  {name:'Lace trim cami midi dress',         price:'£30.00', ai:true, tag:'Tall', swatches:2},
-  {name:'Wrap front jersey midi dress',      price:'£24.00', stars:true},
-  {name:'Halterneck fishtail maxi dress',    price:'£42.00', was:'£55.00', pct:'-24%', offer:'Extra 15% Off Sale, with code: SALE'},
-  {name:'Corset detail structured dress',    price:'£40.00', sponsored:true, taggstar:'No. 6 Bestseller|in Going Out'},
-  {name:'Textured shift dress with pockets', price:'£29.00', swatches:4, stars:true},
-  {name:'Belted utility midi dress',         price:'£36.00', tag:'Plus', ai:true},
-];
-const GRADS=[[165,3,1],[200,1,3],[150,3,1],[185,1,3],[160,3,1],[210,1,3],[170,3,1],[195,1,3],[155,3,1],[205,1,3],[175,3,1],[190,1,3]];
-const SWATCH_COLS=['#B97A57','#3B3B3B','#8A9BAE','#C9C2B8','#5C4033'];
 const LIB=`${AST}/ds/icons/lib`;
-
 const grid=document.getElementById('grid'),catnav=document.getElementById('catnav'),
       deskbar=document.getElementById('deskbar'),mobsplit=document.getElementById('mobsplit'),mobbar=document.getElementById('mobbar'),
       seo=document.getElementById('seo'),search=document.getElementById('search'),showmore=document.getElementById('showmore');
 let MODE='live',view=2,CAT_OVERRIDE='auto';
 
-function icons(cfg){ /* PLT has its own icon set (Figma PLT Icons) */
+function icons(cfg){
   const plt=cfg.icons==='plt';
   return {
     heart16: plt?`${AST}/ds/icons/plt-heart.svg`:`${LIB}/icons-wishlist.svg`,
@@ -204,36 +310,32 @@ function qaBtn(cfg,IC){
   if(cfg.qa==='chip') return `<button class="pc-iconbtn pc-iconbtn--chip" aria-label="Quick add"><img src="${IC.bag}" alt=""></button>`;
   return '';
 }
-function card(p,i,cfg,IC,brandLabel){
-  const g=GRADS[i%GRADS.length];
-  const badges=[p.tag?`<span class="badge">${p.tag}</span>`:'',p.badge?`<span class="badge">${p.badge}</span>`:''].join('');
-  const ts=p.taggstar?p.taggstar.split('|'):null;
+function card(p,i,b,cfg,IC){
+  const showAI=p.ai&&MODE==='new';
   return `<article class="pc${cfg.compact?' pc--compact':''}">
     <div class="pc-img">
-      <div style="position:absolute;inset:0;background:linear-gradient(${g[0]}deg,var(--brand-light-${g[1]}),var(--brand-light-${g[2]}))"></div>
+      <img class="ph" loading="lazy" src="${IMG}/${b}/p${i}.jpg" alt="">
       <div class="pc-actions">${favBtn(cfg,IC)}${qaBtn(cfg,IC)}</div>
-      ${badges?`<div class="pc-badges${p.ai?' has-ai':''}">${badges}</div>`:''}
-      ${p.ai?'<div class="badge-ai"><b>AI</b> Generated</div>':''}
+      ${p.tag?`<div class="pc-badges${showAI?' has-ai':''}"><span class="badge">${p.tag}</span></div>`:''}
+      ${showAI?'<div class="badge-ai"><b>AI</b> Generated</div>':''}
     </div>
     ${cfg.qa==='button'?`<button class="pc-add"><img src="${LIB}/icons-quick-add.svg" alt="">Add</button>`:''}
-    ${ts?`<div class="pc-taggstar${cfg.ts==='brand'?' pc-taggstar--brand':''}"><img src="${LIB}/icons-trophy.svg" alt=""><b>${ts[0]}</b><span>${ts[1]}</span></div>`:''}
     <div class="pc-info">
-      ${p.sponsored?'<div class="pc-sponsored">Sponsored</div>':''}
-      <div class="pc-titles">${cfg.brand?`<div class="pc-brand">${brandLabel(i)}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>
+      <div class="pc-titles">${cfg.brand&&p.brand?`<div class="pc-brand">${p.brand}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>
       <div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>
-      ${p.offer?`<div class="pc-offer">${p.offer}</div>`:''}
-      ${p.swatches?`<div class="pc-swatches${cfg.swatch==='round'?' pc-swatches--round':''}"><span class="set">${SWATCH_COLS.slice(0,p.swatches).map((c,si)=>`<span class="pc-swatch${si===0?' on':''}"><i style="background:${c}"></i></span>`).join('')}</span><span class="pc-more">+${p.swatches}</span></div>`:''}
-      ${p.stars?`<div class="pc-stars"><span class="set"><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-half.svg" alt=""><img src="${LIB}/icons-star-outline.svg" alt=""></span><span>(${9+i})</span></div>`:''}
+      ${p.off?`<div class="pc-offer">${p.off}</div>`:''}
+      ${p.rating?`<div class="pc-stars"><span class="set"><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-half.svg" alt=""><img src="${LIB}/icons-star-outline.svg" alt=""></span><span>(${p.rating})</span></div>`:''}
+      ${p.ndd?`<div class="pc-ndd"><img src="${LIB}/icons-delivery-fast.svg" alt="">Get It Tomorrow</div>`:''}
     </div>
   </article>`;
 }
 function render(){
   const b=document.documentElement.getAttribute('data-brand');
   const cfg=CFG[MODE][b];
+  const F=FASCIA[b];
   const IC=icons(cfg);
   const cs=getComputedStyle(document.documentElement);
   const name=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
-  const brandLabel=b==='brandroom'?(i=>BR_BRANDS[i%BR_BRANDS.length]):(()=>name);
   document.querySelectorAll('.logo').forEach(i=>i.src=`${AST}/brands/${b}.svg`);
   document.querySelectorAll('.bn').forEach(x=>x.textContent=name);
   document.querySelectorAll('.favic').forEach(i=>i.src=cfg.fav==='bookmark'?IC.bookmark:IC.heart24);
@@ -241,32 +343,39 @@ function render(){
   document.querySelectorAll('.ic-account').forEach(i=>i.src=IC.account);
   document.querySelectorAll('.ic-bag').forEach(i=>i.src=IC.bag);
   search.classList.toggle('hd-search--underline',cfg.search==='underline');
+  // real furniture
+  document.querySelector('.hd-nav').innerHTML=F.nav.map((n,i)=>`<a${/sale/i.test(n)?' class="sale"':''} href="#">${n}</a>`).join('');
+  document.querySelector('.hd-usp').textContent=F.uspA;
+  document.querySelector('.hd-usp--b').innerHTML=F.uspB;
+  document.querySelector('.bc').innerHTML=F.crumb.map(c=>`<a href="#">${c}</a><span class="sep">/</span>`).join('')+`<span class="cur">${F.title}</span>`;
+  const h1=document.querySelector('.plp-title h1');
+  h1.textContent=F.title; h1.style.textTransform=cfg.titleCaps?'uppercase':'';
+  document.querySelector('.plp-title .count').textContent=F.count;
   seo.hidden=!cfg.seo;
-  document.getElementById('ftbrands').hidden=(b!=='debenhams');
-  // category nav — per-fascia default, overridable from the review strip (both roundels + links are in use)
+  // category nav — per-fascia default, overridable from the strip
   catnav.className='cat-row';
   const isMobile=matchMedia('(max-width:1023px)').matches;
   let catStyle=cfg.cat==='linkspills'?(isMobile?'pills':'links'):cfg.cat;
   if(CAT_OVERRIDE&&CAT_OVERRIDE!=='auto')catStyle=CAT_OVERRIDE;
-  const grad=`background:linear-gradient(150deg,var(--brand-light-3),var(--brand-light-1))`;
-  if(catStyle==='roundels'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel" href="#"><i style="${grad}"></i><span>${c}</span></a>`).join('');}
-  else if(catStyle==='roundels-outline'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel roundel--outline" style="--roundel-fill:linear-gradient(150deg,var(--brand-light-3),var(--brand-light-1))" href="#"><i></i><span>${c}</span></a>`).join('');}
-  else if(catStyle==='roundels-onimage'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel roundel--onimage" href="#"><i style="${grad}"></i><span>${c}</span></a>`).join('');}
-  else if(catStyle==='roundels-display'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel roundel--onimage roundel--display" href="#"><i style="${grad}"></i><span>${c}</span></a>`).join('');}
-  else if(catStyle==='pills'){catnav.innerHTML=CATS.slice(0,5).map(c=>`<a class="catpill" href="#">${c}</a>`).join('');}
-  else if(catStyle==='pills-solid'){catnav.innerHTML=CATS.slice(0,5).map(c=>`<a class="catpill catpill--solid" href="#">${c}</a>`).join('');}
+  const CATS=(F.cats&&F.cats.length?F.cats:['Dresses','Tops','New In','Knitwear','Denim','Outerwear']);
+  const rimg=i=>`${IMG}/${b}/p${(i+3)%12}.jpg`;
+  if(catStyle==='none'){catnav.innerHTML='';}
+  else if(catStyle==='roundels'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:cover"></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='roundels-outline'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--outline" href="#"><i><img src="${rimg(i)}" alt="" style="position:absolute;inset:4px;border-radius:var(--radius-pill);width:calc(100% - 8px);height:calc(100% - 8px);object-fit:cover;z-index:1"></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='roundels-onimage'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--onimage" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:cover"></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='roundels-display'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--onimage roundel--display" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:cover"></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='pills'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="catpill" href="#">${c}</a>`).join('');}
+  else if(catStyle==='pills-solid'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="catpill catpill--solid" href="#">${c}</a>`).join('');}
   else {catnav.className='catlinks';catnav.innerHTML=CATS.map(c=>`<a href="#">${c}</a>`).join('');}
-  // desktop strip — no dividers; "Show more filters" inline or below (PLT)
+  // desktop strip — real filter labels
   deskbar.innerHTML=`${cfg.nddD?'<span class="sf-ndd" onclick="this.classList.toggle(\'on\')"><span class="track"></span>Next Day Delivery</span>':''}
-    <button class="sf-dd">Style<i></i></button><button class="sf-dd">Size<i></i></button><button class="sf-dd">Colour<i></i></button><button class="sf-dd">Body Fit<i></i></button>
+    ${F.filters.map(f=>`<button class="sf-dd">${f}<i></i></button>`).join('')}
     ${cfg.moreBelow?'':'<a href="#" style="font-size:14px;color:var(--text-primary)"><u>Show more filters</u></a>'}
     <button class="sf-dd sf-sort">Relevance<i></i></button>`;
   showmore.hidden=!cfg.moreBelow;
-  // mobile furniture per mode
   if(MODE==='live'){
     mobsplit.style.display='';
-    const pills=`<button class="sf-dd" style="border-radius:var(--radius-pill);min-width:0;height:36px">Size<i></i></button>
-      <button class="sf-dd" style="border-radius:var(--radius-pill);min-width:0;height:36px">Colour<i></i></button>`;
+    const pills=F.filters.slice(0,2).map(f=>`<button class="sf-dd" style="border-radius:var(--radius-pill);min-width:0;height:36px">${f}<i></i></button>`).join('');
     mobbar.innerHTML=cfg.mobPills==='none'?'':(cfg.mobPills==='nondd'?pills:`<span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>`+pills);
     mobbar.style.display=cfg.mobPills==='none'?'none':'';
   } else {
@@ -279,9 +388,10 @@ function render(){
     document.getElementById('v1').onclick=()=>{view=1;render()};
     document.getElementById('v2').onclick=()=>{view=2;render()};
   }
+  document.getElementById('ftbrands').hidden=(b!=='debenhams');
   grid.style.setProperty('--cols',cfg.cols);
   grid.className=`grid gap-${cfg.gap}${cfg.bleed?' bleed':''}${view===1?' view-1':''}`;
-  grid.innerHTML=PRODUCTS.map((p,i)=>card(p,i,cfg,IC,brandLabel)).join('');
+  grid.innerHTML=F.products.map((p,i)=>card(p,i,b,cfg,IC)).join('');
   const cfgText=`${MODE} · cols ${cfg.cols} · brand ${cfg.brand?'on':'off'} · ${cfg.fav}/${cfg.favShape} · add ${cfg.qa} · ${cfg.bleed?'bleed':'padded'} · ${cfg.compact?'compact':'standard'}`;
   try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE},'*')}catch(e){}
 }
@@ -289,7 +399,6 @@ window.__setState=(brand,mode,cat)=>{ if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat
 addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat); });
 matchMedia('(max-width:1023px)').addEventListener('change',render);
 addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('drawer')?.classList.remove('open')});
-// init from URL
 const q=new URLSearchParams(location.search);
 if(q.get('mode'))MODE=q.get('mode');
 if(q.get('brand'))document.documentElement.setAttribute('data-brand',q.get('brand'));
