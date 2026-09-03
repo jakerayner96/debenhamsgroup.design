@@ -167,7 +167,7 @@
 .sf-split button+button{border-left:var(--border-w) solid var(--border-subtle)}
 .sf-split i.ch{width:16px;height:16px;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
 .sf-split .fic{width:18px;height:18px;background:url("icons/lib/icons-filter.svg") center/contain no-repeat;display:inline-block}
-.sf-dd{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;width:160px;height:42px;padding:8px;background:var(--surface-page);border:var(--border-w) solid var(--border-subtle);border-radius:var(--radius-default);font-family:inherit;font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);cursor:pointer;text-transform:var(--cta-case)} /* 160px dropdowns, grey-2 keyline (Figma 13003-147068) */
+.sf-dd{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;width:160px;height:42px;padding:8px;background:var(--surface-page);border:var(--border-w) solid var(--surface-sunken);border-radius:var(--radius-default);font-family:inherit;font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);cursor:pointer;text-transform:var(--cta-case)} /* 160px dropdowns, grey-2 keyline (Figma 13003-147068) */
 .sf-dd:hover{border-color:var(--border-strong)}
 .sf-dd i{width:16px;height:16px;flex:none;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
 .sf-sort{margin-left:auto;width:220px} /* sort pinned right, 220px */
@@ -188,7 +188,7 @@
 /* mobile floating filter pills — New format (Brand Room Figma 739-92223)
    radius 42 by design on every fascia (explicitly round, even square-radius brands) */
 .sf-float{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:8px var(--plp-margin,16px);margin:0 calc(var(--plp-margin,16px) * -1);width:auto} /* full-bleed: pills iceberg off the right, 16pt internal padding */
-.sf-pill{display:inline-flex;gap:8px;align-items:center;height:34px;padding:8px 12px;background:var(--surface-raised);border:var(--border-w) solid var(--border-default);border-radius:42px;font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);white-space:nowrap;flex:none;cursor:pointer}
+.sf-pill{display:inline-flex;gap:8px;align-items:center;height:34px;padding:8px 12px;background:var(--surface-raised);border:var(--border-w) solid var(--surface-sunken);border-radius:42px;font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);white-space:nowrap;flex:none;cursor:pointer}
 .sf-pill i.dn{width:12px;height:12px;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
 .sf-pill img{width:14px;height:14px;object-fit:contain}
 .sf-pill .track{width:30px;height:16px;border-radius:42px;background:var(--surface-action-disabled);position:relative;transition:background var(--dur-base) var(--ease-standard);flex:none}
@@ -231,7 +231,7 @@
 .roundel--white i img{padding:8px}
 .catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;background:var(--surface-media);border:none;border-radius:var(--radius-default);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--cta-case)} /* Grey 1 pills — never fully rounded */
 .catpill:hover{filter:brightness(.97)}
-.cat-row--pills{gap:4px} /* pill nav links sit 4px apart */
+.cat-row--pills{gap:8px} /* pill nav links sit 8px apart */
 .catpill--solid{} /* alias — pills are badge-format everywhere now */
 .catlinks{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;padding:8px 0;font-family:var(--font-family-base)}
 .catlinks a{font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:underline;text-underline-offset:3px;white-space:nowrap;text-transform:var(--cta-case)}
