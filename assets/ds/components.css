@@ -116,7 +116,7 @@
    Figma: header 3793-3545 · USP banner 11982-37171 (same file)
    ============================================================ */
 .hd{background:var(--surface-page);font-family:var(--font-family-base);color:var(--text-primary)}
-.hd-usp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 16px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:12px;font-weight:var(--w-regular);text-transform:var(--cta-case);text-align:center}
+.hd-usp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 16px;min-height:63px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:12px;font-weight:var(--w-regular);text-transform:var(--cta-case);text-align:center}
 .hd-usp b{font-weight:var(--w-strong)}
 @media(min-width:1024px){.hd-usp{font-size:14px}}
 .hd-usp--b{background:var(--usp-b-bg);color:var(--usp-b-fg)}
@@ -128,7 +128,7 @@
 .usp-cell b{font-weight:var(--w-strong);font-size:14px;line-height:21px}
 .usp-cell u{text-underline-offset:2px;cursor:pointer;font-size:14px;line-height:1.1}
 /* mobile: one message at a time, rotating (Figma 13005-165658) */
-@media(max-width:1023px){.usp-strip{grid-auto-flow:row;grid-template-columns:1fr;padding:0 16px}.usp-strip .usp-cell{display:none;min-height:56px}.usp-strip .usp-cell.rot-on{display:flex}}
+@media(max-width:1023px){.usp-strip{grid-auto-flow:row;grid-template-columns:1fr;padding:0 16px}.usp-strip .usp-cell{display:none;min-height:56px}.usp-strip .usp-cell.rot-on{display:flex}.hd-usp{min-height:56px}}
 /* rotating cells animate in */
 @keyframes usp-rotate{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(max-width:1023px){.usp-strip .usp-cell.rot-on{animation:usp-rotate var(--dur-slow) var(--ease-standard)}}

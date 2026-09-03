@@ -18,8 +18,8 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 /* USP sizes: live = both banners 14px (older format) · new = 12px DS component */
 .hd-usp{font-size:14px}
 .usp-cell,.usp-cell b{font-size:14px}
-.mode-new .hd-usp{font-size:12px;padding:4px 16px}
-.mode-new .usp-cell{font-size:12px;min-height:0;padding:6px 16px;font-weight:var(--w-regular)}
+.mode-new .hd-usp{font-size:12px;padding:4px 16px;min-height:34px}
+.mode-new .usp-cell{font-size:12px;min-height:34px;padding:6px 16px;font-weight:var(--w-regular)}
 .mode-new .usp-cell b{font-size:12px;font-weight:var(--w-strong)}
 .plp{padding:0 var(--plp-margin) 24px;max-width:2000px;margin:0 auto} /* whole container caps at 2000px (PLT live) */
 .plp-title{text-align:left;padding:6px 0 2px}
@@ -194,7 +194,7 @@ const CFG={
   debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'imp', cat:'roundels',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:false, loadMore:'sec', subCaps:1, catEdge:1},
   boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', subCaps:1},
   boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'circle', qa:'button',bleed:false, gap:'norm',  cat:'roundels',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', ts:'lt'},
-  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'plt0', cat:'none',      seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none'},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'plt0', cat:'none',      seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none', flush:1},
   karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'norm',  cat:'none',      seo:true,  nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'nondd', subCaps:1},
   warehouse:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:true, subCaps:1},
   brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'none',      seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', subCaps:1},
@@ -203,7 +203,7 @@ const CFG={
   debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'none',  bleed:true,  gap:'none',  cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false, flush:1},
-  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'plt0', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill', swatch:'round',  icons:'plt',  moreBelow:false},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'plt0', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill', swatch:'round',  icons:'plt',  moreBelow:false, flush:1},
   karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
@@ -280,6 +280,15 @@ function demoVariants(list){
     return q;
   });
 }
+// USP rule: both banners always render the same height — the black bar tracks the strip's tallest visible cell
+function syncUspH(){
+  const bar=document.getElementById('uspb'); if(!bar)return;
+  const cell=document.querySelector('.usp-cell.rot-on')||document.querySelector('.usp-cell');
+  const h=cell?cell.offsetHeight:0;
+  bar.style.minHeight=h?h+'px':'';
+  if(cell&&!bar.hidden&&bar.offsetHeight>h)cell.style.minHeight=bar.offsetHeight+'px'; // and the strip meets a taller bar
+}
+new ResizeObserver(()=>syncUspH()).observe(document.documentElement);
 function render(){
   const b=document.documentElement.getAttribute('data-brand');
   document.body.classList.toggle('mode-new',MODE==='new');
@@ -309,6 +318,7 @@ function render(){
   }).join('');
   const uspBText=MODE==='new'?(F.uspB||F.uspNewB||''):(F.uspB||'');
   const uspb=document.getElementById('uspb');uspb.hidden=!uspBText;uspb.innerHTML=uspBText;
+  syncUspH();
   document.querySelector('.bc').innerHTML=F.crumb.map(c=>`<a href="#">${c}</a><span class="sep">/</span>`).join('')+`<span class="cur">${F.title}</span>`;
   const h1=document.querySelector('.plp-title h1');
   h1.textContent=F.title; h1.style.textTransform=cfg.titleCaps?'uppercase':'';
