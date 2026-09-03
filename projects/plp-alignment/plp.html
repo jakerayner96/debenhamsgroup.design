@@ -150,6 +150,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 </footer>
 
 <script src="data.js"></script>
+<script src="../../assets/review/comments.js" defer></script>
 <script>
 const AST='../../assets';const IMG='img';
 /* ================= Real content per fascia — extracted from the html.to.design live captures
@@ -202,7 +203,7 @@ const CFG={
  new:{
   debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
-  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'none',  bleed:true,  gap:'none',  cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false, flush:1},
+  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'none',  bleed:true,  gap:'none',  cat:'roundels',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false, flush:1},
   plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'plt0', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill', swatch:'round',  icons:'plt',  moreBelow:false, flush:1},
   karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
@@ -260,9 +261,9 @@ function card(p,i,b,cfg,IC){
     </div>
   </article>`;
 }
-// P-05 review aid, new format only: every card demonstrates at least one card layer,
+// P-05 review aid, both modes: every card demonstrates at least one card layer,
 // and three down the page (i 1 / 12 / 24) run the lot — badge + AI + was/-% + offer + rating + NDD + swatches.
-// Copies, not mutations — live mode stays the untouched import data.
+// Copies, not mutations. Explicit new-format removals stay removals (Taggstar, SEO, count, USP links); AI watermark stays new-only.
 function demoVariants(list){
   const SW=['#1D2430','#8A94A8','#C7B9A6','#5A3E36','#2F5D50'];
   const srcOff=(list.find(x=>x.off&&/[\u00a3$\u20ac]\s?\d/.test(x.off))||{}).off;
@@ -373,7 +374,7 @@ function render(){
   document.getElementById('ftbrands').hidden=(b!=='debenhams');
   grid.style.setProperty('--cols',cfg.cols);
   grid.className=`grid gap-${cfg.gap}${cfg.bleed?' bleed':''}${view===1?' view-1':''}`;
-  const plist=MODE==='new'?demoVariants(F.products):F.products;
+  const plist=demoVariants(F.products); // both modes — live and new must carry the same per-product layers (parity rule, 03 Sep); only explicit removals differ
   grid.innerHTML=plist.map((p,i)=>card(p,i,b,cfg,IC)).join('');
   const lm=document.querySelector('.more .bd');
   lm.className='bd '+((MODE==='live'&&cfg.loadMore==='sec')?'sec':'pri');
@@ -386,6 +387,8 @@ function render(){
     :((MODE==='live'&&cfg.subCaps)?'text-transform:uppercase':'');
   const cfgText=`${MODE} · cols ${cfg.cols} · brand ${cfg.brand?'on':'off'} · ${cfg.fav}/${cfg.favShape} · add ${cfg.qa} · ${cfg.bleed?'bleed':'padded'} · ${cfg.compact?'compact':'standard'}`;
   try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE},'*')}catch(e){}
+  window.REVIEW_CTX={proj:'p05',key:b+':'+MODE}; // pinned review comments scope to fascia+mode
+  window.PLPC&&PLPC.refresh();
 }
 window.__setState=(brand,mode,cat)=>{ if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
 addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat); });

@@ -1,0 +1,7 @@
+name = "plp-comments"
+main = "index.js"
+compatibility_date = "2026-09-01"
+
+[[kv_namespaces]]
+binding = "PLP_COMMENTS"
+id = "c4d31625fbb740f3871d474494706a72"
