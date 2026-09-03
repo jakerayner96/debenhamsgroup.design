@@ -15,7 +15,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 /* ---- PLP layout — margins per PLP MASTER: 16px to 1439, 95px at 1440+ ---- */
 :root{--plp-margin:16px}
 @media(min-width:1440px){:root{--plp-margin:95px}}
-.plp{padding:0 var(--plp-margin) 24px}
+.plp{padding:0 var(--plp-margin) 24px;max-width:2000px;margin:0 auto} /* whole container caps at 2000px (PLT live) */
 .plp-title{text-align:left;padding:6px 0 2px}
 .plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
 .plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
@@ -34,6 +34,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .grid.gap-tight{gap:16px 4px}
 .grid.gap-imp{gap:18.5px 16px} /* Debenhams live import: 16px columns, 18.5px rows */
 .grid.gap-none{gap:0} /* boohooMAN new: fully flush — images touch, no gutters */
+.grid.gap-plt0{gap:16px 0} /* PLT live: gap-y-4 gap-x-0 */
 .grid.gap-norm{gap:20px 14px}
 .grid.bleed{margin-left:calc(var(--plp-margin) * -1);margin-right:calc(var(--plp-margin) * -1)}
 .grid.bleed.gap-tight{gap:14px 2px}
@@ -185,7 +186,7 @@ const CFG={
   debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'imp', cat:'roundels',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:false, loadMore:'sec', subCaps:1, catEdge:1},
   boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', subCaps:1},
   boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'pills',     seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
-  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'tight', cat:'none',      seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none'},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'plt0', cat:'none',      seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none'},
   karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'norm',  cat:'none',      seo:true,  nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'nondd', subCaps:1},
   warehouse:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:true, subCaps:1},
   brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'none',      seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', subCaps:1},
@@ -194,7 +195,7 @@ const CFG={
   debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'none',  bleed:true,  gap:'none',  cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false, flush:1},
-  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill', swatch:'round',  icons:'plt',  moreBelow:false},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'plt0', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill', swatch:'round',  icons:'plt',  moreBelow:false},
   karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
