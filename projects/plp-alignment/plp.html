@@ -21,6 +21,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
 .seo{color:var(--text-secondary);font-size:13px;max-width:860px;margin:6px 0 2px}
 .seo--line{display:flex;gap:6px;align-items:baseline;white-space:nowrap;overflow:hidden;max-width:860px}
+.seo[hidden]{display:none}
 .seo--line .t{overflow:hidden;text-overflow:ellipsis;min-width:0}
 .cat-wrap.edge{justify-content:flex-start;margin-right:calc(var(--plp-margin) * -1);overflow-x:auto}
 @media(min-width:1024px){.cat-wrap.edge{justify-content:center;margin-right:0;overflow-x:visible}}
@@ -304,13 +305,12 @@ function render(){
     mobbar.style.display=cfg.mobPills==='none'?'none':'';
   } else {
     mobsplit.style.display='none';mobbar.style.display='';
-    mobbar.innerHTML=`<span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>
-      <span style="margin-left:auto;display:inline-flex;gap:8px;align-items:center">
-        <span class="viewtoggle"><button id="v2" class="${view===2?'on':''}" aria-label="2-column view"><img src="${LIB}/icons-grid.svg" alt=""></button><button id="v1" class="${view===1?'on':''}" aria-label="1-column view"><img src="${LIB}/icons-tile.svg" alt=""></button></span>
-        <button class="sf-btn" onclick="document.getElementById('drawer').classList.add('open')">Sort &amp; Filter <img src="${LIB}/icons-filter.svg" alt=""></button>
-      </span>`;
-    document.getElementById('v1').onclick=()=>{view=1;render()};
-    document.getElementById('v2').onclick=()=>{view=2;render()};
+    // floating pill row — Brand Room Figma 739-92223
+    mobbar.innerHTML=`<div class="sf-float">
+      <button class="sf-pill" onclick="this.classList.toggle('on')">Next Day Delivery <span class="track"></span></button>
+      <button class="sf-pill" onclick="document.getElementById('drawer').classList.add('open')">Sort &amp; Filter <img src="${LIB}/icons-filter.svg" alt=""></button>
+      ${F.filters.map(f=>`<button class="sf-pill" onclick="document.getElementById('drawer').classList.add('open')">${f} <i class="dn"></i></button>`).join('')}
+    </div>`;
   }
   document.getElementById('ftbrands').hidden=(b!=='debenhams');
   grid.style.setProperty('--cols',cfg.cols);
