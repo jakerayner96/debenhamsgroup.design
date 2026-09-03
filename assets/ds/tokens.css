@@ -75,5 +75,14 @@
   --brand-primary:#8E330B;--surface-action:#8E330B;--surface-action-hover:#5E2207;--surface-action-pressed:#5E2207;
   --brand-light-3:#F3C1A7;--brand-light-1:#E88A5B;--brand-primary-dark:#5E2207;
 }
+/* Scaffold modes — name (+ confirmed radius) only; palette + font land per audit.
+   Needed now because the PLP Alignment brief (P-05) spans these fascias. */
+[data-brand="warehouse"]{
+  --brand-name:'Warehouse';
+}
+[data-brand="brandroom"]{
+  --brand-name:'The Brand Room';
+  --radius-default:0px;--radius-lg:0px;--radius-pill:0px; /* square-radius mode — confirmed */
+}
 /* Accessibility: all motion collapses under prefers-reduced-motion */
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

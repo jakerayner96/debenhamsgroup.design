@@ -1,6 +1,8 @@
 # CLAUDE.md — debenhamsgroup.design
 
-Read `.context/` before doing anything. Start with `00-readme.md`, then `13-session-log-2026-09-01c.md` for current state (11 and 12 are earlier the same day), then whichever doc matches the task.
+Read `.context/` before doing anything. Start with `00-readme.md`, then `14-session-log-2026-09-03.md` for current state (11–13 are the earlier history), then whichever doc matches the task.
+
+**Repo:** github.com/jakerayner96/debenhamsgroup.design · **Live site (Pages):** jakerayner96.github.io/debenhamsgroup.design
 
 ## What this repo is
 The Debenhams Group UX site: design system docs, project archive (options + chosen routes), brand centre, requests board — plus (incoming) the master prototypes for core pages. **`index.html` IS the site** — single file, no build step, dark, sidebar-driven — and since 01 Sep it carries the design system layer itself: canonical tokens (invariant semantic layer + five live fascia modes on `data-brand`), foundations pages (colour, typography, spacing, radius, borders, motion, accessibility), component specs, brand centre with real logo marks. Serve it with `python3 -m http.server 3000` from the repo root (assets need HTTP, not file://).
