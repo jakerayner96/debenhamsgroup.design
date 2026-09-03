@@ -21,6 +21,25 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .mode-new .hd-usp{font-size:12px;padding:4px 16px;min-height:0}
 .mode-new .usp-cell{font-size:12px;min-height:0;padding:4px 16px;font-weight:var(--w-regular);gap:4px}
 .mode-new .usp-cell b{font-size:12px;font-weight:var(--w-strong)}
+/* PLP content slot — DS Figma 8556-18755. Square tile after row 3 (new format), three types:
+   Button (media + white CTA), Text (media + gradient + View All + optional Sponsored), Get The Look. */
+.cslot{grid-column:span 2;aspect-ratio:1/1;position:relative;overflow:hidden;cursor:pointer;border-radius:0}
+.cslot>img.media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cslot .slot-btn{position:absolute;right:24px;bottom:24px;height:50px;padding:8px 24px;background:#FFF;color:#000;border:none;border-radius:4px;font-family:var(--font-family-base);font-size:16px;line-height:24px;font-weight:var(--w-btn,600);text-transform:uppercase;display:flex;align-items:center}
+.cslot .slot-grad{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.7))}
+@media(min-width:1024px){.cslot .slot-grad{height:200px}}
+.cslot .slot-view{position:absolute;right:24px;bottom:24px;display:flex;gap:8px;align-items:center;color:#FFF;font-size:20px;font-weight:var(--w-regular)}
+@media(min-width:1024px){.cslot .slot-view{right:32px;bottom:32px}}
+.cslot .slot-view svg{width:16px;height:16px;display:block}
+.cslot .slot-spon{position:absolute;top:8px;right:8px;color:#FFF;font-size:10px;text-shadow:0 0 4px rgba(0,0,0,.8)}
+.cslot--gtl{background:var(--surface-sunken);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:16px}
+@media(min-width:1024px){.cslot--gtl{padding:24px;gap:24px}}
+.cslot--gtl .slot-title{font-size:18px;font-weight:var(--w-strong);color:var(--text-primary)}
+@media(min-width:1024px){.cslot--gtl .slot-title{font-size:20px}}
+.cslot--gtl .slot-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;min-height:0}
+@media(min-width:1024px){.cslot--gtl .slot-grid{gap:12px}}
+.cslot--gtl .slot-grid img{width:100%;height:100%;object-fit:cover;border-radius:4px}
+.cslot--gtl .slot-grid img:first-child{grid-row:1/span 2}
 /* card anatomy modal — review tooling (new format): which component layers this instance uses */
 #anat{position:fixed;inset:0;z-index:975;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}
 #anat[hidden]{display:none}
@@ -51,6 +70,21 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 #anat .tgl.on{background:#0D99FF;border-color:#0D99FF}
 #anat .tgl.on i{left:12px;background:#FFF}
 #anat .nm2{color:#F7F7F7}
+#sed{position:fixed;inset:0;z-index:975;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+#sed[hidden]{display:none}
+#sed .box{width:320px;max-width:100%;max-height:90vh;overflow-y:auto;background:#0A0A0A;color:#B0B0B0;border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:16px;font-family:'Google Sans',system-ui,sans-serif;font-size:12px;display:flex;flex-direction:column;gap:4px}
+#sed h3{color:#F7F7F7;font-size:13px;font-weight:600;margin:0 0 2px;display:flex;justify-content:space-between;align-items:center}
+#sed h3 button{font-size:16px;color:#B0B0B0;background:none;border:none;cursor:pointer}
+#sed .sec{margin-top:10px;font-size:10.5px;color:#707070;text-transform:uppercase;letter-spacing:.06em}
+#sed .seg3{display:flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin:6px 0}
+#sed .seg3 button{flex:1;padding:6px 0;font:500 11.5px 'Google Sans',system-ui,sans-serif;color:#B0B0B0;background:none;border:none;cursor:pointer}
+#sed .seg3 button.on{background:#F7F7F7;color:#000;font-weight:700}
+#sed input,#sed select{width:100%;box-sizing:border-box;background:#161616;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#F7F7F7;padding:7px 9px;font:12px 'Google Sans',system-ui,sans-serif;margin-top:4px}
+#sed .row.t{display:flex;gap:8px;align-items:center;background:none;border:none;cursor:pointer;color:inherit;font:inherit;padding:6px 0;text-align:left}
+#sed .tgl{flex:none;width:26px;height:15px;border-radius:99px;border:1px solid rgba(255,255,255,.35);position:relative;display:inline-block}
+#sed .tgl i{position:absolute;top:1px;left:1px;width:11px;height:11px;border-radius:99px;background:#B0B0B0;transition:left .12s}
+#sed .tgl.on{background:#0D99FF;border-color:#0D99FF}
+#sed .tgl.on i{left:12px;background:#FFF}
 .plp{padding:0 var(--plp-margin) 24px;max-width:2000px;margin:0 auto} /* whole container caps at 2000px (PLT live) */
 .plp-title{text-align:left;padding:6px 0 2px;position:relative}
 /* grid-view selector — Figma PLP-Grid-View 194-2513 / 157-2631 / 157-2683: 16px icon right of the title,
@@ -62,6 +96,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
   .grid[data-mcols="3"]{grid-template-columns:repeat(3,1fr)}
   .grid[data-mcols="3"] .pc-info,.grid[data-mcols="3"] .pc-badges,.grid[data-mcols="3"] .pc-taggstar,.grid[data-mcols="3"] .pc-add{display:none}
   .grid[data-mcols="3"] .pc-actions>*:not(:first-child){display:none}
+  .grid[data-mcols="1"]{grid-template-columns:1fr}
 }
 .plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
 .plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
@@ -286,14 +321,14 @@ function qaBtn(cfg,IC){
 function card(p,i,b,cfg,IC){
   const showAI=p.ai&&MODE==='new';
   return `<article class="pc${cfg.compact?' pc--compact':''}${cfg.flush?' pc--flush':''}" data-idx="${i}">
-    <div class="pc-img">
+    ${p.noImg?'':`<div class="pc-img">
       <img class="ph" loading="lazy" src="${IMG}/${b}/p${p.img!==undefined?p.img:i}.jpg" alt="">
-      <div class="pc-actions">${favBtn(cfg,IC)}${qaBtn(cfg,IC)}</div>
+      <div class="pc-actions">${p.noFav?'':favBtn(cfg,IC)}${qaBtn(cfg,IC)}</div>
       ${p.tag?`<div class="pc-badges${showAI?' has-ai':''}"><span class="badge">${p.tag}</span></div>`:''}
       ${showAI?'<div class="badge-ai"><b>AI</b> Generated</div>':''}
-    </div>
+    </div>`}
     ${cfg.qa==='button'?`<button class="pc-add"><img src="${LIB}/icons-quick-add.svg" alt="">Add</button>`:''}
-    ${p.taggstar&&MODE==='live'?(()=>{const ts=p.taggstar.split('|');return `<div class="pc-taggstar${cfg.ts==='brand'?' pc-taggstar--brand':cfg.ts==='lt'?' pc-taggstar--lt':''}"><img src="${LIB}/${cfg.ts==='lt'?'icons-flame':'icons-trophy'}.svg" alt=""><b>${ts[0]}</b><span>${ts[1]||''}</span></div>`})():''}
+    ${p.taggstar&&(MODE==='live'||p.tsOn)?(()=>{const ts=p.taggstar.split('|');return `<div class="pc-taggstar${cfg.ts==='brand'?' pc-taggstar--brand':cfg.ts==='lt'?' pc-taggstar--lt':''}"><img src="${LIB}/${cfg.ts==='lt'?'icons-flame':'icons-trophy'}.svg" alt=""><b>${ts[0]}</b><span>${ts[1]||''}</span></div>`})():''}
     <div class="pc-info">
       <div class="pc-titles">${cfg.brand&&p.brand?`<div class="pc-brand">${p.brand}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>
       <div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>
@@ -330,12 +365,15 @@ function demoVariants(list,deny,ovrKey){
     }
     const o=ovrKey?OVR[ovrKey+i]:null;
     if(o){ // anatomy-overlay toggles act on top of the demo layers
+      if(o.img!==undefined)q.noImg=!o.img;
+      if(o.fav!==undefined)q.noFav=!o.fav;
+      if(o.ts!==undefined){if(o.ts){q.taggstar=q.taggstar||'#2|bestseller';q.tsOn=true}else{delete q.taggstar;delete q.tsOn}}
       if(o.badge!==undefined){if(o.badge)q.tag=q.tag||'Bestseller';else delete q.tag}
       if(o.ai!==undefined)q.ai=o.ai;
-      if(o.brand!==undefined&&!o.brand)delete q.brand;
+      if(o.brand!==undefined){if(o.brand)q.brand=q.brand||window.__brandName||'';else delete q.brand}
       if(o.sw!==undefined){if(o.sw){q.sw=q.sw||SW;q.swMore=q.swMore===undefined?8:q.swMore}else{delete q.sw;delete q.swMore}}
-      if(o.rating!==undefined&&!deny.rating){if(o.rating)q.rating=q.rating||'4.6';else delete q.rating}
-      if(o.ndd!==undefined&&!deny.ndd)q.ndd=o.ndd;
+      if(o.rating!==undefined){if(o.rating)q.rating=q.rating||'4.6';else delete q.rating} // override beats the brand rule
+      if(o.ndd!==undefined)q.ndd=o.ndd;
       if(o.price){ // the three legal price variants: full · sale (red+was+%) · sale + code line
         if(o.price==='full'){delete q.was;delete q.pct;delete q.off}
         else{mkWas();if(o.price==='salecode'){q.off=o.offText!==undefined?o.offText:(q.off||mkOff())}else delete q.off}
@@ -377,7 +415,7 @@ function render(){
   F.products.forEach(p=>{delete p.taggstar}); if(b==='boohooman'&&F.products[3])F.products[3].taggstar='#2|bestseller'; // live-only social proof demo — height cost vs lean neighbours
   const IC=icons(cfg);
   const cs=getComputedStyle(document.documentElement);
-  const name=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
+  const name=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();window.__brandName=name;
   document.querySelectorAll('.logo').forEach(i=>i.src=`${AST}/brands/${b}.svg`);
   document.querySelectorAll('.bn').forEach(x=>x.textContent=name);
   document.querySelectorAll('.favic').forEach(i=>i.src=cfg.fav==='bookmark'?IC.bookmark:IC.heart24);
@@ -461,7 +499,12 @@ function render(){
   window.__ovrKey=b+':'+MODE+':';
   const plist=demoVariants(F.products,deny,window.__ovrKey); // both modes — live and new carry the same per-product layers (parity rule, 03 Sep); only explicit removals differ
   window.__plist=plist;window.__deny=deny;
-  grid.innerHTML=plist.map((p,i)=>{const o=OVR[window.__ovrKey+i];const c=(o&&o.qa!==undefined&&cfg.qa!=='none')?Object.assign({},cfg,{qa:o.qa?cfg.qa:'none'}):cfg;return card(p,i,b,c,IC)}).join('');
+  grid.innerHTML=plist.map((p,i)=>{
+    const o=OVR[window.__ovrKey+i];let c=cfg;
+    if(o&&(o.qa!==undefined||o.brand!==undefined)){c=Object.assign({},cfg);
+      if(o.qa!==undefined)c.qa=o.qa?(cfg.qa!=='none'?cfg.qa:'icon'):'none';
+      if(o.brand!==undefined)c.brand=o.brand;}
+    return card(p,i,b,c,IC)}).join('');
   const lm=document.querySelector('.more .bd');
   lm.className='bd sec'; // load more is the secondary button — every fascia, both modes (golden truth)
   lm.style.cssText=(MODE==='live'&&b==='debenhams')
@@ -473,8 +516,58 @@ function render(){
     :((MODE==='live'&&cfg.subCaps)?'text-transform:uppercase':'');
   const cfgText=`${MODE} · cols ${cfg.cols} · brand ${cfg.brand?'on':'off'} · ${cfg.fav}/${cfg.favShape} · add ${cfg.qa} · ${cfg.bleed?'bleed':'padded'} · ${cfg.compact?'compact':'standard'}`;
   try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE},'*')}catch(e){}
+  placeSlot(b);
   window.REVIEW_CTX={proj:'p05',key:b+':'+MODE}; // pinned review comments scope to fascia+mode
   window.PLPC&&PLPC.refresh();
+}
+// --- PLP content slot (DS 8556-18755): lands after row 3 in the new format; click it to edit ---
+const SLOT={type:'button',cta:'Shop the edit',img:null,sponsored:true,skus:[0,4,8]};
+function slotHTML(b){
+  const plist=window.__plist||[];
+  const media=SLOT.img||(IMG+'/'+b+'/p'+((plist[2]&&plist[2].img!==undefined)?plist[2].img:2)+'.jpg');
+  if(SLOT.type==='gtl'){
+    const im=k=>{const p2=plist[k]||{};return IMG+'/'+b+'/p'+(p2.img!==undefined?p2.img:(k||0))+'.jpg'};
+    return `<div class="cslot cslot--gtl" id="cslot"><div class="slot-title">Get The Look</div><div class="slot-grid"><img src="${im(SLOT.skus[0])}" alt=""><img src="${im(SLOT.skus[1])}" alt=""><img src="${im(SLOT.skus[2])}" alt=""></div></div>`;
+  }
+  if(SLOT.type==='text'){
+    return `<div class="cslot" id="cslot"><img class="media" src="${media}" alt="">${SLOT.sponsored?'<div class="slot-spon">Sponsored</div>':''}<div class="slot-grad"></div><div class="slot-view">${SLOT.cta||'View All'}<svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#FFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>`;
+  }
+  return `<div class="cslot" id="cslot"><img class="media" src="${media}" alt=""><button class="slot-btn">${SLOT.cta||'CTA'}</button></div>`;
+}
+function placeSlot(b){
+  const old=document.getElementById('cslot');if(old)old.remove();
+  if(MODE!=='new')return;
+  const cols=getComputedStyle(grid).gridTemplateColumns.split(' ').length||2;
+  const wrap=document.createElement('div');wrap.innerHTML=slotHTML(b);
+  const el=wrap.firstElementChild;
+  grid.insertBefore(el,grid.children[cols*3]||null); // after the 3rd row at the current column count
+  el.addEventListener('click',e=>{e.stopPropagation();openSlotEd(b)});
+}
+const sed=document.createElement('div');sed.id='sed';sed.hidden=true;sed.innerHTML='<div class="box"></div>';
+document.addEventListener('DOMContentLoaded',()=>document.body.appendChild(sed));
+if(document.readyState!=='loading')document.body.appendChild(sed);
+sed.addEventListener('click',e=>{if(e.target===sed)sed.hidden=true});
+function openSlotEd(b){
+  const plist=window.__plist||[];
+  const opt=(v,sel)=>plist.slice(0,24).map((p2,k)=>`<option value="${k}" ${k===sel?'selected':''}>${String(k+1).padStart(2,'0')} — ${(p2.name||'').slice(0,26)}</option>`).join('');
+  sed.querySelector('.box').innerHTML=
+    '<h3>Content slot <button class="x" aria-label="Close">×</button></h3>'
+    +'<div class="sec">Style</div>'
+    +'<div class="seg3">'+[['button','Button'],['text','Text'],['gtl','Get the look']].map(([v,l])=>`<button data-t="${v}" class="${SLOT.type===v?'on':''}">${l}</button>`).join('')+'</div>'
+    +(SLOT.type!=='gtl'
+      ?'<div class="sec">CTA text</div><input id="sed-cta" maxlength="24" value="'+(SLOT.cta||'').replace(/"/g,'&quot;')+'">'
+       +'<div class="sec">Image</div><input id="sed-img" type="file" accept="image/*">'
+       +(SLOT.type==='text'?'<button class="row t" id="sed-spon"><span class="tgl'+(SLOT.sponsored?' on':'')+'"><i></i></span><span class="nm">Sponsored tag</span></button>':'')
+      :'<div class="sec">The 3 SKUs — first product image is pulled</div>'
+       +[0,1,2].map(k=>`<select class="sed-sku" data-k="${k}">${opt(k,SLOT.skus[k])}</select>`).join(''));
+  const box=sed.querySelector('.box');
+  box.querySelector('.x').onclick=()=>sed.hidden=true;
+  box.querySelectorAll('.seg3 button').forEach(bt=>bt.onclick=()=>{SLOT.type=bt.dataset.t;placeSlot(b);openSlotEd(b)});
+  const cta=box.querySelector('#sed-cta');if(cta)cta.addEventListener('input',()=>{SLOT.cta=cta.value;const el=document.querySelector('#cslot .slot-btn,#cslot .slot-view');if(el)el.childNodes[0].nodeValue=SLOT.cta});
+  const fi=box.querySelector('#sed-img');if(fi)fi.addEventListener('change',()=>{const f=fi.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{SLOT.img=r.result;placeSlot(b)};r.readAsDataURL(f)});
+  const sp=box.querySelector('#sed-spon');if(sp)sp.onclick=()=>{SLOT.sponsored=!SLOT.sponsored;placeSlot(b);openSlotEd(b)};
+  box.querySelectorAll('.sed-sku').forEach(se=>se.onchange=()=>{SLOT.skus[+se.dataset.k]=+se.value;placeSlot(b)});
+  sed.hidden=false;
 }
 // --- card anatomy modal (review tooling): click a card in the new format to see the component usage ---
 const anat=document.getElementById('anat');
@@ -490,24 +583,21 @@ function showAnatomy(i,cardEl){
   const cfg=CFG.new[b],q=(window.__plist||[])[i],deny=window.__deny||{};
   if(!q||!cardEl)return;
   const key=window.__ovrKey+i; OVR[key]=OVR[key]||{};
-  const full=Object.assign({},q,{tag:q.tag||'Bestseller',ai:true,was:q.was||'\u00a349.99',pct:q.pct||'-30%',off:q.off||'\u00a300.00 with code EXTRA10',sw:q.sw||DEMO_SW,swMore:q.swMore||8});
-  if(!deny.rating)full.rating=q.rating||'4.6'; if(!deny.ndd)full.ndd=true;
-  const probe=document.createElement('div');
-  probe.style.cssText='position:absolute;left:-9999px;top:0;width:'+cardEl.offsetWidth+'px;visibility:hidden';
-  probe.innerHTML=card(full,i,b,cfg,icons(cfg));
-  document.body.appendChild(probe);
-  const fullH=probe.firstElementChild.offsetHeight,thisH=cardEl.offsetHeight;
-  probe.remove();
   const pm=q.off?'salecode':q.was?'sale':'full';
-  const qaOn=cfg.qa!=='none'&&(OVR[key].qa!==undefined?OVR[key].qa:true);
-  const T=[
+  const o=OVR[key];
+  const qaOn=o.qa!==undefined?o.qa:cfg.qa!=='none';
+  const brandOn=o.brand!==undefined?(o.brand&&!!q.brand):!!(cfg.brand&&q.brand);
+  const T=[ // nothing is locked — fascia defaults and brand rules can all be forced per card
+    ['img','Image',!q.noImg,''],
+    ['fav','Wishlist',!q.noFav&&!q.noImg,''],
+    ['ts','Taggstar',!!q.taggstar&&(MODE==='live'||!!q.tsOn),MODE==='new'?'removed in new — forceable':''],
     ['badge','Badge',!!q.tag,''],
     ['ai','AI watermark',!!q.ai,''],
-    ['brand','Brand line',!!(cfg.brand&&q.brand),cfg.brand?'':'off for this fascia'],
-    ['qa','Quick add',qaOn,cfg.qa!=='none'?'':'off for this fascia'],
+    ['brand','Brand line',brandOn,cfg.brand?'':'fascia default: off'],
+    ['qa','Quick add',qaOn,cfg.qa!=='none'?'':'fascia default: off'],
     ['sw','Swatches',!!q.sw,''],
-    ['rating','Rating',!!q.rating,deny.rating?'removed \u2014 MAN brand rule':''],
-    ['ndd','Get It Tomorrow',!!q.ndd,deny.ndd?'removed \u2014 MAN brand rule':''],
+    ['rating','Rating',!!q.rating,deny.rating?'MAN rule: off \u2014 forceable':''],
+    ['ndd','Get It Tomorrow',!!q.ndd,deny.ndd?'MAN rule: off \u2014 forceable':''],
   ];
   const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
   const tg=(on,dis)=>'<span class="tgl'+(on?' on':'')+(dis?' dis':'')+'"><i></i></span>';
@@ -518,17 +608,15 @@ function showAnatomy(i,cardEl){
     +'<div class="seg3">'+['full','sale','salecode'].map(m2=>'<button data-pm="'+m2+'" class="'+(pm===m2?'on':'')+'">'+({full:'Full price',sale:'Sale',salecode:'Sale + code'})[m2]+'</button>').join('')+'</div>'
     +(pm==='salecode'?'<input id="anat-off" maxlength="60" value="'+esc(q.off||'').replace(/"/g,'&quot;')+'" placeholder="\u00a300.00 with code XXX"><div class="cnt" id="anat-cnt"></div>':'')
     +'<div class="sec">Layers</div>'
-    +T.map(r=>'<button class="row t'+(r[3]?' lock':'')+'" data-k="'+r[0]+'">'+tg(r[2],!!r[3])+'<span class="nm">'+r[1]+'</span><span class="why">'+r[3]+'</span></button>').join('')
-    +'<div class="row"><span class="st on">\u2713</span><span class="nm2">Image \u00b7 Wishlist ('+cfg.fav+') \u2014 always on</span></div>'
-    +'<div class="row"><span class="st off">\u2014</span><span class="nm2" style="color:#707070">Taggstar \u2014 removed in the new format</span></div>'
-    +'<div class="sum" id="anat-sum">this card <b>'+thisH+'px</b> vs all layers on <b>'+fullH+'px</b> \u2192 <b>'+Math.max(0,fullH-thisH)+'px saved</b> ('+(fullH?Math.round((fullH-thisH)/fullH*100):0)+'%)</div>';
+    +T.map(r=>'<button class="row t" data-k="'+r[0]+'">'+tg(r[2],false)+'<span class="nm">'+r[1]+'</span><span class="why">'+r[3]+'</span></button>').join('')
+    ;
   const box=anat.querySelector('.box');
   box.querySelector('.x').onclick=()=>anat.hidden=true;
   const reopen=()=>{render();const el=grid.querySelector('[data-idx="'+i+'"]');if(el)showAnatomy(i,el)};
   box.querySelectorAll('.seg3 button').forEach(bt=>bt.onclick=()=>{OVR[key].price=bt.dataset.pm;if(bt.dataset.pm!=='salecode')delete OVR[key].offText;reopen();});
-  box.querySelectorAll('.row.t:not(.lock)').forEach(bt=>bt.onclick=()=>{
+  box.querySelectorAll('.row.t').forEach(bt=>bt.onclick=()=>{
     const k=bt.dataset.k;
-    const cur={badge:!!q.tag,ai:!!q.ai,brand:!!(cfg.brand&&q.brand),qa:qaOn,sw:!!q.sw,rating:!!q.rating,ndd:!!q.ndd}[k];
+    const cur={img:!q.noImg,fav:!q.noFav&&!q.noImg,ts:!!q.taggstar&&(MODE==='live'||!!q.tsOn),badge:!!q.tag,ai:!!q.ai,brand:brandOn,qa:qaOn,sw:!!q.sw,rating:!!q.rating,ndd:!!q.ndd}[k];
     OVR[key][k]=!cur;reopen();
   });
   const offIn=box.querySelector('#anat-off');
@@ -547,22 +635,25 @@ function showAnatomy(i,cardEl){
       cnt.classList.toggle('bad',!fits);
     };
     let t;
-    offIn.addEventListener('input',()=>{OVR[key].offText=offIn.value;clearTimeout(t);t=setTimeout(()=>{render();meas();const el=grid.querySelector('[data-idx="'+i+'"]');const s2=document.getElementById('anat-sum');if(el&&s2)s2.querySelector('b').textContent=el.offsetHeight+'px';},200);});
+    offIn.addEventListener('input',()=>{OVR[key].offText=offIn.value;clearTimeout(t);t=setTimeout(()=>{render();meas()},200);});
     meas();
   }
   anat.hidden=false;
 }
 // grid-view selector: mobile column cycle, persisted
-let MCOLS=+(localStorage.getItem('plpMcols')||2); if(MCOLS!==2&&MCOLS!==3)MCOLS=2;
+let MCOLS=+(localStorage.getItem('plpMcols')||2); if(![1,2,3].includes(MCOLS))MCOLS=2;
 const gtBtn=document.getElementById('gt'),gridEl=document.querySelector('.grid');
-function applyMcols(){ // the icon shows the view you switch TO — exact Figma assets
+const GT_NEXT={2:3,3:1,1:2}; // three designed views: 2-col thumbnail → 3-col tile grid → 1-wide list
+const GT_ICON={2:'view-grid.svg',3:'view-photo.svg',1:'view-2col.svg'}; // exact assets — each shows the view you switch TO
+const GT_NAME={2:'Tile grid view',3:'One-wide list view',1:'Thumbnail view'};
+function applyMcols(){
   gridEl.setAttribute('data-mcols',MCOLS);
-  gtBtn.innerHTML='<img src="'+LIB+'/'+(MCOLS===2?'view-grid.svg':'view-thumb.svg')+'" alt="">';
-  gtBtn.title=MCOLS===2?'Tile grid view':'Thumbnail view';
+  gtBtn.innerHTML='<img src="'+LIB+'/'+GT_ICON[MCOLS]+'" alt="">';
+  gtBtn.title=GT_NAME[MCOLS];
 }
-gtBtn.addEventListener('click',()=>{MCOLS=MCOLS===2?3:2;localStorage.setItem('plpMcols',MCOLS);applyMcols();});
+gtBtn.addEventListener('click',()=>{MCOLS=GT_NEXT[MCOLS];localStorage.setItem('plpMcols',MCOLS);applyMcols();});
 applyMcols();
-window.__setState=(brand,mode,cat)=>{ if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
+window.__setState=(brand,mode,cat)=>{ anat.hidden=true; if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
 addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat); });
 matchMedia('(max-width:1023px)').addEventListener('change',render);
 /* mobile USP rotation — one cell at a time */
