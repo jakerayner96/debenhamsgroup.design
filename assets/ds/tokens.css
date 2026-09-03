@@ -38,7 +38,7 @@
   --font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:300;--w-mid:400;--w-strong:600;--cta-case:none;
   /* USP banner slots (a = message strip, b = code strip) — from the Header Figma component */
-  --usp-a-bg:#FAFAFA;--usp-a-bg2:#F2F2F2;--usp-a-fg:#0F0F0F;--usp-b-bg:#000;--usp-b-fg:#FFF;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000;--usp-b-fg:#FFF;
   /* category nav strip — Debenhams aqua tint; most fascias run it white */
   --nav-bg:var(--brand-light-2);--nav-fg:var(--text-primary);
   /* card overlay chrome (badges, AI banner, sale price) — PLT overrides with its cream/red set */

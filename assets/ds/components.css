@@ -108,18 +108,22 @@
    Figma: header 3793-3545 · USP banner 11982-37171 (same file)
    ============================================================ */
 .hd{background:var(--surface-page);font-family:var(--font-family-base);color:var(--text-primary)}
-.hd-usp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:4px 16px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:12px;font-weight:var(--w-regular);text-transform:var(--cta-case);text-align:center}
+.hd-usp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 16px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:12px;font-weight:var(--w-regular);text-transform:var(--cta-case);text-align:center}
 .hd-usp b{font-weight:var(--w-strong)}
 @media(min-width:1024px){.hd-usp{font-size:14px}}
 .hd-usp--b{background:var(--usp-b-bg);color:var(--usp-b-fg)}
 /* USP strip — the multi-cell banner from the Header Figma (cells alternate usp-a / usp-a2) */
-.usp-strip{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;font-family:var(--font-family-base);text-align:center}
-.usp-cell{padding:9px 16px;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:12px;font-weight:var(--w-regular);text-transform:var(--cta-case)}
+.usp-strip{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;font-family:var(--font-family-base);text-align:center;background:var(--usp-a-bg);padding:0 29px;max-width:100%}
+.usp-strip:empty{display:none}
+.usp-cell{padding:8px;min-height:63px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:14px;font-weight:var(--w-regular);text-transform:var(--cta-case)}
 .usp-cell:nth-child(even){background:var(--usp-a-bg2,var(--usp-a-bg))}
-.usp-cell b{font-weight:var(--w-strong);font-size:13px}
-.usp-cell u{text-underline-offset:2px;cursor:pointer}
-@media(min-width:1024px){.usp-cell{font-size:13px}.usp-cell b{font-size:14px}}
-@media(max-width:1023px){.usp-strip{grid-auto-flow:row;grid-template-columns:repeat(2,1fr);grid-auto-columns:unset}.usp-cell:nth-child(3):last-child{grid-column:1/-1}}
+.usp-cell b{font-weight:var(--w-strong);font-size:14px;line-height:21px}
+.usp-cell u{text-underline-offset:2px;cursor:pointer;font-size:14px;line-height:1.1}
+/* mobile: one message at a time, rotating (Figma 13005-165658) */
+@media(max-width:1023px){.usp-strip{grid-auto-flow:row;grid-template-columns:1fr;padding:0 16px}.usp-strip .usp-cell{display:none;min-height:56px}.usp-strip .usp-cell.rot-on{display:flex}}
+/* the bar below pins to the top of the PLP window on scroll (Figma 13005-165567) */
+.hd-usp--sticky{position:sticky;top:0;z-index:var(--z-sticky)}
+.hd-usp[hidden]{display:none}
 .hd-bar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;gap:16px}
 .hd-left{display:flex;align-items:center;gap:16px;min-width:0}
 .hd-burger{width:24px;height:24px;min-width:24px;background:none;border:none;padding:0;cursor:pointer}
@@ -195,10 +199,10 @@
 .roundel--onimage i::after{content:'';position:absolute;inset:0;border-radius:var(--radius-pill);background:rgba(0,0,0,.3)}
 .roundel--onimage.roundel--display span{font-weight:var(--w-strong);text-transform:uppercase;letter-spacing:-.03em;font-size:16px}
 @media(min-width:1024px){.roundel--onimage span{font-size:18px}.roundel--onimage.roundel--display span{font-size:20px}}
-.cat-row--edge{gap:18px;justify-content:flex-start}
+.cat-row--edge{gap:18px;justify-content:flex-start} /* mobile: from the left margin, icebergs off the right */
 .cat-row--edge .roundel{width:132px}
 .cat-row--edge .roundel i{width:120px;height:120px}
-@media(min-width:1024px){.cat-row--edge .roundel{width:164px}.cat-row--edge .roundel i{width:150px;height:150px}}
+@media(min-width:1024px){.cat-row--edge{justify-content:center}.cat-row--edge .roundel{width:164px}.cat-row--edge .roundel i{width:150px;height:150px}} /* desktop: centered */
 .catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;background:var(--badge-bg);border:var(--border-w) solid var(--badge-border);border-radius:var(--radius-default);font-size:14px;font-weight:var(--w-regular);color:var(--badge-fg);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--cta-case)} /* badge format on every fascia — never fully rounded */
 .catpill:hover{filter:brightness(.97)}
 .catpill--solid{} /* alias — pills are badge-format everywhere now */
