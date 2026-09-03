@@ -70,3 +70,7 @@ Prototype now has a **Live now ⇄ New format** switch: LIVE replicates each fas
 - **Category pills are badge-format on every fascia** — badge tokens + `radius-default`, never fully rounded (PLT cream, others white/keyline).
 - **New-format wishlist/quick-add = PLT chip standard for all fascias except Debenhams** (bookmark fascias keep their glyph inside the chip); Debenhams keeps circles.
 - **New format**: SEO clamps to one line with Read more at the end; Show more filters always inline after the last dropdown.
+
+## Part 8 (same day) — USP two-layer spec + roundel alignment
+
+Debenhams USP per Figma 13005-163125/165658/165567: layer 1 = flat #F8F8F8 strip, 14px Bold headline + 14px underlined action, 63px cells, mobile rotates one message at a time (4s); layer 2 = black EXPRESSDEL bar that **pins to the top of the window on scroll** (moved outside the header — sticky was trapped by its containing block). Fixed the `[hidden]` gap/black-bar bug on empty USP slots. Roundels: centered on desktop, left-margin with right-edge iceberg on mobile.

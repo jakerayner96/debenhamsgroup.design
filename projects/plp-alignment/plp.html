@@ -23,6 +23,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .seo--line{display:flex;gap:6px;align-items:baseline;white-space:nowrap;overflow:hidden;max-width:860px}
 .seo--line .t{overflow:hidden;text-overflow:ellipsis;min-width:0}
 .cat-wrap.edge{justify-content:flex-start;margin-right:calc(var(--plp-margin) * -1);overflow-x:auto}
+@media(min-width:1024px){.cat-wrap.edge{justify-content:center;margin-right:0;overflow-x:visible}}
 @media(min-width:768px){.plp-title{text-align:center}.plp-title h1{font-size:26px}.seo{margin:6px auto 2px;text-align:center}}
 .cat-wrap{display:flex;justify-content:flex-start;overflow:hidden}
 @media(min-width:768px){.cat-wrap{justify-content:center}}
@@ -83,8 +84,9 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
   <nav class="hd-nav only-desktop"><a class="sale" href="#">Sale</a><a href="#">New in</a><a href="#">Dresses</a><a href="#">Clothing</a><a href="#">Co-ords</a><a href="#">Tops</a><a href="#">Shoes</a><a href="#">Accessories</a><a href="#">Brands</a></nav>
   <div class="hd-usp" id="usptop" hidden></div>
   <div class="usp-strip" id="uspstrip"></div>
-  <div class="hd-usp hd-usp--b" id="uspb" hidden></div>
 </header>
+<!-- second USP layer — pins to the top of the window on scroll (Figma 13005-165567) -->
+<div class="hd-usp hd-usp--b hd-usp--sticky" id="uspb" hidden></div>
 
 <main class="plp">
   <nav class="bc" aria-label="Breadcrumb"><a href="#">Home</a><span class="sep">/</span><a href="#">New In</a><span class="sep">/</span><a href="#">Womens New In</a><span class="sep">/</span><span class="cur">New In Dresses</span></nav>
@@ -146,7 +148,7 @@ const FASCIA={
  debenhams:{title:'Autumn',count:'1,000+ products',crumb:['Home','Campaign','Autumn Shop'],
   nav:['Sale','New','Women','Men','Kids','Home','Garden','Beauty','Wedding','Gifts','Fragrance','Brands'],
   cats:['Home Decor','Autumn Fragrance','Halloween','Cosy Knits','Boots','Candles'],filters:['Category','Size','Colour','Style'],
-  uspCells:[{b:'Up To 90% Off Bestsellers',s:'Shop Now'},{b:'Up To 70% Off Top Fashion Brands + Extra 10% Off',s:'Use Code: FASHION'},{b:'Up To 50% Off Beauty',s:'Shop Beauty'},{b:'Clearpay Available at Checkout',s:'Shop Now'}],
+  uspCells:[{b:'Up To 90% Off Bestsellers',s:'Shop Now'},{b:'Up To 70% Off Top Fashion Brands + Extra 10% Off',s:'Use Code: FASHION'},{b:'Up To 50% Off Beauty',s:'Shop Beauty'},{b:'Clearpay Available at Checkout',s:'Shop Now'}],uspB:'Free Express Delivery On Home &amp; Garden Orders Over £25 | Code: EXPRESSDEL',
   products:[
    {brand:'Wallis',name:'Navy Oversized Argyle Jumper',price:'£44.00',was:'£55.00',pct:'-20%',ndd:1},
    {brand:'Coast',name:'Long Sleeve Lace and Pleated Midi Shirt Dress',price:'£70.00',was:'£139.00',pct:'-50%',off:'£63.00 with code FASHION',ndd:1,ai:1},
@@ -353,7 +355,7 @@ function render(){
   // real furniture
   document.querySelector('.hd-nav').innerHTML=F.nav.map((n,i)=>`<a${/sale/i.test(n)?' class="sale"':''} href="#">${n}</a>`).join('');
   const usptop=document.getElementById('usptop');usptop.hidden=!F.uspTop;usptop.textContent=F.uspTop||'';
-  document.getElementById('uspstrip').innerHTML=(F.uspCells||[]).map(c=>`<div class="usp-cell"><b>${c.b}</b>${c.s?`<u>${c.s}</u>`:''}</div>`).join('');
+  document.getElementById('uspstrip').innerHTML=(F.uspCells||[]).map((c,ci)=>`<div class="usp-cell${ci===0?' rot-on':''}"><b>${c.b}</b>${c.s?`<u>${c.s}</u>`:''}</div>`).join('');
   const uspb=document.getElementById('uspb');uspb.hidden=!F.uspB;uspb.innerHTML=F.uspB||'';
   document.querySelector('.bc').innerHTML=F.crumb.map(c=>`<a href="#">${c}</a><span class="sep">/</span>`).join('')+`<span class="cur">${F.title}</span>`;
   const h1=document.querySelector('.plp-title h1');
@@ -416,6 +418,14 @@ function render(){
 window.__setState=(brand,mode,cat)=>{ if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
 addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat); });
 matchMedia('(max-width:1023px)').addEventListener('change',render);
+/* mobile USP rotation — one cell at a time */
+let rotI=0;
+setInterval(()=>{
+  const cells=[...document.querySelectorAll('#uspstrip .usp-cell')];
+  if(!cells.length||!matchMedia('(max-width:1023px)').matches)return;
+  rotI=(rotI+1)%cells.length;
+  cells.forEach((c,i)=>c.classList.toggle('rot-on',i===rotI));
+},4000);
 addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('drawer')?.classList.remove('open')});
 const q=new URLSearchParams(location.search);
 if(q.get('mode'))MODE=q.get('mode');
