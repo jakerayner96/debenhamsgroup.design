@@ -26,7 +26,8 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .cat-wrap.edge{justify-content:flex-start;margin-right:calc(var(--plp-margin) * -1);overflow-x:auto}
 @media(min-width:1024px){.cat-wrap.edge{justify-content:center;margin-right:0;overflow-x:visible}}
 @media(min-width:768px){.plp-title{text-align:center}.plp-title h1{font-size:26px}.seo{margin:6px auto 2px;text-align:center}}
-.cat-wrap{display:flex;justify-content:flex-start;overflow:hidden}
+.cat-wrap{display:flex;justify-content:flex-start;overflow:visible}
+@media(max-width:1023px){.cat-wrap{margin-right:calc(var(--plp-margin) * -1)}.cat-wrap .cat-row{padding-right:var(--plp-margin)}} /* pills run to the screen edge and iceberg */
 @media(min-width:768px){.cat-wrap{justify-content:center}}
 .showmore{display:block;font-size:14px;color:var(--text-primary);padding:2px 0 12px}
 .showmore[hidden]{display:none}
