@@ -103,6 +103,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
   .grid[data-mcols="3"] .pc-actions>*:not(:first-child){display:none}
   .grid[data-mcols="3"] .cslot{display:none} /* the images-only view drops content slots, like badges */
   .grid[data-mcols="1"]{grid-template-columns:1fr}
+  .grid[data-mcols="1"] .cslot{grid-column:1/span 1} /* a span-2 item in a 1-col grid spawns an implicit track and breaks the list */
 }
 .plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
 .plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
