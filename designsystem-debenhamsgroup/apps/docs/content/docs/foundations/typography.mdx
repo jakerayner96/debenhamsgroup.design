@@ -1,0 +1,43 @@
+---
+title: Typography
+description: Type sizes, weights, and per-brand fonts
+---
+
+## Approach
+
+- **Fixed per-breakpoint sizes.** No fluid `clamp()` scaling for v1.
+- **No line-height tokens.** Framework CSS mirrors Figma's `AUTO` behaviour.
+- **No letter-spacing tokens.** Default 0; per-instance exceptions are local overrides.
+- **Per-brand fonts.** Same role names across all facias; the font family changes per brand.
+- **Same sizes across brands.** Only font family + weight differ.
+
+## Sizes
+
+10, 12, 14, 16, 20, 24, 28, 32, 36, 40, 48 (px).
+
+## Roles
+
+- `display-lg` / `display-md` / `display-sm` — hero / marketing
+- `heading-xl` / `heading-lg` / `heading-md` / `heading-sm` / `heading-xs` — page and section titles
+- `body-lg` / `body-md` / `body-md-strong` / `body-sm` — body copy
+- `caption` / `micro` — supporting text
+
+## Per-brand fonts
+
+| Brand | Font |
+|---|---|
+| Debenhams | Geologica |
+| Boohoo / BoohooMAN | Montserrat |
+| PLT | Roboto |
+| Karen Millen | Jost |
+
+Other facias: TBD.
+
+## Weight resolution per brand
+
+| Role | Debenhams | Boohoo/MAN | PLT | KM |
+|---|---|---|---|---|
+| `body-md` | Light | Regular | Light | Light |
+| `body-md-strong` | SemiBold | SemiBold | Regular | SemiBold |
+| `heading-*` | SemiBold | SemiBold | Regular | SemiBold |
+| `caption` | Light | Regular | Light | Light |

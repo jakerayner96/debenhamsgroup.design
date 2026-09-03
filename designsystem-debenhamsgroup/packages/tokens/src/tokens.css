@@ -1,0 +1,203 @@
+/**
+ * Brand mode CSS custom properties.
+ *
+ * Every brand defines its semantic tokens via CSS variables scoped to a
+ * [data-brand="..."] attribute on a parent element (usually <html> or <body>).
+ *
+ * Components reference these via Tailwind classes (which the preset maps to var())
+ * or directly in CSS via var(--surface-action).
+ *
+ * Mode-invariant tokens (greys, status, page surfaces) are defined once at :root.
+ * Brand-specific tokens are defined once per brand.
+ */
+
+/* =============================================================
+   MODE-INVARIANT TOKENS — same across every brand
+   ============================================================= */
+
+:root {
+  /* Text */
+  --text-primary: #0f0f0f; /* Soft Black */
+  --text-secondary: #6b6b6b; /* Grey 5 — floor for body text (AA) */
+  --text-disabled: #b5b5b5; /* Grey 3 */
+  --text-inverse: #ffffff;
+  --text-on-action: #ffffff;
+  --text-error: #d33f3f;
+  --text-success: #1f7a25; /* darker green for contrast */
+  --text-warning: #7a5800; /* darker yellow for contrast */
+
+  /* Surface */
+  --surface-page: #ffffff;
+  --surface-sunken: #fafafa; /* Grey 05 */
+  --surface-raised: #ffffff;
+  --surface-inverse: #0f0f0f;
+  --surface-overlay: rgba(0, 0, 0, 0.6);
+  --surface-action-disabled: #e7e7e7; /* Grey 2 */
+  --surface-error: #fff2f2;
+  --surface-success: #eaf6ea;
+  --surface-warning: #fffbe6;
+
+  /* Border — Grey 2 is the typical divider */
+  --border-subtle: #e7e7e7; /* Grey 2 */
+  --border-default: #d6d6d6; /* Grey 25 */
+  --border-strong: #767676; /* Grey 4 */
+  --border-error: #d33f3f;
+
+  /* Icon — can use Grey 4 (not text-contrast bound) */
+  --icon-primary: #0f0f0f;
+  --icon-secondary: #767676; /* Grey 4 */
+  --icon-disabled: #b5b5b5;
+  --icon-inverse: #ffffff;
+  --icon-on-action: #ffffff;
+
+  /* Spacing — exposed for CSS-direct consumption */
+  --space-0: 0;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-80: 80px;
+  --space-96: 96px;
+  --space-128: 128px;
+
+  /* Border width */
+  --border-width-default: 1px;
+  --border-width-emphasis: 2px;
+  --border-width-focus: 2px;
+
+  /* Motion */
+  --motion-duration-fast: 100ms;
+  --motion-duration-base: 200ms;
+  --motion-duration-slow: 300ms;
+  --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-easing-emphasised: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+  /* Z-index */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-banner: 300;
+  --z-overlay: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-toast: 700;
+  --z-tooltip: 800;
+
+  /* Default brand mode is Debenhams — re-declared below for explicitness */
+  --font-family-base: 'Geologica', ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', system-ui, sans-serif;
+  --brand-primary: #7be7d8;
+  --brand-action: #00787d;
+  --brand-action-pressed: #00565a;
+  --brand-neutral: #e8f4f2;
+  --brand-light-4: #e6fffc;
+  --brand-light-3: #d6fff9;
+  --brand-light-2: #b8fdf4;
+  --brand-light-1: #9dede2;
+  --brand-dark-1: #76decf;
+  --brand-dark-2: #70beb3;
+  --brand-dark-3: #529c92;
+  --brand-primary-dark: #1e6f63;
+
+  /* Surface that uses brand-action — computed from --brand-action */
+  --surface-action: var(--brand-action);
+  --surface-action-hover: var(--brand-primary-dark);
+  --surface-action-pressed: var(--brand-action-pressed);
+  --surface-accent: var(--brand-primary);
+  --surface-accent-subtle: var(--brand-light-3);
+
+  /* Border and link colours that follow brand */
+  --border-action: var(--brand-action);
+  --border-focus: var(--brand-action);
+  --text-link: var(--brand-action);
+  --text-link-hover: var(--brand-primary-dark);
+  --icon-action: var(--brand-action);
+
+  /* Radius — defaults; can be overridden per brand mode */
+  --radius-default: 4px;
+  --radius-lg: 8px;
+  --radius-pill: 9999px;
+}
+
+/* =============================================================
+   PER-BRAND OVERRIDES
+   Each brand resets only what it changes from the default.
+   ============================================================= */
+
+[data-brand='debenhams'] {
+  /* Default — no overrides needed */
+}
+
+[data-brand='boohoo'] {
+  --font-family-base: 'Montserrat', ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', system-ui, sans-serif;
+  --brand-primary: #f8b5cc;
+  --brand-action: #bb305f;
+  --brand-action-pressed: #a02651;
+  --brand-neutral: #f1dce3;
+  --brand-light-4: #ffe9f0;
+  --brand-light-3: #ffe0eb;
+  --brand-light-2: #fcd3e1;
+  --brand-light-1: #ffc2d7;
+  --brand-dark-1: #eea5be;
+  --brand-dark-2: #ea92b0;
+  --brand-dark-3: #dd789b;
+  --brand-primary-dark: #cb4870;
+}
+
+[data-brand='boohoo-man'] {
+  --font-family-base: 'Montserrat', ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', system-ui, sans-serif;
+  /* TODO: Brand colours when audited */
+}
+
+[data-brand='plt'] {
+  --font-family-base: 'Roboto', ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', system-ui, sans-serif;
+  /* Square-radius mode */
+  --radius-default: 0px;
+  --radius-lg: 0px;
+  --radius-pill: 0px;
+  /* TODO: Brand colours when audited */
+}
+
+[data-brand='karen-millen'] {
+  --font-family-base: 'Jost', ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', system-ui, sans-serif;
+  /* TODO: Brand colours when audited */
+}
+
+[data-brand='brand-room'] {
+  /* Square-radius mode */
+  --radius-default: 0px;
+  --radius-lg: 0px;
+  --radius-pill: 0px;
+  /* TODO: Font and brand colours when audited */
+}
+
+/* TODO: Add [data-brand="..."] blocks for the other 10 facias
+   (Burton, Coast, Dorothy Perkins, Misspap, NastyGal, Oasis,
+   Principles, Wallis, Warehouse, DSGN Studio) as they are audited. */
+
+/* =============================================================
+   ACCESSIBILITY
+   ============================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

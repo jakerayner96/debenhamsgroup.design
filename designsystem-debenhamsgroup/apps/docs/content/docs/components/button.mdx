@@ -1,0 +1,57 @@
+---
+title: Button
+description: Placeholder — awaiting Figma audit
+---
+
+import { Button } from '@designsystem-debenhamsgroup/react';
+
+> **This page is a placeholder.** The full Button spec will be written after the Figma node is audited:
+> [Debenhams Design System — Buttons](https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=9144-1807)
+
+## Preview
+
+<div className="flex gap-3 items-center p-4 bg-page rounded-default border border-border-subtle">
+  <Button variant="primary">Primary</Button>
+  <Button variant="secondary">Secondary</Button>
+  <Button variant="tertiary">Tertiary</Button>
+</div>
+
+## What still needs specifying
+
+- Final variant set (Primary, Secondary, Tertiary, Tertiary XS, Pill, Icon Only, Roundel, Navigation Button, Payment Buttons, App Store Badges, Dropdown, Icon Link, Quantity Selector)
+- Final size scale per variant
+- Icon slot handling (currently a Boolean `Has Icon` + Size, not encoded as a state)
+- Loading state visuals
+- Pressed vs Hover state naming consistency (existing Figma has both, inconsistently)
+- Disabled state colours
+- Focus ring exact width and offset
+- Touch target compliance at smallest size
+- Per-brand text style mapping (Primary CTA, Secondary CTA, Tertiary CTA in the Checkout-2026 file)
+
+## API (placeholder)
+
+```tsx
+<Button variant="primary" size="md" onClick={handleClick}>
+  Save & continue
+</Button>
+```
+
+| Prop | Type | Default |
+|---|---|---|
+| `variant` | `'primary' \| 'secondary' \| 'tertiary'` | `'primary'` |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` |
+| `disabled` | `boolean` | `false` |
+| `loading` | `boolean` | `false` |
+| `children` | `ReactNode` | required |
+
+## Accessibility (placeholder)
+
+- Renders a native `<button type="button">` — keyboard accessible by default
+- Focus ring uses `border/focus` (brand action colour, 2pt)
+- `disabled` and `loading` both prevent interaction
+- `loading` sets `aria-busy`
+- Touch target minimum 44×44px on `size="md"` and above — `size="sm"` needs review for mobile use
+
+## Source
+
+The implementation lives in `packages/react/src/components/Button/`.

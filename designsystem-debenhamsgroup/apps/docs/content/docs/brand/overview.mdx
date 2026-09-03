@@ -1,0 +1,104 @@
+---
+title: Facia overview
+description: The 16 facias served by this design system
+---
+
+The Debenhams Group estate spans 16 facias. Each consumes this design system through a brand mode that swaps fonts, colours, and (occasionally) radius behaviour.
+
+## The estate
+
+export function FaciaTile({ slug, name }) {
+  return (
+    <div
+      style={{
+        border: '1px solid var(--border-subtle)',
+        borderRadius: 'var(--radius-default)',
+        background: 'var(--surface-page)',
+        minHeight: '76px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '16px',
+      }}
+    >
+      {slug ? (
+        <img
+          src={`/brands/${slug}.svg`}
+          alt={name}
+          style={{
+            maxHeight: '26px',
+            maxWidth: '85%',
+            width: 'auto',
+            border: 'none',
+            borderRadius: 0,
+            margin: 0,
+          }}
+        />
+      ) : (
+        <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontWeight: 600 }}>
+          {name}
+        </span>
+      )}
+    </div>
+  );
+}
+
+<div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+    gap: '12px',
+    margin: '24px 0',
+  }}
+>
+  <FaciaTile slug="debenhams" name="Debenhams" />
+  <FaciaTile slug="boohoo" name="Boohoo" />
+  <FaciaTile slug="boohoo-man" name="BoohooMAN" />
+  <FaciaTile slug="plt" name="PrettyLittleThing" />
+  <FaciaTile slug="karen-millen" name="Karen Millen" />
+  <FaciaTile slug="burton" name="Burton" />
+  <FaciaTile slug="coast" name="Coast" />
+  <FaciaTile slug="dorothy-perkins" name="Dorothy Perkins" />
+  <FaciaTile slug="misspap" name="Misspap" />
+  <FaciaTile slug="nastygal" name="NastyGal" />
+  <FaciaTile slug="oasis" name="Oasis" />
+  <FaciaTile slug="principles" name="Principles" />
+  <FaciaTile slug="wallis" name="Wallis" />
+  <FaciaTile slug="warehouse" name="Warehouse" />
+  <FaciaTile slug="brand-room" name="The Brand Room" />
+  <FaciaTile name="DSGN Studio" />
+</div>
+
+Logo marks live in the docs app at `public/brands/<brand-id>.svg`, named by their `data-brand` id. DSGN Studio's mark is still to be sourced.
+
+## Confirmed facias
+
+| Facia | Brand font | Radius mode |
+|---|---|---|
+| Debenhams | Geologica | default (4pt) |
+| Boohoo | Montserrat | default |
+| BoohooMAN | Montserrat | default |
+| PrettyLittleThing | Roboto | **square (0)** |
+| Karen Millen | Jost | default |
+
+## Pending audit
+
+These facias are part of the group and will be added once each is audited. They currently inherit Debenhams styling as a placeholder.
+
+Burton · Coast · Dorothy Perkins · Misspap · NastyGal · Oasis · Principles · Wallis · Warehouse · DSGN Studio · The Brand Room
+
+The Brand Room is also a square-radius facia.
+
+## Brand mode mechanics
+
+Setting the active brand on a page is one line of HTML:
+
+```tsx
+<html data-brand="boohoo">
+```
+
+All semantic tokens resolve to that brand's values. Components don't need to know which brand they're rendering in — they just consume `bg-action`, `text-primary`, `rounded-default` etc. and the right colours, fonts, and shapes come out.
+
+## Square radius
+
+PLT and The Brand Room use square radius (0pt) instead of the default 4pt. This is a brand-mode choice, not a hardcoded rule — any facia can opt into square radius in future by changing one token mapping.

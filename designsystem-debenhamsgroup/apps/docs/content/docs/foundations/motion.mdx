@@ -1,0 +1,29 @@
+---
+title: Motion
+description: Animation durations and easing
+---
+
+Motion is conservative by default and respects user preference. Three duration tokens, two easing curves, plus a global override for `prefers-reduced-motion`.
+
+## Durations
+
+| Token | Value | Use |
+|---|---|---|
+| `motion-duration-fast` | 100ms | Micro-interactions (button press) |
+| `motion-duration-base` | 200ms | Default (hover, fade, modal open) |
+| `motion-duration-slow` | 300ms | Larger transitions (drawer slide) |
+
+## Easing
+
+| Token | Value | Use |
+|---|---|---|
+| `motion-easing-standard` | `cubic-bezier(0.2, 0, 0, 1)` | Default |
+| `motion-easing-emphasised` | `cubic-bezier(0.3, 0, 0.8, 0.15)` | Attention-pulling |
+
+## Reduced motion
+
+All transitions globally reduce to instant when the user has `prefers-reduced-motion: reduce` set in their OS or browser. This is built into `tokens.css` and applies system-wide — no component-level work needed.
+
+## No shadow scale
+
+The system is deliberately flat. Hierarchy is communicated through surface-tone shifts and borders, not elevation. If a future component genuinely requires elevation (e.g. a floating popover), an elevation token will be added then — not pre-emptively.

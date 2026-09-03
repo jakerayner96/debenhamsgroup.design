@@ -4,25 +4,90 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Debenhams Group Design</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Archivo+Black&family=Geist+Mono:wght@400;500&family=Geologica:wght@300;600&family=Montserrat:wght@500;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Geologica:wght@300;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#08090A;--panel:#0D0E10;--panel-2:#111216;--raise:#15161A;
-  --line:rgba(255,255,255,.07);--line-2:rgba(255,255,255,.13);
-  --ink:#F7F8F8;--ink-2:#AEB3B8;--ink-3:#686D73;
+  /* pure neutral greys — no hue */
+  --bg:#000000;--panel:#0A0A0A;--panel-2:#111111;--raise:#171717;
+  --line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);
+  --ink:#F7F7F7;--ink-2:#B0B0B0;--ink-3:#707070;
   --aq:#7BE7D8;--aq-dim:rgba(123,231,216,.14);--warn:#F5A623;--ok:#50E3C2;
-  --mono:'Geist Mono',monospace;--disp:'Archivo Black',sans-serif;
+  --mono:'Montserrat',sans-serif;--disp:'Archivo Black',sans-serif;
 }
-/* brand demo tokens */
-[data-brand="debenhams"]{--b-cta:#00787D;--b-cta-down:#00565A;--b-on:#FFF;--b-l1:#9DEDE2;--b-l3:#D6FFF9;--b-paper:#FFF;--b-font:'Geologica';--b-wr:300;--b-wb:600;--b-r:4px;--b-caps:none;--b-name:'Debenhams'}
-[data-brand="boohoo"]{--b-cta:#BB305F;--b-cta-down:#A82A55;--b-on:#FFF;--b-l1:#FBC7D8;--b-l3:#FEE0EA;--b-paper:#FFF;--b-font:'Montserrat';--b-wr:500;--b-wb:700;--b-r:4px;--b-caps:none;--b-name:'boohoo'}
-[data-brand="boohooman"]{--b-cta:#000;--b-cta-down:#242424;--b-on:#FFF;--b-l1:#B5B5B5;--b-l3:#E7E7E7;--b-paper:#FFF;--b-font:'Montserrat';--b-wr:500;--b-wb:700;--b-r:4px;--b-caps:none;--b-name:'boohooMAN'}
-[data-brand="plt"]{--b-cta:#550503;--b-cta-down:#360502;--b-on:#FFFDF7;--b-l1:#C77E75;--b-l3:#FFD5CD;--b-paper:#FFFDF7;--b-font:'Roboto';--b-wr:400;--b-wb:700;--b-r:0px;--b-caps:uppercase;--b-name:'PrettyLittleThing'}
-[data-brand="karenmillen"]{--b-cta:#8E330B;--b-cta-down:#5E2207;--b-on:#FFF;--b-l1:#E88A5B;--b-l3:#F3C1A7;--b-paper:#FFF;--b-font:'Jost';--b-wr:400;--b-wb:600;--b-r:4px;--b-caps:none;--b-name:'Karen Millen'}
+/* ============ DESIGN SYSTEM TOKENS (canonical — absorbed from designsystem-debenhamsgroup packages/tokens) ============ */
+/* Layer 1: mode-invariant semantic tokens + scales. Same across every fascia. */
+:root{
+  /* text — body floor is Grey 5 (AA); Grey 4 and below never used for body text */
+  --text-primary:#0F0F0F;--text-secondary:#6B6B6B;--text-disabled:#B5B5B5;--text-inverse:#FFF;
+  --text-error:#D33F3F;--text-success:#1F7A25;--text-warning:#7A5800;
+  /* surface */
+  --surface-sunken:#FAFAFA;--surface-raised:#FFF;--surface-inverse:#0F0F0F;--surface-overlay:rgba(0,0,0,.6);
+  --surface-action-disabled:#E7E7E7;--surface-error:#FFF2F2;--surface-success:#EAF6EA;--surface-warning:#FFFBE6;
+  /* border */
+  --border-subtle:#E7E7E7;--border-default:#D6D6D6;--border-strong:#767676;--border-error:#D33F3F;
+  /* icon — may use Grey 4 (not text-contrast bound) */
+  --icon-primary:#0F0F0F;--icon-secondary:#767676;--icon-disabled:#B5B5B5;--icon-inverse:#FFF;--icon-on-action:#FFF;
+  /* spacing — 4pt base */
+  --space-2:2px;--space-4:4px;--space-8:8px;--space-12:12px;--space-16:16px;--space-20:20px;--space-24:24px;
+  --space-32:32px;--space-40:40px;--space-48:48px;--space-64:64px;--space-80:80px;--space-96:96px;--space-128:128px;
+  /* border width */
+  --border-w:1px;--border-w-emphasis:2px;--border-w-focus:2px;
+  /* motion */
+  --dur-fast:100ms;--dur-base:200ms;--dur-slow:300ms;
+  --ease-standard:cubic-bezier(.2,0,0,1);--ease-emphasised:cubic-bezier(.3,0,.8,.15);
+  /* z-index */
+  --z-base:0;--z-raised:10;--z-dropdown:100;--z-sticky:200;--z-banner:300;--z-overlay:400;--z-modal:500;--z-popover:600;--z-toast:700;--z-tooltip:800;
+
+  /* Layer 2 defaults: Debenhams (the default mode). Brand blocks below override. */
+  --brand-name:'Debenhams';
+  --font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:300;--w-strong:600;--cta-case:none;
+  --radius-default:4px;--radius-lg:8px;--radius-pill:9999px;
+  --surface-page:#FFF;
+  --brand-primary:#7BE7D8;--surface-action:#00787D;--surface-action-hover:#1E6F63;--surface-action-pressed:#00565A;--text-on-action:#FFF;
+  --brand-neutral:#E8F4F2;--brand-light-4:#E6FFFC;--brand-light-3:#D6FFF9;--brand-light-2:#B8FDF4;--brand-light-1:#9DEDE2;
+  --brand-dark-1:#76DECF;--brand-dark-2:#70BEB3;--brand-dark-3:#529C92;--brand-primary-dark:#1E6F63;
+  /* derived — follow the brand automatically */
+  --border-action:var(--surface-action);--border-focus:var(--surface-action);
+  --text-link:var(--surface-action);--text-link-hover:var(--brand-primary-dark);--icon-action:var(--surface-action);
+}
+/* Layer 2: per-fascia overrides. CTA/pressed/on/light-1/light-3/paper/type/radius/case are the
+   signed-off Colour Alignment set (post-KM review, Aug 26). Full 12-slot families exist for
+   Debenhams + boohoo; remaining slots for the other fascias land as each is audited. */
+[data-brand="debenhams"]{/* default — no overrides */}
+[data-brand="boohoo"]{
+  --brand-name:'boohoo';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:500;--w-strong:700;
+  --brand-primary:#F8B5CC;--surface-action:#BB305F;--surface-action-hover:#CB4870;--surface-action-pressed:#A82A55;
+  --brand-neutral:#F1DCE3;--brand-light-4:#FFE9F0;--brand-light-3:#FEE0EA;--brand-light-2:#FCD3E1;--brand-light-1:#FBC7D8;
+  --brand-dark-1:#EEA5BE;--brand-dark-2:#EA92B0;--brand-dark-3:#DD789B;--brand-primary-dark:#CB4870;
+}
+[data-brand="boohooman"]{
+  --brand-name:'boohooMAN';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:500;--w-strong:700;
+  --brand-primary:#0A0A0A;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
+  --brand-light-3:#E7E7E7;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
+}
+[data-brand="plt"]{
+  --brand-name:'PrettyLittleThing';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-strong:700;--cta-case:uppercase;
+  --radius-default:0px;--radius-lg:0px;--radius-pill:0px; /* square-radius mode */
+  --surface-page:#FFFDF7;--text-on-action:#FFFDF7;
+  --brand-primary:#550503;--surface-action:#550503;--surface-action-hover:#360502;--surface-action-pressed:#360502;
+  --brand-light-3:#FFD5CD;--brand-light-1:#C77E75;--brand-primary-dark:#360502;
+}
+[data-brand="karenmillen"]{
+  --brand-name:'Karen Millen';--font-family-base:'Jost',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-strong:600;
+  --brand-primary:#8E330B;--surface-action:#8E330B;--surface-action-hover:#5E2207;--surface-action-pressed:#5E2207;
+  --brand-light-3:#F3C1A7;--brand-light-1:#E88A5B;--brand-primary-dark:#5E2207;
+}
+/* Accessibility: all motion collapses under prefers-reduced-motion */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{background:var(--bg);color:var(--ink);font:450 14px/1.6 'Inter',sans-serif;letter-spacing:-.008em;-webkit-font-smoothing:antialiased;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.6 'Montserrat',sans-serif;letter-spacing:-.008em;-webkit-font-smoothing:antialiased;overflow:hidden}
 a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 ::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#222;border-radius:9px;border:2px solid var(--bg)}
@@ -37,11 +102,22 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .searchbtn{margin-left:auto;display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--bg);border-radius:7px;padding:6px 11px;font-size:12.5px;color:var(--ink-3);min-width:220px}
 .searchbtn:hover{border-color:var(--line-2)}
 .searchbtn kbd{margin-left:auto;font-family:var(--mono);font-size:10px;border:1px solid var(--line-2);border-radius:4px;padding:1px 5px;color:var(--ink-3)}
-.brandsel{display:flex;gap:3px;border:1px solid var(--line);border-radius:8px;padding:3px;background:var(--bg)}
-.brandsel button{width:24px;height:24px;border-radius:5px;display:grid;place-items:center;opacity:.55;transition:opacity .12s}
-.brandsel button i{width:12px;height:12px;border-radius:4px;border:1px solid rgba(255,255,255,.18)}
-.brandsel button:hover{opacity:.85}
-.brandsel button.on{opacity:1;background:var(--raise);outline:1px solid var(--line-2)}
+/* ============ BRAND SWITCHER FAB (floating, top right) ============ */
+.fab{position:fixed;top:16px;right:20px;z-index:80;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.fab-btn{width:46px;height:46px;border-radius:13px;border:1px solid var(--line-2);background:var(--panel);display:grid;place-items:center;cursor:pointer;box-shadow:0 10px 28px rgba(0,0,0,.55);transition:transform var(--dur-fast) var(--ease-standard),border-color var(--dur-fast) var(--ease-standard)}
+.fab-btn:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.28)}
+.appic{display:grid;place-items:center;overflow:hidden}
+.appic img{width:74%;height:auto;max-height:60%;object-fit:contain}
+.appic.dk img{filter:invert(1)}
+.fab-btn .appic{width:38px;height:38px;border-radius:10px}
+.fab-menu{display:none;flex-direction:column;gap:6px;padding:9px;background:var(--panel);border:1px solid var(--line-2);border-radius:16px;box-shadow:0 18px 48px rgba(0,0,0,.65);max-height:min(440px,72vh);overflow-y:auto}
+.fab.open .fab-menu{display:flex;animation:fabin var(--dur-base) var(--ease-standard)}
+@keyframes fabin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.fab-menu button{display:flex;align-items:center;justify-content:flex-end;gap:11px;padding:5px 6px 5px 14px;border-radius:12px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--ink-2);transition:background var(--dur-fast) var(--ease-standard)}
+.fab-menu button:hover{background:var(--raise);color:var(--ink)}
+.fab-menu button.on{background:var(--raise);color:var(--ink);outline:1px solid var(--line-2)}
+.fab-menu button .appic{width:36px;height:36px;border-radius:9px;flex:none}
+.fab-menu button span:first-child{white-space:nowrap}
 .status{font-family:var(--mono);font-size:10.5px;color:var(--ok);display:flex;gap:6px;align-items:center;padding:0 6px;white-space:nowrap}
 .status i{width:6px;height:6px;border-radius:99px;background:var(--ok);box-shadow:0 0 7px var(--ok)}
 
@@ -50,41 +126,36 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 /* sidebar header (Finder-style) */
 .shead{padding:12px 8px 10px;border-bottom:1px solid var(--line);margin-bottom:10px}
 .shead .rowa{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.shead .wm{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;min-width:0}
+.shead .wm{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;min-width:0}
 .shead .wm i{width:14px;height:14px;border-radius:4px;background:conic-gradient(from 210deg,var(--aq),#2E5750 55%,#0E1B19);flex:none}
 .shead .wm span{color:var(--ink-3);font-weight:400}
-.brandsel{display:flex;gap:3px;border:1px solid var(--line);border-radius:8px;padding:3px;background:var(--bg)}
-.brandsel button{width:23px;height:23px;border-radius:5px;display:grid;place-items:center;opacity:.55;transition:opacity .12s}
-.brandsel button i{width:11px;height:11px;border-radius:3px;border:1px solid rgba(255,255,255,.18)}
-.brandsel button:hover{opacity:.85}
-.brandsel button.on{opacity:1;background:var(--raise);outline:1px solid var(--line-2)}
-.shead .searchbtn{width:100%;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--bg);border-radius:7px;padding:6px 10px;font-size:12px;color:var(--ink-3)}
+.shead .searchbtn{width:100%;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--bg);border-radius:7px;padding:7px 10px;font-size:13px;color:var(--ink-3)}
 .shead .searchbtn:hover{border-color:var(--line-2)}
-.shead .searchbtn kbd{margin-left:auto;font-family:var(--mono);font-size:10px;border:1px solid var(--line-2);border-radius:4px;padding:1px 5px}
+.shead .searchbtn kbd{margin-left:auto;font-family:var(--mono);font-size:10.5px;border:1px solid var(--line-2);border-radius:4px;padding:1px 5px}
 /* plain home */
-.home-title{font-family:var(--disp);font-size:34px;line-height:1.08;text-transform:uppercase;font-weight:400;margin:6px 0 8px}
-.home-sub{color:var(--ink-3);font-size:13.5px;margin-bottom:30px;font-family:var(--mono)}
+.home-title{font-family:var(--disp);font-size:38px;line-height:1.08;text-transform:uppercase;font-weight:400;margin:6px 0 8px}
+.home-sub{color:var(--ink-3);font-size:14.5px;margin-bottom:30px;font-family:var(--mono)}
 .quick{border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden;margin-bottom:38px}
-.quick a{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);font-size:14px;font-weight:500;transition:background .1s}
+.quick a{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);font-size:15px;font-weight:500;transition:background .1s}
 .quick a:last-child{border:none}
 .quick a:hover{background:var(--panel-2)}
 .quick a .ic{width:16px;text-align:center;color:var(--aq);font-size:12px}
-.quick a small{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);font-weight:400}
+.quick a small{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);font-weight:400}
 
 /* ---------- sidebar ---------- */
 .side{border-right:1px solid var(--line);background:var(--panel);overflow-y:auto;padding:12px 8px 40px}
 .grp{margin-bottom:4px}
-.grp>button{width:100%;display:flex;align-items:center;gap:7px;padding:6px 10px;font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);border-radius:6px}
+.grp>button{width:100%;display:flex;align-items:center;gap:7px;padding:6px 10px;font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);border-radius:6px}
 .grp>button:hover{color:var(--ink-2)}
 .grp>button .car{transition:transform .15s;font-size:9px}
 .grp.closed .car{transform:rotate(-90deg)}
 .grp.closed .items{display:none}
-.items a{display:flex;align-items:center;gap:9px;padding:6px 10px 6px 14px;border-radius:6px;font-size:13px;color:var(--ink-2);margin:1px 0;border-left:2px solid transparent}
+.items a{display:flex;align-items:center;gap:9px;padding:7px 10px 7px 14px;border-radius:6px;font-size:14px;color:var(--ink-2);margin:1px 0;border-left:2px solid transparent}
 .items a:hover{background:var(--panel-2);color:var(--ink)}
 .items a.on{background:var(--raise);color:var(--ink);border-left-color:var(--aq)}
 .items a .ic{width:14px;text-align:center;color:var(--ink-3);font-size:11px;flex:none}
 .items a.on .ic{color:var(--aq)}
-.items a .tag{margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:4px;padding:1px 5px;color:var(--ink-3)}
+.items a .tag{margin-left:auto;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:4px;padding:1px 6px;color:var(--ink-3)}
 .items a .tag.ok{color:var(--ok);border-color:#1E463D}
 .items a .tag.wip{color:var(--warn);border-color:#4A3A16}
 
@@ -94,18 +165,18 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .page.on{display:block}
 .page.rail{display:none;grid-template-columns:1fr 190px;gap:48px;max-width:1250px}
 .page.rail.on{display:grid}
-.kick{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.kick{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
 .kick b{color:var(--aq);font-weight:400}
-h1{font-family:var(--disp);font-size:40px;line-height:1;letter-spacing:.005em;text-transform:uppercase;font-weight:400;margin-bottom:14px}
+h1{font-family:var(--disp);font-size:42px;line-height:1;letter-spacing:.005em;text-transform:uppercase;font-weight:400;margin-bottom:14px}
 h1 .dim{color:transparent;-webkit-text-stroke:1px var(--ink-3)}
-.lede{font-size:15.5px;color:var(--ink-2);max-width:600px;margin-bottom:34px}
-h2{font-size:16px;font-weight:600;letter-spacing:-.02em;margin:44px 0 14px;display:flex;align-items:center;gap:10px}
-h2 code{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);font-weight:400}
-p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
+.lede{font-size:17px;color:var(--ink-2);max-width:640px;margin-bottom:34px}
+h2{font-size:17px;font-weight:600;letter-spacing:-.02em;margin:44px 0 14px;display:flex;align-items:center;gap:10px}
+h2 code{font-family:var(--mono);font-size:11px;color:var(--ink-3);font-weight:400}
+p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
 
 /* right rail */
-.toc{position:sticky;top:40px;align-self:start;font-size:12.5px;border-left:1px solid var(--line);padding-left:16px}
-.toc h6{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+.toc{position:sticky;top:40px;align-self:start;font-size:13.5px;border-left:1px solid var(--line);padding-left:16px}
+.toc h6{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
 .toc a{display:block;color:var(--ink-3);padding:4px 0}
 .toc a:hover{color:var(--ink)}
 
@@ -114,18 +185,18 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
 .stat{padding:18px 20px;border-right:1px solid var(--line)}
 .stat:last-child{border:none}
 .stat b{display:block;font-family:var(--disp);font-size:26px;font-weight:400;letter-spacing:.01em}
-.stat span{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+.stat span{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
 
 /* index table (D) */
 .tbl{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
-.tr{display:grid;grid-template-columns:52px 1.2fr 1.6fr 110px 84px;align-items:center;padding:0 16px;height:48px;border-bottom:1px solid var(--line);font-size:13px;transition:background .1s;cursor:pointer}
+.tr{display:grid;grid-template-columns:52px 1.2fr 1.6fr 110px 84px;align-items:center;padding:0 16px;height:48px;border-bottom:1px solid var(--line);font-size:14px;transition:background .1s;cursor:pointer}
 .tr:last-child{border:none}
 .tr:hover{background:var(--panel-2)}
-.tr.h{height:36px;background:var(--panel-2);font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);cursor:default}
-.tr .id{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.tr.h{height:36px;background:var(--panel-2);font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);cursor:default}
+.tr .id{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
 .tr .nm{font-weight:500}
-.tr .d{color:var(--ink-3);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:14px}
-.pill{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:4px;border:1px solid var(--line-2);color:var(--ink-2);justify-self:start;white-space:nowrap}
+.tr .d{color:var(--ink-3);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:14px}
+.pill{font-family:var(--mono);font-size:11px;font-weight:500;padding:2px 8px;border-radius:4px;border:1px solid var(--line-2);color:var(--ink-2);justify-self:start;white-space:nowrap}
 .pill.ok{color:var(--ok);border-color:#1E463D}
 .pill.wip{color:var(--warn);border-color:#4A3A16}
 .dots{display:flex;gap:4px}
@@ -133,88 +204,113 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
 
 /* feed */
 .feed{border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden}
-.fr{display:flex;gap:16px;align-items:baseline;padding:13px 16px;border-bottom:1px solid var(--line);font-size:13px}
+.fr{display:flex;gap:16px;align-items:baseline;padding:13px 16px;border-bottom:1px solid var(--line);font-size:14px}
 .fr:last-child{border:none}
-.fr time{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);width:78px;flex:none}
+.fr time{font-family:var(--mono);font-size:11px;color:var(--ink-3);width:86px;flex:none}
 .fr .t b{font-weight:500}
-.fr .t small{display:block;color:var(--ink-3);font-size:12px;margin-top:1px}
+.fr .t small{display:block;color:var(--ink-3);font-size:13px;margin-top:1px}
 .fr .pill{margin-left:auto}
 
 /* demo surface (spec-hero, from A) */
 .demo{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden;margin:20px 0}
-.demo .hd{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
-.demo .hd i{width:8px;height:8px;border-radius:99px;background:#232527}
+.demo .hd{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.demo .hd i{width:8px;height:8px;border-radius:99px;background:#262626}
 .demo .hd span{margin-left:6px}
 .demo .hd .bn{margin-left:auto;color:var(--aq)}
-.canvas{background:var(--b-paper);padding:44px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:center;position:relative;font-family:var(--b-font)}
-.fig{position:absolute;font-family:var(--mono);font-size:9.5px;color:#9AA;letter-spacing:.04em}
+.canvas{background:var(--surface-page);padding:44px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:center;position:relative;font-family:var(--font-family-base)}
+.fig{position:absolute;font-family:var(--mono);font-size:10px;color:#999;letter-spacing:.04em}
 .fig.tl{top:12px;left:14px}.fig.br{bottom:12px;right:14px}
-.bd{font-family:var(--b-font);font-weight:var(--b-wb);font-size:14px;padding:13px 26px;border-radius:var(--b-r);text-transform:var(--b-caps);letter-spacing:.02em;border:none;cursor:pointer}
-.bd.pri{background:var(--b-cta);color:var(--b-on)}
-.bd.pri:active{background:var(--b-cta-down)}
-.bd.sec{background:var(--b-paper);color:var(--b-cta);box-shadow:inset 0 0 0 1.5px var(--b-cta)}
-.bd.dis{background:#E7E7E7;color:#767676;cursor:not-allowed}
-.bd.spn{background:var(--b-cta);color:var(--b-on);min-width:110px}
-.bd.spn i{display:inline-block;width:13px;height:13px;border:2px solid var(--b-on);border-right-color:transparent;border-radius:99px;animation:sp .7s linear infinite;vertical-align:-2px}
+.bd{font-family:var(--font-family-base);font-weight:var(--w-strong);font-size:14px;padding:13px 26px;border-radius:var(--radius-default);text-transform:var(--cta-case);letter-spacing:.02em;border:none;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
+.bd.pri{background:var(--surface-action);color:var(--text-on-action)}
+.bd.pri:hover{background:var(--surface-action-hover)}
+.bd.pri:active{background:var(--surface-action-pressed)}
+.bd.sec{background:var(--surface-page);color:var(--text-link);box-shadow:inset 0 0 0 1.5px var(--border-action)}
+.bd.dis{background:var(--surface-action-disabled);color:#767676;cursor:not-allowed}
+.bd.spn{background:var(--surface-action);color:var(--text-on-action);min-width:110px}
+.bd.spn i{display:inline-block;width:13px;height:13px;border:2px solid var(--text-on-action);border-right-color:transparent;border-radius:99px;animation:sp .7s linear infinite;vertical-align:-2px}
+.bd:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 @keyframes sp{to{transform:rotate(1turn)}}
+
+/* foundations visuals */
+.swg{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:10px;margin:14px 0}
+.sw{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--panel)}
+.sw i{display:block;height:50px;border-bottom:1px solid var(--line)}
+.sw div{padding:7px 10px 8px}
+.sw b{display:block;font-size:12.5px;font-weight:500;letter-spacing:-.01em}
+.sw code{font-family:var(--mono);font-size:10px;color:var(--ink-3);text-transform:uppercase}
+.bars{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:16px 18px;display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.bar{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:14px;font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+.bar i{display:block;height:13px;background:var(--aq-dim);border:1px solid rgba(123,231,216,.35);border-radius:3px;min-width:2px}
+.rchips{display:flex;gap:14px;flex-wrap:wrap;margin:16px 0}
+.rchip{width:88px;text-align:center;font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.rchip i{display:block;height:56px;border:1px solid var(--line-2);background:var(--panel-2);margin-bottom:7px}
+.pr5{grid-template-columns:1.1fr .9fr .9fr .9fr .9fr}
+.code{font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--ink-2);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;margin:12px 0;white-space:pre}
+.code b{color:var(--aq);font-weight:400}
+.specimen{display:flex;flex-direction:column;gap:14px;align-items:flex-start;justify-content:center;text-align:left;padding:36px 44px}
+.specimen>div{display:flex;align-items:baseline;gap:18px;width:100%}
+.specimen code{font-family:var(--mono);font-size:10px;color:#999;width:104px;flex:none}
+.specimen span{color:#161314;font-family:var(--font-family-base)}
 /* props table */
-.props{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);font-size:13px}
+.props{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);font-size:14px}
 .pr{display:grid;grid-template-columns:1fr 1fr 1.4fr;padding:10px 16px;border-bottom:1px solid var(--line)}
 .pr:last-child{border:none}
-.pr.h{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--panel-2)}
-.pr code{font-family:var(--mono);font-size:11.5px;color:var(--aq)}
+.pr.h{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--panel-2)}
+.pr code{font-family:var(--mono);font-size:12.5px;color:var(--aq)}
 .pr span{color:var(--ink-2)}
 
 /* token table */
-.tok{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);font-size:13px}
+.tok{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);font-size:14px}
 .tk{display:grid;grid-template-columns:46px 1fr 120px 1fr;align-items:center;padding:9px 16px;border-bottom:1px solid var(--line)}
 .tk:last-child{border:none}
-.tk.h{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--panel-2);padding:8px 16px}
+.tk.h{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--panel-2);padding:8px 16px}
 .tk i{width:26px;height:26px;border-radius:6px;border:1px solid rgba(255,255,255,.12)}
-.tk code{font-family:var(--mono);font-size:11px;color:var(--ink-2)}
-.tk .role{color:var(--ink-3);font-size:12px}
+.tk code{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.tk .role{color:var(--ink-3);font-size:13px}
 
 /* options (project) */
 .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
 .opt{border:1px solid var(--line);border-radius:10px;padding:16px;background:var(--panel);position:relative}
 .opt.win{border-color:#1E463D;background:linear-gradient(180deg,rgba(80,227,194,.05),var(--panel))}
-.opt b{font-size:13.5px;font-weight:600}
-.opt p{font-size:12.5px;color:var(--ink-3);margin:6px 0 0}
-.opt .ch{position:absolute;top:-9px;right:12px;background:#0E2A24;border:1px solid #1E463D;color:var(--ok);font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px}
-.meta{display:flex;gap:22px;font-size:12px;color:var(--ink-3);margin-bottom:26px;font-family:var(--mono)}
+.opt b{font-size:14.5px;font-weight:600}
+.opt p{font-size:13.5px;color:var(--ink-3);margin:6px 0 0}
+.opt .ch{position:absolute;top:-9px;right:12px;background:#0E2A24;border:1px solid #1E463D;color:var(--ok);font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px}
+.meta{display:flex;gap:22px;font-size:13px;color:var(--ink-3);margin-bottom:26px;font-family:var(--mono)}
 .meta b{color:var(--ink-2);font-weight:400}
 
 /* brand wall (C) */
 .wall{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.f{border-right:1px solid var(--line);border-bottom:1px solid var(--line);aspect-ratio:16/9;display:flex;align-items:flex-end;padding:14px;font-size:12.5px;color:var(--ink-2);position:relative;overflow:hidden;background:var(--panel)}
+.f{border-right:1px solid var(--line);border-bottom:1px solid var(--line);aspect-ratio:16/9;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:14px;font-size:13.5px;color:var(--ink-2);position:relative;overflow:hidden;background:var(--panel)}
 .f i{position:absolute;inset:0;opacity:0;transition:opacity .2s}
 .f:hover{color:#fff}.f:hover i{opacity:1}
 .f:nth-child(4n){border-right:none}
 .f span{position:relative}
+.f img{position:relative;height:16px;width:auto;max-width:72%;filter:invert(1);opacity:.85;object-fit:contain;object-position:left}
+.f:hover img{opacity:1}
 
 /* board */
 .board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.col h4{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;display:flex;gap:8px}
+.col h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;display:flex;gap:8px}
 .col h4 b{color:var(--ink-2);font-weight:400}
-.card{border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:10px;background:var(--panel);font-size:13px;cursor:grab}
+.card{border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:10px;background:var(--panel);font-size:14px;cursor:grab}
 .card:hover{border-color:var(--line-2)}
-.card .who{font-family:var(--mono);font-size:10px;color:var(--ink-3);margin-top:8px}
+.card .who{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);margin-top:8px}
 
 /* home hero number (C) */
-.bignum{position:absolute;right:30px;top:6px;font-family:var(--disp);font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1px #1B1D20;pointer-events:none;user-select:none;z-index:0}
+.bignum{position:absolute;right:30px;top:6px;font-family:var(--disp);font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1px #1C1C1C;pointer-events:none;user-select:none;z-index:0}
 .hero-home{position:relative}
 
 /* ================= SEARCH OVERLAY ================= */
 .ovl{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);display:none;z-index:100;padding-top:14vh}
 .ovl.on{display:block}
 .pal{width:min(600px,92vw);margin:0 auto;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
-.pal input{width:100%;background:transparent;border:none;outline:none;color:var(--ink);font:450 15px 'Inter';padding:16px 18px;border-bottom:1px solid var(--line)}
+.pal input{width:100%;background:transparent;border:none;outline:none;color:var(--ink);font:500 16px 'Montserrat',sans-serif;padding:16px 18px;border-bottom:1px solid var(--line)}
 .pal .res{max-height:320px;overflow-y:auto;padding:6px}
-.ri{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:7px;font-size:13.5px;cursor:pointer}
+.ri{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:7px;font-size:14.5px;cursor:pointer}
 .ri:hover,.ri.sel{background:var(--raise)}
 .ri .ic{width:16px;text-align:center;color:var(--ink-3);font-size:11px}
-.ri small{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
-.pal .ft{display:flex;gap:14px;padding:9px 14px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.ri small{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.pal .ft{display:flex;gap:14px;padding:9px 14px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
 
 @media(max-width:920px){.shell{grid-template-columns:1fr}.side{display:none}.page{padding:26px 18px 100px}.page.rail.on{display:block}.toc{display:none}.stats,.opts,.board{grid-template-columns:1fr 1fr}.wall{grid-template-columns:repeat(2,1fr)}.tr{grid-template-columns:1fr 84px}.tr .id,.tr .d,.tr .dots{display:none}.crumbs{display:none}.searchbtn{min-width:0}}
 </style>
@@ -226,14 +322,7 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
 <aside class="side">
   <div class="shead">
     <div class="rowa">
-      <div class="brandsel" id="bsel" title="Demo brand">
-        <button data-b="debenhams" class="on"><i style="background:#7BE7D8"></i></button>
-        <button data-b="boohoo"><i style="background:#F8B5CC"></i></button>
-        <button data-b="boohooman"><i style="background:#0A0A0A"></i></button>
-        <button data-b="plt"><i style="background:#550503"></i></button>
-        <button data-b="karenmillen"><i style="background:#DB4E11"></i></button>
-      </div>
-      <a class="wm" href="#home"><span>dg/design</span></a>
+      <a class="wm" href="#home"><i></i>debenhamsgroup<span>/design</span></a>
     </div>
     <button class="searchbtn" onclick="openPal()">Search… <kbd>⌘K</kbd></button>
   </div>
@@ -248,7 +337,13 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
     <button onclick="tg(this)"><span class="car">▾</span>System</button>
     <div class="items">
       <a href="#colour"><span class="ic">◈</span>Colour <span class="tag ok">live</span></a>
-      <a href="#type"><span class="ic">Aa</span>Typography <span class="tag wip">wip</span></a>
+      <a href="#type"><span class="ic">Aa</span>Typography <span class="tag ok">live</span></a>
+      <a href="#spacing"><span class="ic">⇥</span>Spacing <span class="tag ok">live</span></a>
+      <a href="#radius"><span class="ic">◜</span>Radius <span class="tag ok">live</span></a>
+      <a href="#borders"><span class="ic">▭</span>Borders <span class="tag ok">live</span></a>
+      <a href="#motion"><span class="ic">◐</span>Motion <span class="tag ok">live</span></a>
+      <a href="#a11y"><span class="ic">✓</span>Accessibility <span class="tag ok">live</span></a>
+      <a href="#install"><span class="ic">⤓</span>Using the system</a>
       <a href="#components"><span class="ic">▦</span>Components</a>
       <a href="#prototypes"><span class="ic">▣</span>Master prototypes <span class="tag wip">wip</span></a>
       <a href="#button"><span class="ic">▢</span>Button <span class="tag ok">live</span></a>
@@ -292,6 +387,7 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
     </div>
     <h2 style="margin-top:0">Latest work <code>/changelog</code></h2>
     <div class="feed">
+      <div class="fr"><time>2026-09-01</time><div class="t"><b>Design system folded into the site</b><small>Full token layer · type · spacing · radius · borders · motion · a11y · fascia modes — standalone repo retired</small></div><span class="pill ok">merged</span></div>
       <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP Alignment opened</b><small>boohoo · boohooMAN · PLT · Warehouse · Brand Room → one core template</small></div><span class="pill wip">open</span></div>
       <div class="fr"><time>2026-08-26</time><div class="t"><b>Colour Alignment merged</b><small>Signed-off styling · five brands × five screens · post-KM review</small></div><span class="pill ok">merged</span></div>
       <div class="fr"><time>2026-08-26</time><div class="t"><b>Group tokens extracted</b><small>brands.ts → tokens.css · five-brand live switching</small></div><span class="pill ok">merged</span></div>
@@ -305,6 +401,7 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
     <h1>Shipping</h1>
     <p class="lede">Everything that merged, shipped or opened — newest first. Every row links to the project page with its options and decision.</p>
     <div class="feed">
+      <div class="fr"><time>2026-09-01</time><div class="t"><b>Design system folded into the site</b><small>Tokens + foundations + fascia modes absorbed from designsystem-debenhamsgroup</small></div><span class="pill ok">merged</span></div>
       <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP Alignment opened</b><small>Target w/c 08 Sep · Scott's brief</small></div><span class="pill wip">open</span></div>
       <div class="fr"><time>2026-08-26</time><div class="t"><b>Colour Alignment merged</b><small>KM review complete</small></div><span class="pill ok">merged</span></div>
       <div class="fr"><time>2026-08-24</time><div class="t"><b>Checkout 2026 promo field shipped</b><small>Figma WChEtDPH… · 3990:58406</small></div><span class="pill">shipped</span></div>
@@ -316,23 +413,327 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
   <section class="page" id="colour" data-crumb="System / Foundations / Colour">
     <div class="kick">system / foundations <b>· rendering <span class="bn">Debenhams</span></b></div>
     <h1>Colour</h1>
-    <p class="lede">Semantic roles resolved live from the current demo brand — switch it in the top bar. Values are the signed-off set from the Colour Alignment review.</p>
+    <p class="lede">Two layers: primitives named by what they are, semantic tokens named by role. Components consume only semantic tokens; the brand mode swaps what they resolve to. Brand values are the signed-off Colour Alignment set (post-KM review, Aug 26).</p>
+
+    <h2>Brand-resolved roles <code>live — switch brand in the sidebar</code></h2>
     <div class="tok">
       <div class="tk h"><span></span><span>Token</span><span>Value</span><span>Role</span></div>
-      <div class="tk"><i style="background:var(--b-cta)"></i><code>surface/cta/primary</code><code class="val" data-v="--b-cta"></code><span class="role">Primary action fill</span></div>
-      <div class="tk"><i style="background:var(--b-cta-down)"></i><code>surface/cta/pressed</code><code class="val" data-v="--b-cta-down"></code><span class="role">Touch-down state</span></div>
-      <div class="tk"><i style="background:var(--b-on)"></i><code>text/on-cta</code><code class="val" data-v="--b-on"></code><span class="role">Label on primary fill</span></div>
-      <div class="tk"><i style="background:var(--b-l1)"></i><code>accent/light-1</code><code class="val" data-v="--b-l1"></code><span class="role">Tinted surfaces, badges</span></div>
-      <div class="tk"><i style="background:var(--b-l3)"></i><code>accent/light-3</code><code class="val" data-v="--b-l3"></code><span class="role">Wash backgrounds</span></div>
-      <div class="tk"><i style="background:var(--b-paper)"></i><code>surface/page</code><code class="val" data-v="--b-paper"></code><span class="role">Page background</span></div>
+      <div class="tk"><i style="background:var(--surface-action)"></i><code>surface/action</code><code class="val" data-v="--surface-action"></code><span class="role">Primary action fill</span></div>
+      <div class="tk"><i style="background:var(--surface-action-hover)"></i><code>surface/action-hover</code><code class="val" data-v="--surface-action-hover"></code><span class="role">Action hover</span></div>
+      <div class="tk"><i style="background:var(--surface-action-pressed)"></i><code>surface/action-pressed</code><code class="val" data-v="--surface-action-pressed"></code><span class="role">Touch-down state</span></div>
+      <div class="tk"><i style="background:var(--text-on-action)"></i><code>text/on-action</code><code class="val" data-v="--text-on-action"></code><span class="role">Label on action fill</span></div>
+      <div class="tk"><i style="background:var(--brand-primary)"></i><code>surface/accent</code><code class="val" data-v="--brand-primary"></code><span class="role">Accent fills — badges, highlights</span></div>
+      <div class="tk"><i style="background:var(--brand-light-1)"></i><code>brand/light-1</code><code class="val" data-v="--brand-light-1"></code><span class="role">Tinted surfaces, badges</span></div>
+      <div class="tk"><i style="background:var(--brand-light-3)"></i><code>brand/light-3 · surface/accent-subtle</code><code class="val" data-v="--brand-light-3"></code><span class="role">Wash backgrounds</span></div>
+      <div class="tk"><i style="background:var(--surface-page)"></i><code>surface/page</code><code class="val" data-v="--surface-page"></code><span class="role">Page background</span></div>
+      <div class="tk"><i style="background:var(--text-link)"></i><code>text/link · border/focus</code><code class="val" data-v="--text-link"></code><span class="role">Links, focus rings — follow the action colour</span></div>
     </div>
+
+    <h2>Semantic — text <code>mode-invariant unless marked</code></h2>
+    <p>Body text floor is <b style="color:var(--ink)">Grey 5</b>. Grey 4 and below never carry body text — they fail AA contrast.</p>
+    <div class="swg">
+      <div class="sw"><i style="background:var(--text-primary)"></i><div><b>text/primary</b><code>#0F0F0F</code></div></div>
+      <div class="sw"><i style="background:var(--text-secondary)"></i><div><b>text/secondary</b><code>#6B6B6B · floor</code></div></div>
+      <div class="sw"><i style="background:var(--text-disabled)"></i><div><b>text/disabled</b><code>#B5B5B5</code></div></div>
+      <div class="sw"><i style="background:var(--text-inverse)"></i><div><b>text/inverse</b><code>#FFFFFF</code></div></div>
+      <div class="sw"><i style="background:var(--text-error)"></i><div><b>text/error</b><code>#D33F3F</code></div></div>
+      <div class="sw"><i style="background:var(--text-success)"></i><div><b>text/success</b><code>#1F7A25</code></div></div>
+      <div class="sw"><i style="background:var(--text-warning)"></i><div><b>text/warning</b><code>#7A5800</code></div></div>
+      <div class="sw"><i style="background:var(--text-link)"></i><div><b>text/link</b><code class="val" data-v="--text-link"></code></div></div>
+    </div>
+
+    <h2>Semantic — surface</h2>
+    <div class="swg">
+      <div class="sw"><i style="background:var(--surface-sunken)"></i><div><b>surface/sunken</b><code>#FAFAFA</code></div></div>
+      <div class="sw"><i style="background:var(--surface-raised);border-bottom:1px solid var(--line)"></i><div><b>surface/raised</b><code>#FFF + border</code></div></div>
+      <div class="sw"><i style="background:var(--surface-inverse)"></i><div><b>surface/inverse</b><code>#0F0F0F</code></div></div>
+      <div class="sw"><i style="background:var(--surface-overlay)"></i><div><b>surface/overlay</b><code>#000 @ 60%</code></div></div>
+      <div class="sw"><i style="background:var(--surface-action-disabled)"></i><div><b>surface/action-disabled</b><code>#E7E7E7</code></div></div>
+      <div class="sw"><i style="background:var(--surface-error)"></i><div><b>surface/error</b><code>#FFF2F2</code></div></div>
+      <div class="sw"><i style="background:var(--surface-success)"></i><div><b>surface/success</b><code>#EAF6EA</code></div></div>
+      <div class="sw"><i style="background:var(--surface-warning)"></i><div><b>surface/warning</b><code>#FFFBE6</code></div></div>
+    </div>
+
+    <h2>Semantic — border &amp; icon</h2>
+    <div class="swg">
+      <div class="sw"><i style="background:var(--border-subtle)"></i><div><b>border/subtle</b><code>#E7E7E7 · dividers</code></div></div>
+      <div class="sw"><i style="background:var(--border-default)"></i><div><b>border/default</b><code>#D6D6D6</code></div></div>
+      <div class="sw"><i style="background:var(--border-strong)"></i><div><b>border/strong</b><code>#767676</code></div></div>
+      <div class="sw"><i style="background:var(--border-action)"></i><div><b>border/action · focus</b><code class="val" data-v="--border-action"></code></div></div>
+      <div class="sw"><i style="background:var(--icon-primary)"></i><div><b>icon/primary</b><code>#0F0F0F</code></div></div>
+      <div class="sw"><i style="background:var(--icon-secondary)"></i><div><b>icon/secondary</b><code>#767676 · grey 4 ok</code></div></div>
+    </div>
+
+    <h2>Neutrals <code>shared by every fascia</code></h2>
+    <div class="swg">
+      <div class="sw"><i style="background:#FFFFFF;border-bottom:1px solid var(--line)"></i><div><b>White</b><code>#FFFFFF</code></div></div>
+      <div class="sw"><i style="background:#FAFAFA"></i><div><b>Grey 05</b><code>#FAFAFA</code></div></div>
+      <div class="sw"><i style="background:#F2F2F2"></i><div><b>Grey 1</b><code>#F2F2F2</code></div></div>
+      <div class="sw"><i style="background:#E7E7E7"></i><div><b>Grey 2</b><code>#E7E7E7</code></div></div>
+      <div class="sw"><i style="background:#D6D6D6"></i><div><b>Grey 25</b><code>#D6D6D6</code></div></div>
+      <div class="sw"><i style="background:#B5B5B5"></i><div><b>Grey 3</b><code>#B5B5B5</code></div></div>
+      <div class="sw"><i style="background:#767676"></i><div><b>Grey 4</b><code>#767676</code></div></div>
+      <div class="sw"><i style="background:#6B6B6B"></i><div><b>Grey 5</b><code>#6B6B6B · text floor</code></div></div>
+      <div class="sw"><i style="background:#323232"></i><div><b>Grey 6</b><code>#323232</code></div></div>
+      <div class="sw"><i style="background:#0F0F0F"></i><div><b>Soft Black</b><code>#0F0F0F</code></div></div>
+      <div class="sw"><i style="background:#000000"></i><div><b>Black</b><code>#000000</code></div></div>
+    </div>
+
+    <h2>Status <code>never colour alone — always paired with icon or text</code></h2>
+    <div class="swg">
+      <div class="sw"><i style="background:#D33F3F"></i><div><b>Red</b><code>#D33F3F</code></div></div>
+      <div class="sw"><i style="background:#FFF2F2"></i><div><b>Red Light</b><code>#FFF2F2</code></div></div>
+      <div class="sw"><i style="background:#FFD600"></i><div><b>Yellow</b><code>#FFD600</code></div></div>
+      <div class="sw"><i style="background:#FFFBE6"></i><div><b>Yellow Light</b><code>#FFFBE6</code></div></div>
+      <div class="sw"><i style="background:#70C474"></i><div><b>Green</b><code>#70C474</code></div></div>
+      <div class="sw"><i style="background:#EAF6EA"></i><div><b>Green Light</b><code>#EAF6EA</code></div></div>
+    </div>
+
+    <h2>Primitives — Debenhams Aqua family <code>locked · names preserved from the DS file</code></h2>
+    <div class="swg">
+      <div class="sw"><i style="background:#E6FFFC"></i><div><b>Aqua Light 4</b><code>#E6FFFC</code></div></div>
+      <div class="sw"><i style="background:#D6FFF9"></i><div><b>Aqua Light 3</b><code>#D6FFF9</code></div></div>
+      <div class="sw"><i style="background:#E8F4F2"></i><div><b>Aqua Neutral</b><code>#E8F4F2</code></div></div>
+      <div class="sw"><i style="background:#B8FDF4"></i><div><b>Aqua Light 2</b><code>#B8FDF4</code></div></div>
+      <div class="sw"><i style="background:#9DEDE2"></i><div><b>Aqua Light 1</b><code>#9DEDE2</code></div></div>
+      <div class="sw"><i style="background:#7BE7D8"></i><div><b>Primary Aqua</b><code>#7BE7D8</code></div></div>
+      <div class="sw"><i style="background:#76DECF"></i><div><b>Aqua Dark 1</b><code>#76DECF</code></div></div>
+      <div class="sw"><i style="background:#70BEB3"></i><div><b>Aqua Dark 2</b><code>#70BEB3</code></div></div>
+      <div class="sw"><i style="background:#529C92"></i><div><b>Aqua Dark 3</b><code>#529C92</code></div></div>
+      <div class="sw"><i style="background:#00787D"></i><div><b>CTA Aqua</b><code>#00787D</code></div></div>
+      <div class="sw"><i style="background:#00565A"></i><div><b>CTA Touch Down</b><code>#00565A</code></div></div>
+      <div class="sw"><i style="background:#1E6F63"></i><div><b>Primary Dark</b><code>#1E6F63</code></div></div>
+    </div>
+
+    <h2>Primitives — boohoo Pink family <code>12 slots · same structure every fascia</code></h2>
+    <div class="swg">
+      <div class="sw"><i style="background:#FFE9F0"></i><div><b>Pink Light 4</b><code>#FFE9F0</code></div></div>
+      <div class="sw"><i style="background:#FEE0EA"></i><div><b>Pink Light 3</b><code>#FEE0EA</code></div></div>
+      <div class="sw"><i style="background:#F1DCE3"></i><div><b>Pink Neutral</b><code>#F1DCE3</code></div></div>
+      <div class="sw"><i style="background:#FCD3E1"></i><div><b>Pink Light 2</b><code>#FCD3E1</code></div></div>
+      <div class="sw"><i style="background:#FBC7D8"></i><div><b>Pink Light 1</b><code>#FBC7D8</code></div></div>
+      <div class="sw"><i style="background:#F8B5CC"></i><div><b>Primary Pink</b><code>#F8B5CC</code></div></div>
+      <div class="sw"><i style="background:#EEA5BE"></i><div><b>Pink Dark 1</b><code>#EEA5BE</code></div></div>
+      <div class="sw"><i style="background:#EA92B0"></i><div><b>Pink Dark 2</b><code>#EA92B0</code></div></div>
+      <div class="sw"><i style="background:#DD789B"></i><div><b>Pink Dark 3</b><code>#DD789B</code></div></div>
+      <div class="sw"><i style="background:#BB305F"></i><div><b>CTA Pink</b><code>#BB305F</code></div></div>
+      <div class="sw"><i style="background:#A82A55"></i><div><b>CTA Touch Down</b><code>#A82A55</code></div></div>
+      <div class="sw"><i style="background:#CB4870"></i><div><b>Primary Dark</b><code>#CB4870</code></div></div>
+    </div>
+    <p>boohooMAN, PLT and Karen Millen carry their signed-off CTA set (rendered above when switched); their remaining primitive slots land as each fascia is audited. Removed from the primitive layer: KM mode overrides (re-mapped fresh via semantic layer) and Rewards colours (project dead).</p>
   </section>
 
   <!-- TYPE -->
   <section class="page" id="type" data-crumb="System / Foundations / Typography">
+    <div class="kick">system / foundations <b>· rendering <span class="bn">Debenhams</span></b></div>
+    <h1>Typography</h1>
+    <p class="lede">One role set, every fascia. Sizes are identical across brands — only font family and weight change with the mode. Fixed per-breakpoint sizes (no fluid clamp for v1), line-height mirrors Figma AUTO, letter-spacing defaults to 0.</p>
+    <div class="demo">
+      <div class="hd"><i></i><i></i><i></i><span>canvas — type specimen</span><span class="bn">Debenhams</span></div>
+      <div class="canvas specimen">
+        <div><code>display-lg · 48</code><span style="font-size:48px;font-weight:var(--w-strong);line-height:1.1">Wardrobe icons</span></div>
+        <div><code>heading-xl · 28</code><span style="font-size:28px;font-weight:var(--w-strong);line-height:1.2">New season edit</span></div>
+        <div><code>heading-sm · 16</code><span style="font-size:16px;font-weight:var(--w-strong)">Delivery &amp; returns</span></div>
+        <div><code>body-md · 14</code><span style="font-size:14px;font-weight:var(--w-regular)">Free returns within 28 days. Star buys are final sale — check the label before you commit.</span></div>
+        <div><code>caption · 12</code><span style="font-size:12px;font-weight:var(--w-regular);color:#6B6B6B">Selected lines only. T&amp;Cs apply.</span></div>
+      </div>
+    </div>
+    <h2>Roles <code>mobile / desktop px · same for every fascia</code></h2>
+    <div class="tok">
+      <div class="tk h"><span></span><span>Role</span><span>Mobile / Desktop</span><span>Use</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>display-lg</code><code>32 / 48 · strong</code><span class="role">Hero, marketing pages</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>display-md</code><code>28 / 40 · strong</code><span class="role">Section openers</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>display-sm</code><code>24 / 32 · strong</code><span class="role">Editorial leads</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>heading-xl</code><code>20 / 28 · strong</code><span class="role">Page titles</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>heading-lg</code><code>18 / 24 · strong</code><span class="role">Section titles</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>heading-md</code><code>16 / 20 · strong</code><span class="role">Subsection titles</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>heading-sm</code><code>16 / 16 · strong</code><span class="role">Card titles — matches existing "Header 1"</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>heading-xs</code><code>14 / 14 · strong</code><span class="role">Inline section labels — matches "Header 2"</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>body-lg</code><code>16 / 16 · regular</code><span class="role">Long-form body</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>body-md</code><code>14 / 14 · regular</code><span class="role">Default body — matches "Body M"</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>body-md-strong</code><code>14 / 14 · strong</code><span class="role">Emphasis</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>body-sm</code><code>12 / 12 · regular</code><span class="role">Compact body</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>caption</code><code>12 / 12 · regular</code><span class="role">Captions, T&amp;Cs, legal</span></div>
+      <div class="tk"><i style="background:var(--panel-2)"></i><code>micro</code><code>10 / 10 · regular</code><span class="role">Smallest legal labels</span></div>
+    </div>
+    <h2>Size primitives</h2>
+    <p style="font-family:var(--mono);font-size:12px;color:var(--ink-2)">10 · 12 · 14 · 16 · 20 · 24 · 28 · 32 · 36 · 40 · 48</p>
+    <h2>Per-fascia resolution <code>signed-off · colour alignment, Aug 26</code></h2>
+    <div class="props">
+      <div class="pr5 pr h"><span>Fascia</span><span>Font</span><span>Regular</span><span>Strong</span><span>CTA case</span></div>
+      <div class="pr5 pr"><code>debenhams</code><span>Geologica</span><span>300 Light</span><span>600 SemiBold</span><span>sentence</span></div>
+      <div class="pr5 pr"><code>boohoo</code><span>Montserrat</span><span>500 Medium</span><span>700 Bold</span><span>sentence</span></div>
+      <div class="pr5 pr"><code>boohooman</code><span>Montserrat</span><span>500 Medium</span><span>700 Bold</span><span>sentence</span></div>
+      <div class="pr5 pr"><code>plt</code><span>Roboto</span><span>400 Regular</span><span>700 Bold</span><span>UPPERCASE</span></div>
+      <div class="pr5 pr"><code>karenmillen</code><span>Jost</span><span>400 Regular</span><span>600 SemiBold</span><span>sentence</span></div>
+    </div>
+    <p>Every brand font is a Google Font with the full weight range available. Fonts for the other 11 fascias are captured as each is audited. If a fascia's font ever demands a size shift, it becomes a brand-mode override at the role layer — the default is consistency.</p>
+  </section>
+
+  <!-- SPACING -->
+  <section class="page" id="spacing" data-crumb="System / Foundations / Spacing">
     <div class="kick">system / foundations</div>
-    <h1>Typography <span class="dim">wip</span></h1>
-    <p class="lede">Text styles are being ported from the Checkout-2026 file — the best current source. Scale, roles and line-heights land here once locked.</p>
+    <h1>Spacing</h1>
+    <p class="lede">4pt base, named by pixel value — no t-shirt sizes. Multiples of 8 carry most component spacing; 4 is reserved for tight inline gaps.</p>
+    <div class="bars">
+      <div class="bar"><span>space-2</span><i style="width:2px"></i></div>
+      <div class="bar"><span>space-4</span><i style="width:4px"></i></div>
+      <div class="bar"><span>space-8</span><i style="width:8px"></i></div>
+      <div class="bar"><span>space-12</span><i style="width:12px"></i></div>
+      <div class="bar"><span>space-16</span><i style="width:16px"></i></div>
+      <div class="bar"><span>space-20</span><i style="width:20px"></i></div>
+      <div class="bar"><span>space-24</span><i style="width:24px"></i></div>
+      <div class="bar"><span>space-32</span><i style="width:32px"></i></div>
+      <div class="bar"><span>space-40</span><i style="width:40px"></i></div>
+      <div class="bar"><span>space-48</span><i style="width:48px"></i></div>
+      <div class="bar"><span>space-64</span><i style="width:64px"></i></div>
+      <div class="bar"><span>space-80</span><i style="width:80px"></i></div>
+      <div class="bar"><span>space-96</span><i style="width:96px"></i></div>
+      <div class="bar"><span>space-128</span><i style="width:128px"></i></div>
+    </div>
+    <h2>Common use</h2>
+    <div class="props">
+      <div class="pr h"><span>Token</span><span>Value</span><span>Use</span></div>
+      <div class="pr"><code>space-4</code><span>4px</span><span>Tight inline gaps — icon + label</span></div>
+      <div class="pr"><code>space-8</code><span>8px</span><span>Tight component padding</span></div>
+      <div class="pr"><code>space-12</code><span>12px</span><span>Standard inline gap</span></div>
+      <div class="pr"><code>space-16</code><span>16px</span><span>Default component padding · mobile margin</span></div>
+      <div class="pr"><code>space-24</code><span>24px</span><span>Default desktop margin (small) · section separation</span></div>
+      <div class="pr"><code>space-32</code><span>32px</span><span>Section breaks</span></div>
+      <div class="pr"><code>space-48</code><span>48px</span><span>Layout-level spacing</span></div>
+      <div class="pr"><code>space-96</code><span>96px</span><span>Desktop side gutter at 1440+ — content scales inside</span></div>
+    </div>
+    <h2>Icon sizes</h2>
+    <div class="rchips">
+      <div class="rchip"><i style="height:12px;width:12px;margin:22px auto 7px;border-radius:2px"></i>12</div>
+      <div class="rchip"><i style="height:16px;width:16px;margin:20px auto 7px;border-radius:2px"></i>16</div>
+      <div class="rchip"><i style="height:20px;width:20px;margin:18px auto 7px;border-radius:2px"></i>20</div>
+      <div class="rchip"><i style="height:24px;width:24px;margin:16px auto 7px;border-radius:2px"></i>24</div>
+      <div class="rchip"><i style="height:32px;width:32px;margin:12px auto 7px;border-radius:3px"></i>32</div>
+      <div class="rchip"><i style="height:48px;width:48px;margin:4px auto 7px;border-radius:4px"></i>48</div>
+    </div>
+    <p>All icons draw at a 1pt stroke. Buttons use 16 / 20 / 24; 32 and 48 are for hero and decorative use.</p>
+    <h2>Z-index <code>layer scale</code></h2>
+    <div class="props">
+      <div class="pr h"><span>Token</span><span>Value</span><span>Layer</span></div>
+      <div class="pr"><code>z-base / z-raised</code><span>0 / 10</span><span>Page flow, raised cards</span></div>
+      <div class="pr"><code>z-dropdown / z-sticky</code><span>100 / 200</span><span>Menus, sticky headers</span></div>
+      <div class="pr"><code>z-banner / z-overlay</code><span>300 / 400</span><span>Banners, scrims</span></div>
+      <div class="pr"><code>z-modal / z-popover</code><span>500 / 600</span><span>Dialogs, popovers</span></div>
+      <div class="pr"><code>z-toast / z-tooltip</code><span>700 / 800</span><span>Toasts, tooltips — always on top</span></div>
+    </div>
+    <h2>Breakpoints <code>deferred — deliberate</code></h2>
+    <p>The live estate applies breakpoints inconsistently per component; the new system exists partly to fix that. Designers work at 390 and 1440. Components are specced fluid-first; the named breakpoint set gets locked once the component audit reveals real reflow needs.</p>
+  </section>
+
+  <!-- RADIUS -->
+  <section class="page" id="radius" data-crumb="System / Foundations / Radius">
+    <div class="kick">system / foundations <b>· rendering <span class="bn">Debenhams</span></b></div>
+    <h1>Radius</h1>
+    <p class="lede">4pt corners by default. Square is a brand-mode option, not a fork — PLT and The Brand Room opt in today; any fascia can, by swapping one token mapping.</p>
+    <div class="rchips">
+      <div class="rchip"><i style="border-radius:0"></i>radius-0</div>
+      <div class="rchip"><i style="border-radius:2px"></i>radius-2</div>
+      <div class="rchip"><i style="border-radius:4px"></i>radius-4</div>
+      <div class="rchip"><i style="border-radius:8px"></i>radius-8</div>
+      <div class="rchip"><i style="border-radius:16px"></i>radius-16</div>
+      <div class="rchip"><i style="border-radius:28px"></i>radius-full</div>
+    </div>
+    <h2>Semantic mapping</h2>
+    <div class="props">
+      <div class="pr h"><span>Role</span><span>Default</span><span>Square mode (PLT · Brand Room)</span></div>
+      <div class="pr"><code>radius/default</code><span>radius-4</span><span>radius-0</span></div>
+      <div class="pr"><code>radius/lg</code><span>radius-8</span><span>radius-0</span></div>
+      <div class="pr"><code>radius/pill</code><span>radius-full</span><span>radius-0</span></div>
+    </div>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--ink-3)">current brand resolves radius/default → <span class="rv" style="color:var(--aq)"></span></p>
+  </section>
+
+  <!-- BORDERS -->
+  <section class="page" id="borders" data-crumb="System / Foundations / Borders">
+    <div class="kick">system / foundations</div>
+    <h1>Borders</h1>
+    <p class="lede">Everything draws at 1pt — borders, dividers, line icons. 2pt is reserved for focus rings and selected states. No shadow scale: the system is flat, hierarchy comes from borders and surface tones.</p>
+    <div class="props">
+      <div class="pr h"><span>Token</span><span>Value</span><span>Use</span></div>
+      <div class="pr"><code>border-width/default</code><span>1pt</span><span>Borders, dividers, icons</span></div>
+      <div class="pr"><code>border-width/emphasis</code><span>2pt</span><span>Selected states</span></div>
+      <div class="pr"><code>border-width/focus</code><span>2pt</span><span>Focus rings</span></div>
+    </div>
+    <h2>Colour conventions</h2>
+    <div class="tok">
+      <div class="tk h"><span></span><span>Token</span><span>Value</span><span>Use</span></div>
+      <div class="tk"><i style="background:var(--border-subtle)"></i><code>border/subtle</code><code>#E7E7E7</code><span class="role">Default divider · PDP box borders</span></div>
+      <div class="tk"><i style="background:var(--border-default)"></i><code>border/default</code><code>#D6D6D6</code><span class="role">Inputs, cards</span></div>
+      <div class="tk"><i style="background:var(--border-strong)"></i><code>border/strong</code><code>#767676</code><span class="role">Emphasised borders</span></div>
+      <div class="tk"><i style="background:var(--border-action)"></i><code>border/action · border/focus</code><code class="val" data-v="--border-action"></code><span class="role">Secondary buttons, focused inputs, focus rings</span></div>
+      <div class="tk"><i style="background:var(--border-error)"></i><code>border/error</code><code>#D33F3F</code><span class="role">Error input borders</span></div>
+    </div>
+    <p>Borders aren't subject to text contrast rules, so every grey is available — the Grey 5 floor applies to text only.</p>
+  </section>
+
+  <!-- MOTION -->
+  <section class="page" id="motion" data-crumb="System / Foundations / Motion">
+    <div class="kick">system / foundations</div>
+    <h1>Motion</h1>
+    <p class="lede">Conservative by default. Three durations, two curves, and a global collapse to instant under prefers-reduced-motion — built into the token layer, no per-component work.</p>
+    <div class="props">
+      <div class="pr h"><span>Token</span><span>Value</span><span>Use</span></div>
+      <div class="pr"><code>motion-duration-fast</code><span>100ms</span><span>Micro — button press</span></div>
+      <div class="pr"><code>motion-duration-base</code><span>200ms</span><span>Default — hover, fade, modal open</span></div>
+      <div class="pr"><code>motion-duration-slow</code><span>300ms</span><span>Larger transitions — drawer slide</span></div>
+      <div class="pr"><code>motion-easing-standard</code><span>cubic-bezier(.2, 0, 0, 1)</span><span>Default</span></div>
+      <div class="pr"><code>motion-easing-emphasised</code><span>cubic-bezier(.3, 0, .8, .15)</span><span>Attention-pulling</span></div>
+    </div>
+    <h2>No shadows</h2>
+    <p>Deliberately flat. If a future component genuinely needs elevation (a floating popover, say), an elevation token gets proposed then — not pre-emptively.</p>
+  </section>
+
+  <!-- ACCESSIBILITY -->
+  <section class="page" id="a11y" data-crumb="System / Foundations / Accessibility">
+    <div class="kick">system / foundations <b>· wcag 2.1 aa — the floor, not the ceiling</b></div>
+    <h1>Accessibility</h1>
+    <p class="lede">Every component targets WCAG 2.1 AA. Non-negotiable: anything that doesn't meet the bar doesn't ship, and a component spec without an Accessibility section isn't finished.</p>
+    <div class="props">
+      <div class="pr h"><span>Rule</span><span>Bar</span><span>Detail</span></div>
+      <div class="pr"><code>contrast · body</code><span>4.5 : 1</span><span>Floor is Grey 5 #6B6B6B — Grey 4 and below never carry body text</span></div>
+      <div class="pr"><code>contrast · large/UI</code><span>3 : 1</span><span>18pt+ text and UI components</span></div>
+      <div class="pr"><code>focus</code><span>always visible</span><span>2pt ring in the brand action colour · full keyboard operation</span></div>
+      <div class="pr"><code>touch targets</code><span>44 × 44</span><span>Minimum on mobile — inline body links exempt where natural</span></div>
+      <div class="pr"><code>motion</code><span>reduced-motion</span><span>All animation collapses to instant · nothing auto-plays without opt-out</span></div>
+      <div class="pr"><code>meaning</code><span>never colour alone</span><span>Status pairs colour with icon and text · icon-only buttons carry aria-label</span></div>
+    </div>
+    <h2>Exemptions</h2>
+    <p>The Grey 5 floor applies to text only. Borders, dividers, icons and decorative elements may use any grey — Grey 2 is the typical divider, Grey 4 the standard secondary icon.</p>
+  </section>
+
+  <!-- USING THE SYSTEM -->
+  <section class="page" id="install" data-crumb="System / Using the system">
+    <div class="kick">system <b>· npm distribution — planned production shape</b></div>
+    <h1>Using the system</h1>
+    <p class="lede">Brand sites install two packages: the tokens and the components. Set one attribute on the root element and every semantic token resolves to that fascia.</p>
+    <div class="code">npm install <b>@designsystem-debenhamsgroup/react</b> <b>@designsystem-debenhamsgroup/tokens</b></div>
+    <h2>Wire in the tokens</h2>
+    <div class="code">/* global css */
+@import '@designsystem-debenhamsgroup/tokens/css';
+
+/* tailwind.config.js */
+presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
+    <h2>Set the brand mode</h2>
+    <div class="code">&lt;html <b>data-brand="debenhams"</b>&gt;  &lt;!-- or boohoo · boohooman · plt · karenmillen --&gt;</div>
+    <h2>Use a component</h2>
+    <div class="code">import { Button } from '@designsystem-debenhamsgroup/react';
+
+&lt;Button variant="primary" size="md"&gt;Save &amp; continue&lt;/Button&gt;</div>
+    <h2>The rules that keep it working</h2>
+    <div class="props">
+      <div class="pr h"><span>Rule</span><span></span><span>Why</span></div>
+      <div class="pr"><code>semantic tokens only</code><span>components never touch primitives</span><span>Brand colours appear only in the token layer — this is what keeps multi-brand working</span></div>
+      <div class="pr"><code>one mechanism</code><span>data-brand attribute</span><span>No per-brand CSS files, no component forks</span></div>
+      <div class="pr"><code>docs page = spec</code><span>they ship together</span><span>A component without a docs page doesn't exist</span></div>
+    </div>
+    <h2>Escape hatch</h2>
+    <p>Components are intentionally constrained. If one genuinely doesn't fit, the source is visible on its page — copy and modify, or raise a request to extend the official component.</p>
   </section>
 
   <!-- COMPONENTS INDEX -->
@@ -384,17 +785,28 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
       <h2 id="b-props">Props <code>ButtonProps</code></h2>
       <div class="props">
         <div class="pr h"><span>Prop</span><span>Type</span><span>Notes</span></div>
-        <div class="pr"><code>variant</code><span>primary · secondary</span><span>One primary per view</span></div>
-        <div class="pr"><code>state</code><span>default · pressed · disabled · loading</span><span>Pressed maps to touch-down token</span></div>
+        <div class="pr"><code>variant</code><span>primary · secondary · tertiary</span><span>One primary per view · default primary</span></div>
+        <div class="pr"><code>size</code><span>sm · md · lg</span><span>Default md · sm needs touch-target review</span></div>
+        <div class="pr"><code>disabled</code><span>boolean</span><span>Prevents interaction</span></div>
+        <div class="pr"><code>loading</code><span>boolean</span><span>Prevents interaction · sets aria-busy · spinner</span></div>
         <div class="pr"><code>brand</code><span>inherited from mode</span><span>Never set per-instance</span></div>
-        <div class="pr"><code>size</code><span>md · sm</span><span>sm = tertiary-xs replacement</span></div>
       </div>
       <h2 id="b-usage">Usage</h2>
       <p>Secondary carries the CTA colour as a keyline, never a second fill. PLT renders square with uppercase labels; every other fascia 4px radius, sentence case — that difference is brand config, not a component fork.</p>
+      <h2 id="b-a11y">Accessibility</h2>
+      <div class="props">
+        <div class="pr h"><span>Check</span><span>State</span><span>Detail</span></div>
+        <div class="pr"><code>keyboard</code><span>native</span><span>Renders a native button element — focusable and operable by default</span></div>
+        <div class="pr"><code>focus ring</code><span>2pt</span><span>border/focus — brand action colour, 2px offset</span></div>
+        <div class="pr"><code>loading</code><span>aria-busy</span><span>Both disabled and loading prevent interaction</span></div>
+        <div class="pr"><code>touch target</code><span>44 × 44</span><span>Met at md and above · sm under review for mobile</span></div>
+      </div>
+      <h2 id="b-open">Still to specify <code>after the Figma node audit</code></h2>
+      <p>Full variant set (Pill, Icon Only, Roundel, Navigation, Payment, Dropdown, Quantity Selector, App Store badges) · icon slot handling (boolean + size, not encoded as states) · loading visuals · pressed-vs-hover naming unification · disabled colour reconciliation (golden truth label #767676 vs token text/disabled Grey 3) · focus ring exact width and offset per size.</p>
       <h2 id="b-src">Source</h2>
-      <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">packages/components/src/button</code> · Figma mirror: DS file → BUTTONS (new)</p>
+      <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">packages/react/src/components/button</code> · Figma: <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=9144-1807" target="_blank" rel="noopener">DS file → BUTTONS (new) · 9144-1807</a></p>
     </div>
-    <nav class="toc"><h6>On this page</h6><a href="#d-states">States</a><a href="#b-props">Props</a><a href="#b-usage">Usage</a><a href="#b-src">Source</a></nav>
+    <nav class="toc"><h6>On this page</h6><a href="#d-states">States</a><a href="#b-props">Props</a><a href="#b-usage">Usage</a><a href="#b-a11y">Accessibility</a><a href="#b-open">Open</a><a href="#b-src">Source</a></nav>
   </section>
 
   <!-- PRODUCT CARD -->
@@ -406,18 +818,18 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
       <div class="hd"><i></i><i></i><i></i><span>canvas — product card</span><span class="bn">Debenhams</span></div>
       <div class="canvas">
         <div style="width:190px">
-          <div style="aspect-ratio:3/4;border-radius:var(--b-r);background:linear-gradient(160deg,var(--b-l3),var(--b-l1));position:relative">
-            <span style="position:absolute;top:8px;right:8px;width:29px;height:29px;border-radius:99px;background:var(--b-paper);display:grid;place-items:center;color:var(--b-cta);font-size:13px;box-shadow:0 4px 10px rgba(22,19,20,.12)">♥</span>
+          <div style="aspect-ratio:3/4;border-radius:var(--radius-default);background:linear-gradient(160deg,var(--brand-light-3),var(--brand-light-1));position:relative">
+            <span style="position:absolute;top:8px;right:8px;width:29px;height:29px;border-radius:99px;background:var(--surface-page);display:grid;place-items:center;color:var(--icon-action);font-size:13px;box-shadow:0 4px 10px rgba(22,19,20,.12)">♥</span>
           </div>
-          <div style="font-size:12px;margin-top:8px;font-weight:var(--b-wr);color:#242424">Ribbed knit midi dress</div>
-          <div style="font-size:13px;font-weight:var(--b-wb);color:#242424;margin-top:3px">£28.00 <s style="color:#767676;font-weight:400;margin-left:5px">£40.00</s></div>
+          <div style="font-size:12px;margin-top:8px;font-weight:var(--w-regular);color:#242424">Ribbed knit midi dress</div>
+          <div style="font-size:13px;font-weight:var(--w-strong);color:#242424;margin-top:3px">£28.00 <s style="color:#767676;font-weight:400;margin-left:5px">£40.00</s></div>
         </div>
         <div style="width:190px">
-          <div style="aspect-ratio:3/4;border-radius:var(--b-r);background:linear-gradient(200deg,var(--b-l3),var(--b-l1));position:relative">
-            <span style="position:absolute;top:8px;right:8px;width:29px;height:29px;border-radius:99px;background:var(--b-paper);display:grid;place-items:center;color:var(--b-cta);font-size:13px;box-shadow:0 4px 10px rgba(22,19,20,.12)">♡</span>
+          <div style="aspect-ratio:3/4;border-radius:var(--radius-default);background:linear-gradient(200deg,var(--brand-light-3),var(--brand-light-1));position:relative">
+            <span style="position:absolute;top:8px;right:8px;width:29px;height:29px;border-radius:99px;background:var(--surface-page);display:grid;place-items:center;color:var(--icon-action);font-size:13px;box-shadow:0 4px 10px rgba(22,19,20,.12)">♡</span>
           </div>
-          <div style="font-size:12px;margin-top:8px;font-weight:var(--b-wr);color:#242424">Oversized denim jacket</div>
-          <div style="font-size:13px;font-weight:var(--b-wb);color:#242424;margin-top:3px">£45.00</div>
+          <div style="font-size:12px;margin-top:8px;font-weight:var(--w-regular);color:#242424">Oversized denim jacket</div>
+          <div style="font-size:13px;font-weight:var(--w-strong);color:#242424;margin-top:3px">£45.00</div>
         </div>
       </div>
     </div>
@@ -497,22 +909,36 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
     <h1>The estate</h1>
     <p class="lede">Every fascia's palette, type, tone and assets. Hover a cell; click through for the full guideline page.</p>
     <div class="wall">
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#00787D,#0A2523)"></i><span>Debenhams</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#BB305F,#2A0E18)"></i><span>boohoo</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#2E2E2E,#000)"></i><span>boohooMAN</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#550503,#140100)"></i><span>PrettyLittleThing</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#8E330B,#1E0B03)"></i><span>Karen Millen</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#4A4A46,#111)"></i><span>Warehouse</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#6E5E4E,#141210)"></i><span>Coast</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3E4A42,#0D110E)"></i><span>Oasis</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3A3E4A,#0C0D11)"></i><span>Burton</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#4A3A44,#110C10)"></i><span>Dorothy Perkins</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#443E30,#100F0B)"></i><span>Wallis</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#503A3A,#120D0D)"></i><span>Nasty Gal</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3A4A50,#0C1012)"></i><span>Misspap</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#46503A,#0F110C)"></i><span>Principles</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#2F2F4A,#0B0B12)"></i><span>The Brand Room</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#333,#0A0A0A)"></i><span>DSGN Studio</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#00787D,#0A2523)"></i><img src="assets/brands/debenhams.svg" alt=""><span>Debenhams</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#BB305F,#2A0E18)"></i><img src="assets/brands/boohoo.svg" alt=""><span>boohoo</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#2E2E2E,#000)"></i><img src="assets/brands/boohooman.svg" alt=""><span>boohooMAN</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#550503,#140100)"></i><img src="assets/brands/plt.svg" alt=""><span>PrettyLittleThing</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#8E330B,#1E0B03)"></i><img src="assets/brands/karenmillen.svg" alt=""><span>Karen Millen</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#4A4A46,#111)"></i><img src="assets/brands/warehouse.svg" alt=""><span>Warehouse</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#6E5E4E,#141210)"></i><img src="assets/brands/coast.svg" alt=""><span>Coast</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3E4A42,#0D110E)"></i><img src="assets/brands/oasis.svg" alt=""><span>Oasis</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3A3E4A,#0C0D11)"></i><img src="assets/brands/burton.svg" alt=""><span>Burton</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#4A3A44,#110C10)"></i><img src="assets/brands/dorothyperkins.svg" alt=""><span>Dorothy Perkins</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#443E30,#100F0B)"></i><img src="assets/brands/wallis.svg" alt=""><span>Wallis</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#503A3A,#120D0D)"></i><img src="assets/brands/nastygal.svg" alt=""><span>Nasty Gal</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3A4A50,#0C1012)"></i><img src="assets/brands/misspap.svg" alt=""><span>Misspap</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#46503A,#0F110C)"></i><img src="assets/brands/principles.svg" alt=""><span>Principles</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#2F2F4A,#0B0B12)"></i><img src="assets/brands/brandroom.svg" alt=""><span>The Brand Room</span></a>
+      <a class="f" href="#"><i style="background:linear-gradient(140deg,#333,#0A0A0A)"></i><span style="margin-top:auto">DSGN Studio</span></a>
+    </div>
+    <h2>Modes <code>data-brand — the only theming mechanism</code></h2>
+    <p>One attribute on the root element themes everything: colours, font, weights, radius, case. No per-brand CSS files, no component forks. Five fascias are live modes today; the rest inherit Debenhams until audited.</p>
+    <div class="tok">
+      <div class="tk h"><span></span><span>Fascia</span><span>Font</span><span>Mode state</span></div>
+      <div class="tk"><i style="background:#7BE7D8"></i><code>debenhams</code><code>Geologica</code><span class="role">Live — full 12-slot palette · 4pt</span></div>
+      <div class="tk"><i style="background:#F8B5CC"></i><code>boohoo</code><code>Montserrat</code><span class="role">Live — full 12-slot palette · 4pt</span></div>
+      <div class="tk"><i style="background:#0A0A0A"></i><code>boohooman</code><code>Montserrat</code><span class="role">Live — signed-off CTA set · palette slots TBD · 4pt</span></div>
+      <div class="tk"><i style="background:#550503"></i><code>plt</code><code>Roboto</code><span class="role">Live — signed-off CTA set · square radius · uppercase CTAs</span></div>
+      <div class="tk"><i style="background:#8E330B"></i><code>karenmillen</code><code>Jost</code><span class="role">Live — signed-off CTA set · palette slots TBD · 4pt</span></div>
+      <div class="tk"><i style="background:#3A3E4A"></i><code>burton · coast · dorothyperkins · misspap</code><code>TBD</code><span class="role">Scaffolded — inherit Debenhams until audited</span></div>
+      <div class="tk"><i style="background:#503A3A"></i><code>nastygal · oasis · principles · wallis · warehouse</code><code>TBD</code><span class="role">Scaffolded — inherit Debenhams until audited</span></div>
+      <div class="tk"><i style="background:#2F2F4A"></i><code>brandroom</code><code>TBD</code><span class="role">Scaffolded — square radius confirmed</span></div>
+      <div class="tk"><i style="background:#333"></i><code>dsgnstudio</code><code>TBD</code><span class="role">Scaffolded — logo still to source</span></div>
     </div>
   </section>
 
@@ -539,6 +965,20 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
 </main>
 </div>
 
+<!-- ============ BRAND SWITCHER FAB ============ -->
+<div class="fab" id="fab">
+  <button class="fab-btn" id="fabBtn" title="Switch demo brand" aria-haspopup="true" aria-expanded="false" aria-label="Switch demo brand">
+    <span class="appic" id="fabIc" style="background:#7BE7D8"><img src="assets/brands/debenhams.svg" alt=""></span>
+  </button>
+  <div class="fab-menu" id="fabMenu" role="menu" aria-label="Demo brand">
+    <button data-b="debenhams" class="on" role="menuitem"><span>Debenhams</span><span class="appic" style="background:#7BE7D8"><img src="assets/brands/debenhams.svg" alt=""></span></button>
+    <button data-b="boohoo" role="menuitem"><span>boohoo</span><span class="appic" style="background:#F8B5CC"><img src="assets/brands/boohoo.svg" alt=""></span></button>
+    <button data-b="boohooman" role="menuitem"><span>boohooMAN</span><span class="appic dk" style="background:#0A0A0A;outline:1px solid var(--line-2)"><img src="assets/brands/boohooman.svg" alt=""></span></button>
+    <button data-b="plt" role="menuitem"><span>PrettyLittleThing</span><span class="appic dk" style="background:#550503"><img src="assets/brands/plt.svg" alt=""></span></button>
+    <button data-b="karenmillen" role="menuitem"><span>Karen Millen</span><span class="appic dk" style="background:#8E330B"><img src="assets/brands/karenmillen.svg" alt=""></span></button>
+  </div>
+</div>
+
 <!-- ============ SEARCH ============ -->
 <div class="ovl" id="ovl" onclick="if(event.target===this)closePal()">
   <div class="pal">
@@ -553,8 +993,14 @@ p{color:var(--ink-2);max-width:640px;margin-bottom:10px;font-size:14px}
 const REG=[
  {h:'home',t:'Home',k:'overview dashboard',ic:'⌂',s:'Overview'},
  {h:'shipping',t:'Shipping',k:'changelog merged',ic:'↗',s:'Overview'},
- {h:'colour',t:'Colour',k:'tokens palette semantic',ic:'◈',s:'System'},
- {h:'type',t:'Typography',k:'text styles fonts',ic:'Aa',s:'System'},
+ {h:'colour',t:'Colour',k:'tokens palette semantic primitives neutrals status aqua pink',ic:'◈',s:'System'},
+ {h:'type',t:'Typography',k:'text styles fonts scale roles weights geologica montserrat roboto jost',ic:'Aa',s:'System'},
+ {h:'spacing',t:'Spacing',k:'4pt scale gaps margins icon sizes z-index breakpoints',ic:'⇥',s:'System'},
+ {h:'radius',t:'Radius',k:'corners square plt pill',ic:'◜',s:'System'},
+ {h:'borders',t:'Borders',k:'dividers widths keyline focus',ic:'▭',s:'System'},
+ {h:'motion',t:'Motion',k:'animation durations easing reduced',ic:'◐',s:'System'},
+ {h:'a11y',t:'Accessibility',k:'wcag aa contrast focus touch targets',ic:'✓',s:'System'},
+ {h:'install',t:'Using the system',k:'npm install tokens tailwind data-brand setup',ic:'⤓',s:'System'},
  {h:'components',t:'Components',k:'library index',ic:'▦',s:'System'},
  {h:'prototypes',t:'Master prototypes',k:'plp pdp bag checkout canonical master',ic:'▣',s:'System'},
  {h:'button',t:'Button',k:'cta primary states c-01',ic:'▢',s:'Component'},
@@ -571,9 +1017,10 @@ const REG=[
 const pages=[...document.querySelectorAll('.page')];
 function route(){
   const h=(location.hash||'#home').slice(1);
+  const pg=document.getElementById(h);
+  if(pg&&!pg.classList.contains('page')){pg.scrollIntoView({block:'start'});return} // in-page anchor — keep current view
   pages.forEach(p=>p.classList.toggle('on',p.id===h));
   document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));
-  const pg=document.getElementById(h);
   const _c=document.getElementById('crumbs'); if(_c)_c.innerHTML=(pg?.dataset.crumb||'Home').split(' / ').map((c,i,a)=>i===a.length-1?`<b>${c}</b>`:c).join(' <span style="opacity:.4">/</span> ');
   document.getElementById('main').scrollTop=0;
 }
@@ -586,15 +1033,21 @@ function tg(btn){btn.parentElement.classList.toggle('closed')}
 function paint(){
   const cs=getComputedStyle(document.documentElement);
   document.querySelectorAll('.val').forEach(v=>v.textContent=cs.getPropertyValue(v.dataset.v).trim().toUpperCase());
-  document.querySelectorAll('.rv').forEach(v=>v.textContent=cs.getPropertyValue('--b-r').trim());
-  const n=cs.getPropertyValue('--b-name').replace(/'/g,'').trim();
+  document.querySelectorAll('.rv').forEach(v=>v.textContent=cs.getPropertyValue('--radius-default').trim());
+  const n=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
   document.querySelectorAll('.bn').forEach(b=>b.textContent=n);
 }
-document.querySelectorAll('#bsel button').forEach(b=>b.onclick=()=>{
+const fab=document.getElementById('fab'),fabBtn=document.getElementById('fabBtn'),fabIc=document.getElementById('fabIc'),fabMenu=document.getElementById('fabMenu');
+function fabClose(){fab.classList.remove('open');fabBtn.setAttribute('aria-expanded','false')}
+fabBtn.onclick=e=>{e.stopPropagation();const o=fab.classList.toggle('open');fabBtn.setAttribute('aria-expanded',o)};
+fabMenu.querySelectorAll('button').forEach(b=>b.onclick=()=>{
   document.documentElement.setAttribute('data-brand',b.dataset.b);
-  document.querySelectorAll('#bsel button').forEach(x=>x.classList.toggle('on',x===b));
-  paint();
+  fabMenu.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+  const ic=b.querySelector('.appic');
+  fabIc.className=ic.className;fabIc.style.cssText=ic.style.cssText;fabIc.innerHTML=ic.innerHTML;
+  paint();fabClose();
 });
+addEventListener('click',e=>{if(!fab.contains(e.target))fabClose()});
 
 /* ---- search palette ---- */
 const ovl=document.getElementById('ovl'),q=document.getElementById('q'),res=document.getElementById('res');
@@ -610,6 +1063,7 @@ function draw(v){
 q.addEventListener('input',()=>draw(q.value));
 addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();ovl.classList.contains('on')?closePal():openPal();return}
+  if(e.key==='Escape')fabClose();
   if(!ovl.classList.contains('on'))return;
   if(e.key==='Escape')closePal();
   if(e.key==='ArrowDown'){sel=Math.min(sel+1,hits.length-1);mark()}

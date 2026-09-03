@@ -1,0 +1,49 @@
+---
+title: Installation
+description: Adding the design system to your project
+---
+
+## For brand sites
+
+Install the React component library and the tokens via npm:
+
+```bash
+npm install @designsystem-debenhamsgroup/react @designsystem-debenhamsgroup/tokens
+```
+
+In your global CSS (e.g. `app.css` or `global.css`):
+
+```css
+@import '@designsystem-debenhamsgroup/tokens/css';
+```
+
+In your `tailwind.config.js`:
+
+```js
+module.exports = {
+  presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')],
+  content: ['./src/**/*.{ts,tsx}'],
+};
+```
+
+In your root layout, set the brand mode:
+
+```tsx
+<html data-brand="debenhams">
+  {/* or "boohoo", "plt", "karen-millen", etc. */}
+</html>
+```
+
+That's it. All semantic tokens will resolve to the brand's values automatically.
+
+## Using a component
+
+```tsx
+import { Button } from '@designsystem-debenhamsgroup/react';
+
+<Button variant="primary" size="md">Save & continue</Button>
+```
+
+## Need an escape hatch?
+
+Components are intentionally constrained to keep the system coherent. If a component genuinely doesn't fit your use case, the source code for every component is visible on each component's docs page — you can copy and modify, or raise a request to extend the official component.

@@ -1,0 +1,44 @@
+---
+title: Accessibility
+description: WCAG 2.1 AA — the floor, not the ceiling
+---
+
+Every component in this system targets **WCAG 2.1 AA** compliance. This is non-negotiable. Anything that doesn't meet the bar doesn't ship.
+
+## Contrast
+
+- **Body text** — minimum 4.5:1 contrast ratio
+- **Large text (18pt+)** and **UI components** — minimum 3:1
+- **Body text floor** — Grey 5 (`#6b6b6b`). Grey 4 and below are not permitted for body text.
+
+## Focus
+
+- Every interactive element has a visible focus state
+- Focus state is operable via keyboard (tab, shift+tab, enter, space, escape, arrow keys as appropriate)
+- Focus rings use `border/focus` (the brand action colour at 2pt width)
+
+## Touch targets
+
+- Minimum 44×44px on mobile for any tappable element
+- Inline links in body copy are exempt where natural
+
+## Motion
+
+- All animations respect `prefers-reduced-motion`
+- No content auto-plays or auto-scrolls without an opt-out
+
+## Meaning
+
+- **Status is never communicated by colour alone.** Error states pair red with icons and text. Success states pair green with icons and text.
+- All form inputs have associated labels (visible or `aria-label`)
+- Icons used as the sole content of buttons have `aria-label`
+
+## Per-component accessibility notes
+
+Every component's documentation page includes an Accessibility section flagging:
+- Contrast ratios for the colour pairings it uses
+- Keyboard interactions it supports
+- Screen reader behaviour
+- Any limitations or known issues
+
+If a component spec doesn't include an Accessibility section, it isn't finished.

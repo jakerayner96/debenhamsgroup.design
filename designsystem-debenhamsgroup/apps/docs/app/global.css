@@ -1,0 +1,12 @@
+@import '@designsystem-debenhamsgroup/tokens/css';
+@import 'fumadocs-ui/style.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: var(--font-family-base);
+  color: var(--text-primary);
+  background: var(--surface-page);
+}

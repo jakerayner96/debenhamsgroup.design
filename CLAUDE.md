@@ -1,9 +1,13 @@
 # CLAUDE.md — debenhamsgroup.design
 
-Read `.context/` before doing anything. Start with `00-readme.md`, then `11-session-log-2026-09-01.md` for current state, then whichever doc matches the task.
+Read `.context/` before doing anything. Start with `00-readme.md`, then `13-session-log-2026-09-01c.md` for current state (11 and 12 are earlier the same day), then whichever doc matches the task.
 
 ## What this repo is
-The Debenhams Group UX site: design system docs, project archive (options + chosen routes), brand centre, requests board — plus (incoming) the master prototypes for core pages. `index.html` is the current v3 wireframe: single file, no build step, dark, sidebar-driven.
+The Debenhams Group UX site: design system docs, project archive (options + chosen routes), brand centre, requests board — plus (incoming) the master prototypes for core pages. **`index.html` IS the site** — single file, no build step, dark, sidebar-driven — and since 01 Sep it carries the design system layer itself: canonical tokens (invariant semantic layer + five live fascia modes on `data-brand`), foundations pages (colour, typography, spacing, radius, borders, motion, accessibility), component specs, brand centre with real logo marks. Serve it with `python3 -m http.server 3000` from the repo root (assets need HTTP, not file://).
+
+- **`assets/brands/`** — fascia logo SVGs, named by `data-brand` slug (no dashes: `boohooman`, `karenmillen`, `dorothyperkins`, `brandroom`…). DSGN Studio's mark still missing.
+- **`.context/07-foundations.md`** — the locked foundations spec the site pages render.
+- **`designsystem-debenhamsgroup/`** — **RETIRED.** The older Next/Fumadocs monorepo; its tokens, brand modes, foundations and docs content were absorbed into `index.html` (see log 13). Kept only as reference until Jake deletes it — don't build on it, don't run it.
 
 ## Rules that always apply
 - **Code first, Figma downstream.** Production is canonical; the Figma library mirrors it.

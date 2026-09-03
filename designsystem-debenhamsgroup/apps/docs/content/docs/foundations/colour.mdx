@@ -1,0 +1,27 @@
+---
+title: Colour
+description: The two-layer colour system — primitives and semantic tokens
+---
+
+The colour system has two layers.
+
+## Primitives
+
+The raw palette. Named by what they are — `Primary Aqua`, `CTA Aqua`, `Grey 5`. These don't change based on usage.
+
+Each brand has its own primitive palette. Greys, status colours (red, yellow, green) and black/white are shared across all brands.
+
+## Semantic tokens
+
+Named by **role** — what the colour does, not what it is. Components consume only these.
+
+- `text/primary`, `text/secondary`, `text/disabled`, `text/inverse`, `text/on-action`, `text/link`, `text/error`, `text/success`, `text/warning`
+- `surface/page`, `surface/sunken`, `surface/raised`, `surface/inverse`, `surface/overlay`, `surface/action`, `surface/action-hover`, `surface/action-pressed`, `surface/action-disabled`, `surface/accent`, `surface/accent-subtle`, `surface/error`, `surface/success`, `surface/warning`
+- `border/subtle`, `border/default`, `border/strong`, `border/action`, `border/focus`, `border/error`
+- `icon/primary`, `icon/secondary`, `icon/disabled`, `icon/inverse`, `icon/on-action`, `icon/action`
+
+When the active brand changes (via `data-brand` on the root element), the `brand-*` family of tokens swaps to that brand's palette. `text/primary` and `surface/page` remain constant — they're mode-invariant.
+
+## Accessibility
+
+Body text floor is **Grey 5** (`#6b6b6b`). Grey 4 and below are not permitted for body text — they fail WCAG AA contrast. Grey 4 *can* be used for icons, borders, and other non-text elements.
