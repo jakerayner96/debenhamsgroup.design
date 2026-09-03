@@ -85,3 +85,8 @@ Debenhams USP per Figma 13005-163125/165658/165567: layer 1 = flat #F8F8F8 strip
 ## Part 10 (same day) — new-format mobile filter = floating pills
 
 Brand Room Figma 739-92223 is the new-format mobile sort & filter: scrolling row of white radius-42 pills with soft shadow — NDD with an inline mini-toggle, Sort & Filter with the DS filter icon, then per-fascia filter chips with 12px chevrons, all opening the combined sheet. Radius stays 42 on every fascia by design (explicitly round even on square-radius brands). Replaces the NDD+viewtoggle+button row; view toggle parked until the grid-view Figma pass. Also fixed `.seo[hidden]` losing to the one-line flex display.
+
+## Part 11 (same day) — top-nav options simplified + MAN new-format card rules
+
+- Top-nav switcher trimmed to: auto · roundels (text below) · roundels (text on) · pills · links. Pills are now **Grey 1** background, borderless, radius-default on every fascia.
+- **boohooMAN new format**: no quick add on PLP; fully flush full-bleed images (gap 0, `.pc--flush` 4px text inset); badges + wishlist chip **white at 85%, 4px radius** (brand badge tokens; chip radius now follows `radius-default` so PLT/Brand Room stay square). Taggstar stays **off** — flagged as too tall alongside everything else; revisit as a reduced-height bar or an on-image treatment against the other image overlays.
