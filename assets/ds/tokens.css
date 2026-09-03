@@ -1,0 +1,79 @@
+/* ============================================================
+   DEBENHAMS GROUP DESIGN SYSTEM — TOKENS (canonical)
+   Single source of truth. The site (index.html) and every project
+   prototype link this file — never copy values out of it.
+   Brand values: signed-off Colour Alignment set (post-KM, 26 Aug 2026).
+   Full 12-slot families: Debenhams + boohoo. Others land per audit.
+   Provenance note: to be re-wired to the extract-tokens.mjs chain
+   when plt-app-prototype is ingested (see .context/13).
+   ============================================================ */
+
+/* Layer 1: mode-invariant semantic tokens + scales. Same across every fascia. */
+:root{
+  /* text — body floor is Grey 5 (AA); Grey 4 and below never used for body text */
+  --text-primary:#0F0F0F;--text-secondary:#6B6B6B;--text-disabled:#B5B5B5;--text-inverse:#FFF;
+  --text-error:#D33F3F;--text-success:#1F7A25;--text-warning:#7A5800;
+  /* surface */
+  --surface-sunken:#FAFAFA;--surface-raised:#FFF;--surface-inverse:#0F0F0F;--surface-overlay:rgba(0,0,0,.6);
+  --surface-action-disabled:#E7E7E7;--surface-error:#FFF2F2;--surface-success:#EAF6EA;--surface-warning:#FFFBE6;
+  /* border */
+  --border-subtle:#E7E7E7;--border-default:#D6D6D6;--border-strong:#767676;--border-error:#D33F3F;
+  /* icon — may use Grey 4 (not text-contrast bound) */
+  --icon-primary:#0F0F0F;--icon-secondary:#767676;--icon-disabled:#B5B5B5;--icon-inverse:#FFF;--icon-on-action:#FFF;
+  /* spacing — 4pt base */
+  --space-2:2px;--space-4:4px;--space-8:8px;--space-12:12px;--space-16:16px;--space-20:20px;--space-24:24px;
+  --space-32:32px;--space-40:40px;--space-48:48px;--space-64:64px;--space-80:80px;--space-96:96px;--space-128:128px;
+  /* border width */
+  --border-w:1px;--border-w-emphasis:2px;--border-w-focus:2px;
+  /* motion */
+  --dur-fast:100ms;--dur-base:200ms;--dur-slow:300ms;
+  --ease-standard:cubic-bezier(.2,0,0,1);--ease-emphasised:cubic-bezier(.3,0,.8,.15);
+  /* z-index */
+  --z-base:0;--z-raised:10;--z-dropdown:100;--z-sticky:200;--z-banner:300;--z-overlay:400;--z-modal:500;--z-popover:600;--z-toast:700;--z-tooltip:800;
+
+  /* Layer 2 defaults: Debenhams (the default mode). Brand blocks below override. */
+  --brand-name:'Debenhams';
+  --font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:300;--w-strong:600;--cta-case:none;
+  --radius-default:4px;--radius-lg:8px;--radius-pill:9999px;
+  --surface-page:#FFF;
+  --brand-primary:#7BE7D8;--surface-action:#00787D;--surface-action-hover:#1E6F63;--surface-action-pressed:#00565A;--text-on-action:#FFF;
+  --brand-neutral:#E8F4F2;--brand-light-4:#E6FFFC;--brand-light-3:#D6FFF9;--brand-light-2:#B8FDF4;--brand-light-1:#9DEDE2;
+  --brand-dark-1:#76DECF;--brand-dark-2:#70BEB3;--brand-dark-3:#529C92;--brand-primary-dark:#1E6F63;
+  /* derived — follow the brand automatically */
+  --border-action:var(--surface-action);--border-focus:var(--surface-action);
+  --text-link:var(--surface-action);--text-link-hover:var(--brand-primary-dark);--icon-action:var(--surface-action);
+}
+/* Layer 2: per-fascia overrides. CTA/pressed/on/light-1/light-3/paper/type/radius/case are the
+   signed-off Colour Alignment set (post-KM review, Aug 26). Full 12-slot families exist for
+   Debenhams + boohoo; remaining slots for the other fascias land as each is audited. */
+[data-brand="debenhams"]{/* default — no overrides */}
+[data-brand="boohoo"]{
+  --brand-name:'boohoo';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:500;--w-strong:700;
+  --brand-primary:#F8B5CC;--surface-action:#BB305F;--surface-action-hover:#CB4870;--surface-action-pressed:#A82A55;
+  --brand-neutral:#F1DCE3;--brand-light-4:#FFE9F0;--brand-light-3:#FEE0EA;--brand-light-2:#FCD3E1;--brand-light-1:#FBC7D8;
+  --brand-dark-1:#EEA5BE;--brand-dark-2:#EA92B0;--brand-dark-3:#DD789B;--brand-primary-dark:#CB4870;
+}
+[data-brand="boohooman"]{
+  --brand-name:'boohooMAN';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:500;--w-strong:700;
+  --brand-primary:#0A0A0A;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
+  --brand-light-3:#E7E7E7;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
+}
+[data-brand="plt"]{
+  --brand-name:'PrettyLittleThing';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-strong:700;--cta-case:uppercase;
+  --radius-default:0px;--radius-lg:0px;--radius-pill:0px; /* square-radius mode */
+  --surface-page:#FFFDF7;--text-on-action:#FFFDF7;
+  --brand-primary:#550503;--surface-action:#550503;--surface-action-hover:#360502;--surface-action-pressed:#360502;
+  --brand-light-3:#FFD5CD;--brand-light-1:#C77E75;--brand-primary-dark:#360502;
+}
+[data-brand="karenmillen"]{
+  --brand-name:'Karen Millen';--font-family-base:'Jost',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-strong:600;
+  --brand-primary:#8E330B;--surface-action:#8E330B;--surface-action-hover:#5E2207;--surface-action-pressed:#5E2207;
+  --brand-light-3:#F3C1A7;--brand-light-1:#E88A5B;--brand-primary-dark:#5E2207;
+}
+/* Accessibility: all motion collapses under prefers-reduced-motion */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

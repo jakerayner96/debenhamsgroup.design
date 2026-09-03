@@ -1,0 +1,22 @@
+/* ============================================================
+   DEBENHAMS GROUP DESIGN SYSTEM — COMPONENTS
+   Consumes tokens.css only — no raw colour, font or radius values
+   (the one exception is flagged inline). Load AFTER tokens.css.
+
+   C-01 Button (.bd) — placeholder pending the Figma node audit
+   (DS file → BUTTONS (new) · 9144-1807). Spec on the site: #button.
+   New components built in project branches get promoted into this
+   file when the brief merges.
+   ============================================================ */
+
+/* C-01 Button */
+.bd{font-family:var(--font-family-base);font-weight:var(--w-strong);font-size:14px;padding:13px 26px;border-radius:var(--radius-default);text-transform:var(--cta-case);letter-spacing:.02em;border:none;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
+.bd.pri{background:var(--surface-action);color:var(--text-on-action)}
+.bd.pri:hover{background:var(--surface-action-hover)}
+.bd.pri:active{background:var(--surface-action-pressed)}
+.bd.sec{background:var(--surface-page);color:var(--text-link);box-shadow:inset 0 0 0 1.5px var(--border-action)}
+.bd.dis{background:var(--surface-action-disabled);color:#767676;cursor:not-allowed} /* #767676: golden-truth disabled label — reconcile vs text/disabled Grey 3, see Button spec */
+.bd.spn{background:var(--surface-action);color:var(--text-on-action);min-width:110px}
+.bd.spn i{display:inline-block;width:13px;height:13px;border:2px solid var(--text-on-action);border-right-color:transparent;border-radius:99px;animation:sp .7s linear infinite;vertical-align:-2px}
+.bd:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
+@keyframes sp{to{transform:rotate(1turn)}}
