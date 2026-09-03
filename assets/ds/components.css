@@ -164,7 +164,7 @@
 .sf-bar{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;padding:12px 0;font-family:var(--font-family-base);font-size:14px;color:var(--text-primary)}
 .sf-bar--strip{} /* desktop strip under the category links — borderless per review */
 /* mobile split bar — live platform pattern: Filters ⚏ | Relevance ⌄ */
-.sf-split{display:grid;grid-template-columns:1fr 1fr;border-top:var(--border-w) solid var(--border-subtle);border-bottom:var(--border-w) solid var(--border-subtle);font-family:var(--font-family-base);font-size:15px;color:var(--text-primary)}
+.sf-split{display:grid;grid-template-columns:1fr 1fr;border-top:var(--border-w) solid var(--border-subtle);border-bottom:var(--border-w) solid var(--border-subtle);font-family:var(--font-family-base);font-size:15px;color:var(--text-primary);margin:0 calc(var(--plp-margin,16px) * -1)} /* rules run edge to edge; button padding keeps labels on the margin */
 .sf-split button{display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 16px;font-family:inherit;font-size:inherit;color:inherit;text-align:left}
 .sf-split button+button{border-left:var(--border-w) solid var(--border-subtle)}
 .sf-split i.ch{width:16px;height:16px;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
