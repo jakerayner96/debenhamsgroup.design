@@ -72,7 +72,7 @@
 .pc-price.sale .now,.pc-price .pct{color:var(--price-sale)}
 .pc-price .was{font-weight:var(--w-mid);text-decoration:line-through}
 .pc-price .pct{font-weight:var(--w-regular)}
-.pc-offer{color:var(--price-sale);font-weight:var(--w-regular)}
+.pc-offer{color:var(--price-sale);font-weight:var(--w-regular);margin-top:-6px} /* 2px from the price line */
 .pc-ndd{display:flex;gap:6px;align-items:center;font-weight:var(--w-regular);color:var(--text-primary)} /* inherits the card text size — same as product name */
 .pc-ndd img{width:16px;height:16px;object-fit:contain}
 /* colour swatches */
@@ -98,6 +98,7 @@
 .pc--compact .pc-name{font-size:12px}
 .pc--compact .pc-price{font-size:13px}
 .pc--compact .pc-offer,.pc--compact .pc-sponsored{font-size:11px}
+.pc--compact .pc-offer{margin-top:-4px}
 .pc--compact .pc-iconbtn{width:28px;height:28px;min-width:28px}
 .pc--compact .pc-iconbtn img{width:14px;height:14px}
 .pc--compact .badge{height:24px;font-size:11px}
