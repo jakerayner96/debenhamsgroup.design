@@ -38,7 +38,7 @@
   --font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:300;--w-mid:400;--w-strong:600;--cta-case:none;
   /* USP banner slots (a = message strip, b = code strip) — from the Header Figma component */
-  --usp-a-bg:#FAFAFA;--usp-a-fg:#0F0F0F;--usp-b-bg:#000;--usp-b-fg:#FFF;
+  --usp-a-bg:#FAFAFA;--usp-a-bg2:#F2F2F2;--usp-a-fg:#0F0F0F;--usp-b-bg:#000;--usp-b-fg:#FFF;
   /* category nav strip — Debenhams aqua tint; most fascias run it white */
   --nav-bg:var(--brand-light-2);--nav-fg:var(--text-primary);
   /* card overlay chrome (badges, AI banner, sale price) — PLT overrides with its cream/red set */
@@ -65,7 +65,7 @@
 [data-brand="boohoo"]{
   --brand-name:'boohoo';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:500;--w-mid:400;--w-strong:700;
-  --usp-a-bg:#000;--usp-a-fg:#FFF;--usp-b-bg:#FFE0EB;--usp-b-fg:#0F0F0F;
+  --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#FFE0EB;--usp-b-fg:#0F0F0F;
   --brand-primary:#F8B5CC;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
   --border-action:var(--surface-action);--border-focus:var(--surface-action);--text-link:var(--surface-action);--text-link-hover:#242424;--icon-action:var(--surface-action);
   --brand-neutral:#F1DCE3;--brand-light-4:#FFE9F0;--brand-light-3:#FEE0EA;--brand-light-2:#FCD3E1;--brand-light-1:#FBC7D8;
@@ -75,6 +75,7 @@
 [data-brand="boohooman"]{
   --brand-name:'boohooMAN';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:500;--w-mid:400;--w-strong:700;
+  --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#F2F2F2;--usp-b-fg:#0F0F0F;
   --brand-primary:#01FE8A;/* MAN accent green — signed-off 'new' + card button */--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
   --border-action:#000;--border-focus:#000;--text-link:#000;--text-link-hover:#242424;--icon-action:#000;
   --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
@@ -83,7 +84,7 @@
 [data-brand="plt"]{
   --brand-name:'PrettyLittleThing';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:400;--w-strong:700;--cta-case:uppercase;
-  --usp-a-bg:#F1C59E;--usp-a-fg:#0F0F0F;--usp-b-bg:#FFE4D2;--usp-b-fg:#0F0F0F; /* warm peach + light cream — from Header Figma */
+  --usp-a-bg:#F1C59E;--usp-a-bg2:#FFE4D2;--usp-a-fg:#0F0F0F;--usp-b-bg:#FFE4D2;--usp-b-fg:#0F0F0F; /* warm peach + light cream — from Header Figma */
   --nav-bg:#000;--nav-fg:#FFF; /* PLT runs a black nav strip */
   /* PLT card chrome — AI-Watermark Figma 3-574: cream 85% chips, #333 text, PLT sale red */
   --badge-bg:rgba(250,245,231,.85);--badge-fg:#333;--badge-border:transparent;--price-sale:#C90000;
@@ -97,6 +98,7 @@
 [data-brand="karenmillen"]{
   --brand-name:'Karen Millen';--font-family-base:'Jost',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-strong:600;--w-btn:400; /* KM buttons: lighter, sentence case (signed-off) */
+  --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#000;--usp-b-fg:#FFF;
   --brand-primary:#D24508;--surface-action:#D24508;--surface-action-hover:#892D05;--surface-action-pressed:#892D05;
   --border-action:#892D05;--border-focus:#892D05;--text-link:#892D05;--text-link-hover:#000;--icon-action:#892D05;
   --brand-light-3:#F3C1A7;--brand-light-2:#F0B597;--brand-light-1:#E88A5B;--brand-primary-dark:#892D05;

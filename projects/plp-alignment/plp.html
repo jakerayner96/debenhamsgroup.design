@@ -20,6 +20,9 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
 .plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
 .seo{color:var(--text-secondary);font-size:13px;max-width:860px;margin:6px 0 2px}
+.seo--line{display:flex;gap:6px;align-items:baseline;white-space:nowrap;overflow:hidden;max-width:860px}
+.seo--line .t{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.cat-wrap.edge{justify-content:flex-start;margin-right:calc(var(--plp-margin) * -1);overflow-x:auto}
 @media(min-width:768px){.plp-title{text-align:center}.plp-title h1{font-size:26px}.seo{margin:6px auto 2px;text-align:center}}
 .cat-wrap{display:flex;justify-content:flex-start;overflow:hidden}
 @media(min-width:768px){.cat-wrap{justify-content:center}}
@@ -78,14 +81,15 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
     </div>
   </div>
   <nav class="hd-nav only-desktop"><a class="sale" href="#">Sale</a><a href="#">New in</a><a href="#">Dresses</a><a href="#">Clothing</a><a href="#">Co-ords</a><a href="#">Tops</a><a href="#">Shoes</a><a href="#">Accessories</a><a href="#">Brands</a></nav>
-  <div class="hd-usp">Free delivery when you spend over £50</div>
-  <div class="hd-usp hd-usp--b">Extra 20% off everything&nbsp;·&nbsp;Code: <b>ALIGN20</b></div>
+  <div class="hd-usp" id="usptop" hidden></div>
+  <div class="usp-strip" id="uspstrip"></div>
+  <div class="hd-usp hd-usp--b" id="uspb" hidden></div>
 </header>
 
 <main class="plp">
   <nav class="bc" aria-label="Breadcrumb"><a href="#">Home</a><span class="sep">/</span><a href="#">New In</a><span class="sep">/</span><a href="#">Womens New In</a><span class="sep">/</span><span class="cur">New In Dresses</span></nav>
   <div class="plp-title"><h1>New In Dresses</h1><div class="count">1,284 styles</div></div>
-  <p class="seo" id="seo" hidden>The search stops here. Pieces that instantly elevate your look — we're constantly curating the most relevant silhouettes, so you're always first to the newest shapes… <u>Read more</u></p>
+  <p class="seo" id="seo" hidden><span class="t" id="seotext"></span> <u style="flex:none">Read more</u></p>
 
   <div class="cat-wrap"><div id="catnav"></div></div>
 
@@ -141,8 +145,8 @@ const AST='../../assets';const IMG='img';
 const FASCIA={
  debenhams:{title:'Autumn',count:'1,000+ products',crumb:['Home','Campaign','Autumn Shop'],
   nav:['Sale','New','Women','Men','Kids','Home','Garden','Beauty','Wedding','Gifts','Fragrance','Brands'],
-  cats:['Home Decor','Autumn Fragrance','Halloween'],filters:['Category','Size','Colour','Style'],
-  uspA:'Up To 90% Off Bestsellers · Shop Now',uspB:'Up To 70% Off Top Fashion Brands + Extra 10% Off · Use Code: FASHION',
+  cats:['Home Decor','Autumn Fragrance','Halloween','Cosy Knits','Boots','Candles'],filters:['Category','Size','Colour','Style'],
+  uspCells:[{b:'Up To 90% Off Bestsellers',s:'Shop Now'},{b:'Up To 70% Off Top Fashion Brands + Extra 10% Off',s:'Use Code: FASHION'},{b:'Up To 50% Off Beauty',s:'Shop Beauty'},{b:'Clearpay Available at Checkout',s:'Shop Now'}],
   products:[
    {brand:'Wallis',name:'Navy Oversized Argyle Jumper',price:'£44.00',was:'£55.00',pct:'-20%',ndd:1},
    {brand:'Coast',name:'Long Sleeve Lace and Pleated Midi Shirt Dress',price:'£70.00',was:'£139.00',pct:'-50%',off:'£63.00 with code FASHION',ndd:1,ai:1},
@@ -159,7 +163,7 @@ const FASCIA={
  boohoo:{title:'New Season',count:'1,000+ products',crumb:['Home','Womens','Shop By Collection'],
   nav:['New In','Womens','Dresses','Autumn','Shoes','Accessories','Shop By Fit','Occasion','DSGN','Trends','Mens','Beauty','Home','SALE'],
   cats:[],filters:['Category','Style','Size','Colour','Body Fit'],
-  uspA:'EXTRA 10% OFF ALMOST EVERYTHING* USE CODE: EXTRA',uspB:'PREMIER NEXT DAY DELIVERY · ONLY £5.99 FOR 1 YEAR',
+  uspCells:[{b:'EXTRA 10% OFF ALMOST EVERYTHING*',s:'USE CODE: EXTRA'},{b:'UP TO 20% OFF NEW SEASON*'},{b:'PREMIER NEXT DAY DELIVERY',s:'ONLY £5.99 FOR 1 YEAR'}],
   products:[
    {brand:'boohoo',name:'Cinched Waist Peplum Blazer',price:'£33.60',was:'£42.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
    {brand:'boohoo',name:'Tailored Wide Leg Trousers',price:'£22.40',was:'£28.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA',ai:1},
@@ -176,7 +180,8 @@ const FASCIA={
  boohooman:{title:'New Season',count:'1,000+ products',crumb:['Home','Mens','Shop By Collection'],
   nav:['SALE','NEW','CLOTHING','BRANDS','ACTIVE','PLUS','TALL','ESSENTIALS','GOING OUT','SUMMER','SETS'],
   cats:['Tops','Jeans','Joggers','Tracksuits','Hoodies','Jackets'],filters:['Size','Colour','Category','Style'],
-  uspA:'ORDER BY MIDNIGHT TO GET IT TOMORROW',uspB:'20% OFF* + EXTRA 10% OFF · USE CODE: EXTRATEN',
+  seoText:'Get ready to level up your cozy game. Jump headfirst into our men\'s new season drop and uncover ultimate snugness — street-smart oversized fits and zip-ups.',
+  uspCells:[{b:'ORDER BY MIDNIGHT TO GET IT TOMORROW'},{b:'STUDENT DISCOUNT!',s:'Extra 20% Off!'},{b:'BRANDS AT MAN',s:'Up To 70% Off!'}],uspB:'20% OFF* + EXTRA 10% OFF · Use Code: <b>EXTRATEN</b>',
   products:[
    {brand:'boohooMAN',name:'Black Oversized Moto Print Hoodie',price:'£24.00',was:'£30.00',pct:'-20%',off:'£21.60 WITH CODE: EXTRATEN',tag:'Plus Sizes Available'},
    {brand:'boohooMAN',name:'Baggy Fit Camo Print Twill Trousers',price:'£28.00',was:'£35.00',pct:'-20%',off:'£25.20 WITH CODE: EXTRATEN'},
@@ -193,7 +198,8 @@ const FASCIA={
  plt:{title:'Going Out Outfits',count:'1,000+ products',crumb:['Home','Womens','Shop By Collection'],
   nav:['NEW ARRIVALS','SALE','CLOTHING','AUTUMN','DRESSES','CO-ORDS','TOPS','TRENDING','ATHLEISURE','SHOP BY FIT','BEAUTY','LIFESTYLE','BRANDS'],
   cats:[],filters:['Category','Colour','Style','Body Fit','Size'],
-  uspA:'ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY · 00:12:16:29',uspB:'25% OFF ALMOST EVERYTHING*',
+  seoText:'The search stops here. Pieces that instantly elevate your look — we\'re constantly curating the most relevant going-out silhouettes, so you\'re always first to the newest shapes.',
+  uspTop:'ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY · 00:12:16:29',uspCells:[{b:'25% OFF ALMOST EVERYTHING*'},{b:'EXTRA 20% OFF* AUTUMN ESSENTIALS, CODE: COSY20'},{b:'£5.99 ROYALTY - FREE NEXT DAY DELIVERY AND FREE RETURNS FOR 12 MONTHS'}],
   products:[
    {name:'Lace Godet Flared Trousers',price:'£27.00',was:'£36.00',pct:'-25%'},
    {name:'Stretch Woven Pleated Skort Playsuit',price:'£22.50',was:'£30.00',pct:'-25%'},
@@ -210,7 +216,8 @@ const FASCIA={
  karenmillen:{title:'Summer Dresses',count:'588 products',crumb:['Home','Womens','Womens Clothing','Dresses'],
   nav:['OUTLET','NEW IN','CLOTHING','DRESSES','OCCASION WEAR','ACCESSORIES','BEAUTY','BRANDS','HOME'],
   cats:[],filters:['Style','Size','Body Fit','Brands','Colour'],seo:1,
-  uspA:'extra 10% off* · code: KMEXTRA10',uspB:'£2.99 express delivery on orders over £150*',
+  seoText:'Meet your new favourite dress. From desk to dinner to dancefloor, you\'ll discover summer dresses here that you\'ll rely on all-day long — lightweight, breathable fabric.',
+  uspCells:[{b:'extra 10% off*',s:'code: KMEXTRA10'},{b:'30% off dresses*'},{b:'£2.99 express delivery',s:'on orders over £150*'}],
   products:[
    {brand:'KarenMillen',name:'Foil Metallic Figure Form Bandage Fringed Knit Maxi Dress',price:'£149.00'},
    {brand:'KarenMillen',name:'Cotton Cutwork Belted Midi Dress',price:'£209.30',was:'£299.00',ai:1},
@@ -227,7 +234,7 @@ const FASCIA={
  warehouse:{title:'NEW IN',count:'44 products',crumb:['Home','New In','Womens New In'],
   nav:['NEW ARRIVALS','CLOTHING','DRESSES','OUTLET'],
   cats:[],filters:['Category','Size','Colour','Style'],
-  uspA:'Extra 20% Off!* Use Code: WH20',uspB:'Free Delivery* When you spend over £75',
+  uspCells:[{b:'Extra 20% Off!*',s:'Use Code: WH20'},{b:'Free Delivery*',s:'When you spend over £75'}],
   products:[
    {brand:'Warehouse',name:'Real Suede Oversized Blazer',price:'£249.00'},
    {brand:'Warehouse',name:'Jacquard Blouson Sleeve Mini Dress',price:'£89.00'},
@@ -244,7 +251,7 @@ const FASCIA={
  brandroom:{title:'New In',count:'1,000+ products',crumb:['Home','New In'],
   nav:['New','Women','Men','Footwear','Accessories','Brands'],marketing:'The Autumn Edit | Shop The Season',
   cats:[],filters:['Brands','Category','Style','Size'],
-  uspA:'The Autumn Edit | Shop The Season',uspB:'Free next day delivery over £100',
+  uspCells:[{b:'The Autumn Edit | Shop The Season'}],
   products:[
    {brand:'Skechers',name:'Summits Mesh Bungee Slip-On Trainers With Memory Foam - Navy',price:'£72.99'},
    {brand:'Lacoste',name:'Rib Knit Brushed Wool Beanie Navy Blue',price:'£59.00'},
@@ -262,22 +269,22 @@ const FASCIA={
 /* ================= PLPBrandConfig — LIVE (before, matches the Figma captures) vs NEW (after, DS) ================= */
 const CFG={
  live:{
-  debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:false},
-  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+  debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:false, loadMore:'sec', subCaps:1, catEdge:1},
+  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', subCaps:1},
   boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'button',bleed:false, gap:'norm',  cat:'pills',     seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
   plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'tight', cat:'none',      seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none'},
-  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'norm',  cat:'none',      seo:true,  nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'nondd'},
-  warehouse:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:true},
-  brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'none',      seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'norm',  cat:'none',      seo:true,  nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'nondd', subCaps:1},
+  warehouse:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:true, subCaps:1},
+  brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'none',      seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', subCaps:1},
  },
  new:{
   debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
-  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
-  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'button',bleed:false, gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
-  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills-solid',seo:true, nddD:true,  compact:true,  nameCaps:true,  search:'pill', swatch:'round',  icons:'plt',  moreBelow:true},
-  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
-  warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'square', qa:'icon',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
-  brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill', swatch:'round',  icons:'plt',  moreBelow:false},
+  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
  }
 };
 const LIB=`${AST}/ds/icons/lib`;
@@ -300,7 +307,7 @@ function icons(cfg){
 }
 function favBtn(cfg,IC){
   if(cfg.favShape==='plain') return `<button class="pc-iconbtn pc-fav--plain" aria-label="Add to wishlist"><img src="${IC.heart24}" alt=""></button>`;
-  if(cfg.favShape==='chip')  return `<button class="pc-iconbtn pc-iconbtn--chip" aria-label="Add to wishlist"><img src="${IC.heart16}" alt=""></button>`;
+  if(cfg.favShape==='chip')  return `<button class="pc-iconbtn pc-iconbtn--chip" aria-label="Add to wishlist"><img src="${cfg.fav==='bookmark'?IC.bookmark:IC.heart16}" alt=""></button>`;
   const sq=cfg.favShape==='square'?' pc-iconbtn--sq':'';
   const ic=cfg.fav==='bookmark'?IC.bookmark:IC.heart16;
   return `<button class="pc-iconbtn${sq}" aria-label="Add to wishlist"><img src="${ic}" alt=""></button>`;
@@ -345,13 +352,16 @@ function render(){
   search.classList.toggle('hd-search--underline',cfg.search==='underline');
   // real furniture
   document.querySelector('.hd-nav').innerHTML=F.nav.map((n,i)=>`<a${/sale/i.test(n)?' class="sale"':''} href="#">${n}</a>`).join('');
-  document.querySelector('.hd-usp').textContent=F.uspA;
-  document.querySelector('.hd-usp--b').innerHTML=F.uspB;
+  const usptop=document.getElementById('usptop');usptop.hidden=!F.uspTop;usptop.textContent=F.uspTop||'';
+  document.getElementById('uspstrip').innerHTML=(F.uspCells||[]).map(c=>`<div class="usp-cell"><b>${c.b}</b>${c.s?`<u>${c.s}</u>`:''}</div>`).join('');
+  const uspb=document.getElementById('uspb');uspb.hidden=!F.uspB;uspb.innerHTML=F.uspB||'';
   document.querySelector('.bc').innerHTML=F.crumb.map(c=>`<a href="#">${c}</a><span class="sep">/</span>`).join('')+`<span class="cur">${F.title}</span>`;
   const h1=document.querySelector('.plp-title h1');
   h1.textContent=F.title; h1.style.textTransform=cfg.titleCaps?'uppercase':'';
   document.querySelector('.plp-title .count').textContent=F.count;
   seo.hidden=!cfg.seo;
+  document.getElementById('seotext').textContent=F.seoText||'';
+  seo.classList.toggle('seo--line',MODE==='new');
   // category nav — per-fascia default, overridable from the strip
   catnav.className='cat-row';
   const isMobile=matchMedia('(max-width:1023px)').matches;
@@ -359,6 +369,9 @@ function render(){
   if(CAT_OVERRIDE&&CAT_OVERRIDE!=='auto')catStyle=CAT_OVERRIDE;
   const CATS=(F.cats&&F.cats.length?F.cats:['Dresses','Tops','New In','Knitwear','Denim','Outerwear']);
   const rimg=i=>`${IMG}/${b}/p${(i+3)%12}.jpg`;
+  const edge=!!cfg.catEdge;
+  catnav.classList.toggle('cat-row--edge',edge&&catStyle.startsWith('roundels'));
+  catnav.parentElement.classList.toggle('edge',edge&&catStyle.startsWith('roundels'));
   if(catStyle==='none'){catnav.innerHTML='';}
   else if(catStyle==='roundels'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:cover"></i><span>${c}</span></a>`).join('');}
   else if(catStyle==='roundels-outline'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--outline" href="#"><i><img src="${rimg(i)}" alt="" style="position:absolute;inset:4px;border-radius:var(--radius-pill);width:calc(100% - 8px);height:calc(100% - 8px);object-fit:cover;z-index:1"></i><span>${c}</span></a>`).join('');}
@@ -392,6 +405,11 @@ function render(){
   grid.style.setProperty('--cols',cfg.cols);
   grid.className=`grid gap-${cfg.gap}${cfg.bleed?' bleed':''}${view===1?' view-1':''}`;
   grid.innerHTML=F.products.map((p,i)=>card(p,i,b,cfg,IC)).join('');
+  const lm=document.querySelector('.more .bd');
+  lm.className='bd '+((MODE==='live'&&cfg.loadMore==='sec')?'sec':'pri');
+  lm.style.textTransform=(MODE==='live'&&cfg.subCaps)?'uppercase':'';
+  const sub=document.querySelector('.ft-sub .bd');
+  if(sub)sub.style.textTransform=(MODE==='live'&&cfg.subCaps)?'uppercase':'';
   const cfgText=`${MODE} · cols ${cfg.cols} · brand ${cfg.brand?'on':'off'} · ${cfg.fav}/${cfg.favShape} · add ${cfg.qa} · ${cfg.bleed?'bleed':'padded'} · ${cfg.compact?'compact':'standard'}`;
   try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE},'*')}catch(e){}
 }
