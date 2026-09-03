@@ -827,7 +827,8 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
             </div>
           </div>
           <div class="hd-usp">Lorem ipsum dolor sit amet</div>
-          <div class="hd-usp hd-usp--b">Lorem ipsum dolor sit amet&nbsp;·&nbsp;Code: <b>FAST</b></div>
+          <div class="hd-usp hd-usp--b">Lorem ipsum dolor sit amet<span class="usp-sep"></span>Code: <b>FAST</b></div>
+          <div class="hd-usp"><span class="usp-cav" style="padding:0">*Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>
         </div>
       </div>
     </div>
@@ -848,6 +849,14 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
           <div class="hd-usp">Lorem ipsum dolor sit amet</div>
         </div>
       </div>
+    </div>
+    <h2>USP banner types <code>Figma 11982-37171</code></h2>
+    <div class="props">
+      <div class="pr h"><span>Type</span><span>Content</span><span>Rule</span></div>
+      <div class="pr"><code>Single / Double Text</code><span>12px regular; Double joins two texts with the dash</span><span>Separator is the 4px dash (<code>.usp-sep</code>, 8px side gaps) — never a mid-dot</span></div>
+      <div class="pr"><code>Text + Code</code><span>"Code:" regular · code value <b>strong</b></span><span>Joined to the text by the dash separator</span></div>
+      <div class="pr"><code>Text + Countdown</code><span>12:34:21:08 — strong digits, 5px colon columns (<code>.usp-cd</code>)</span><span>Countdown is a second row, 4px gap · Black/Red variant sets digits <code>--usp-cd</code> red</span></div>
+      <div class="pr"><code>Caveat</code><span>10px caption line (<code>.usp-cav</code>), bottom of the banner</span><span><b>Asterisk rule (design + dev):</b> a * in banner copy exists only on the Caveat-paired type, and the caption text is a required prop. Built without a caption, an asterisk must not be enterable — strip it.</span></div>
     </div>
     <h2>Per-fascia differences <code>all token-driven</code></h2>
     <div class="props">

@@ -18,9 +18,24 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 /* USP sizes: live = both banners 14px (older format) · new = 12px DS component */
 .hd-usp{font-size:14px}
 .usp-cell,.usp-cell b{font-size:14px}
-.mode-new .hd-usp{font-size:12px;padding:4px 16px;min-height:34px}
-.mode-new .usp-cell{font-size:12px;min-height:34px;padding:6px 16px;font-weight:var(--w-regular)}
+.mode-new .hd-usp{font-size:12px;padding:4px 16px;min-height:0}
+.mode-new .usp-cell{font-size:12px;min-height:0;padding:4px 16px;font-weight:var(--w-regular);gap:4px}
 .mode-new .usp-cell b{font-size:12px;font-weight:var(--w-strong)}
+/* card anatomy modal — review tooling (new format): which component layers this instance uses */
+#anat{position:fixed;inset:0;z-index:975;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+#anat[hidden]{display:none}
+#anat .box{width:340px;max-width:100%;max-height:90vh;overflow-y:auto;background:#0A0A0A;color:#B0B0B0;border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:16px;font-family:'Google Sans',system-ui,sans-serif;font-size:12px}
+#anat .box h3{color:#F7F7F7;font-size:13px;font-weight:600;margin:0 0 2px;display:flex;justify-content:space-between;align-items:center}
+#anat .box h3 button{font-size:16px;color:#B0B0B0;background:none;border:none;cursor:pointer;padding:0 2px}
+#anat .sub{font-size:10.5px;color:#707070;margin-bottom:10px}
+#anat .row{display:flex;gap:8px;align-items:baseline;padding:4.5px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+#anat .row .st{flex:none;width:16px;text-align:center;font-weight:700}
+#anat .row .on{color:#7BE7D8}
+#anat .row .off{color:#5A5A5A}
+#anat .row .nm{color:#F7F7F7;flex:none;min-width:104px}
+#anat .row .why{color:#707070;font-size:10.5px}
+#anat .sum{margin-top:12px;padding:10px 12px;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#F7F7F7;line-height:1.5}
+#anat .sum b{color:#7BE7D8}
 .plp{padding:0 var(--plp-margin) 24px;max-width:2000px;margin:0 auto} /* whole container caps at 2000px (PLT live) */
 .plp-title{text-align:left;padding:6px 0 2px}
 .plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
@@ -150,6 +165,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 </footer>
 
 <script src="data.js"></script>
+<div id="anat" hidden><div class="box"></div></div>
 <script src="../../assets/review/comments.js" defer></script>
 <script>
 const AST='../../assets';const IMG='img';
@@ -242,7 +258,7 @@ function qaBtn(cfg,IC){
 }
 function card(p,i,b,cfg,IC){
   const showAI=p.ai&&MODE==='new';
-  return `<article class="pc${cfg.compact?' pc--compact':''}${cfg.flush?' pc--flush':''}">
+  return `<article class="pc${cfg.compact?' pc--compact':''}${cfg.flush?' pc--flush':''}" data-idx="${i}">
     <div class="pc-img">
       <img class="ph" loading="lazy" src="${IMG}/${b}/p${i}.jpg" alt="">
       <div class="pc-actions">${favBtn(cfg,IC)}${qaBtn(cfg,IC)}</div>
@@ -264,19 +280,22 @@ function card(p,i,b,cfg,IC){
 // P-05 review aid, both modes: every card demonstrates at least one card layer,
 // and three down the page (i 1 / 12 / 24) run the lot — badge + AI + was/-% + offer + rating + NDD + swatches.
 // Copies, not mutations. Explicit new-format removals stay removals (Taggstar, SEO, count, USP links); AI watermark stays new-only.
-function demoVariants(list){
-  const SW=['#1D2430','#8A94A8','#C7B9A6','#5A3E36','#2F5D50'];
+const DEMO_SW=['#1D2430','#8A94A8','#C7B9A6','#5A3E36','#2F5D50'];
+function demoVariants(list,deny){
+  deny=deny||{};const SW=DEMO_SW;
   const srcOff=(list.find(x=>x.off&&/[\u00a3$\u20ac]\s?\d/.test(x.off))||{}).off;
   return list.map((p,i)=>{
     const q=Object.assign({},p);
+    if(deny.rating)delete q.rating; if(deny.ndd)delete q.ndd; // brand rules (MAN: no stars, no NDD) apply to real data too
     const cur=(String(q.price).match(/^[^\d]*/)||['\u00a3'])[0]||'\u00a3';
     const n=parseFloat(String(q.price).replace(/[^0-9.]/g,''))||0;
     const mkOff=()=>{const t=cur+(n*.9).toFixed(2);return srcOff?srcOff.replace(/^[^\d]*[\d.,]+/,t):t+' with code EXTRA10'};
     const mkWas=()=>{q.was=q.was||cur+(n?(Math.ceil(n/0.7)-0.01).toFixed(2):'49.99');q.pct=q.pct||'-30%'};
-    if(i===1||i===12||i===24){ // the kitchen-sink cards
-      q.tag=q.tag||'Bestseller';q.ai=true;mkWas();q.off=q.off||mkOff();q.rating=q.rating||'4.6';q.ndd=true;q.sw=SW;q.swMore=8;
-    }else if(!(q.tag||q.ai||q.was||q.off||q.rating||q.ndd)){ // bare card: give it one layer, rotating
-      switch(i%6){case 0:q.tag='New in';break;case 1:q.rating='4.3';break;case 2:q.ndd=true;break;case 3:mkWas();break;case 4:q.off=mkOff();break;default:q.sw=SW.slice(0,3);q.swMore=5;}
+    if(i===1||i===12||i===24){ // the kitchen-sink cards (denied layers stay off)
+      q.tag=q.tag||'Bestseller';q.ai=true;mkWas();q.off=q.off||mkOff();if(!deny.rating)q.rating=q.rating||'4.6';if(!deny.ndd)q.ndd=true;q.sw=SW;q.swMore=8;
+    }else if(!(q.tag||q.ai||q.was||q.off||q.rating||q.ndd)){ // bare card: give it one allowed layer, rotating
+      const opts=[()=>q.tag='New in',()=>{if(deny.rating)q.tag='Trending';else q.rating='4.3'},()=>{if(deny.ndd)mkWas();else q.ndd=true},()=>mkWas(),()=>q.off=mkOff(),()=>{q.sw=SW.slice(0,3);q.swMore=5}];
+      opts[i%opts.length]();
     }
     return q;
   });
@@ -313,12 +332,15 @@ function render(){
   document.getElementById('uspstrip').innerHTML=(F.uspCells||[]).map((c,ci)=>{
     if(MODE==='new'){ // DS USP banner component: banner itself is tappable — no links; codes/countdowns stay inline
       const keep=c.s&&/code|%|\d/i.test(c.s)&&!/^shop/i.test(c.s);
-      return `<div class="usp-cell${ci===0?' rot-on':''}">${c.b}${keep?' · '+c.s:''}</div>`;
+      const noStar=t=>String(t).replace(/\*/g,''); // asterisk only ships with a caveat caption (DS rule) — this data has none
+      const code=keep?noStar(c.s).replace(/(code:?\s*)([A-Za-z0-9]+)/i,'$1<b>$2</b>'):'';
+      return `<div class="usp-cell${ci===0?' rot-on':''}"><span>${noStar(c.b)}${keep?'<span class="usp-sep"></span>'+code:''}</span></div>`;
     }
     return `<div class="usp-cell${ci===0?' rot-on':''}"><b>${c.b}</b>${c.s?`<u>${c.s}</u>`:''}</div>`;
   }).join('');
   const uspBText=MODE==='new'?(F.uspB||F.uspNewB||''):(F.uspB||'');
-  const uspb=document.getElementById('uspb');uspb.hidden=!uspBText;uspb.innerHTML=uspBText;
+  const fmtUsp=t=>String(t).replace(/\*/g,'').replace(/\s*[|\u00b7\u2022-]\s*(?=code)/i,'<span class="usp-sep"></span>').replace(/(code:?\s*)([A-Za-z0-9]+)/i,'$1<b>$2</b>'); // DS banner: dash separator + strong code, no orphan asterisks
+  const uspb=document.getElementById('uspb');uspb.hidden=!uspBText;uspb.innerHTML=MODE==='new'?fmtUsp(uspBText):uspBText;
   syncUspH();
   document.querySelector('.bc').innerHTML=F.crumb.map(c=>`<a href="#">${c}</a><span class="sep">/</span>`).join('')+`<span class="cur">${F.title}</span>`;
   const h1=document.querySelector('.plp-title h1');
@@ -374,7 +396,9 @@ function render(){
   document.getElementById('ftbrands').hidden=(b!=='debenhams');
   grid.style.setProperty('--cols',cfg.cols);
   grid.className=`grid gap-${cfg.gap}${cfg.bleed?' bleed':''}${view===1?' view-1':''}`;
-  const plist=demoVariants(F.products); // both modes — live and new must carry the same per-product layers (parity rule, 03 Sep); only explicit removals differ
+  const deny=b==='boohooman'?{rating:1,ndd:1}:{}; // MAN brand rule: no star ratings, no Get-It-Tomorrow
+  const plist=demoVariants(F.products,deny); // both modes — live and new carry the same per-product layers (parity rule, 03 Sep); only explicit removals differ
+  window.__plist=plist;window.__deny=deny;
   grid.innerHTML=plist.map((p,i)=>card(p,i,b,cfg,IC)).join('');
   const lm=document.querySelector('.more .bd');
   lm.className='bd '+((MODE==='live'&&cfg.loadMore==='sec')?'sec':'pri');
@@ -389,6 +413,53 @@ function render(){
   try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE},'*')}catch(e){}
   window.REVIEW_CTX={proj:'p05',key:b+':'+MODE}; // pinned review comments scope to fascia+mode
   window.PLPC&&PLPC.refresh();
+}
+// --- card anatomy modal (review tooling): click a card in the new format to see the component usage ---
+const anat=document.getElementById('anat');
+anat.addEventListener('click',e=>{if(e.target===anat)anat.hidden=true});
+addEventListener('keydown',e=>{if(e.key==='Escape')anat.hidden=true});
+document.querySelector('.grid').addEventListener('click',e=>{
+  if(MODE!=='new')return;
+  const c=e.target.closest('.pc');if(!c||!c.dataset.idx)return;
+  e.preventDefault();showAnatomy(+c.dataset.idx,c);
+});
+function showAnatomy(i,cardEl){
+  const b=document.documentElement.getAttribute('data-brand');
+  const cfg=CFG.new[b],q=(window.__plist||[])[i],deny=window.__deny||{};
+  if(!q)return;
+  // measure: this instance vs the same card with every allowed layer on
+  const full=Object.assign({},q,{tag:q.tag||'Bestseller',ai:true,was:q.was||'£49.99',pct:q.pct||'-30%',off:q.off||'£00.00 with code EXTRA10',sw:q.sw||DEMO_SW,swMore:q.swMore||8});
+  if(!deny.rating)full.rating=q.rating||'4.6'; if(!deny.ndd)full.ndd=true;
+  const probe=document.createElement('div');
+  probe.style.cssText='position:absolute;left:-9999px;top:0;width:'+cardEl.offsetWidth+'px;visibility:hidden';
+  probe.innerHTML=card(full,i,b,cfg,icons(cfg));
+  document.body.appendChild(probe);
+  const fullH=probe.firstElementChild.offsetHeight,thisH=cardEl.offsetHeight;
+  probe.remove();
+  const rows=[
+    ['Image',1,''],
+    ['Wishlist',1,cfg.fav+' / '+cfg.favShape],
+    ['Quick add',cfg.qa!=='none',cfg.qa!=='none'?cfg.qa:'off for this fascia'],
+    ['Badge',!!q.tag,q.tag||''],
+    ['AI watermark',!!q.ai,q.ai?'new-format addition':''],
+    ['Taggstar',false,'removed in the new format'],
+    ['Brand line',!!(cfg.brand&&q.brand),cfg.brand?(q.brand||'no brand on this product'):'off for this fascia'],
+    ['Name',1,''],['Price',1,''],
+    ['Was / -%',!!q.was,q.was?q.was+' '+(q.pct||''):''],
+    ['Offer line',!!q.off,''],
+    ['Swatches',!!q.sw,q.sw?q.sw.length+(q.swMore?' +'+q.swMore:'')+' · '+cfg.swatch:''],
+    ['Rating',!!q.rating,deny.rating?'removed — MAN brand rule':(q.rating||'')],
+    ['Get It Tomorrow',!!q.ndd,deny.ndd?'removed — MAN brand rule':''],
+  ];
+  const on=rows.filter(r=>r[1]).length;
+  const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  anat.querySelector('.box').innerHTML=
+    '<h3>Card component usage <button aria-label="Close">×</button></h3>'+
+    '<div class="sub">'+esc(q.name)+' — '+b+' · new format</div>'+
+    rows.map(r=>'<div class="row"><span class="st '+(r[1]?'on':'off')+'">'+(r[1]?'✓':'—')+'</span><span class="nm">'+r[0]+'</span><span class="why">'+esc(r[2])+'</span></div>').join('')+
+    '<div class="sum">'+on+' of '+rows.length+' layers on · this card <b>'+thisH+'px</b> vs all layers on <b>'+fullH+'px</b> → <b>'+Math.max(0,fullH-thisH)+'px saved</b> ('+(fullH?Math.round((fullH-thisH)/fullH*100):0)+'%)</div>';
+  anat.querySelector('h3 button').onclick=()=>anat.hidden=true;
+  anat.hidden=false;
 }
 window.__setState=(brand,mode,cat)=>{ if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
 addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat); });
