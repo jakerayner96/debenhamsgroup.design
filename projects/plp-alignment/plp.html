@@ -271,7 +271,7 @@ function render(){
   const h1=document.querySelector('.plp-title h1');
   h1.textContent=F.title; h1.style.textTransform=cfg.titleCaps?'uppercase':'';
   document.querySelector('.plp-title .count').textContent=F.count;
-  seo.hidden=!cfg.seo;
+  seo.hidden=!cfg.seo||MODE==='new'; // SEO copy is live-only — dropped from the new format
   document.getElementById('seotext').textContent=F.seoText||'';
   seo.classList.toggle('seo--line',MODE==='new');
   // category nav — per-fascia default, overridable from the strip
