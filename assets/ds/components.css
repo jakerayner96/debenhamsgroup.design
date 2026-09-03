@@ -71,6 +71,8 @@
 .pc-price .was{font-weight:var(--w-mid);text-decoration:line-through}
 .pc-price .pct{font-weight:var(--w-regular)}
 .pc-offer{color:var(--price-sale);font-weight:var(--w-regular)}
+.pc-ndd{display:flex;gap:6px;align-items:center;font-weight:var(--w-regular);color:var(--text-primary)} /* inherits the card text size — same as product name */
+.pc-ndd img{width:16px;height:16px;object-fit:contain}
 /* colour swatches */
 .pc-swatches{display:flex;gap:8px;align-items:center;height:20px}
 .pc-swatches .set{display:flex;gap:4px}
