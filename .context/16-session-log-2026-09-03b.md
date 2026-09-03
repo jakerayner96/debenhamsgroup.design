@@ -81,3 +81,7 @@ Debenhams USP per Figma 13005-163125/165658/165567: layer 1 = flat #F8F8F8 strip
 - **Debenhams live per import**: Load More = white with 1px Grey-3 keyline, 16px SemiBold caps, 20/16 padding (13005-165375); Subscribe = Primary Aqua, 16px SemiBold caps (165398); grid gaps 16px columns / 18.5px rows; 5 per row at 1440 confirmed.
 - **Footer payments are the real badge PNGs** from the footer import (165380) — visa→gpay incl. Pay+, in DS assets (`icons/pay/`) + app-store badges; site footer demo updated too.
 - **boohooMAN live card corrected** per 13003-149344: Debenhams card format with bookmark in the white circle, no Add button (Add stays in earlier design refs only).
+
+## Part 10 (same day) — new-format mobile filter = floating pills
+
+Brand Room Figma 739-92223 is the new-format mobile sort & filter: scrolling row of white radius-42 pills with soft shadow — NDD with an inline mini-toggle, Sort & Filter with the DS filter icon, then per-fascia filter chips with 12px chevrons, all opening the combined sheet. Radius stays 42 on every fascia by design (explicitly round even on square-radius brands). Replaces the NDD+viewtoggle+button row; view toggle parked until the grid-view Figma pass. Also fixed `.seo[hidden]` losing to the one-line flex display.
