@@ -112,6 +112,14 @@
 .hd-usp b{font-weight:var(--w-strong)}
 @media(min-width:1024px){.hd-usp{font-size:14px}}
 .hd-usp--b{background:var(--usp-b-bg);color:var(--usp-b-fg)}
+/* USP strip — the multi-cell banner from the Header Figma (cells alternate usp-a / usp-a2) */
+.usp-strip{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;font-family:var(--font-family-base);text-align:center}
+.usp-cell{padding:9px 16px;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:12px;font-weight:var(--w-regular);text-transform:var(--cta-case)}
+.usp-cell:nth-child(even){background:var(--usp-a-bg2,var(--usp-a-bg))}
+.usp-cell b{font-weight:var(--w-strong);font-size:13px}
+.usp-cell u{text-underline-offset:2px;cursor:pointer}
+@media(min-width:1024px){.usp-cell{font-size:13px}.usp-cell b{font-size:14px}}
+@media(max-width:1023px){.usp-strip{grid-auto-flow:row;grid-template-columns:repeat(2,1fr);grid-auto-columns:unset}.usp-cell:nth-child(3):last-child{grid-column:1/-1}}
 .hd-bar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;gap:16px}
 .hd-left{display:flex;align-items:center;gap:16px;min-width:0}
 .hd-burger{width:24px;height:24px;min-width:24px;background:none;border:none;padding:0;cursor:pointer}
@@ -187,10 +195,13 @@
 .roundel--onimage i::after{content:'';position:absolute;inset:0;border-radius:var(--radius-pill);background:rgba(0,0,0,.3)}
 .roundel--onimage.roundel--display span{font-weight:var(--w-strong);text-transform:uppercase;letter-spacing:-.03em;font-size:16px}
 @media(min-width:1024px){.roundel--onimage span{font-size:18px}.roundel--onimage.roundel--display span{font-size:20px}}
-.catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;border:var(--border-w) solid var(--border-default);border-radius:var(--radius-pill);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--cta-case)}
-.catpill:hover{border-color:var(--border-strong)}
-.catpill--solid{background:var(--badge-bg);color:var(--badge-fg);border-color:transparent} /* PLT: solid tonal pills, like the Petite badge */
-.catpill--solid:hover{border-color:transparent;filter:brightness(.97)}
+.cat-row--edge{gap:18px;justify-content:flex-start}
+.cat-row--edge .roundel{width:132px}
+.cat-row--edge .roundel i{width:120px;height:120px}
+@media(min-width:1024px){.cat-row--edge .roundel{width:164px}.cat-row--edge .roundel i{width:150px;height:150px}}
+.catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;background:var(--badge-bg);border:var(--border-w) solid var(--badge-border);border-radius:var(--radius-default);font-size:14px;font-weight:var(--w-regular);color:var(--badge-fg);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--cta-case)} /* badge format on every fascia — never fully rounded */
+.catpill:hover{filter:brightness(.97)}
+.catpill--solid{} /* alias — pills are badge-format everywhere now */
 .catlinks{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;padding:8px 0;font-family:var(--font-family-base)}
 .catlinks a{font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:underline;text-underline-offset:3px;white-space:nowrap;text-transform:var(--cta-case)}
 

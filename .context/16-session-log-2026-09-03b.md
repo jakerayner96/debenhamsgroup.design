@@ -61,3 +61,12 @@ Prototype now has a **Live now ⇄ New format** switch: LIVE replicates each fas
 - **Live mode now renders each fascia's real PLP**: Debenhams = Autumn campaign (sister-brand products, photo roundels, Get It Tomorrow lines, ratings); boohooMAN = New Season (category pills, full-width Add, Plus Sizes/Back In Stock badges, EXTRATEN caps offers); KM = Summer Dresses (OUTLET/Petite, no percent labels); Warehouse = NEW IN caps, 44 products, no category row; boohoo/PLT/Brand Room per capture. New format uses the same real data on DS components; the AI-Generated banner demos on one card per fascia in New mode only.
 - **Signed-off buttons ingested** (colour-alignment `brand-colours.html`): Debenhams primary = **Primary Aqua + black ink** (teal = links/focus only, now split into literal link tokens); **boohoo buttons are black** (pink stays accent); **KM palette corrected to #D24508/#892D05** with 400-weight sentence-case buttons (`--w-btn`); PLT ink #FFF; boohooMAN accent green #01FE8A recorded as brand-primary. These drive every CTA in the New format (Load more, Add, drawer, Subscribe).
 - **Google Sans adopted as the Group-UX chrome font** (site + review strips, Montserrat fallback); review strip is now strictly black & white — no aqua.
+
+## Part 7 (same day) — live-fidelity feedback round
+
+- **USP strips restored to the Figma component**: multi-cell grid (`.usp-strip`, cells alternate `--usp-a-bg/--usp-a-bg2`, bold line + underlined action) with real per-fascia cells; PLT keeps its countdown bar above; boohooMAN grey EXTRATEN code bar below; KM/boohoo black cells (token flips).
+- **Debenhams live CTAs**: Load more = secondary; Subscribe/Load more uppercase in live (`subCaps`); Get It Tomorrow + brand + name all 14pt (compact keeps 12).
+- **Debenhams roundels**: six, larger (150px desktop), tighter 18px gaps, left-aligned running to the right edge (`.cat-row--edge`).
+- **Category pills are badge-format on every fascia** — badge tokens + `radius-default`, never fully rounded (PLT cream, others white/keyline).
+- **New-format wishlist/quick-add = PLT chip standard for all fascias except Debenhams** (bookmark fascias keep their glyph inside the chip); Debenhams keeps circles.
+- **New format**: SEO clamps to one line with Read more at the end; Show more filters always inline after the last dropdown.
