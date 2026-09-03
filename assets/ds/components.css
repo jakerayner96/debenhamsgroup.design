@@ -36,7 +36,7 @@
 .pc-iconbtn img{width:16px;height:16px;display:block;object-fit:contain}
 .pc-iconbtn:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 .pc-iconbtn--sq{border-radius:var(--radius-default)} /* boohooMAN / KM / Brand Room run square wishlist buttons */
-.pc-iconbtn--chip{width:24px;height:24px;min-width:24px;border-radius:0;background:var(--badge-bg);box-shadow:none;backdrop-filter:blur(2px)} /* PLT: cream translucent square chips (Figma 3-574) */
+.pc-iconbtn--chip{width:24px;height:24px;min-width:24px;border-radius:var(--radius-default);background:var(--badge-bg);box-shadow:none;backdrop-filter:blur(2px)} /* chip follows brand radius: 4px MAN/Deb-side, square PLT/Brand Room (Figma 3-574) */
 .pc-iconbtn--chip img{width:13px;height:13px}
 .pc-fav--plain{background:none;box-shadow:none;width:28px;height:28px;min-width:28px}
 .pc-fav--plain img{width:22px;height:22px;object-fit:contain}
@@ -219,7 +219,7 @@
 .cat-row--edge .roundel{width:132px}
 .cat-row--edge .roundel i{width:120px;height:120px}
 @media(min-width:1024px){.cat-row--edge{justify-content:center}.cat-row--edge .roundel{width:164px}.cat-row--edge .roundel i{width:150px;height:150px}} /* desktop: centered */
-.catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;background:var(--badge-bg);border:var(--border-w) solid var(--badge-border);border-radius:var(--radius-default);font-size:14px;font-weight:var(--w-regular);color:var(--badge-fg);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--cta-case)} /* badge format on every fascia — never fully rounded */
+.catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;background:var(--surface-media);border:none;border-radius:var(--radius-default);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--cta-case)} /* Grey 1 pills — never fully rounded */
 .catpill:hover{filter:brightness(.97)}
 .catpill--solid{} /* alias — pills are badge-format everywhere now */
 .catlinks{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;padding:8px 0;font-family:var(--font-family-base)}

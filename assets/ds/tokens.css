@@ -76,6 +76,7 @@
   --brand-name:'boohooMAN';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:500;--w-mid:400;--w-strong:700;
   --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#F2F2F2;--usp-b-fg:#0F0F0F;
+  --badge-bg:rgba(255,255,255,.85);--badge-border:transparent; /* MAN: white 85% badges + wishlist chip, 4px radius */
   --brand-primary:#01FE8A;/* MAN accent green — signed-off 'new' + card button */--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
   --border-action:#000;--border-focus:#000;--text-link:#000;--text-link-hover:#242424;--icon-action:#000;
   --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
