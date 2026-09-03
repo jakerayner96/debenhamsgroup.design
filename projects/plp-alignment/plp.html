@@ -300,9 +300,9 @@ function render(){
   showmore.hidden=!cfg.moreBelow;
   if(MODE==='live'){
     mobsplit.style.display='';
-    const pills=F.filters.slice(0,2).map(f=>`<button class="sf-dd" style="border-radius:var(--radius-pill);min-width:0;height:36px">${f}<i></i></button>`).join('');
-    mobbar.innerHTML=cfg.mobPills==='none'?'':(cfg.mobPills==='nondd'?pills:`<span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>`+pills);
-    mobbar.style.display=cfg.mobPills==='none'?'none':'';
+    // live mobile: NDD toggle only — Size/Colour pills removed per review
+    mobbar.innerHTML=cfg.mobPills==='full'?`<span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>`:'';
+    mobbar.style.display=cfg.mobPills==='full'?'':'none';
   } else {
     mobsplit.style.display='none';mobbar.style.display='';
     // floating pill row — Brand Room Figma 739-92223
