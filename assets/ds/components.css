@@ -3,18 +3,20 @@
    Consumes tokens.css only — no raw colour, font or radius values
    (the one exception is flagged inline). Load AFTER tokens.css.
 
-   C-01 Button (.bd) — placeholder pending the Figma node audit
+   C-01 Button (.bd) — signed-off: colour-alignment brand-colours (post-KM, 26 Aug)
    (DS file → BUTTONS (new) · 9144-1807). Spec on the site: #button.
    New components built in project branches get promoted into this
    file when the brief merges.
    ============================================================ */
 
 /* C-01 Button */
-.bd{font-family:var(--font-family-base);font-weight:var(--w-btn,var(--w-strong));font-size:14px;padding:13px 26px;border-radius:var(--radius-default);text-transform:var(--cta-case);letter-spacing:.02em;border:none;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
+/* C-01 golden truth (colour-alignment brand-colours, signed-off 26 Aug): 50px, 16/24, 4px radius on
+   EVERY fascia (PLT/Brand Room square-radius modes do not zero buttons), primary uppercase (KM sentence). */
+.bd{font-family:var(--font-family-base);font-weight:var(--w-btn,var(--w-strong));font-size:16px;line-height:24px;padding:12px 24px;border-radius:4px;text-transform:var(--case-btn1,uppercase);letter-spacing:.02em;border:1px solid transparent;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
 .bd.pri{background:var(--surface-action);color:var(--text-on-action)}
 .bd.pri:hover{background:var(--surface-action-hover)}
 .bd.pri:active{background:var(--surface-action-pressed)}
-.bd.sec{background:var(--surface-page);color:var(--text-link);box-shadow:inset 0 0 0 1.5px var(--border-action)}
+.bd.sec{background:var(--surface-page,#FFF);color:#000;border-color:var(--btn-outline,var(--border-action));text-transform:var(--case-btn2,none)} /* secondary: white, brand outline, black label, sentence case */
 .bd.dis{background:var(--surface-action-disabled);color:#767676;cursor:not-allowed} /* #767676: golden-truth disabled label — reconcile vs text/disabled Grey 3, see Button spec */
 .bd.spn{background:var(--surface-action);color:var(--text-on-action);min-width:110px}
 .bd.spn i{display:inline-block;width:13px;height:13px;border:2px solid var(--text-on-action);border-right-color:transparent;border-radius:99px;animation:sp .7s linear infinite;vertical-align:-2px}
@@ -78,10 +80,13 @@
 /* colour swatches */
 .pc-swatches{display:flex;gap:8px;align-items:center;height:20px}
 .pc-swatches .set{display:flex;gap:4px}
-.pc-swatch{width:20px;height:20px;border:var(--border-w) solid var(--border-subtle);border-radius:var(--radius-default);padding:1px;background:var(--surface-raised)}
-.pc-swatch i{display:block;width:100%;height:100%;border-radius:calc(var(--radius-default) - 1px)}
+/* Figma 921-7470 exact: 20px, 4px radius (3px fill) on every fascia, Grey 2 border,
+   selected = black border + white inner keyline, 4px swatch gaps, +N 14px at 8px gap */
+.pc-swatch{width:20px;height:20px;border:var(--border-w) solid var(--border-subtle);border-radius:4px;padding:0;background:var(--surface-raised);overflow:hidden}
+.pc-swatch i{display:block;width:100%;height:100%;border-radius:3px}
 .pc-swatch.on{border-color:var(--icon-primary)}
-.pc-more{font-weight:var(--w-regular)}
+.pc-swatch.on i{border:1px solid #FFF}
+.pc-more{font-weight:var(--w-regular);font-size:14px}
 .pc-swatches--round .pc-swatch,.pc-swatches--round .pc-swatch i{border-radius:var(--radius-pill)} /* PLT runs circle swatches */
 .pc-swatches--round .pc-swatch{border-color:transparent}
 .pc-swatches--round .pc-swatch.on{border-color:var(--icon-primary)}
@@ -150,8 +155,8 @@
 .hd-logo{height:16px;width:auto;max-width:130px;object-fit:contain;object-position:left;display:block} /* Header component: mobile ~16px */
 .hd-icons{display:flex;align-items:center}
 .hd-icons button{width:38px;height:36px;display:grid;place-items:center;background:none;border:none;cursor:pointer;padding:0}
-.hd-icons img{width:24px;height:24px;display:block;object-fit:contain}
-.hd-icons img.favic{width:21px;height:21px} /* wishlist glyph runs large — optically match siblings */
+.hd-icons img{width:var(--hd-icon,24px);height:var(--hd-icon,24px);display:block;object-fit:contain}
+.hd-icons img.favic{width:var(--hd-favic,21px);height:var(--hd-favic,21px)} /* wishlist glyph runs large — optically match siblings */
 .hd-icons button:focus-visible,.hd-burger:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 /* desktop bar (≥1024): logo · centred pill search · icons */
 .hd-bar--desktop{height:88px;padding:16px var(--plp-margin,16px);max-width:2000px;margin:0 auto}
@@ -258,7 +263,7 @@
 
 /* header bag / wishlist count */
 .hd-count{position:relative}
-.hd-count::after{content:attr(data-n);position:absolute;top:4px;right:2px;width:14px;height:14px;border-radius:50%;background:var(--icon-primary);color:var(--text-inverse);font-size:8px;font-weight:var(--w-mid);display:grid;place-items:center;padding:0;line-height:1} /* always 1:1 */
+.hd-count::after{content:attr(data-n);position:absolute;top:4px;right:2px;width:var(--hd-count,14px);height:var(--hd-count,14px);border-radius:50%;background:var(--icon-primary);color:var(--text-inverse);font-size:var(--hd-count-fs,8px);font-weight:var(--w-mid);display:grid;place-items:center;padding:0;line-height:1} /* always 1:1 */
 
 /* ============================================================
    C-08 Footer (.ft) — Figma 664-1064 (Debenhams) · live-checked
@@ -267,7 +272,9 @@
    payment strip, centre logo + copyright. Tokens carry the brand.
    ============================================================ */
 .ft{background:var(--surface-page);color:var(--text-primary);font-family:var(--font-family-base);margin-top:64px}
-.ft-news,.ft-cols,.ft-brands,.ft-pay,.ft-base{max-width:2000px;margin-left:auto;margin-right:auto}
+.ft-news,.ft-cols,.ft-brands,.ft-pay,.ft-apps,.ft-base{max-width:2000px;margin-left:auto;margin-right:auto}
+.ft-apps{display:flex;gap:12px;align-items:center;justify-content:center;padding:18px var(--plp-margin,16px) 0}
+.ft-apps img{height:40px;width:auto;display:block}
 .ft a{color:inherit;text-decoration:none}
 .ft a:hover{text-decoration:underline}
 .ft-news{background:var(--ft-band);padding:40px var(--plp-margin,16px);display:grid;gap:24px;grid-template-columns:1fr;align-items:start}
@@ -275,7 +282,7 @@
 .ft-news h3{font-size:26px;font-weight:var(--w-strong);letter-spacing:-.01em;margin-bottom:10px}
 .ft-news p{font-size:14px;font-weight:var(--w-regular);max-width:420px}
 .ft-sub{display:flex;gap:12px;align-items:stretch}
-.ft-sub input{flex:1;min-width:0;height:48px;padding:0 16px;border:var(--border-w) solid var(--border-default);border-radius:var(--radius-default);background:var(--surface-raised);font-family:inherit;font-size:14px;color:var(--text-primary)}
+.ft-sub input{flex:1;min-width:0;height:50px;padding:0 16px;border:var(--border-w) solid var(--border-default);border-radius:var(--radius-default);background:var(--surface-raised);font-family:inherit;font-size:14px;color:var(--text-primary)}
 .ft-sub input::placeholder{color:var(--text-secondary)}
 .ft-sub .bd{padding:0 26px}
 .ft-legal{font-size:11px;color:var(--text-secondary);margin-top:10px;max-width:640px}

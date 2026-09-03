@@ -37,7 +37,15 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 #anat .sum{margin-top:12px;padding:10px 12px;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#F7F7F7;line-height:1.5}
 #anat .sum b{color:#7BE7D8}
 .plp{padding:0 var(--plp-margin) 24px;max-width:2000px;margin:0 auto} /* whole container caps at 2000px (PLT live) */
-.plp-title{text-align:left;padding:6px 0 2px}
+.plp-title{text-align:left;padding:6px 0 2px;position:relative}
+/* grid-view selector — Figma PLP-Grid-View 194-2513: 16px icon right of the title, mobile only; cycles 2 → 3 → 1 columns */
+.gt{display:none;position:absolute;right:0;top:10px;width:24px;height:24px;padding:4px;background:none;border:none;cursor:pointer}
+.gt svg{width:16px;height:16px;display:block}
+.gt svg rect{fill:var(--icon-primary)}
+@media(max-width:767px){.gt{display:block}
+  .grid[data-mcols="3"]{grid-template-columns:repeat(3,1fr)}
+  .grid[data-mcols="1"]{grid-template-columns:1fr}
+}
 .plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
 .plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
 .seo{color:var(--text-secondary);font-size:13px;max-width:860px;margin:6px 0 2px}
@@ -114,7 +122,8 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 
 <main class="plp">
   <nav class="bc" aria-label="Breadcrumb"><a href="#">Home</a><span class="sep">/</span><a href="#">New In</a><span class="sep">/</span><a href="#">Womens New In</a><span class="sep">/</span><span class="cur">New In Dresses</span></nav>
-  <div class="plp-title"><h1>New In Dresses</h1><div class="count">1,284 styles</div></div>
+  <div class="plp-title"><h1>New In Dresses</h1><div class="count">1,284 styles</div>
+    <button class="gt" id="gt" aria-label="Change grid view"></button></div>
   <p class="seo" id="seo" hidden><span class="t" id="seotext"></span> <u style="flex:none">Read more</u></p>
 
   <div class="cat-wrap"><div id="catnav"></div></div>
@@ -131,7 +140,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
   <div class="sf-bar only-mobile" id="mobbar"></div>
 
   <div class="grid" id="grid"></div>
-  <div class="more"><button class="bd pri">Load more</button></div>
+  <div class="more"><button class="bd sec">Load more</button></div>
 </main>
 
 <!-- ============ C-08 FOOTER — one template, brand tokens ============ -->
@@ -160,6 +169,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
   <div class="ft-brands" id="ftbrands" hidden>
     <img src="../../assets/brands/dorothyperkins.svg" alt="Dorothy Perkins"><img src="../../assets/brands/wallis.svg" alt="Wallis"><img src="../../assets/brands/oasis.svg" alt="Oasis"><img src="../../assets/brands/coast.svg" alt="Coast"><img src="../../assets/brands/burton.svg" alt="Burton"><img src="../../assets/brands/misspap.svg" alt="Misspap"><img src="../../assets/brands/warehouse.svg" alt="Warehouse"><img src="../../assets/brands/nastygal.svg" alt="Nasty Gal">
   </div>
+  <div class="ft-apps"><img src="../../assets/ds/icons/apps/app-store.svg" alt="Download on the App Store"><img src="../../assets/ds/icons/apps/google-play.png" alt="Get it on Google Play"></div>
   <div class="ft-pay"><img src="../../assets/ds/icons/pay/visa.png" alt="visa"><img src="../../assets/ds/icons/pay/mastercard.png" alt="mastercard"><img src="../../assets/ds/icons/pay/amex.png" alt="amex"><img src="../../assets/ds/icons/pay/maestro.png" alt="maestro"><img src="../../assets/ds/icons/pay/visa-electron.png" alt="visa-electron"><img src="../../assets/ds/icons/pay/apple-pay.png" alt="apple-pay"><img src="../../assets/ds/icons/pay/payplus.png" alt="payplus"><img src="../../assets/ds/icons/pay/paypal.png" alt="paypal"><img src="../../assets/ds/icons/pay/klarna.png" alt="klarna"><img src="../../assets/ds/icons/pay/clearpay.png" alt="clearpay"><img src="../../assets/ds/icons/pay/google-pay.png" alt="google-pay"></div>
   <div class="ft-base"><img class="logo" src="../../assets/brands/debenhams.svg" alt=""><small>Copyright © 2026 <span class="bn">PrettyLittleThing</span></small></div>
 </footer>
@@ -190,7 +200,7 @@ const FASCIA={
   nav:['NEW ARRIVALS','SALE','CLOTHING','AUTUMN','DRESSES','CO-ORDS','TOPS','TRENDING','ATHLEISURE','SHOP BY FIT','BEAUTY','LIFESTYLE','BRANDS'],
   cats:[],filters:['Category','Colour','Style','Body Fit','Size'],
   seoText:'The search stops here. Pieces that instantly elevate your look — we\'re constantly curating the most relevant going-out silhouettes, so you\'re always first to the newest shapes.',
-  uspTop:'ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY · 00:12:16:29',uspCells:[{b:'25% OFF ALMOST EVERYTHING*'},{b:'EXTRA 20% OFF* AUTUMN ESSENTIALS, CODE: COSY20'},{b:'£5.99 ROYALTY - FREE NEXT DAY DELIVERY AND FREE RETURNS FOR 12 MONTHS'}],uspNewB:'EXTRA 20% OFF* AUTUMN ESSENTIALS&nbsp;·&nbsp;CODE: <b>COSY20</b>'},
+  uspTop:'ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY · 00:12:16:29',uspCells:[{b:'25% OFF ALMOST EVERYTHING*'},{b:'EXTRA 20% OFF* AUTUMN ESSENTIALS, CODE: COSY20'},{b:'£5.99 ROYALTY - FREE NEXT DAY DELIVERY AND FREE RETURNS FOR 12 MONTHS'}]},
  karenmillen:{title:'Summer Dresses',count:'588 products',crumb:['Home','Womens','Womens Clothing','Dresses'],
   nav:['OUTLET','NEW IN','CLOTHING','DRESSES','OCCASION WEAR','ACCESSORIES','BEAUTY','BRANDS','HOME'],
   cats:[],filters:['Style','Size','Body Fit','Brands','Colour'],seo:1,
@@ -260,7 +270,7 @@ function card(p,i,b,cfg,IC){
   const showAI=p.ai&&MODE==='new';
   return `<article class="pc${cfg.compact?' pc--compact':''}${cfg.flush?' pc--flush':''}" data-idx="${i}">
     <div class="pc-img">
-      <img class="ph" loading="lazy" src="${IMG}/${b}/p${i}.jpg" alt="">
+      <img class="ph" loading="lazy" src="${IMG}/${b}/p${p.img!==undefined?p.img:i}.jpg" alt="">
       <div class="pc-actions">${favBtn(cfg,IC)}${qaBtn(cfg,IC)}</div>
       ${p.tag?`<div class="pc-badges${showAI?' has-ai':''}"><span class="badge">${p.tag}</span></div>`:''}
       ${showAI?'<div class="badge-ai"><b>AI</b> Generated</div>':''}
@@ -362,6 +372,8 @@ function render(){
   h1.textContent=F.title; h1.style.textTransform=cfg.titleCaps?'uppercase':'';
   const cnt=document.querySelector('.plp-title .count');cnt.textContent=F.count;cnt.style.display=(MODE==='new')?'none':'';
   seo.hidden=!cfg.seo||MODE==='new'; // SEO copy is live-only — dropped from the new format
+  if(b==='plt'&&MODE==='live'){document.querySelector('.more').after(seo);seo.style.margin='18px auto 6px';} // PLT live: SEO sits under Load more
+  else{document.querySelector('.plp-title').after(seo);seo.style.margin='';}
   document.getElementById('seotext').textContent=F.seoText||'';
   seo.classList.toggle('seo--line',MODE==='new');
   // category nav — per-fascia default, overridable from the strip
@@ -416,7 +428,7 @@ function render(){
   window.__plist=plist;window.__deny=deny;
   grid.innerHTML=plist.map((p,i)=>card(p,i,b,cfg,IC)).join('');
   const lm=document.querySelector('.more .bd');
-  lm.className='bd '+((MODE==='live'&&cfg.loadMore==='sec')?'sec':'pri');
+  lm.className='bd sec'; // load more is the secondary button — every fascia, both modes (golden truth)
   lm.style.cssText=(MODE==='live'&&b==='debenhams')
     ?'background:#FFF;color:#000;box-shadow:inset 0 0 0 1px #B5B5B5;font-size:16px;font-weight:var(--w-strong);padding:16px 20px;text-transform:uppercase;border-radius:4px'
     :((MODE==='live'&&cfg.subCaps)?'text-transform:uppercase':'');
@@ -476,6 +488,17 @@ function showAnatomy(i,cardEl){
   anat.querySelector('h3 button').onclick=()=>anat.hidden=true;
   anat.hidden=false;
 }
+// grid-view selector: mobile column cycle, persisted
+let MCOLS=+(localStorage.getItem('plpMcols')||2);
+const gtBtn=document.getElementById('gt'),gridEl=document.querySelector('.grid');
+const GT_ICONS={ // icon shows the NEXT view (Figma: 3x3 / 2x2 / full-width rows of rounded 1px-radius cells)
+  2:'<svg viewBox="0 0 16 16">'+[0,5.5,11].map(y=>[0,5.66,11.33].map(x=>`<rect x="${x}" y="${y}" width="4.67" height="4.67" rx="1"/>`).join('')).join('')+'</svg>',
+  3:'<svg viewBox="0 0 16 16">'+[0,8.5].map(y=>[0,8.5].map(x=>`<rect x="${x}" y="${y}" width="7.5" height="7.5" rx="1"/>`).join('')).join('')+'</svg>',
+  1:'<svg viewBox="0 0 16 16">'+[0,5.5,11].map(y=>`<rect x="0" y="${y}" width="16" height="4.67" rx="1"/>`).join('')+'</svg>'
+};
+function applyMcols(){gridEl.setAttribute('data-mcols',MCOLS);gtBtn.innerHTML=GT_ICONS[{2:2,3:3,1:1}[MCOLS]]||GT_ICONS[2];}
+gtBtn.addEventListener('click',()=>{MCOLS={2:3,3:1,1:2}[MCOLS]||2;localStorage.setItem('plpMcols',MCOLS);applyMcols();});
+applyMcols();
 window.__setState=(brand,mode,cat)=>{ if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
 addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat); });
 matchMedia('(max-width:1023px)').addEventListener('change',render);

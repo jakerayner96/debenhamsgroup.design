@@ -57,12 +57,18 @@
   /* link/check/focus colour (Debenhams: CTA Aqua teal) — other fascias re-derive from their action */
   --border-action:#00787D;--border-focus:#00787D;
   --text-link:#00787D;--text-link-hover:#00565A;--icon-action:#00787D;
+  /* button component — signed-off golden truth (colour-alignment brand-colours):
+     SemiBold 600 · primary UPPERCASE · secondary sentence case · 4px radius every fascia ·
+     secondary = white + 1px brand outline + black label. KM alone: 400, sentence case both. */
+  --btn-outline:#70BEB3;--case-btn1:uppercase;--case-btn2:none;
 }
 /* Layer 2: per-fascia overrides. CTA/pressed/on/light-1/light-3/paper/type/radius/case are the
    signed-off Colour Alignment set (post-KM review, Aug 26). Full 12-slot families exist for
    Debenhams + boohoo; remaining slots for the other fascias land as each is audited. */
 [data-brand="debenhams"]{/* default — no overrides */}
 [data-brand="boohoo"]{
+  --text-on-action:#FFF; /* golden: primary ink is white */
+  --w-btn:600;--btn-outline:#000; /* golden button truth */
   --brand-name:'boohoo';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:500;--w-mid:400;--w-strong:700;
   --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#FFE0EB;--usp-b-fg:#0F0F0F;
@@ -73,6 +79,8 @@
   --nav-bg:#FFF;
 }
 [data-brand="boohooman"]{
+  --text-on-action:#FFF; /* golden: primary ink is white */
+  --w-btn:600;--btn-outline:#000; /* golden button truth */
   --brand-name:'boohooMAN';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:500;--w-mid:400;--w-strong:700;
   --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#F2F2F2;--usp-b-fg:#0F0F0F;
@@ -83,6 +91,11 @@
   --nav-bg:#FFF;
 }
 [data-brand="plt"]{
+  --w-btn:600;--btn-outline:#360502; /* golden button truth */
+  /* PLT sand rule (03 Sep): anything grey or white on other fascias renders in the sand family here —
+     white → warm white, Grey 05 → sand, Grey 1 → darker sand (darker hex DRAFT pending sign-off) */
+  --surface-raised:#FFFDF7;--surface-sunken:#FAF5E7;--surface-media:#F0E9D6;
+  --hd-icon:16px;--hd-favic:15px;--hd-count:12px;--hd-count-fs:9px; /* PLT header icon set — PLP-Grid-View 158-8458 */
   --brand-name:'PrettyLittleThing';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:400;--w-strong:700;--cta-case:uppercase;
   --usp-a-bg:#F1C59E;--usp-a-bg2:#FFE4D2;--usp-a-fg:#0F0F0F;--usp-b-bg:#FFE4D2;--usp-b-fg:#0F0F0F; /* warm peach + light cream — from Header Figma */
@@ -97,8 +110,9 @@
   --brand-light-3:#FFD5CD;--brand-light-2:#FFE4D2;--brand-light-1:#C77E75;--brand-primary-dark:#360502;
 }
 [data-brand="karenmillen"]{
+  --text-on-action:#FFF; /* golden: primary ink is white */
   --brand-name:'Karen Millen';--font-family-base:'Jost',ui-sans-serif,-apple-system,system-ui,sans-serif;
-  --w-regular:400;--w-strong:600;--w-btn:400; /* KM buttons: lighter, sentence case (signed-off) */
+  --w-regular:400;--w-strong:600;--w-btn:400;--case-btn1:none;--btn-outline:#000; /* KM buttons: lighter, sentence case both, black outline (signed-off) */
   --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#000;--usp-b-fg:#FFF;
   --brand-primary:#D24508;--surface-action:#D24508;--surface-action-hover:#892D05;--surface-action-pressed:#892D05;
   --border-action:#892D05;--border-focus:#892D05;--text-link:#892D05;--text-link-hover:#000;--icon-action:#892D05;
@@ -108,6 +122,8 @@
 /* DRAFT modes (P-05) — Warehouse from the live relaunch direction (03 Sep capture),
    The Brand Room from its Figma (NRsu568JGzwCDq4egvkUbn). Confirm palettes at audit sign-off. */
 [data-brand="warehouse"]{
+  --text-on-action:#FFF; /* golden: primary ink is white */
+  --w-btn:600;--btn-outline:#000; /* golden button truth */
   --brand-name:'Warehouse';
   --font-family-base:'Helvetica Neue',Helvetica,Arial,ui-sans-serif,sans-serif;
   --w-regular:400;--w-mid:400;--w-strong:700;
@@ -118,6 +134,8 @@
   --nav-bg:#FFF;
 }
 [data-brand="brandroom"]{
+  --text-on-action:#FFF; /* golden: primary ink is white */
+  --w-btn:600;--btn-outline:#000; /* golden button truth */
   --brand-name:'The Brand Room';
   --font-family-base:'Helvetica Neue',Helvetica,Arial,ui-sans-serif,sans-serif;
   --w-regular:400;--w-mid:400;--w-strong:700;--cta-case:uppercase;
