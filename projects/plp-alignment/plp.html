@@ -36,15 +36,32 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 #anat .row .why{color:#707070;font-size:10.5px}
 #anat .sum{margin-top:12px;padding:10px 12px;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#F7F7F7;line-height:1.5}
 #anat .sum b{color:#7BE7D8}
+#anat .row{align-items:center}
+#anat .sec{margin-top:10px;font-size:10.5px;color:#707070;text-transform:uppercase;letter-spacing:.06em}
+#anat .seg3{display:flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin:6px 0}
+#anat .seg3 button{flex:1;padding:6px 0;font:500 11.5px 'Google Sans',system-ui,sans-serif;color:#B0B0B0;background:none;border:none;cursor:pointer}
+#anat .seg3 button.on{background:#F7F7F7;color:#000;font-weight:700}
+#anat input{width:100%;box-sizing:border-box;background:#161616;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#F7F7F7;padding:7px 9px;font:12px 'Google Sans',system-ui,sans-serif;margin-top:2px}
+#anat .cnt{font-size:10px;color:#707070;margin-top:3px}
+#anat .cnt.bad{color:#FF6B6B}
+#anat .row.t{width:100%;background:none;border:none;cursor:pointer;text-align:left;font:inherit;color:inherit}
+#anat .row.t.lock{cursor:default;opacity:.55}
+#anat .tgl{flex:none;width:26px;height:15px;border-radius:99px;border:1px solid rgba(255,255,255,.35);position:relative;display:inline-block}
+#anat .tgl i{position:absolute;top:1px;left:1px;width:11px;height:11px;border-radius:99px;background:#B0B0B0;transition:left .12s}
+#anat .tgl.on{background:#0D99FF;border-color:#0D99FF}
+#anat .tgl.on i{left:12px;background:#FFF}
+#anat .nm2{color:#F7F7F7}
 .plp{padding:0 var(--plp-margin) 24px;max-width:2000px;margin:0 auto} /* whole container caps at 2000px (PLT live) */
 .plp-title{text-align:left;padding:6px 0 2px;position:relative}
-/* grid-view selector — Figma PLP-Grid-View 194-2513: 16px icon right of the title, mobile only; cycles 2 → 3 → 1 columns */
+/* grid-view selector — Figma PLP-Grid-View 194-2513 / 157-2631 / 157-2683: 16px icon right of the title,
+   mobile only. Two views: thumbnail (2-col, full card) ⇄ tile grid (3-col, images only — wishlist + AI badge only).
+   The icon shows the view you switch TO: exact design assets (view-grid.svg / view-thumb.svg). */
 .gt{display:none;position:absolute;right:0;top:10px;width:24px;height:24px;padding:4px;background:none;border:none;cursor:pointer}
-.gt svg{width:16px;height:16px;display:block}
-.gt svg rect{fill:var(--icon-primary)}
+.gt img{width:16px;height:16px;display:block}
 @media(max-width:767px){.gt{display:block}
   .grid[data-mcols="3"]{grid-template-columns:repeat(3,1fr)}
-  .grid[data-mcols="1"]{grid-template-columns:1fr}
+  .grid[data-mcols="3"] .pc-info,.grid[data-mcols="3"] .pc-badges,.grid[data-mcols="3"] .pc-taggstar,.grid[data-mcols="3"] .pc-add{display:none}
+  .grid[data-mcols="3"] .pc-actions>*:not(:first-child){display:none}
 }
 .plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
 .plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
@@ -291,7 +308,8 @@ function card(p,i,b,cfg,IC){
 // and three down the page (i 1 / 12 / 24) run the lot — badge + AI + was/-% + offer + rating + NDD + swatches.
 // Copies, not mutations. Explicit new-format removals stay removals (Taggstar, SEO, count, USP links); AI watermark stays new-only.
 const DEMO_SW=['#1D2430','#8A94A8','#C7B9A6','#5A3E36','#2F5D50'];
-function demoVariants(list,deny){
+const OVR={}; // per-card layer overrides from the anatomy overlay, keyed brand:mode:index (session only)
+function demoVariants(list,deny,ovrKey){
   deny=deny||{};const SW=DEMO_SW;
   const srcOff=(list.find(x=>x.off&&/[\u00a3$\u20ac]\s?\d/.test(x.off))||{}).off;
   return list.map((p,i)=>{
@@ -309,6 +327,19 @@ function demoVariants(list,deny){
     }else if(!(q.tag||q.ai||q.was||q.off||q.rating||q.ndd)){ // bare card: give it one allowed layer, rotating
       const opts=[()=>q.tag='New in',()=>{if(deny.rating)q.tag='Trending';else q.rating='4.3'},()=>{if(deny.ndd)mkWas();else q.ndd=true},()=>mkWas(),()=>q.off=mkOff(),()=>{q.sw=SW.slice(0,3);q.swMore=5}];
       opts[i%opts.length]();
+    }
+    const o=ovrKey?OVR[ovrKey+i]:null;
+    if(o){ // anatomy-overlay toggles act on top of the demo layers
+      if(o.badge!==undefined){if(o.badge)q.tag=q.tag||'Bestseller';else delete q.tag}
+      if(o.ai!==undefined)q.ai=o.ai;
+      if(o.brand!==undefined&&!o.brand)delete q.brand;
+      if(o.sw!==undefined){if(o.sw){q.sw=q.sw||SW;q.swMore=q.swMore===undefined?8:q.swMore}else{delete q.sw;delete q.swMore}}
+      if(o.rating!==undefined&&!deny.rating){if(o.rating)q.rating=q.rating||'4.6';else delete q.rating}
+      if(o.ndd!==undefined&&!deny.ndd)q.ndd=o.ndd;
+      if(o.price){ // the three legal price variants: full · sale (red+was+%) · sale + code line
+        if(o.price==='full'){delete q.was;delete q.pct;delete q.off}
+        else{mkWas();if(o.price==='salecode'){q.off=o.offText!==undefined?o.offText:(q.off||mkOff())}else delete q.off}
+      }else if(o.offText!==undefined&&q.off)q.off=o.offText;
     }
     return q;
   });
@@ -427,9 +458,10 @@ function render(){
   grid.style.setProperty('--cols',cfg.cols);
   grid.className=`grid gap-${cfg.gap}${cfg.bleed?' bleed':''}${view===1?' view-1':''}`;
   const deny=b==='boohooman'?{rating:1,ndd:1}:{}; // MAN brand rule: no star ratings, no Get-It-Tomorrow
-  const plist=demoVariants(F.products,deny); // both modes — live and new carry the same per-product layers (parity rule, 03 Sep); only explicit removals differ
+  window.__ovrKey=b+':'+MODE+':';
+  const plist=demoVariants(F.products,deny,window.__ovrKey); // both modes — live and new carry the same per-product layers (parity rule, 03 Sep); only explicit removals differ
   window.__plist=plist;window.__deny=deny;
-  grid.innerHTML=plist.map((p,i)=>card(p,i,b,cfg,IC)).join('');
+  grid.innerHTML=plist.map((p,i)=>{const o=OVR[window.__ovrKey+i];const c=(o&&o.qa!==undefined&&cfg.qa!=='none')?Object.assign({},cfg,{qa:o.qa?cfg.qa:'none'}):cfg;return card(p,i,b,c,IC)}).join('');
   const lm=document.querySelector('.more .bd');
   lm.className='bd sec'; // load more is the secondary button — every fascia, both modes (golden truth)
   lm.style.cssText=(MODE==='live'&&b==='debenhams')
@@ -456,9 +488,9 @@ document.querySelector('.grid').addEventListener('click',e=>{
 function showAnatomy(i,cardEl){
   const b=document.documentElement.getAttribute('data-brand');
   const cfg=CFG.new[b],q=(window.__plist||[])[i],deny=window.__deny||{};
-  if(!q)return;
-  // measure: this instance vs the same card with every allowed layer on
-  const full=Object.assign({},q,{tag:q.tag||'Bestseller',ai:true,was:q.was||'£49.99',pct:q.pct||'-30%',off:q.off||'£00.00 with code EXTRA10',sw:q.sw||DEMO_SW,swMore:q.swMore||8});
+  if(!q||!cardEl)return;
+  const key=window.__ovrKey+i; OVR[key]=OVR[key]||{};
+  const full=Object.assign({},q,{tag:q.tag||'Bestseller',ai:true,was:q.was||'\u00a349.99',pct:q.pct||'-30%',off:q.off||'\u00a300.00 with code EXTRA10',sw:q.sw||DEMO_SW,swMore:q.swMore||8});
   if(!deny.rating)full.rating=q.rating||'4.6'; if(!deny.ndd)full.ndd=true;
   const probe=document.createElement('div');
   probe.style.cssText='position:absolute;left:-9999px;top:0;width:'+cardEl.offsetWidth+'px;visibility:hidden';
@@ -466,41 +498,69 @@ function showAnatomy(i,cardEl){
   document.body.appendChild(probe);
   const fullH=probe.firstElementChild.offsetHeight,thisH=cardEl.offsetHeight;
   probe.remove();
-  const rows=[
-    ['Image',1,''],
-    ['Wishlist',1,cfg.fav+' / '+cfg.favShape],
-    ['Quick add',cfg.qa!=='none',cfg.qa!=='none'?cfg.qa:'off for this fascia'],
-    ['Badge',!!q.tag,q.tag||''],
-    ['AI watermark',!!q.ai,q.ai?'new-format addition':''],
-    ['Taggstar',false,'removed in the new format'],
-    ['Brand line',!!(cfg.brand&&q.brand),cfg.brand?(q.brand||'no brand on this product'):'off for this fascia'],
-    ['Name',1,''],['Price',1,''],
-    ['Was / -%',!!q.was,q.was?q.was+' '+(q.pct||''):''],
-    ['Offer line',!!q.off,''],
-    ['Swatches',!!q.sw,q.sw?q.sw.length+(q.swMore?' +'+q.swMore:'')+' · '+cfg.swatch:''],
-    ['Rating',!!q.rating,deny.rating?'removed — MAN brand rule':(q.rating||'')],
-    ['Get It Tomorrow',!!q.ndd,deny.ndd?'removed — MAN brand rule':''],
+  const pm=q.off?'salecode':q.was?'sale':'full';
+  const qaOn=cfg.qa!=='none'&&(OVR[key].qa!==undefined?OVR[key].qa:true);
+  const T=[
+    ['badge','Badge',!!q.tag,''],
+    ['ai','AI watermark',!!q.ai,''],
+    ['brand','Brand line',!!(cfg.brand&&q.brand),cfg.brand?'':'off for this fascia'],
+    ['qa','Quick add',qaOn,cfg.qa!=='none'?'':'off for this fascia'],
+    ['sw','Swatches',!!q.sw,''],
+    ['rating','Rating',!!q.rating,deny.rating?'removed \u2014 MAN brand rule':''],
+    ['ndd','Get It Tomorrow',!!q.ndd,deny.ndd?'removed \u2014 MAN brand rule':''],
   ];
-  const on=rows.filter(r=>r[1]).length;
   const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const tg=(on,dis)=>'<span class="tgl'+(on?' on':'')+(dis?' dis':'')+'"><i></i></span>';
   anat.querySelector('.box').innerHTML=
-    '<h3>Card component usage <button aria-label="Close">×</button></h3>'+
-    '<div class="sub">'+esc(q.name)+' — '+b+' · new format</div>'+
-    rows.map(r=>'<div class="row"><span class="st '+(r[1]?'on':'off')+'">'+(r[1]?'✓':'—')+'</span><span class="nm">'+r[0]+'</span><span class="why">'+esc(r[2])+'</span></div>').join('')+
-    '<div class="sum">'+on+' of '+rows.length+' layers on · this card <b>'+thisH+'px</b> vs all layers on <b>'+fullH+'px</b> → <b>'+Math.max(0,fullH-thisH)+'px saved</b> ('+(fullH?Math.round((fullH-thisH)/fullH*100):0)+'%)</div>';
-  anat.querySelector('h3 button').onclick=()=>anat.hidden=true;
+    '<h3>Card component usage <button class="x" aria-label="Close">\u00d7</button></h3>'
+    +'<div class="sub">'+esc(q.name)+' \u2014 '+b+' \u00b7 new format</div>'
+    +'<div class="sec">Price \u2014 one of three</div>'
+    +'<div class="seg3">'+['full','sale','salecode'].map(m2=>'<button data-pm="'+m2+'" class="'+(pm===m2?'on':'')+'">'+({full:'Full price',sale:'Sale',salecode:'Sale + code'})[m2]+'</button>').join('')+'</div>'
+    +(pm==='salecode'?'<input id="anat-off" maxlength="60" value="'+esc(q.off||'').replace(/"/g,'&quot;')+'" placeholder="\u00a300.00 with code XXX"><div class="cnt" id="anat-cnt"></div>':'')
+    +'<div class="sec">Layers</div>'
+    +T.map(r=>'<button class="row t'+(r[3]?' lock':'')+'" data-k="'+r[0]+'">'+tg(r[2],!!r[3])+'<span class="nm">'+r[1]+'</span><span class="why">'+r[3]+'</span></button>').join('')
+    +'<div class="row"><span class="st on">\u2713</span><span class="nm2">Image \u00b7 Wishlist ('+cfg.fav+') \u2014 always on</span></div>'
+    +'<div class="row"><span class="st off">\u2014</span><span class="nm2" style="color:#707070">Taggstar \u2014 removed in the new format</span></div>'
+    +'<div class="sum" id="anat-sum">this card <b>'+thisH+'px</b> vs all layers on <b>'+fullH+'px</b> \u2192 <b>'+Math.max(0,fullH-thisH)+'px saved</b> ('+(fullH?Math.round((fullH-thisH)/fullH*100):0)+'%)</div>';
+  const box=anat.querySelector('.box');
+  box.querySelector('.x').onclick=()=>anat.hidden=true;
+  const reopen=()=>{render();const el=grid.querySelector('[data-idx="'+i+'"]');if(el)showAnatomy(i,el)};
+  box.querySelectorAll('.seg3 button').forEach(bt=>bt.onclick=()=>{OVR[key].price=bt.dataset.pm;if(bt.dataset.pm!=='salecode')delete OVR[key].offText;reopen();});
+  box.querySelectorAll('.row.t:not(.lock)').forEach(bt=>bt.onclick=()=>{
+    const k=bt.dataset.k;
+    const cur={badge:!!q.tag,ai:!!q.ai,brand:!!(cfg.brand&&q.brand),qa:qaOn,sw:!!q.sw,rating:!!q.rating,ndd:!!q.ndd}[k];
+    OVR[key][k]=!cur;reopen();
+  });
+  const offIn=box.querySelector('#anat-off');
+  if(offIn){
+    const cnt=box.querySelector('#anat-cnt');
+    const meas=()=>{
+      const el=grid.querySelector('[data-idx="'+i+'"] .pc-offer');
+      if(!el){cnt.textContent='';return}
+      const cs=getComputedStyle(el);
+      const lh=parseFloat(cs.lineHeight)||parseFloat(cs.fontSize)*1.4;
+      const fits=el.getBoundingClientRect().height<lh*1.6; // the line wraps down, not sideways
+      const cx=document.createElement('canvas').getContext('2d');cx.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;
+      const tw=cx.measureText(el.textContent).width||1;
+      const max=Math.max(1,Math.floor(el.clientWidth*el.textContent.length/tw));
+      cnt.textContent=el.textContent.length+' chars \u00b7 ~'+max+' fits one line at this width'+(fits?'':' \u2014 WRAPPING');
+      cnt.classList.toggle('bad',!fits);
+    };
+    let t;
+    offIn.addEventListener('input',()=>{OVR[key].offText=offIn.value;clearTimeout(t);t=setTimeout(()=>{render();meas();const el=grid.querySelector('[data-idx="'+i+'"]');const s2=document.getElementById('anat-sum');if(el&&s2)s2.querySelector('b').textContent=el.offsetHeight+'px';},200);});
+    meas();
+  }
   anat.hidden=false;
 }
 // grid-view selector: mobile column cycle, persisted
-let MCOLS=+(localStorage.getItem('plpMcols')||2);
+let MCOLS=+(localStorage.getItem('plpMcols')||2); if(MCOLS!==2&&MCOLS!==3)MCOLS=2;
 const gtBtn=document.getElementById('gt'),gridEl=document.querySelector('.grid');
-const GT_ICONS={ // icon shows the NEXT view (Figma: 3x3 / 2x2 / full-width rows of rounded 1px-radius cells)
-  2:'<svg viewBox="0 0 16 16">'+[0,5.5,11].map(y=>[0,5.66,11.33].map(x=>`<rect x="${x}" y="${y}" width="4.67" height="4.67" rx="1"/>`).join('')).join('')+'</svg>',
-  3:'<svg viewBox="0 0 16 16">'+[0,8.5].map(y=>[0,8.5].map(x=>`<rect x="${x}" y="${y}" width="7.5" height="7.5" rx="1"/>`).join('')).join('')+'</svg>',
-  1:'<svg viewBox="0 0 16 16">'+[0,5.5,11].map(y=>`<rect x="0" y="${y}" width="16" height="4.67" rx="1"/>`).join('')+'</svg>'
-};
-function applyMcols(){gridEl.setAttribute('data-mcols',MCOLS);gtBtn.innerHTML=GT_ICONS[{2:2,3:3,1:1}[MCOLS]]||GT_ICONS[2];}
-gtBtn.addEventListener('click',()=>{MCOLS={2:3,3:1,1:2}[MCOLS]||2;localStorage.setItem('plpMcols',MCOLS);applyMcols();});
+function applyMcols(){ // the icon shows the view you switch TO — exact Figma assets
+  gridEl.setAttribute('data-mcols',MCOLS);
+  gtBtn.innerHTML='<img src="'+LIB+'/'+(MCOLS===2?'view-grid.svg':'view-thumb.svg')+'" alt="">';
+  gtBtn.title=MCOLS===2?'Tile grid view':'Thumbnail view';
+}
+gtBtn.addEventListener('click',()=>{MCOLS=MCOLS===2?3:2;localStorage.setItem('plpMcols',MCOLS);applyMcols();});
 applyMcols();
 window.__setState=(brand,mode,cat)=>{ if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
 addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat); });
