@@ -136,7 +136,7 @@
 .hd-left{display:flex;align-items:center;gap:16px;min-width:0}
 .hd-burger{width:24px;height:24px;min-width:24px;background:none;border:none;padding:0;cursor:pointer}
 .hd-burger img{width:100%;height:100%;display:block;object-fit:contain}
-.hd-logo{height:18px;width:auto;max-width:150px;object-fit:contain;object-position:left;display:block}
+.hd-logo{height:16px;width:auto;max-width:130px;object-fit:contain;object-position:left;display:block} /* Header component: mobile ~16px */
 .hd-icons{display:flex;align-items:center}
 .hd-icons button{width:38px;height:36px;display:grid;place-items:center;background:none;border:none;cursor:pointer;padding:0}
 .hd-icons img{width:24px;height:24px;display:block;object-fit:contain}
@@ -144,7 +144,7 @@
 .hd-icons button:focus-visible,.hd-burger:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 /* desktop bar (≥1024): logo · centred pill search · icons */
 .hd-bar--desktop{height:88px;padding:16px var(--plp-margin,16px);max-width:2000px;margin:0 auto}
-.hd-bar--desktop .hd-logo{height:22px;max-width:190px}
+.hd-bar--desktop .hd-logo{height:20px;max-width:141px} /* Header component: 141×20 */
 .hd-search{flex:1;max-width:800px;margin:0 auto;height:52px;background:var(--surface-media);border:none;border-radius:var(--radius-pill);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;font-family:var(--font-family-base);font-size:16px;font-weight:var(--w-regular);color:var(--text-secondary);cursor:text}
 .hd-search .ics{display:flex;gap:20px;align-items:center}
 .hd-search img{width:22px;height:22px;display:block;object-fit:contain}
@@ -167,10 +167,13 @@
 .sf-split button+button{border-left:var(--border-w) solid var(--border-subtle)}
 .sf-split i.ch{width:16px;height:16px;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
 .sf-split .fic{width:18px;height:18px;background:url("icons/lib/icons-filter.svg") center/contain no-repeat;display:inline-block}
-.sf-dd{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;min-width:120px;height:40px;padding:0 14px;background:var(--surface-page);border:var(--border-w) solid var(--border-default);border-radius:var(--radius-default);font-family:inherit;font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);cursor:pointer;text-transform:var(--cta-case)}
+.sf-dd{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;width:160px;height:42px;padding:8px;background:var(--surface-page);border:var(--border-w) solid var(--border-subtle);border-radius:var(--radius-default);font-family:inherit;font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);cursor:pointer;text-transform:var(--cta-case)} /* 160px dropdowns, grey-2 keyline (Figma 13003-147068) */
 .sf-dd:hover{border-color:var(--border-strong)}
 .sf-dd i{width:16px;height:16px;flex:none;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
-.sf-sort{margin-left:auto}
+.sf-sort{margin-left:auto;width:220px} /* sort pinned right, 220px */
+.sf-filters{display:flex;flex-wrap:wrap;gap:8px 12px;flex:1;min-width:0;max-height:44px;overflow:hidden} /* one row; overflow hides until expanded */
+.sf-bar.expanded .sf-filters{max-height:none}
+.sf-more{font-size:14px;color:var(--text-primary);white-space:nowrap;align-self:center}
 .sf-ndd{display:inline-flex;align-items:center;gap:8px;font-weight:var(--w-regular);cursor:pointer;user-select:none}
 .sf-ndd .track{width:40px;height:22px;border-radius:var(--radius-pill);background:var(--surface-action-disabled);position:relative;transition:background var(--dur-base) var(--ease-standard);flex:none}
 .sf-ndd .track::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:var(--radius-pill);background:var(--surface-raised);box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform var(--dur-base) var(--ease-standard)}
@@ -182,7 +185,7 @@
 .sf-chip button{background:none;border:none;cursor:pointer;font-size:14px;line-height:1;padding:0;color:var(--icon-secondary)}
 /* mobile floating filter pills — New format (Brand Room Figma 739-92223)
    radius 42 by design on every fascia (explicitly round, even square-radius brands) */
-.sf-float{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:8px 2px;width:100%} /* 8pt above and below the pills */
+.sf-float{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:8px var(--plp-margin,16px);margin:0 calc(var(--plp-margin,16px) * -1);width:auto} /* full-bleed: pills iceberg off the right, 16pt internal padding */
 .sf-pill{display:inline-flex;gap:8px;align-items:center;height:34px;padding:8px 12px;background:var(--surface-raised);border:var(--border-w) solid var(--border-default);border-radius:42px;font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);white-space:nowrap;flex:none;cursor:pointer}
 .sf-pill i.dn{width:12px;height:12px;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
 .sf-pill img{width:14px;height:14px;object-fit:contain}
@@ -222,6 +225,8 @@
 .cat-row--edge .roundel{width:132px}
 .cat-row--edge .roundel i{width:120px;height:120px}
 @media(min-width:1024px){.cat-row--edge{justify-content:center}.cat-row--edge .roundel{width:164px}.cat-row--edge .roundel i{width:150px;height:150px}} /* desktop: centered */
+.roundel--white i{background:#FFF;border:var(--border-w) solid var(--border-subtle)} /* MAN roundels: white ground, contained imagery (13003-147021) */
+.roundel--white i img{padding:8px}
 .catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;background:var(--surface-media);border:none;border-radius:var(--radius-default);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--cta-case)} /* Grey 1 pills — never fully rounded */
 .catpill:hover{filter:brightness(.97)}
 .catpill--solid{} /* alias — pills are badge-format everywhere now */
@@ -239,7 +244,7 @@
 
 /* header bag / wishlist count */
 .hd-count{position:relative}
-.hd-count::after{content:attr(data-n);position:absolute;top:4px;right:2px;min-width:13px;height:13px;border-radius:var(--radius-pill);background:var(--icon-primary);color:var(--text-inverse);font-size:8px;font-weight:var(--w-mid);display:grid;place-items:center;padding:0 2px;line-height:1}
+.hd-count::after{content:attr(data-n);position:absolute;top:4px;right:2px;width:14px;height:14px;border-radius:50%;background:var(--icon-primary);color:var(--text-inverse);font-size:8px;font-weight:var(--w-mid);display:grid;place-items:center;padding:0;line-height:1} /* always 1:1 */
 
 /* ============================================================
    C-08 Footer (.ft) — Figma 664-1064 (Debenhams) · live-checked
@@ -274,5 +279,5 @@
 .ft-pay span{display:inline-flex;align-items:center;height:26px;padding:0 9px;border:var(--border-w) solid var(--border-default);border-radius:4px;font-size:10px;font-weight:var(--w-strong);letter-spacing:.03em;background:var(--surface-raised)}
 .ft-pay img{height:26px;width:auto;object-fit:contain;border-radius:3px}
 .ft-base{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 16px 36px}
-.ft-base img{height:22px;width:auto;max-width:190px;object-fit:contain}
+.ft-base img{height:24px;width:auto;max-width:170px;object-fit:contain} /* footer logo per component */
 .ft-base small{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary)}

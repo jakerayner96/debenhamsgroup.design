@@ -90,3 +90,12 @@ Brand Room Figma 739-92223 is the new-format mobile sort & filter: scrolling row
 
 - Top-nav switcher trimmed to: auto · roundels (text below) · roundels (text on) · pills · links. Pills are now **Grey 1** background, borderless, radius-default on every fascia.
 - **boohooMAN new format**: no quick add on PLP; fully flush full-bleed images (gap 0, `.pc--flush` 4px text inset); badges + wishlist chip **white at 85%, 4px radius** (brand badge tokens; chip radius now follows `radius-default` so PLT/Brand Room stay square). Taggstar stays **off** — flagged as too tall alongside everything else; revisit as a reduced-height bar or an on-image treatment against the other image overlays.
+
+## Part 12 (same day) — queued review round landed
+
+- New format runs the two-part USP component everywhere (message strip + code bar; code bars synthesised for fascias whose live lacks one); mobile rotation animates (usp-rotate, motion tokens).
+- AI-Generated badge scattered on a few products down every fascia (every 7th card, New mode only); MAN badges/wishlist chip white 85% borderless.
+- Desktop filter strip: full 2000px width, filters clamp to one row, overflow expands below via Show more/fewer filters, Relevance pinned right (220px); dropdowns 160px, grey-2 keyline, 16px text per MAN Figma 13003-147068; MAN filter list extended to seven.
+- MAN roundels: white ground with contained imagery (13003-147021).
+- Floating pills: grey keyline no shadow, 8pt vertical padding, full-bleed with 16pt internal padding — iceberg off the right.
+- Header/footer logos to component sizes (mobile 16 / desktop 141×20 / footer 24); bag count badge always a 1:1 circle; product count line hidden in New; shell defaults to 390 mobile.
