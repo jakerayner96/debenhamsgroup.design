@@ -301,6 +301,9 @@ function demoVariants(list,deny){
     const n=parseFloat(String(q.price).replace(/[^0-9.]/g,''))||0;
     const mkOff=()=>{const t=cur+(n*.9).toFixed(2);return srcOff?srcOff.replace(/^[^\d]*[\d.,]+/,t):t+' with code EXTRA10'};
     const mkWas=()=>{q.was=q.was||cur+(n?(Math.ceil(n/0.7)-0.01).toFixed(2):'49.99');q.pct=q.pct||'-30%'};
+    // price integrity: sale = red now + was + % together, or a lone black full price — never a % without a markdown
+    if(q.pct&&!q.was){const pc=Math.abs(parseFloat(q.pct))||0;if(pc>0&&pc<95&&n)q.was=cur+(n/(1-pc/100)).toFixed(2);else delete q.pct;}
+    if(q.was&&!q.pct){const w=parseFloat(String(q.was).replace(/[^0-9.]/g,''))||0;if(w>n&&n)q.pct='-'+Math.round((1-n/w)*100)+'%';}
     if(i===1||i===12||i===24){ // the kitchen-sink cards (denied layers stay off)
       q.tag=q.tag||'Bestseller';q.ai=true;mkWas();q.off=q.off||mkOff();if(!deny.rating)q.rating=q.rating||'4.6';if(!deny.ndd)q.ndd=true;q.sw=SW;q.swMore=8;
     }else if(!(q.tag||q.ai||q.was||q.off||q.rating||q.ndd)){ // bare card: give it one allowed layer, rotating
