@@ -254,10 +254,31 @@ function card(p,i,b,cfg,IC){
       <div class="pc-titles">${cfg.brand&&p.brand?`<div class="pc-brand">${p.brand}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>
       <div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>
       ${p.off?`<div class="pc-offer">${p.off}</div>`:''}
+      ${p.sw?`<div class="pc-swatches${cfg.swatch==='round'?' pc-swatches--round':''}"><span class="set">${p.sw.map((c,si)=>`<span class="pc-swatch${si===0?' on':''}"><i style="background:${c}"></i></span>`).join('')}</span>${p.swMore?`<span class="pc-more">+${p.swMore}</span>`:''}</div>`:''}
       ${p.rating?`<div class="pc-stars"><span class="set"><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-half.svg" alt=""><img src="${LIB}/icons-star-outline.svg" alt=""></span><span>(${p.rating})</span></div>`:''}
       ${p.ndd?`<div class="pc-ndd"><img src="${LIB}/icons-delivery-fast.svg" alt="">Get It Tomorrow</div>`:''}
     </div>
   </article>`;
+}
+// P-05 review aid, new format only: every card demonstrates at least one card layer,
+// and three down the page (i 1 / 12 / 24) run the lot — badge + AI + was/-% + offer + rating + NDD + swatches.
+// Copies, not mutations — live mode stays the untouched import data.
+function demoVariants(list){
+  const SW=['#1D2430','#8A94A8','#C7B9A6','#5A3E36','#2F5D50'];
+  const srcOff=(list.find(x=>x.off&&/[\u00a3$\u20ac]\s?\d/.test(x.off))||{}).off;
+  return list.map((p,i)=>{
+    const q=Object.assign({},p);
+    const cur=(String(q.price).match(/^[^\d]*/)||['\u00a3'])[0]||'\u00a3';
+    const n=parseFloat(String(q.price).replace(/[^0-9.]/g,''))||0;
+    const mkOff=()=>{const t=cur+(n*.9).toFixed(2);return srcOff?srcOff.replace(/^[^\d]*[\d.,]+/,t):t+' with code EXTRA10'};
+    const mkWas=()=>{q.was=q.was||cur+(n?(Math.ceil(n/0.7)-0.01).toFixed(2):'49.99');q.pct=q.pct||'-30%'};
+    if(i===1||i===12||i===24){ // the kitchen-sink cards
+      q.tag=q.tag||'Bestseller';q.ai=true;mkWas();q.off=q.off||mkOff();q.rating=q.rating||'4.6';q.ndd=true;q.sw=SW;q.swMore=8;
+    }else if(!(q.tag||q.ai||q.was||q.off||q.rating||q.ndd)){ // bare card: give it one layer, rotating
+      switch(i%6){case 0:q.tag='New in';break;case 1:q.rating='4.3';break;case 2:q.ndd=true;break;case 3:mkWas();break;case 4:q.off=mkOff();break;default:q.sw=SW.slice(0,3);q.swMore=5;}
+    }
+    return q;
+  });
 }
 function render(){
   const b=document.documentElement.getAttribute('data-brand');
@@ -342,7 +363,8 @@ function render(){
   document.getElementById('ftbrands').hidden=(b!=='debenhams');
   grid.style.setProperty('--cols',cfg.cols);
   grid.className=`grid gap-${cfg.gap}${cfg.bleed?' bleed':''}${view===1?' view-1':''}`;
-  grid.innerHTML=F.products.map((p,i)=>card(p,i,b,cfg,IC)).join('');
+  const plist=MODE==='new'?demoVariants(F.products):F.products;
+  grid.innerHTML=plist.map((p,i)=>card(p,i,b,cfg,IC)).join('');
   const lm=document.querySelector('.more .bd');
   lm.className='bd '+((MODE==='live'&&cfg.loadMore==='sec')?'sec':'pri');
   lm.style.cssText=(MODE==='live'&&b==='debenhams')
