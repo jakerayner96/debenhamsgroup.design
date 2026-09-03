@@ -74,3 +74,10 @@ Prototype now has a **Live now ⇄ New format** switch: LIVE replicates each fas
 ## Part 8 (same day) — USP two-layer spec + roundel alignment
 
 Debenhams USP per Figma 13005-163125/165658/165567: layer 1 = flat #F8F8F8 strip, 14px Bold headline + 14px underlined action, 63px cells, mobile rotates one message at a time (4s); layer 2 = black EXPRESSDEL bar that **pins to the top of the window on scroll** (moved outside the header — sticky was trapped by its containing block). Fixed the `[hidden]` gap/black-bar bug on empty USP slots. Roundels: centered on desktop, left-margin with right-edge iceberg on mobile.
+
+## Part 9 (same day) — full catalogues + import-exact Debenhams CTAs/footer
+
+- **All products loaded from the live imports**: parser now extracts the complete per-fascia product sets (38–40 each, PLT capped at 40 of 79) into generated `projects/plp-alignment/data.js`; 314 photos at 560px (9.8MB total). Fields per product: brand, name, price, was, pct, offer line, tag, rating, Get-It-Tomorrow.
+- **Debenhams live per import**: Load More = white with 1px Grey-3 keyline, 16px SemiBold caps, 20/16 padding (13005-165375); Subscribe = Primary Aqua, 16px SemiBold caps (165398); grid gaps 16px columns / 18.5px rows; 5 per row at 1440 confirmed.
+- **Footer payments are the real badge PNGs** from the footer import (165380) — visa→gpay incl. Pay+, in DS assets (`icons/pay/`) + app-store badges; site footer demo updated too.
+- **boohooMAN live card corrected** per 13003-149344: Debenhams card format with bookmark in the white circle, no Add button (Add stays in earlier design refs only).
