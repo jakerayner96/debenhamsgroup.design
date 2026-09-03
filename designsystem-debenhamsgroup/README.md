@@ -1,5 +1,8 @@
 # Debenhams Group Design System
 
+> ## ⚠️ RETIRED — absorbed into the site on 01 Sep 2026
+> Everything of value here (token architecture, brand modes, foundations, docs content) was folded into the repo root: `index.html` + `assets/ds/tokens.css` + `assets/ds/components.css`. This folder is an archived reference — don't run or extend it. See the root `README.md` / `CLAUDE.md` and `.context/13-session-log-2026-09-01c.md` for the record of the merge.
+
 The design system for the Debenhams Group estate — Debenhams, Boohoo, BoohooMAN, PLT, Karen Millen, and 11 other facias.
 
 **Production site (planned):** `debenhamsgroup.design`

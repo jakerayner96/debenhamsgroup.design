@@ -1,5 +1,8 @@
 # CLAUDE.md
 
+> ## ⚠️ RETIRED — do not work in this folder
+> This monorepo was absorbed into the site on **01 Sep 2026**: its tokens, brand modes, foundations and docs content now live in the repo root (`index.html` + `assets/ds/tokens.css` + `assets/ds/components.css`). It is archived for reference only — don't run it, don't build on it, don't treat anything below as current. Start instead from the **root** `CLAUDE.md` and `.context/13`–`14` session logs.
+
 Project-specific guidance for Claude Code (or any AI assistant working in this repo).
 
 ## Start here

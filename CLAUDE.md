@@ -11,6 +11,15 @@ The Debenhams Group UX site: design system docs, project archive (options + chos
 - **`.context/07-foundations.md`** — the locked foundations spec the site pages render.
 - **`designsystem-debenhamsgroup/`** — **RETIRED.** The older Next/Fumadocs monorepo; its tokens, brand modes, foundations and docs content were absorbed into `index.html` (see log 13). Kept only as reference until Jake deletes it — don't build on it, don't run it.
 
+## Git & session workflow
+
+- **Remote:** `origin → https://github.com/jakerayner96/debenhamsgroup.design.git`. Auth is the Mac's keychain (osxkeychain) — on Jake's machine, plain `git pull` / `git push` just work. A session on any other machine/environment must authenticate to GitHub once first (`gh auth login` or a PAT); a chat-only session can read the public repo but cannot push.
+- **Start of session:** `git pull`, check `git branch --show-current` — briefs live on their own branch, site/DS work happens on `main`.
+- **New brief:** branch from main named for the project (`plp-alignment` pattern) → `projects/<name>/README.md` (brief, Figma source, decisions) + prototypes that link `../../assets/ds/tokens.css` + `components.css`. Add the branch link to the project's page on the site.
+- **Merge = promote:** when a brief's winner merges to main, move its reusable patterns into `assets/ds/components.css`, land any new token facts in `assets/ds/tokens.css`, and spec the component on the site. The branch is never deleted — it's the record.
+- **Never force-push.** Commit messages: what + why, ending `Co-Authored-By: Claude <the model> <noreply@anthropic.com>`.
+- **End of session:** decisions and state go into a `.context/` session log (next number), and CLAUDE.md's pointer updates to it. Chat history is disposable; the repo is not.
+
 ## Rules that always apply
 - **Code first, Figma downstream.** Production is canonical; the Figma library mirrors it.
 - **Ship fast over perfect.** Jake pushes back on over-engineering and over-clarification. "Go" means proceed; make judgment calls, state assumptions, execute to a defined endpoint.
