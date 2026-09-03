@@ -109,8 +109,6 @@
 .pc--compact .badge{height:24px;font-size:11px}
 .pc--compact .pc-add{min-height:36px;font-size:14px}
 .pc--compact .pc-add img{width:20px;height:20px}
-.pc--compact .pc-swatches{height:16px}
-.pc--compact .pc-swatch{width:16px;height:16px}
 .pc-name--caps{text-transform:uppercase;letter-spacing:.02em} /* PLT names run uppercase */
 /* flush variant — full-bleed zero-gutter grids (boohooMAN new): text insets 4px under the image */
 .pc--flush .pc-info{padding:0 4px 12px}
