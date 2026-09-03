@@ -116,7 +116,7 @@
    Figma: header 3793-3545 · USP banner 11982-37171 (same file)
    ============================================================ */
 .hd{background:var(--surface-page);font-family:var(--font-family-base);color:var(--text-primary)}
-.hd-usp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 16px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:12px;font-weight:var(--w-regular);text-transform:var(--cta-case);text-align:center}
+.hd-usp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 16px;min-height:63px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:12px;font-weight:var(--w-regular);text-transform:var(--cta-case);text-align:center}
 .hd-usp b{font-weight:var(--w-strong)}
 @media(min-width:1024px){.hd-usp{font-size:14px}}
 .hd-usp--b{background:var(--usp-b-bg);color:var(--usp-b-fg)}
@@ -128,13 +128,21 @@
 .usp-cell b{font-weight:var(--w-strong);font-size:14px;line-height:21px}
 .usp-cell u{text-underline-offset:2px;cursor:pointer;font-size:14px;line-height:1.1}
 /* mobile: one message at a time, rotating (Figma 13005-165658) */
-@media(max-width:1023px){.usp-strip{grid-auto-flow:row;grid-template-columns:1fr;padding:0 16px}.usp-strip .usp-cell{display:none;min-height:56px}.usp-strip .usp-cell.rot-on{display:flex}}
+@media(max-width:1023px){.usp-strip{grid-auto-flow:row;grid-template-columns:1fr;padding:0 16px}.usp-strip .usp-cell{display:none;min-height:56px}.usp-strip .usp-cell.rot-on{display:flex}.hd-usp{min-height:56px}}
 /* rotating cells animate in */
 @keyframes usp-rotate{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(max-width:1023px){.usp-strip .usp-cell.rot-on{animation:usp-rotate var(--dur-slow) var(--ease-standard)}}
 /* the bar below pins to the top of the PLP window on scroll (Figma 13005-165567) */
 .hd-usp--sticky{position:sticky;top:0;z-index:var(--z-sticky)}
 .hd-usp[hidden]{display:none}
+/* USP banner content — Figma 11982-37171. Separator is a 4px dash (never a mid-dot);
+   'Code:' label regular, code value strong; countdown digits strong (Black/Red variant sets --usp-cd red);
+   caveat = 10px caption line. RULE (design + dev build): an asterisk may only appear in banner copy
+   when the Caveat type is used — the caption text is a required prop. No caption, no asterisk. */
+.usp-sep{display:inline-block;width:4px;height:1px;background:currentColor;vertical-align:middle;margin:0 8px;flex:none}
+.usp-cav{display:block;width:100%;font-size:10px;font-weight:var(--w-regular);line-height:1;padding-bottom:4px;text-align:center}
+.usp-cd{display:inline-flex;gap:1px;align-items:center;font-weight:var(--w-strong);color:var(--usp-cd,currentColor)}
+.usp-cd i{font-style:normal;width:5px;text-align:center;padding-bottom:2px;color:inherit}
 .hd-bar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;gap:16px}
 .hd-left{display:flex;align-items:center;gap:16px;min-width:0}
 .hd-burger{width:24px;height:24px;min-width:24px;background:none;border:none;padding:0;cursor:pointer}
