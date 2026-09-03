@@ -39,6 +39,8 @@
   --w-regular:300;--w-mid:400;--w-strong:600;--cta-case:none;
   /* USP banner slots (a = message strip, b = code strip) — from the Header Figma component */
   --usp-a-bg:#FAFAFA;--usp-a-fg:#0F0F0F;--usp-b-bg:#000;--usp-b-fg:#FFF;
+  /* category nav strip — Debenhams aqua tint; most fascias run it white */
+  --nav-bg:var(--brand-light-2);--nav-fg:var(--text-primary);
   --radius-default:4px;--radius-lg:8px;--radius-pill:9999px;
   --surface-page:#FFF;
   --brand-primary:#7BE7D8;--surface-action:#00787D;--surface-action-hover:#1E6F63;--surface-action-pressed:#00565A;--text-on-action:#FFF;
@@ -59,17 +61,20 @@
   --brand-primary:#F8B5CC;--surface-action:#BB305F;--surface-action-hover:#CB4870;--surface-action-pressed:#A82A55;
   --brand-neutral:#F1DCE3;--brand-light-4:#FFE9F0;--brand-light-3:#FEE0EA;--brand-light-2:#FCD3E1;--brand-light-1:#FBC7D8;
   --brand-dark-1:#EEA5BE;--brand-dark-2:#EA92B0;--brand-dark-3:#DD789B;--brand-primary-dark:#CB4870;
+  --nav-bg:#FFF;
 }
 [data-brand="boohooman"]{
   --brand-name:'boohooMAN';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:500;--w-mid:400;--w-strong:700;
   --brand-primary:#0A0A0A;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
   --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
+  --nav-bg:#FFF;
 }
 [data-brand="plt"]{
   --brand-name:'PrettyLittleThing';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:400;--w-strong:700;--cta-case:uppercase;
   --usp-a-bg:#F1C59E;--usp-a-fg:#0F0F0F;--usp-b-bg:#FFE4D2;--usp-b-fg:#0F0F0F; /* warm peach + light cream — from Header Figma */
+  --nav-bg:#000;--nav-fg:#FFF; /* PLT runs a black nav strip */
   --radius-default:0px;--radius-lg:0px;--radius-pill:0px; /* square-radius mode */
   --surface-page:#FFFDF7;--text-on-action:#FFFDF7;
   --brand-primary:#550503;--surface-action:#550503;--surface-action-hover:#360502;--surface-action-pressed:#360502;
@@ -80,6 +85,7 @@
   --w-regular:400;--w-strong:600;
   --brand-primary:#8E330B;--surface-action:#8E330B;--surface-action-hover:#5E2207;--surface-action-pressed:#5E2207;
   --brand-light-3:#F3C1A7;--brand-light-2:#F0B597;--brand-light-1:#E88A5B;--brand-primary-dark:#5E2207;
+  --nav-bg:#FFF;
 }
 /* DRAFT modes (P-05) — Warehouse from the live relaunch direction (03 Sep capture),
    The Brand Room from its Figma (NRsu568JGzwCDq4egvkUbn). Confirm palettes at audit sign-off. */
@@ -90,6 +96,7 @@
   --brand-primary:#0A0A0A;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
   --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
   --usp-a-bg:#323232;--usp-a-fg:#FFF;--usp-b-bg:#323232;--usp-b-fg:#FFF;
+  --nav-bg:#FFF;
 }
 [data-brand="brandroom"]{
   --brand-name:'The Brand Room';
@@ -99,6 +106,7 @@
   --brand-primary:#0A0A0A;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
   --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
   --usp-a-bg:#000;--usp-a-fg:#FFF;--usp-b-bg:#000;--usp-b-fg:#FFF;
+  --nav-bg:#FFF;
 }
 /* Accessibility: all motion collapses under prefers-reduced-motion */
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
