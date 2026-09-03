@@ -104,6 +104,9 @@
 .pc--compact .pc-swatches{height:16px}
 .pc--compact .pc-swatch{width:16px;height:16px}
 .pc-name--caps{text-transform:uppercase;letter-spacing:.02em} /* PLT names run uppercase */
+/* flush variant — full-bleed zero-gutter grids (boohooMAN new): text insets 4px under the image */
+.pc--flush .pc-info{padding:0 4px 12px}
+.pc--flush .pc-taggstar,.pc--flush .pc-add{margin:0 4px}
 
 /* ============================================================
    C-03 PLP Header (.hd) — one template, brand tokens style it
