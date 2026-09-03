@@ -23,7 +23,9 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .mode-new .usp-cell b{font-size:12px;font-weight:var(--w-strong)}
 /* PLP content slot — DS Figma 8556-18755. Square tile after row 3 (new format), three types:
    Button (media + white CTA), Text (media + gradient + View All + optional Sponsored), Get The Look. */
-.cslot{grid-column:span 2;aspect-ratio:1/1;position:relative;overflow:hidden;cursor:pointer;border-radius:0;margin-bottom:2px}
+.cslot{grid-column:1/span 2;aspect-ratio:1/1;position:relative;overflow:hidden;cursor:pointer;border-radius:0;margin-bottom:2px} /* always opens its row */
+.cslot .slot-cut{position:absolute;right:0;bottom:0;background:#FFF;min-width:44px;min-height:44px;padding:10px 14px;display:flex;gap:8px;align-items:center;justify-content:center;color:#000;font-size:14px;font-weight:var(--w-regular)}
+.cslot .slot-cut svg{width:16px;height:16px;display:block}
 .cslot>img.media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cslot .slot-btn{position:absolute;right:24px;bottom:24px;height:50px;padding:8px 24px;background:#FFF;color:#000;border:none;border-radius:4px;font-family:var(--font-family-base);font-size:16px;line-height:24px;font-weight:var(--w-btn,600);text-transform:uppercase;display:flex;align-items:center}
 .cslot .slot-grad{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.7))}
@@ -80,6 +82,8 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 #sed .seg3{display:flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin:6px 0}
 #sed .seg3 button{flex:1;padding:6px 0;font:500 11.5px 'Google Sans',system-ui,sans-serif;color:#B0B0B0;background:none;border:none;cursor:pointer}
 #sed .seg3 button.on{background:#F7F7F7;color:#000;font-weight:700}
+#sed .seg3--wrap{flex-wrap:wrap;border-radius:12px}
+#sed .seg3--wrap button{flex:1 1 32%;padding:7px 0}
 #sed input,#sed select{width:100%;box-sizing:border-box;background:#161616;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#F7F7F7;padding:7px 9px;font:12px 'Google Sans',system-ui,sans-serif;margin-top:4px}
 #sed .row.t{display:flex;gap:8px;align-items:center;background:none;border:none;cursor:pointer;color:inherit;font:inherit;padding:6px 0;text-align:left}
 #sed .tgl{flex:none;width:26px;height:15px;border-radius:99px;border:1px solid rgba(255,255,255,.35);position:relative;display:inline-block}
@@ -97,6 +101,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
   .grid[data-mcols="3"]{grid-template-columns:repeat(3,1fr)}
   .grid[data-mcols="3"] .pc-info,.grid[data-mcols="3"] .pc-badges,.grid[data-mcols="3"] .pc-taggstar,.grid[data-mcols="3"] .pc-add{display:none}
   .grid[data-mcols="3"] .pc-actions>*:not(:first-child){display:none}
+  .grid[data-mcols="3"] .cslot{display:none} /* the images-only view drops content slots, like badges */
   .grid[data-mcols="1"]{grid-template-columns:1fr}
 }
 .plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
@@ -522,28 +527,38 @@ function render(){
   window.PLPC&&PLPC.refresh();
 }
 // --- PLP content slot (DS 8556-18755): lands after row 3 in the new format; click it to edit ---
-const SLOT={type:'text',cta:'View All',img:null,sponsored:true,skus:[0,4,8]};
+const SLOTS={ // per-mode defaults: live mirrors the current site style (white cutout), new leads with the text link
+  live:{type:'cutout',cta:'',img:null,sponsored:false,skus:[0,4,8]},
+  new:{type:'text',cta:'View All',img:null,sponsored:true,skus:[0,4,8]}
+};
+function slotState(){return SLOTS[MODE]||SLOTS.new}
 function slotHTML(b){
-  const plist=window.__plist||[];
-  const media=SLOT.img||(IMG+'/'+b+'/p'+((plist[2]&&plist[2].img!==undefined)?plist[2].img:2)+'.jpg');
-  if(SLOT.type==='gtl'){
+  const S2=slotState(),plist=window.__plist||[];
+  const media=S2.img||(b==='boohooman'?IMG+'/boohooman/slot-git.jpg':IMG+'/'+b+'/p'+((plist[2]&&plist[2].img!==undefined)?plist[2].img:2)+'.jpg');
+  if(S2.type==='gtl'){
     const im=k=>{const p2=plist[k]||{};return IMG+'/'+b+'/p'+(p2.img!==undefined?p2.img:(k||0))+'.jpg'};
-    return `<div class="cslot cslot--gtl" id="cslot"><div class="slot-title">Get The Look</div><div class="slot-grid"><img src="${im(SLOT.skus[0])}" alt=""><img src="${im(SLOT.skus[1])}" alt=""><img src="${im(SLOT.skus[2])}" alt=""></div></div>`;
+    return `<div class="cslot cslot--gtl" id="cslot"><div class="slot-title">Get The Look</div><div class="slot-grid"><img src="${im(S2.skus[0])}" alt=""><img src="${im(S2.skus[1])}" alt=""><img src="${im(S2.skus[2])}" alt=""></div></div>`;
   }
-  if(SLOT.type==='text'){
-    return `<div class="cslot" id="cslot"><img class="media" src="${media}" alt="">${SLOT.sponsored?'<div class="slot-spon">Sponsored</div>':''}<div class="slot-grad"></div><div class="slot-view">${SLOT.cta||'View All'}<svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#FFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>`;
+  if(S2.type==='text'){
+    return `<div class="cslot" id="cslot"><img class="media" src="${media}" alt="">${S2.sponsored?'<div class="slot-spon">Sponsored</div>':''}<div class="slot-grad"></div><div class="slot-view">${S2.cta||'View All'}<svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#FFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>`;
   }
-  return `<div class="cslot" id="cslot"><img class="media" src="${media}" alt=""><button class="slot-btn">${SLOT.cta||'CTA'}</button></div>`;
+  if(S2.type==='cutout'){ // live-site pattern: white cutout bottom-right, optional text beside the chevron
+    return `<div class="cslot" id="cslot"><img class="media" src="${media}" alt=""><div class="slot-cut">${S2.cta?`<span>${S2.cta}</span>`:''}<svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>`;
+  }
+  if(S2.type==='none'){ // no link — media only
+    return `<div class="cslot" id="cslot"><img class="media" src="${media}" alt=""></div>`;
+  }
+  return `<div class="cslot" id="cslot"><img class="media" src="${media}" alt=""><button class="slot-btn">${S2.cta||'CTA'}</button></div>`;
 }
 function placeSlot(b){
   const old=document.getElementById('cslot');if(old)old.remove();
-  if(MODE!=='new')return;
   const cols=getComputedStyle(grid).gridTemplateColumns.split(' ').length||2;
   const wrap=document.createElement('div');wrap.innerHTML=slotHTML(b);
   const el=wrap.firstElementChild;
   grid.insertBefore(el,grid.children[cols*3]||null); // after the 3rd row at the current column count
   el.addEventListener('click',e=>{e.stopPropagation();openSlotEd(b)});
 }
+let slotRT;addEventListener('resize',()=>{clearTimeout(slotRT);slotRT=setTimeout(()=>placeSlot(document.documentElement.getAttribute('data-brand')),180)}); // column count changes move the row boundary
 const sed=document.createElement('div');sed.id='sed';sed.hidden=true;sed.innerHTML='<div class="box"></div>';
 document.addEventListener('DOMContentLoaded',()=>document.body.appendChild(sed));
 if(document.readyState!=='loading')document.body.appendChild(sed);
@@ -551,23 +566,24 @@ sed.addEventListener('click',e=>{if(e.target===sed)sed.hidden=true});
 function openSlotEd(b){
   const plist=window.__plist||[];
   const opt=(v,sel)=>plist.slice(0,24).map((p2,k)=>`<option value="${k}" ${k===sel?'selected':''}>${String(k+1).padStart(2,'0')} — ${(p2.name||'').slice(0,26)}</option>`).join('');
+  const S2=slotState();
   sed.querySelector('.box').innerHTML=
     '<h3>Content slot <button class="x" aria-label="Close">×</button></h3>'
     +'<div class="sec">Style</div>'
-    +'<div class="seg3">'+[['button','Button'],['text','Text'],['gtl','Get the look']].map(([v,l])=>`<button data-t="${v}" class="${SLOT.type===v?'on':''}">${l}</button>`).join('')+'</div>'
-    +(SLOT.type!=='gtl'
-      ?'<div class="sec">CTA text</div><input id="sed-cta" maxlength="24" value="'+(SLOT.cta||'').replace(/"/g,'&quot;')+'">'
+    +'<div class="seg3 seg3--wrap">'+[['button','Button'],['text','Text link'],['cutout','Cutout'],['none','No link'],['gtl','Get the look']].map(([v,l])=>`<button data-t="${v}" class="${S2.type===v?'on':''}">${l}</button>`).join('')+'</div>'
+    +(S2.type!=='gtl'
+      ?(S2.type!=='none'?'<div class="sec">CTA text'+(S2.type==='cutout'?' (optional — chevron only when empty)':'')+'</div><input id="sed-cta" maxlength="24" value="'+(S2.cta||'').replace(/"/g,'&quot;')+'">':'')
        +'<div class="sec">Image</div><input id="sed-img" type="file" accept="image/*">'
-       +(SLOT.type==='text'?'<button class="row t" id="sed-spon"><span class="tgl'+(SLOT.sponsored?' on':'')+'"><i></i></span><span class="nm">Sponsored tag</span></button>':'')
+       +(S2.type==='text'?'<button class="row t" id="sed-spon"><span class="tgl'+(S2.sponsored?' on':'')+'"><i></i></span><span class="nm">Sponsored tag</span></button>':'')
       :'<div class="sec">The 3 SKUs — first product image is pulled</div>'
-       +[0,1,2].map(k=>`<select class="sed-sku" data-k="${k}">${opt(k,SLOT.skus[k])}</select>`).join(''));
+       +[0,1,2].map(k=>`<select class="sed-sku" data-k="${k}">${opt(k,S2.skus[k])}</select>`).join(''));
   const box=sed.querySelector('.box');
   box.querySelector('.x').onclick=()=>sed.hidden=true;
-  box.querySelectorAll('.seg3 button').forEach(bt=>bt.onclick=()=>{SLOT.type=bt.dataset.t;placeSlot(b);openSlotEd(b)});
-  const cta=box.querySelector('#sed-cta');if(cta)cta.addEventListener('input',()=>{SLOT.cta=cta.value;const el=document.querySelector('#cslot .slot-btn,#cslot .slot-view');if(el)el.childNodes[0].nodeValue=SLOT.cta});
-  const fi=box.querySelector('#sed-img');if(fi)fi.addEventListener('change',()=>{const f=fi.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{SLOT.img=r.result;placeSlot(b)};r.readAsDataURL(f)});
-  const sp=box.querySelector('#sed-spon');if(sp)sp.onclick=()=>{SLOT.sponsored=!SLOT.sponsored;placeSlot(b);openSlotEd(b)};
-  box.querySelectorAll('.sed-sku').forEach(se=>se.onchange=()=>{SLOT.skus[+se.dataset.k]=+se.value;placeSlot(b)});
+  box.querySelectorAll('.seg3 button').forEach(bt=>bt.onclick=()=>{S2.type=bt.dataset.t;placeSlot(b);openSlotEd(b)});
+  const cta=box.querySelector('#sed-cta');if(cta)cta.addEventListener('input',()=>{S2.cta=cta.value;placeSlot(b)});
+  const fi=box.querySelector('#sed-img');if(fi)fi.addEventListener('change',()=>{const f=fi.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S2.img=r.result;placeSlot(b)};r.readAsDataURL(f)});
+  const sp=box.querySelector('#sed-spon');if(sp)sp.onclick=()=>{S2.sponsored=!S2.sponsored;placeSlot(b);openSlotEd(b)};
+  box.querySelectorAll('.sed-sku').forEach(se=>se.onchange=()=>{S2.skus[+se.dataset.k]=+se.value;placeSlot(b)});
   sed.hidden=false;
 }
 // --- card anatomy modal (review tooling): click a card in the new format to see the component usage ---
