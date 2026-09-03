@@ -171,9 +171,11 @@
 .sf-dd:hover{border-color:var(--border-strong)}
 .sf-dd i{width:16px;height:16px;flex:none;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
 .sf-sort{margin-left:auto;width:220px} /* sort pinned right, 220px */
-.sf-filters{display:flex;flex-wrap:wrap;gap:8px 12px;flex:1;min-width:0;max-height:44px;overflow:hidden} /* one row; overflow hides until expanded */
+.sf-filters{display:flex;flex-wrap:wrap;gap:8px 12px;flex:0 1 auto;min-width:0;max-height:44px;overflow:hidden} /* one row; show-more sits right after the filters, not by sort */
 .sf-bar.expanded .sf-filters{max-height:none}
-.sf-more{font-size:14px;color:var(--text-primary);white-space:nowrap;align-self:center}
+.sf-more{font-size:14px;color:var(--text-primary);white-space:nowrap;align-self:center;flex:none}
+.sf-bar--clamp{flex-wrap:nowrap}
+.sf-bar:has(.sf-float){padding:0} /* pill rows carry their own 8px */
 .sf-ndd{display:inline-flex;align-items:center;gap:8px;font-weight:var(--w-regular);cursor:pointer;user-select:none}
 .sf-ndd .track{width:40px;height:22px;border-radius:var(--radius-pill);background:var(--surface-action-disabled);position:relative;transition:background var(--dur-base) var(--ease-standard);flex:none}
 .sf-ndd .track::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:var(--radius-pill);background:var(--surface-raised);box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform var(--dur-base) var(--ease-standard)}
@@ -229,6 +231,7 @@
 .roundel--white i img{padding:8px}
 .catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;background:var(--surface-media);border:none;border-radius:var(--radius-default);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--cta-case)} /* Grey 1 pills — never fully rounded */
 .catpill:hover{filter:brightness(.97)}
+.cat-row--pills{gap:4px} /* pill nav links sit 4px apart */
 .catpill--solid{} /* alias — pills are badge-format everywhere now */
 .catlinks{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;padding:8px 0;font-family:var(--font-family-base)}
 .catlinks a{font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:underline;text-underline-offset:3px;white-space:nowrap;text-transform:var(--cta-case)}

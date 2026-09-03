@@ -98,7 +98,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
   <div class="cat-wrap"><div id="catnav"></div></div>
 
   <!-- C-06 sort & filter — desktop strip under the links, no dividers -->
-  <div class="sf-bar only-desktop" id="deskbar"></div>
+  <div class="sf-bar sf-bar--clamp only-desktop" id="deskbar"></div>
   <a class="showmore only-desktop" id="showmore" href="#" hidden><u>Show more filters</u></a>
 
   <!-- mobile — LIVE: split Filters|Relevance + pill row · NEW: NDD + view + combined -->
@@ -294,8 +294,8 @@ function render(){
   else if(catStyle==='roundels-outline'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--outline" href="#"><i><img src="${rimg(i)}" alt="" style="position:absolute;inset:4px;border-radius:var(--radius-pill);width:calc(100% - 8px);height:calc(100% - 8px);object-fit:cover;z-index:1"></i><span>${c}</span></a>`).join('');}
   else if(catStyle==='roundels-onimage'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--onimage${rW}" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:${rFit}"></i><span>${c}</span></a>`).join('');}
   else if(catStyle==='roundels-display'){catnav.innerHTML=CATS.slice(0,6).map((c,i)=>`<a class="roundel roundel--onimage roundel--display" href="#"><i><img src="${rimg(i)}" alt="" style="width:100%;height:100%;object-fit:cover"></i><span>${c}</span></a>`).join('');}
-  else if(catStyle==='pills'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="catpill" href="#">${c}</a>`).join('');}
-  else if(catStyle==='pills-solid'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="catpill catpill--solid" href="#">${c}</a>`).join('');}
+  else if(catStyle==='pills'){catnav.classList.add('cat-row--pills');catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="catpill" href="#">${c}</a>`).join('');}
+  else if(catStyle==='pills-solid'){catnav.classList.add('cat-row--pills');catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="catpill catpill--solid" href="#">${c}</a>`).join('');}
   else {catnav.className='catlinks';catnav.innerHTML=CATS.map(c=>`<a href="#">${c}</a>`).join('');}
   // desktop strip — real filter labels
   deskbar.classList.remove('expanded');
