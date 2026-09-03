@@ -40,10 +40,10 @@ body.dragging iframe{pointer-events:none}
   <b>P-05</b>
   <span class="seg" id="mode"><button data-m="live" class="on">Live now</button><button data-m="new">New format</button></span>
   <span id="brands">
-    <button class="chip" data-b="debenhams">Debenhams</button>
+    <button class="chip on" data-b="debenhams">Debenhams</button>
     <button class="chip" data-b="boohoo">boohoo</button>
     <button class="chip" data-b="boohooman">boohooMAN</button>
-    <button class="chip on" data-b="plt">PLT</button>
+    <button class="chip" data-b="plt">PLT</button>
     <button class="chip" data-b="karenmillen">Karen Millen</button>
     <button class="chip" data-b="warehouse">Warehouse</button>
     <button class="chip" data-b="brandroom">Brand Room</button>
@@ -70,19 +70,19 @@ body.dragging iframe{pointer-events:none}
     <option value="0" selected>Fit window</option>
   </select>
   <span class="sizebox" id="sizebox"></span>
-  <a class="openfull" id="openfull" href="plp.html?brand=plt&mode=live" target="_blank" rel="noopener">open ↗</a>
+  <a class="openfull" id="openfull" href="plp.html?brand=debenhams&mode=live" target="_blank" rel="noopener">open ↗</a>
   <span class="cfg" id="cfg"></span>
 </div>
 
 <div class="stage" id="stage">
   <div class="holder">
-    <iframe id="frame" src="plp.html?brand=plt&mode=live" title="PLP preview"></iframe>
+    <iframe id="frame" src="plp.html?brand=debenhams&mode=live" title="PLP preview"></iframe>
     <div class="handle" id="hr" title="Drag to resize width"><i></i></div>
   </div>
 </div>
 
 <script>
-let W=0, BRAND='plt', MODE='live', CAT='auto'; // W=0 → fit window
+let W=0, BRAND='debenhams', MODE='live', CAT='auto'; // W=0 → fit window
 const frame=document.getElementById('frame'),stage=document.getElementById('stage'),
       preset=document.getElementById('preset'),sizebox=document.getElementById('sizebox'),
       cfg=document.getElementById('cfg'),openfull=document.getElementById('openfull');
