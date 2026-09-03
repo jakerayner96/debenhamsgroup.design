@@ -20,6 +20,8 @@
   --border-subtle:#E7E7E7;--border-default:#D6D6D6;--border-strong:#767676;--border-error:#D33F3F;
   /* icon — may use Grey 4 (not text-contrast bound) */
   --icon-primary:#0F0F0F;--icon-secondary:#767676;--icon-disabled:#B5B5B5;--icon-inverse:#FFF;--icon-on-action:#FFF;
+  /* media + callout surfaces (product imagery placeholder Grey 1 · Taggstar bar Grey 6) */
+  --surface-media:#F2F2F2;--surface-callout:#323232;
   /* spacing — 4pt base */
   --space-2:2px;--space-4:4px;--space-8:8px;--space-12:12px;--space-16:16px;--space-20:20px;--space-24:24px;
   --space-32:32px;--space-40:40px;--space-48:48px;--space-64:64px;--space-80:80px;--space-96:96px;--space-128:128px;
@@ -34,7 +36,9 @@
   /* Layer 2 defaults: Debenhams (the default mode). Brand blocks below override. */
   --brand-name:'Debenhams';
   --font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
-  --w-regular:300;--w-strong:600;--cta-case:none;
+  --w-regular:300;--w-mid:400;--w-strong:600;--cta-case:none;
+  /* USP banner slots (a = message strip, b = code strip) — from the Header Figma component */
+  --usp-a-bg:#FAFAFA;--usp-a-fg:#0F0F0F;--usp-b-bg:#000;--usp-b-fg:#FFF;
   --radius-default:4px;--radius-lg:8px;--radius-pill:9999px;
   --surface-page:#FFF;
   --brand-primary:#7BE7D8;--surface-action:#00787D;--surface-action-hover:#1E6F63;--surface-action-pressed:#00565A;--text-on-action:#FFF;
@@ -50,39 +54,51 @@
 [data-brand="debenhams"]{/* default — no overrides */}
 [data-brand="boohoo"]{
   --brand-name:'boohoo';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
-  --w-regular:500;--w-strong:700;
+  --w-regular:500;--w-mid:400;--w-strong:700;
+  --usp-a-bg:#000;--usp-a-fg:#FFF;--usp-b-bg:#FFE0EB;--usp-b-fg:#0F0F0F;
   --brand-primary:#F8B5CC;--surface-action:#BB305F;--surface-action-hover:#CB4870;--surface-action-pressed:#A82A55;
   --brand-neutral:#F1DCE3;--brand-light-4:#FFE9F0;--brand-light-3:#FEE0EA;--brand-light-2:#FCD3E1;--brand-light-1:#FBC7D8;
   --brand-dark-1:#EEA5BE;--brand-dark-2:#EA92B0;--brand-dark-3:#DD789B;--brand-primary-dark:#CB4870;
 }
 [data-brand="boohooman"]{
   --brand-name:'boohooMAN';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
-  --w-regular:500;--w-strong:700;
+  --w-regular:500;--w-mid:400;--w-strong:700;
   --brand-primary:#0A0A0A;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
-  --brand-light-3:#E7E7E7;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
+  --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
 }
 [data-brand="plt"]{
   --brand-name:'PrettyLittleThing';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
-  --w-regular:400;--w-strong:700;--cta-case:uppercase;
+  --w-regular:400;--w-mid:400;--w-strong:700;--cta-case:uppercase;
+  --usp-a-bg:#F1C59E;--usp-a-fg:#0F0F0F;--usp-b-bg:#FFE4D2;--usp-b-fg:#0F0F0F; /* warm peach + light cream — from Header Figma */
   --radius-default:0px;--radius-lg:0px;--radius-pill:0px; /* square-radius mode */
   --surface-page:#FFFDF7;--text-on-action:#FFFDF7;
   --brand-primary:#550503;--surface-action:#550503;--surface-action-hover:#360502;--surface-action-pressed:#360502;
-  --brand-light-3:#FFD5CD;--brand-light-1:#C77E75;--brand-primary-dark:#360502;
+  --brand-light-3:#FFD5CD;--brand-light-2:#FFE4D2;--brand-light-1:#C77E75;--brand-primary-dark:#360502;
 }
 [data-brand="karenmillen"]{
   --brand-name:'Karen Millen';--font-family-base:'Jost',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-strong:600;
   --brand-primary:#8E330B;--surface-action:#8E330B;--surface-action-hover:#5E2207;--surface-action-pressed:#5E2207;
-  --brand-light-3:#F3C1A7;--brand-light-1:#E88A5B;--brand-primary-dark:#5E2207;
+  --brand-light-3:#F3C1A7;--brand-light-2:#F0B597;--brand-light-1:#E88A5B;--brand-primary-dark:#5E2207;
 }
-/* Scaffold modes — name (+ confirmed radius) only; palette + font land per audit.
-   Needed now because the PLP Alignment brief (P-05) spans these fascias. */
+/* DRAFT modes (P-05) — Warehouse from the live relaunch direction (03 Sep capture),
+   The Brand Room from its Figma (NRsu568JGzwCDq4egvkUbn). Confirm palettes at audit sign-off. */
 [data-brand="warehouse"]{
   --brand-name:'Warehouse';
+  --font-family-base:'Helvetica Neue',Helvetica,Arial,ui-sans-serif,sans-serif;
+  --w-regular:400;--w-mid:400;--w-strong:700;
+  --brand-primary:#0A0A0A;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
+  --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
+  --usp-a-bg:#323232;--usp-a-fg:#FFF;--usp-b-bg:#323232;--usp-b-fg:#FFF;
 }
 [data-brand="brandroom"]{
   --brand-name:'The Brand Room';
+  --font-family-base:'Helvetica Neue',Helvetica,Arial,ui-sans-serif,sans-serif;
+  --w-regular:400;--w-mid:400;--w-strong:700;--cta-case:uppercase;
   --radius-default:0px;--radius-lg:0px;--radius-pill:0px; /* square-radius mode — confirmed */
+  --brand-primary:#0A0A0A;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
+  --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
+  --usp-a-bg:#000;--usp-a-fg:#FFF;--usp-b-bg:#000;--usp-b-fg:#FFF;
 }
 /* Accessibility: all motion collapses under prefers-reduced-motion */
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
