@@ -46,3 +46,11 @@ Prototype now has a **Live now ⇄ New format** switch: LIVE replicates each fas
 - **C-08 Footer** built from Figma 664-1064 + live footers captured for all 7 fascias (capture/*/footer-1440.png): newsletter band (`--ft-band`), 4 link columns + social/app rail (real social SVGs), payment chips, sister-brands strip (Debenhams only), centre logo. On the site + in the prototype.
 - **Review shell**: prototype split into `plp.html` (pure page) + `index.html` (strip + iframed page with drag-to-resize width + presets — breakpoints respond inside the iframe). A full Safari-chrome device preview was built then scrapped on review ("looks shit") in favour of the plain resizer.
 - Fixed: `[hidden]` beaten by display rules (show-more, sister-brands), broken icon fills, strip chip wrap.
+
+## Part 5 (same day) — category-nav variants, breadcrumb, USP/nav balance
+
+- **Roundel rebuilt to the Figma component** (8459-1652): Default, Outline (4px `brand-primary` ring with inset gap), On-image label (Geologica), On-image display type (Antonio approximated by w-strong caps — Antonio not loaded, flagged), each ± label; 14px capitalize labels, 104–116px desktop / 72–84px mobile.
+- **Top-nav switcher in the review strip**: auto (per fascia) / roundels ×4 / pills / pills-solid / links — both roundels and links are in production use, so reviews can flip them per fascia.
+- **PLT category pills → solid** (`.catpill--solid`, badge tokens — reads like the Petite badge) so nav pills differentiate from the bordered filter dropdowns.
+- **Breadcrumb is now a DS component** (`.bc`, Figma 12711-4044): 12px w-regular capitalize, slash separators; share icon reserved for PDP mobile, not rendered on PLP.
+- **USP banner 12→14px at desktop; nav strip 16→15px** — rebalanced per review.

@@ -49,6 +49,16 @@ body.dragging iframe{pointer-events:none}
     <button class="chip" data-b="brandroom">Brand Room</button>
   </span>
   <span class="div"></span>
+  <select id="catsel" aria-label="Category nav style">
+    <option value="auto" selected>Top nav: auto</option>
+    <option value="roundels">Roundels</option>
+    <option value="roundels-outline">Roundels — outline</option>
+    <option value="roundels-onimage">Roundels — on image</option>
+    <option value="roundels-display">Roundels — display type</option>
+    <option value="pills">Pills</option>
+    <option value="pills-solid">Pills — solid</option>
+    <option value="links">Links</option>
+  </select>
   <select id="preset" aria-label="Width preset">
     <option value="390">390 — mobile</option>
     <option value="402">402</option>
@@ -72,7 +82,7 @@ body.dragging iframe{pointer-events:none}
 </div>
 
 <script>
-let W=0, BRAND='plt', MODE='live'; // W=0 → fit window
+let W=0, BRAND='plt', MODE='live', CAT='auto'; // W=0 → fit window
 const frame=document.getElementById('frame'),stage=document.getElementById('stage'),
       preset=document.getElementById('preset'),sizebox=document.getElementById('sizebox'),
       cfg=document.getElementById('cfg'),openfull=document.getElementById('openfull');
@@ -84,7 +94,7 @@ function apply(){
   sizebox.textContent=`${Math.round(w)}px`;
   openfull.href=`plp.html?brand=${BRAND}&mode=${MODE}`;
 }
-function send(){ frame.contentWindow.postMessage({plpSet:1,brand:BRAND,mode:MODE},'*'); }
+function send(){ frame.contentWindow.postMessage({plpSet:1,brand:BRAND,mode:MODE,cat:CAT},'*'); }
 addEventListener('message',e=>{ if(e.data&&e.data.plpCfg){cfg.textContent=e.data.plpCfg;} });
 
 document.querySelectorAll('#brands .chip').forEach(b=>b.onclick=()=>{
@@ -98,6 +108,7 @@ document.querySelectorAll('#mode button').forEach(b=>b.onclick=()=>{
   send();apply();
 });
 preset.onchange=()=>{W=+preset.value;apply();};
+document.getElementById('catsel').onchange=e=>{CAT=e.target.value;send();};
 
 document.getElementById('hr').addEventListener('pointerdown',e=>{
   e.preventDefault();document.body.classList.add('dragging');

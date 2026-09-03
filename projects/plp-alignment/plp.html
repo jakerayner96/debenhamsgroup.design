@@ -16,9 +16,6 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 :root{--plp-margin:16px}
 @media(min-width:1440px){:root{--plp-margin:95px}}
 .plp{padding:0 var(--plp-margin) 24px}
-.crumbs{padding:14px 0 4px;font-size:12px;color:var(--text-secondary)}
-.crumbs a{color:inherit;text-decoration:none}
-.crumbs a:hover{text-decoration:underline}
 .plp-title{text-align:left;padding:6px 0 2px}
 .plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
 .plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
@@ -26,7 +23,6 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 @media(min-width:768px){.plp-title{text-align:center}.plp-title h1{font-size:26px}.seo{margin:6px auto 2px;text-align:center}}
 .cat-wrap{display:flex;justify-content:flex-start;overflow:hidden}
 @media(min-width:768px){.cat-wrap{justify-content:center}}
-@media(min-width:1024px){.roundel{width:112px}.roundel i{width:96px;height:96px}}
 .showmore{display:block;font-size:14px;color:var(--text-primary);padding:2px 0 12px}
 .showmore[hidden]{display:none}
 .grid{display:grid;margin-top:8px}
@@ -85,7 +81,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 </header>
 
 <main class="plp">
-  <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a> / <a href="#">New In</a> / <a href="#">Womens New In</a> / New In Dresses</nav>
+  <nav class="bc" aria-label="Breadcrumb"><a href="#">Home</a><span class="sep">/</span><a href="#">New In</a><span class="sep">/</span><a href="#">Womens New In</a><span class="sep">/</span><span class="cur">New In Dresses</span></nav>
   <div class="plp-title"><h1>New In Dresses</h1><div class="count">1,284 styles</div></div>
   <p class="seo" id="seo" hidden>The search stops here. Pieces that instantly elevate your look — we're constantly curating the most relevant silhouettes, so you're always first to the newest shapes… <u>Read more</u></p>
 
@@ -144,7 +140,7 @@ const CFG={
   debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
   boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'brand', seo:false, nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
   boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:true,  nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
-  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'tight', cat:'linkspills',ts:'dark',  seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none'},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'tight', cat:'pills-solid',ts:'dark',  seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none'},
   karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:true,  nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'nondd'},
   warehouse:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
   brandroom:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
@@ -153,7 +149,7 @@ const CFG={
   debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
   boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
   boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'button',bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
-  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill',      swatch:'round',  icons:'plt',  moreBelow:true},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills-solid',ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill',      swatch:'round',  icons:'plt',  moreBelow:true},
   karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
   warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'square', qa:'icon',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
   brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
@@ -182,7 +178,7 @@ const LIB=`${AST}/ds/icons/lib`;
 const grid=document.getElementById('grid'),catnav=document.getElementById('catnav'),
       deskbar=document.getElementById('deskbar'),mobsplit=document.getElementById('mobsplit'),mobbar=document.getElementById('mobbar'),
       seo=document.getElementById('seo'),search=document.getElementById('search'),showmore=document.getElementById('showmore');
-let MODE='live',view=2;
+let MODE='live',view=2,CAT_OVERRIDE='auto';
 
 function icons(cfg){ /* PLT has its own icon set (Figma PLT Icons) */
   const plt=cfg.icons==='plt';
@@ -247,12 +243,18 @@ function render(){
   search.classList.toggle('hd-search--underline',cfg.search==='underline');
   seo.hidden=!cfg.seo;
   document.getElementById('ftbrands').hidden=(b!=='debenhams');
-  // category nav
+  // category nav — per-fascia default, overridable from the review strip (both roundels + links are in use)
   catnav.className='cat-row';
   const isMobile=matchMedia('(max-width:1023px)').matches;
-  const catStyle=cfg.cat==='linkspills'?(isMobile?'pills':'links'):cfg.cat;
-  if(catStyle==='roundels'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel" href="#"><i style="background:linear-gradient(150deg,var(--brand-light-3),var(--brand-light-1))"></i><span>${c}</span></a>`).join('');}
+  let catStyle=cfg.cat==='linkspills'?(isMobile?'pills':'links'):cfg.cat;
+  if(CAT_OVERRIDE&&CAT_OVERRIDE!=='auto')catStyle=CAT_OVERRIDE;
+  const grad=`background:linear-gradient(150deg,var(--brand-light-3),var(--brand-light-1))`;
+  if(catStyle==='roundels'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel" href="#"><i style="${grad}"></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='roundels-outline'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel roundel--outline" style="--roundel-fill:linear-gradient(150deg,var(--brand-light-3),var(--brand-light-1))" href="#"><i></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='roundels-onimage'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel roundel--onimage" href="#"><i style="${grad}"></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='roundels-display'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel roundel--onimage roundel--display" href="#"><i style="${grad}"></i><span>${c}</span></a>`).join('');}
   else if(catStyle==='pills'){catnav.innerHTML=CATS.slice(0,5).map(c=>`<a class="catpill" href="#">${c}</a>`).join('');}
+  else if(catStyle==='pills-solid'){catnav.innerHTML=CATS.slice(0,5).map(c=>`<a class="catpill catpill--solid" href="#">${c}</a>`).join('');}
   else {catnav.className='catlinks';catnav.innerHTML=CATS.map(c=>`<a href="#">${c}</a>`).join('');}
   // desktop strip — no dividers; "Show more filters" inline or below (PLT)
   deskbar.innerHTML=`${cfg.nddD?'<span class="sf-ndd" onclick="this.classList.toggle(\'on\')"><span class="track"></span>Next Day Delivery</span>':''}
@@ -283,8 +285,8 @@ function render(){
   const cfgText=`${MODE} · cols ${cfg.cols} · brand ${cfg.brand?'on':'off'} · ${cfg.fav}/${cfg.favShape} · add ${cfg.qa} · ${cfg.bleed?'bleed':'padded'} · ${cfg.compact?'compact':'standard'}`;
   try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE},'*')}catch(e){}
 }
-window.__setState=(brand,mode)=>{ if(mode)MODE=mode; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
-addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode); });
+window.__setState=(brand,mode,cat)=>{ if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
+addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat); });
 matchMedia('(max-width:1023px)').addEventListener('change',render);
 addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('drawer')?.classList.remove('open')});
 // init from URL
