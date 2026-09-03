@@ -1,2 +1,4 @@
 .DS_Store
 node_modules/
+# capture screenshots are binaries — manifest is tracked, PNGs are not (cloud storage + manifest rule)
+projects/*/capture/**/*.png

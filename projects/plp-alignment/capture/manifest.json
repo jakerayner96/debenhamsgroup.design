@@ -1,0 +1,112 @@
+{
+  "captured_at": "2026-09-03T09:29:42.624Z",
+  "breakpoints": [
+    390,
+    402,
+    440,
+    1023,
+    1024,
+    1440
+  ],
+  "note": "Desktop UA at all widths — layout via CSS media queries; UA-sniffed differences not captured. Full audit rig remains debenhams-design-system-scraper.",
+  "sites": [
+    {
+      "slug": "debenhams",
+      "home": "https://www.debenhams.com",
+      "plp": "https://www.debenhams.com/categories/womens-sale-dresses",
+      "shots": [
+        390,
+        402,
+        440,
+        1023,
+        1024,
+        1440
+      ],
+      "errors": []
+    },
+    {
+      "slug": "boohoo",
+      "home": "https://www.boohoo.com",
+      "plp": "https://www.boohoo.com/categories/womens-new-in-dresses",
+      "shots": [
+        390,
+        402,
+        440,
+        1023,
+        1024,
+        1440
+      ],
+      "errors": []
+    },
+    {
+      "slug": "boohooman",
+      "home": "https://www.boohooman.com",
+      "plp": "https://www.boohooman.com/categories/mens-sale-hoodies-sweatshirts",
+      "shots": [
+        390,
+        402,
+        440,
+        1023,
+        1024,
+        1440
+      ],
+      "errors": []
+    },
+    {
+      "slug": "plt",
+      "home": "https://www.prettylittlething.com",
+      "plp": "https://www.prettylittlething.com/categories/womens-new-in-dresses",
+      "shots": [
+        390,
+        402,
+        440,
+        1023,
+        1024,
+        1440
+      ],
+      "errors": []
+    },
+    {
+      "slug": "karenmillen",
+      "home": "https://www.karenmillen.com",
+      "plp": "https://www.karenmillen.com/categories/womens-sale-dresses",
+      "shots": [
+        390,
+        402,
+        440,
+        1023,
+        1024,
+        1440
+      ],
+      "errors": []
+    },
+    {
+      "slug": "warehouse",
+      "home": "https://www.warehousefashion.com",
+      "plp": "https://www.warehousefashion.com/categories/womens-new-in-dresses",
+      "shots": [
+        390,
+        402,
+        440,
+        1023,
+        1024,
+        1440
+      ],
+      "errors": []
+    },
+    {
+      "slug": "brandroom",
+      "home": "https://www.debenhams.com/pages/brand-room",
+      "plp": "https://www.debenhams.com/categories/sale",
+      "shots": [
+        390,
+        402,
+        440,
+        1023,
+        1024,
+        1440
+      ],
+      "errors": []
+    }
+  ]
+}

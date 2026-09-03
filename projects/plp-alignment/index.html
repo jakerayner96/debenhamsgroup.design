@@ -2,8 +2,8 @@
 <html lang="en" data-brand="plt">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>P-05 · PLP Alignment — working skeleton</title>
-<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
+<title>P-05 · PLP — one template, seven fascias</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
 <!-- DS — canonical, linked not copied -->
 <link rel="stylesheet" href="../../assets/ds/tokens.css">
 <link rel="stylesheet" href="../../assets/ds/components.css">
@@ -12,118 +12,234 @@
 body{background:var(--surface-page);color:var(--text-primary);font-family:var(--font-family-base);font-weight:var(--w-regular);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 
-/* project chrome (not DS) — the switch strip for review */
-.strip{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:6px;padding:9px 16px;background:#000;color:#B0B0B0;font-family:'Montserrat',sans-serif;font-size:11.5px}
-.strip b{color:#F7F7F7;font-weight:600;margin-right:8px}
-.strip button{padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px}
+/* ---- project review strip (chrome, not DS) ---- */
+.strip{position:sticky;top:0;z-index:400;display:flex;align-items:center;gap:6px;padding:8px 14px;background:#000;color:#B0B0B0;font-family:'Montserrat',sans-serif;font-size:11.5px;overflow-x:auto}
+.strip b{color:#F7F7F7;font-weight:600;margin-right:6px;white-space:nowrap}
+.strip button{flex:none;padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px;color:#B0B0B0}
 .strip button.on{background:#F7F7F7;color:#000;border-color:#F7F7F7;font-weight:600}
-.strip .cfg{margin-left:auto;font-size:10.5px;color:#707070}
+.strip .cfg{margin-left:auto;font-size:10.5px;color:#707070;white-space:nowrap;padding-left:12px}
 
-/* PLP — everything below consumes DS tokens only */
-.plp{max-width:1440px;margin:0 auto;padding:0 var(--space-24) var(--space-64)}
-.crumb{padding:var(--space-16) 0 var(--space-8);font-size:12px;color:var(--text-secondary)}
-h1{font-size:24px;font-weight:var(--w-strong);text-transform:var(--cta-case);letter-spacing:.01em;margin:0 0 var(--space-4)}
-.count{font-size:13px;color:var(--text-secondary);margin-bottom:var(--space-16)}
-.filters{display:flex;gap:var(--space-8);padding:var(--space-12) 0;border-top:var(--border-w) solid var(--border-subtle);border-bottom:var(--border-w) solid var(--border-subtle);margin-bottom:var(--space-24);overflow-x:auto}
-.chip{flex:none;padding:8px 14px;border:var(--border-w) solid var(--border-default);border-radius:var(--radius-pill);font-size:13px;background:var(--surface-page);transition:border-color var(--dur-fast) var(--ease-standard)}
-.chip:hover{border-color:var(--border-strong)}
-.chip:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
+/* ---- PLP layout — margins per PLP MASTER: 16px to 1439, 95px at 1440+ ---- */
+:root{--plp-margin:16px;--grid-gap:16px 12px}
+@media(min-width:1440px){:root{--plp-margin:95px}}
+.plp{padding:0 var(--plp-margin) 64px}
+.crumbs{padding:14px 0 4px;font-size:12px;color:var(--text-secondary)}
+.crumbs a{color:inherit;text-decoration:none}
+.crumbs a:hover{text-decoration:underline}
+.plp-title{text-align:center;padding:6px 0 2px}
+.plp-title h1{font-size:24px;font-weight:var(--w-strong);text-transform:var(--cta-case);letter-spacing:.01em}
+.plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
+.cat-wrap{display:flex;justify-content:center}
+.grid{display:grid;gap:var(--grid-gap);margin-top:8px}
+.grid.bleed{margin-left:calc(var(--plp-margin) * -1);margin-right:calc(var(--plp-margin) * -1);gap:12px 2px}
+.more{display:flex;justify-content:center;margin-top:40px}
+.foot{margin-top:64px;padding:24px var(--plp-margin);background:var(--surface-sunken);border-top:var(--border-w) solid var(--border-subtle);text-align:center;font-size:12px;color:var(--text-secondary)}
 
-.grid{display:grid;gap:var(--space-24) var(--space-16)}
-.card{position:relative}
-.card .img{aspect-ratio:3/4;border-radius:var(--radius-default);background:linear-gradient(165deg,var(--brand-light-3),var(--brand-light-1));position:relative;overflow:hidden}
-.grid.pad .card .img{margin:0}
-.card .fav{position:absolute;top:var(--space-8);right:var(--space-8);width:36px;height:36px;min-width:36px;border-radius:var(--radius-pill);background:var(--surface-page);display:grid;place-items:center;color:var(--icon-action);font-size:15px;box-shadow:0 4px 10px rgba(22,19,20,.12)}
-.card .fav:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
-.card .badge{position:absolute;left:var(--space-8);bottom:var(--space-8);background:var(--surface-accent);color:var(--text-primary);font-size:11px;font-weight:var(--w-strong);text-transform:var(--cta-case);padding:3px 8px;border-radius:var(--radius-default)}
-.card .brand{font-size:11px;font-weight:var(--w-strong);letter-spacing:.04em;text-transform:uppercase;color:var(--text-secondary);margin-top:var(--space-8)}
-.card .name{font-size:13px;font-weight:var(--w-regular);margin-top:2px}
-.card .brand+.name{margin-top:2px}
-.card .name:first-child{margin-top:var(--space-8)}
-.card .price{font-size:14px;font-weight:var(--w-strong);margin-top:3px}
-.card .price s{color:var(--text-secondary);font-weight:var(--w-regular);margin-left:var(--space-4)}
-.more{display:flex;justify-content:center;margin-top:var(--space-40)}
-
-@media(max-width:920px){.grid{grid-template-columns:repeat(2,1fr)!important;gap:var(--space-16) var(--space-8)}.plp{padding:0 var(--space-16) var(--space-48)}}
+/* desktop vs mobile furniture */
+.only-mobile{display:none}
+@media(max-width:1023px){
+  .only-desktop{display:none}
+  .only-mobile{display:block}
+  .sf-bar.only-mobile{display:flex}
+  .hd-bar--desktop,.hd-nav{display:none}
+}
+@media(min-width:1024px){.hd-bar:not(.hd-bar--desktop){display:none}}
+/* grid columns: 2 mobile (1 via view toggle) · 3 tablet · config desktop */
+.grid{grid-template-columns:repeat(2,1fr)}
+.grid.view-1{grid-template-columns:1fr}
+@media(min-width:768px){.grid,.grid.view-1{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1280px){.grid,.grid.view-1{grid-template-columns:repeat(var(--cols,4),1fr)}}
+.viewtoggle{display:inline-flex;border:var(--border-w) solid var(--border-default);border-radius:var(--radius-default);overflow:hidden}
+.viewtoggle button{width:36px;height:38px;display:grid;place-items:center;font-size:13px;color:var(--icon-secondary)}
+.viewtoggle button.on{background:var(--surface-sunken);color:var(--icon-primary)}
 </style>
 </head>
 <body>
 
-<!-- review strip — project chrome, not part of the PLP -->
 <div class="strip" id="strip">
   <b>P-05 · PLP</b>
-  <button data-b="plt" class="on">PLT</button>
+  <button data-b="debenhams">Debenhams</button>
   <button data-b="boohoo">boohoo</button>
   <button data-b="boohooman">boohooMAN</button>
+  <button data-b="plt" class="on">PLT</button>
+  <button data-b="karenmillen">Karen Millen</button>
   <button data-b="warehouse">Warehouse</button>
   <button data-b="brandroom">Brand Room</button>
   <span class="cfg" id="cfg"></span>
 </div>
 
-<main class="plp">
-  <div class="crumb">Home / Women / Dresses</div>
-  <h1>Dresses</h1>
-  <div class="count">1,284 styles</div>
-  <div class="filters">
-    <button class="chip">Filter &amp; sort</button>
-    <button class="chip">Size</button>
-    <button class="chip">Colour</button>
-    <button class="chip">Price</button>
-    <button class="chip">Length</button>
-    <button class="chip">New in</button>
+<!-- ============ C-05 HEADER — one template, brand tokens ============ -->
+<header class="hd">
+  <div class="hd-bar">
+    <div class="hd-left"><button class="hd-burger" aria-label="Menu"><img src="../../assets/ds/icons/hamburger.svg" alt=""></button><img class="hd-logo" id="logoM" src="../../assets/brands/plt.svg" alt=""></div>
+    <div class="hd-icons">
+      <button aria-label="Search"><img src="../../assets/ds/icons/search.svg" alt=""></button>
+      <button aria-label="Account"><img src="../../assets/ds/icons/account.svg" alt=""></button>
+      <button aria-label="Wishlist"><img class="favic" src="../../assets/ds/icons/heart-24.svg" alt=""></button>
+      <button aria-label="Bag"><img src="../../assets/ds/icons/bag.svg" alt=""></button>
+    </div>
   </div>
+  <div class="hd-bar hd-bar--desktop">
+    <img class="hd-logo" id="logoD" src="../../assets/brands/plt.svg" alt="">
+    <div class="hd-search"><span>Search products and brands…</span><span class="ics"><img src="../../assets/ds/icons/camera.svg" alt=""><img src="../../assets/ds/icons/search.svg" alt=""></span></div>
+    <div class="hd-icons">
+      <button aria-label="Account"><img src="../../assets/ds/icons/account.svg" alt=""></button>
+      <button aria-label="Wishlist"><img class="favic" src="../../assets/ds/icons/heart-24.svg" alt=""></button>
+      <button aria-label="Bag"><img src="../../assets/ds/icons/bag.svg" alt=""></button>
+    </div>
+  </div>
+  <nav class="hd-nav only-desktop"><a class="sale" href="#">Sale</a><a href="#">New in</a><a href="#">Dresses</a><a href="#">Clothing</a><a href="#">Co-ords</a><a href="#">Tops</a><a href="#">Shoes</a><a href="#">Accessories</a><a href="#">Brands</a></nav>
+  <div class="hd-usp">Free delivery when you spend over £50</div>
+  <div class="hd-usp hd-usp--b">Extra 20% off everything&nbsp;·&nbsp;Code: <b>ALIGN20</b></div>
+</header>
+
+<main class="plp">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a> / <a href="#">New In</a> / <a href="#">Womens New In</a> / New In Dresses</nav>
+  <div class="plp-title"><h1>New In Dresses</h1><div class="count">1,284 styles</div></div>
+
+  <!-- category nav — roundels | pills | links per fascia config -->
+  <div class="cat-wrap"><div id="catnav"></div></div>
+
+  <!-- C-06 sort & filter — desktop row -->
+  <div class="sf-bar only-desktop">
+    <span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>
+    <button class="sf-dd">Size<i></i></button>
+    <button class="sf-dd">Colour<i></i></button>
+    <button class="sf-dd">Style<i></i></button>
+    <button class="sf-dd">Body Fit<i></i></button>
+    <button class="sf-dd">Price<i></i></button>
+    <button class="sf-dd sf-sort">Relevance<i></i></button>
+  </div>
+  <!-- mobile: NDD + view toggle + combined sort&filter -->
+  <div class="sf-bar only-mobile">
+    <span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>
+    <span style="margin-left:auto;display:inline-flex;gap:8px;align-items:center">
+      <span class="viewtoggle"><button id="v2" class="on" aria-label="2-column view">▦</button><button id="v1" aria-label="1-column view">▢</button></span>
+      <button class="sf-btn" onclick="document.getElementById('drawer').classList.add('open')">Sort &amp; Filter ⚏</button>
+    </span>
+  </div>
+
   <div class="grid" id="grid"></div>
   <div class="more"><button class="bd pri">Load more</button></div>
 </main>
 
+<div class="foot">One core PLP template · differences are fascia config, not forks · P-05 PLP Alignment — debenhamsgroup.design</div>
+
+<!-- C-06 mobile filter sheet -->
+<div class="sf-drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Filters">
+  <div class="head">Filters <button aria-label="Close" onclick="document.getElementById('drawer').classList.remove('open')">×</button></div>
+  <div class="rows">
+    <button class="sf-row">Sort <i></i></button>
+    <button class="sf-row">Size <i></i></button>
+    <button class="sf-row">Colour <i></i></button>
+    <button class="sf-row">Brands <i></i></button>
+    <button class="sf-row">Style <i></i></button>
+    <button class="sf-row">Category <i></i></button>
+    <button class="sf-row">Body Fit <i></i></button>
+    <button class="sf-row">Price <i></i></button>
+  </div>
+  <button class="sf-cta" onclick="document.getElementById('drawer').classList.remove('open')">View products</button>
+</div>
+
 <script>
-/* Per-fascia config — DRAFT values, reconcile against .context/08-plp-alignment.md
-   + live capture. This object IS the deliverable shape: differences as config, not forks. */
+const AST='../../assets';
+/* ================= PLPBrandConfig — the deliverable shape =================
+   Differences are configuration, not forks. Grounded in: Scott's brief (01 Sep),
+   the Figma header/card components, and the 03 Sep live capture (capture/manifest.json).
+   fontScale is recorded for the audit trail but is a NO-OP once aligned — the DS
+   role sizes ARE the PLT sizes, so alignment happens by adoption. */
 const PLP_CONFIG={
-  plt:       {showBrand:false,imageFullWidth:true, favouriteIcon:'default',columnsDesktop:4,fontScale:'plt'},
-  boohoo:    {showBrand:true, imageFullWidth:true, favouriteIcon:'default',columnsDesktop:4,fontScale:'plt'},
-  boohooman: {showBrand:true, imageFullWidth:true, favouriteIcon:'default',columnsDesktop:4,fontScale:'plt'},
-  warehouse: {showBrand:false,imageFullWidth:true, favouriteIcon:'km',     columnsDesktop:4,fontScale:'plt'},
-  brandroom: {showBrand:true, imageFullWidth:true, favouriteIcon:'default',columnsDesktop:4,fontScale:'plt'},
+  debenhams:  {cols:4, showBrand:true,  fav:'heart',    quickAdd:'icon',   fullBleed:false, catNav:'roundels', fontScale:'ds'},
+  boohoo:     {cols:4, showBrand:true,  fav:'heart',    quickAdd:'icon',   fullBleed:true,  catNav:'pills',    fontScale:'plt'},
+  boohooman:  {cols:4, showBrand:true,  fav:'bookmark', quickAdd:'button', fullBleed:false, catNav:'pills',    fontScale:'ds'},
+  plt:        {cols:4, showBrand:false, fav:'plain',    quickAdd:'none',   fullBleed:true,  catNav:'links',    fontScale:'ds'},
+  karenmillen:{cols:4, showBrand:true,  fav:'bookmark', quickAdd:'icon',   fullBleed:false, catNav:'links',    fontScale:'ds'},
+  warehouse:  {cols:4, showBrand:false, fav:'bookmark', quickAdd:'icon',   fullBleed:true,  catNav:'links',    fontScale:'plt'},
+  brandroom:  {cols:4, showBrand:true,  fav:'bookmark', quickAdd:'none',   fullBleed:false, catNav:'pills',    fontScale:'ds'},
 };
-
+const CATS=['Dresses','New In','Midi Dresses','Long Sleeve','Satin','Shirt Dresses','White Dresses'];
+/* supplier brands shown on Brand Room (a marketplace); own-brand elsewhere */
+const BR_BRANDS=['Karen Millen','Clarks','DKNY','Ted Baker','Coast','Dune London'];
 const PRODUCTS=[
-  {brand:'Collection', name:'Ribbed knit midi dress',        price:'£28.00', was:'£40.00', badge:'-30%'},
-  {brand:'Collection', name:'Oversized denim jacket',        price:'£45.00'},
-  {brand:'Premium',    name:'Satin slip dress',              price:'£35.00', badge:'New'},
-  {brand:'Collection', name:'Tailored wide-leg trouser',     price:'£32.00'},
-  {brand:'Basics',     name:'Longline shacket',              price:'£38.00', was:'£55.00', badge:'-30%'},
-  {brand:'Premium',    name:'Pleated mini skirt',            price:'£22.00'},
-  {brand:'Collection', name:'Cropped blazer',                price:'£42.00'},
-  {brand:'Basics',     name:'Seamless bodysuit',             price:'£16.00', badge:'New'},
+  {name:'Ribbed knit midi dress',            price:'£28.00', was:'£40.00', pct:'-30%', tag:'Plus',   swatches:4, stars:true},
+  {name:'Satin cowl neck slip dress',        price:'£35.00', badge:'New',  ai:true,    stars:true},
+  {name:'Tailored blazer mini dress',        price:'£45.00', was:'£60.00', pct:'-25%', offer:'Extra 20% Off Applied', swatches:3},
+  {name:'Broderie tiered smock dress',       price:'£32.00', tag:'Petite', stars:true},
+  {name:'Bandeau pleated maxi dress',        price:'£38.00', sponsored:true, swatches:5},
+  {name:'Oversized shirt dress',             price:'£26.00', was:'£34.00', pct:'-24%', taggstar:'No. 3 Bestseller|in Dresses'},
+  {name:'Lace trim cami midi dress',         price:'£30.00', ai:true, tag:'Tall', swatches:2},
+  {name:'Wrap front jersey midi dress',      price:'£24.00', stars:true},
+  {name:'Halterneck fishtail maxi dress',    price:'£42.00', was:'£55.00', pct:'-24%', offer:'Extra 15% Off Sale, with code: SALE'},
+  {name:'Corset detail structured dress',    price:'£40.00', sponsored:true, taggstar:'No. 6 Bestseller|in Going Out'},
+  {name:'Textured shift dress with pockets', price:'£29.00', swatches:4, stars:true},
+  {name:'Belted utility midi dress',         price:'£36.00', tag:'Plus', ai:true},
 ];
+const GRADS=[[165,3,1],[200,1,3],[150,3,1],[185,1,3],[160,3,1],[210,1,3],[170,3,1],[195,1,3],[155,3,1],[205,1,3],[175,3,1],[190,1,3]];
+/* swatches are PRODUCT colours, not brand colours */
+const SWATCH_COLS=['#B97A57','#3B3B3B','#8A9BAE','#C9C2B8','#5C4033'];
 
-const grid=document.getElementById('grid'),cfgEl=document.getElementById('cfg');
+const grid=document.getElementById('grid'),catnav=document.getElementById('catnav'),cfgEl=document.getElementById('cfg');
+let view=2;
 
+function favMarkup(cfg){
+  if(cfg.fav==='plain')  return `<button class="pc-iconbtn pc-fav--plain" aria-label="Add to wishlist"><img src="${AST}/ds/icons/heart-24.svg" alt=""></button>`;
+  const ic=cfg.fav==='bookmark'?'bookmark':'heart-16';
+  return `<button class="pc-iconbtn" aria-label="Add to wishlist"><img src="${AST}/ds/icons/${ic}.svg" alt=""></button>`;
+}
+function card(p,i,cfg,brandLabel){
+  const g=GRADS[i%GRADS.length];
+  const badges=[p.tag?`<span class="badge">${p.tag}</span>`:'',p.badge?`<span class="badge">${p.badge}</span>`:''].join('');
+  const ts=p.taggstar?p.taggstar.split('|'):null;
+  return `<article class="pc">
+    <div class="pc-img">
+      <div style="position:absolute;inset:0;background:linear-gradient(${g[0]}deg,var(--brand-light-${g[1]}),var(--brand-light-${g[2]}))"></div>
+      <div class="pc-actions">${favMarkup(cfg)}${cfg.quickAdd==='icon'?`<button class="pc-iconbtn" aria-label="Quick add"><img src="${AST}/ds/icons/quick-add-16.svg" alt=""></button>`:''}</div>
+      ${badges?`<div class="pc-badges${p.ai?' has-ai':''}">${badges}</div>`:''}
+      ${p.ai?'<div class="badge-ai">AI Generated</div>':''}
+    </div>
+    ${cfg.quickAdd==='button'?`<button class="pc-add"><img src="${AST}/ds/icons/quick-add-24.svg" alt="">Add</button>`:''}
+    ${ts?`<div class="pc-taggstar"><img src="${AST}/ds/icons/trophy.svg" alt=""><b>${ts[0]}</b><span>${ts[1]}</span></div>`:''}
+    <div class="pc-info">
+      ${p.sponsored?'<div class="pc-sponsored">Sponsored</div>':''}
+      <div class="pc-titles">${cfg.showBrand?`<div class="pc-brand">${brandLabel(i)}</div>`:''}<div class="pc-name">${p.name}</div></div>
+      <div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>
+      ${p.offer?`<div class="pc-offer">${p.offer}</div>`:''}
+      ${p.swatches?`<div class="pc-swatches"><span class="set">${SWATCH_COLS.slice(0,p.swatches).map((c,si)=>`<span class="pc-swatch${si===0?' on':''}"><i style="background:${c}"></i></span>`).join('')}</span><span class="pc-more">+${p.swatches}</span></div>`:''}
+      ${p.stars?`<div class="pc-stars"><span class="set"><img src="${AST}/ds/icons/star-fill.svg" alt=""><img src="${AST}/ds/icons/star-fill.svg" alt=""><img src="${AST}/ds/icons/star-fill.svg" alt=""><img src="${AST}/ds/icons/star-half.svg" alt=""><img src="${AST}/ds/icons/star-outline.svg" alt=""></span><span>(${9+i})</span></div>`:''}
+    </div>
+  </article>`;
+}
 function render(){
   const b=document.documentElement.getAttribute('data-brand');
-  const c=PLP_CONFIG[b];
-  grid.style.gridTemplateColumns=`repeat(${c.columnsDesktop},1fr)`;
-  grid.classList.toggle('pad',!c.imageFullWidth);
-  const fav=c.favouriteIcon==='km'?'♥':'♡';
-  grid.innerHTML=PRODUCTS.map(p=>`
-    <article class="card">
-      <div class="img">
-        <button class="fav" aria-label="Add to wishlist">${fav}</button>
-        ${p.badge?`<span class="badge">${p.badge}</span>`:''}
-      </div>
-      ${c.showBrand?`<div class="brand">${p.brand}</div>`:''}
-      <div class="name">${p.name}</div>
-      <div class="price">${p.price}${p.was?` <s>${p.was}</s>`:''}</div>
-    </article>`).join('');
-  cfgEl.textContent=`cols ${c.columnsDesktop} · brand ${c.showBrand?'on':'off'} · fav ${c.favouriteIcon} · img ${c.imageFullWidth?'full':'padded'}`;
+  const cfg=PLP_CONFIG[b];
+  const cs=getComputedStyle(document.documentElement);
+  const name=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
+  const brandLabel=b==='brandroom'?(i=>BR_BRANDS[i%BR_BRANDS.length]):(()=>name);
+  // logos + fav icon in header
+  document.getElementById('logoM').src=`${AST}/brands/${b}.svg`;
+  document.getElementById('logoD').src=`${AST}/brands/${b}.svg`;
+  document.querySelectorAll('.favic').forEach(i=>i.src=`${AST}/ds/icons/${cfg.fav==='bookmark'?'bookmark':'heart-24'}.svg`);
+  // category nav style
+  catnav.className='cat-row';
+  if(cfg.catNav==='roundels'){catnav.innerHTML=CATS.slice(0,5).map(c=>`<a class="roundel" href="#"><i style="background:linear-gradient(150deg,var(--brand-light-3),var(--brand-light-1))"></i><span>${c}</span></a>`).join('');}
+  else if(cfg.catNav==='pills'){catnav.innerHTML=CATS.slice(0,5).map(c=>`<a class="catpill" href="#">${c}</a>`).join('');}
+  else {catnav.className='catlinks';catnav.innerHTML=CATS.map(c=>`<a href="#">${c}</a>`).join('');}
+  // grid
+  grid.style.setProperty('--cols',cfg.cols);
+  grid.classList.toggle('bleed',cfg.fullBleed);
+  grid.classList.toggle('view-1',view===1);
+  grid.innerHTML=PRODUCTS.map((p,i)=>card(p,i,cfg,brandLabel)).join('');
+  cfgEl.textContent=`cols ${cfg.cols} · brand ${cfg.showBrand?'on':'off'} · fav ${cfg.fav} · add ${cfg.quickAdd} · ${cfg.fullBleed?'full-bleed':'padded'} · ${cfg.catNav}`;
 }
-
 document.querySelectorAll('#strip button[data-b]').forEach(btn=>btn.onclick=()=>{
   document.documentElement.setAttribute('data-brand',btn.dataset.b);
   document.querySelectorAll('#strip button[data-b]').forEach(x=>x.classList.toggle('on',x===btn));
   render();
 });
+document.getElementById('v1').onclick=()=>{view=1;vt();render()};
+document.getElementById('v2').onclick=()=>{view=2;vt();render()};
+function vt(){document.getElementById('v1').classList.toggle('on',view===1);document.getElementById('v2').classList.toggle('on',view===2)}
+addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('drawer').classList.remove('open')});
 render();
 </script>
 </body>

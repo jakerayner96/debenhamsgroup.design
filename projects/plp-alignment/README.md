@@ -2,42 +2,53 @@
 
 **Status:** open · **Brief:** Scott (Head of Ecommerce & Trading, PLT & boohoo), email 01 Sep 2026 · **Target:** w/c 08 Sep · **Branch:** `plp-alignment`
 
-Align boohoo, boohooMAN, PLT, Warehouse and The Brand Room onto **one core PLP template**. Differences become configuration, not forks. PLT is the reference implementation. Full brief distillation, config schema and audit matrix: [`.context/08-plp-alignment.md`](../../.context/08-plp-alignment.md).
+One core PLP template for **seven fascias** — Debenhams, boohoo, boohooMAN, PLT, Karen Millen, Warehouse, The Brand Room. Differences are configuration, not forks. PLT is the reference implementation. Brief distillation: [`.context/08-plp-alignment.md`](../../.context/08-plp-alignment.md).
 
-**Figma source:** TBD — brief arrived by email; node recorded here the moment the first Figma frame exists (house rule: every project records file key + node id).
+## Figma sources (the hero references)
 
-## The contract with the design system
-
-- Prototypes here link the canonical DS files — **never copy values**:
-  ```html
-  <link rel="stylesheet" href="../../assets/ds/tokens.css">
-  <link rel="stylesheet" href="../../assets/ds/components.css">
-  ```
-- Brand switching is only ever `data-brand` on the root element. No per-fascia CSS, no forks.
-- Components this project produces (product card, PLP grid, filter bar…) are built here as token-consuming patterns. When the winning option merges to main they get **promoted into `assets/ds/components.css`** and specced on the site (System → Components). That's how project work feeds the DS.
-- Missing tokens discovered here (e.g. Warehouse palette) go into `assets/ds/tokens.css` on main via the audit — flagged, not guessed.
-
-## Config schema (draft — reconcile against 08 doc + live capture)
-
-| Key | Default | Per brief |
+| What | Where | Status |
 |---|---|---|
-| `showBrand` | true | false — PLT, Warehouse |
-| `imageFullWidth` | false | true — BHW, Warehouse (PLT pattern) |
-| `favouriteIcon` | default | km — Warehouse |
-| `columnsDesktop` | 5 | 4 — Warehouse |
-| `fontScale` | brand | plt — BHW, Warehouse (site-wide reduction) |
+| Product card (hero asset) | DS file `aIHmkCaTy9c5EWOxAGw0So` · [5992-10841](https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=5992-10841) · variable layers [12999-146812](https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=12999-146812) | **Built into DS** → `assets/ds/components.css` `.pc` + site C-02 |
+| Header + USP banner | [3793-3545](https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=3793-3545) · [11982-37171](https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=11982-37171) | **Built** → `.hd` + site C-05 (USP colours are per-fascia tokens) |
+| Sort & filter (A/B/C tests) | [1783-11572](https://www.figma.com/design/s7WDE3BkCxbgqJ4x4hoV80/Sort---Filter?node-id=1783-11572) | **Built** (combined pattern) → `.sf` + site C-06 |
+| AI-generated watermark + badge stacking | [25-11775](https://www.figma.com/design/d0zY0vt8hoz0gq8ycTimxS/AI-Generated-Watermark?node-id=25-11775) et al · [live demo](https://jakerayner96.github.io/ai-generated-badge/) | **Built** → `.badge` / `.badge-ai` + site C-07 |
+| Margins spec | PLP MASTER `GP04SeG99nevXl4yuwY3sM` · [291-18049](https://www.figma.com/design/GP04SeG99nevXl4yuwY3sM/PLP-MASTER--21.10-25-?node-id=291-18049) | **Applied**: 16px sides to 1439 · 95px at 1440+, containers scale |
+| Debenhams PLP m/d (older format ref) | [291-34498](https://www.figma.com/design/GP04SeG99nevXl4yuwY3sM/PLP-MASTER--21.10-25-?node-id=291-34498) · [318-19215](https://www.figma.com/design/GP04SeG99nevXl4yuwY3sM/PLP-MASTER--21.10-25-?node-id=318-19215) | Reference |
+| The Brand Room PLP | [780-116608](https://www.figma.com/design/NRsu568JGzwCDq4egvkUbn/The-Brand-Room?node-id=780-116608) · [552-16411](https://www.figma.com/design/NRsu568JGzwCDq4egvkUbn/The-Brand-Room?node-id=552-16411) | Palette + config extracted (mono, uppercase, bookmark, supplier brands) |
+| MAN PLP (Taggstar) | [3546-14580](https://www.figma.com/design/00YKWCHwTarfwWZ1HayFUI/Taggstar?node-id=3546-14580) / [3546-13842](https://www.figma.com/design/00YKWCHwTarfwWZ1HayFUI/Taggstar?node-id=3546-13842) | Taggstar bar built into card; deeper pass pending |
+| PLP grid view (mobile) | [157-2718](https://www.figma.com/design/H679chUDMrAVSdARchnheR/PLP-Grid-View?node-id=157-2718) / [157-2879](https://www.figma.com/design/H679chUDMrAVSdARchnheR/PLP-Grid-View?node-id=157-2879) / [158-8455](https://www.figma.com/design/H679chUDMrAVSdARchnheR/PLP-Grid-View?node-id=158-8455) | **Pending extraction** — prototype has a placeholder 2↔1 toggle until these are pulled |
 
-## Files
+## Live capture — done 03 Sep
 
-- `index.html` — working five-fascia PLP skeleton: switch fascia top-right, per-fascia config applied live. This is the working surface until `plt-app-prototype` is ingested to seed M-01 properly.
-- Options land as `option-a.html`, `option-b.html`, `option-c.html` (A: strict PLT clone · B: PLT + toggles · C: B + density switch) — reviewed via OptionSwitcher when it exists.
+`capture/manifest.json` + 84 PNGs (gitignored — binaries stay out of git): **7 fascias × 6 audit breakpoints** (390/402/440/1023/1024/1440), fold + full-page, real PLP URLs per site. Caveats in the manifest: desktop UA at all widths; Brand Room capture resolved to a generic Debenhams sale PLP (its own pattern comes from Figma). Rerun: `node capture.mjs` (script preserved in session scratchpad; promote into repo tooling if reruns become regular).
 
-## Blocked / waiting
+## The template (prototype `index.html`)
 
-1. **plt-app-prototype ingest** — the best PLP; seeds the master card anatomy + behaviours.
-2. **Live capture** of the five fascias' PLPs (scraper config in 08 doc §4) — fills the audit matrix; all five run the same client-rendered `/categories/` platform so web-fetch is IA-only.
-3. **Warehouse + Brand Room palettes** — modes exist as name-only scaffolds in tokens.css until audited.
+DS components only — linked from `../../assets/ds/`: C-05 header (mobile + desktop) → USP a/b → breadcrumbs → centred title + count → category nav (roundels/pills/links per fascia) → C-06 sort & filter (desktop dropdown row · mobile NDD + view toggle + sheet) → C-02 card grid (2-col mobile / 3 tablet / config desktop · full-bleed option) → C-01 load more. Badges + AI banner per C-07.
 
-## The loop (per the operating model)
+## PLPBrandConfig (draft v2 — grounded in brief + Figma + capture)
 
-brief → this branch → options → stakeholder review → winner merges to main as **M-01 Master PLP** → components promoted into the DS → branch archived as the record.
+| Fascia | cols | showBrand | fav | quickAdd | fullBleed | catNav | fontScale |
+|---|---|---|---|---|---|---|---|
+| debenhams | 4 | ✓ | heart | icon | — | roundels | ds |
+| boohoo | 4 | ✓ | heart | icon | ✓ | pills | plt* |
+| boohooman | 4 | ✓ | bookmark | button | — | pills | ds |
+| plt (ref) | 4 | ✗ | plain heart | — | ✓ | links | ds |
+| karenmillen | 4 | ✓ | bookmark | icon | — | links | ds |
+| warehouse | 4 | ✗ | bookmark | icon | ✓ | links | plt* |
+| brandroom | 4 | ✓ (supplier) | bookmark | — | — | pills | ds |
+
+\* `fontScale` records the brief's ask; it's a **no-op once aligned** — the DS role sizes are the PLT sizes, so adopting the template is the reduction.
+
+## Open / next
+
+1. **Grid-view Figma nodes** → replace the placeholder mobile view toggle with the real spec.
+2. **Breakpoints workstream** (flagged by Jake): PLP MASTER notes 320/375/425/768/1024/1280/1440/1728/2560/3840; audit capture at the locked six; reconcile into the DS breakpoint set (currently deferred in `07-foundations`).
+3. Warehouse + Brand Room palettes are **DRAFT** in tokens.css — confirm at audit sign-off.
+4. PLT's 16px icon set (vs 24px standard) parked — one-template rule wins unless PLT pushes back.
+5. plt-app-prototype ingest still open (card behaviours: hover states, quick-add flow).
+6. Options A/B/C on OptionSwitcher once the base template is agreed.
+
+## The loop
+
+Winner merges to main as **M-01 Master PLP**; the card/header/sort-filter/badges are already promoted (they're canonical Figma components, not options). Branch stays as the record.

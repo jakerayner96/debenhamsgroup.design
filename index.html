@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Debenhams Group Design</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Geologica:wght@300;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Geologica:wght@300;400;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ds/tokens.css">
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
@@ -273,6 +273,9 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
       <a href="#prototypes"><span class="ic">▣</span>Master prototypes <span class="tag wip">wip</span></a>
       <a href="#button"><span class="ic">▢</span>Button <span class="tag ok">live</span></a>
       <a href="#product-card"><span class="ic">▢</span>Product card <span class="tag ok">live</span></a>
+      <a href="#header"><span class="ic">▢</span>PLP header <span class="tag ok">live</span></a>
+      <a href="#sort-filter"><span class="ic">▢</span>Sort &amp; filter <span class="tag ok">live</span></a>
+      <a href="#badges"><span class="ic">▢</span>Badges <span class="tag ok">live</span></a>
     </div>
   </div>
   <div class="grp">
@@ -669,9 +672,12 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <div class="tbl">
       <div class="tr h"><span></span><span>Name</span><span>Description</span><span>Brands</span><span>Status</span></div>
       <div class="tr" onclick="location.hash='button'"><span class="id">C-01</span><span class="nm">Button</span><span class="d">Primary · secondary · disabled · spinner — golden-truth state matrix</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
-      <div class="tr" onclick="location.hash='product-card'"><span class="id">C-02</span><span class="nm">Product card</span><span class="d">The PLP unit — brand label, was-price, badge, favourite as config</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
+      <div class="tr" onclick="location.hash='product-card'"><span class="id">C-02</span><span class="nm">Product card</span><span class="d">The hero asset — Figma-exact, variable layers as config, used on every PLP + carousel</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
       <div class="tr"><span class="id">C-03</span><span class="nm">Smart promo field</span><span class="d">Promo code or gift card — detects which it's given</span><span class="dots"><i style="background:#00787D"></i></span><span class="pill ok">live</span></div>
-      <div class="tr"><span class="id">C-04</span><span class="nm">PLP template</span><span class="d">One core template · five brand configs · Sep brief</span><span class="dots"><i style="background:#26282B"></i></span><span class="pill wip">wip</span></div>
+      <div class="tr"><span class="id">C-04</span><span class="nm">PLP template</span><span class="d">One core template · seven fascia configs · building on branch plp-alignment</span><span class="dots"><i style="background:#26282B"></i></span><span class="pill wip">wip</span></div>
+      <div class="tr" onclick="location.hash='header'"><span class="id">C-05</span><span class="nm">PLP header</span><span class="d">Logo · pill search · icons · nav · USP banners — one template, brand-token styled</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
+      <div class="tr" onclick="location.hash='sort-filter'"><span class="id">C-06</span><span class="nm">Sort &amp; filter</span><span class="d">Combined pattern — desktop dropdown row, mobile sheet with drill-ins</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
+      <div class="tr" onclick="location.hash='badges'"><span class="id">C-07</span><span class="nm">Badges</span><span class="d">Image-overlay tags + AI-generated banner — stack rules, per-brand theming</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
     </div>
   </section>
 
@@ -738,34 +744,184 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
   <section class="page" id="product-card" data-crumb="System / Components / Product card">
     <div class="kick">system / components / C-02 <b>· rendering <span class="bn">Debenhams</span></b></div>
     <h1>Product card</h1>
-    <p class="lede">The PLP unit. Brand label, was-price, badge and favourite icon are per-brand toggles on one component — the open PLP brief resolves each fascia's config.</p>
+    <p class="lede">The hero asset — built exactly from the Figma component, used across every PLP and carousel. Every optional element is a variable layer: turn it on per fascia, never fork the card.</p>
     <div class="demo">
-      <div class="hd"><i></i><i></i><i></i><span>canvas — product card</span><span class="bn">Debenhams</span></div>
-      <div class="canvas">
-        <div style="width:190px">
-          <div style="aspect-ratio:3/4;border-radius:var(--radius-default);background:linear-gradient(160deg,var(--brand-light-3),var(--brand-light-1));position:relative">
-            <span style="position:absolute;top:8px;right:8px;width:29px;height:29px;border-radius:99px;background:var(--surface-page);display:grid;place-items:center;color:var(--icon-action);font-size:13px;box-shadow:0 4px 10px rgba(22,19,20,.12)">♥</span>
+      <div class="hd"><i></i><i></i><i></i><span>canvas — product card · all layers on / minimal</span><span class="bn">Debenhams</span></div>
+      <div class="canvas" style="align-items:flex-start">
+        <article class="pc" style="width:210px">
+          <div class="pc-img">
+            <div style="position:absolute;inset:0;background:linear-gradient(165deg,var(--brand-light-3),var(--brand-light-1))"></div>
+            <div class="pc-actions">
+              <button class="pc-iconbtn" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button>
+              <button class="pc-iconbtn" aria-label="Quick add"><img src="assets/ds/icons/quick-add-16.svg" alt=""></button>
+            </div>
+            <div class="pc-badges has-ai"><span class="badge">Plus</span></div>
+            <div class="badge-ai">AI Generated</div>
           </div>
-          <div style="font-size:12px;margin-top:8px;font-weight:var(--w-regular);color:#242424">Ribbed knit midi dress</div>
-          <div style="font-size:13px;font-weight:var(--w-strong);color:#242424;margin-top:3px">£28.00 <s style="color:#767676;font-weight:400;margin-left:5px">£40.00</s></div>
-        </div>
-        <div style="width:190px">
-          <div style="aspect-ratio:3/4;border-radius:var(--radius-default);background:linear-gradient(200deg,var(--brand-light-3),var(--brand-light-1));position:relative">
-            <span style="position:absolute;top:8px;right:8px;width:29px;height:29px;border-radius:99px;background:var(--surface-page);display:grid;place-items:center;color:var(--icon-action);font-size:13px;box-shadow:0 4px 10px rgba(22,19,20,.12)">♡</span>
+          <button class="pc-add"><img src="assets/ds/icons/quick-add-24.svg" alt="">Add</button>
+          <div class="pc-taggstar"><img src="assets/ds/icons/trophy.svg" alt=""><b>No. 6 Bestseller</b><span>in Face</span></div>
+          <div class="pc-info">
+            <div class="pc-sponsored">Sponsored</div>
+            <div class="pc-titles"><div class="pc-brand">Brand Name</div><div class="pc-name">Product name product name product name</div></div>
+            <div class="pc-price sale"><span class="now">£0.00</span><span class="was">£2.99</span><span class="pct">-30%</span></div>
+            <div class="pc-swatches"><span class="set"><span class="pc-swatch on"><i style="background:#B97A57"></i></span><span class="pc-swatch"><i style="background:#B97A57"></i></span><span class="pc-swatch"><i style="background:#B97A57"></i></span><span class="pc-swatch"><i style="background:#B97A57"></i></span><span class="pc-swatch"><i style="background:#B97A57"></i></span></span><span class="pc-more">+5</span></div>
+            <div class="pc-stars"><span class="set"><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-half.svg" alt=""><img src="assets/ds/icons/star-outline.svg" alt=""></span><span>(9)</span></div>
           </div>
-          <div style="font-size:12px;margin-top:8px;font-weight:var(--w-regular);color:#242424">Oversized denim jacket</div>
-          <div style="font-size:13px;font-weight:var(--w-strong);color:#242424;margin-top:3px">£45.00</div>
+        </article>
+        <article class="pc" style="width:210px">
+          <div class="pc-img">
+            <div style="position:absolute;inset:0;background:linear-gradient(200deg,var(--brand-light-3),var(--brand-light-1))"></div>
+            <div class="pc-actions"><button class="pc-iconbtn" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button></div>
+          </div>
+          <div class="pc-info">
+            <div class="pc-titles"><div class="pc-brand">Brand Name</div><div class="pc-name">Product name product name</div></div>
+            <div class="pc-price"><span class="now">£45.00</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+    <h2>Variable layers <code>booleans on one component — the Figma model, kept verbatim</code></h2>
+    <div class="props">
+      <div class="pr h"><span>Layer</span><span>Element</span><span>Notes</span></div>
+      <div class="pr"><code>wishlistButton</code><span>32px circle · heart</span><span>Icon swaps per fascia: heart or bookmark (KM, boohooMAN, Brand Room, Warehouse) — nested atomic icon</span></div>
+      <div class="pr"><code>quickAdd</code><span>icon · button · none</span><span>Circle icon (Debenhams) or full-width Add button (boohooMAN)</span></div>
+      <div class="pr"><code>productTag</code><span>badge, bottom-left</span><span>Plus / Petite / Tall — see C-07 Badges for stacking</span></div>
+      <div class="pr"><code>taggstar</code><span>social-proof bar</span><span>Grey 6 bar · trophy · "No. N Bestseller in X"</span></div>
+      <div class="pr"><code>sponsored</code><span>text row</span><span>Figma uses Grey 4 — lifted to Grey 5 here for the AA text floor</span></div>
+      <div class="pr"><code>colourSwatches</code><span>20px swatch row</span><span>Swatch shape is a nested atomic component — restyle per brand without touching the card</span></div>
+      <div class="pr"><code>showReviewStars</code><span>stars + count</span><span>12px stars, 2px gap</span></div>
+      <div class="pr"><code>showBrand</code><span>brand line</span><span>Hidden on PLT + Warehouse per the Sep brief</span></div>
+    </div>
+    <h2>Anatomy values</h2>
+    <p>Image 2:3 on <code style="font-family:var(--mono);color:var(--aq)">surface/media</code> · card gap 12 · info gap 8 · title gap 4 · text 14px — brand <code style="font-family:var(--mono);color:var(--aq)">w-strong</code>, name <code style="font-family:var(--mono);color:var(--aq)">w-regular</code> 2-line clamp, was-price <code style="font-family:var(--mono);color:var(--aq)">w-mid</code> strikethrough · sale price + percent in status red · actions 32px circles, top 8 right 8, gap 8.</p>
+    <h2>Source</h2>
+    <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">assets/ds/components.css → .pc</code> · Figma: <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=5992-10841" target="_blank" rel="noopener">DS file → Product Card · 5992-10841</a> · <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=12999-146812" target="_blank" rel="noopener">variable layers on · 12999-146812</a></p>
+  </section>
+
+  <!-- PLP HEADER -->
+  <section class="page" id="header" data-crumb="System / Components / PLP header">
+    <div class="kick">system / components / C-05 <b>· rendering <span class="bn">Debenhams</span></b></div>
+    <h1>PLP header</h1>
+    <p class="lede">One header template for every fascia: logo, pill search, account/wishlist/bag, category nav, USP banners. Brand tokens carry the identity — including each fascia's USP banner colours and wishlist icon.</p>
+    <div class="demo">
+      <div class="hd"><i></i><i></i><i></i><span>canvas — mobile header + USP banners · 390</span><span class="bn">Debenhams</span></div>
+      <div class="canvas" style="padding:24px">
+        <div class="hd" style="width:390px;max-width:100%;border:1px solid var(--border-subtle)">
+          <div class="hd-bar">
+            <div class="hd-left"><button class="hd-burger" aria-label="Menu"><img src="assets/ds/icons/hamburger.svg" alt=""></button><img class="hd-logo brandlogo" src="assets/brands/debenhams.svg" alt=""></div>
+            <div class="hd-icons">
+              <button aria-label="Search"><img src="assets/ds/icons/search.svg" alt=""></button>
+              <button aria-label="Account"><img src="assets/ds/icons/account.svg" alt=""></button>
+              <button aria-label="Wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button>
+              <button aria-label="Bag"><img src="assets/ds/icons/bag.svg" alt=""></button>
+            </div>
+          </div>
+          <div class="hd-usp">Lorem ipsum dolor sit amet</div>
+          <div class="hd-usp hd-usp--b">Lorem ipsum dolor sit amet&nbsp;·&nbsp;Code: <b>FAST</b></div>
         </div>
       </div>
     </div>
-    <h2>Config</h2>
-    <div class="props">
-      <div class="pr h"><span>Toggle</span><span>Default</span><span>Brief (Sep 26)</span></div>
-      <div class="pr"><code>showBrand</code><span>true</span><span>false — PLT, Warehouse</span></div>
-      <div class="pr"><code>imageFullWidth</code><span>false</span><span>true — BHW, Warehouse (PLT pattern)</span></div>
-      <div class="pr"><code>favouriteIcon</code><span>default</span><span>km — Warehouse</span></div>
-      <div class="pr"><code>columnsDesktop</code><span>5</span><span>4 — Warehouse</span></div>
+    <div class="demo">
+      <div class="hd"><i></i><i></i><i></i><span>canvas — desktop bar + nav</span><span class="bn">Debenhams</span></div>
+      <div class="canvas" style="padding:24px;display:block">
+        <div class="hd" style="border:1px solid var(--border-subtle)">
+          <div class="hd-bar hd-bar--desktop" style="--plp-margin:24px">
+            <img class="hd-logo brandlogo" src="assets/brands/debenhams.svg" alt="">
+            <div class="hd-search"><span>Search over 10,000+ brands...</span><span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="assets/ds/icons/search.svg" alt=""></span></div>
+            <div class="hd-icons">
+              <button aria-label="Account"><img src="assets/ds/icons/account.svg" alt=""></button>
+              <button aria-label="Wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button>
+              <button aria-label="Bag"><img src="assets/ds/icons/bag.svg" alt=""></button>
+            </div>
+          </div>
+          <nav class="hd-nav"><a class="sale" href="#header">Sale</a><a href="#header">New</a><a href="#header">Women</a><a href="#header">Men</a><a href="#header">Kids</a><a href="#header">Shoes</a><a href="#header">Beauty</a><a href="#header">Home</a><a href="#header">Brands</a></nav>
+          <div class="hd-usp">Lorem ipsum dolor sit amet</div>
+        </div>
+      </div>
     </div>
+    <h2>Per-fascia differences <code>all token-driven</code></h2>
+    <div class="props">
+      <div class="pr h"><span>Slot</span><span>Mechanism</span><span>Values</span></div>
+      <div class="pr"><code>usp banners</code><span>--usp-a / --usp-b</span><span>Deb grey+black · boohoo black+pink · PLT peach+cream · Warehouse dark grey · Brand Room black</span></div>
+      <div class="pr"><code>wishlist icon</code><span>icon swap</span><span>Heart: Debenhams, boohoo, PLT · Bookmark: boohooMAN, KM, Warehouse, Brand Room</span></div>
+      <div class="pr"><code>nav strip</code><span>--brand-light-2 + --cta-case</span><span>Debenhams aqua tint · PLT uppercase · Brand Room uppercase</span></div>
+      <div class="pr"><code>margins</code><span>--plp-margin</span><span>16px to 1439 · 95px at 1440+ (PLP MASTER margins spec)</span></div>
+    </div>
+    <h2>Source</h2>
+    <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">assets/ds/components.css → .hd</code> · Figma: <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=3793-3545" target="_blank" rel="noopener">Header · 3793-3545</a> · <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=11982-37171" target="_blank" rel="noopener">USP banner · 11982-37171</a> · <a style="color:var(--aq)" href="https://www.figma.com/design/GP04SeG99nevXl4yuwY3sM/PLP-MASTER--21.10-25-?node-id=291-18049" target="_blank" rel="noopener">Margins · 291-18049</a></p>
+  </section>
+
+  <!-- SORT & FILTER -->
+  <section class="page" id="sort-filter" data-crumb="System / Components / Sort &amp; filter">
+    <div class="kick">system / components / C-06 <b>· rendering <span class="bn">Debenhams</span></b></div>
+    <h1>Sort &amp; filter</h1>
+    <p class="lede">The combined pattern from the A/B/C tests: desktop gets a dropdown row with sort on the right; mobile gets Next Day Delivery + a single Sort &amp; Filter entry opening a full sheet with drill-in panels and a pinned CTA.</p>
+    <div class="demo">
+      <div class="hd"><i></i><i></i><i></i><span>canvas — desktop row / mobile bar</span><span class="bn">Debenhams</span></div>
+      <div class="canvas" style="display:block;padding:24px">
+        <div class="sf-bar" style="border-top:var(--border-w) solid var(--border-subtle);border-bottom:var(--border-w) solid var(--border-subtle)">
+          <span class="sf-ndd on"><span class="track"></span>Next Day Delivery</span>
+          <button class="sf-dd">Size<i></i></button>
+          <button class="sf-dd">Colour<i></i></button>
+          <button class="sf-dd">Brands<i></i></button>
+          <button class="sf-dd">Style<i></i></button>
+          <button class="sf-dd sf-sort">Relevance<i></i></button>
+        </div>
+        <div class="sf-bar">
+          <span class="sf-ndd"><span class="track"></span>Next Day Delivery</span>
+          <button class="sf-btn" style="margin-left:auto">Sort &amp; Filter ⚏</button>
+        </div>
+        <div class="sf-bar"><span class="sf-chip">Women's: 12, 14, XS, M, L <button aria-label="Remove">×</button></span><span class="sf-chip">Men's: XS, M, L <button aria-label="Remove">×</button></span></div>
+      </div>
+    </div>
+    <div class="demo">
+      <div class="hd"><i></i><i></i><i></i><span>canvas — mobile filter sheet</span><span class="bn">Debenhams</span></div>
+      <div class="canvas" style="padding:24px">
+        <div class="sf-drawer open" style="position:static;width:320px;height:420px;border:1px solid var(--border-subtle);z-index:auto">
+          <div class="head">Filters <button aria-label="Close">×</button></div>
+          <div class="rows">
+            <button class="sf-row">Sort <i></i></button>
+            <button class="sf-row">Size <i></i></button>
+            <button class="sf-row">Colour <i></i></button>
+            <button class="sf-row">Brands <i></i></button>
+            <button class="sf-row">Style <i></i></button>
+            <button class="sf-row">Price <i></i></button>
+          </div>
+          <button class="sf-cta">View products</button>
+        </div>
+      </div>
+    </div>
+    <h2>Source</h2>
+    <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">assets/ds/components.css → .sf</code> · Figma: <a style="color:var(--aq)" href="https://www.figma.com/design/s7WDE3BkCxbgqJ4x4hoV80/Sort---Filter?node-id=1783-11572" target="_blank" rel="noopener">Sort &amp; Filter combined · 1783-11572</a> — A/B/C variants live in the same file for the test readout.</p>
+  </section>
+
+  <!-- BADGES -->
+  <section class="page" id="badges" data-crumb="System / Components / Badges">
+    <div class="kick">system / components / C-07 <b>· rendering <span class="bn">Debenhams</span></b></div>
+    <h1>Badges</h1>
+    <p class="lede">Image-overlay tags (Plus, Petite, Sale, Sponsored) and the AI-generated banner. Badges stack bottom-left, newest on top; the AI banner is a full-width strip pinned to the image foot and is mandatory whenever the imagery is AI-generated.</p>
+    <div class="demo">
+      <div class="hd"><i></i><i></i><i></i><span>canvas — stacking on the card image</span><span class="bn">Debenhams</span></div>
+      <div class="canvas" style="align-items:flex-start">
+        <div class="pc" style="width:190px"><div class="pc-img">
+          <div style="position:absolute;inset:0;background:linear-gradient(165deg,var(--brand-light-3),var(--brand-light-1))"></div>
+          <div class="pc-badges has-ai"><span class="badge">Petite</span><span class="badge badge--sale">Sale</span></div>
+          <div class="badge-ai">AI Generated</div>
+        </div></div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;padding-top:8px">
+          <span class="badge">Plus</span><span class="badge">Petite</span><span class="badge">Tall</span><span class="badge badge--sale">Sale</span>
+        </div>
+      </div>
+    </div>
+    <h2>Rules</h2>
+    <div class="props">
+      <div class="pr h"><span>Rule</span><span></span><span>Detail</span></div>
+      <div class="pr"><code>ai banner</code><span>mandatory</span><span>Full-width black strip at image foot whenever product imagery is AI-generated — uppercase, 10px, white</span></div>
+      <div class="pr"><code>stacking</code><span>bottom-left column</span><span>Badges lift 32px when the AI banner is present (.has-ai) · gap 4</span></div>
+      <div class="pr"><code>theming</code><span>tokens only</span><span>Radius, font, case follow the brand mode — square on PLT/Brand Room automatically</span></div>
+    </div>
+    <h2>Source</h2>
+    <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">assets/ds/components.css → .badge</code> · Figma: <a style="color:var(--aq)" href="https://www.figma.com/design/d0zY0vt8hoz0gq8ycTimxS/AI-Generated-Watermark?node-id=25-11775" target="_blank" rel="noopener">AI watermark + stacking · 25-11775</a> · live demo: <a style="color:var(--aq)" href="https://jakerayner96.github.io/ai-generated-badge/" target="_blank" rel="noopener">ai-generated-badge</a></p>
   </section>
 
   <!-- PROJECTS INDEX -->
@@ -929,7 +1085,10 @@ const REG=[
  {h:'components',t:'Components',k:'library index',ic:'▦',s:'System'},
  {h:'prototypes',t:'Master prototypes',k:'plp pdp bag checkout canonical master',ic:'▣',s:'System'},
  {h:'button',t:'Button',k:'cta primary states c-01',ic:'▢',s:'Component'},
- {h:'product-card',t:'Product card',k:'plp card favourite c-02',ic:'▢',s:'Component'},
+ {h:'product-card',t:'Product card',k:'plp card favourite wishlist quick add taggstar swatches ratings c-02',ic:'▢',s:'Component'},
+ {h:'header',t:'PLP header',k:'logo search usp banner nav menu c-05',ic:'▢',s:'Component'},
+ {h:'sort-filter',t:'Sort & filter',k:'dropdowns drawer sheet next day delivery c-06',ic:'▢',s:'Component'},
+ {h:'badges',t:'Badges',k:'ai generated watermark tags petite sale sponsored c-07',ic:'▢',s:'Component'},
  {h:'projects',t:'All projects',k:'archive briefs',ic:'☰',s:'Projects'},
  {h:'p-plp',t:'PLP Alignment',k:'warehouse boohoo template p-05',ic:'▸',s:'Project'},
  {h:'p-colour',t:'Colour Alignment',k:'signed off km p-04',ic:'▸',s:'Project'},
@@ -961,6 +1120,8 @@ function paint(){
   document.querySelectorAll('.rv').forEach(v=>v.textContent=cs.getPropertyValue('--radius-default').trim());
   const n=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
   document.querySelectorAll('.bn').forEach(b=>b.textContent=n);
+  const slug=document.documentElement.getAttribute('data-brand');
+  document.querySelectorAll('.brandlogo').forEach(i=>i.src='assets/brands/'+slug+'.svg');
 }
 const fab=document.getElementById('fab'),fabBtn=document.getElementById('fabBtn'),fabIc=document.getElementById('fabIc'),fabMenu=document.getElementById('fabMenu');
 function fabClose(){fab.classList.remove('open');fabBtn.setAttribute('aria-expanded','false')}
