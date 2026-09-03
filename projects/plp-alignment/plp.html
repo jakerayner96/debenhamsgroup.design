@@ -23,7 +23,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .mode-new .usp-cell b{font-size:12px;font-weight:var(--w-strong)}
 /* PLP content slot — DS Figma 8556-18755. Square tile after row 3 (new format), three types:
    Button (media + white CTA), Text (media + gradient + View All + optional Sponsored), Get The Look. */
-.cslot{grid-column:span 2;aspect-ratio:1/1;position:relative;overflow:hidden;cursor:pointer;border-radius:0;margin-bottom:12px}
+.cslot{grid-column:span 2;aspect-ratio:1/1;position:relative;overflow:hidden;cursor:pointer;border-radius:0;margin-bottom:2px}
 .cslot>img.media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cslot .slot-btn{position:absolute;right:24px;bottom:24px;height:50px;padding:8px 24px;background:#FFF;color:#000;border:none;border-radius:4px;font-family:var(--font-family-base);font-size:16px;line-height:24px;font-weight:var(--w-btn,600);text-transform:uppercase;display:flex;align-items:center}
 .cslot .slot-grad{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.7))}
@@ -32,14 +32,15 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 @media(min-width:1024px){.cslot .slot-view{right:32px;bottom:32px}}
 .cslot .slot-view svg{width:16px;height:16px;display:block}
 .cslot .slot-spon{position:absolute;top:8px;right:8px;color:#FFF;font-size:10px;text-shadow:0 0 4px rgba(0,0,0,.8)}
-.cslot--gtl{background:var(--surface-sunken);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:16px}
+.cslot--gtl{background:var(--surface-sunken);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:16px;aspect-ratio:auto} /* height follows the mosaic — right cells stay true squares */
 @media(min-width:1024px){.cslot--gtl{padding:24px;gap:24px}}
 .cslot--gtl .slot-title{font-size:18px;font-weight:var(--w-strong);color:var(--text-primary)}
 @media(min-width:1024px){.cslot--gtl .slot-title{font-size:20px}}
-.cslot--gtl .slot-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;min-height:0}
+.cslot--gtl .slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px} /* 2x2: first image takes the full left column, the other two are squares */
 @media(min-width:1024px){.cslot--gtl .slot-grid{gap:12px}}
-.cslot--gtl .slot-grid img{width:100%;height:100%;object-fit:cover;border-radius:4px}
-.cslot--gtl .slot-grid img:first-child{grid-row:1/span 2}
+.cslot--gtl .slot-grid img{width:100%;object-fit:cover;border-radius:4px;display:block}
+.cslot--gtl .slot-grid img:first-child{grid-row:1/span 2;height:100%}
+.cslot--gtl .slot-grid img:not(:first-child){aspect-ratio:1/1;height:auto}
 /* card anatomy modal — review tooling (new format): which component layers this instance uses */
 #anat{position:fixed;inset:0;z-index:975;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}
 #anat[hidden]{display:none}
