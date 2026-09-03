@@ -38,7 +38,7 @@ export default {
       return json({ ok: true, threads: doc }, 200, headers);
     }
 
-    if (request.method === 'POST' && ['/thread', '/reply', '/resolve'].includes(url.pathname)) {
+    if (request.method === 'POST' && ['/thread', '/reply', '/resolve', '/delete'].includes(url.pathname)) {
       let body;
       try { body = await request.json(); } catch { return json({ ok: false, error: 'bad json' }, 400, headers); }
       const k = body.k || '';
@@ -48,11 +48,12 @@ export default {
       if (url.pathname === '/thread') {
         const t = body.thread || {};
         if (!clip(t.text, 2000).trim()) return json({ ok: false, error: 'empty' }, 400, headers);
+        if (!clip(t.name, 60).trim()) return json({ ok: false, error: 'name required' }, 400, headers);
         if (doc.length >= 500) return json({ ok: false, error: 'thread cap' }, 429, headers);
         doc.push({
           id: clip(t.id, 40) || (Date.now() + '-' + Math.random().toString(36).slice(2, 8)),
           anchor: { key: clip(t.anchor && t.anchor.key, 60) || 'page', rx: +((t.anchor && t.anchor.rx) || 0), ry: +((t.anchor && t.anchor.ry) || 0) },
-          name: clip(t.name, 60) || 'Anonymous',
+          name: clip(t.name, 60),
           text: clip(t.text, 2000),
           ts: Date.now(),
           resolved: false,
@@ -62,12 +63,17 @@ export default {
         const t = doc.find(x => x.id === body.id);
         if (!t) return json({ ok: false, error: 'no thread' }, 404, headers);
         if (!clip(body.text, 2000).trim()) return json({ ok: false, error: 'empty' }, 400, headers);
+        if (!clip(body.name, 60).trim()) return json({ ok: false, error: 'name required' }, 400, headers);
         if (t.replies.length >= 200) return json({ ok: false, error: 'reply cap' }, 429, headers);
-        t.replies.push({ name: clip(body.name, 60) || 'Anonymous', text: clip(body.text, 2000), ts: Date.now() });
-      } else {
+        t.replies.push({ name: clip(body.name, 60), text: clip(body.text, 2000), ts: Date.now() });
+      } else if (url.pathname === '/resolve') {
         const t = doc.find(x => x.id === body.id);
         if (!t) return json({ ok: false, error: 'no thread' }, 404, headers);
         t.resolved = !!body.resolved;
+      } else {
+        const i = doc.findIndex(x => x.id === body.id);
+        if (i < 0) return json({ ok: false, error: 'no thread' }, 404, headers);
+        doc.splice(i, 1);
       }
 
       await env.PLP_COMMENTS.put(k, JSON.stringify(doc));

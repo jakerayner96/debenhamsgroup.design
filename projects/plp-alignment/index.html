@@ -74,8 +74,7 @@ body.dragging iframe{pointer-events:none}
   </select>
   <span class="sizebox" id="sizebox"></span>
   <button class="chip" id="cmt" title="Add a comment — then click anywhere on the page">💬 Comment</button>
-  <button class="sw" id="pins" title="Show / hide comment pins"><span class="tr"><i></i></span><span id="pinlbl">Pins</span></button>
-  <a class="openfull" id="openfull" href="plp.html?brand=debenhams&mode=live" target="_blank" rel="noopener">open ↗</a>
+  <button class="sw" id="pins" title="Show / hide comment pins"><span class="tr"><i></i></span><span id="pinlbl">Show comments</span></button>
   <span class="cfg" id="cfg"></span>
 </div>
 
@@ -90,14 +89,13 @@ body.dragging iframe{pointer-events:none}
 let W=390, BRAND='debenhams', MODE='live', CAT='auto'; // defaults to 390 mobile
 const frame=document.getElementById('frame'),stage=document.getElementById('stage'),
       preset=document.getElementById('preset'),sizebox=document.getElementById('sizebox'),
-      cfg=document.getElementById('cfg'),openfull=document.getElementById('openfull');
+      cfg=document.getElementById('cfg');
 
 function apply(){
   const avail=stage.clientWidth-16;
   const w=Math.min(W||avail,avail);
   frame.style.width=w+'px';
   sizebox.textContent=`${Math.round(w)}px`;
-  openfull.href=`plp.html?brand=${BRAND}&mode=${MODE}`;
 }
 function send(){ frame.contentWindow.postMessage({plpSet:1,brand:BRAND,mode:MODE,cat:CAT},'*'); }
 addEventListener('message',e=>{
@@ -105,7 +103,7 @@ addEventListener('message',e=>{
   if(e.data&&e.data.plpcState){const st=e.data.plpcState;
     cmtBtn.classList.toggle('on',st.armed);
     pinsBtn.classList.toggle('on',st.show);
-    document.getElementById('pinlbl').textContent=st.count?`Pins (${st.count})`:'Pins';
+    document.getElementById('pinlbl').textContent=st.count?`Show comments (${st.count})`:'Show comments';
   }
 });
 const cmtBtn=document.getElementById('cmt'),pinsBtn=document.getElementById('pins');

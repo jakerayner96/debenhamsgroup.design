@@ -28,9 +28,9 @@ css.textContent=`
 #plpc-catcher{position:fixed;inset:0;z-index:940;cursor:crosshair;display:none}
 html.plpc-arm #plpc-catcher{display:block}
 #plpc-layer{position:absolute;left:0;top:0;width:100%;height:0;overflow:visible;z-index:930;pointer-events:none}
-.plpc-pin{position:absolute;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:99px 99px 99px 4px;background:#000;color:#FFF;border:2px solid #FFF;box-shadow:0 2px 10px rgba(0,0,0,.4);font:700 12px/1 'Google Sans',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;transform:rotate(-45deg)}
+.plpc-pin{position:absolute;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:99px 99px 99px 4px;background:#0D99FF;color:#FFF;border:2px solid #FFF;box-shadow:0 2px 10px rgba(0,0,0,.4);font:700 12px/1 'Google Sans',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;transform:rotate(-45deg)}
 .plpc-pin span{transform:rotate(45deg)}
-.plpc-pin.open{background:#FFF;color:#000;border-color:#000}
+.plpc-pin.open{background:#FFF;color:#0D99FF;border-color:#0D99FF}
 #plpc-pop{position:absolute;z-index:970;width:280px;background:#0A0A0A;color:#B0B0B0;border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:12px;font-family:'Google Sans',system-ui,sans-serif;font-size:12.5px;box-shadow:0 12px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:8px}
 #plpc-pop .hd{display:flex;align-items:center;justify-content:space-between;color:#F7F7F7;font-weight:600;font-size:12.5px}
 #plpc-pop .hd .x{cursor:pointer;color:#B0B0B0;font-size:16px;padding:0 2px;background:none;border:none}
@@ -40,6 +40,7 @@ html.plpc-arm #plpc-catcher{display:block}
 #plpc-pop button.act{background:#F7F7F7;color:#000;border:none;border-radius:99px;padding:6px 14px;font:600 12px 'Google Sans',system-ui,sans-serif;cursor:pointer}
 #plpc-pop button.act:disabled{opacity:.5}
 #plpc-pop button.ghost{background:none;color:#B0B0B0;border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:6px 12px;font:500 12px 'Google Sans',system-ui,sans-serif;cursor:pointer}
+#plpc-pop button.ghost.del{color:#FF6B6B;border-color:rgba(255,107,107,.5)}
 #plpc-pop .thread{display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto}
 #plpc-pop .msg b{color:#F7F7F7;font-weight:600}
 #plpc-pop .msg small{color:#707070;font-size:9.5px;margin-left:6px}
@@ -59,6 +60,12 @@ controls.append(armBtn,eyeBtn);
 function el(t,attrs){const e=document.createElement(t);for(const k in attrs||{})e.setAttribute(k,attrs[k]);return e}
 function btn(title,svg){const b=el('button',{class:'plpc-btn',title});b.innerHTML=svg+'<span class="n" hidden></span>';return b}
 function esc(fn){return e=>{e.stopPropagation();fn(e)}}
+function need(inp){ // required field: flag it red until it has a value
+  if(inp.value.trim()){inp.style.borderColor='';return true}
+  inp.style.borderColor='#FF6B6B';inp.focus();
+  inp.addEventListener('input',()=>inp.style.borderColor='',{once:true});
+  return false;
+}
 
 let inited=false;
 document.addEventListener('DOMContentLoaded',init);
@@ -176,10 +183,11 @@ function composer(anchor,at){
   row.append(st,save);
   pop.append(hd,name,text,row);
   save.onclick=esc(async()=>{
-    const v=text.value.trim();if(!v)return;
+    const okName=need(name),okText=need(text);if(!okName||!okText)return; // name is forced
+    const v=text.value.trim();
     save.disabled=true;st.textContent='Saving…';
     LSSET('plpc:name',name.value.trim());
-    const t={id:Date.now()+'-'+Math.random().toString(36).slice(2,8),anchor,name:name.value.trim()||'Anonymous',text:v,ts:Date.now(),resolved:false,replies:[]};
+    const t={id:Date.now()+'-'+Math.random().toString(36).slice(2,8),anchor,name:name.value.trim(),text:v,ts:Date.now(),resolved:false,replies:[]};
     const ok=await push('/thread',{thread:t});
     if(!ok){S.threads.push(t);cache()}
     closePop();draw();
@@ -206,18 +214,26 @@ function openThread(id){
   const text=el('textarea',{rows:'2',placeholder:'Reply…',maxlength:'2000'});
   const row=el('div',{class:'row'});
   const st=el('span',{class:'status'});st.textContent=S.offline?'offline — saving locally':'';
+  const del=el('button',{class:'ghost del'});del.textContent='Delete';
   const res=el('button',{class:'ghost'});res.textContent=t.resolved?'Reopen':'Resolve';
   const rep=el('button',{class:'act'});rep.textContent='Reply';
-  row.append(st,res,rep);
+  row.append(st,del,res,rep);
   pop.append(hd,list,name,text,row);
   rep.onclick=esc(async()=>{
-    const v=text.value.trim();if(!v)return;
+    const okName=need(name),okText=need(text);if(!okName||!okText)return; // name is forced
+    const v=text.value.trim();
     rep.disabled=true;st.textContent='Saving…';
     LSSET('plpc:name',name.value.trim());
-    const r={name:name.value.trim()||'Anonymous',text:v,ts:Date.now()};
+    const r={name:name.value.trim(),text:v,ts:Date.now()};
     const ok=await push('/reply',{id:t.id,text:r.text,name:r.name});
     if(!ok){t.replies.push(r);cache()}
     openThread(id);positionPop(t);
+  });
+  del.onclick=esc(async()=>{
+    if(del.textContent!=='Sure?'){del.textContent='Sure?';return} // two-click confirm
+    const ok=await push('/delete',{id:t.id});
+    if(!ok){S.threads=S.threads.filter(x=>x.id!==t.id);cache()}
+    closePop();draw();
   });
   res.onclick=esc(async()=>{
     const to=!t.resolved;

@@ -302,11 +302,26 @@ function demoVariants(list,deny){
 }
 // USP rule: both banners always render the same height — the black bar tracks the strip's tallest visible cell
 function syncUspH(){
-  const bar=document.getElementById('uspb'); if(!bar)return;
-  const cell=document.querySelector('.usp-cell.rot-on')||document.querySelector('.usp-cell');
-  const h=cell?cell.offsetHeight:0;
+  const bar=document.getElementById('uspb'),strip=document.getElementById('uspstrip');
+  const cells=strip?[...strip.querySelectorAll('.usp-cell')]:[];
+  let h=0;
+  if(cells.length&&matchMedia('(max-width:1023px)').matches){
+    // rotation must not breathe: lock every cell to the tallest message (probe render, all visible)
+    const probe=strip.cloneNode(false);
+    probe.style.cssText='position:absolute;left:-9999px;top:0;width:'+strip.offsetWidth+'px;visibility:hidden;display:grid';
+    cells.forEach(c=>{const k=c.cloneNode(true);k.classList.add('rot-on');k.style.minHeight='';probe.appendChild(k)});
+    document.body.appendChild(probe);
+    h=Math.max(0,...[...probe.children].map(c=>c.offsetHeight));
+    probe.remove();
+    cells.forEach(c=>c.style.minHeight=h?h+'px':'');
+  }else if(cells.length){
+    cells.forEach(c=>c.style.minHeight='');
+    const vis=cells.find(c=>c.offsetHeight)||cells[0];
+    h=vis.offsetHeight; // desktop grid row already equalises the cells
+  }
+  if(!bar)return;
   bar.style.minHeight=h?h+'px':'';
-  if(cell&&!bar.hidden&&bar.offsetHeight>h)cell.style.minHeight=bar.offsetHeight+'px'; // and the strip meets a taller bar
+  if(h&&!bar.hidden&&bar.offsetHeight>h)cells.forEach(c=>c.style.minHeight=bar.offsetHeight+'px'); // and the strip meets a taller bar
 }
 new ResizeObserver(()=>syncUspH()).observe(document.documentElement);
 function render(){
