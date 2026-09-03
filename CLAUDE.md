@@ -1,6 +1,6 @@
 # CLAUDE.md — debenhamsgroup.design
 
-Read `.context/` before doing anything. Start with `00-readme.md`, then `16-session-log-2026-09-03b.md` for current state (11–15 are the earlier history), then whichever doc matches the task.
+Read `.context/` before doing anything. Start with `00-readme.md`, then `16-session-log-2026-09-03b.md` for current state — read all four parts (11–15 are the earlier history), then whichever doc matches the task.
 
 **Repo:** github.com/jakerayner96/debenhamsgroup.design · **Live site (Pages):** jakerayner96.github.io/debenhamsgroup.design
 

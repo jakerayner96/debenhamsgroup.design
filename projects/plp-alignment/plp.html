@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="plt">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P-05 PLP</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
+<!-- DS — canonical, linked not copied -->
+<link rel="stylesheet" href="../../assets/ds/tokens.css">
+<link rel="stylesheet" href="../../assets/ds/components.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface-page);color:var(--text-primary);font-family:var(--font-family-base);font-weight:var(--w-regular);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+
+/* ---- PLP layout — margins per PLP MASTER: 16px to 1439, 95px at 1440+ ---- */
+:root{--plp-margin:16px}
+@media(min-width:1440px){:root{--plp-margin:95px}}
+.plp{padding:0 var(--plp-margin) 24px}
+.crumbs{padding:14px 0 4px;font-size:12px;color:var(--text-secondary)}
+.crumbs a{color:inherit;text-decoration:none}
+.crumbs a:hover{text-decoration:underline}
+.plp-title{text-align:left;padding:6px 0 2px}
+.plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
+.plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
+.seo{color:var(--text-secondary);font-size:13px;max-width:860px;margin:6px 0 2px}
+@media(min-width:768px){.plp-title{text-align:center}.plp-title h1{font-size:26px}.seo{margin:6px auto 2px;text-align:center}}
+.cat-wrap{display:flex;justify-content:flex-start;overflow:hidden}
+@media(min-width:768px){.cat-wrap{justify-content:center}}
+@media(min-width:1024px){.roundel{width:112px}.roundel i{width:96px;height:96px}}
+.showmore{display:block;font-size:14px;color:var(--text-primary);padding:2px 0 12px}
+.showmore[hidden]{display:none}
+.grid{display:grid;margin-top:8px}
+.grid.gap-tight{gap:16px 4px}
+.grid.gap-norm{gap:20px 14px}
+.grid.bleed{margin-left:calc(var(--plp-margin) * -1);margin-right:calc(var(--plp-margin) * -1)}
+.grid.bleed.gap-tight{gap:14px 2px}
+.more{display:flex;justify-content:center;margin-top:40px}
+
+/* desktop vs mobile furniture — the header breaks at 1024 */
+.only-mobile{display:none}
+@media(max-width:1023px){
+  .only-desktop{display:none}
+  .only-mobile{display:block}
+  .sf-bar.only-mobile{display:flex}
+  .sf-split.only-mobile{display:grid}
+  .hd-bar--desktop,.hd-nav{display:none}
+}
+@media(min-width:1024px){.hd-bar:not(.hd-bar--desktop){display:none}}
+.grid{grid-template-columns:repeat(2,1fr)}
+.grid.view-1{grid-template-columns:1fr}
+@media(min-width:768px){.grid,.grid.view-1{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1280px){.grid,.grid.view-1{grid-template-columns:repeat(var(--cols,4),1fr)}}
+.viewtoggle{display:inline-flex;border:var(--border-w) solid var(--border-default);border-radius:var(--radius-default);overflow:hidden}
+.viewtoggle button{width:36px;height:38px;display:grid;place-items:center;padding:0}
+.viewtoggle img{width:16px;height:16px;object-fit:contain;opacity:.45}
+.viewtoggle button.on img{opacity:1}
+.viewtoggle button.on{background:var(--surface-sunken)}
+</style>
+</head>
+<body>
+
+<!-- ============ C-05 HEADER — one template, brand tokens · breaks mobile↔desktop at 1024 ============ -->
+<header class="hd">
+  <div class="hd-bar">
+    <div class="hd-left"><button class="hd-burger" aria-label="Menu"><img class="ic-menu" src="../../assets/ds/icons/lib/icons-hamburger-menu.svg" alt=""></button><img class="hd-logo logo" src="../../assets/brands/plt.svg" alt=""></div>
+    <div class="hd-icons">
+      <button aria-label="Search"><img class="ic-search" src="../../assets/ds/icons/lib/icons-search.svg" alt=""></button>
+      <button aria-label="Account"><img class="ic-account" src="../../assets/ds/icons/lib/icons-account.svg" alt=""></button>
+      <button aria-label="Wishlist"><img class="favic" src="../../assets/ds/icons/lib/icons-wishlist.svg" alt=""></button>
+      <button aria-label="Bag" class="hd-count" data-n="1"><img class="ic-bag" src="../../assets/ds/icons/lib/icons-bag.svg" alt=""></button>
+    </div>
+  </div>
+  <div class="hd-bar hd-bar--desktop">
+    <img class="hd-logo logo" src="../../assets/brands/plt.svg" alt="">
+    <div class="hd-search" id="search"><span>Search products and brands…</span><span class="ics"><img src="../../assets/ds/icons/lib/icons-camera.svg" alt=""><img class="ic-search" src="../../assets/ds/icons/lib/icons-search.svg" alt=""></span></div>
+    <div class="hd-icons">
+      <button aria-label="Account"><img class="ic-account" src="../../assets/ds/icons/lib/icons-account.svg" alt=""></button>
+      <button aria-label="Wishlist"><img class="favic" src="../../assets/ds/icons/lib/icons-wishlist.svg" alt=""></button>
+      <button aria-label="Bag" class="hd-count" data-n="1"><img class="ic-bag" src="../../assets/ds/icons/lib/icons-bag.svg" alt=""></button>
+    </div>
+  </div>
+  <nav class="hd-nav only-desktop"><a class="sale" href="#">Sale</a><a href="#">New in</a><a href="#">Dresses</a><a href="#">Clothing</a><a href="#">Co-ords</a><a href="#">Tops</a><a href="#">Shoes</a><a href="#">Accessories</a><a href="#">Brands</a></nav>
+  <div class="hd-usp">Free delivery when you spend over £50</div>
+  <div class="hd-usp hd-usp--b">Extra 20% off everything&nbsp;·&nbsp;Code: <b>ALIGN20</b></div>
+</header>
+
+<main class="plp">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a> / <a href="#">New In</a> / <a href="#">Womens New In</a> / New In Dresses</nav>
+  <div class="plp-title"><h1>New In Dresses</h1><div class="count">1,284 styles</div></div>
+  <p class="seo" id="seo" hidden>The search stops here. Pieces that instantly elevate your look — we're constantly curating the most relevant silhouettes, so you're always first to the newest shapes… <u>Read more</u></p>
+
+  <div class="cat-wrap"><div id="catnav"></div></div>
+
+  <!-- C-06 sort & filter — desktop strip under the links, no dividers -->
+  <div class="sf-bar only-desktop" id="deskbar"></div>
+  <a class="showmore only-desktop" id="showmore" href="#" hidden><u>Show more filters</u></a>
+
+  <!-- mobile — LIVE: split Filters|Relevance + pill row · NEW: NDD + view + combined -->
+  <div class="sf-split only-mobile" id="mobsplit">
+    <button>Filters <span class="fic"></span></button>
+    <button>Relevance <i class="ch"></i></button>
+  </div>
+  <div class="sf-bar only-mobile" id="mobbar"></div>
+
+  <div class="grid" id="grid"></div>
+  <div class="more"><button class="bd pri">Load more</button></div>
+</main>
+
+<!-- ============ C-08 FOOTER — one template, brand tokens ============ -->
+<footer class="ft">
+  <div class="ft-news">
+    <div><h3>Let's get to know each other</h3><p>Sign up to receive emails from us, so you never miss out on the good stuff.</p></div>
+    <div>
+      <div class="ft-sub"><input type="email" placeholder="Please enter your email address" aria-label="Email address"><button class="bd pri">Subscribe</button></div>
+      <p class="ft-legal">By submitting your details, you agree to receive marketing communications from <span class="bn">this brand</span> &amp; our family of brands by email. You can unsubscribe at any point. Your details are used in accordance with our Privacy Policy.</p>
+    </div>
+  </div>
+  <div class="ft-cols">
+    <div class="ft-col"><h4>Let us help you</h4><a href="#">Help</a><a href="#">Returns</a><a href="#">Delivery</a><a href="#">Size Guide</a><a href="#">Gift Cards</a><a href="#">Clearpay</a><a href="#">Klarna</a></div>
+    <div class="ft-col"><h4>About us</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Student Discount</a><a href="#">Modern Slavery Statement</a><a href="#">Rewards</a></div>
+    <div class="ft-col"><h4>Privacy &amp; legal</h4><a href="#">Privacy Policy</a><a href="#">Terms &amp; Conditions</a><a href="#">About Cookies</a><a href="#">Terms of Use</a></div>
+    <div class="ft-col"><h4>My account</h4><a href="#">Order History</a><a href="#">Track My Order</a><a href="#">Refer A Friend</a><a href="#">Contact Us</a></div>
+    <div class="ft-col">
+      <h4>Follow us on social media</h4>
+      <div class="ft-social">
+        <img src="../../assets/ds/icons/lib/social-instagram.svg" alt="Instagram"><img src="../../assets/ds/icons/lib/social-pintrest.svg" alt="Pinterest"><img src="../../assets/ds/icons/lib/social-facebook.svg" alt="Facebook"><img src="../../assets/ds/icons/lib/you-tube.svg" alt="YouTube"><img src="../../assets/ds/icons/lib/social-tik-tok.svg" alt="TikTok"><img src="../../assets/ds/icons/lib/social-x.svg" alt="X">
+      </div>
+      <h4>Download our app</h4>
+      <span class="ft-badge"> App Store</span><span class="ft-badge">▶ Google Play</span>
+    </div>
+  </div>
+  <div class="ft-brands" id="ftbrands" hidden>
+    <img src="../../assets/brands/dorothyperkins.svg" alt="Dorothy Perkins"><img src="../../assets/brands/wallis.svg" alt="Wallis"><img src="../../assets/brands/oasis.svg" alt="Oasis"><img src="../../assets/brands/coast.svg" alt="Coast"><img src="../../assets/brands/burton.svg" alt="Burton"><img src="../../assets/brands/misspap.svg" alt="Misspap"><img src="../../assets/brands/warehouse.svg" alt="Warehouse"><img src="../../assets/brands/nastygal.svg" alt="Nasty Gal">
+  </div>
+  <div class="ft-pay"><span>VISA</span><span>Mastercard</span><span>AMEX</span><span>Maestro</span><span>PayPal</span><span>Apple Pay</span><span>G Pay</span><span>Klarna</span><span>Clearpay</span></div>
+  <div class="ft-base"><img class="logo" src="../../assets/brands/plt.svg" alt=""><small>Copyright © 2026 <span class="bn">PrettyLittleThing</span></small></div>
+</footer>
+
+<script>
+const AST='../../assets';
+/* ================= PLPBrandConfig — LIVE (03 Sep capture) vs NEW (aligned shorter format) ================= */
+const CFG={
+ live:{
+  debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'brand', seo:false, nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:true,  nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'tight', cat:'linkspills',ts:'dark',  seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none'},
+  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:true,  nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'nondd'},
+  warehouse:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'linkspills',ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+  brandroom:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+ },
+ new:{
+  debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
+  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
+  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'button',bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
+  plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill',      swatch:'round',  icons:'plt',  moreBelow:true},
+  karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
+  warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'square', qa:'icon',  bleed:true,  gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
+  brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'none',  bleed:false, gap:'tight', cat:'pills',     ts:'dark',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false},
+ }
+};
+const CATS=['Dresses','New In','Midi Dresses','Long Sleeve','Satin','Shirt Dresses','White Dresses'];
+const BR_BRANDS=['Karen Millen','Clarks','DKNY','Ted Baker','Coast','Dune London'];
+const PRODUCTS=[
+  {name:'Ribbed knit midi dress',            price:'£28.00', was:'£40.00', pct:'-30%', tag:'Plus',   swatches:4, stars:true},
+  {name:'Satin cowl neck slip dress',        price:'£35.00', badge:'New',  ai:true,    stars:true},
+  {name:'Tailored blazer mini dress',        price:'£45.00', was:'£60.00', pct:'-25%', offer:'Extra 20% Off Applied', swatches:3},
+  {name:'Broderie tiered smock dress',       price:'£32.00', tag:'Petite', stars:true},
+  {name:'Bandeau pleated maxi dress',        price:'£38.00', sponsored:true, swatches:5},
+  {name:'Oversized shirt dress',             price:'£26.00', was:'£34.00', pct:'-24%', taggstar:'No. 3 Bestseller|in Dresses'},
+  {name:'Lace trim cami midi dress',         price:'£30.00', ai:true, tag:'Tall', swatches:2},
+  {name:'Wrap front jersey midi dress',      price:'£24.00', stars:true},
+  {name:'Halterneck fishtail maxi dress',    price:'£42.00', was:'£55.00', pct:'-24%', offer:'Extra 15% Off Sale, with code: SALE'},
+  {name:'Corset detail structured dress',    price:'£40.00', sponsored:true, taggstar:'No. 6 Bestseller|in Going Out'},
+  {name:'Textured shift dress with pockets', price:'£29.00', swatches:4, stars:true},
+  {name:'Belted utility midi dress',         price:'£36.00', tag:'Plus', ai:true},
+];
+const GRADS=[[165,3,1],[200,1,3],[150,3,1],[185,1,3],[160,3,1],[210,1,3],[170,3,1],[195,1,3],[155,3,1],[205,1,3],[175,3,1],[190,1,3]];
+const SWATCH_COLS=['#B97A57','#3B3B3B','#8A9BAE','#C9C2B8','#5C4033'];
+const LIB=`${AST}/ds/icons/lib`;
+
+const grid=document.getElementById('grid'),catnav=document.getElementById('catnav'),
+      deskbar=document.getElementById('deskbar'),mobsplit=document.getElementById('mobsplit'),mobbar=document.getElementById('mobbar'),
+      seo=document.getElementById('seo'),search=document.getElementById('search'),showmore=document.getElementById('showmore');
+let MODE='live',view=2;
+
+function icons(cfg){ /* PLT has its own icon set (Figma PLT Icons) */
+  const plt=cfg.icons==='plt';
+  return {
+    heart16: plt?`${AST}/ds/icons/plt-heart.svg`:`${LIB}/icons-wishlist.svg`,
+    heart24: plt?`${AST}/ds/icons/plt-heart.svg`:`${LIB}/icons-wishlist.svg`,
+    bag:     plt?`${AST}/ds/icons/plt-bag.svg`:`${LIB}/icons-bag.svg`,
+    search:  plt?`${AST}/ds/icons/plt-search.svg`:`${LIB}/icons-search.svg`,
+    account: plt?`${AST}/ds/icons/plt-account.svg`:`${LIB}/icons-account.svg`,
+    quick:   `${LIB}/icons-quick-add.svg`,
+    bookmark:`${LIB}/icon-bookmark.svg`,
+  };
+}
+function favBtn(cfg,IC){
+  if(cfg.favShape==='plain') return `<button class="pc-iconbtn pc-fav--plain" aria-label="Add to wishlist"><img src="${IC.heart24}" alt=""></button>`;
+  if(cfg.favShape==='chip')  return `<button class="pc-iconbtn pc-iconbtn--chip" aria-label="Add to wishlist"><img src="${IC.heart16}" alt=""></button>`;
+  const sq=cfg.favShape==='square'?' pc-iconbtn--sq':'';
+  const ic=cfg.fav==='bookmark'?IC.bookmark:IC.heart16;
+  return `<button class="pc-iconbtn${sq}" aria-label="Add to wishlist"><img src="${ic}" alt=""></button>`;
+}
+function qaBtn(cfg,IC){
+  if(cfg.qa==='icon') return `<button class="pc-iconbtn${cfg.favShape==='square'?' pc-iconbtn--sq':''}" aria-label="Quick add"><img src="${IC.quick}" alt=""></button>`;
+  if(cfg.qa==='chip') return `<button class="pc-iconbtn pc-iconbtn--chip" aria-label="Quick add"><img src="${IC.bag}" alt=""></button>`;
+  return '';
+}
+function card(p,i,cfg,IC,brandLabel){
+  const g=GRADS[i%GRADS.length];
+  const badges=[p.tag?`<span class="badge">${p.tag}</span>`:'',p.badge?`<span class="badge">${p.badge}</span>`:''].join('');
+  const ts=p.taggstar?p.taggstar.split('|'):null;
+  return `<article class="pc${cfg.compact?' pc--compact':''}">
+    <div class="pc-img">
+      <div style="position:absolute;inset:0;background:linear-gradient(${g[0]}deg,var(--brand-light-${g[1]}),var(--brand-light-${g[2]}))"></div>
+      <div class="pc-actions">${favBtn(cfg,IC)}${qaBtn(cfg,IC)}</div>
+      ${badges?`<div class="pc-badges${p.ai?' has-ai':''}">${badges}</div>`:''}
+      ${p.ai?'<div class="badge-ai"><b>AI</b> Generated</div>':''}
+    </div>
+    ${cfg.qa==='button'?`<button class="pc-add"><img src="${LIB}/icons-quick-add.svg" alt="">Add</button>`:''}
+    ${ts?`<div class="pc-taggstar${cfg.ts==='brand'?' pc-taggstar--brand':''}"><img src="${LIB}/icons-trophy.svg" alt=""><b>${ts[0]}</b><span>${ts[1]}</span></div>`:''}
+    <div class="pc-info">
+      ${p.sponsored?'<div class="pc-sponsored">Sponsored</div>':''}
+      <div class="pc-titles">${cfg.brand?`<div class="pc-brand">${brandLabel(i)}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>
+      <div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>
+      ${p.offer?`<div class="pc-offer">${p.offer}</div>`:''}
+      ${p.swatches?`<div class="pc-swatches${cfg.swatch==='round'?' pc-swatches--round':''}"><span class="set">${SWATCH_COLS.slice(0,p.swatches).map((c,si)=>`<span class="pc-swatch${si===0?' on':''}"><i style="background:${c}"></i></span>`).join('')}</span><span class="pc-more">+${p.swatches}</span></div>`:''}
+      ${p.stars?`<div class="pc-stars"><span class="set"><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-half.svg" alt=""><img src="${LIB}/icons-star-outline.svg" alt=""></span><span>(${9+i})</span></div>`:''}
+    </div>
+  </article>`;
+}
+function render(){
+  const b=document.documentElement.getAttribute('data-brand');
+  const cfg=CFG[MODE][b];
+  const IC=icons(cfg);
+  const cs=getComputedStyle(document.documentElement);
+  const name=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
+  const brandLabel=b==='brandroom'?(i=>BR_BRANDS[i%BR_BRANDS.length]):(()=>name);
+  document.querySelectorAll('.logo').forEach(i=>i.src=`${AST}/brands/${b}.svg`);
+  document.querySelectorAll('.bn').forEach(x=>x.textContent=name);
+  document.querySelectorAll('.favic').forEach(i=>i.src=cfg.fav==='bookmark'?IC.bookmark:IC.heart24);
+  document.querySelectorAll('.ic-search').forEach(i=>i.src=IC.search);
+  document.querySelectorAll('.ic-account').forEach(i=>i.src=IC.account);
+  document.querySelectorAll('.ic-bag').forEach(i=>i.src=IC.bag);
+  search.classList.toggle('hd-search--underline',cfg.search==='underline');
+  seo.hidden=!cfg.seo;
+  document.getElementById('ftbrands').hidden=(b!=='debenhams');
+  // category nav
+  catnav.className='cat-row';
+  const isMobile=matchMedia('(max-width:1023px)').matches;
+  const catStyle=cfg.cat==='linkspills'?(isMobile?'pills':'links'):cfg.cat;
+  if(catStyle==='roundels'){catnav.innerHTML=CATS.slice(0,6).map(c=>`<a class="roundel" href="#"><i style="background:linear-gradient(150deg,var(--brand-light-3),var(--brand-light-1))"></i><span>${c}</span></a>`).join('');}
+  else if(catStyle==='pills'){catnav.innerHTML=CATS.slice(0,5).map(c=>`<a class="catpill" href="#">${c}</a>`).join('');}
+  else {catnav.className='catlinks';catnav.innerHTML=CATS.map(c=>`<a href="#">${c}</a>`).join('');}
+  // desktop strip — no dividers; "Show more filters" inline or below (PLT)
+  deskbar.innerHTML=`${cfg.nddD?'<span class="sf-ndd" onclick="this.classList.toggle(\'on\')"><span class="track"></span>Next Day Delivery</span>':''}
+    <button class="sf-dd">Style<i></i></button><button class="sf-dd">Size<i></i></button><button class="sf-dd">Colour<i></i></button><button class="sf-dd">Body Fit<i></i></button>
+    ${cfg.moreBelow?'':'<a href="#" style="font-size:14px;color:var(--text-primary)"><u>Show more filters</u></a>'}
+    <button class="sf-dd sf-sort">Relevance<i></i></button>`;
+  showmore.hidden=!cfg.moreBelow;
+  // mobile furniture per mode
+  if(MODE==='live'){
+    mobsplit.style.display='';
+    const pills=`<button class="sf-dd" style="border-radius:var(--radius-pill);min-width:0;height:36px">Size<i></i></button>
+      <button class="sf-dd" style="border-radius:var(--radius-pill);min-width:0;height:36px">Colour<i></i></button>`;
+    mobbar.innerHTML=cfg.mobPills==='none'?'':(cfg.mobPills==='nondd'?pills:`<span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>`+pills);
+    mobbar.style.display=cfg.mobPills==='none'?'none':'';
+  } else {
+    mobsplit.style.display='none';mobbar.style.display='';
+    mobbar.innerHTML=`<span class="sf-ndd" onclick="this.classList.toggle('on')"><span class="track"></span>Next Day Delivery</span>
+      <span style="margin-left:auto;display:inline-flex;gap:8px;align-items:center">
+        <span class="viewtoggle"><button id="v2" class="${view===2?'on':''}" aria-label="2-column view"><img src="${LIB}/icons-grid.svg" alt=""></button><button id="v1" class="${view===1?'on':''}" aria-label="1-column view"><img src="${LIB}/icons-tile.svg" alt=""></button></span>
+        <button class="sf-btn" onclick="document.getElementById('drawer').classList.add('open')">Sort &amp; Filter <img src="${LIB}/icons-filter.svg" alt=""></button>
+      </span>`;
+    document.getElementById('v1').onclick=()=>{view=1;render()};
+    document.getElementById('v2').onclick=()=>{view=2;render()};
+  }
+  grid.style.setProperty('--cols',cfg.cols);
+  grid.className=`grid gap-${cfg.gap}${cfg.bleed?' bleed':''}${view===1?' view-1':''}`;
+  grid.innerHTML=PRODUCTS.map((p,i)=>card(p,i,cfg,IC,brandLabel)).join('');
+  const cfgText=`${MODE} · cols ${cfg.cols} · brand ${cfg.brand?'on':'off'} · ${cfg.fav}/${cfg.favShape} · add ${cfg.qa} · ${cfg.bleed?'bleed':'padded'} · ${cfg.compact?'compact':'standard'}`;
+  try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE},'*')}catch(e){}
+}
+window.__setState=(brand,mode)=>{ if(mode)MODE=mode; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
+addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode); });
+matchMedia('(max-width:1023px)').addEventListener('change',render);
+addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('drawer')?.classList.remove('open')});
+// init from URL
+const q=new URLSearchParams(location.search);
+if(q.get('mode'))MODE=q.get('mode');
+if(q.get('brand'))document.documentElement.setAttribute('data-brand',q.get('brand'));
+render();
+</script>
+<!-- C-06 mobile filter sheet (combined pattern — New format) -->
+<div class="sf-drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Filters">
+  <div class="head">Filters <button aria-label="Close" onclick="document.getElementById('drawer').classList.remove('open')"><img src="../../assets/ds/icons/lib/icons-close.svg" alt=""></button></div>
+  <div class="rows">
+    <button class="sf-row">Sort <i></i></button>
+    <button class="sf-row">Size <i></i></button>
+    <button class="sf-row">Colour <i></i></button>
+    <button class="sf-row">Brands <i></i></button>
+    <button class="sf-row">Style <i></i></button>
+    <button class="sf-row">Category <i></i></button>
+    <button class="sf-row">Body Fit <i></i></button>
+    <button class="sf-row">Price <i></i></button>
+  </div>
+  <button class="sf-cta" onclick="document.getElementById('drawer').classList.remove('open')">View products</button>
+</div>
+</body>
+</html>
