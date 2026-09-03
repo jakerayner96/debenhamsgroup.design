@@ -110,6 +110,7 @@
 .hd{background:var(--surface-page);font-family:var(--font-family-base);color:var(--text-primary)}
 .hd-usp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:4px 16px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:12px;font-weight:var(--w-regular);text-transform:var(--cta-case);text-align:center}
 .hd-usp b{font-weight:var(--w-strong)}
+@media(min-width:1024px){.hd-usp{font-size:14px}}
 .hd-usp--b{background:var(--usp-b-bg);color:var(--usp-b-fg)}
 .hd-bar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;gap:16px}
 .hd-left{display:flex;align-items:center;gap:16px;min-width:0}
@@ -128,7 +129,7 @@
 .hd-search .ics{display:flex;gap:20px;align-items:center}
 .hd-search img{width:22px;height:22px;display:block;object-fit:contain}
 .hd-search--underline{background:transparent;border-radius:0;border-bottom:var(--border-w) solid var(--icon-primary);padding:0 4px} /* PLT pattern */
-.hd-nav{display:flex;gap:16px;align-items:center;justify-content:center;height:40px;background:var(--nav-bg);color:var(--nav-fg);font-size:16px;font-weight:var(--w-mid);text-transform:var(--cta-case);overflow-x:auto;padding:0 16px}
+.hd-nav{display:flex;gap:16px;align-items:center;justify-content:center;height:40px;background:var(--nav-bg);color:var(--nav-fg);font-size:15px;font-weight:var(--w-mid);text-transform:var(--cta-case);overflow-x:auto;padding:0 16px}
 .hd-nav a{color:inherit;text-decoration:none;white-space:nowrap}
 .hd-nav a.sale{color:var(--text-error);font-weight:var(--w-strong)}
 .hd-nav a:hover{text-decoration:underline}
@@ -175,13 +176,32 @@
    Category nav — roundels (image circles) or pills or text links
    ============================================================ */
 .cat-row{display:flex;gap:12px;align-items:flex-start;overflow-x:auto;padding:12px 0;font-family:var(--font-family-base)}
-.roundel{display:flex;flex-direction:column;align-items:center;gap:6px;width:76px;flex:none;text-decoration:none;color:var(--text-primary)}
-.roundel i{width:64px;height:64px;border-radius:var(--radius-pill);border:var(--border-w) solid var(--border-subtle);display:block;background:var(--surface-media)}
-.roundel span{font-size:12px;font-weight:var(--w-regular);text-align:center}
+/* Roundel — Figma 8459-1652: Default / Outline (4px brand-primary ring) / On-image label, each ± label */
+.roundel{display:flex;flex-direction:column;align-items:center;gap:10px;width:84px;flex:none;text-decoration:none;color:var(--text-primary);position:relative}
+.roundel i{width:72px;height:72px;border-radius:var(--radius-pill);display:block;background:var(--surface-media);position:relative;overflow:hidden}
+.roundel span{font-size:13px;font-weight:var(--w-regular);text-align:center;text-transform:capitalize;line-height:1.25}
+@media(min-width:1024px){.roundel{width:116px}.roundel i{width:104px;height:104px}.roundel span{font-size:14px}}
+.roundel--outline i{border:4px solid var(--brand-primary);padding:4px;background:var(--surface-page)}
+.roundel--outline i::after{content:'';position:absolute;inset:4px;border-radius:var(--radius-pill);background:var(--roundel-fill,var(--surface-media))}
+.roundel--onimage span{position:absolute;left:8px;right:8px;top:50%;transform:translateY(-50%);color:var(--text-inverse);font-size:15px;z-index:1}
+.roundel--onimage i::after{content:'';position:absolute;inset:0;border-radius:var(--radius-pill);background:rgba(0,0,0,.3)}
+.roundel--onimage.roundel--display span{font-weight:var(--w-strong);text-transform:uppercase;letter-spacing:-.03em;font-size:16px}
+@media(min-width:1024px){.roundel--onimage span{font-size:18px}.roundel--onimage.roundel--display span{font-size:20px}}
 .catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;border:var(--border-w) solid var(--border-default);border-radius:var(--radius-pill);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--cta-case)}
 .catpill:hover{border-color:var(--border-strong)}
+.catpill--solid{background:var(--badge-bg);color:var(--badge-fg);border-color:transparent} /* PLT: solid tonal pills, like the Petite badge */
+.catpill--solid:hover{border-color:transparent;filter:brightness(.97)}
 .catlinks{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;padding:8px 0;font-family:var(--font-family-base)}
 .catlinks a{font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:underline;text-underline-offset:3px;white-space:nowrap;text-transform:var(--cta-case)}
+
+/* Breadcrumb — Figma 12711-4044. 12px w-regular capitalize, slash separators; share icon = PDP mobile only */
+.bc{display:flex;flex-wrap:wrap;gap:8px;row-gap:8px;align-items:center;padding:16px 0 4px;font-family:var(--font-family-base);font-size:12px;font-weight:var(--w-regular);color:var(--text-primary)}
+.bc a{color:inherit;text-decoration:none;text-transform:capitalize}
+.bc a:hover{text-decoration:underline}
+.bc .sep{letter-spacing:.4px}
+.bc .cur{text-transform:capitalize}
+.bc-share{margin-left:auto;width:20px;height:20px;background:none;border:none;padding:0;cursor:pointer}
+.bc-share img{width:100%;height:100%;object-fit:contain}
 
 /* header bag / wishlist count */
 .hd-count{position:relative}
