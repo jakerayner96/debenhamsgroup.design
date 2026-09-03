@@ -38,3 +38,11 @@ Prototype now has a **Live now ⇄ New format** switch: LIVE replicates each fas
 - Jake's 01 Sep chat transcript banked verbatim → `.context/15-chat-transcript-2026-09-01.md`.
 - Site fonts now include Geologica 400 (card mid weight).
 - Open: grid-view Figma nodes (157-2718/157-2879/158-8455) not yet extracted — mobile view toggle is a placeholder; PLT 16px icon set parked; breakpoints workstream flagged (PLP MASTER lists 320→3840); plt-app-prototype still not ingested.
+
+## Part 4 (same day) — icon library, PLT-exact treatment, footer, width resizer
+
+- **Icon library ingested**: 146 SVGs from the Figma Iconography page (470-887) → `assets/ds/icons/lib/`, named per Figma. Site gained a System → Icons page with the rules: 1pt stroke at every scale, aspect always locked (fixed square box + object-fit contain). All chevrons/filter/close/view-toggle glyphs across components now use library icons — no more CSS-drawn carets. Header wishlist optically downsized (21px). Ten multi-part icons flagged for flat re-export. (First download pass silently wrote 0-byte files — python urllib blocked; curl re-pull fixed all 146.)
+- **PLT card chrome exact per AI-Watermark 3-574**: cream rgba(250,245,231,.85) square chips (heart + bag, PLT's own icon set), badges same cream with #333 uppercase text, **AI banner now matches the badge styling everywhere** with a bolder AI (`--ai-bg/fg = badge tokens`), PLT sale red #C90000 (`--price-sale`), circle swatches variant (`.pc-swatches--round`), title back to sentence case, desktop filter strip borderless (dividers removed per review) with Show-more-filters below on PLT.
+- **C-08 Footer** built from Figma 664-1064 + live footers captured for all 7 fascias (capture/*/footer-1440.png): newsletter band (`--ft-band`), 4 link columns + social/app rail (real social SVGs), payment chips, sister-brands strip (Debenhams only), centre logo. On the site + in the prototype.
+- **Review shell**: prototype split into `plp.html` (pure page) + `index.html` (strip + iframed page with drag-to-resize width + presets — breakpoints respond inside the iframe). A full Safari-chrome device preview was built then scrapped on review ("looks shit") in favour of the plain resizer.
+- Fixed: `[hidden]` beaten by display rules (show-more, sister-brands), broken icon fills, strip chip wrap.
