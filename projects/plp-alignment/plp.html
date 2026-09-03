@@ -23,12 +23,12 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .mode-new .usp-cell b{font-size:12px;font-weight:var(--w-strong)}
 /* PLP content slot — DS Figma 8556-18755. Square tile after row 3 (new format), three types:
    Button (media + white CTA), Text (media + gradient + View All + optional Sponsored), Get The Look. */
-.cslot{grid-column:span 2;aspect-ratio:1/1;position:relative;overflow:hidden;cursor:pointer;border-radius:0}
+.cslot{grid-column:span 2;aspect-ratio:1/1;position:relative;overflow:hidden;cursor:pointer;border-radius:0;margin-bottom:12px}
 .cslot>img.media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cslot .slot-btn{position:absolute;right:24px;bottom:24px;height:50px;padding:8px 24px;background:#FFF;color:#000;border:none;border-radius:4px;font-family:var(--font-family-base);font-size:16px;line-height:24px;font-weight:var(--w-btn,600);text-transform:uppercase;display:flex;align-items:center}
 .cslot .slot-grad{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.7))}
 @media(min-width:1024px){.cslot .slot-grad{height:200px}}
-.cslot .slot-view{position:absolute;right:24px;bottom:24px;display:flex;gap:8px;align-items:center;color:#FFF;font-size:20px;font-weight:var(--w-regular)}
+.cslot .slot-view{position:absolute;right:24px;bottom:24px;display:flex;gap:8px;align-items:center;color:#FFF;font-size:14px;font-weight:var(--w-regular)}
 @media(min-width:1024px){.cslot .slot-view{right:32px;bottom:32px}}
 .cslot .slot-view svg{width:16px;height:16px;display:block}
 .cslot .slot-spon{position:absolute;top:8px;right:8px;color:#FFF;font-size:10px;text-shadow:0 0 4px rgba(0,0,0,.8)}
@@ -521,7 +521,7 @@ function render(){
   window.PLPC&&PLPC.refresh();
 }
 // --- PLP content slot (DS 8556-18755): lands after row 3 in the new format; click it to edit ---
-const SLOT={type:'button',cta:'Shop the edit',img:null,sponsored:true,skus:[0,4,8]};
+const SLOT={type:'text',cta:'View All',img:null,sponsored:true,skus:[0,4,8]};
 function slotHTML(b){
   const plist=window.__plist||[];
   const media=SLOT.img||(IMG+'/'+b+'/p'+((plist[2]&&plist[2].img!==undefined)?plist[2].img:2)+'.jpg');
