@@ -254,6 +254,7 @@
 .ft-brands img{height:14px;width:auto;max-width:110px;object-fit:contain;opacity:.85}
 .ft-pay{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;padding:14px var(--plp-margin,16px)}
 .ft-pay span{display:inline-flex;align-items:center;height:26px;padding:0 9px;border:var(--border-w) solid var(--border-default);border-radius:4px;font-size:10px;font-weight:var(--w-strong);letter-spacing:.03em;background:var(--surface-raised)}
+.ft-pay img{height:26px;width:auto;object-fit:contain;border-radius:3px}
 .ft-base{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 16px 36px}
 .ft-base img{height:22px;width:auto;max-width:190px;object-fit:contain}
 .ft-base small{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary)}

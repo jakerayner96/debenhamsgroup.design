@@ -31,6 +31,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .showmore[hidden]{display:none}
 .grid{display:grid;margin-top:8px}
 .grid.gap-tight{gap:16px 4px}
+.grid.gap-imp{gap:18.5px 16px} /* Debenhams live import: 16px columns, 18.5px rows */
 .grid.gap-norm{gap:20px 14px}
 .grid.bleed{margin-left:calc(var(--plp-margin) * -1);margin-right:calc(var(--plp-margin) * -1)}
 .grid.bleed.gap-tight{gap:14px 2px}
@@ -134,10 +135,11 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
   <div class="ft-brands" id="ftbrands" hidden>
     <img src="../../assets/brands/dorothyperkins.svg" alt="Dorothy Perkins"><img src="../../assets/brands/wallis.svg" alt="Wallis"><img src="../../assets/brands/oasis.svg" alt="Oasis"><img src="../../assets/brands/coast.svg" alt="Coast"><img src="../../assets/brands/burton.svg" alt="Burton"><img src="../../assets/brands/misspap.svg" alt="Misspap"><img src="../../assets/brands/warehouse.svg" alt="Warehouse"><img src="../../assets/brands/nastygal.svg" alt="Nasty Gal">
   </div>
-  <div class="ft-pay"><span>VISA</span><span>Mastercard</span><span>AMEX</span><span>Maestro</span><span>PayPal</span><span>Apple Pay</span><span>G Pay</span><span>Klarna</span><span>Clearpay</span></div>
+  <div class="ft-pay"><img src="../../assets/ds/icons/pay/visa.png" alt="visa"><img src="../../assets/ds/icons/pay/mastercard.png" alt="mastercard"><img src="../../assets/ds/icons/pay/amex.png" alt="amex"><img src="../../assets/ds/icons/pay/maestro.png" alt="maestro"><img src="../../assets/ds/icons/pay/visa-electron.png" alt="visa-electron"><img src="../../assets/ds/icons/pay/apple-pay.png" alt="apple-pay"><img src="../../assets/ds/icons/pay/payplus.png" alt="payplus"><img src="../../assets/ds/icons/pay/paypal.png" alt="paypal"><img src="../../assets/ds/icons/pay/klarna.png" alt="klarna"><img src="../../assets/ds/icons/pay/clearpay.png" alt="clearpay"><img src="../../assets/ds/icons/pay/google-pay.png" alt="google-pay"></div>
   <div class="ft-base"><img class="logo" src="../../assets/brands/debenhams.svg" alt=""><small>Copyright © 2026 <span class="bn">PrettyLittleThing</span></small></div>
 </footer>
 
+<script src="data.js"></script>
 <script>
 const AST='../../assets';const IMG='img';
 /* ================= Real content per fascia — extracted from the html.to.design live captures
@@ -146,132 +148,41 @@ const FASCIA={
  debenhams:{title:'Autumn',count:'1,000+ products',crumb:['Home','Campaign','Autumn Shop'],
   nav:['Sale','New','Women','Men','Kids','Home','Garden','Beauty','Wedding','Gifts','Fragrance','Brands'],
   cats:['Home Decor','Autumn Fragrance','Halloween','Cosy Knits','Boots','Candles'],filters:['Category','Size','Colour','Style'],
-  uspCells:[{b:'Up To 90% Off Bestsellers',s:'Shop Now'},{b:'Up To 70% Off Top Fashion Brands + Extra 10% Off',s:'Use Code: FASHION'},{b:'Up To 50% Off Beauty',s:'Shop Beauty'},{b:'Clearpay Available at Checkout',s:'Shop Now'}],uspB:'Free Express Delivery On Home &amp; Garden Orders Over £25 | Code: EXPRESSDEL',
-  products:[
-   {brand:'Wallis',name:'Navy Oversized Argyle Jumper',price:'£44.00',was:'£55.00',pct:'-20%',ndd:1},
-   {brand:'Coast',name:'Long Sleeve Lace and Pleated Midi Shirt Dress',price:'£70.00',was:'£139.00',pct:'-50%',off:'£63.00 with code FASHION',ndd:1,ai:1},
-   {brand:'Burton',name:'Dark Brown Faux Leather Zip Up Jacket',price:'£80.00',ndd:1},
-   {brand:'Burton',name:'Cotton Rich Ribbed Roll Neck Jumper',price:'£40.00',ndd:1},
-   {brand:'Burton',name:'Blue Black Dark Wash Stretch Slim Fit Jean',price:'£13.33',was:'£34.00',pct:'-61%',off:'£12.00 with code FASHION',ndd:1},
-   {brand:'Wallis',name:'Petite Floral Cape Detail Pencil Dress',price:'£52.00',was:'£65.00',pct:'-20%',tag:'Petite',ndd:1},
-   {brand:'Wallis',name:'Hista Ruched Mid Heel Pointed Knee Boots',price:'£55.30',was:'£79.00',pct:'-30%',rating:12,ndd:1},
-   {brand:'Mantaray',name:'Long Waxed Coat',price:'£59.00',was:'£215.00',pct:'-73%',rating:1},
-   {brand:'Mantaray',name:'Drifter Cotton Relaxed V-neck Cardigan',price:'£23.00',was:'£70.00',pct:'-67%',rating:8},
-   {brand:'Wallis',name:'Wide Fit Darcia Snaffle Detail Pointed Block Heel Slingback Court Shoes',price:'£44.10',was:'£49.00',pct:'-10%',tag:'Wide Fit',rating:1,ndd:1},
-   {brand:'boohoo',name:'Oversized Faux Suede Jacket',price:'£18.00',was:'£55.00',pct:'-67%',off:'£16.20 with code FASHION',ndd:1},
-   {brand:'Regatta',name:'Harriett II Ankle Waterproof Wellies',price:'£28.00',ndd:1}]},
+  uspCells:[{b:'Up To 90% Off Bestsellers',s:'Shop Now'},{b:'Up To 70% Off Top Fashion Brands + Extra 10% Off',s:'Use Code: FASHION'},{b:'Up To 50% Off Beauty',s:'Shop Beauty'},{b:'Clearpay Available at Checkout',s:'Shop Now'}],uspB:'Free Express Delivery On Home &amp; Garden Orders Over £25 | Code: EXPRESSDEL'},
  boohoo:{title:'New Season',count:'1,000+ products',crumb:['Home','Womens','Shop By Collection'],
   nav:['New In','Womens','Dresses','Autumn','Shoes','Accessories','Shop By Fit','Occasion','DSGN','Trends','Mens','Beauty','Home','SALE'],
   cats:[],filters:['Category','Style','Size','Colour','Body Fit'],
-  uspCells:[{b:'EXTRA 10% OFF ALMOST EVERYTHING*',s:'USE CODE: EXTRA'},{b:'UP TO 20% OFF NEW SEASON*'},{b:'PREMIER NEXT DAY DELIVERY',s:'ONLY £5.99 FOR 1 YEAR'}],
-  products:[
-   {brand:'boohoo',name:'Cinched Waist Peplum Blazer',price:'£33.60',was:'£42.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
-   {brand:'boohoo',name:'Tailored Wide Leg Trousers',price:'£22.40',was:'£28.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA',ai:1},
-   {brand:'boohoo',name:'Balloon Sleeve Plunge Tailored Top',price:'£22.40',was:'£28.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
-   {brand:'boohoo',name:'Tailored Mini Skirt',price:'£16.00',was:'£20.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
-   {brand:'boohoo',name:'Woven Tailored Cinched Blazer',price:'£26.40',was:'£33.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
-   {brand:'boohoo',name:'Double Layer Capri Legging',price:'£15.30',was:'£18.00',pct:'-15%',off:'Extra 10% Off, with code: EXTRA'},
-   {brand:'boohoo',name:'Peached Funnel Neck Button Down Shirt',price:'£21.25',was:'£25.00',pct:'-15%',off:'Extra 10% Off, with code: EXTRA'},
-   {brand:'boohoo',name:'Twill Double Breasted Short Sleeve Shirt',price:'£19.20',was:'£24.00',pct:'-20%',off:'Extra 10% Off, with code: EXTRA'},
-   {brand:'boohoo',name:'High Neck Curved Boxy Blazer',price:'£36.00',was:'£40.00',pct:'-10%',off:'Extra 10% Off, with code: EXTRA'},
-   {brand:'boohoo',name:'Funnel Neck Wrap Front Blazer',price:'£37.80',was:'£42.00',pct:'-10%',off:'Extra 10% Off, with code: EXTRA'},
-   {brand:'boohoo',name:'Pocket Flap Wide Leg Tailored Trousers',price:'£27.00',was:'£30.00',pct:'-10%',off:'Extra 10% Off, with code: EXTRA'},
-   {brand:'boohoo',name:'Double Breasted Cinched Blazer',price:'£40.50',was:'£45.00',pct:'-10%',off:'Extra 10% Off, with code: EXTRA'}]},
+  uspCells:[{b:'EXTRA 10% OFF ALMOST EVERYTHING*',s:'USE CODE: EXTRA'},{b:'UP TO 20% OFF NEW SEASON*'},{b:'PREMIER NEXT DAY DELIVERY',s:'ONLY £5.99 FOR 1 YEAR'}]},
  boohooman:{title:'New Season',count:'1,000+ products',crumb:['Home','Mens','Shop By Collection'],
   nav:['SALE','NEW','CLOTHING','BRANDS','ACTIVE','PLUS','TALL','ESSENTIALS','GOING OUT','SUMMER','SETS'],
   cats:['Tops','Jeans','Joggers','Tracksuits','Hoodies','Jackets'],filters:['Size','Colour','Category','Style'],
   seoText:'Get ready to level up your cozy game. Jump headfirst into our men\'s new season drop and uncover ultimate snugness — street-smart oversized fits and zip-ups.',
-  uspCells:[{b:'ORDER BY MIDNIGHT TO GET IT TOMORROW'},{b:'STUDENT DISCOUNT!',s:'Extra 20% Off!'},{b:'BRANDS AT MAN',s:'Up To 70% Off!'}],uspB:'20% OFF* + EXTRA 10% OFF · Use Code: <b>EXTRATEN</b>',
-  products:[
-   {brand:'boohooMAN',name:'Black Oversized Moto Print Hoodie',price:'£24.00',was:'£30.00',pct:'-20%',off:'£21.60 WITH CODE: EXTRATEN',tag:'Plus Sizes Available'},
-   {brand:'boohooMAN',name:'Baggy Fit Camo Print Twill Trousers',price:'£28.00',was:'£35.00',pct:'-20%',off:'£25.20 WITH CODE: EXTRATEN'},
-   {brand:'boohooMAN',name:'Washed Twill Contrast Cord Collar Worker Jacket',price:'£40.00',was:'£50.00',pct:'-20%',off:'£36.00 WITH CODE: EXTRATEN',tag:'Back In Stock',ai:1},
-   {brand:'boohooMAN',name:'Relaxed Fit Twill Trouser',price:'£20.00',was:'£25.00',pct:'-20%',off:'£18.00 WITH CODE: EXTRATEN',tag:'Plus Sizes Available'},
-   {brand:'boohooMAN',name:'Essential Boxy Fit Midweight Padded Funnel Neck Puffer Jacket',price:'£32.00',was:'£40.00',pct:'-20%',off:'£28.80 WITH CODE: EXTRATEN',tag:'Plus Sizes Available'},
-   {brand:'boohooMAN',name:'Straight Fit Piping Jogger',price:'£20.00',was:'£25.00',pct:'-20%',off:'£18.00 WITH CODE: EXTRATEN'},
-   {brand:'boohooMAN',name:'Black Oversized Boxy Graffiti Print T-Shirt',price:'£12.80',was:'£16.00',pct:'-20%',off:'£11.52 WITH CODE: EXTRATEN',tag:'Back In Stock'},
-   {brand:'boohooMAN',name:'Straight Leg Jogger',price:'£36.00',was:'£45.00',pct:'-20%',off:'£32.40 WITH CODE: EXTRATEN'},
-   {brand:'boohooMAN',name:'Oversized Boxy Waffle Long Sleeve Henley',price:'£12.80',was:'£16.00',pct:'-20%',off:'£11.52 WITH CODE: EXTRATEN'},
-   {brand:'boohooMAN',name:'Washed Barrel Leg Jeans',price:'£22.40',was:'£28.00',pct:'-20%',off:'£20.16 WITH CODE: EXTRATEN'},
-   {brand:'boohooMAN',name:'Oversized Zip Through Hoodie',price:'£24.00',was:'£30.00',pct:'-20%',off:'£21.60 WITH CODE: EXTRATEN'},
-   {brand:'boohooMAN',name:'Slim Fit Stretch Chino',price:'£18.00',was:'£22.00',pct:'-18%',off:'£16.20 WITH CODE: EXTRATEN'}]},
+  uspCells:[{b:'ORDER BY MIDNIGHT TO GET IT TOMORROW'},{b:'STUDENT DISCOUNT!',s:'Extra 20% Off!'},{b:'BRANDS AT MAN',s:'Up To 70% Off!'}],uspB:'20% OFF* + EXTRA 10% OFF · Use Code: <b>EXTRATEN</b>'},
  plt:{title:'Going Out Outfits',count:'1,000+ products',crumb:['Home','Womens','Shop By Collection'],
   nav:['NEW ARRIVALS','SALE','CLOTHING','AUTUMN','DRESSES','CO-ORDS','TOPS','TRENDING','ATHLEISURE','SHOP BY FIT','BEAUTY','LIFESTYLE','BRANDS'],
   cats:[],filters:['Category','Colour','Style','Body Fit','Size'],
   seoText:'The search stops here. Pieces that instantly elevate your look — we\'re constantly curating the most relevant going-out silhouettes, so you\'re always first to the newest shapes.',
-  uspTop:'ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY · 00:12:16:29',uspCells:[{b:'25% OFF ALMOST EVERYTHING*'},{b:'EXTRA 20% OFF* AUTUMN ESSENTIALS, CODE: COSY20'},{b:'£5.99 ROYALTY - FREE NEXT DAY DELIVERY AND FREE RETURNS FOR 12 MONTHS'}],
-  products:[
-   {name:'Lace Godet Flared Trousers',price:'£27.00',was:'£36.00',pct:'-25%'},
-   {name:'Stretch Woven Pleated Skort Playsuit',price:'£22.50',was:'£30.00',pct:'-25%'},
-   {name:'Woven High Neck Zip Up Jacket',price:'£22.50',was:'£30.00',pct:'-25%',ai:1},
-   {name:'Woven Wide Leg Frill Trousers',price:'£24.00',was:'£32.00',pct:'-25%'},
-   {name:'Satin Contrast Lace Trim Shorts',price:'£18.00',was:'£24.00',pct:'-25%'},
-   {name:'Satin Tie Side Lace Detail Trousers',price:'£30.00',was:'£40.00',pct:'-25%'},
-   {name:'Scarf Printed Satin Dress',price:'£30.00',was:'£40.00',pct:'-25%'},
-   {name:'Brown Multi Print Textured Sheer Floral Lace Corset',price:'£22.50',was:'£30.00',pct:'-25%'},
-   {name:'Button Detail Cropped Jacket',price:'£25.50',was:'£34.00',pct:'-25%'},
-   {name:'Velvet Jacquard Floral Button Detail Jacket',price:'£39.00',was:'£52.00',pct:'-25%'},
-   {name:'Chiffon Frill Detail Velvet Bow Blouse',price:'£28.50',was:'£38.00',pct:'-25%'},
-   {name:'Sheer Lace Frill Sleeve Blouse',price:'£18.00',was:'£24.00',pct:'-25%'}]},
+  uspTop:'ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY · 00:12:16:29',uspCells:[{b:'25% OFF ALMOST EVERYTHING*'},{b:'EXTRA 20% OFF* AUTUMN ESSENTIALS, CODE: COSY20'},{b:'£5.99 ROYALTY - FREE NEXT DAY DELIVERY AND FREE RETURNS FOR 12 MONTHS'}]},
  karenmillen:{title:'Summer Dresses',count:'588 products',crumb:['Home','Womens','Womens Clothing','Dresses'],
   nav:['OUTLET','NEW IN','CLOTHING','DRESSES','OCCASION WEAR','ACCESSORIES','BEAUTY','BRANDS','HOME'],
   cats:[],filters:['Style','Size','Body Fit','Brands','Colour'],seo:1,
   seoText:'Meet your new favourite dress. From desk to dinner to dancefloor, you\'ll discover summer dresses here that you\'ll rely on all-day long — lightweight, breathable fabric.',
-  uspCells:[{b:'extra 10% off*',s:'code: KMEXTRA10'},{b:'30% off dresses*'},{b:'£2.99 express delivery',s:'on orders over £150*'}],
-  products:[
-   {brand:'KarenMillen',name:'Foil Metallic Figure Form Bandage Fringed Knit Maxi Dress',price:'£149.00'},
-   {brand:'KarenMillen',name:'Cotton Cutwork Belted Midi Dress',price:'£209.30',was:'£299.00',ai:1},
-   {brand:'KarenMillen',name:'Petite Essential Techno Shirt Sleeve Woven Shirt Dress With Gold Hardware',price:'£90.30',was:'£129.00',tag:'Petite'},
-   {brand:'KarenMillen',name:'Cotton Collared Halter Neck Woven Midi Shirt Dress With Dropped Waist Detail',price:'£90.30',was:'£129.00',tag:'OUTLET'},
-   {brand:'KarenMillen',name:'Double Cloth Tile Print Contrast Piping Midi Dress',price:'£118.30',was:'£169.00'},
-   {brand:'KarenMillen',name:'Petite Cotton Poplin Tie Neck Midi Dress',price:'£118.30',was:'£169.00',tag:'Petite'},
-   {brand:'KarenMillen',name:'Double Cloth Tile Print Halterneck Midi Dress',price:'£104.30',was:'£149.00'},
-   {brand:'KarenMillen',name:'Pleated Tiered Maxi Dress',price:'£199.00'},
-   {brand:'KarenMillen',name:'Viscose Satin Floral Print Halter Neck Maxi Dress',price:'£125.30',was:'£179.00'},
-   {brand:'KarenMillen',name:'Stripe Strappy Woven Midi Dress',price:'£118.30',was:'£169.00'},
-   {brand:'KarenMillen',name:'Georgette Placed Cutwork Halter Woven Midi Dress',price:'£237.30',was:'£339.00'},
-   {brand:'KarenMillen',name:'Baroque Silk Cotton Strappy Midi Dress',price:'£139.30',was:'£199.00'}]},
+  uspCells:[{b:'extra 10% off*',s:'code: KMEXTRA10'},{b:'30% off dresses*'},{b:'£2.99 express delivery',s:'on orders over £150*'}]},
  warehouse:{title:'NEW IN',count:'44 products',crumb:['Home','New In','Womens New In'],
   nav:['NEW ARRIVALS','CLOTHING','DRESSES','OUTLET'],
   cats:[],filters:['Category','Size','Colour','Style'],
-  uspCells:[{b:'Extra 20% Off!*',s:'Use Code: WH20'},{b:'Free Delivery*',s:'When you spend over £75'}],
-  products:[
-   {brand:'Warehouse',name:'Real Suede Oversized Blazer',price:'£249.00'},
-   {brand:'Warehouse',name:'Jacquard Blouson Sleeve Mini Dress',price:'£89.00'},
-   {brand:'Warehouse',name:'Viscose Draped Scarf Detail Cut-out Midaxi Dress',price:'£79.00',ai:1},
-   {brand:'Warehouse',name:'Contrast Collar Corded Waist Detail Jacket',price:'£69.00'},
-   {brand:'Warehouse',name:'Self Stripe Chiffon Sheer Layered Maxi Dress',price:'£55.00'},
-   {brand:'Warehouse',name:'Tailored Duster Longline Coat',price:'£99.00'},
-   {brand:'Warehouse',name:'Satin Asymmetric Hem Scarf Neck Top',price:'£49.00'},
-   {brand:'Warehouse',name:'Premium Dispersed Floral Beaded Maxi Dress',price:'£109.00'},
-   {brand:'Warehouse',name:'Asymmetric One Shoulder Tie Neck Mini',price:'£65.00'},
-   {brand:'Warehouse',name:'Print Mix Tie Neck Chiffon Panelled Maxi Dress',price:'£79.00'},
-   {brand:'Warehouse',name:'Premium Satin Draped Cape Mini Dress',price:'£59.00'},
-   {brand:'Warehouse',name:'Petite Premium Fringe Trim One Shoulder Midi Dress',price:'£55.00',was:'£79.00',pct:'-30%',tag:'Petite'}]},
+  uspCells:[{b:'Extra 20% Off!*',s:'Use Code: WH20'},{b:'Free Delivery*',s:'When you spend over £75'}]},
  brandroom:{title:'New In',count:'1,000+ products',crumb:['Home','New In'],
   nav:['New','Women','Men','Footwear','Accessories','Brands'],marketing:'The Autumn Edit | Shop The Season',
   cats:[],filters:['Brands','Category','Style','Size'],
-  uspCells:[{b:'The Autumn Edit | Shop The Season'}],
-  products:[
-   {brand:'Skechers',name:'Summits Mesh Bungee Slip-On Trainers With Memory Foam - Navy',price:'£72.99'},
-   {brand:'Lacoste',name:'Rib Knit Brushed Wool Beanie Navy Blue',price:'£59.00'},
-   {brand:'Lacoste',name:'Rib Knit Brushed Wool Beanie Green',price:'£45.00',ai:1},
-   {brand:'Björn Borg',name:'Barclay 3 Pack Core Trunks Black Grey Red',price:'£45.00'},
-   {brand:'Björn Borg',name:'Misha Sleepwear Set with Wash Bag Peacoat Bright White Black',price:'£30.99'},
-   {brand:'Björn Borg',name:'Charlie Sleepwear Shorts Set Plum/Granite',price:'£40.99'},
-   {brand:'Calvin Klein',name:'Boxer Brief 5-Pack Black / Harbor Mist / Dark Purple',price:'£35.99'},
-   {brand:'Calvin Klein',name:'Trunk 3PK Black/Harbor Mist/Dark Purple',price:'£65.00'},
-   {brand:'Tommy Hilfiger',name:'Core Classic Runner Trainer Navy Blue',price:'£44.00'},
-   {brand:'Sweaty Betty',name:'After Class Cropped Sweatshirt Espresso Brown',price:'£85.00'},
-   {brand:'Sweaty Betty',name:'Ultimate Studio Scoop Sports Bra Brown Soft Dot Print',price:'£45.00'},
-   {brand:'Ted Baker',name:'Crinkle Extra Large Icon Bag Mid Grey',price:'£40.00'}]},
+  uspCells:[{b:'The Autumn Edit | Shop The Season'}]},
 };
 /* ================= PLPBrandConfig — LIVE (before, matches the Figma captures) vs NEW (after, DS) ================= */
 const CFG={
  live:{
-  debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:false, loadMore:'sec', subCaps:1, catEdge:1},
+  debenhams:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'imp', cat:'roundels',  seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:false, loadMore:'sec', subCaps:1, catEdge:1},
   boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', subCaps:1},
-  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'button',bleed:false, gap:'norm',  cat:'pills',     seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
+  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'pills',     seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full'},
   plt:        {cols:4, brand:false, fav:'heart',    favShape:'plain',  qa:'none',  bleed:true,  gap:'tight', cat:'none',      seo:true,  nddD:false, compact:true,  nameCaps:true,  search:'underline', swatch:'round',  icons:'plt',  moreBelow:true,  mobPills:'none'},
   karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'square', qa:'icon',  bleed:false, gap:'norm',  cat:'none',      seo:true,  nddD:false, compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'nondd', subCaps:1},
   warehouse:  {cols:5, brand:true,  fav:'heart',    favShape:'circle', qa:'none',  bleed:false, gap:'norm',  cat:'none',      seo:false, nddD:true,  compact:false, nameCaps:false, search:'pill',      swatch:'square', icons:'core', moreBelow:false, mobPills:'full', titleCaps:true, subCaps:1},
@@ -339,7 +250,7 @@ function card(p,i,b,cfg,IC){
 function render(){
   const b=document.documentElement.getAttribute('data-brand');
   const cfg=CFG[MODE][b];
-  const F=FASCIA[b];
+  const F=FASCIA[b]; F.products=window.PRODUCTS_ALL[b]||[];
   const IC=icons(cfg);
   const cs=getComputedStyle(document.documentElement);
   const name=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
@@ -407,9 +318,13 @@ function render(){
   grid.innerHTML=F.products.map((p,i)=>card(p,i,b,cfg,IC)).join('');
   const lm=document.querySelector('.more .bd');
   lm.className='bd '+((MODE==='live'&&cfg.loadMore==='sec')?'sec':'pri');
-  lm.style.textTransform=(MODE==='live'&&cfg.subCaps)?'uppercase':'';
+  lm.style.cssText=(MODE==='live'&&b==='debenhams')
+    ?'background:#FFF;color:#000;box-shadow:inset 0 0 0 1px #B5B5B5;font-size:16px;font-weight:var(--w-strong);padding:16px 20px;text-transform:uppercase;border-radius:4px'
+    :((MODE==='live'&&cfg.subCaps)?'text-transform:uppercase':'');
   const sub=document.querySelector('.ft-sub .bd');
-  if(sub)sub.style.textTransform=(MODE==='live'&&cfg.subCaps)?'uppercase':'';
+  if(sub)sub.style.cssText=(MODE==='live'&&b==='debenhams')
+    ?'font-size:16px;font-weight:var(--w-strong);text-transform:uppercase;padding:0 48px'
+    :((MODE==='live'&&cfg.subCaps)?'text-transform:uppercase':'');
   const cfgText=`${MODE} · cols ${cfg.cols} · brand ${cfg.brand?'on':'off'} · ${cfg.fav}/${cfg.favShape} · add ${cfg.qa} · ${cfg.bleed?'bleed':'padded'} · ${cfg.compact?'compact':'standard'}`;
   try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE},'*')}catch(e){}
 }
