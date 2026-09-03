@@ -33,6 +33,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .grid{display:grid;margin-top:8px}
 .grid.gap-tight{gap:16px 4px}
 .grid.gap-imp{gap:18.5px 16px} /* Debenhams live import: 16px columns, 18.5px rows */
+.grid.gap-none{gap:0} /* boohooMAN new: fully flush — images touch, no gutters */
 .grid.gap-norm{gap:20px 14px}
 .grid.bleed{margin-left:calc(var(--plp-margin) * -1);margin-right:calc(var(--plp-margin) * -1)}
 .grid.bleed.gap-tight{gap:14px 2px}
@@ -192,7 +193,7 @@ const CFG={
  new:{
   debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
-  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:true,  gap:'none',  cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false, flush:1},
   plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill', swatch:'round',  icons:'plt',  moreBelow:false},
   karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
   warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
@@ -231,7 +232,7 @@ function qaBtn(cfg,IC){
 }
 function card(p,i,b,cfg,IC){
   const showAI=p.ai&&MODE==='new';
-  return `<article class="pc${cfg.compact?' pc--compact':''}">
+  return `<article class="pc${cfg.compact?' pc--compact':''}${cfg.flush?' pc--flush':''}">
     <div class="pc-img">
       <img class="ph" loading="lazy" src="${IMG}/${b}/p${i}.jpg" alt="">
       <div class="pc-actions">${favBtn(cfg,IC)}${qaBtn(cfg,IC)}</div>
