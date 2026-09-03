@@ -23,6 +23,12 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .sizebox{font-size:10.5px;color:#707070;white-space:nowrap;font-variant-numeric:tabular-nums}
 .cfg{margin-left:auto;font-size:10.5px;color:#707070;white-space:nowrap;padding-left:12px}
 .openfull{color:#F7F7F7;text-decoration:underline;font-size:11px;white-space:nowrap;flex:none}
+.sw{display:inline-flex;align-items:center;gap:6px;flex:none;font-size:11.5px;color:#B0B0B0;cursor:pointer}
+.sw .tr{width:30px;height:17px;border-radius:99px;border:1px solid rgba(255,255,255,.35);position:relative;transition:background .15s}
+.sw .tr i{position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:99px;background:#B0B0B0;transition:left .15s,background .15s}
+.sw.on .tr{background:#F7F7F7;border-color:#F7F7F7}
+.sw.on .tr i{left:15px;background:#000}
+.sw.on{color:#F7F7F7}
 
 .stage{flex:1;display:flex;align-items:stretch;justify-content:center;overflow:hidden;padding:0}
 .holder{display:flex;align-items:stretch;height:100%}
@@ -67,6 +73,8 @@ body.dragging iframe{pointer-events:none}
     <option value="0">Fit window</option>
   </select>
   <span class="sizebox" id="sizebox"></span>
+  <button class="chip" id="cmt" title="Add a comment — then click anywhere on the page">💬 Comment</button>
+  <button class="sw" id="pins" title="Show / hide comment pins"><span class="tr"><i></i></span><span id="pinlbl">Pins</span></button>
   <a class="openfull" id="openfull" href="plp.html?brand=debenhams&mode=live" target="_blank" rel="noopener">open ↗</a>
   <span class="cfg" id="cfg"></span>
 </div>
@@ -92,7 +100,17 @@ function apply(){
   openfull.href=`plp.html?brand=${BRAND}&mode=${MODE}`;
 }
 function send(){ frame.contentWindow.postMessage({plpSet:1,brand:BRAND,mode:MODE,cat:CAT},'*'); }
-addEventListener('message',e=>{ if(e.data&&e.data.plpCfg){cfg.textContent=e.data.plpCfg;} });
+addEventListener('message',e=>{
+  if(e.data&&e.data.plpCfg){cfg.textContent=e.data.plpCfg;}
+  if(e.data&&e.data.plpcState){const st=e.data.plpcState;
+    cmtBtn.classList.toggle('on',st.armed);
+    pinsBtn.classList.toggle('on',st.show);
+    document.getElementById('pinlbl').textContent=st.count?`Pins (${st.count})`:'Pins';
+  }
+});
+const cmtBtn=document.getElementById('cmt'),pinsBtn=document.getElementById('pins');
+cmtBtn.onclick=()=>frame.contentWindow.postMessage({plpcCmd:'arm'},'*');
+pinsBtn.onclick=()=>frame.contentWindow.postMessage({plpcCmd:'pins'},'*');
 
 document.querySelectorAll('#brands .chip').forEach(b=>b.onclick=()=>{
   BRAND=b.dataset.b;

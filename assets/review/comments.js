@@ -13,7 +13,8 @@ const REMOTE='https://plp-comments.jakerayner96.workers.dev'; // '' disables syn
 const LS=k=>{try{return localStorage.getItem(k)}catch(_){return null}};
 const LSSET=(k,v)=>{try{localStorage.setItem(k,v)}catch(_){}};
 
-const S={ctx:null,threads:[],show:LS('plpc:show')!=='0',armed:false,offline:!REMOTE,open:null,compose:null};
+const S={ctx:null,threads:[],show:LS('plpc:show')==='1',armed:false,offline:!REMOTE,open:null,compose:null};
+const EMBED=(()=>{try{return window.self!==window.top}catch(_){return true}})(); // in the review shell the strip hosts the controls
 
 /* ---------- chrome ---------- */
 const css=document.createElement('style');
@@ -65,6 +66,11 @@ if(document.readyState!=='loading')init();
 function init(){
   if(inited)return;inited=true;
   document.body.append(layer,catcher,controls,pop);
+  if(EMBED)controls.style.display='none';
+  addEventListener('message',e=>{const d=e.data;if(!d||!d.plpcCmd)return;
+    if(d.plpcCmd==='arm')arm(!S.armed);
+    if(d.plpcCmd==='pins'){S.show=!S.show;LSSET('plpc:show',S.show?'1':'0');draw()}
+  });
   armBtn.onclick=esc(()=>arm(!S.armed));
   eyeBtn.onclick=esc(()=>{S.show=!S.show;LSSET('plpc:show',S.show?'1':'0');draw()});
   catcher.addEventListener('click',onPlace);
@@ -138,11 +144,13 @@ function draw(){
   if(S.armed)armBtn.classList.add('on');
   if(!S.show)eyeBtn.classList.add('on');
   const n=eyeBtn.querySelector('.n');n.hidden=!openCount;n.textContent=openCount;
+  if(EMBED)try{parent.postMessage({plpcState:{armed:S.armed,show:S.show,count:openCount}},'*')}catch(_){}
 }
 function place(){draw();if(S.open)positionPop(S.threads.find(t=>t.id===S.open))}
 
 /* ---------- composing ---------- */
-function arm(on){S.armed=on;document.documentElement.classList.toggle('plpc-arm',on);if(on)closePop();draw()}
+function arm(on){S.armed=on;if(on&&!S.show){S.show=true;LSSET('plpc:show','1')} // adding comments implies seeing them
+  document.documentElement.classList.toggle('plpc-arm',on);if(on)closePop();draw()}
 function onPlace(e){
   e.stopPropagation(); // the placing click must not reach the document-level close handler
   catcher.style.pointerEvents='none';
