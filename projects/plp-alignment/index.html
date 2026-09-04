@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P-05 · PLP review — live ⇄ new, seven fascias</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#161616;font-family:'Google Sans','Montserrat',system-ui,sans-serif;color:#B0B0B0;display:flex;flex-direction:column;overflow:hidden}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+
+.strip{display:flex;align-items:center;gap:6px;padding:8px 14px;background:#000;font-size:11.5px;overflow-x:auto;flex:none;font-family:'Google Sans','Montserrat',system-ui,sans-serif}
+.strip b{color:#F7F7F7;font-weight:600;margin-right:2px;white-space:nowrap}
+.strip .chip{flex:none;padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px;color:#B0B0B0}
+.strip .chip.on{background:#F7F7F7;color:#000;border-color:#F7F7F7;font-weight:600}
+#brands{display:inline-flex;gap:6px;flex:none}
+.seg{display:inline-flex;flex:none;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden}
+.seg button{border:none;border-radius:0;padding:5px 12px;color:#B0B0B0}
+.seg button.on{background:#F7F7F7;color:#000;font-weight:700}
+.strip select{background:#161616;color:#F7F7F7;border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 8px;font:inherit;font-size:11.5px}
+.strip .div{width:1px;height:20px;background:rgba(255,255,255,.15);margin:0 6px;flex:none}
+.sizebox{font-size:10.5px;color:#707070;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cfg{margin-left:auto;font-size:10.5px;color:#707070;white-space:nowrap;padding-left:12px}
+.openfull{color:#F7F7F7;text-decoration:underline;font-size:11px;white-space:nowrap;flex:none}
+.sw{display:inline-flex;align-items:center;gap:6px;flex:none;font-size:11.5px;color:#B0B0B0;cursor:pointer}
+.sw .tr{width:30px;height:17px;border-radius:99px;border:1px solid rgba(255,255,255,.35);position:relative;transition:background .15s}
+.sw .tr i{position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:99px;background:#B0B0B0;transition:left .15s,background .15s}
+.sw.on .tr{background:#F7F7F7;border-color:#F7F7F7}
+.sw.on .tr i{left:15px;background:#000}
+.sw.on{color:#F7F7F7}
+
+.stage{flex:1;display:flex;align-items:stretch;justify-content:center;overflow:hidden;padding:0}
+.holder{display:flex;align-items:stretch;height:100%}
+iframe{border:none;display:block;height:100%;background:#FFF;box-shadow:0 0 60px rgba(0,0,0,.5)}
+.handle{width:16px;display:flex;align-items:center;justify-content:center;cursor:col-resize;flex:none}
+.handle i{width:5px;height:56px;border-radius:99px;background:#3A3A3A}
+.handle:hover i,.dragging .handle i{background:#6A6A6A}
+body.dragging{user-select:none;cursor:col-resize}
+body.dragging iframe{pointer-events:none}
+</style>
+</head>
+<body>
+
+<div class="strip">
+  <b>P-05</b>
+  <span class="seg" id="mode"><button data-m="live" class="on">Live now</button><button data-m="new">New format</button></span>
+  <span id="brands">
+    <button class="chip on" data-b="debenhams">Debenhams</button>
+    <button class="chip" data-b="boohoo">boohoo</button>
+    <button class="chip" data-b="boohooman">boohooMAN</button>
+    <button class="chip" data-b="plt">PLT</button>
+    <button class="chip" data-b="karenmillen">Karen Millen</button>
+    <button class="chip" data-b="warehouse">Warehouse</button>
+    <button class="chip" data-b="brandroom">Brand Room</button>
+  </span>
+  <span class="div"></span>
+  <select id="catsel" aria-label="Category nav style">
+    <option value="auto" selected>Top nav: auto</option>
+    <option value="roundels">Roundels — text below</option>
+    <option value="roundels-onimage">Roundels — text on</option>
+    <option value="pills">Pills</option>
+    <option value="links">Links</option>
+  </select>
+  <select id="preset" aria-label="Width preset">
+    <option value="390" selected>390 — mobile</option>
+    <option value="402">402</option>
+    <option value="440">440</option>
+    <option value="768">768 — tablet</option>
+    <option value="1024">1024</option>
+    <option value="1280">1280</option>
+    <option value="1440">1440 — desktop</option>
+    <option value="0">Fit window</option>
+  </select>
+  <span class="sizebox" id="sizebox"></span>
+  <button class="chip" id="cmt" title="Add a comment — then click anywhere on the page">💬 Comment</button>
+  <button class="sw" id="pins" title="Show / hide comment pins"><span class="tr"><i></i></span><span id="pinlbl">Show comments</span></button>
+  <span class="cfg" id="cfg"></span>
+</div>
+
+<div class="stage" id="stage">
+  <div class="holder">
+    <iframe id="frame" src="plp.html?brand=debenhams&mode=live" title="PLP preview"></iframe>
+    <div class="handle" id="hr" title="Drag to resize width"><i></i></div>
+  </div>
+</div>
+
+<script>
+let W=390, BRAND='debenhams', MODE='live', CAT='auto'; // defaults to 390 mobile
+const frame=document.getElementById('frame'),stage=document.getElementById('stage'),
+      preset=document.getElementById('preset'),sizebox=document.getElementById('sizebox'),
+      cfg=document.getElementById('cfg');
+
+function apply(){
+  const avail=stage.clientWidth-16;
+  const w=Math.min(W||avail,avail);
+  frame.style.width=w+'px';
+  sizebox.textContent=`${Math.round(w)}px`;
+}
+function send(){ frame.contentWindow.postMessage({plpSet:1,brand:BRAND,mode:MODE,cat:CAT},'*'); }
+addEventListener('message',e=>{
+  if(e.data&&e.data.plpCfg){cfg.textContent=e.data.plpCfg;}
+  if(e.data&&e.data.plpcState){const st=e.data.plpcState;
+    cmtBtn.classList.toggle('on',st.armed);
+    pinsBtn.classList.toggle('on',st.show);
+    document.getElementById('pinlbl').textContent=st.count?`Show comments (${st.count})`:'Show comments';
+  }
+});
+const cmtBtn=document.getElementById('cmt'),pinsBtn=document.getElementById('pins');
+cmtBtn.onclick=()=>frame.contentWindow.postMessage({plpcCmd:'arm'},'*');
+pinsBtn.onclick=()=>frame.contentWindow.postMessage({plpcCmd:'pins'},'*');
+
+document.querySelectorAll('#brands .chip').forEach(b=>b.onclick=()=>{
+  BRAND=b.dataset.b;
+  document.querySelectorAll('#brands .chip').forEach(x=>x.classList.toggle('on',x===b));
+  send();apply();
+});
+document.querySelectorAll('#mode button').forEach(b=>b.onclick=()=>{
+  MODE=b.dataset.m;
+  document.querySelectorAll('#mode button').forEach(x=>x.classList.toggle('on',x===b));
+  send();apply();
+});
+preset.onchange=()=>{W=+preset.value;apply();};
+document.getElementById('catsel').onchange=e=>{CAT=e.target.value;send();};
+
+document.getElementById('hr').addEventListener('pointerdown',e=>{
+  e.preventDefault();document.body.classList.add('dragging');
+  const sx=e.clientX, sw=frame.offsetWidth;
+  const move=ev=>{W=Math.max(320,sw+(ev.clientX-sx));preset.value='0';preset.options[preset.selectedIndex].textContent='Fit window';apply();};
+  const up=()=>{document.body.classList.remove('dragging');removeEventListener('pointermove',move);removeEventListener('pointerup',up);};
+  addEventListener('pointermove',move);addEventListener('pointerup',up);
+});
+addEventListener('resize',apply);
+frame.addEventListener('load',send);
+apply();
+
+</script>
+</body>
+</html>
