@@ -64,9 +64,10 @@ body:not(.mode-new) .hd-usp{height:50px;min-height:0;padding:4px 16px;line-heigh
 #anat .sum b{color:#7BE7D8}
 #anat .row{align-items:center}
 #anat .sec{margin-top:10px;font-size:10.5px;color:#707070;text-transform:uppercase;letter-spacing:.06em}
-#anat .seg3{display:flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin:6px 0}
-#anat .seg3 button{flex:1;padding:6px 0;font:500 11.5px 'Google Sans',system-ui,sans-serif;color:#B0B0B0;background:none;border:none;cursor:pointer}
-#anat .seg3 button.on{background:#F7F7F7;color:#000;font-weight:700}
+#anat .opt,#sed .opt{width:100%;background:none;border:none;cursor:pointer;text-align:left;font:inherit;color:inherit;display:flex;gap:8px;align-items:center;padding:5px 0}
+#anat .opt .dot,#sed .opt .dot{flex:none;width:14px;height:14px;border-radius:99px;border:1.5px solid #707070;box-sizing:border-box}
+#anat .opt.on .dot,#sed .opt.on .dot{border-color:#0D99FF;background:#0D99FF;box-shadow:inset 0 0 0 3px #0A0A0A}
+#anat .opt.on .nm,#sed .opt.on .nm{color:#F7F7F7;font-weight:600}
 #anat input{width:100%;box-sizing:border-box;background:#161616;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#F7F7F7;padding:7px 9px;font:12px 'Google Sans',system-ui,sans-serif;margin-top:2px}
 #anat .cnt{font-size:10px;color:#707070;margin-top:3px}
 #anat .cnt.bad{color:#FF6B6B}
@@ -83,11 +84,6 @@ body:not(.mode-new) .hd-usp{height:50px;min-height:0;padding:4px 16px;line-heigh
 #sed h3{color:#F7F7F7;font-size:13px;font-weight:600;margin:0 0 2px;display:flex;justify-content:space-between;align-items:center}
 #sed h3 button{font-size:16px;color:#B0B0B0;background:none;border:none;cursor:pointer}
 #sed .sec{margin-top:10px;font-size:10.5px;color:#707070;text-transform:uppercase;letter-spacing:.06em}
-#sed .seg3{display:flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin:6px 0}
-#sed .seg3 button{flex:1;padding:6px 0;font:500 11.5px 'Google Sans',system-ui,sans-serif;color:#B0B0B0;background:none;border:none;cursor:pointer}
-#sed .seg3 button.on{background:#F7F7F7;color:#000;font-weight:700}
-#sed .seg3--wrap{flex-wrap:wrap;border-radius:12px}
-#sed .seg3--wrap button{flex:1 1 32%;padding:7px 0}
 #sed input,#sed select{width:100%;box-sizing:border-box;background:#161616;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#F7F7F7;padding:7px 9px;font:12px 'Google Sans',system-ui,sans-serif;margin-top:4px}
 #sed .row.t{display:flex;gap:8px;align-items:center;background:none;border:none;cursor:pointer;color:inherit;font:inherit;padding:6px 0;text-align:left}
 #sed .tgl{flex:none;width:26px;height:15px;border-radius:99px;border:1px solid rgba(255,255,255,.35);position:relative;display:inline-block}
@@ -572,7 +568,7 @@ function openSlotEd(b){
   sed.querySelector('.box').innerHTML=
     '<h3>Content slot <button class="x" aria-label="Close">×</button></h3>'
     +'<div class="sec">Style</div>'
-    +'<div class="seg3 seg3--wrap">'+[['button','Button'],['text','Text link'],['cutout','Cutout'],['none','No link'],['gtl','Get the look']].map(([v,l])=>`<button data-t="${v}" class="${S2.type===v?'on':''}">${l}</button>`).join('')+'</div>'
+    +[['button','Button'],['text','Text link'],['cutout','Cutout'],['none','No link'],['gtl','Get the look']].map(([v,l])=>`<button class="row opt${S2.type===v?' on':''}" data-t="${v}"><span class="dot"></span><span class="nm">${l}</span></button>`).join('')
     +(S2.type!=='gtl'
       ?(S2.type!=='none'?'<div class="sec">CTA text'+(S2.type==='cutout'?' (optional — chevron only when empty)':'')+'</div><input id="sed-cta" maxlength="24" value="'+(S2.cta||'').replace(/"/g,'&quot;')+'">':'')
        +'<div class="sec">Image</div><input id="sed-img" type="file" accept="image/*">'
@@ -581,7 +577,7 @@ function openSlotEd(b){
        +[0,1,2].map(k=>`<select class="sed-sku" data-k="${k}">${opt(k,S2.skus[k])}</select>`).join(''));
   const box=sed.querySelector('.box');
   box.querySelector('.x').onclick=()=>sed.hidden=true;
-  box.querySelectorAll('.seg3 button').forEach(bt=>bt.onclick=()=>{S2.type=bt.dataset.t;placeSlot(b);openSlotEd(b)});
+  box.querySelectorAll('.opt[data-t]').forEach(bt=>bt.onclick=()=>{S2.type=bt.dataset.t;placeSlot(b);openSlotEd(b)});
   const cta=box.querySelector('#sed-cta');if(cta)cta.addEventListener('input',()=>{S2.cta=cta.value;placeSlot(b)});
   const fi=box.querySelector('#sed-img');if(fi)fi.addEventListener('change',()=>{const f=fi.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S2.img=r.result;placeSlot(b)};r.readAsDataURL(f)});
   const sp=box.querySelector('#sed-spon');if(sp)sp.onclick=()=>{S2.sponsored=!S2.sponsored;placeSlot(b);openSlotEd(b)};
@@ -624,7 +620,7 @@ function showAnatomy(i,cardEl){
     '<h3>Card component usage <button class="x" aria-label="Close">\u00d7</button></h3>'
     +'<div class="sub">'+esc(q.name)+' \u2014 '+b+' \u00b7 new format</div>'
     +'<div class="sec">Price \u2014 one of three</div>'
-    +'<div class="seg3">'+['full','sale','salecode'].map(m2=>'<button data-pm="'+m2+'" class="'+(pm===m2?'on':'')+'">'+({full:'Full price',sale:'Sale',salecode:'Sale + code'})[m2]+'</button>').join('')+'</div>'
+    +['full','sale','salecode'].map(m2=>'<button class="row opt'+(pm===m2?' on':'')+'" data-pm="'+m2+'"><span class="dot"></span><span class="nm">'+({full:'Full price',sale:'Sale',salecode:'Sale + code'})[m2]+'</span></button>').join('')
     +(pm==='salecode'?'<input id="anat-off" maxlength="60" value="'+esc(q.off||'').replace(/"/g,'&quot;')+'" placeholder="\u00a300.00 with code XXX"><div class="cnt" id="anat-cnt"></div>':'')
     +'<div class="sec">Layers</div>'
     +T.map(r=>'<button class="row t" data-k="'+r[0]+'">'+tg(r[2],false)+'<span class="nm">'+r[1]+'</span><span class="why">'+r[3]+'</span></button>').join('')
@@ -632,7 +628,7 @@ function showAnatomy(i,cardEl){
   const box=anat.querySelector('.box');
   box.querySelector('.x').onclick=()=>anat.hidden=true;
   const reopen=()=>{render();const el=grid.querySelector('[data-idx="'+i+'"]');if(el)showAnatomy(i,el)};
-  box.querySelectorAll('.seg3 button').forEach(bt=>bt.onclick=()=>{OVR[key].price=bt.dataset.pm;if(bt.dataset.pm!=='salecode')delete OVR[key].offText;reopen();});
+  box.querySelectorAll('.opt[data-pm]').forEach(bt=>bt.onclick=()=>{OVR[key].price=bt.dataset.pm;if(bt.dataset.pm!=='salecode')delete OVR[key].offText;reopen();});
   box.querySelectorAll('.row.t').forEach(bt=>bt.onclick=()=>{
     const k=bt.dataset.k;
     const cur={img:!q.noImg,fav:!q.noFav&&!q.noImg,ts:!!q.taggstar&&(MODE==='live'||!!q.tsOn),badge:!!q.tag,ai:!!q.ai,brand:brandOn,qa:qaOn,sw:!!q.sw,rating:!!q.rating,ndd:!!q.ndd}[k];
