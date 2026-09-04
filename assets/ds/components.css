@@ -131,7 +131,8 @@
 .usp-cell b{font-weight:var(--w-strong);font-size:14px;line-height:21px}
 .usp-cell u{text-underline-offset:2px;cursor:pointer;font-size:14px;line-height:1.1}
 .usp-cell .s{font-weight:var(--w-regular);line-height:1.1}
-.usp-cell .s.cd{color:#FF0000} /* live countdown red, per production */
+.usp-cell .s.cd,.hd-usp .s.cd{color:var(--usp-cd-live,currentColor)} /* live countdown accent — MAN red, PLT black (production) */
+.hd-usp--top{background:var(--usp-top-bg,var(--usp-a-bg));color:var(--usp-top-fg,var(--usp-a-fg))}
 .hd-usp:has(.s){flex-direction:column;gap:2px} /* two-line bar: bold headline over the sub line */
 .hd-usp .s{font-weight:var(--w-regular)}
 /* mobile: one message at a time, rotating (Figma 13005-165658) */
