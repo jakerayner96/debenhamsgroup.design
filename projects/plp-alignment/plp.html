@@ -18,6 +18,10 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 /* USP sizes: live = both banners 14px (older format) · new = 12px DS component */
 .hd-usp{font-size:14px}
 .usp-cell,.usp-cell b{font-size:14px}
+/* live banners: fixed 50px tall — both of them, every fascia */
+body:not(.mode-new) .usp-cell{height:50px;min-height:0;padding:4px 16px;line-height:1.25;overflow:hidden}
+body:not(.mode-new) .usp-cell b{line-height:1.25}
+body:not(.mode-new) .hd-usp{height:50px;min-height:0;padding:4px 16px;line-height:1.25;overflow:hidden}
 .mode-new .hd-usp{font-size:12px;padding:4px 16px;min-height:0}
 .mode-new .usp-cell{font-size:12px;min-height:0;padding:4px 16px;font-weight:var(--w-regular);gap:4px}
 .mode-new .usp-cell b{font-size:12px;font-weight:var(--w-strong)}
