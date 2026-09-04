@@ -18,10 +18,14 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 /* USP sizes: live = both banners 14px (older format) · new = 12px DS component */
 .hd-usp{font-size:14px}
 .usp-cell,.usp-cell b{font-size:14px}
-/* live banners: fixed 50px tall — both of them, every fascia */
-body:not(.mode-new) .usp-cell{height:50px;min-height:0;padding:4px 16px;line-height:1.25;overflow:hidden}
-body:not(.mode-new) .usp-cell b{line-height:1.25}
-body:not(.mode-new) .hd-usp{height:50px;min-height:0;padding:4px 16px;line-height:1.25;overflow:hidden}
+/* live banners, per production markup: no fixed heights — 8px vertical + 16px side padding,
+   bold 14/20 title over a 12px-leading sub line; content wraps and the banner grows with it */
+body:not(.mode-new) .usp-cell{height:auto;min-height:0;padding:8px 16px}
+body:not(.mode-new) .usp-cell b{font-size:14px;line-height:20px}
+body:not(.mode-new) .usp-cell .s,body:not(.mode-new) .usp-cell u{font-size:14px;line-height:12px}
+body:not(.mode-new) .hd-usp{height:auto;min-height:0;padding:8px 16px}
+body:not(.mode-new) .hd-usp b{line-height:20px}
+body:not(.mode-new) .hd-usp .s{line-height:12px}
 .mode-new .hd-usp{font-size:12px;padding:4px 16px;min-height:0}
 .mode-new .usp-cell{font-size:12px;min-height:0;padding:4px 16px;font-weight:var(--w-regular);gap:4px}
 .mode-new .usp-cell b{font-size:12px;font-weight:var(--w-strong)}
@@ -407,9 +411,7 @@ function syncUspH(){
     const vis=cells.find(c=>c.offsetHeight)||cells[0];
     h=vis.offsetHeight; // desktop grid row already equalises the cells
   }
-  if(!bar)return;
-  bar.style.minHeight=h?h+'px':'';
-  if(h&&!bar.hidden&&bar.offsetHeight>h)cells.forEach(c=>c.style.minHeight=bar.offsetHeight+'px'); // and the strip meets a taller bar
+  // production: the two banners size independently — only the mobile rotation stays locked to its tallest message
 }
 new ResizeObserver(()=>syncUspH()).observe(document.documentElement);
 function render(){

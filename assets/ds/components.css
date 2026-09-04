@@ -124,7 +124,7 @@
 @media(min-width:1024px){.hd-usp{font-size:14px}}
 .hd-usp--b{background:var(--usp-b-bg);color:var(--usp-b-fg)}
 /* USP strip — the multi-cell banner from the Header Figma (cells alternate usp-a / usp-a2) */
-.usp-strip{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;font-family:var(--font-family-base);text-align:center;background:var(--usp-a-bg);padding:0 29px;max-width:100%}
+.usp-strip{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;font-family:var(--font-family-base);text-align:center;background:var(--usp-a-bg);padding:0 16px;max-width:100%} /* 16px side margin, per production */
 .usp-strip:empty{display:none}
 .usp-cell{padding:8px;min-height:63px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--usp-a-bg);color:var(--usp-a-fg);font-size:14px;font-weight:var(--w-regular);text-transform:var(--cta-case)}
 .usp-cell:nth-child(even){background:var(--usp-a-bg2,var(--usp-a-bg))}
