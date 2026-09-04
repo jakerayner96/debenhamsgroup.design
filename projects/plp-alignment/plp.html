@@ -94,6 +94,8 @@ body:not(.mode-new) .hd-usp .s{line-height:12px}
 #sed .tgl i{position:absolute;top:1px;left:1px;width:11px;height:11px;border-radius:99px;background:#B0B0B0;transition:left .12s}
 #sed .tgl.on{background:#0D99FF;border-color:#0D99FF}
 #sed .tgl.on i{left:12px;background:#FFF}
+#sed .sed-skuimg{margin-top:2px;margin-bottom:8px}
+#sed .sed-skuclr{background:none;border:none;color:#FF6B6B;font:10.5px 'Google Sans',system-ui,sans-serif;cursor:pointer;text-align:left;padding:0 0 8px;margin-top:-4px}
 .plp{padding:0 var(--plp-margin) 24px;max-width:2000px;margin:0 auto} /* whole container caps at 2000px (PLT live) */
 .plp-title{text-align:left;padding:6px 0 2px;position:relative}
 /* grid-view selector — Figma PLP-Grid-View 194-2513 / 157-2631 / 157-2683: 16px icon right of the title,
@@ -528,16 +530,16 @@ function render(){
 }
 // --- PLP content slot (DS 8556-18755): lands after row 3 in the new format; click it to edit ---
 const SLOTS={ // per-mode defaults: live mirrors the current site style (white cutout), new leads with the text link
-  live:{type:'cutout',cta:'',img:null,sponsored:false,skus:[0,4,8]},
-  new:{type:'text',cta:'View All',img:null,sponsored:true,skus:[0,4,8]}
+  live:{type:'cutout',cta:'',img:null,sponsored:false,skus:[0,4,8],skuImgs:[null,null,null]},
+  new:{type:'text',cta:'View All',img:null,sponsored:true,skus:[0,4,8],skuImgs:[null,null,null]}
 };
 function slotState(){return SLOTS[MODE]||SLOTS.new}
 function slotHTML(b){
   const S2=slotState(),plist=window.__plist||[];
   const media=S2.img||(b==='boohooman'?IMG+'/boohooman/slot-git.jpg':IMG+'/'+b+'/p'+((plist[2]&&plist[2].img!==undefined)?plist[2].img:2)+'.jpg');
   if(S2.type==='gtl'){
-    const im=k=>{const p2=plist[k]||{};return IMG+'/'+b+'/p'+(p2.img!==undefined?p2.img:(k||0))+'.jpg'};
-    return `<div class="cslot cslot--gtl" id="cslot"><div class="slot-title">Get The Look</div><div class="slot-grid"><img src="${im(S2.skus[0])}" alt=""><img src="${im(S2.skus[1])}" alt=""><img src="${im(S2.skus[2])}" alt=""></div></div>`;
+    const im=(k,ix)=>{if(S2.skuImgs&&S2.skuImgs[ix])return S2.skuImgs[ix];const p2=plist[k]||{};return IMG+'/'+b+'/p'+(p2.img!==undefined?p2.img:(k||0))+'.jpg'};
+    return `<div class="cslot cslot--gtl" id="cslot"><div class="slot-title">Get The Look</div><div class="slot-grid"><img src="${im(S2.skus[0],0)}" alt=""><img src="${im(S2.skus[1],1)}" alt=""><img src="${im(S2.skus[2],2)}" alt=""></div></div>`;
   }
   if(S2.type==='text'){
     return `<div class="cslot" id="cslot"><img class="media" src="${media}" alt="">${S2.sponsored?'<div class="slot-spon">Sponsored</div>':''}<div class="slot-grad"></div><div class="slot-view">${S2.cta||'View All'}<svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#FFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>`;
@@ -575,15 +577,17 @@ function openSlotEd(b){
       ?(S2.type!=='none'?'<div class="sec">CTA text'+(S2.type==='cutout'?' (optional — chevron only when empty)':'')+'</div><input id="sed-cta" maxlength="24" value="'+(S2.cta||'').replace(/"/g,'&quot;')+'">':'')
        +'<div class="sec">Image</div><input id="sed-img" type="file" accept="image/*">'
        +(S2.type==='text'?'<button class="row t" id="sed-spon"><span class="tgl'+(S2.sponsored?' on':'')+'"><i></i></span><span class="nm">Sponsored tag</span></button>':'')
-      :'<div class="sec">The 3 SKUs — first product image is pulled</div>'
-       +[0,1,2].map(k=>`<select class="sed-sku" data-k="${k}">${opt(k,S2.skus[k])}</select>`).join(''));
+      :'<div class="sec">The 3 SKUs — first product image is pulled, or upload your own</div>'
+       +[0,1,2].map(k=>`<select class="sed-sku" data-k="${k}">${opt(k,S2.skus[k])}</select><input type="file" accept="image/*" class="sed-skuimg" data-k="${k}" title="Upload an image for this tile">${S2.skuImgs&&S2.skuImgs[k]?'<button class="sed-skuclr" data-k="'+k+'">× remove uploaded image</button>':''}`).join(''));
   const box=sed.querySelector('.box');
   box.querySelector('.x').onclick=()=>sed.hidden=true;
   box.querySelectorAll('.opt[data-t]').forEach(bt=>bt.onclick=()=>{S2.type=bt.dataset.t;placeSlot(b);openSlotEd(b)});
   const cta=box.querySelector('#sed-cta');if(cta)cta.addEventListener('input',()=>{S2.cta=cta.value;placeSlot(b)});
   const fi=box.querySelector('#sed-img');if(fi)fi.addEventListener('change',()=>{const f=fi.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S2.img=r.result;placeSlot(b)};r.readAsDataURL(f)});
   const sp=box.querySelector('#sed-spon');if(sp)sp.onclick=()=>{S2.sponsored=!S2.sponsored;placeSlot(b);openSlotEd(b)};
-  box.querySelectorAll('.sed-sku').forEach(se=>se.onchange=()=>{S2.skus[+se.dataset.k]=+se.value;placeSlot(b)});
+  box.querySelectorAll('.sed-sku').forEach(se=>se.onchange=()=>{const k=+se.dataset.k;S2.skus[k]=+se.value;S2.skuImgs[k]=null;placeSlot(b)}); // picking a product reverts that tile to its image
+  box.querySelectorAll('.sed-skuimg').forEach(fi2=>fi2.addEventListener('change',()=>{const f=fi2.files[0];if(!f)return;const k=+fi2.dataset.k;const r=new FileReader();r.onload=()=>{S2.skuImgs[k]=r.result;placeSlot(b);openSlotEd(b)};r.readAsDataURL(f)}));
+  box.querySelectorAll('.sed-skuclr').forEach(cl=>cl.onclick=()=>{S2.skuImgs[+cl.dataset.k]=null;placeSlot(b);openSlotEd(b)});
   sed.hidden=false;
 }
 // --- card anatomy modal (review tooling): click a card in the new format to see the component usage ---
