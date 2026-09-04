@@ -179,7 +179,7 @@ body:not(.mode-new) .hd-usp .s{line-height:12px}
     </div>
   </div>
   <nav class="hd-nav only-desktop"><a class="sale" href="#">Sale</a><a href="#">New in</a><a href="#">Dresses</a><a href="#">Clothing</a><a href="#">Co-ords</a><a href="#">Tops</a><a href="#">Shoes</a><a href="#">Accessories</a><a href="#">Brands</a></nav>
-  <div class="hd-usp" id="usptop" hidden></div>
+  <div class="hd-usp hd-usp--top" id="usptop" hidden></div>
   <div class="usp-strip" id="uspstrip"></div>
 </header>
 <!-- second USP layer — pins to the top of the window on scroll (Figma 13005-165567) -->
@@ -264,7 +264,7 @@ const FASCIA={
   nav:['NEW ARRIVALS','SALE','CLOTHING','AUTUMN','DRESSES','CO-ORDS','TOPS','TRENDING','ATHLEISURE','SHOP BY FIT','BEAUTY','LIFESTYLE','BRANDS'],
   cats:[],filters:['Category','Colour','Style','Body Fit','Size'],
   seoText:'The search stops here. Pieces that instantly elevate your look — we\'re constantly curating the most relevant going-out silhouettes, so you\'re always first to the newest shapes.',
-  uspTop:'ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY · 00:12:16:29',uspCells:[{b:'25% OFF ALMOST EVERYTHING*'},{b:'EXTRA 20% OFF* AUTUMN ESSENTIALS, CODE: COSY20'},{b:'£5.99 ROYALTY - FREE NEXT DAY DELIVERY AND FREE RETURNS FOR 12 MONTHS'}]},
+  uspTop:'<b>ORDER BY MIDNIGHT FOR NEXT DAY DELIVERY</b><span class="s cd">00:15:22:58</span>',uspCells:[{b:'25% OFF ALMOST EVERYTHING*'},{b:'EXTRA 10% OFF DRESSES & CO-ORDS* CODE: PLTSTYLE'}]},
  karenmillen:{title:'Summer Dresses',count:'588 products',crumb:['Home','Womens','Womens Clothing','Dresses'],
   nav:['OUTLET','NEW IN','CLOTHING','DRESSES','OCCASION WEAR','ACCESSORIES','BEAUTY','BRANDS','HOME'],
   cats:[],filters:['Style','Size','Body Fit','Brands','Colour'],seo:1,
@@ -435,7 +435,7 @@ function render(){
   search.classList.toggle('hd-search--underline',cfg.search==='underline');
   // real furniture
   document.querySelector('.hd-nav').innerHTML=F.nav.map((n,i)=>`<a${/sale/i.test(n)?' class="sale"':''} href="#">${n}</a>`).join('');
-  const usptop=document.getElementById('usptop');usptop.hidden=!F.uspTop;usptop.textContent=F.uspTop||'';
+  const usptop=document.getElementById('usptop');usptop.hidden=!F.uspTop;usptop.innerHTML=F.uspTop||'';
   document.getElementById('uspstrip').innerHTML=(F.uspCells||[]).map((c,ci)=>{
     if(MODE==='new'){ // DS USP banner component: banner itself is tappable — no links; codes/countdowns stay inline
       const keep=c.s&&/code|%|\d/i.test(c.s)&&!/^shop/i.test(c.s);
