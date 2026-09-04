@@ -239,7 +239,6 @@ body:not(.mode-new) .hd-usp{height:50px;min-height:0;padding:4px 16px;line-heigh
 
 <script src="data.js"></script>
 <div id="anat" hidden><div class="box"></div></div>
-<script src="../../assets/review/comments.js" defer></script>
 <script>
 const AST='../../assets';const IMG='img';
 /* ================= Real content per fascia — extracted from the html.to.design live captures
@@ -528,8 +527,6 @@ function render(){
   const cfgText=`${MODE} · cols ${cfg.cols} · brand ${cfg.brand?'on':'off'} · ${cfg.fav}/${cfg.favShape} · add ${cfg.qa} · ${cfg.bleed?'bleed':'padded'} · ${cfg.compact?'compact':'standard'}`;
   try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE},'*')}catch(e){}
   placeSlot(b);
-  window.REVIEW_CTX={proj:'p05',key:b+':'+MODE}; // pinned review comments scope to fascia+mode
-  window.PLPC&&PLPC.refresh();
 }
 // --- PLP content slot (DS 8556-18755): lands after row 3 in the new format; click it to edit ---
 const SLOTS={ // per-mode defaults: live mirrors the current site style (white cutout), new leads with the text link
