@@ -148,9 +148,13 @@
    caveat = 10px caption line. RULE (design + dev build): an asterisk may only appear in banner copy
    when the Caveat type is used — the caption text is a required prop. No caption, no asterisk. */
 .usp-sep{display:inline-block;width:4px;height:1px;background:currentColor;vertical-align:middle;margin:0 8px;flex:none}
+.usp-row{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;row-gap:2px}
+.usp-row .usp-t{white-space:normal}
+.usp-sep.wrapbr{display:block;width:100%;height:0;margin:0;background:none} /* wrapped sections: the dash yields to a line break */
+.hd-usp:has(.usp-cd),.usp-cell:has(.usp-cd){flex-direction:column;gap:4px} /* countdown always sits on its own row */
 .usp-cav{display:block;width:100%;font-size:10px;font-weight:var(--w-regular);line-height:1;padding-bottom:4px;text-align:center}
 .usp-cd{display:inline-flex;gap:1px;align-items:center;font-weight:var(--w-strong);color:var(--usp-cd,currentColor)}
-.usp-cd i{font-style:normal;width:5px;text-align:center;padding-bottom:2px;color:inherit}
+.usp-cd i{font-style:normal;width:5px;text-align:center;padding-bottom:2px;color:var(--usp-a-fg,currentColor)} /* colons stay banner-ink on the Black/Red variant */
 .hd-bar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;gap:16px}
 .hd-left{display:flex;align-items:center;gap:16px;min-width:0}
 .hd-burger{width:24px;height:24px;min-width:24px;background:none;border:none;padding:0;cursor:pointer}

@@ -415,7 +415,31 @@ function syncUspH(){
   }
   // production: the two banners size independently — only the mobile rotation stays locked to its tallest message
 }
-new ResizeObserver(()=>syncUspH()).observe(document.documentElement);
+new ResizeObserver(()=>{syncUspH();uspSepWrap()}).observe(document.documentElement);
+// DS USP banner 11982-37171: sections joined by the 4px dash ONLY while they share a line;
+// countdown is always its own row (strong digits, 5px colon columns, --usp-cd red on the Black/Red variant)
+function uspCdMarkup(v){return '<span class="usp-cd">'+v.split(':').map((d,i)=>(i?'<i>:</i>':'')+'<b>'+d+'</b>').join('')+'</span>'}
+function uspNewParts(text,sub){
+  const noStar=t=>String(t).replace(/\*/g,'');
+  let row='<span class="usp-t">'+noStar(text)+'</span>',cd='';
+  if(sub){const sv=String(sub).trim();
+    if(/^[\d:]+$/.test(sv))cd=uspCdMarkup(sv);
+    else row+='<span class="usp-sep"></span><span class="usp-t">'+noStar(sv).replace(/(code:?\s*)([A-Za-z0-9]+)/i,'$1<b>$2</b>')+'</span>';
+  }
+  return '<span class="usp-row">'+row+'</span>'+cd;
+}
+function uspSepWrap(){ // auto-layout rule: the dash exists only while its sections share a line —
+  // once they split, it becomes an invisible full-width breaker (keeps the wrap stable, no dangling hyphen)
+  document.querySelectorAll('.usp-row').forEach(r=>{
+    const kids=[...r.children];
+    kids.forEach(el=>el.classList.remove('wrapbr'));
+    kids.forEach((el,i)=>{
+      if(!el.classList.contains('usp-sep'))return;
+      const prev=kids[i-1],next=kids[i+1];
+      if(prev&&next&&Math.abs(prev.offsetTop-next.offsetTop)>=4)el.classList.add('wrapbr');
+    });
+  });
+}
 function render(){
   const b=document.documentElement.getAttribute('data-brand');
   document.body.classList.toggle('mode-new',MODE==='new');
@@ -437,18 +461,23 @@ function render(){
   document.querySelector('.hd-nav').innerHTML=F.nav.map((n,i)=>`<a${/sale/i.test(n)?' class="sale"':''} href="#">${n}</a>`).join('');
   const usptop=document.getElementById('usptop');usptop.hidden=!F.uspTop;usptop.innerHTML=F.uspTop||'';
   document.getElementById('uspstrip').innerHTML=(F.uspCells||[]).map((c,ci)=>{
-    if(MODE==='new'){ // DS USP banner component: banner itself is tappable — no links; codes/countdowns stay inline
+    if(MODE==='new'){ // DS USP banner component: banner itself is tappable — no links; countdown gets its own row
       const keep=c.s&&/code|%|\d/i.test(c.s)&&!/^shop/i.test(c.s);
-      const noStar=t=>String(t).replace(/\*/g,''); // asterisk only ships with a caveat caption (DS rule) — this data has none
-      const code=keep?noStar(c.s).replace(/(code:?\s*)([A-Za-z0-9]+)/i,'$1<b>$2</b>'):'';
-      return `<div class="usp-cell${ci===0?' rot-on':''}"><span>${noStar(c.b)}${keep?'<span class="usp-sep"></span>'+code:''}</span></div>`;
+      return `<div class="usp-cell${ci===0?' rot-on':''}">${uspNewParts(c.b,keep?c.s:null)}</div>`;
     }
     return `<div class="usp-cell${ci===0?' rot-on':''}"><b>${c.b}</b>${c.s?(/^shop/i.test(c.s)?`<u>${c.s}</u>`:`<span class="s${/^[\d:]+$/.test(c.s)?' cd':''}">${c.s}</span>`):''}</div>`; // production: subs are plain (countdown red); only Shop-Now CTAs underline
   }).join('');
   const uspBText=MODE==='new'?(F.uspB||F.uspNewB||''):(F.uspB||'');
-  const fmtUsp=t=>String(t).replace(/\*/g,'').replace(/\s*[|\u00b7\u2022-]\s*(?=code)/i,'<span class="usp-sep"></span>').replace(/(code:?\s*)([A-Za-z0-9]+)/i,'$1<b>$2</b>'); // DS banner: dash separator + strong code, no orphan asterisks
+  const fmtUsp=t=>{ // bar in new format: parse into text + sub sections, rebuild per the component rules
+    t=String(t);
+    const m=t.match(/^<b>(.*?)<\/b><span class="s(?: cd)?">(.*?)<\/span>$/);
+    let a2,b2;
+    if(m){a2=m[1];b2=m[2];}
+    else{const sp=t.replace(/<[^>]+>/g,'').split(/\s*[|\u00b7\u2022]\s*|\s+-\s+/);a2=sp[0];b2=sp.slice(1).join(' ');}
+    return uspNewParts(a2,b2||null);
+  };
   const uspb=document.getElementById('uspb');uspb.hidden=!uspBText;uspb.innerHTML=MODE==='new'?fmtUsp(uspBText):uspBText;
-  syncUspH();
+  syncUspH();uspSepWrap();
   document.querySelector('.bc').innerHTML=F.crumb.map(c=>`<a href="#">${c}</a><span class="sep">/</span>`).join('')+`<span class="cur">${F.title}</span>`;
   const h1=document.querySelector('.plp-title h1');
   h1.textContent=F.title; h1.style.textTransform=cfg.titleCaps?'uppercase':'';
