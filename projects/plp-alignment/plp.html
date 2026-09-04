@@ -258,7 +258,7 @@ const FASCIA={
   cats:['Tops','Jeans','Joggers','Tracksuits','Hoodies','Jackets'],
   roundels:[{t:'Tops',img:'img/roundels/tops.jpg'},{t:'Jeans',img:'img/roundels/jeans.jpg'},{t:'Joggers',img:'img/roundels/joggers.jpg'},{t:'Tracksuits',img:'img/roundels/tracksuits.jpg'},{t:'Hoodies',img:'img/roundels/hoodies.jpg'},{t:'Jackets',img:'img/roundels/jackets.jpg'}],filters:['Size','Colour','Category','Style','Brands','Price','Body Fit'],
   seoText:'Get ready to level up your cozy game. Jump headfirst into our men\'s new season drop and uncover ultimate snugness — street-smart oversized fits and zip-ups.',
-  uspCells:[{b:'ORDER BY MIDNIGHT TO GET IT TOMORROW'},{b:'STUDENT DISCOUNT!',s:'Extra 20% Off!'},{b:'BRANDS AT MAN',s:'Up To 70% Off!'}],uspB:'20% OFF* + EXTRA 10% OFF · Use Code: <b>EXTRATEN</b>'},
+  uspCells:[{b:'ORDER BY MIDNIGHT TO GET IT TOMORROW',s:'00:15:50:22'},{b:'STUDENT DISCOUNT!',s:'Extra 20% Off!'},{b:'BRANDS AT MAN',s:'Up To 70% Off!'}],uspB:'<b>20% OFF* + EXTRA 10% OFF</b><span class="s">Use Code: EXTRATEN</span>'},
  plt:{title:'Going Out Outfits',count:'1,000+ products',crumb:['Home','Womens','Shop By Collection'],
   nav:['NEW ARRIVALS','SALE','CLOTHING','AUTUMN','DRESSES','CO-ORDS','TOPS','TRENDING','ATHLEISURE','SHOP BY FIT','BEAUTY','LIFESTYLE','BRANDS'],
   cats:[],filters:['Category','Colour','Style','Body Fit','Size'],
@@ -444,7 +444,7 @@ function render(){
       const code=keep?noStar(c.s).replace(/(code:?\s*)([A-Za-z0-9]+)/i,'$1<b>$2</b>'):'';
       return `<div class="usp-cell${ci===0?' rot-on':''}"><span>${noStar(c.b)}${keep?'<span class="usp-sep"></span>'+code:''}</span></div>`;
     }
-    return `<div class="usp-cell${ci===0?' rot-on':''}"><b>${c.b}</b>${c.s?`<u>${c.s}</u>`:''}</div>`;
+    return `<div class="usp-cell${ci===0?' rot-on':''}"><b>${c.b}</b>${c.s?(/^shop/i.test(c.s)?`<u>${c.s}</u>`:`<span class="s${/^[\d:]+$/.test(c.s)?' cd':''}">${c.s}</span>`):''}</div>`; // production: subs are plain (countdown red); only Shop-Now CTAs underline
   }).join('');
   const uspBText=MODE==='new'?(F.uspB||F.uspNewB||''):(F.uspB||'');
   const fmtUsp=t=>String(t).replace(/\*/g,'').replace(/\s*[|\u00b7\u2022-]\s*(?=code)/i,'<span class="usp-sep"></span>').replace(/(code:?\s*)([A-Za-z0-9]+)/i,'$1<b>$2</b>'); // DS banner: dash separator + strong code, no orphan asterisks
