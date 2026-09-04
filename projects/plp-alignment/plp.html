@@ -101,13 +101,13 @@ body:not(.mode-new) .hd-usp{height:50px;min-height:0;padding:4px 16px;line-heigh
    The icon shows the view you switch TO: exact design assets (view-grid.svg / view-thumb.svg). */
 .gt{display:none;position:absolute;right:0;top:10px;width:24px;height:24px;padding:4px;background:none;border:none;cursor:pointer}
 .gt img{width:16px;height:16px;display:block}
-@media(max-width:767px){.gt{display:block}
-  .grid[data-mcols="3"]{grid-template-columns:repeat(3,1fr)}
-  .grid[data-mcols="3"] .pc-info,.grid[data-mcols="3"] .pc-badges,.grid[data-mcols="3"] .pc-taggstar,.grid[data-mcols="3"] .pc-add{display:none}
-  .grid[data-mcols="3"] .pc-actions>*:not(:first-child){display:none}
-  .grid[data-mcols="3"] .cslot{display:none} /* the images-only view drops content slots, like badges */
-  .grid[data-mcols="1"]{grid-template-columns:1fr}
-  .grid[data-mcols="1"] .cslot{grid-column:1/span 1} /* a span-2 item in a 1-col grid spawns an implicit track and breaks the list */
+@media(max-width:767px){body.mode-new .gt{display:block} /* the view toggle is a new-format feature — live keeps the standard grid */
+  .mode-new .grid[data-mcols="3"]{grid-template-columns:repeat(3,1fr)}
+  .mode-new .grid[data-mcols="3"] .pc-info,.mode-new .grid[data-mcols="3"] .pc-badges,.mode-new .grid[data-mcols="3"] .pc-taggstar,.mode-new .grid[data-mcols="3"] .pc-add{display:none}
+  .mode-new .grid[data-mcols="3"] .pc-actions>*:not(:first-child){display:none}
+  .mode-new .grid[data-mcols="3"] .cslot{display:none} /* the images-only view drops content slots, like badges */
+  .mode-new .grid[data-mcols="1"]{grid-template-columns:1fr}
+  .mode-new .grid[data-mcols="1"] .cslot{grid-column:1/span 1} /* a span-2 item in a 1-col grid spawns an implicit track and breaks the list */
 }
 .plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
 .plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
