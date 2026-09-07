@@ -292,11 +292,11 @@ const CFG={
  },
  new:{
   debenhams:  {cols:4, brand:true,  fav:'heart',    favShape:'circle', qa:'icon',  bleed:false, gap:'tight', cat:'roundels',  seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
-  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  boohoo:     {cols:4, brand:true,  fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false, flush:1},
   boohooman:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'none',  bleed:true,  gap:'none',  cat:'roundels',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false, flush:1},
   plt:        {cols:4, brand:false, fav:'heart',    favShape:'chip',   qa:'chip',  bleed:true,  gap:'plt0', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:true,  search:'pill', swatch:'round',  icons:'plt',  moreBelow:false, flush:1},
   karenmillen:{cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:true,  nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
-  warehouse:  {cols:4, brand:false, fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
+  warehouse:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:true,  gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false, flush:1},
   brandroom:  {cols:4, brand:true,  fav:'bookmark', favShape:'chip',   qa:'chip',  bleed:false, gap:'tight', cat:'pills',     seo:false, nddD:true,  compact:true,  nameCaps:false, search:'pill', swatch:'square', icons:'core', moreBelow:false},
  }
 };
@@ -327,11 +327,12 @@ function favBtn(cfg,IC){
 }
 function qaBtn(cfg,IC){
   if(cfg.qa==='icon') return `<button class="pc-iconbtn${cfg.favShape==='square'?' pc-iconbtn--sq':''}" aria-label="Quick add"><img src="${IC.quick}" alt=""></button>`;
-  if(cfg.qa==='chip') return `<button class="pc-iconbtn pc-iconbtn--chip" aria-label="Quick add"><img src="${IC.bag}" alt=""></button>`;
+  if(cfg.qa==='chip') return `<button class="pc-iconbtn pc-iconbtn--chip" aria-label="Quick add"><img src="${IC.quick}" alt=""></button>`; // quick add is always the bag-with-plus
   return '';
 }
 function card(p,i,b,cfg,IC){
   const showAI=p.ai&&MODE==='new';
+  const brandT=t=>String(t).toLowerCase().replace(/(^|\s)\S/g,c=>c.toUpperCase()); // brand line is title case, never caps
   return `<article class="pc${cfg.compact?' pc--compact':''}${cfg.flush?' pc--flush':''}" data-idx="${i}">
     ${p.noImg?'':`<div class="pc-img">
       <img class="ph" loading="lazy" src="${IMG}/${b}/p${p.img!==undefined?p.img:i}.jpg" alt="">
@@ -342,7 +343,7 @@ function card(p,i,b,cfg,IC){
     ${cfg.qa==='button'?`<button class="pc-add"><img src="${LIB}/icons-quick-add.svg" alt="">Add</button>`:''}
     ${p.taggstar&&(MODE==='live'||p.tsOn)?(()=>{const ts=p.taggstar.split('|');return `<div class="pc-taggstar${cfg.ts==='brand'?' pc-taggstar--brand':cfg.ts==='lt'?' pc-taggstar--lt':''}"><img src="${LIB}/${cfg.ts==='lt'?'icons-flame':'icons-trophy'}.svg" alt=""><b>${ts[0]}</b><span>${ts[1]||''}</span></div>`})():''}
     <div class="pc-info">
-      <div class="pc-titles">${cfg.brand&&p.brand?`<div class="pc-brand">${p.brand}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>
+      <div class="pc-titles">${cfg.brand&&p.brand?`<div class="pc-brand">${brandT(p.brand)}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>
       <div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>
       ${p.off?`<div class="pc-offer">${p.off}</div>`:''}
       ${p.sw?`<div class="pc-swatches${cfg.swatch==='round'?' pc-swatches--round':''}"><span class="set">${p.sw.map((c,si)=>`<span class="pc-swatch${si===0?' on':''}"><i style="background:${c}"></i></span>`).join('')}</span>${p.swMore?`<span class="pc-more">+${p.swMore}</span>`:''}</div>`:''}
@@ -459,7 +460,7 @@ function render(){
   search.classList.toggle('hd-search--underline',cfg.search==='underline');
   // real furniture
   document.querySelector('.hd-nav').innerHTML=F.nav.map((n,i)=>`<a${/sale/i.test(n)?' class="sale"':''} href="#">${n}</a>`).join('');
-  const usptop=document.getElementById('usptop');usptop.hidden=!F.uspTop;usptop.innerHTML=F.uspTop||'';
+  const usptop=document.getElementById('usptop');usptop.hidden=!F.uspTop||MODE==='new';usptop.innerHTML=F.uspTop||'';
   document.getElementById('uspstrip').innerHTML=(F.uspCells||[]).map((c,ci)=>{
     if(MODE==='new'){ // DS USP banner component: banner itself is tappable — no links; countdown gets its own row
       const keep=c.s&&/code|%|\d/i.test(c.s)&&!/^shop/i.test(c.s);
@@ -467,7 +468,7 @@ function render(){
     }
     return `<div class="usp-cell${ci===0?' rot-on':''}"><b>${c.b}</b>${c.s?(/^shop/i.test(c.s)?`<u>${c.s}</u>`:`<span class="s${/^[\d:]+$/.test(c.s)?' cd':''}">${c.s}</span>`):''}</div>`; // production: subs are plain (countdown red); only Shop-Now CTAs underline
   }).join('');
-  const uspBText=MODE==='new'?(F.uspB||F.uspNewB||''):(F.uspB||'');
+  const uspBText=MODE==='new'?'':(F.uspB||''); // new format runs a single banner — the strip
   const fmtUsp=t=>{ // bar in new format: parse into text + sub sections, rebuild per the component rules
     t=String(t);
     const m=t.match(/^<b>(.*?)<\/b><span class="s(?: cd)?">(.*?)<\/span>$/);
@@ -478,7 +479,7 @@ function render(){
   };
   const uspb=document.getElementById('uspb');uspb.hidden=!uspBText;uspb.innerHTML=MODE==='new'?fmtUsp(uspBText):uspBText;
   syncUspH();uspSepWrap();
-  document.querySelector('.bc').innerHTML=F.crumb.map(c=>`<a href="#">${c}</a><span class="sep">/</span>`).join('')+`<span class="cur">${F.title}</span>`;
+  document.querySelector('.bc').innerHTML=F.crumb.slice(1).map(c=>`<a href="#">${c}</a><span class="sep">/</span>`).join('')+`<span class="cur">${F.title}</span>`; // the first layer (Home) never shows
   const h1=document.querySelector('.plp-title h1');
   h1.textContent=F.title; h1.style.textTransform=cfg.titleCaps?'uppercase':'';
   const cnt=document.querySelector('.plp-title .count');cnt.textContent=F.count;cnt.style.display=(MODE==='new')?'none':'';

@@ -96,7 +96,7 @@
   --w-btn:600;--btn-outline:#360502; /* golden button truth */
   /* PLT sand rule (03 Sep): anything grey or white on other fascias renders in the sand family here —
      white → warm white, Grey 05 → sand, Grey 1 → darker sand (darker hex DRAFT pending sign-off) */
-  --surface-raised:#FFFDF7;--surface-sunken:#FAF5E7;--surface-media:#F0E9D6;
+  --surface-raised:#FFFDF7;--surface-sunken:#FAF5E7;--surface-media:#FAF5E7;
   --hd-icon:16px;--hd-favic:15px;--hd-count:12px;--hd-count-fs:9px; /* PLT header icon set — PLP-Grid-View 158-8458 */
   --brand-name:'PrettyLittleThing';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:400;--w-strong:700;--cta-case:uppercase;
