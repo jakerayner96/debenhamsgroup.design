@@ -56,6 +56,14 @@ body.dragging iframe{pointer-events:none}
     <option value="pills">Pills</option>
     <option value="links">Links</option>
   </select>
+  <select id="qasel" aria-label="Quick add type">
+    <option value="auto" selected>Quick add: auto</option>
+    <option value="mini">Mini — on price row</option>
+    <option value="button">Button — full width</option>
+    <option value="icon">Icon — on image</option>
+    <option value="chip">Chip — on image</option>
+    <option value="none">Off</option>
+  </select>
   <select id="preset" aria-label="Width preset">
     <option value="390" selected>390 — mobile</option>
     <option value="402">402</option>
@@ -78,7 +86,7 @@ body.dragging iframe{pointer-events:none}
 </div>
 
 <script>
-let W=390, BRAND='debenhams', MODE='live', CAT='auto'; // defaults to 390 mobile
+let W=390, BRAND='debenhams', MODE='live', CAT='auto', QA='auto'; // defaults to 390 mobile
 const frame=document.getElementById('frame'),stage=document.getElementById('stage'),
       preset=document.getElementById('preset'),sizebox=document.getElementById('sizebox'),
       cfg=document.getElementById('cfg');
@@ -89,7 +97,7 @@ function apply(){
   frame.style.width=w+'px';
   sizebox.textContent=`${Math.round(w)}px`;
 }
-function send(){ frame.contentWindow.postMessage({plpSet:1,brand:BRAND,mode:MODE,cat:CAT},'*'); }
+function send(){ frame.contentWindow.postMessage({plpSet:1,brand:BRAND,mode:MODE,cat:CAT,qa:QA},'*'); }
 addEventListener('message',e=>{ if(e.data&&e.data.plpCfg){cfg.textContent=e.data.plpCfg;} });
 
 document.querySelectorAll('#brands .chip').forEach(b=>b.onclick=()=>{
@@ -104,6 +112,7 @@ document.querySelectorAll('#mode button').forEach(b=>b.onclick=()=>{
 });
 preset.onchange=()=>{W=+preset.value;apply();};
 document.getElementById('catsel').onchange=e=>{CAT=e.target.value;send();};
+document.getElementById('qasel').onchange=e=>{QA=e.target.value;send();};
 
 document.getElementById('hr').addEventListener('pointerdown',e=>{
   e.preventDefault();document.body.classList.add('dragging');

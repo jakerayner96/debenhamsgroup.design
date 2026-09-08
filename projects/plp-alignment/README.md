@@ -42,6 +42,8 @@ DS components only — linked from `../../assets/ds/`: C-05 header (mobile + des
 | warehouse | 4 | ✗ (brief) | bookmark · square (KM icon, brief) | icon | ✓ (brief) | pills |
 | brandroom | 4 | ✓ supplier | bookmark · square | — | — | pills |
 
+**Quick add types** (`cfg.qa`, overridable for review from the strip's *Quick add* select, `?qa=` on plp.html): `icon` / `chip` = bag-with-plus on the image under the wishlist; `button` = full-width "Add" between image and titles (MAN live); `mini` = 28px primary-styled "Quick add" pill at the right of the price row (Adanola Complete-The-Look reference, 08 Sep) — zero card-height cost, hidden with the info block in the tile view; `none`. The per-card anatomy toggle still forces the fascia's type on/off.
+
 Mobile in NEW mode uses the combined Sort & Filter sheet (the A/B/C winner); LIVE keeps the split bar. `fontScale` is retired as a config — the compact card **is** the reduction.
 
 ## Open / next

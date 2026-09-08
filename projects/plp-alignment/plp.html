@@ -304,7 +304,8 @@ const LIB=`${AST}/ds/icons/lib`;
 const grid=document.getElementById('grid'),catnav=document.getElementById('catnav'),
       deskbar=document.getElementById('deskbar'),mobsplit=document.getElementById('mobsplit'),mobbar=document.getElementById('mobbar'),
       seo=document.getElementById('seo'),search=document.getElementById('search'),showmore=document.getElementById('showmore');
-let MODE='live',view=2,CAT_OVERRIDE='auto';
+let MODE='live',view=2,CAT_OVERRIDE='auto',QA_OVERRIDE='auto'; // QA_OVERRIDE: review-strip quick-add type — auto = fascia config, else none|icon|chip|button|mini
+function curCfg(mode,b){const c=Object.assign({},CFG[mode][b]);if(QA_OVERRIDE!=='auto')c.qa=QA_OVERRIDE;return c}
 
 function icons(cfg){
   const plt=cfg.icons==='plt';
@@ -344,7 +345,7 @@ function card(p,i,b,cfg,IC){
     ${p.taggstar&&(MODE==='live'||p.tsOn)?(()=>{const ts=p.taggstar.split('|');return `<div class="pc-taggstar${cfg.ts==='brand'?' pc-taggstar--brand':cfg.ts==='lt'?' pc-taggstar--lt':''}"><img src="${LIB}/${cfg.ts==='lt'?'icons-flame':'icons-trophy'}.svg" alt=""><b>${ts[0]}</b><span>${ts[1]||''}</span></div>`})():''}
     <div class="pc-info">
       <div class="pc-titles">${cfg.brand&&p.brand?`<div class="pc-brand">${brandT(p.brand)}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>
-      <div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>
+      ${cfg.qa==='mini'?'<div class="pc-pricerow">':''}<div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>${cfg.qa==='mini'?'<button class="pc-qa" aria-label="Quick add"><i></i>Quick add</button></div>':''}
       ${p.off?`<div class="pc-offer">${p.off}</div>`:''}
       ${p.sw?`<div class="pc-swatches${cfg.swatch==='round'?' pc-swatches--round':''}"><span class="set">${p.sw.map((c,si)=>`<span class="pc-swatch${si===0?' on':''}"><i style="background:${c}"></i></span>`).join('')}</span>${p.swMore?`<span class="pc-more">+${p.swMore}</span>`:''}</div>`:''}
       ${p.rating?`<div class="pc-stars"><span class="set"><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-half.svg" alt=""><img src="${LIB}/icons-star-outline.svg" alt=""></span><span>(${p.rating})</span></div>`:''}
@@ -444,7 +445,7 @@ function uspSepWrap(){ // auto-layout rule: the dash exists only while its secti
 function render(){
   const b=document.documentElement.getAttribute('data-brand');
   document.body.classList.toggle('mode-new',MODE==='new');
-  const cfg=CFG[MODE][b];
+  const cfg=curCfg(MODE,b);
   const F=FASCIA[b]; F.products=window.PRODUCTS_ALL[b]||[];
   F.products.forEach((p,i)=>{p.ai=(i%7===2)}); // AI-generated badge scattered down the page
   F.products.forEach(p=>{delete p.taggstar}); if(b==='boohooman'&&F.products[3])F.products[3].taggstar='#2|bestseller'; // live-only social proof demo — height cost vs lean neighbours
@@ -631,7 +632,7 @@ document.querySelector('.grid').addEventListener('click',e=>{
 });
 function showAnatomy(i,cardEl){
   const b=document.documentElement.getAttribute('data-brand');
-  const cfg=CFG.new[b],q=(window.__plist||[])[i],deny=window.__deny||{};
+  const cfg=curCfg('new',b),q=(window.__plist||[])[i],deny=window.__deny||{};
   if(!q||!cardEl)return;
   const key=window.__ovrKey+i; OVR[key]=OVR[key]||{};
   const pm=q.off?'salecode':q.was?'sale':'full';
@@ -645,7 +646,7 @@ function showAnatomy(i,cardEl){
     ['badge','Badge',!!q.tag,''],
     ['ai','AI watermark',!!q.ai,''],
     ['brand','Brand line',brandOn,cfg.brand?'':'fascia default: off'],
-    ['qa','Quick add',qaOn,cfg.qa!=='none'?'':'fascia default: off'],
+    ['qa','Quick add',qaOn,cfg.qa!=='none'?(QA_OVERRIDE!=='auto'?'strip override: '+cfg.qa:cfg.qa):'fascia default: off'],
     ['sw','Swatches',!!q.sw,''],
     ['rating','Rating',!!q.rating,deny.rating?'MAN rule: off \u2014 forceable':''],
     ['ndd','Get It Tomorrow',!!q.ndd,deny.ndd?'MAN rule: off \u2014 forceable':''],
@@ -704,8 +705,8 @@ function applyMcols(){
 }
 gtBtn.addEventListener('click',()=>{MCOLS=GT_NEXT[MCOLS];localStorage.setItem('plpMcols',MCOLS);applyMcols();});
 applyMcols();
-window.__setState=(brand,mode,cat)=>{ anat.hidden=true; if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
-addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat); });
+window.__setState=(brand,mode,cat,qa)=>{ anat.hidden=true; if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(qa)QA_OVERRIDE=qa; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
+addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat,e.data.qa); });
 matchMedia('(max-width:1023px)').addEventListener('change',render);
 /* mobile USP rotation — one cell at a time */
 let rotI=0;
@@ -719,6 +720,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('draw
 const q=new URLSearchParams(location.search);
 if(q.get('mode'))MODE=q.get('mode');
 if(q.get('brand'))document.documentElement.setAttribute('data-brand',q.get('brand'));
+if(q.get('qa'))QA_OVERRIDE=q.get('qa');
 render();
 </script>
 <!-- C-06 mobile filter sheet (combined pattern — New format) -->
