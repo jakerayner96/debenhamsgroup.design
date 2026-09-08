@@ -56,7 +56,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .status i{width:6px;height:6px;border-radius:99px;background:var(--ok);box-shadow:0 0 7px var(--ok)}
 
 /* ================= SHELL ================= */
-.shell{display:grid;grid-template-columns:256px 1fr;height:100vh}
+.shell{display:grid;grid-template-columns:320px 1fr;height:100vh}
 /* sidebar header (Finder-style) */
 .shead{padding:12px 8px 10px;border-bottom:1px solid var(--line);margin-bottom:10px}
 .shead .rowa{display:flex;align-items:center;gap:8px;margin-bottom:10px}
@@ -84,7 +84,8 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .grp>button .car{transition:transform .15s;font-size:9px}
 .grp.closed .car{transform:rotate(-90deg)}
 .grp.closed .items{display:none}
-.items a{display:flex;align-items:center;gap:9px;padding:7px 10px 7px 14px;border-radius:6px;font-size:14px;color:var(--ink-2);margin:1px 0;border-left:2px solid transparent}
+.items a{display:flex;align-items:center;gap:9px;padding:7px 10px 7px 14px;border-radius:6px;font-size:14px;color:var(--ink-2);margin:1px 0;border-left:2px solid transparent;white-space:nowrap}
+.items a .tag{flex:none}
 .items a:hover{background:var(--panel-2);color:var(--ink)}
 .items a.on{background:var(--raise);color:var(--ink);border-left-color:var(--aq)}
 .items a .ic{width:14px;text-align:center;color:var(--ink-3);font-size:11px;flex:none}
