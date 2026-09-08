@@ -19,6 +19,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .seg button{border:none;border-radius:0;padding:5px 12px;color:#B0B0B0}
 .seg button.on{background:#F7F7F7;color:#000;font-weight:700}
 .strip select{background:#161616;color:#F7F7F7;border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 8px;font:inherit;font-size:11.5px}
+.strip select:disabled{opacity:.4}
 .strip .div{width:1px;height:20px;background:rgba(255,255,255,.15);margin:0 6px;flex:none}
 .sizebox{font-size:10.5px;color:#707070;white-space:nowrap;font-variant-numeric:tabular-nums}
 .cfg{margin-left:auto;font-size:10.5px;color:#707070;white-space:nowrap;padding-left:12px}
@@ -56,14 +57,15 @@ body.dragging iframe{pointer-events:none}
     <option value="pills">Pills</option>
     <option value="links">Links</option>
   </select>
-  <select id="qasel" aria-label="Quick add type">
-    <option value="auto" selected>Quick add: auto</option>
+  <span class="div"></span>
+  <b>Quick add</b>
+  <span class="seg" id="qaon" title="Quick add on every product, or none"><button data-q="off">Off</button><button data-q="on">On</button></span>
+  <select id="qasty" aria-label="Quick add style" title="Quick add style — applies to every product">
+    <option value="image">On image — matches wishlist</option>
+    <option value="button">Button — under image</option>
     <option value="mini">Mini — on price row</option>
-    <option value="button">Button — full width</option>
-    <option value="icon">Icon — on image</option>
-    <option value="chip">Chip — on image</option>
-    <option value="none">Off</option>
   </select>
+  <span class="div"></span>
   <select id="preset" aria-label="Width preset">
     <option value="390" selected>390 — mobile</option>
     <option value="402">402</option>
@@ -86,7 +88,7 @@ body.dragging iframe{pointer-events:none}
 </div>
 
 <script>
-let W=390, BRAND='debenhams', MODE='live', CAT='auto', QA='auto'; // defaults to 390 mobile
+let W=390, BRAND='debenhams', MODE='live', CAT='auto', QA_ON='auto', QA_STYLE='auto'; // quick add: page-level, auto follows the fascia config until touched // defaults to 390 mobile
 const frame=document.getElementById('frame'),stage=document.getElementById('stage'),
       preset=document.getElementById('preset'),sizebox=document.getElementById('sizebox'),
       cfg=document.getElementById('cfg');
@@ -97,8 +99,12 @@ function apply(){
   frame.style.width=w+'px';
   sizebox.textContent=`${Math.round(w)}px`;
 }
-function send(){ frame.contentWindow.postMessage({plpSet:1,brand:BRAND,mode:MODE,cat:CAT,qa:QA},'*'); }
-addEventListener('message',e=>{ if(e.data&&e.data.plpCfg){cfg.textContent=e.data.plpCfg;} });
+function send(){ frame.contentWindow.postMessage({plpSet:1,brand:BRAND,mode:MODE,cat:CAT,qaOn:QA_ON,qaStyle:QA_STYLE},'*'); }
+const qaon=document.getElementById('qaon'),qasty=document.getElementById('qasty');
+addEventListener('message',e=>{ if(e.data&&e.data.plpCfg){cfg.textContent=e.data.plpCfg;
+  // the page reports the effective quick-add state — the strip mirrors it (so 'auto' shows what the fascia actually does)
+  qaon.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.q===(e.data.qaOn?'on':'off')));
+  if(e.data.qaStyle)qasty.value=e.data.qaStyle; qasty.disabled=!e.data.qaOn;} });
 
 document.querySelectorAll('#brands .chip').forEach(b=>b.onclick=()=>{
   BRAND=b.dataset.b;
@@ -112,7 +118,8 @@ document.querySelectorAll('#mode button').forEach(b=>b.onclick=()=>{
 });
 preset.onchange=()=>{W=+preset.value;apply();};
 document.getElementById('catsel').onchange=e=>{CAT=e.target.value;send();};
-document.getElementById('qasel').onchange=e=>{QA=e.target.value;send();};
+qaon.querySelectorAll('button').forEach(b=>b.onclick=()=>{QA_ON=b.dataset.q;send();});
+qasty.onchange=e=>{QA_STYLE=e.target.value;QA_ON='on';send();};
 
 document.getElementById('hr').addEventListener('pointerdown',e=>{
   e.preventDefault();document.body.classList.add('dragging');

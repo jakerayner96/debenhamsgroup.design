@@ -304,8 +304,19 @@ const LIB=`${AST}/ds/icons/lib`;
 const grid=document.getElementById('grid'),catnav=document.getElementById('catnav'),
       deskbar=document.getElementById('deskbar'),mobsplit=document.getElementById('mobsplit'),mobbar=document.getElementById('mobbar'),
       seo=document.getElementById('seo'),search=document.getElementById('search'),showmore=document.getElementById('showmore');
-let MODE='live',view=2,CAT_OVERRIDE='auto',QA_OVERRIDE='auto'; // QA_OVERRIDE: review-strip quick-add type — auto = fascia config, else none|icon|chip|button|mini
-function curCfg(mode,b){const c=Object.assign({},CFG[mode][b]);if(QA_OVERRIDE!=='auto')c.qa=QA_OVERRIDE;return c}
+let MODE='live',view=2,CAT_OVERRIDE='auto';
+// Quick add is a PAGE setting, never per card: on/off for every product, plus one style for every product.
+// QA_ON: auto (fascia config) | on | off.  QA_STYLE: auto | image (button on the photo, takes the wishlist button's shape) | button (under the image) | mini (price row)
+let QA_ON='auto',QA_STYLE='auto';
+const qaStyleOf=v=>v==='icon'||v==='chip'?'image':v; // legacy config values collapse into the one on-image style
+function curCfg(mode,b){
+  const c=Object.assign({},CFG[mode][b]);
+  const base=c.qa||'none';
+  const on=QA_ON==='auto'?base!=='none':QA_ON==='on';
+  const style=QA_STYLE!=='auto'?QA_STYLE:(base==='none'?'image':qaStyleOf(base));
+  c.qa=on?style:'none';
+  return c;
+}
 
 function icons(cfg){
   const plt=cfg.icons==='plt';
@@ -327,9 +338,10 @@ function favBtn(cfg,IC){
   return `<button class="pc-iconbtn${sq}" aria-label="Add to wishlist"><img src="${ic}" alt=""></button>`;
 }
 function qaBtn(cfg,IC){
-  if(cfg.qa==='icon') return `<button class="pc-iconbtn${cfg.favShape==='square'?' pc-iconbtn--sq':''}" aria-label="Quick add"><img src="${IC.quick}" alt=""></button>`;
-  if(cfg.qa==='chip') return `<button class="pc-iconbtn pc-iconbtn--chip" aria-label="Quick add"><img src="${IC.quick}" alt=""></button>`; // quick add is always the bag-with-plus
-  return '';
+  if(qaStyleOf(cfg.qa)!=='image') return '';
+  // on-image quick add mirrors the wishlist button's shape so the stack reads as one set: chip (PLT/MAN new), square (KM/MAN live), circle (Debenhams). Always the bag-with-plus.
+  const shape=cfg.favShape==='chip'||cfg.favShape==='plain'?' pc-iconbtn--chip':cfg.favShape==='square'?' pc-iconbtn--sq':'';
+  return `<button class="pc-iconbtn${shape}" aria-label="Quick add"><img src="${IC.quick}" alt=""></button>`;
 }
 function card(p,i,b,cfg,IC){
   const showAI=p.ai&&MODE==='new';
@@ -542,9 +554,7 @@ function render(){
   window.__plist=plist;window.__deny=deny;
   grid.innerHTML=plist.map((p,i)=>{
     const o=OVR[window.__ovrKey+i];let c=cfg;
-    if(o&&(o.qa!==undefined||o.brand!==undefined)){c=Object.assign({},cfg);
-      if(o.qa!==undefined)c.qa=o.qa?(cfg.qa!=='none'?cfg.qa:'icon'):'none';
-      if(o.brand!==undefined)c.brand=o.brand;}
+    if(o&&o.brand!==undefined){c=Object.assign({},cfg);c.brand=o.brand;} // quick add is page-level — no per-card override
     return card(p,i,b,c,IC)}).join('');
   const lm=document.querySelector('.more .bd');
   lm.className='bd sec'; // load more is the secondary button — every fascia, both modes (golden truth)
@@ -556,7 +566,8 @@ function render(){
     ?'font-size:16px;font-weight:var(--w-strong);text-transform:uppercase;padding:0 48px'
     :((MODE==='live'&&cfg.subCaps)?'text-transform:uppercase':'');
   const cfgText=`${MODE} · cols ${cfg.cols} · brand ${cfg.brand?'on':'off'} · ${cfg.fav}/${cfg.favShape} · add ${cfg.qa} · ${cfg.bleed?'bleed':'padded'} · ${cfg.compact?'compact':'standard'}`;
-  try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE},'*')}catch(e){}
+  const qaStyle=cfg.qa!=='none'?cfg.qa:(QA_STYLE!=='auto'?QA_STYLE:qaStyleOf(CFG[MODE][b].qa||'image')); // what the strip should show as the style when off
+  try{parent.postMessage({plpCfg:cfgText,brand:b,mode:MODE,qaOn:cfg.qa!=='none',qaStyle:qaStyle==='none'?'image':qaStyle},'*')}catch(e){}
   placeSlot(b);
 }
 // --- PLP content slot (DS 8556-18755): lands after row 3 in the new format; click it to edit ---
@@ -637,7 +648,6 @@ function showAnatomy(i,cardEl){
   const key=window.__ovrKey+i; OVR[key]=OVR[key]||{};
   const pm=q.off?'salecode':q.was?'sale':'full';
   const o=OVR[key];
-  const qaOn=o.qa!==undefined?o.qa:cfg.qa!=='none';
   const brandOn=o.brand!==undefined?(o.brand&&!!q.brand):!!(cfg.brand&&q.brand);
   const T=[ // nothing is locked — fascia defaults and brand rules can all be forced per card
     ['img','Image',!q.noImg,''],
@@ -646,7 +656,6 @@ function showAnatomy(i,cardEl){
     ['badge','Badge',!!q.tag,''],
     ['ai','AI watermark',!!q.ai,''],
     ['brand','Brand line',brandOn,cfg.brand?'':'fascia default: off'],
-    ['qa','Quick add',qaOn,cfg.qa!=='none'?(QA_OVERRIDE!=='auto'?'strip override: '+cfg.qa:cfg.qa):'fascia default: off'],
     ['sw','Swatches',!!q.sw,''],
     ['rating','Rating',!!q.rating,deny.rating?'MAN rule: off \u2014 forceable':''],
     ['ndd','Get It Tomorrow',!!q.ndd,deny.ndd?'MAN rule: off \u2014 forceable':''],
@@ -668,7 +677,7 @@ function showAnatomy(i,cardEl){
   box.querySelectorAll('.opt[data-pm]').forEach(bt=>bt.onclick=()=>{OVR[key].price=bt.dataset.pm;if(bt.dataset.pm!=='salecode')delete OVR[key].offText;reopen();});
   box.querySelectorAll('.row.t').forEach(bt=>bt.onclick=()=>{
     const k=bt.dataset.k;
-    const cur={img:!q.noImg,fav:!q.noFav&&!q.noImg,ts:!!q.taggstar&&(MODE==='live'||!!q.tsOn),badge:!!q.tag,ai:!!q.ai,brand:brandOn,qa:qaOn,sw:!!q.sw,rating:!!q.rating,ndd:!!q.ndd}[k];
+    const cur={img:!q.noImg,fav:!q.noFav&&!q.noImg,ts:!!q.taggstar&&(MODE==='live'||!!q.tsOn),badge:!!q.tag,ai:!!q.ai,brand:brandOn,sw:!!q.sw,rating:!!q.rating,ndd:!!q.ndd}[k];
     OVR[key][k]=!cur;reopen();
   });
   const offIn=box.querySelector('#anat-off');
@@ -705,8 +714,8 @@ function applyMcols(){
 }
 gtBtn.addEventListener('click',()=>{MCOLS=GT_NEXT[MCOLS];localStorage.setItem('plpMcols',MCOLS);applyMcols();});
 applyMcols();
-window.__setState=(brand,mode,cat,qa)=>{ anat.hidden=true; if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(qa)QA_OVERRIDE=qa; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
-addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat,e.data.qa); });
+window.__setState=(brand,mode,cat,qaOn,qaStyle)=>{ anat.hidden=true; if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(qaOn)QA_ON=qaOn; if(qaStyle)QA_STYLE=qaStyle; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
+addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat,e.data.qaOn,e.data.qaStyle); });
 matchMedia('(max-width:1023px)').addEventListener('change',render);
 /* mobile USP rotation — one cell at a time */
 let rotI=0;
@@ -720,7 +729,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('draw
 const q=new URLSearchParams(location.search);
 if(q.get('mode'))MODE=q.get('mode');
 if(q.get('brand'))document.documentElement.setAttribute('data-brand',q.get('brand'));
-if(q.get('qa'))QA_OVERRIDE=q.get('qa');
+if(q.get('qa')){const v=q.get('qa');if(v==='none'||v==='off')QA_ON='off';else{QA_ON='on';QA_STYLE=qaStyleOf(v)}} // ?qa=off|image|button|mini
 render();
 </script>
 <!-- C-06 mobile filter sheet (combined pattern — New format) -->
