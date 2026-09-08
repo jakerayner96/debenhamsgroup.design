@@ -54,6 +54,18 @@
 .pc-add img{width:24px;height:24px;object-fit:contain}
 .pc-add:hover{border-color:var(--border-strong)}
 .pc-add:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
+/* quick add — mini price-row variant (ref: Adanola Complete The Look): a small primary-styled button sitting
+   at the right of the price row, so it costs no card height. Icon is the same bag-with-plus, masked to take
+   the button ink (Debenhams aqua/black, every other fascia black/white). Hidden with .pc-info in the tile grid view. */
+.pc-pricerow{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.pc-pricerow .pc-price{min-width:0}
+.pc-qa{display:inline-flex;align-items:center;gap:6px;flex:none;height:28px;padding:0 10px;background:var(--surface-action);color:var(--text-on-action);border:none;border-radius:var(--radius-default);font-family:var(--font-family-base);font-size:12px;line-height:1;font-weight:var(--w-btn,var(--w-strong));letter-spacing:.02em;text-transform:var(--case-btn1,uppercase);white-space:nowrap;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
+.pc-qa i{width:14px;height:14px;display:block;background:currentColor;-webkit-mask:url(icons/lib/icons-quick-add.svg) center/contain no-repeat;mask:url(icons/lib/icons-quick-add.svg) center/contain no-repeat}
+.pc-qa:hover{background:var(--surface-action-hover)}
+.pc-qa:active{background:var(--surface-action-pressed)}
+.pc-qa:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
+.pc--compact .pc-qa{height:26px;font-size:11px;padding:0 8px}
+.pc--compact .pc-qa i{width:13px;height:13px}
 /* taggstar social proof */
 .pc-taggstar{display:flex;align-items:center;gap:4px;background:var(--surface-callout);color:var(--text-inverse);border-radius:var(--radius-default);padding:4px 8px} /* text inherits the card size — same as product name */
 .pc-taggstar img{width:12px;height:12px;object-fit:contain;filter:invert(1)}
@@ -158,19 +170,19 @@
 .hd-bar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;gap:16px}
 .hd-left{display:flex;align-items:center;gap:16px;min-width:0}
 .hd-burger{width:24px;height:24px;min-width:24px;background:none;border:none;padding:0;cursor:pointer}
-.hd-burger img{width:100%;height:100%;display:block;object-fit:contain}
-.hd-logo{height:16px;width:auto;max-width:130px;object-fit:contain;object-position:left;display:block} /* Header component: mobile ~16px */
+.hd-burger img{width:100%;height:100%;display:block;object-fit:none} /* 24-grid glyph at native size — library SVGs are trimmed to the glyph, never scale them up */
+.hd-logo{height:15px;width:auto;max-width:106px;object-fit:contain;object-position:left;display:block} /* Header component / production: 106×15 mobile */
 .hd-icons{display:flex;align-items:center}
-.hd-icons button{width:38px;height:36px;display:grid;place-items:center;background:none;border:none;cursor:pointer;padding:0}
-.hd-icons img{width:var(--hd-icon,24px);height:var(--hd-icon,24px);display:block;object-fit:contain}
-.hd-icons img.favic{width:var(--hd-favic,21px);height:var(--hd-favic,21px)} /* wishlist glyph runs large — optically match siblings */
+.hd-icons button{width:38px;height:40px;display:grid;place-items:center;background:none;border:none;cursor:pointer;padding:0} /* production: 24 icon + 7px side padding, py-2 */
+.hd-icons img{width:var(--hd-icon,24px);height:var(--hd-icon,24px);display:block;object-fit:none} /* native glyph size inside the 24 box (bookmark 15×21, bag 20×23) — matches production, no optical fudge */
+.hd-icons img.favic{width:var(--hd-favic,24px);height:var(--hd-favic,24px)}
 .hd-icons button:focus-visible,.hd-burger:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 /* desktop bar (≥1024): logo · centred pill search · icons */
 .hd-bar--desktop{height:88px;padding:16px var(--plp-margin,16px);max-width:2000px;margin:0 auto}
 .hd-bar--desktop .hd-logo{height:20px;max-width:141px} /* Header component: 141×20 */
-.hd-search{flex:1;max-width:800px;margin:0 auto;height:52px;background:var(--surface-media);border:none;border-radius:var(--radius-pill);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;font-family:var(--font-family-base);font-size:16px;font-weight:var(--w-regular);color:var(--text-secondary);cursor:text}
+.hd-search{flex:1;max-width:800px;margin:0 auto;height:56px;/* production: h-14 */background:var(--surface-media);border:none;border-radius:var(--radius-pill);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;font-family:var(--font-family-base);font-size:16px;font-weight:var(--w-regular);color:var(--text-secondary);cursor:text}
 .hd-search .ics{display:flex;gap:20px;align-items:center}
-.hd-search img{width:22px;height:22px;display:block;object-fit:contain}
+.hd-search img{width:24px;height:24px;display:block;object-fit:none}
 .hd-search--underline{background:transparent;border-radius:0;border-bottom:var(--border-w) solid var(--icon-primary);padding:0 4px} /* PLT pattern */
 .hd-nav{display:flex;gap:16px;align-items:center;justify-content:center;height:40px;max-width:2000px;margin:0 auto;background:var(--nav-bg);color:var(--nav-fg);font-size:15px;font-weight:var(--w-mid);text-transform:var(--cta-case);overflow-x:auto;padding:0 16px}
 .hd-nav a{color:inherit;text-decoration:none;white-space:nowrap}
