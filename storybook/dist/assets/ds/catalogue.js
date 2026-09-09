@@ -1,0 +1,616 @@
+/* ============================================================
+   DG GROUP DESIGN SYSTEM — COMPONENT CATALOGUE (single source)
+   One entry per component. Drives:
+     · the site's Component library gallery + wiki pages (index.html)
+     · storybook/gen-stories.mjs → our own Storybook for the dev team
+     · .context/inventory/05-dev-storybook.md overlay tables
+   Markup uses assets/ds/components.css classes only; every colour is a token.
+   `dev` = the matching component in the front-end Storybook
+   (web-storybook.jamesb.play.dbztech.net) and how well it lines up:
+     match   — same component, same job; ours is the visual target
+     partial — overlaps, but one side has states/variants the other lacks
+     ours    — no dev counterpart yet (dev to build)
+   Asset paths are relative to the repo root (the site + Storybook both serve it).
+   ============================================================ */
+(function(root){
+const IMG = (deg, a, b) => `<span style="position:absolute;inset:0;background:linear-gradient(${deg}deg,var(${a}),var(${b}))"></span>`;
+const ICON = (n, extra='') => `<img src="assets/ds/icons/lib/icons-${n}.svg" alt="" ${extra}>`;
+const PH = (w, h, deg=160) => `<span style="display:block;width:${w}px;height:${h}px;background:linear-gradient(${deg}deg,var(--brand-light-3),var(--brand-light-1));flex:none"></span>`;
+
+const CARD = (opts={}) => `<article class="pc${opts.compact?' pc--compact':''}" style="width:${opts.w||200}px">
+  <div class="pc-img">${IMG(165,'--brand-light-3','--brand-light-1')}
+    <div class="pc-actions"><button class="pc-iconbtn${opts.sq?' pc-iconbtn--sq':''}" aria-label="Add to wishlist"><img src="assets/ds/icons/${opts.sq?'bookmark':'heart-16'}.svg" alt=""></button>${opts.qa==='icon'?'<button class="pc-iconbtn" aria-label="Quick add"><img src="assets/ds/icons/quick-add-16.svg" alt=""></button>':''}</div>
+    ${opts.badges?`<div class="pc-badges${opts.ai?' has-ai':''}">${opts.badges}</div>`:''}${opts.ai?'<div class="badge-ai"><b>AI</b> Generated</div>':''}
+  </div>
+  ${opts.qa==='button'?'<button class="pc-add"><img src="assets/ds/icons/quick-add-24.svg" alt="">Add</button>':''}
+  ${opts.taggstar?'<div class="pc-taggstar"><img src="assets/ds/icons/trophy.svg" alt=""><b>No. 6 Bestseller</b><span>in Dresses</span></div>':''}
+  <div class="pc-info">${opts.sponsored?'<div class="pc-sponsored">Sponsored</div>':''}
+    <div class="pc-toprow"><div class="pc-titles">${opts.brand===false?'':'<div class="pc-brand">Coast</div>'}<div class="pc-name">Lace and pleated midi shirt dress</div></div>${opts.qa==='mini'?'<button class="pc-qa" aria-label="Quick add"><i></i>Add</button>':''}</div>
+    <div class="pc-price${opts.sale===false?'':' sale'}"><span class="now">£70.00</span>${opts.sale===false?'':'<span class="was">£139.00</span><span class="pct">-50%</span>'}</div>
+    ${opts.swatches?'<div class="pc-swatches"><span class="set"><span class="pc-swatch on"><i style="background:#B97A57"></i></span><span class="pc-swatch"><i style="background:#2B2B2B"></i></span><span class="pc-swatch"><i style="background:#8FA3B8"></i></span></span><span class="pc-more">+5</span></div>':''}
+    ${opts.stars?'<div class="pc-stars"><span class="set"><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-half.svg" alt=""><img src="assets/ds/icons/star-outline.svg" alt=""></span><span>(9)</span></div>':''}
+  </div></article>`;
+
+const DG_CATALOGUE = [
+
+/* ───────────── ACTIONS ───────────── */
+{ slug:'button', name:'Button', group:'Actions', tier:'atom', css:'.bd', figma:'aIHmkCaTy9c5EWOxAGw0So · 9144-1807 / 12681-158518',
+  summary:'The one action component. Six types, every state, every fascia — colour, type, radius and case all come from the brand tokens.',
+  use:['One primary per view — the thing you most want the customer to do.','Secondary for the alternative path (Continue shopping, Cancel).','Tertiary and text buttons for low-emphasis actions inside modules.','Buy It Now only for the express-checkout path.'],
+  avoid:['Two primaries side by side.','Colouring a button per instance — the brand mode does it.','Sentence-case a primary label on a fascia that runs uppercase (PLT, Brand Room).'],
+  anatomy:['Container 50px (md) · 40px tertiary · 32px XS','Label 16/24 · weight from --w-btn · case from --case-btn1/2','Optional 20px icon slot, left of the label','Spinner state: label gives way to a 24px arc, fill drops to Neutral'],
+  variants:[
+    {name:'Primary', html:'<button class="bd pri">Add to bag</button>'},
+    {name:'Secondary', html:'<button class="bd sec">Continue shopping</button>'},
+    {name:'Buy it now', html:'<button class="bd buy">Buy it now</button>'},
+    {name:'Tertiary', html:'<button class="bd ter">Tertiary</button>'},
+    {name:'Tertiary XS', html:'<button class="bd xs">Tertiary XS</button>'},
+    {name:'Text only', html:'<button class="bd txt">Text only</button>'},
+    {name:'Disabled', html:'<button class="bd pri" disabled>Disabled</button> <button class="bd sec" disabled>Disabled</button>'},
+    {name:'Loading', html:'<button class="bd pri spn"><i></i></button>'},
+    {name:'With icon', html:'<button class="bd pri ic24"><img src="assets/ds/icons/lib/icons-quick-add.svg" alt="">Added</button>'},
+    {name:'Small', html:'<button class="bd sec sm">Add photo</button>'},
+    {name:'Pay (checkout)', html:'<button class="bd pay">Pay £47.99</button>'},
+  ],
+  dev:{title:'Atoms/Button', status:'match', note:'19 dev variants map onto our 6 types + states. primary → .pri · secondary → .sec · tertiary → .ter · tertiaryXs → .xs · text → .txt · unlimitedAddToBag → .buy · iconOnlyButton → Icon button · iconPillButton → Filter pill. primaryAlt/secondaryAlt (boohoo pink), closeChat, countdownBannerCTA, customColour are page-specific skins we fold into tokens rather than keep as variants. Dev secondary uses a grey #B5B5B5 outline on every fascia; ours is the brand outline.'} },
+
+{ slug:'payment-buttons', name:'Payment buttons', group:'Actions', tier:'atom', css:'.pay', figma:'aIHmkCaTy9c5EWOxAGw0So · 9144-1931',
+  summary:'Wallet and BNPL buttons in their own scheme colours. These never take brand tokens — PayPal is always yellow, Apple Pay always black.',
+  use:['Express checkout on PDP, bag and checkout.','Stack full-width in the order shown here; “or” divider before card payment.'],
+  avoid:['Restyling a wallet button to the fascia colour.','Mixing mini and full-height in one stack.'],
+  anatomy:['50px container, radius follows the brand (square on PLT / Brand Room)','Official artwork only, from assets/ds/icons/payments/','.pay--mini 114px wide for inline placement · .pay--glass for floating chrome'],
+  variants:[
+    {name:'Wallet stack', html:'<div style="display:flex;flex-direction:column;gap:8px;width:300px"><button class="pay pay--paypal"><img src="assets/ds/icons/payments/paypal-word-1.svg" alt="PayPal"></button><button class="pay pay--apple"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button><button class="pay pay--gpay"><img src="assets/ds/icons/payments/gpay-g.svg" alt=""><img src="assets/ds/icons/payments/gpay-word.svg" alt="Google Pay"></button><button class="pay pay--klarna"><img src="assets/ds/icons/payments/klarna-badge.svg" alt="Klarna"></button><button class="pay pay--clearpay"><img src="assets/ds/icons/payments/clearpay-lockup.svg" alt="Clearpay"></button></div>'},
+    {name:'Payment options', html:'<div class="pay-opts"><span class="pchip"><img src="assets/ds/icons/pay/visa.png" alt="Visa"></span><span class="pchip"><img src="assets/ds/icons/pay/mastercard.png" alt="Mastercard"></span><span class="pchip"><img src="assets/ds/icons/pay/amex.png" alt="Amex"></span><span class="pchip"><img src="assets/ds/icons/pay/apple-pay.png" alt="Apple Pay"></span><span class="pchip"><img src="assets/ds/icons/pay/google-pay.png" alt="Google Pay"></span><span class="pchip"><img src="assets/ds/icons/pay/paypal.png" alt="PayPal"></span><span class="pchip"><img src="assets/ds/icons/pay/klarna.png" alt="Klarna"></span></div>'},
+  ],
+  dev:{title:'—', status:'ours', note:'No payment button component in the dev Storybook (PSP renders them today). Dev has the payment icons inside Atoms/Icon (payment_visa … revolut_pay).'} },
+
+{ slug:'text-link', name:'Text link', group:'Actions', tier:'atom', css:'.lnk', figma:'colour-alignment · brand-colours',
+  summary:'Inline action in the brand link colour. Strong weight on every fascia except Karen Millen (500).',
+  use:['Secondary navigation inside copy — Size guide, Learn more, View all.'],
+  avoid:['Using a link where the action changes data (that is a button).'],
+  anatomy:['12–14px label · --text-link · hover shifts to --text-link-hover'],
+  variants:[{name:'Default', html:'<a class="lnk" href="#">Size guide</a>'}, {name:'In copy', html:'<p style="font-size:14px;margin:0">By continuing you agree to our <a class="lnk" href="#" style="font-size:14px">terms</a>.</p>'}],
+  dev:{title:'Atoms/Link', status:'match', note:'Dev Link is Internal / External routing; styling comes from the caller. Ours fixes the visual.'} },
+
+{ slug:'icon-button', name:'Icon button', group:'Actions', tier:'atom', css:'.pc-iconbtn', figma:'aIHmkCaTy9c5EWOxAGw0So · 5992-10841',
+  summary:'The 32px circle (or square) that holds wishlist and quick-add on imagery. The icon inside swaps per fascia: heart or bookmark.',
+  use:['Wishlist and quick add on product imagery.','Close buttons on sheets and modals.'],
+  avoid:['Putting a label inside it — use a Button.'],
+  anatomy:['32px hit area · white 90% ground · icon 16px','Circle everywhere · square on boohooMAN, KM, Brand Room (.pc-iconbtn--sq)','Plain glyph, no ground, on PLT (.pc-fav--plain)'],
+  variants:[
+    {name:'Heart in circle', html:'<button class="pc-iconbtn" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button>'},
+    {name:'Bookmark in square', html:'<button class="pc-iconbtn pc-iconbtn--sq" aria-label="Add to wishlist"><img src="assets/ds/icons/bookmark.svg" alt=""></button>'},
+    {name:'Plain heart (PLT)', html:'<button class="pc-iconbtn pc-fav--plain" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button>'},
+    {name:'Quick add', html:'<button class="pc-iconbtn" aria-label="Quick add"><img src="assets/ds/icons/quick-add-16.svg" alt=""></button>'},
+  ],
+  dev:{title:'Molecules/Basket/WishlistButton', status:'match', note:'Also Atoms/Button variants iconOnlyButton / iconOnlyButtonNoBackground. Dev runs --wishlist-opacity 0.7 on KM and Brand Room.'} },
+
+{ slug:'quantity', name:'Quantity stepper', group:'Actions', tier:'atom', css:'.qty', figma:'CYyGeUDy4w02enV7uFxZ6W · 1234:76756',
+  summary:'Minus / count / plus. At quantity one the minus becomes remove — the same rule the dev QuantityPill follows.',
+  use:['Bag line items, samples, gift quantities.'],
+  avoid:['Free-typing quantity in a field.'],
+  anatomy:['28px controls · 1px --border-default · count centred'],
+  variants:[{name:'Default', html:'<div class="qty"><button aria-label="Remove">–</button><span>2</span><button aria-label="Add">+</button></div>'}, {name:'At one (remove)', html:'<div class="qty"><button aria-label="Remove">🗑</button><span>1</span><button aria-label="Add">+</button></div>'}],
+  dev:{title:'Molecules/Basket/QuantityPill', status:'match', note:'Dev states: quantity of one shows remove · mid range shows minus · max disables plus · fixed · disabled · debounced taps. Ours needs the max / fixed / disabled states drawn.'} },
+
+/* ───────────── FORMS ───────────── */
+{ slug:'text-field', name:'Text field', group:'Forms', tier:'atom', css:'.fld', figma:'WChEtDPH0LcErdYFS9SESn · 3990:36587',
+  summary:'Floating-label input. The label shrinks from 14 to 12 as the value arrives; errors turn the keyline red and add a message underneath.',
+  use:['Every text entry: email, address, promo code, search inside forms.'],
+  avoid:['Placeholder text as the only label.','Error colour without an error message.'],
+  anatomy:['50px container · 1px keyline · 4px radius (brand)','Label floats to the top-left on focus / filled','Inline error 12px in --text-error under the field'],
+  variants:[
+    {name:'Empty', html:'<label class="fld" style="width:280px"><input placeholder=" "><span class="lbl">Email address</span></label>'},
+    {name:'Filled', html:'<label class="fld" style="width:280px"><input placeholder=" " value="jake@debenhams.com"><span class="lbl">Email address</span></label>'},
+    {name:'Error', html:'<div style="width:280px"><label class="fld invalid"><input placeholder=" " value="SUMMER"><span class="lbl">Promo code</span></label><div class="fld-err">Sorry, we don’t recognise that code</div></div>'},
+  ],
+  dev:{title:'Atoms/Input Field', status:'match', note:'Dev has label / errors / readOnlyValue / hyphenatedInput / errorOnlyBorder. Molecules/Date Select is three of these — compose, not a new component.'} },
+
+{ slug:'select', name:'Select', group:'Forms', tier:'atom', css:'.fsel', figma:'—',
+  summary:'A styled trigger over a real native select, so the platform picker does the work on mobile.',
+  use:['Sort order, country, title, quantity beyond the stepper.'],
+  avoid:['Custom dropdown lists where the native one will do.'],
+  anatomy:['50px trigger · chevron right · native <select> stretched invisibly over it'],
+  variants:[{name:'Default', html:'<div class="fsel" style="width:240px"><span>Relevance</span><select aria-label="Sort"><option>Relevance</option><option>Price low to high</option><option>Newest</option></select></div>'}],
+  dev:{title:'Atoms/Select', status:'match', note:'Dev Select: label · options · selectedOption · placeholder · error.'} },
+
+{ slug:'checkbox', name:'Checkbox', group:'Forms', tier:'atom', css:'.chk',
+  summary:'24px box, 3px radius, filled with the brand action colour when on.',
+  use:['Multiple choice, consent, add-ons (protection, gift wrap).'],
+  avoid:['A checkbox for an either/or choice — that is a radio.'],
+  anatomy:['24px · 1px --border-strong · on = --icon-action fill + white tick','Row variant aligns the label at 14/20; .chk-row--lg top-aligns long copy'],
+  variants:[{name:'On / off', html:'<div style="display:flex;flex-direction:column;gap:12px"><div class="chk-row"><button class="chk on" aria-checked="true"></button>Add Worry-Free Purchase® for £3.18</div><div class="chk-row"><button class="chk" aria-checked="false"></button>Use my delivery address for billing</div></div>'}],
+  dev:{title:'—', status:'ours', note:'No checkbox atom in the dev Storybook (checkout forms use native inputs). Adopt ours.'} },
+
+{ slug:'radio', name:'Radio', group:'Forms', tier:'atom', css:'.rad',
+  summary:'26px ring with a 14px dot. One of a set.',
+  use:['Delivery options, payment method, sort order in a sheet.'],
+  avoid:['A single radio on its own.'],
+  anatomy:['26px ring · 14px dot in --icon-action'],
+  variants:[{name:'Set', html:'<div style="display:flex;flex-direction:column;gap:12px"><div class="rad-row"><button class="rad on" aria-checked="true"></button>Recommended</div><div class="rad-row" style="padding-top:0"><button class="rad" aria-checked="false"></button>Lowest price</div></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook. Adopt ours.'} },
+
+{ slug:'toggle', name:'Toggle', group:'Forms', tier:'atom', css:'.tog',
+  summary:'On/off switch for an immediate setting — Next Day Delivery on the PLP is the canonical use.',
+  use:['Instant filters and preferences that apply on tap.'],
+  avoid:['Settings that need a Save button (use a checkbox).'],
+  anatomy:['Track 36×20 · knob 16 · on = --surface-action'],
+  variants:[{name:'On / off', html:'<div style="display:flex;gap:16px"><button class="tog on" aria-checked="true"></button><button class="tog" aria-checked="false"></button></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook. Adopt ours (the PLP NDD toggle exists in production without a shared component).'} },
+
+{ slug:'promo-field', name:'Promo / gift card field', group:'Forms', tier:'molecule', css:'.promo', figma:'WChEtDPH0LcErdYFS9SESn · 3990:58406',
+  summary:'One field for promo codes and gift cards with a 95px Apply. The smart version detects which it has been given.',
+  use:['Bag and checkout payment section.'],
+  avoid:['Two separate fields for promo and gift card.'],
+  anatomy:['Text field + secondary Apply button, 8px gap','Gift card reveals a PIN field (.fld--pin)'],
+  variants:[{name:'Default', html:'<div class="promo" style="width:340px"><label class="fld"><input placeholder=" "><span class="lbl">Promo code or gift card</span></label><button class="bd sec">Apply</button></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook as a component; lives inside the basket page. Promote.'} },
+
+{ slug:'psp-field', name:'Card field (PSP)', group:'Forms', tier:'atom', css:'.sfield',
+  summary:'The payment provider renders these, so they are fixed across every fascia: navy set, #EFEFF1 grey, 8px radius.',
+  use:['Card number, expiry, CVC inside checkout only.'],
+  avoid:['Using this style for any field we render ourselves.'],
+  anatomy:['50px · fixed --field-grey / --field-border · 8px radius on all brands'],
+  variants:[{name:'Grey + white', html:'<div style="display:flex;flex-direction:column;gap:10px;width:280px"><div><div class="sfield-lbl">Card number</div><div class="sfield sfield--grey">•••• •••• •••• 4242</div></div><div class="sfield sfield--white">MM / YY</div></div>'}],
+  dev:{title:'—', status:'ours', note:'PSP-owned; documented so the checkout looks intentional around it.'} },
+
+/* ───────────── FEEDBACK ───────────── */
+{ slug:'message', name:'Message banner', group:'Feedback', tier:'molecule', css:'.msg', figma:'WChEtDPH0LcErdYFS9SESn · K11',
+  summary:'Inline status: a 4px colour bar, icon and text. Success, neutral and error tones; optional dismiss and inline action.',
+  use:['Confirming an applied code, showing a balance, explaining a failure — in place, next to the thing it is about.'],
+  avoid:['Stacking more than one at a time.','A dismiss on a neutral message — it is a readout, not an alert.'],
+  anatomy:['4px status bar · 20px icon · 14px text · optional action / ×','Tones: --success-bar/-bg · --surface-sunken · --error-bg'],
+  variants:[
+    {name:'Success', html:'<div class="msg msg--success" style="width:380px"><i></i><div class="body"><span style="flex:1">Promo code SUMMER applied — £6.00 off</span><button class="x" aria-label="Dismiss"></button></div></div>'},
+    {name:'Neutral', html:'<div class="msg msg--neutral" style="width:380px"><i></i><div class="body"><span style="flex:1">Gift card balance: £25.00</span><button class="act">Apply</button></div></div>'},
+    {name:'Error', html:'<div class="msg msg--error" style="width:380px"><i></i><div class="body"><span style="flex:1">We couldn’t find that gift card. Check the number and PIN.</span></div></div>'},
+  ],
+  dev:{title:'Molecules/Message Block', status:'match', note:'Dev types: error · warning · info · infoNew · warningNew · infoWithIcon · message. Reconcile to three tones + optional icon.'} },
+
+{ slug:'toast', name:'Toast', group:'Feedback', tier:'molecule', css:'.toast',
+  summary:'Transient confirmation. Bottom black snackbar for “done”; top light toast when there is something to act on.',
+  use:['Added to wishlist, copied, saved — anything that needs no reply.'],
+  avoid:['Errors in a toast — they disappear.'],
+  anatomy:['Snackbar 1.8s · top toast 6s with a strong action label'],
+  variants:[{name:'Snackbar', html:'<div class="toast" style="position:static;transform:none">Added to wishlist</div>'}, {name:'Top, actionable', html:'<div class="toast toast--top" style="position:static;width:340px"><span style="flex:1">Item added to bag</span><button class="act">View</button></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook. Adopt ours.'} },
+
+{ slug:'stock-alert', name:'Stock alert', group:'Feedback', tier:'atom', css:'.alert',
+  summary:'Red-light urgency line under a price or size.',
+  use:['Low stock, last chance.'],
+  avoid:['Fake urgency.'],
+  anatomy:['--error-bg ground · 2px red rule · 12px text'],
+  variants:[{name:'Default', html:'<div class="alert" style="width:280px">Only 2 left — order soon</div>'}],
+  dev:{title:'Atoms/Social Proof', status:'partial', note:'Dev social proof covers urgency messaging (PLP / PDP / CART locations, dismissible). Our stock alert is the fixed-copy version.'} },
+
+{ slug:'empty-state', name:'Empty state', group:'Feedback', tier:'molecule', css:'.empty', figma:'erREG2vwLzUF2QKTp5Uh6R · 3178-24710',
+  summary:'A 32px glyph, one line, one button. Empty bag, wishlist, orders, search.',
+  use:['Any list with nothing in it.'],
+  avoid:['Long explanations — one line and a way out.'],
+  anatomy:['32px icon · 16/23 text · primary button · optional recently-viewed rail beneath'],
+  variants:[{name:'Empty bag', html:'<div class="empty" style="width:320px"><img src="assets/ds/icons/lib/icons-bag.svg" alt=""><p>Your bag is empty</p><button class="bd pri">Continue shopping</button></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook.'} },
+
+{ slug:'spinner', name:'Spinner', group:'Feedback', tier:'atom', css:'.bd.spn',
+  summary:'24px arc in the current text colour. Inside a button it replaces the label; on its own it marks a loading region.',
+  use:['In-flight actions; page or panel loading.'],
+  avoid:['Spinners longer than a couple of seconds without copy.'],
+  anatomy:['24px arc · 2px stroke · 0.8s rotation'],
+  variants:[{name:'In a button', html:'<button class="bd pri spn"><i></i></button>'}, {name:'Neutral fill', html:'<button class="bd ter spn"><i></i></button>'}],
+  dev:{title:'Atoms / Progress Spinner', status:'partial', note:'Dev spinner has small / medium / large + isPage. Ours is button-embedded; add the standalone sizes.'} },
+
+/* ───────────── PRODUCT ───────────── */
+{ slug:'product-card', name:'Product card', group:'Product', tier:'molecule', css:'.pc', figma:'aIHmkCaTy9c5EWOxAGw0So · 5992-10841 / 12999-146812',
+  summary:'The hero asset. One card for every PLP, carousel and recommendation — every optional element is a layer you switch on per fascia, never a fork.',
+  use:['Product grids, rails, search results, Shop The Look.'],
+  avoid:['Rounding the image corners (live and Figma are square).','A discount in the product tag — tags are fit and range only.','Letting quick add squeeze the price row (it sits on the titles row).'],
+  anatomy:['Image 2:3 on --surface-media · actions top-right 32px, 8px in','Badges bottom-left · AI strip owns the image foot','Info block: brand (strong) · name (2-line clamp) · price · swatches · stars','Compact format: 11px caps brand, 12px name — the alignment target'],
+  variants:[
+    {name:'All layers', html:CARD({qa:'icon',badges:'<span class="badge">Plus</span>',ai:true,taggstar:true,sponsored:true,swatches:true,stars:true})},
+    {name:'Minimal', html:CARD({sale:false,w:180})},
+    {name:'Compact (target)', html:CARD({compact:true,sq:true,w:170})},
+    {name:'Quick add · button', html:CARD({qa:'button',w:180})},
+    {name:'Quick add · mini', html:CARD({qa:'mini',w:200})},
+    {name:'No brand line (PLT / Warehouse)', html:CARD({brand:false,w:180})},
+  ],
+  dev:{title:'Molecules/CT Product Card', status:'match', note:'Dev card layouts default · 1-column · dropdown, flags quickAdd · hideBadges · hideColourSwatches · showRatings · sponsoredStatus · useSquareImage — the same layer model. Molecules/Product Card (CMS) is the simpler content card.'} },
+
+{ slug:'badges', name:'Badges', group:'Product', tier:'atom', css:'.badge', figma:'d0zY0vt8hoz0gq8ycTimxS · 25-11775',
+  summary:'Overlay tags on imagery: Plus, Petite, Tall, Sale. They stack bottom-left and lift when the AI strip is present.',
+  use:['Fit and range information on the image.'],
+  avoid:['Discounts or urgency in a badge.','More than two stacked.'],
+  anatomy:['White 90% ground · 11px label · brand radius','Stack gap 4 · lifts by --ai-h over the AI strip'],
+  variants:[{name:'Set', html:'<div style="display:flex;gap:8px"><span class="badge">Plus</span><span class="badge">Petite</span><span class="badge">Tall</span><span class="badge badge--sale">Sale</span></div>'}, {name:'Stacked on image', html:CARD({badges:'<span class="badge">Petite</span><span class="badge badge--sale">Sale</span>',ai:true,w:180,sale:false})}],
+  dev:{title:'—', status:'ours', note:'Dev renders badges inside CT Product Card (hideBadges / hidePromoBadges) with no standalone atom. Split out.'} },
+
+{ slug:'ai-strip', name:'AI Generated strip', group:'Product', tier:'atom', css:'.badge-ai', figma:'d0zY0vt8hoz0gq8ycTimxS',
+  summary:'Mandatory label for AI-generated imagery (EU AI Act Art. 50(4)). Live text, full width, pinned to the image foot, before add-to-bag everywhere.',
+  use:['Every image flagged AI, on PLP, PDP, rails and search.'],
+  avoid:['Baking it into the image.','Hiding it behind other badges.'],
+  anatomy:['Height --ai-h 24px · 10px minimum text · badge colours per brand','Other badges shift up by exactly --ai-h · hidden in bag / checkout (legal sign-off)'],
+  variants:[{name:'On image', html:CARD({ai:true,w:180,sale:false})}, {name:'Strip alone', html:'<div style="position:relative;width:200px;height:24px"><div class="badge-ai" style="position:absolute;inset:0"><b>AI</b> Generated</div></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook (icons_ai / ai_summary_sparkles exist in Atoms/Icon). Build to this spec.'} },
+
+{ slug:'price', name:'Price', group:'Product', tier:'atom', css:'.price · .pc-price', figma:'core-pdp C5',
+  summary:'Now, was and saving. Sale prices go red (PLT’s own red), the was price is struck through in the mid weight.',
+  use:['Cards, PDP, bag lines, order summary.'],
+  avoid:['Showing a saving without the was price.'],
+  anatomy:['Now 16–20px strong · was struck, --w-mid · save badge --badge-save-bg/-fg','Promo line in --price-sale under the block'],
+  variants:[{name:'PDP block', html:'<div><div class="price"><span class="now sale">£70.00</span><span class="was">£139.00</span><span class="save">Save 50%</span></div><div class="price-promo">£63.00 with code FASHION</div></div>'}, {name:'Card price', html:'<div class="pc-price sale" style="font-family:var(--font-family-base)"><span class="now">£70.00</span><span class="was">£139.00</span><span class="pct">-50%</span></div>'}, {name:'Full price', html:'<div class="price"><span class="now">£45.00</span></div>'}],
+  dev:{title:'Molecules/Product Price', status:'match', note:'Dev: wasPrice · percentageSaving · priceSavingInline · showFromPriceRange · priceMatch label. Same anatomy.'} },
+
+{ slug:'size-selector', name:'Size selector', group:'Product', tier:'molecule', css:'.sizes', figma:'aIHmkCaTy9c5EWOxAGw0So · 8942-6191 · bell 11190:23531',
+  summary:'60×50 size buttons with three out-of-stock treatments: greyed, struck, or a bell for notify-me.',
+  use:['PDP, quick add, set builder.'],
+  avoid:['Hiding out-of-stock sizes — show them so the customer can ask to be notified.'],
+  anatomy:['Header: Size: M · Size guide link','Buttons 60×50 · selected = black fill · OOS = grey / strike / bell'],
+  variants:[{name:'Default', html:'<div class="sizes" style="width:360px"><div class="sizes-head"><span>Size: <b>M</b></span><span class="guide">Size guide</span></div><div class="set"><button class="sz">XS</button><button class="sz">S</button><button class="sz on">M</button><button class="sz oos oos--strike">L</button><button class="sz oos">XL'+ICON('notification','class="bell" onerror="this.remove()"')+'</button><button class="sz">One size</button></div></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook as a component (lives in the PDP). Promote.'} },
+
+{ slug:'colour-swatches', name:'Colour swatches', group:'Product', tier:'atom', css:'.cswatch · .pc-swatch', figma:'aIHmkCaTy9c5EWOxAGw0So · 921-7470',
+  summary:'Two scales: 20px colour chips on the card, 60×89 image swatches on the PDP. Selection is a black keyline with a white inset.',
+  use:['Colourways on card and PDP.'],
+  avoid:['Rounding the PDP image swatches.'],
+  anatomy:['Card: 20px, 4px radius, Grey 2 border, +N overflow','PDP: 60×89 image, selected = 1px black + white inset'],
+  variants:[{name:'Card chips', html:'<div class="pc-swatches" style="font-family:var(--font-family-base)"><span class="set"><span class="pc-swatch on"><i style="background:#B97A57"></i></span><span class="pc-swatch"><i style="background:#2B2B2B"></i></span><span class="pc-swatch"><i style="background:#8FA3B8"></i></span><span class="pc-swatch"><i style="background:#D9C7B8"></i></span></span><span class="pc-more">+5</span></div>'}, {name:'PDP image swatches', html:'<div class="cswatches"><button class="cswatch on">'+PH(60,89,160)+'</button><button class="cswatch">'+PH(60,89,200)+'</button><button class="cswatch">'+PH(60,89,240)+'</button></div>'}],
+  dev:{title:'—', status:'partial', note:'Dev renders colour variants inside CT Product Card (colourVariants, hideColourSwatches). No standalone atom.'} },
+
+{ slug:'social-proof', name:'Social proof', group:'Product', tier:'atom', css:'.pc-taggstar', figma:'aIHmkCaTy9c5EWOxAGw0So · 5992-10841',
+  summary:'Taggstar bar: trophy, bold claim, context. Grey 6 by default; brand-tinted on boohoo.',
+  use:['Bestseller rank, trending, viewed-recently — under the card image or on the PDP.'],
+  avoid:['More than one claim per product.'],
+  anatomy:['--surface-callout ground · 16px icon · 12px strong + regular'],
+  variants:[{name:'Default', html:'<div class="pc-taggstar" style="width:200px;font-family:var(--font-family-base)"><img src="assets/ds/icons/trophy.svg" alt=""><b>No. 6 Bestseller</b><span>in Dresses</span></div>'}, {name:'Brand tint', html:'<div class="pc-taggstar pc-taggstar--brand" style="width:200px;font-family:var(--font-family-base)"><img src="assets/ds/icons/trophy.svg" alt=""><b>Trending</b><span>120 bought today</span></div>'}],
+  dev:{title:'Atoms/Social Proof', status:'match', note:'Dev: location PLP / PDP / CART, dismissible, per-fascia --social-proof-* tokens (Debenhams black 60% + blur on PDP; boohoo pink; PLT peach). Plus Molecules/Product Social Proof and Basket Social Proof.'} },
+
+{ slug:'ratings', name:'Ratings', group:'Product', tier:'atom', css:'.pc-stars',
+  summary:'Five 12px stars and a count.',
+  use:['Cards and PDP header.'],
+  avoid:['Stars without the count.'],
+  anatomy:['12px stars, 2px gap · count in --text-secondary'],
+  variants:[{name:'Default', html:'<div class="pc-stars" style="font-family:var(--font-family-base)"><span class="set"><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-half.svg" alt=""><img src="assets/ds/icons/star-outline.svg" alt=""></span><span>(9)</span></div>'}],
+  dev:{title:'—', status:'partial', note:'Inside CT Product Card (showRatings, averageRating, totalReviewCount).'} },
+
+/* ───────────── PDP MODULES ───────────── */
+{ slug:'accordion', name:'Accordion', group:'PDP modules', tier:'molecule', css:'.acc', figma:'core-pdp C16',
+  summary:'Title row with a chevron; body reveals beneath. Divider between items, none above the first.',
+  use:['PDP details, delivery and returns, footer link groups on mobile.'],
+  avoid:['Nesting accordions.'],
+  anatomy:['Header 48px · 16px title · chevron rotates · body 14/20'],
+  variants:[{name:'Open + closed', html:'<div style="width:340px"><div class="acc open"><button class="acc-h">Description'+ICON('down-arrow','onerror="this.remove()"')+'</button><div class="acc-b">Long sleeve lace and pleated midi shirt dress in pink. Regular fit, concealed zip.</div></div><div class="hr"></div><div class="acc"><button class="acc-h">Delivery &amp; returns'+ICON('down-arrow','onerror="this.remove()"')+'</button><div class="acc-b">Free returns within 28 days.</div></div></div>'}],
+  dev:{title:'Molecules/Accordion', status:'match', note:'Dev: expandOnDesktop · defaultExpandState · isFacetFilter · collapseAll. Organisms/Product Accordion is the PDP flavour.'} },
+
+{ slug:'section-rail', name:'Section header + rail', group:'PDP modules', tier:'organism', css:'.sec-head · .prail', figma:'core-pdp C19',
+  summary:'A 20px title with a View all link, then a horizontal rail of product cards.',
+  use:['Recommendations, recently viewed, complete the look.'],
+  avoid:['A rail with fewer than three items — use a grid.'],
+  anatomy:['Title 20/22 --w-mid · link 14px right · rail gap 4, cards 165px'],
+  variants:[{name:'Default', html:'<div style="width:520px;display:flex;flex-direction:column;gap:12px;font-family:var(--font-family-base)"><div class="sec-head"><h3>You may also like</h3><a href="#">View all</a></div><div class="prail">'+CARD({w:165,sale:false})+CARD({w:165})+CARD({w:165,sale:false})+'</div></div>'}],
+  dev:{title:'Molecules/PersonalisedCarousel', status:'partial', note:'Dev carousel has controls, brand / category / search-term feeds. Ours fixes the header + spacing.'} },
+
+{ slug:'usp-box', name:'USP box', group:'PDP modules', tier:'molecule', css:'.usp-box', figma:'aIHmkCaTy9c5EWOxAGw0So · 3619-10541',
+  summary:'Delivery and returns rows with an icon, title and sub line.',
+  use:['PDP under the add-to-bag; bag sidebar.'],
+  avoid:['More than three rows.'],
+  anatomy:['24px icon centred to the row · 14px strong title · 12px sub'],
+  variants:[{name:'Default', html:'<div class="usp-box" style="width:320px"><div class="r">'+ICON('delivery-fast')+'<div><div class="t">Next day delivery</div><div class="s">Order by midnight</div></div></div><div class="r">'+ICON('quick-add')+'<div><div class="t">Free returns</div><div class="s">28 days, in store or by post</div></div></div></div>'}],
+  dev:{title:'Molecules/USP Item', status:'partial', note:'Dev USP Item is the header banner cell (label · href · dropdown copy). The PDP box is page-local in dev.'} },
+
+{ slug:'bnpl', name:'BNPL', group:'PDP modules', tier:'molecule', css:'.bnpl', figma:'aIHmkCaTy9c5EWOxAGw0So · 2969-10048',
+  summary:'Provider chips plus the “pay in 3” line and legal small print.',
+  use:['PDP under the price; bag summary.'],
+  avoid:['Provider logos in brand colours.'],
+  anatomy:['Chip row (Pay+, Klarna, Clearpay, PayPal) · 14px terms · 12px legal with a strong See more'],
+  variants:[{name:'Default', html:'<div class="bnpl" style="width:340px"><div class="chips"><span class="pc pc--payplus"><img src="assets/ds/icons/payments/bnpl-payplus-glyph.svg" alt="Pay+"></span><span class="pc pc--klarna"><img src="assets/ds/icons/payments/bnpl-klarna-word.svg" alt="Klarna"></span><span class="pc pc--clearpay"><img src="assets/ds/icons/payments/clearpay-lockup-mini.svg" alt="Clearpay"></span><span class="pc pc--paypal"><img src="assets/ds/icons/payments/bnpl-paypal-logo.svg" alt="PayPal"></span></div><div class="terms">Pay in 3 interest-free payments of £23.33</div><div class="small">18+, T&amp;C apply. Credit subject to status. <b>See more</b></div></div>'}],
+  dev:{title:'Molecules/BNPL Banner', status:'match', note:'Dev: label · numberOfPayments · min/max price · paymentLogo · providerLink.'} },
+
+{ slug:'threshold', name:'Free-delivery threshold', group:'PDP modules', tier:'molecule', css:'.thresh', figma:'BBz64OeCbe5TBmYKbCxvCp · 38-35751',
+  summary:'“Spend £X more” progress bar that turns into a tick when the threshold is met.',
+  use:['Bag, mini bag, PDP.'],
+  avoid:['Showing it when free delivery is not on offer.'],
+  anatomy:['14px line with strong amount · 4px track, fill in --surface-action · ok state = tick + message'],
+  variants:[{name:'In progress', html:'<div class="thresh" style="width:320px"><span>Spend <b>£12.01</b> more for free delivery</span><div class="track"><div class="fill" style="width:60%"></div></div></div>'}, {name:'Reached', html:'<div class="thresh thresh--ok" style="width:320px"><span class="tick"></span><span>Congratulations, you’re eligible for free delivery</span></div>'}],
+  dev:{title:'Molecules/Delivery Progress', status:'partial', note:'Dev Delivery Progress is a step indicator (step: number). The threshold bar lives in the basket page.'} },
+
+{ slug:'deliver-plus', name:'Deliver+ banner', group:'PDP modules', tier:'molecule', css:'.dplus', figma:'CQIe2e2c0iagD1T9WjdYsx',
+  summary:'SEEL Deliver+ upsell, skinned per fascia with the official lockup.',
+  use:['PDP and bag when the protection add-on is available.'],
+  avoid:['Redrawing the lockup.'],
+  anatomy:['Lockup · 16px strong heading · ticked list · Learn more link'],
+  variants:[{name:'Default', html:'<div class="dplus" style="width:340px"><img class="lockup" src="assets/ds/icons/seel/lockup-deliverplus.svg" alt="Deliver+"><div class="h">Elevate your experience</div><ul><li>+14-day return extension</li><li>£5/day late delivery compensation</li><li>Full order coverage with instant payout</li></ul><span class="more">Learn more</span></div>'}],
+  dev:{title:'—', status:'ours', note:'seel_check / seelLogoIcon exist in Atoms/Icon; no banner component.'} },
+
+{ slug:'at-a-glance', name:'At a glance', group:'PDP modules', tier:'molecule', css:'.glance',
+  summary:'Ticked key facts, as a list or as chips.',
+  use:['PDP above the description.'],
+  avoid:['More than five items.'],
+  anatomy:['Tick in --tickc · 14px label · chip variant on --surface-sunken'],
+  variants:[{name:'Chips', html:'<ul class="glance glance--chips"><li><i>✓</i>Regular fit</li><li><i>✓</i>Machine washable</li><li><i>✓</i>Recycled polyester</li></ul>'}, {name:'Link chips', html:'<div class="linkchips" style="width:320px"><a href="#">Midi dresses</a><a href="#">Coast</a><a href="#">Occasion</a><a href="#">Pink dresses</a></div>'}],
+  dev:{title:'—', status:'ours', note:'atAGlanceDefault icon exists in dev; no component.'} },
+
+/* ───────────── NAVIGATION ───────────── */
+{ slug:'header', name:'Header', group:'Navigation', tier:'organism', css:'.hd', figma:'aIHmkCaTy9c5EWOxAGw0So · 3793-3545',
+  summary:'One header for every fascia: logo, search, account / wishlist / bag, category nav and USP banners. Tokens carry the identity.',
+  use:['Every page.'],
+  avoid:['A second logo size per page.','Icons that are not from the library.'],
+  anatomy:['Mobile bar: burger · logo · 4 icons · breaks to desktop at 1024','Desktop bar: logo · centred pill search · icons · nav row','USP banners beneath (see USP banner)'],
+  variants:[
+    {name:'Mobile 390', html:'<div class="hd" style="width:390px;border:1px solid var(--border-subtle)"><div class="hd-bar"><div class="hd-left"><button class="hd-burger" aria-label="Menu"><img src="assets/ds/icons/hamburger.svg" alt=""></button><img class="hd-logo brandlogo" src="assets/brands/debenhams.svg" alt=""></div><div class="hd-icons"><button aria-label="Search"><img src="assets/ds/icons/search.svg" alt=""></button><button aria-label="Account"><img src="assets/ds/icons/account.svg" alt=""></button><button aria-label="Wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button><button class="hd-count" data-n="2" aria-label="Bag"><img src="assets/ds/icons/bag.svg" alt=""></button></div></div><div class="hd-usp">Free delivery over £50</div></div>'},
+    {name:'Desktop', html:'<div class="hd" style="width:900px;max-width:100%;border:1px solid var(--border-subtle)"><div class="hd-bar hd-bar--desktop" style="--plp-margin:24px"><img class="hd-logo brandlogo" src="assets/brands/debenhams.svg" alt=""><div class="hd-search"><span>Search over 10,000+ brands...</span><span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="assets/ds/icons/search.svg" alt=""></span></div><div class="hd-icons"><button aria-label="Account"><img src="assets/ds/icons/account.svg" alt=""></button><button aria-label="Wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button><button aria-label="Bag"><img src="assets/ds/icons/bag.svg" alt=""></button></div></div><nav class="hd-nav"><a class="sale" href="#">Sale</a><a href="#">New</a><a href="#">Women</a><a href="#">Men</a><a href="#">Kids</a><a href="#">Shoes</a><a href="#">Beauty</a><a href="#">Home</a><a href="#">Brands</a></nav><div class="hd-usp">Free delivery over £50</div></div>'},
+  ],
+  dev:{title:'Organisms/Header', status:'match', note:'Dev Header = menu · searchPanel · logoSrc · displayMode · uspCollection; Primary Navigation (Desktop / Mobile) covers the panels. Molecules/Cart Link = our bag icon + count; Molecules/Search Link = the search trigger.'} },
+
+{ slug:'usp-banner', name:'USP banner', group:'Navigation', tier:'molecule', css:'.hd-usp · .usp-strip', figma:'aIHmkCaTy9c5EWOxAGw0So · 11982-37171 / 13005-165658',
+  summary:'Message strips under the header. Single, double, code, countdown and caveat types; a multi-cell strip on desktop that rotates one message at a time on mobile.',
+  use:['Delivery promises, promo codes, countdowns.'],
+  avoid:['A mid-dot separator (it is a 4px dash).','An asterisk without a caveat line.'],
+  anatomy:['Bar 12px regular · code strong · countdown digits with 5px colon columns','Strip cells 14px on --usp-a-bg / --usp-a-bg2, 63px tall','Colours per fascia: --usp-a / --usp-b'],
+  variants:[
+    {name:'Text + code', html:'<div class="hd" style="width:390px"><div class="hd-usp hd-usp--b">Free delivery over £50<span class="usp-sep"></span>Code: <b>FAST</b></div></div>'},
+    {name:'Caveat', html:'<div class="hd" style="width:390px"><div class="hd-usp"><span class="usp-cav" style="padding:0">*Excludes sale, beauty and marketplace items.</span></div></div>'},
+    {name:'Desktop strip', html:'<div class="hd" style="width:900px;max-width:100%"><div class="usp-strip"><div class="usp-cell rot-on"><b>Free delivery</b><span class="s">on orders over £50</span></div><div class="usp-cell rot-on"><b>Free returns</b><span class="s">within 28 days</span></div><div class="usp-cell rot-on"><b>Next day delivery</b><span class="s">order by midnight</span></div></div></div>'},
+  ],
+  dev:{title:'Molecules/USP Banner', status:'match', note:'Dev: items · displayType (ticker / rotate) · rotation delay · stickyBanner · tickerSpacing; USP Item is the cell. Our type set adds the countdown + caveat rules.'} },
+
+{ slug:'category-nav', name:'Category navigation', group:'Navigation', tier:'molecule', css:'.cat-row · .roundel · .catpill · .catlinks', figma:'App-PLP 1124-2505 · 13003-149196',
+  summary:'The row under the PLP title: image roundels, grey pills or underlined links, per fascia.',
+  use:['Sub-category entry on PLP and landing pages.'],
+  avoid:['Fully rounded pills (they are badge-format, brand radius).'],
+  anatomy:['Roundel 90px mobile / 173px desktop, label beneath · outline and on-image variants','Pill 36px on --surface-media · Links 14px underlined'],
+  variants:[
+    {name:'Roundels', html:'<div class="cat-row cat-row--r" style="width:440px"><a class="roundel" href="#"><i>'+IMG(160,'--brand-light-3','--brand-light-1')+'</i><span>Dresses</span></a><a class="roundel" href="#"><i>'+IMG(200,'--brand-light-2','--brand-dark-1')+'</i><span>Tops</span></a><a class="roundel roundel--outline" href="#"><i></i><span>Jeans</span></a><a class="roundel roundel--onimage" href="#"><i>'+IMG(220,'--brand-dark-2','--brand-primary-dark')+'</i><span>Sale</span></a></div>'},
+    {name:'Pills', html:'<div class="cat-row cat-row--pills"><a class="catpill" href="#">Dresses</a><a class="catpill" href="#">Tops</a><a class="catpill" href="#">Jeans</a><a class="catpill" href="#">Knitwear</a></div>'},
+    {name:'Links', html:'<div class="catlinks"><a href="#">Dresses</a><a href="#">Tops</a><a href="#">Jeans</a><a href="#">Knitwear</a><a href="#">Coats</a></div>'},
+  ],
+  dev:{title:'Molecules/Category Header', status:'partial', note:'Dev Category Header is title + back link; Category Highlight is a content tile. Roundels / pills are page-local in dev today.'} },
+
+{ slug:'breadcrumb', name:'Breadcrumb', group:'Navigation', tier:'atom', css:'.bc', figma:'aIHmkCaTy9c5EWOxAGw0So · 12711-4044',
+  summary:'12px trail with slash separators, never wrapping. The first layer (Home) is dropped.',
+  use:['PLP and PDP above the title.'],
+  avoid:['Wrapping onto two lines — truncate instead.'],
+  anatomy:['12px --w-regular capitalised · slash separators · share icon on PDP mobile only'],
+  variants:[{name:'Default', html:'<nav class="bc" aria-label="Breadcrumb" style="width:360px"><a href="#">New In</a><span class="sep">/</span><a href="#">Womens New In</a><span class="sep">/</span><span class="cur">New In Dresses</span></nav>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook.'} },
+
+{ slug:'sort-filter', name:'Sort & filter', group:'Navigation', tier:'organism', css:'.sf-*', figma:'s7WDE3BkCxbgqJ4x4hoV80 · 1783-11572',
+  summary:'Desktop: a bordered strip of dropdowns with sort on the right. Mobile: the split Filters | Relevance bar today, floating pills in the new format, both opening one combined sheet.',
+  use:['Every PLP and search results page.'],
+  avoid:['Separate Sort and Filter sheets on mobile.'],
+  anatomy:['Desktop strip: NDD toggle · dropdown boxes · Show more · sort right','Mobile: split bar or pill row · sheet with drill-in rows · pinned View products'],
+  variants:[
+    {name:'Desktop strip', html:'<div class="sf-bar" style="width:760px;max-width:100%"><span class="sf-ndd on"><span class="track"></span>Next Day Delivery</span><button class="sf-dd">Size<i></i></button><button class="sf-dd">Colour<i></i></button><button class="sf-dd">Brands<i></i></button><button class="sf-dd">Style<i></i></button><button class="sf-dd sf-sort">Relevance<i></i></button></div>'},
+    {name:'Applied chips', html:'<div class="sf-bar" style="width:520px"><span class="sf-chip">Women’s: 12, 14, XS, M, L <button aria-label="Remove">×</button></span><span class="sf-chip">Pink <button aria-label="Remove">×</button></span></div>'},
+    {name:'Mobile split bar', html:'<div style="width:360px"><div class="sf-split"><button>Filters <span class="fic"></span></button><button>Relevance <i class="ch"></i></button></div></div>'},
+    {name:'Mobile pills (new)', html:'<div style="width:390px;overflow:hidden"><div class="sf-float"><button class="sf-pill on">Next Day Delivery <span class="track"></span></button><button class="sf-pill">Sort &amp; Filter '+ICON('filter')+'</button><button class="sf-pill">Category <i class="dn"></i></button></div></div>'},
+    {name:'Filter sheet', html:'<div class="sf-drawer open" style="position:static;width:320px;height:400px;border:1px solid var(--border-subtle);z-index:auto"><div class="head">Filters <button aria-label="Close">'+ICON('close')+'</button></div><div class="rows"><button class="sf-row">Sort <i></i></button><button class="sf-row">Size <i></i></button><button class="sf-row">Colour <i></i></button><button class="sf-row">Brands <i></i></button><button class="sf-row">Price <i></i></button></div><button class="sf-cta">View products</button></div>'},
+  ],
+  dev:{title:'—', status:'ours', note:'Facets are not in the dev Storybook (Accordion has an isFacetFilter flag; --color-facet-pill-* tokens exist). Ours is the spec.'} },
+
+{ slug:'footer', name:'Footer', group:'Navigation', tier:'organism', css:'.ft', figma:'aIHmkCaTy9c5EWOxAGw0So · 664-1064',
+  summary:'Newsletter band, link columns with the social and app rail, payment badges, logo and copyright. Debenhams alone adds the sister-brand strip.',
+  use:['Every page.'],
+  avoid:['Payment badges as text chips — use the official artwork set.'],
+  anatomy:['Band on --ft-band · 26px title · field + primary Subscribe','4 link columns + social/app column · accordions under 1024','Payment badges 30px in live order · centre logo · caps copyright'],
+  variants:[{name:'Default', html:'<footer class="ft" style="margin:0;width:1000px;max-width:100%"><div class="ft-news" style="--plp-margin:24px"><div><h3>Let’s get to know each other</h3><p>Sign up to receive emails from us, so you never miss out on the good stuff.</p></div><div><div class="ft-sub"><input type="email" placeholder="Please enter your email address" aria-label="Email address"><button class="bd pri">Subscribe</button></div><p class="ft-legal">By submitting your details, you agree to receive marketing communications from us &amp; our family of brands by email.</p></div></div><div class="ft-cols" style="--plp-margin:24px"><div class="ft-col"><h4>Let us help you</h4><a href="#">Help</a><a href="#">Returns</a><a href="#">Delivery</a><a href="#">Size Guide</a></div><div class="ft-col"><h4>About us</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Rewards</a></div><div class="ft-col"><h4>Privacy &amp; legal</h4><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Cookies</a></div><div class="ft-col"><h4>My account</h4><a href="#">Order History</a><a href="#">Track My Order</a></div><div class="ft-col"><h4>Follow us</h4><div class="ft-social"><img src="assets/ds/icons/lib/social-instagram.svg" alt=""><img src="assets/ds/icons/lib/social-facebook.svg" alt=""><img src="assets/ds/icons/lib/social-tik-tok.svg" alt=""><img src="assets/ds/icons/lib/social-x.svg" alt=""></div><h4>Download our app</h4><span class="ft-badge"> App Store</span><span class="ft-badge">▶ Google Play</span></div></div><div class="ft-pay"><img src="assets/ds/icons/pay/visa.png" alt="Visa"><img src="assets/ds/icons/pay/mastercard.png" alt="Mastercard"><img src="assets/ds/icons/pay/amex.png" alt="American Express"><img src="assets/ds/icons/pay/maestro.png" alt="Maestro"><img src="assets/ds/icons/pay/apple-pay.png" alt="Apple Pay"><img src="assets/ds/icons/pay/paypal.png" alt="PayPal"><img src="assets/ds/icons/pay/klarna.png" alt="Klarna"><img src="assets/ds/icons/pay/clearpay.png" alt="Clearpay"><img src="assets/ds/icons/pay/google-pay.png" alt="Google Pay"></div><div class="ft-base"><img class="brandlogo" src="assets/brands/debenhams.svg" alt=""><small>Copyright © 2026</small></div></footer>'}],
+  dev:{title:'Organisms/Footer', status:'match', note:'Dev: footerLinks · paymentMethods · countries · marketFlagCountry; Footer Link = the column groups; Newsletter Signup = our band. Dev runs a peach --color-footer-help-header-background #FFF1E8 on every fascia — ours uses --ft-band per brand.'} },
+
+/* ───────────── OVERLAYS & BAG ───────────── */
+{ slug:'sheet', name:'Bottom sheet', group:'Overlays & bag', tier:'organism', css:'.sheet', figma:'Modal / Mobile 5539:23018',
+  summary:'The mobile overlay shell: scrim, white panel to 56px from the top, sticky footer. From 768px it becomes a centred card.',
+  use:['Filters, size picker, Shop The Set, added to bag.'],
+  avoid:['A sheet inside a sheet.'],
+  anatomy:['Scrim 40% · panel 4px top radius · head · scroll body · pinned foot','.sheet--auto hugs content · .sheet--dark for the VTO variant'],
+  variants:[{name:'Shell (inline)', html:'<div style="position:relative;width:360px;height:420px;background:#ddd;overflow:hidden;border-radius:4px"><div class="sheet open" style="position:absolute"><div class="scrim"></div><div class="panel" style="height:340px"><div style="padding:0 16px 16px;font-size:18px;font-weight:var(--w-strong);display:flex;justify-content:space-between">Choose a size <span style="font-weight:300">×</span></div><div style="flex:1;padding:0 16px;font-size:14px;color:var(--text-secondary)">Body scrolls</div><div style="padding:16px;border-top:1px solid var(--border-subtle)"><button class="bd pri" style="width:100%">Add to bag</button></div></div></div></div>'}],
+  dev:{title:'Molecules/Side Panel', status:'partial', note:'Dev Side Panel slides from the side (dimBackground · gradientEdge · align · top / height). Atoms/Modal is the centred card. Ours is bottom-anchored on mobile — agree one shell with an anchor prop.'} },
+
+{ slug:'modal', name:'Modal', group:'Overlays & bag', tier:'organism', css:'.modal', figma:'—',
+  summary:'Centred card that scales in from 0.96. Title, body, actions.',
+  use:['Confirmations, gift card detail, size guide on desktop.'],
+  avoid:['Long forms in a modal — use a page or sheet.'],
+  anatomy:['Scrim 50% · card 358px max · 20px padding · title 18px strong'],
+  variants:[{name:'Card (inline)', html:'<div class="modal on" style="position:static;background:transparent;padding:0"><div class="card" style="box-shadow:var(--shadow-float)"><div class="t">Remove this item?</div><div class="b">You can add it back from your wishlist later.</div><div style="display:flex;flex-direction:column;gap:8px;width:100%"><button class="bd pri">Remove</button><button class="bd sec">Keep it</button></div></div></div>'}],
+  dev:{title:'Atoms/Modal', status:'match', note:'Dev Modal: title · onClose · showBackdrop · useSmallClose · addInfoIconToTitle · uspModal flags.'} },
+
+{ slug:'bag-item', name:'Bag line item', group:'Overlays & bag', tier:'molecule', css:'.bag-item', figma:'CYyGeUDy4w02enV7uFxZ6W · 1337:250088',
+  summary:'99×148 image beside brand, name, variant and price. Quantity and remove live in the row.',
+  use:['Bag, mini bag, added-to-bag, order confirmation.'],
+  avoid:['A different image ratio to the product card.'],
+  anatomy:['Image 99×148 · brand strong · name 2-line · variant --text-secondary · price with strike'],
+  variants:[{name:'Default', html:'<div class="bag-item" style="width:340px">'+PH(99,148)+'<div class="info"><div class="b">Coast</div><div class="n">Long Sleeve Lace and Pleated Midi Shirt Dress</div><div class="v">Size 12 · Pink</div><div class="p"><span class="sale">£70.00</span><s>£139.00</s></div></div></div>'}],
+  dev:{title:'Molecules/Basket/CartLineItemV2Card', status:'partial', note:'Dev has 23 states (low stock, max quantity, gift card, premier, sample, pre-order, price promise, protection plan, subscribe & save, free gift, Taggstar…). Ours draws the base; states to follow from the CA bag variants.'} },
+
+{ slug:'order-summary', name:'Order summary', group:'Overlays & bag', tier:'molecule', css:'.summary', figma:'CYyGeUDy4w02enV7uFxZ6W · 1337:250678',
+  summary:'Subtotal, delivery, discounts, total on the sunken surface.',
+  use:['Bag, checkout, confirmation.'],
+  avoid:['Hiding discounts inside the subtotal.'],
+  anatomy:['Rows 14px · discount row in --text-success · divider · total 16px strong'],
+  variants:[{name:'Default', html:'<div class="summary" style="width:320px"><div class="sum-row"><span>Subtotal</span><span>£70.00</span></div><div class="sum-row"><span>Delivery</span><span><b>FREE</b></span></div><div class="sum-disc">Discounts <span style="font-weight:400">−£6.00</span></div><div class="hr"></div><div class="sum-row total"><span>Order total</span><span>£64.00</span></div></div>'}],
+  dev:{title:'Molecules/Basket/OrderSummaryV2', status:'match', note:'Dev stories: Figma default · free delivery with add-on · multiple discounts · no discounts · all rows.'} },
+
+/* ───────────── CHIPS & PILLS ───────────── */
+{ slug:'chip', name:'Chip', group:'Chips & pills', tier:'atom', css:'.chip',
+  summary:'40px outlined choice that fills with ink when selected.',
+  use:['Single-select filters on rails and content pages.'],
+  avoid:['Chips for navigation (use category pills).'],
+  anatomy:['40px · 1px outline · selected = --text-primary fill, inverse label'],
+  variants:[{name:'Set', html:'<div style="display:flex;gap:8px"><button class="chip on">All items</button><button class="chip">New in</button><button class="chip">Sale</button></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook.'} },
+
+{ slug:'filter-pill', name:'Filter pill', group:'Chips & pills', tier:'atom', css:'.fpill · .sf-pill', figma:'TBR 739-92209',
+  summary:'44px white pill with a soft shadow, optional inline toggle or chevron. The floating mobile filter row.',
+  use:['Mobile PLP filter entry (new format).'],
+  avoid:['Solid fills — it floats over imagery.'],
+  anatomy:['44px · white · --shadow-pill · 14px label · toggle / chevron right'],
+  variants:[{name:'Set', html:'<div style="display:flex;gap:8px"><button class="fpill">Next Day Delivery <span class="tog on"></span></button><button class="fpill">Size ▾</button></div>'}],
+  dev:{title:'Atoms/Button', status:'partial', note:'Dev iconPillButton variant is the nearest; facet pill tokens --color-facet-pill-bg/border-selected exist.'} },
+
+{ slug:'tag-pill', name:'Tag pill', group:'Chips & pills', tier:'atom', css:'.tagpill · .chip-save',
+  summary:'Small status pills: black tag, count bubble, red-light save chip.',
+  use:['Status in account rows, counts on chips, savings in the bag.'],
+  avoid:['Tag pills as buttons.'],
+  anatomy:['24px black pill 11px caps · count bubble · save chip on --badge-save-bg'],
+  variants:[{name:'Set', html:'<div style="display:flex;gap:10px;align-items:center"><span class="tagpill">Active</span><span class="tagpill tagpill--n">3</span><span class="chip-save">Save 5%</span></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook.'} },
+
+{ slug:'entry-chip', name:'Entry chip', group:'Chips & pills', tier:'atom', css:'.entry-chip',
+  summary:'Floating white chip with an icon and count badge — the PDP entry to Virtual Try On or a set.',
+  use:['Over the PDP gallery.'],
+  avoid:['More than two on one image.'],
+  anatomy:['Pill 100 radius · --shadow-pill · 12px strong · count badge in --text-link'],
+  variants:[{name:'Default', html:'<button class="entry-chip">'+ICON('quick-add','style="width:16px;height:16px"')+'Virtual try on<span class="n">2</span></button>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook.'} },
+
+/* ───────────── ACCOUNT ───────────── */
+{ slug:'account-card', name:'Balance card', group:'Account', tier:'molecule', css:'.acct-card', figma:'2KLlzqIWlDcri8YIHwEd63',
+  summary:'The account hero: a 62.5px balance on the fascia fill, loyalty label, View balance button.',
+  use:['Account home.'],
+  avoid:['More than one number on the card.'],
+  anatomy:['Fill --card-bg (Debenhams aqua gradient, boohoo black, PLT garnet, KM orange) · numeral 62.5px tight · caps label · white button'],
+  variants:[{name:'Default', html:'<div class="acct-page" style="width:340px;padding:16px"><div class="acct-card"><div class="amt">£12<small>.00</small></div><div class="lbl">Unlimited balance</div><button class="bd">View balance</button></div></div>'}],
+  dev:{title:'Layouts/Customer Account', status:'partial', note:'Dev layout carries rewardsSummary / storeCreditSummary with --store-credit-* gradient tokens (teal on every fascia, pink on PLT). Ours skins it per brand.'} },
+
+{ slug:'account-row', name:'Account row', group:'Account', tier:'molecule', css:'.acct-row',
+  summary:'White panel row with a 24px icon, label and a status or tag on the right.',
+  use:['Account menu, settings.'],
+  avoid:['Rows without an icon.'],
+  anatomy:['56px row · 24px icon · 16px label · status with 8px dot or tag pill'],
+  variants:[{name:'Set', html:'<div class="acct-page" style="width:340px;padding:16px;display:flex;flex-direction:column;gap:8px"><button class="acct-row">'+ICON('delivery-fast')+'<span class="lbl">My orders</span><span class="st"><span class="dot"></span>1 on its way</span></button><button class="acct-row">'+ICON('quick-add')+'<span class="lbl">Unlimited</span><span class="tagpill">Active</span></button></div>'}],
+  dev:{title:'Molecules/AccountLink', status:'match', note:'Dev AccountLink: name · route.'} },
+
+/* ───────────── LAYOUT ───────────── */
+{ slug:'tile-rail', name:'Square tile rail', group:'Layout', tier:'molecule', css:'.tile-rail',
+  summary:'Edge-to-edge square tiles with 1px gutters — the Brand Room brand and category rail.',
+  use:['Brand walls, category entry on content pages.'],
+  avoid:['Mixing with roundels in one view.'],
+  anatomy:['Square tiles · 1px gutters · label bottom-left'],
+  variants:[{name:'Default', html:'<div class="tile-rail" style="width:480px"><a class="tile" href="#"><i style="display:block;position:relative;aspect-ratio:1;overflow:hidden">'+IMG(160,'--brand-light-3','--brand-light-1')+'</i><span>Tops</span></a><a class="tile" href="#"><i style="display:block;position:relative;aspect-ratio:1;overflow:hidden">'+IMG(200,'--brand-light-2','--brand-dark-1')+'</i><span>Jeans</span></a><a class="tile" href="#"><i style="display:block;position:relative;aspect-ratio:1;overflow:hidden">'+IMG(220,'--brand-dark-2','--brand-primary-dark')+'</i><span>Jackets</span></a></div>'}],
+  dev:{title:'Molecules/CTA Card', status:'partial', note:'Dev CTA Card / Content Grid are the CMS equivalents (gradient, liveText, columns per breakpoint).'} },
+];
+
+/* ============================================================
+   DEV STORYBOOK OVERLAY — every title in web-storybook.jamesb.play.dbztech.net
+   (index.json, 09 Sep 2026: 80 components · 178 stories · 21 fascias) → ours.
+   ours: catalogue slug(s) · status: match | partial | ours | dev-only | infra
+   ============================================================ */
+const DG_DEV_OVERLAY = [
+ {dev:'BackToTop', stories:1, ours:[], status:'dev-only', note:'Adopt — position via buttonLocation. Needs our styling.'},
+ {dev:'Atoms/Button', stories:11, ours:['button','icon-button','filter-pill'], status:'match', note:'19 variants → 6 types + states.'},
+ {dev:'Atoms/Heading', stories:1, ours:[], status:'infra', note:'Typography foundations page is the spec.'},
+ {dev:'Atoms/Text', stories:1, ours:[], status:'infra', note:'Typography foundations.'},
+ {dev:'Atoms/Markdown', stories:1, ours:[], status:'infra', note:'CMS rich text — inherits type tokens.'},
+ {dev:'Atoms/Icon', stories:9, ours:[], status:'match', note:'240 dev icons vs our 146-icon Figma library — reconcile names (System → Icons page).'},
+ {dev:'Atoms/Image', stories:4, ours:[], status:'infra', note:'Media plumbing (CMS asset, crop, lazy).'},
+ {dev:'Atoms/Picture', stories:4, ours:[], status:'infra', note:'Responsive sources.'},
+ {dev:'Atoms/Video', stories:1, ours:[], status:'infra', note:'—'},
+ {dev:'Atoms/Input Field', stories:2, ours:['text-field'], status:'match', note:''},
+ {dev:'Atoms/Link', stories:2, ours:['text-link'], status:'match', note:''},
+ {dev:'Atoms/Modal', stories:1, ours:['modal'], status:'match', note:''},
+ {dev:'Atoms/Select', stories:1, ours:['select'], status:'match', note:''},
+ {dev:'Atoms/Social Proof', stories:1, ours:['social-proof','stock-alert'], status:'match', note:''},
+ {dev:'Atoms / Progress Spinner', stories:3, ours:['spinner'], status:'partial', note:'Add standalone sizes to ours.'},
+ {dev:'Molecules/Accordion', stories:2, ours:['accordion'], status:'match', note:''},
+ {dev:'Organisms/Product Accordion', stories:1, ours:['accordion'], status:'match', note:'PDP flavour of the same.'},
+ {dev:'Molecules/AccountLink', stories:1, ours:['account-row'], status:'match', note:''},
+ {dev:'Layouts/Customer Account', stories:1, ours:['account-card','account-row'], status:'partial', note:''},
+ {dev:'Molecules/BNPL Banner', stories:1, ours:['bnpl'], status:'match', note:''},
+ {dev:'Molecules/Banner', stories:2, ours:['usp-banner'], status:'partial', note:'CMS promo banner (colour, body, CTA). Ours covers the header USP types.'},
+ {dev:'Molecules/Basket Social Proof', stories:1, ours:['social-proof'], status:'match', note:''},
+ {dev:'Molecules/Product Social Proof', stories:1, ours:['social-proof'], status:'match', note:''},
+ {dev:'Molecules/Basket/CartLineItemV2Card', stories:23, ours:['bag-item'], status:'partial', note:'23 dev states; ours draws the base.'},
+ {dev:'Molecules/Basket/CartLineItemV2List', stories:1, ours:['bag-item'], status:'partial', note:'Compose.'},
+ {dev:'Molecules/Basket/FreeGiftItemCard', stories:2, ours:[], status:'dev-only', note:'Bag GWP — spec from the bag project.'},
+ {dev:'Molecules/Basket/FreeGiftsList', stories:3, ours:[], status:'dev-only', note:''},
+ {dev:'Molecules/Basket/GiftcardDetailModal', stories:1, ours:['modal'], status:'partial', note:'Compose from Modal.'},
+ {dev:'Molecules/Basket/OrderSummaryV2', stories:5, ours:['order-summary'], status:'match', note:''},
+ {dev:'Molecules/Basket/QuantityPill', stories:6, ours:['quantity'], status:'match', note:''},
+ {dev:'Molecules/Basket/WishlistButton', stories:2, ours:['icon-button'], status:'match', note:''},
+ {dev:'Molecules/Blog Card', stories:1, ours:[], status:'dev-only', note:'Content / blog family — Brand Room backlog.'},
+ {dev:'Molecules/Blog Header', stories:1, ours:[], status:'dev-only', note:''},
+ {dev:'Molecules/Blog Panel/Detail', stories:1, ours:[], status:'dev-only', note:''},
+ {dev:'Molecules/Blog Panel/Product Highlight', stories:1, ours:[], status:'dev-only', note:''},
+ {dev:'Molecules/Blog Panel/Style Overview', stories:1, ours:[], status:'dev-only', note:''},
+ {dev:'Molecules/Blog Panel Product Focus', stories:1, ours:[], status:'dev-only', note:''},
+ {dev:'Molecules/CT Product Card', stories:3, ours:['product-card','badges','colour-swatches','ratings'], status:'match', note:'Same layer model.'},
+ {dev:'Molecules/Product Card', stories:1, ours:['product-card'], status:'partial', note:'Simple CMS card.'},
+ {dev:'Molecules/CTA Card', stories:1, ours:['tile-rail'], status:'partial', note:'Content tile.'},
+ {dev:'Molecules/Cart Link', stories:2, ours:['header'], status:'match', note:'Bag icon + count.'},
+ {dev:'Molecules/Search Link', stories:1, ours:['header'], status:'match', note:'Search trigger.'},
+ {dev:'Molecules/Category Header', stories:1, ours:['category-nav','breadcrumb'], status:'partial', note:''},
+ {dev:'Molecules/Category Highlight', stories:1, ours:[], status:'dev-only', note:'Content tile with gradient text panel.'},
+ {dev:'Molecules/Content Container', stories:2, ours:[], status:'infra', note:'CMS section wrapper.'},
+ {dev:'Organisms/Content Grid', stories:1, ours:['tile-rail'], status:'infra', note:'Columns per breakpoint.'},
+ {dev:'Organisms/Content Sections', stories:1, ours:[], status:'infra', note:'CMS dynamic zone.'},
+ {dev:'Molecules/Spacing', stories:1, ours:[], status:'infra', note:'Spacer — our spacing scale applies.'},
+ {dev:'Molecules/Iframe', stories:1, ours:[], status:'infra', note:''},
+ {dev:'Molecules/ContentImage', stories:1, ours:[], status:'infra', note:''},
+ {dev:'Molecules/Image Header', stories:1, ours:[], status:'dev-only', note:'Content header.'},
+ {dev:'Molecules/Magazine Header', stories:2, ours:[], status:'dev-only', note:''},
+ {dev:'Molecules/Marquee', stories:1, ours:[], status:'dev-only', note:'Core PDP 2026 has a marquee entry (08 family) — align later.'},
+ {dev:'Molecules/Hero Banner', stories:1, ours:[], status:'dev-only', note:'CMS hero with hotspots, carousel, live text.'},
+ {dev:'Molecules/Countdown Timer', stories:2, ours:['usp-banner'], status:'partial', note:'Our countdown is the USP banner digits (.usp-cd).'},
+ {dev:'Organisms/Countdown Banner', stories:4, ours:['usp-banner'], status:'partial', note:''},
+ {dev:'Molecules/ Date Select', stories:1, ours:['select'], status:'partial', note:'Three selects — compose.'},
+ {dev:'Molecules/Delivery Progress', stories:1, ours:['threshold'], status:'partial', note:'Step indicator; ours is the spend bar.'},
+ {dev:'Molecules/Login Form', stories:2, ours:['text-field','button'], status:'partial', note:'Compose from field + button.'},
+ {dev:'Molecules/Signup Form', stories:2, ours:['text-field','button'], status:'partial', note:'Compose.'},
+ {dev:'Molecules/Newsletter Signup', stories:1, ours:['footer'], status:'match', note:'Our footer band.'},
+ {dev:'Molecules/Message Block', stories:3, ours:['message'], status:'match', note:'7 dev types → 3 tones + icon flag.'},
+ {dev:'Molecules/OrderTrack', stories:1, ours:[], status:'dev-only', note:'Account — order tracking.'},
+ {dev:'Molecules/PersonalisedCarousel', stories:1, ours:['section-rail'], status:'partial', note:''},
+ {dev:'Molecules/Product Image Gallery', stories:2, ours:[], status:'dev-only', note:'PDP gallery — Core PDP 2026 backlog.'},
+ {dev:'Molecules/Product Price', stories:2, ours:['price'], status:'match', note:''},
+ {dev:'Molecules/Search Promo Card', stories:1, ours:[], status:'dev-only', note:''},
+ {dev:'Molecules/Side Panel', stories:3, ours:['sheet'], status:'partial', note:'Side vs bottom anchor — one shell.'},
+ {dev:'Molecules/Style Together', stories:3, ours:[], status:'dev-only', note:'= Shop The Look / Set (Core PDP 2026 repo).'},
+ {dev:'Molecules/USP Banner', stories:1, ours:['usp-banner'], status:'match', note:''},
+ {dev:'Molecules/USP Item', stories:1, ours:['usp-banner','usp-box'], status:'match', note:''},
+ {dev:'Organisms/Footer', stories:1, ours:['footer'], status:'match', note:''},
+ {dev:'Organisms/Footer Link', stories:1, ours:['footer'], status:'match', note:''},
+ {dev:'Organisms/Header', stories:1, ours:['header'], status:'match', note:''},
+ {dev:'Organisms/Primary Navigation (Desktop)', stories:4, ours:['header'], status:'partial', note:'Mega-menu panels not yet drawn on our side.'},
+ {dev:'Organisms/Primary Navigation (Mobile)', stories:4, ours:['header'], status:'partial', note:'Drawer + sub nav.'},
+ {dev:'Organisms/Basket/ProductReplenishmentV2Section', stories:4, ours:[], status:'dev-only', note:'Bag — buy again.'},
+ {dev:'Organisms/Basket/ProductSamplesV2Section', stories:4, ours:[], status:'dev-only', note:'Bag — samples.'},
+ {dev:'Pages/Basket/BasketV2Page', stories:4, ours:['bag-item','order-summary','promo-field','threshold'], status:'partial', note:'Page composition.'},
+];
+
+/* Dev theme variables (per fascia, RGB triplets consumed by Tailwind) → our semantic tokens. */
+const DG_TOKEN_MAP = [
+ {dev:'--color-primary', ours:'--surface-action', note:'Button fill. Debenhams 7BE7D8 ✓ · PLT 550503 ✓ · MAN/WH/TBR 000 ✓ · boohoo 444444 ✗ (ours 000) · KM 000 ✗ (ours D24508 signed-off).'},
+ {dev:'--color-button-text-primary', ours:'--text-on-action', note:'Debenhams black ✓, others white ✓ (Warehouse F1F1F1 ~).'},
+ {dev:'--color-cta-primary / --color-cta-accent', ours:'--text-link · --border-action · --icon-action', note:'Debenhams 00787D ✓.'},
+ {dev:'--color-primary-dark', ours:'--surface-action-pressed · --brand-dark-3', note:'Debenhams 529C92 = our brand-dark-3 ✓.'},
+ {dev:'--color-primary-alt / --color-button-text-primary-alt', ours:'--brand-primary (boohoo F8B5CC)', note:'Alt pink button on boohoo — no variant on our side; token exists.'},
+ {dev:'--color-primary-dark-alt', ours:'--brand-primary-dark', note:'boohoo BB305F vs ours CB4870 — confirm.'},
+ {dev:'--color-secondary', ours:'--surface-raised', note:'White — but KM / Warehouse / TBR set it to black ✗ (check usage).'},
+ {dev:'--color-text-secondary', ours:'--text-secondary', note:'Dev 767676 (Grey 4) vs ours 6B6B6B (Grey 5, AA body floor) ✗.'},
+ {dev:'--color-bg-grey', ours:'--surface-sunken', note:'F8F8F8 vs ours FAFAFA · PLT FAF5E7 sand ✓.'},
+ {dev:'--color-bg-secondary', ours:'--surface-media', note:'Grey 1 F2F2F2 ✓ (also feeds bg-grey-1/2 utilities).'},
+ {dev:'--color-button-secondary-border', ours:'--btn-outline', note:'Dev grey B5B5B5 on every fascia; ours brand outline (70BEB3 / 000 / 360502) ✗ — decide.'},
+ {dev:'--color-primary-nav / --color-primary-nav-text', ours:'--nav-bg / --nav-fg', note:'Debenhams B1F1E8 vs ours B8FDF4 (light-2) ~ · PLT black/white ✓ · KM/TBR values malformed in dev (NaN).'},
+ {dev:'--color-header-background', ours:'--surface-page', note:'PLT FFFDF7 ✓.'},
+ {dev:'--color-search-input-background / -text / -placeholder', ours:'--surface-media · --text-primary · --text-secondary', note:'F2F2F2 / 000 / 767676.'},
+ {dev:'--color-facet-pill-bg-selected / -border-selected', ours:'--brand-neutral · --border-action', note:'Debenhams E8F4F2 / 00787D ✓.'},
+ {dev:'--color-footer-help-header-background / -text', ours:'--ft-band', note:'Dev peach FFF1E8 on all fascias; Warehouse F1F1F1 + D6FF00 text. Ours: per-brand band.'},
+ {dev:'--font-body / --font-serif / --font-cta / --font-heading', ours:'--font-family-base', note:'Same families (Geologica, Montserrat, Roboto, Jost, Archivo) except KM CTA/heading = WorkSans in dev ✗; Warehouse Roboto vs ours Helvetica (DRAFT).'},
+ {dev:'--font-weight-base / -semibold / -bold', ours:'--w-regular / --w-mid / --w-strong', note:'PLT 300 / 400 / 400 in dev vs ours 400 / 400 / 700 ✗.'},
+ {dev:'--default-rounding', ours:'--radius-default', note:'PLT 0 · TBR 0 ✓ — identical square-mode rule.'},
+ {dev:'--default-text-colour', ours:'--text-primary', note:'PLT 333333 vs ours 0F0F0F.'},
+ {dev:'--text-cta', ours:'button label size (16px)', note:'PLT 14px in dev.'},
+ {dev:'--text-xs … --text-4xl', ours:'type scale (Typography page)', note:'PLT flattens 12/12/16/16/16/16 in dev — check against the locked scale.'},
+ {dev:'--wishlist-opacity', ours:'.pc-iconbtn ground', note:'0.7 on KM / TBR.'},
+ {dev:'--social-proof-* (plp / pdp / basket)', ours:'--surface-callout · .pc-taggstar--brand', note:'Per-location colour, alpha, blur, border.'},
+ {dev:'--store-credit-gradient-* / -button / -text', ours:'--card-bg · --card-btn-bg', note:'Teal 1ABC9C gradient on all but PLT (pink) in dev; ours per brand.'},
+ {dev:'--unlimited-*-bag-button-bg / -text', ours:'--action-buy / --text-on-action', note:'Debenhams Unlimited ATB (black).'},
+ {dev:'--text-markdown-colour', ours:'--price-sale', note:'PLT C90000 ✓.'},
+ {dev:'--swiper-pagination-color', ours:'--dot', note:'Carousel dots — MAN 284D7B in dev looks stale.'},
+ {dev:'grey-1 … grey-6 (fixed utilities)', ours:'Grey 1–6 primitives', note:'F2F2F2 · E7E7E7 · B5B5B5 · 767676 · 6B6B6B · 323232 — identical ramp ✓.'},
+];
+
+/* our data-brand slug ↔ dev fascia global */
+const DG_FASCIA_MAP = {debenhams:'debenhams', boohoo:'boohooww', boohooman:'boohooman', plt:'prettylittlething', karenmillen:'karenmillen', warehouse:'warehouse', brandroom:'thebrandroom'};
+
+const api = {DG_CATALOGUE, DG_DEV_OVERLAY, DG_TOKEN_MAP, DG_FASCIA_MAP};
+if (typeof module !== 'undefined' && module.exports) module.exports = api; else Object.assign(root, api);
+})(typeof window !== 'undefined' ? window : globalThis);

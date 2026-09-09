@@ -1,0 +1,19 @@
+{
+  "name": "dg-group-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DG Group Design System — Storybook for the Debenhams Group component library. Stories are generated from ../assets/ds/catalogue.js; the CSS is ../assets/ds/tokens.css + components.css.",
+  "type": "module",
+  "scripts": {
+    "gen": "node gen-stories.mjs",
+    "storybook": "npm run gen && storybook dev -p 6006",
+    "build-storybook": "npm run gen && storybook build -o dist"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/html": "^8.6.14",
+    "@storybook/html-vite": "^8.6.14",
+    "storybook": "^8.6.14",
+    "vite": "^5.4.19"
+  }
+}
