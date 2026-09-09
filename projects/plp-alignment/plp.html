@@ -28,9 +28,10 @@ body:not(.mode-new) .hd-usp b{line-height:20px}
 body:not(.mode-new) .hd-usp .s{line-height:12px}
 /* NEW format USP = DS USP banner 11982-37171: 12px text, 4px vertical padding, 15px leading → 23px single row, 44px with the countdown row.
    body.usp-old keeps the live rendering inside the new format (configurator toggle). */
-.mode-new:not(.usp-old) .hd-usp{font-size:12px;line-height:15px;padding:4px 16px;min-height:0}
+.mode-new:not(.usp-old) .hd-usp{font-size:12px;line-height:15px;padding:4px 16px;min-height:0;text-transform:none}
 .mode-new:not(.usp-old) .usp-strip{padding:0;gap:0;overflow:hidden}
-.mode-new:not(.usp-old) .usp-cell{font-size:12px;line-height:15px;min-height:0;padding:4px 16px;font-weight:var(--w-regular);gap:4px;background:var(--usp-a-bg)}
+.mode-new:not(.usp-old) .usp-cell{font-size:12px;line-height:15px;min-height:0;padding:4px 16px;font-weight:var(--w-regular);gap:2px;background:var(--usp-a-bg);text-transform:none}
+.mode-new:not(.usp-old) .usp-cell:has(.usp-cd){gap:2px} /* text → countdown: 2px */
 .mode-new:not(.usp-old) .usp-cell b{font-size:12px;line-height:15px;font-weight:var(--w-strong)}
 .mode-new:not(.usp-old) .usp-cd{line-height:17px}
 @media(min-width:1024px){.mode-new:not(.usp-old) .usp-strip{grid-auto-columns:auto;justify-content:center;column-gap:32px}}
@@ -441,12 +442,20 @@ new ResizeObserver(()=>{syncUspH();uspSepWrap()}).observe(document.documentEleme
 // DS USP banner 11982-37171: sections joined by the 4px dash ONLY while they share a line;
 // countdown is always its own row (strong digits, 5px colon columns, --usp-cd red on the Black/Red variant)
 function uspCdMarkup(v){return '<span class="usp-cd">'+v.split(':').map((d,i)=>(i?'<i>:</i>':'')+'<b>'+d+'</b>').join('')+'</span>'}
+// new-format copy rules: no asterisks, sentence case (brand initialisms kept), 'Use Code' → 'Code:', code value strong and uppercase
+const USP_KEEP=['MAN','PLT','UK','NDD','DSGN','DEBENHAMS'];
+function uspTidy(t){
+  let s=String(t).replace(/<[^>]+>/g,'').replace(/\*/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+  s=s.charAt(0).toUpperCase()+s.slice(1);
+  USP_KEEP.forEach(k=>{s=s.replace(new RegExp('\\b'+k.toLowerCase()+'\\b','g'),k==='DEBENHAMS'?'Debenhams':k)});
+  s=s.replace(/\b(?:use\s+)?code:?\s*([a-z0-9]+)/i,(m,c)=>'Code: <b>'+c.toUpperCase()+'</b>');
+  return s;
+}
 function uspNewParts(text,sub){
-  const noStar=t=>String(t).replace(/\*/g,'');
-  let row='<span class="usp-t">'+noStar(text)+'</span>',cd='';
+  let row='<span class="usp-t">'+uspTidy(text)+'</span>',cd='';
   if(sub){const sv=String(sub).trim();
     if(/^[\d:]+$/.test(sv))cd=uspCdMarkup(sv);
-    else row+='<span class="usp-sep"></span><span class="usp-t">'+noStar(sv).replace(/(code:?\s*)([A-Za-z0-9]+)/i,'$1<b>$2</b>')+'</span>';
+    else row+='<span class="usp-sep"></span><span class="usp-t">'+uspTidy(sv)+'</span>';
   }
   return '<span class="usp-row">'+row+'</span>'+cd;
 }
