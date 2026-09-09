@@ -1,6 +1,6 @@
 # CLAUDE.md — debenhamsgroup.design
 
-Read `.context/` before doing anything. Start with `00-readme.md`, then `16-session-log-2026-09-03b.md` for current PLP/DS state (11–15 are the earlier history) and `17-session-log-2026-09-08.md` for the Core PDP 2026 kick-off (lives in its own repo: github.com/jakerayner96/core-pdp-2026), then whichever doc matches the task.
+Read `.context/` before doing anything. Start with `00-readme.md`, then `16-session-log-2026-09-03b.md` for current PLP/DS state (11–15 are the earlier history) and `17-session-log-2026-09-08.md` for the Core PDP 2026 kick-off (lives in its own repo: github.com/jakerayner96/core-pdp-2026) + `19-session-log-2026-09-09.md` for its latest state (entry-point families 08/09, shuffle toggle, live footer), then whichever doc matches the task.
 
 **Repo:** github.com/jakerayner96/debenhamsgroup.design · **Live site (Pages):** jakerayner96.github.io/debenhamsgroup.design
 
