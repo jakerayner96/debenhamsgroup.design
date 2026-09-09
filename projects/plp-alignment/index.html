@@ -163,7 +163,8 @@ body.dragging iframe{pointer-events:none}
   </div>
   <div class="ph"><h1>Configure the PLP</h1><a class="open" id="openfull" href="plp.html" target="_blank" rel="noopener">Open page ↗</a></div>
 
-  <div class="card"><h3>Format</h3><p>Live replicates each fascia's real PLP (03 Sep capture). New is the aligned template: compact card, combined sort &amp; filter, the brief applied.</p><div id="modeopts"></div></div>
+  <div class="card"><h3>Format</h3><div id="modeopts"></div></div>
+  <div class="card"><h3>USP banners <span class="tag">new format</span></h3><div id="uspopts"></div></div>
   <div class="card"><h3>Category nav</h3><div id="catopts"></div></div>
   <div class="card"><h3>Quick add <span class="tag">page-level</span></h3><p>Every product or none — never per card.</p><div id="qaopts"></div><div class="sub second">Style</div><div id="qastyle"></div></div>
 
@@ -194,15 +195,16 @@ body.dragging iframe{pointer-events:none}
 <div id="hidden"></div>
 
 <script>
-const MODES=[['live','Live now','What each site ships today'],['new','New format','The aligned template']];
-const CATS=[['auto','Fascia default'],['roundels','Roundels — text below'],['roundels-onimage','Roundels — text on image'],['pills','Pills'],['links','Links']];
+const MODES=[['live','Live'],['new','New']];
+const USPS=[['new','New','DS USP component — every live message, one 23px row'],['old','Old','Rendered as live: 14px, separate banners']];
+const CATS=[['auto','Fascia default'],['roundels','Roundels — text below'],['roundels-onimage','Roundels — text on image'],['pills','Pills'],['links','Links']]; // Links is live-only
 const QA_ON=[['auto','Fascia default'],['on','On — every product'],['off','Off']];
 const QA_STYLE=[['auto','Fascia default'],['image','On image','Bag-with-plus under the wishlist, takes its shape'],['button','Button','Full-width Add between image and titles'],['mini','Mini','Small Add pill on the titles row']];
 const DOMAIN={debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehouse.co.uk',brandroom:'thebrandroom.com'};
 const BRAND_NAME={debenhams:'Debenhams',boohoo:'boohoo',boohooman:'boohooMAN',plt:'PLT',karenmillen:'Karen Millen',warehouse:'Warehouse',brandroom:'Brand Room'};
 
 let FOLD=false, W=390;
-const CFG={brand:'debenhams',mode:'live',cat:'auto',qaOn:'auto',qaStyle:'auto'};
+const CFG={brand:'debenhams',mode:'live',cat:'auto',qaOn:'auto',qaStyle:'auto',usp:'new'};
 let EFFECTIVE={qaOn:null,qaStyle:null}; // what the page reports it is actually doing (so 'fascia default' shows the outcome)
 const $=s=>document.querySelector(s);
 const frame=$('#frame'),stage=$('#stage'),win=$('#win'),preset=$('#preset'),sizebox=$('#sizebox'),cfg=$('#cfg');
@@ -217,8 +219,9 @@ function radios(host,list,get,set,disabled){
   });
 }
 function renderPanel(){
-  radios($('#modeopts'),MODES,()=>CFG.mode,v=>CFG.mode=v);
-  radios($('#catopts'),CATS,()=>CFG.cat,v=>CFG.cat=v);
+  radios($('#modeopts'),MODES,()=>CFG.mode,v=>{CFG.mode=v;if(v==='new'&&CFG.cat==='links')CFG.cat='auto';});
+  radios($('#catopts'),CFG.mode==='new'?CATS.filter(([v])=>v!=='links'):CATS,()=>CFG.cat,v=>CFG.cat=v);
+  radios($('#uspopts'),USPS,()=>CFG.usp,v=>CFG.usp=v,CFG.mode!=='new');
   const qaList=QA_ON.map(([v,l])=>v==='auto'&&EFFECTIVE.qaOn!==null?[v,l,EFFECTIVE.qaOn?'Currently on':'Currently off']:[v,l]);
   radios($('#qaopts'),qaList,()=>CFG.qaOn,v=>CFG.qaOn=v);
   const qaOff=EFFECTIVE.qaOn===false;
@@ -228,7 +231,7 @@ function renderPanel(){
   $('#openfull').href=pageURL();
   $('#urltxt').textContent=DOMAIN[CFG.brand];
 }
-function pageURL(){const p=new URLSearchParams({brand:CFG.brand,mode:CFG.mode});if(CFG.cat!=='auto')p.set('cat',CFG.cat);if(CFG.qaOn==='off')p.set('qa','off');else if(CFG.qaStyle!=='auto')p.set('qa',CFG.qaStyle);return 'plp.html?'+p;}
+function pageURL(){const p=new URLSearchParams({brand:CFG.brand,mode:CFG.mode});if(CFG.cat!=='auto')p.set('cat',CFG.cat);if(CFG.mode==='new'&&CFG.usp!=='new')p.set('usp',CFG.usp);if(CFG.qaOn==='off')p.set('qa','off');else if(CFG.qaStyle!=='auto')p.set('qa',CFG.qaStyle);return 'plp.html?'+p;}
 function apply(){
   if(matchMedia('(max-width:760px)').matches){frame.style.width='100%';win.style.width='100%';return;}
   const avail=stage.clientWidth-16;
@@ -239,7 +242,7 @@ function apply(){
   sizebox.textContent=`${Math.round(w)}px`;
   document.querySelectorAll('#dev button').forEach(b=>b.classList.toggle('on',(b.dataset.w==='390'&&w<600)||(b.dataset.w==='0'&&w>=600)));
 }
-function send(f=frame){ try{f.contentWindow.postMessage({plpSet:1,brand:CFG.brand,mode:CFG.mode,cat:CFG.cat,qaOn:CFG.qaOn,qaStyle:CFG.qaStyle},'*');}catch(e){} }
+function send(f=frame){ try{f.contentWindow.postMessage({plpSet:1,brand:CFG.brand,mode:CFG.mode,cat:CFG.cat,qaOn:CFG.qaOn,qaStyle:CFG.qaStyle,usp:CFG.usp},'*');}catch(e){} }
 addEventListener('message',e=>{
   const d=e.data;if(!d||e.source!==frame.contentWindow)return;
   if(d.plpCfg){cfg.textContent=d.plpCfg;EFFECTIVE={qaOn:!!d.qaOn,qaStyle:d.qaStyle||null};renderPanel();}
@@ -251,7 +254,7 @@ document.querySelectorAll('#brands .chip,#brands-m .chip').forEach(b=>b.onclick=
 document.querySelectorAll('#dev button').forEach(b=>b.onclick=()=>{W=+b.dataset.w;preset.value=String(W);apply();});
 preset.onchange=()=>{W=+preset.value;apply();};
 document.querySelectorAll('#fold button').forEach(b=>b.onclick=()=>{FOLD=b.dataset.f==='1';apply();});
-$('#reset').onclick=()=>{CFG.cat='auto';CFG.qaOn='auto';CFG.qaStyle='auto';send();renderPanel();};
+$('#reset').onclick=()=>{CFG.cat='auto';CFG.qaOn='auto';CFG.qaStyle='auto';CFG.usp='new';send();renderPanel();};
 $('#hr').addEventListener('pointerdown',e=>{
   e.preventDefault();document.body.classList.add('dragging');
   const sx=e.clientX, sw=frame.offsetWidth;
@@ -261,7 +264,10 @@ $('#hr').addEventListener('pointerdown',e=>{
 });
 addEventListener('resize',apply);
 frame.addEventListener('load',()=>send());
-frame.src='plp.html?brand=debenhams&mode=live&_='+Date.now(); // always a fresh copy of the page
+// shareable state: the configurator reads the same query the page does (?brand&mode&cat&qa&usp)
+{const q=new URLSearchParams(location.search);if(q.get('brand')&&DOMAIN[q.get('brand')])CFG.brand=q.get('brand');if(q.get('mode'))CFG.mode=q.get('mode');if(q.get('cat'))CFG.cat=q.get('cat');if(q.get('usp'))CFG.usp=q.get('usp');
+ const qa=q.get('qa');if(qa==='off')CFG.qaOn='off';else if(qa){CFG.qaOn='on';CFG.qaStyle=qa;}}
+frame.src=pageURL()+'&_='+Date.now(); // always a fresh copy of the page
 renderPanel();apply();
 
 /* ---------- Export: full-page PNGs (390 + 1440) + zip of the code with this configuration baked in ---------- */
@@ -294,9 +300,9 @@ async function doExport(){
     let html=await (await fetch('plp.html')).text();
     const SC='scr'+'ipt';
     html=html.split('../../assets').join('assets'); // the zip carries the DS alongside the page
-    html=html.replace(`<${SC} src="data.js"></${SC}>`,`<${SC}>window.PLP_PRESET=${JSON.stringify({brand:CFG.brand,mode:CFG.mode,cat:CFG.cat,qaOn:CFG.qaOn,qaStyle:CFG.qaStyle})};</${SC}>\n<${SC} src="data.js"></${SC}>`);
+    html=html.replace(`<${SC} src="data.js"></${SC}>`,`<${SC}>window.PLP_PRESET=${JSON.stringify({brand:CFG.brand,mode:CFG.mode,cat:CFG.cat,qaOn:CFG.qaOn,qaStyle:CFG.qaStyle,usp:CFG.usp})};</${SC}>\n<${SC} src="data.js"></${SC}>`);
     root.file('plp.html',html);root.file('data.js',await (await fetch('data.js')).text());
-    root.file('README.txt',`PLP UI updates — All Brands · ${BRAND_NAME[CFG.brand]} · ${CFG.mode==='new'?'New format':'Live now'}\nExported ${state.exportedAt}\n\nOpen plp.html over HTTP (e.g. python3 -m http.server) to see this exact configuration.\nconfig.json is the decision record: fascia, format, category nav, quick add.\n\nConfiguration: ${cfg.textContent}\n`);
+    root.file('README.txt',`PLP UI updates — All Brands · ${BRAND_NAME[CFG.brand]} · ${CFG.mode==='new'?'New format':'Live now'}\nExported ${state.exportedAt}\n\nOpen plp.html over HTTP (e.g. python3 -m http.server) to see this exact configuration.\nconfig.json is the decision record: fascia, format, USP banner style, category nav, quick add.\n\nConfiguration: ${cfg.textContent}\n`);
     const files=await (await fetch('assets-manifest.json')).json();
     let n=0;for(const fpath of files){exptxt.textContent=`Packaging assets… ${++n}/${files.length}`;const r=await fetch(fpath);if(r.ok)root.file(fpath.replace(/^\.\.\/\.\.\//,''),await r.blob());}
     exptxt.textContent='Zipping…';

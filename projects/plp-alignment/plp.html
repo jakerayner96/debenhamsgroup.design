@@ -26,9 +26,17 @@ body:not(.mode-new) .usp-cell .s,body:not(.mode-new) .usp-cell u{font-size:14px;
 body:not(.mode-new) .hd-usp{height:auto;min-height:0;padding:8px 16px}
 body:not(.mode-new) .hd-usp b{line-height:20px}
 body:not(.mode-new) .hd-usp .s{line-height:12px}
-.mode-new .hd-usp{font-size:12px;padding:4px 16px;min-height:0}
-.mode-new .usp-cell{font-size:12px;min-height:0;padding:4px 16px;font-weight:var(--w-regular);gap:4px}
-.mode-new .usp-cell b{font-size:12px;font-weight:var(--w-strong)}
+/* NEW format USP = DS USP banner 11982-37171: 12px text, 4px vertical padding, 15px leading → 23px single row, 44px with the countdown row.
+   body.usp-old keeps the live rendering inside the new format (configurator toggle). */
+.mode-new:not(.usp-old) .hd-usp{font-size:12px;line-height:15px;padding:4px 16px;min-height:0}
+.mode-new:not(.usp-old) .usp-strip{padding:0;gap:0;overflow:hidden}
+.mode-new:not(.usp-old) .usp-cell{font-size:12px;line-height:15px;min-height:0;padding:4px 16px;font-weight:var(--w-regular);gap:4px;background:var(--usp-a-bg)}
+.mode-new:not(.usp-old) .usp-cell b{font-size:12px;line-height:15px;font-weight:var(--w-strong)}
+.mode-new:not(.usp-old) .usp-cd{line-height:17px}
+@media(min-width:1024px){.mode-new:not(.usp-old) .usp-strip{grid-auto-columns:auto;justify-content:center;column-gap:32px}}
+/* rotation: crossfade in place — no slide, nothing leaves the clip */
+@media(max-width:1023px){.mode-new:not(.usp-old) .usp-strip .usp-cell.rot-on{animation:usp-fade var(--dur-slow) var(--ease-standard)}}
+@keyframes usp-fade{from{opacity:0}to{opacity:1}}
 /* PLP content slot — DS Figma 8556-18755. Square tile after row 3 (new format), three types:
    Button (media + white CTA), Text (media + gradient + View All + optional Sponsored), Get The Look. */
 .cslot{grid-column:1/span 2;aspect-ratio:1/1;position:relative;overflow:hidden;cursor:pointer;border-radius:0;margin-bottom:2px} /* always opens its row */
@@ -304,7 +312,7 @@ const LIB=`${AST}/ds/icons/lib`;
 const grid=document.getElementById('grid'),catnav=document.getElementById('catnav'),
       deskbar=document.getElementById('deskbar'),mobsplit=document.getElementById('mobsplit'),mobbar=document.getElementById('mobbar'),
       seo=document.getElementById('seo'),search=document.getElementById('search'),showmore=document.getElementById('showmore');
-let MODE='live',view=2,CAT_OVERRIDE='auto';
+let MODE='live',view=2,CAT_OVERRIDE='auto',USP='new'; // USP: new = DS component · old = live rendering (new format only)
 // Quick add is a PAGE setting, never per card: on/off for every product, plus one style for every product.
 // QA_ON: auto (fascia config) | on | off.  QA_STYLE: auto | image (button on the photo, takes the wishlist button's shape) | button (under the image) | mini (price row)
 let QA_ON='auto',QA_STYLE='auto';
@@ -457,6 +465,8 @@ function uspSepWrap(){ // auto-layout rule: the dash exists only while its secti
 function render(){
   const b=document.documentElement.getAttribute('data-brand');
   document.body.classList.toggle('mode-new',MODE==='new');
+  const uspNew=MODE==='new'&&USP!=='old'; // DS component: one strip carrying every live message (top bar + cells + black bar), same size on every fascia
+  document.body.classList.toggle('usp-old',MODE==='new'&&USP==='old');
   const cfg=curCfg(MODE,b);
   const F=FASCIA[b]; F.products=window.PRODUCTS_ALL[b]||[];
   F.products.forEach((p,i)=>{p.ai=(i%7===2)}); // AI-generated badge scattered down the page
@@ -473,24 +483,18 @@ function render(){
   search.classList.toggle('hd-search--underline',cfg.search==='underline');
   // real furniture
   document.querySelector('.hd-nav').innerHTML=F.nav.map((n,i)=>`<a${/sale/i.test(n)?' class="sale"':''} href="#">${n}</a>`).join('');
-  const usptop=document.getElementById('usptop');usptop.hidden=!F.uspTop||MODE==='new';usptop.innerHTML=F.uspTop||'';
-  document.getElementById('uspstrip').innerHTML=(F.uspCells||[]).map((c,ci)=>{
-    if(MODE==='new'){ // DS USP banner component: banner itself is tappable — no links; countdown gets its own row
+  const usptop=document.getElementById('usptop');usptop.hidden=!F.uspTop||uspNew;usptop.innerHTML=F.uspTop||'';
+  const splitBar=t=>{t=String(t);const m=t.match(/^<b>(.*?)<\/b><span class="s(?: cd)?">(.*?)<\/span>$/);if(m)return {b:m[1],s:m[2]};const sp=t.replace(/<[^>]+>/g,'').split(/\s*[|\u00b7\u2022]\s*|\s+-\s+/);return {b:sp[0],s:sp.slice(1).join(' ')||null};};
+  const uspMsgs=uspNew?[...(F.uspTop?[splitBar(F.uspTop)]:[]),...(F.uspCells||[]),...(F.uspB?[splitBar(F.uspB)]:[])]:(F.uspCells||[]); // new: every live message, one component
+  document.getElementById('uspstrip').innerHTML=uspMsgs.map((c,ci)=>{
+    if(uspNew){ // DS USP banner component: banner itself is tappable — no links; countdown gets its own row
       const keep=c.s&&/code|%|\d/i.test(c.s)&&!/^shop/i.test(c.s);
       return `<div class="usp-cell${ci===0?' rot-on':''}">${uspNewParts(c.b,keep?c.s:null)}</div>`;
     }
     return `<div class="usp-cell${ci===0?' rot-on':''}"><b>${c.b}</b>${c.s?(/^shop/i.test(c.s)?`<u>${c.s}</u>`:`<span class="s${/^[\d:]+$/.test(c.s)?' cd':''}">${c.s}</span>`):''}</div>`; // production: subs are plain (countdown red); only Shop-Now CTAs underline
   }).join('');
-  const uspBText=MODE==='new'?'':(F.uspB||''); // new format runs a single banner — the strip
-  const fmtUsp=t=>{ // bar in new format: parse into text + sub sections, rebuild per the component rules
-    t=String(t);
-    const m=t.match(/^<b>(.*?)<\/b><span class="s(?: cd)?">(.*?)<\/span>$/);
-    let a2,b2;
-    if(m){a2=m[1];b2=m[2];}
-    else{const sp=t.replace(/<[^>]+>/g,'').split(/\s*[|\u00b7\u2022]\s*|\s+-\s+/);a2=sp[0];b2=sp.slice(1).join(' ');}
-    return uspNewParts(a2,b2||null);
-  };
-  const uspb=document.getElementById('uspb');uspb.hidden=!uspBText;uspb.innerHTML=MODE==='new'?fmtUsp(uspBText):uspBText;
+  const uspBText=uspNew?'':(F.uspB||''); // new USP component runs a single strip — the black bar's message joins the rotation
+  const uspb=document.getElementById('uspb');uspb.hidden=!uspBText;uspb.innerHTML=uspBText;
   syncUspH();uspSepWrap();
   document.querySelector('.bc').innerHTML=F.crumb.slice(1).map(c=>`<a href="#">${c}</a><span class="sep">/</span>`).join('')+`<span class="cur">${F.title}</span>`; // the first layer (Home) never shows
   const h1=document.querySelector('.plp-title h1');
@@ -714,8 +718,8 @@ function applyMcols(){
 }
 gtBtn.addEventListener('click',()=>{MCOLS=GT_NEXT[MCOLS];localStorage.setItem('plpMcols',MCOLS);applyMcols();});
 applyMcols();
-window.__setState=(brand,mode,cat,qaOn,qaStyle)=>{ anat.hidden=true; if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(qaOn)QA_ON=qaOn; if(qaStyle)QA_STYLE=qaStyle; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
-addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat,e.data.qaOn,e.data.qaStyle); });
+window.__setState=(brand,mode,cat,qaOn,qaStyle,usp)=>{ anat.hidden=true; if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(qaOn)QA_ON=qaOn; if(qaStyle)QA_STYLE=qaStyle; if(usp)USP=usp; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
+addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat,e.data.qaOn,e.data.qaStyle,e.data.usp); });
 matchMedia('(max-width:1023px)').addEventListener('change',render);
 /* mobile USP rotation — one cell at a time */
 let rotI=0;
@@ -731,7 +735,8 @@ if(q.get('mode'))MODE=q.get('mode');
 if(q.get('brand'))document.documentElement.setAttribute('data-brand',q.get('brand'));
 if(q.get('qa')){const v=q.get('qa');if(v==='none'||v==='off')QA_ON='off';else{QA_ON='on';QA_STYLE=qaStyleOf(v)}} // ?qa=off|image|button|mini
 if(q.get('cat'))CAT_OVERRIDE=q.get('cat');
-if(window.PLP_PRESET){const P=window.PLP_PRESET;if(P.brand)document.documentElement.setAttribute('data-brand',P.brand);if(P.mode)MODE=P.mode;if(P.cat)CAT_OVERRIDE=P.cat;if(P.qaOn)QA_ON=P.qaOn;if(P.qaStyle)QA_STYLE=P.qaStyle;} // exported zips bake the configuration in
+if(q.get('usp'))USP=q.get('usp'); // ?usp=old|new
+if(window.PLP_PRESET){const P=window.PLP_PRESET;if(P.brand)document.documentElement.setAttribute('data-brand',P.brand);if(P.mode)MODE=P.mode;if(P.cat)CAT_OVERRIDE=P.cat;if(P.qaOn)QA_ON=P.qaOn;if(P.qaStyle)QA_STYLE=P.qaStyle;if(P.usp)USP=P.usp;} // exported zips bake the configuration in
 render();
 try{parent.postMessage({plpReady:1},'*')}catch(e){}
 </script>
