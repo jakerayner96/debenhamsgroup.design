@@ -50,8 +50,12 @@ ${stories}
 }
 
 // Introduction + overlay docs (MDX)
-const rows = DG_DEV_OVERLAY.map(o => `| ${o.dev} | ${o.stories} | ${o.ours.join(', ') || '—'} | ${o.status} | ${o.note.replace(/\|/g, '/')} |`).join('\n');
-const toks = DG_TOKEN_MAP.map(t => `| \`${t.dev}\` | \`${t.ours}\` | ${t.note.replace(/\|/g, '/')} |`).join('\n');
+// Storybook's MDX has no GFM tables, so emit HTML tables.
+const h = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\{/g, '&#123;').replace(/\}/g, '&#125;');
+const byslug = Object.fromEntries(DG_CATALOGUE.map(c => [c.slug, c]));
+const tbl = (head, body) => `<table style={{fontSize:13}}><thead><tr>${head.map(x => `<th align="left">${x}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table>`;
+const rows = tbl(['Front-end component', 'Stories', 'DG component(s)', 'Status', 'Note'], DG_DEV_OVERLAY.map(o => `<tr><td><a href="${DEV}${devId(o.dev)}--docs" target="_blank" rel="noopener">${h(o.dev)}</a></td><td>${o.stories}</td><td>${o.ours.map(s => h(byslug[s] ? byslug[s].name : s)).join(', ') || '—'}</td><td><b>${o.status}</b></td><td>${h(o.note)}</td></tr>`).join(''));
+const toks = tbl(['Front-end variable', 'DG token', 'Note'], DG_TOKEN_MAP.map(t => `<tr><td><code>${h(t.dev)}</code></td><td><code>${h(t.ours)}</code></td><td>${h(t.note)}</td></tr>`).join(''));
 fs.writeFileSync(path.join(out, 'Introduction.mdx'), `import { Meta } from '@storybook/blocks';
 
 <Meta title="DG/Introduction" />
@@ -67,18 +71,14 @@ front-end Storybook. Switch fascia in the toolbar: the same \`fascia\` global th
 
 - Groups follow the job the component does (Actions, Forms, Feedback, Product, PDP modules, Navigation, Overlays & bag, Chips & pills, Account, Layout) rather than atom/molecule tiers.
 - Each component's Docs tab names its front-end counterpart and the alignment status: **match** (same job, ours is the visual target), **partial** (one side has states the other lacks), **ours** (no counterpart yet — build to this).
-- Tokens: the front-end theme is a flat list of ~40 RGB-triplet CSS variables per fascia consumed by Tailwind utilities. The table below maps each onto our semantic tokens.
+- Tokens: the front-end theme is a flat list of ~25–67 RGB-triplet CSS variables per fascia consumed by Tailwind utilities. The table below maps each onto our semantic tokens.
 
 ## Front-end Storybook → DG components
 
-| Front-end component | Stories | DG component(s) | Status | Note |
-|---|---|---|---|---|
 ${rows}
 
 ## Front-end theme variables → DG tokens
 
-| Front-end variable | DG token | Note |
-|---|---|---|
 ${toks}
 `);
 

@@ -8,7 +8,6 @@ projects/*/capture/**/*.png
 .context/inventory/storybook-capture/dom/
 .context/inventory/storybook-capture/extract.json
 .context/inventory/storybook-capture/preview.css
-# our Storybook — build output + generated stories + deps
+# our Storybook — generated stories + deps (dist/ IS committed: Pages serves it at /storybook/dist/)
 storybook/node_modules/
-storybook/storybook-static/
 storybook/stories/

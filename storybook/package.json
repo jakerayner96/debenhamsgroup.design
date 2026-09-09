@@ -7,7 +7,7 @@
   "scripts": {
     "gen": "node gen-stories.mjs",
     "storybook": "npm run gen && storybook dev -p 6006",
-    "build-storybook": "npm run gen && storybook build -o storybook-static"
+    "build-storybook": "npm run gen && storybook build -o dist"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.6.14",

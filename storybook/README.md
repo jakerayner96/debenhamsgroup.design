@@ -20,11 +20,10 @@ one per component variant, themed by the same `fascia` toolbar global the front-
 cd storybook
 npm install
 npm run storybook          # dev server on :6006 (regenerates stories first)
-npm run build-storybook    # static build → storybook-static/ (gitignored)
+npm run build-storybook    # static build → dist/ (committed — Pages serves it)
 ```
 
-Requires Node 20+. `storybook-static/` and `node_modules/` are not committed; publish the build to Pages
-(or hand the folder over) when a review needs a URL.
+Requires Node 20+. `dist/` is committed so GitHub Pages serves it at https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/ — rebuild and commit after changing the catalogue. `node_modules/` and `stories/` are not committed.
 
 ## For the front-end team
 
