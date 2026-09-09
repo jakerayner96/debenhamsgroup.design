@@ -252,6 +252,50 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
 .openrow{margin:-6px 0 18px}
 .nav .items a.ext::after,.items a.ext::after{content:"↗";margin-left:auto;font-size:10px;opacity:.6;flex:none;margin-top:3px}
 .tag.dim{opacity:.55}
+/* ================= COMPONENT LIBRARY (gallery + wiki, rendered from assets/ds/catalogue.js) ================= */
+.cfilters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;align-items:center}
+.cf{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:99px;padding:5px 11px;color:var(--ink-3);cursor:pointer}
+.cf:hover{color:var(--ink)}
+.cf.on{color:var(--aq);border-color:rgba(123,231,216,.5);background:var(--aq-dim)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.ctile{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:border-color .12s,transform .12s;color:inherit}
+.ctile:hover{border-color:var(--line-2);transform:translateY(-1px)}
+.ctile .cv{background:var(--surface-page);height:210px;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;font-family:var(--font-family-base);position:relative;pointer-events:none;color:var(--text-primary)}
+.ctile .cv .fit{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;transform-origin:center;flex:none}
+.ctile .cm{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px}
+.ctile .cm b{font-size:14.5px;font-weight:600}
+.ctile .cm small{font-size:12.5px;color:var(--ink-3);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ctile .cm .row{display:flex;gap:8px;align-items:center;margin-top:6px}
+.cg{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.dv{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;border-radius:4px;padding:1px 6px;border:1px solid var(--line-2);color:var(--ink-3);white-space:nowrap}
+.dv.match{color:var(--ok);border-color:#1E463D}.dv.partial{color:var(--warn);border-color:#4A3A16}.dv.ours{color:var(--aq);border-color:rgba(123,231,216,.4)}.dv.dev-only{color:#C9A0FF;border-color:#3B2A58}.dv.infra{opacity:.6}
+.wiki{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:40px;align-items:start}
+.wiki .hero .canvas{min-height:240px}
+.wlist{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:14px 16px;margin:0 0 14px}
+.wlist h5{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.wlist ul{list-style:none;display:flex;flex-direction:column;gap:7px;font-size:13.5px;color:var(--ink-2)}
+.wlist li{display:flex;gap:9px;align-items:flex-start;line-height:1.45}
+.wlist li i{flex:none;font-style:normal;width:18px;text-align:center;color:var(--ok);font-size:12px;margin-top:2px}
+.wlist.no li i{color:#E06C6C}
+.wlist.an li i{color:var(--aq);font-family:var(--mono);font-size:10px}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin:14px 0}
+.vcard{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel);min-width:0}
+.vcard .canvas{padding:28px;min-height:150px;overflow-x:auto}
+.vcard .vn{padding:9px 14px;font-family:var(--mono);font-size:11px;color:var(--ink-3);border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.vcard .vn button{font-family:var(--mono);font-size:10px;color:var(--aq);text-transform:uppercase;letter-spacing:.06em}
+.vcard.wide{grid-column:1/-1}
+.devbox{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:14px 16px;font-size:13.5px;color:var(--ink-2);line-height:1.6}
+.devbox b{color:var(--ink);font-weight:500}
+.devbox a{color:var(--aq)}
+.codeblk{display:none;font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ink-2);background:var(--bg);border-top:1px solid var(--line);padding:12px 14px;white-space:pre-wrap;word-break:break-all;max-height:260px;overflow:auto;margin:0}
+.vcard.code .codeblk{display:block}
+.omx .tr{grid-template-columns:1.5fr 60px 1.3fr 96px 2fr;height:auto;min-height:44px;padding:8px 16px;cursor:default;font-size:13px;gap:10px}
+.omx .tr.h{min-height:36px}
+.omx .tr .d,.tmx .tr .d{white-space:normal;font-size:12.5px;line-height:1.5}
+.omx .tr a,.tmx .tr a{color:var(--aq)}
+.tmx .tr{grid-template-columns:1.2fr 1.2fr 2.4fr;height:auto;min-height:44px;padding:8px 16px;cursor:default;font-size:13px;gap:10px}
+.tmx code{font-family:var(--mono);font-size:11.5px;color:var(--aq);word-break:break-all}
+@media(max-width:920px){.wiki{grid-template-columns:1fr}.omx .tr,.tmx .tr{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -285,14 +329,9 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
       <a href="#install"><span class="ic">⤓</span>Using the system</a>
       <a href="#components"><span class="ic">▦</span>Components</a>
       <a href="#prototypes"><span class="ic">▣</span>Master prototypes <span class="tag wip">wip</span></a>
-      <a href="#button"><span class="ic">▢</span>Button <span class="tag ok">live</span></a>
-      <a href="#product-card"><span class="ic">▢</span>Product card <span class="tag ok">live</span></a>
-      <a href="#header"><span class="ic">▢</span>PLP header <span class="tag ok">live</span></a>
-      <a href="#sort-filter"><span class="ic">▢</span>Sort &amp; filter <span class="tag ok">live</span></a>
-      <a href="#badges"><span class="ic">▢</span>Badges <span class="tag ok">live</span></a>
+      <a href="#gallery"><span class="ic">▦</span>Component library <span class="tag ok">new</span></a>
+      <a href="#dev-overlay"><span class="ic">⇄</span>Dev alignment <span class="tag ok">new</span></a>
       <a href="#icons"><span class="ic">✳</span>Icons <span class="tag ok">live</span></a>
-      <a href="#footer"><span class="ic">▬</span>Footer <span class="tag ok">live</span></a>
-      <a href="#library"><span class="ic">▦</span>Extended library <span class="tag ok">live</span></a>
     </div>
   </div>
   <div class="grp">
@@ -695,6 +734,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <div class="kick">system <b>· packages/components</b></div>
     <h1>Components</h1>
     <p class="lede">The library index. Brand chips show themed coverage; status is live in production or in build.</p>
+    <div class="quick" style="margin-bottom:24px"><a href="#gallery"><span class="ic">▦</span>Component library — every component live, as a visual wiki<small>new</small></a><a href="#dev-overlay"><span class="ic">⇄</span>Dev alignment — how the front-end Storybook overlays with ours<small>new</small></a></div>
     <div class="tbl">
       <div class="tr h"><span></span><span>Name</span><span>Description</span><span>Brands</span><span>Status</span></div>
       <div class="tr" onclick="location.hash='button'"><span class="id">C-01</span><span class="nm">Button</span><span class="d">Primary · secondary · disabled · spinner — golden-truth state matrix</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
@@ -1190,6 +1230,32 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">assets/ds/components.css → EXTENDED LIBRARY · assets/ds/tokens.css → EXTENDED COMPONENT TOKENS</code> · Inventory: <code>.context/18-component-inventory.md</code> (+ four full repo reads in <code>.context/inventory/</code>) · Backlog not yet ported: PDP gallery, Shop The Look + bundle family, notify-me form, VTO flow, Brand Room nav/drawer/hero family, checkout saved-card rows, glass nav chrome (app), request-form kit.</p>
   </section>
 
+  <!-- COMPONENT LIBRARY (gallery — rendered from assets/ds/catalogue.js) -->
+  <section class="page" id="gallery" data-crumb="System / Component library">
+    <div class="kick">system <b>· assets/ds/catalogue.js → this page + storybook/</b></div>
+    <h1>Component library</h1>
+    <p class="lede">Every component in the system, live, in the brand you have selected. Open one for what it is, when to use it and how it is built. The same catalogue generates our Storybook for the dev team.</p>
+    <div class="cfilters"></div>
+    <div class="cgrid"></div>
+  </section>
+
+  <!-- DEV ALIGNMENT (front-end Storybook overlay) -->
+  <section class="page" id="dev-overlay" data-crumb="System / Dev alignment">
+    <div class="kick">system <b>· web-storybook.jamesb.play.dbztech.net · read 09 Sep 2026</b></div>
+    <h1>Dev alignment</h1>
+    <p class="lede">The front-end team's Storybook has 79 components across 178 stories, themed for 21 fascias. This is how it overlays with ours — component by component, token by token — and what the shared build should become.</p>
+    <div class="stats" style="grid-template-columns:repeat(5,1fr)"></div>
+    <h2>How the devs build <code>React · Tailwind · per-fascia CSS variables</code></h2>
+    <p>Components are React with Tailwind utility classes. A <b>variant</b> prop selects a class string (Button has 19). Theming is a flat list of ~25–67 CSS variables per fascia — RGB triplets like <code>--color-primary: 123 231 216</code> — read by utilities such as <code>bg-primary</code>, <code>font-cta</code> and <code>rounded</code> (which resolves <code>--default-rounding</code>: 0 on PLT and Brand Room — exactly our square modes). Greys are fixed utilities on the same Grey 1–6 ramp we use. Fonts per fascia match ours except Karen Millen (dev runs Work Sans for CTA and headings) and Warehouse (Roboto). A <code>fascia</code> toolbar global switches the theme; our Storybook exposes the same global mapped onto <code>data-brand</code>.</p>
+    <p><b style="color:var(--ink)">The plan:</b> our catalogue is the visual target. Where a dev component matches, the dev build adopts our tokens and states; where it is partial, the Docs note says what to add on which side; where we have no counterpart it is a new component for us to spec; where they have no counterpart it is a new component for them to build from our story.</p>
+    <h2>Component overlay <code>dev → ours</code></h2>
+    <div class="tbl omx"></div>
+    <h2>Token map <code>dev theme variables → our semantic tokens</code></h2>
+    <div class="tbl tmx"></div>
+    <h2>Source</h2>
+    <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">.context/inventory/05-dev-storybook.md</code> — the full ingest: every component with its props, per-fascia theme variables, 1440 + 390 renders of all 178 stories. <code style="font-family:var(--mono);font-size:12px;color:var(--aq)">storybook/</code> — our DG Group Design System Storybook, generated from the same catalogue.</p>
+  </section>
+
   <!-- PROJECTS INDEX -->
   <section class="page" id="projects" data-crumb="Projects">
     <div class="kick">projects <b>· options + chosen route, always</b></div>
@@ -1356,6 +1422,58 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
   </div>
 </div>
 
+<script src="assets/ds/catalogue.js"></script>
+<script>
+/* ---- component library: gallery + wiki pages + dev overlay, rendered from assets/ds/catalogue.js ---- */
+(function(){
+const C=window.DG_CATALOGUE,O=window.DG_DEV_OVERLAY,T=window.DG_TOKEN_MAP;
+const DEV='https://web-storybook.jamesb.play.dbztech.net/?path=/docs/';
+const devId=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const SPEC={button:'button','product-card':'product-card',header:'header','sort-filter':'sort-filter',badges:'badges',footer:'footer','usp-banner':'header','ai-strip':'badges'};
+const esc=x=>x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const groups=[...new Set(C.map(c=>c.group))];
+const st=x=>`<span class="dv ${x}">${x==='ours'?'ours only':x.replace('-',' ')}</span>`;
+const main=document.getElementById('main');
+/* gallery */
+const gal=document.getElementById('gallery');
+gal.querySelector('.cfilters').innerHTML=`<button class="cf on" data-f="*">All ${C.length}</button>`+groups.map(g=>`<button class="cf" data-f="${g}">${g} <span style="opacity:.6">${C.filter(c=>c.group===g).length}</span></button>`).join('')+`<span style="width:6px"></span>`+['match','partial','ours'].map(x=>`<button class="cf" data-s="${x}">${x==='ours'?'no dev counterpart':'dev '+x}</button>`).join('');
+gal.querySelector('.cgrid').innerHTML=C.map(c=>`<div class="ctile" onclick="location.hash='c-${c.slug}'" data-g="${c.group}" data-s="${c.dev.status}"><div class="cv"><div class="fit">${c.variants[0].html}</div></div><div class="cm"><b>${c.name}</b><small>${c.summary}</small><div class="row"><span class="cg">${c.group}</span>${st(c.dev.status)}</div></div></div>`).join('');
+gal.querySelectorAll('.cf').forEach(b=>b.onclick=()=>{gal.querySelectorAll('.cf').forEach(x=>x.classList.toggle('on',x===b));const f=b.dataset.f,x=b.dataset.s;gal.querySelectorAll('.ctile').forEach(t=>t.style.display=(f==='*'||t.dataset.g===f||(x&&t.dataset.s===x))?'':'none');fitTiles();});
+window.fitTiles=function(){document.querySelectorAll('#gallery .ctile .cv').forEach(cv=>{const f=cv.firstElementChild;if(!f||!cv.offsetParent)return;f.style.transform='none';const bw=cv.clientWidth-40,bh=cv.clientHeight-40;const w=f.scrollWidth,h=f.scrollHeight;if(!w||!h)return;f.style.transform='scale('+Math.min(1,bw/w,bh/h).toFixed(3)+')';});};
+/* wiki pages */
+const wl=(title,items,cls,glyph)=>`<div class="wlist ${cls||''}"><h5>${title}</h5><ul>${items.map((x,i)=>`<li><i>${glyph===null?String(i+1).padStart(2,'0'):glyph}</i>${x}</li>`).join('')}</ul></div>`;
+const wide=h=>/width:\s*([5-9]\d{2}|\d{4})px/.test(h);
+C.forEach((c,i)=>{
+  const s=document.createElement('section');s.className='page';s.id='c-'+c.slug;s.dataset.crumb='System / Component library / '+c.name;
+  const prev=C[(i-1+C.length)%C.length],next=C[(i+1)%C.length];
+  const devLink=c.dev.title!=='—'?`<a href="${DEV}${devId(c.dev.title)}--docs" target="_blank" rel="noopener">${c.dev.title} ↗</a>`:'no counterpart in the dev build yet';
+  s.innerHTML=`<div class="kick"><a href="#gallery" style="color:inherit">component library</a> / ${c.group} <b>· rendering <span class="bn">Debenhams</span></b></div>
+  <h1>${c.name}</h1><p class="lede">${c.summary}</p>
+  <div class="wiki"><div style="min-width:0">
+    <div class="demo hero"><div class="hd"><i></i><i></i><i></i><span>canvas — ${c.name.toLowerCase()} · ${c.variants[0].name.toLowerCase()}</span><span class="bn">Debenhams</span></div><div class="canvas" style="overflow-x:auto">${c.variants[0].html}</div></div>
+    <h2>Variants <code>${c.variants.length}</code></h2>
+    <div class="vgrid">${c.variants.map(v=>`<div class="vcard${wide(v.html)?' wide':''}"><div class="canvas">${v.html}</div><div class="vn"><span>${v.name}</span><button onclick="this.closest('.vcard').classList.toggle('code')">html</button></div><pre class="codeblk">${esc(v.html.trim())}</pre></div>`).join('')}</div>
+    <h2>In the dev build <code>front-end storybook</code></h2>
+    <div class="devbox">${st(c.dev.status)} &nbsp;<b>${devLink}</b><br>${c.dev.note}</div>
+    <div style="display:flex;justify-content:space-between;margin-top:36px;font-size:13.5px"><a href="#c-${prev.slug}" style="color:var(--ink-3)">← ${prev.name}</a><a href="#c-${next.slug}" style="color:var(--ink-3)">${next.name} →</a></div>
+  </div><aside>
+    ${wl('When to use',c.use,'','✓')}${wl('Avoid',c.avoid,'no','✕')}${wl('Anatomy',c.anatomy,'an',null)}
+    <div class="wlist"><h5>Source</h5><ul><li><i style="color:var(--ink-3)">css</i><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">${c.css}</code></li>${c.figma?`<li><i style="color:var(--ink-3)">fig</i><span style="font-family:var(--mono);font-size:11.5px">${c.figma}</span></li>`:''}<li><i style="color:var(--ink-3)">sb</i><span style="font-family:var(--mono);font-size:11.5px">DG / ${c.group} / ${c.name}</span></li><li><i style="color:var(--ink-3)">→</i><a href="#${SPEC[c.slug]||'library'}" style="color:var(--aq)">${SPEC[c.slug]?'Full spec page':'Extended library spec'}</a></li></ul></div>
+  </aside></div>`;
+  main.appendChild(s);
+});
+/* dev overlay */
+const ov=document.getElementById('dev-overlay');
+const cnt=x=>O.filter(o=>o.status===x).length;
+ov.querySelector('.stats').innerHTML=[[O.length,'dev components'],[cnt('match'),'match'],[cnt('partial'),'partial'],[cnt('dev-only')+cnt('infra'),'dev only / infra'],[C.filter(c=>c.dev.status==='ours').length,'ours only']].map(([b,l])=>`<div class="stat"><b>${b}</b><span>${l}</span></div>`).join('');
+ov.querySelector('.omx').innerHTML=`<div class="tr h"><span>Dev component</span><span>Stories</span><span>Ours</span><span>Status</span><span>Note</span></div>`+O.map(o=>`<div class="tr"><span><a href="${DEV}${devId(o.dev)}--docs" target="_blank" rel="noopener">${o.dev}</a></span><span class="id">${o.stories}</span><span class="d">${o.ours.map(u=>{const c=C.find(x=>x.slug===u);return c?`<a href="#c-${u}">${c.name}</a>`:u}).join(' · ')||'—'}</span><span>${st(o.status)}</span><span class="d">${o.note}</span></div>`).join('');
+ov.querySelector('.tmx').innerHTML=`<div class="tr h"><span>Dev variable</span><span>Our token</span><span>Note</span></div>`+T.map(t=>`<div class="tr"><span><code>${t.dev}</code></span><span><code>${t.ours}</code></span><span class="d">${t.note}</span></div>`).join('');
+/* demo links inside catalogue canvases are inert */
+main.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&a.closest('.canvas,.cv')&&a.closest('.page[id^="c-"],#gallery'))e.preventDefault();});
+/* search registry */
+window.DG_REG=[{h:'gallery',t:'Component library',k:'gallery wiki all components visual',ic:'▦',s:'System'},{h:'dev-overlay',t:'Dev alignment',k:'storybook front-end dev overlay tokens tailwind react mapping',ic:'⇄',s:'System'}].concat(C.map(c=>({h:'c-'+c.slug,t:c.name,k:(c.group+' '+c.css+' '+c.dev.title+' '+c.variants.map(v=>v.name).join(' ')).toLowerCase(),ic:'▢',s:'Component'})));
+})();
+</script>
 <script>
 /* ---- registry (drives search + routing) ---- */
 const REG=[
@@ -1386,6 +1504,7 @@ const REG=[
  {h:'brands',t:'Brand Centre',k:'fascias estate guidelines',ic:'✦',s:'Brands'},
  {h:'requests',t:'Requests board',k:'intake tickets status',ic:'▤',s:'Requests'},
 ];
+if(window.DG_REG)REG.push(...window.DG_REG);
 
 /* ---- routing ---- */
 const pages=[...document.querySelectorAll('.page')];
@@ -1395,8 +1514,10 @@ function route(){
   if(pg&&!pg.classList.contains('page')){pg.scrollIntoView({block:'start'});return} // in-page anchor — keep current view
   pages.forEach(p=>p.classList.toggle('on',p.id===h));
   document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));
+  if(h.startsWith('c-')){const g=document.querySelector('.side .items a[href="#gallery"]');if(g)g.classList.add('on')}
   const _c=document.getElementById('crumbs'); if(_c)_c.innerHTML=(pg?.dataset.crumb||'Home').split(' / ').map((c,i,a)=>i===a.length-1?`<b>${c}</b>`:c).join(' <span style="opacity:.4">/</span> ');
   document.getElementById('main').scrollTop=0;
+  if(window.fitTiles)requestAnimationFrame(fitTiles);
 }
 addEventListener('hashchange',route);
 
@@ -1412,6 +1533,7 @@ function paint(){
   document.querySelectorAll('.bn').forEach(b=>b.textContent=n);
   const slug=document.documentElement.getAttribute('data-brand');
   document.querySelectorAll('.brandlogo').forEach(i=>i.src='assets/brands/'+slug+'.svg');
+  if(window.fitTiles)requestAnimationFrame(fitTiles);
 }
 const fab=document.getElementById('fab'),fabBtn=document.getElementById('fabBtn'),fabIc=document.getElementById('fabIc'),fabMenu=document.getElementById('fabMenu');
 function fabClose(){fab.classList.remove('open');fabBtn.setAttribute('aria-expanded','false')}
