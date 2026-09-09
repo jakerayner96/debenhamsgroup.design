@@ -356,8 +356,8 @@ function card(p,i,b,cfg,IC){
     ${cfg.qa==='button'?`<button class="pc-add"><img src="${LIB}/icons-quick-add.svg" alt="">Add</button>`:''}
     ${p.taggstar&&(MODE==='live'||p.tsOn)?(()=>{const ts=p.taggstar.split('|');return `<div class="pc-taggstar${cfg.ts==='brand'?' pc-taggstar--brand':cfg.ts==='lt'?' pc-taggstar--lt':''}"><img src="${LIB}/${cfg.ts==='lt'?'icons-flame':'icons-trophy'}.svg" alt=""><b>${ts[0]}</b><span>${ts[1]||''}</span></div>`})():''}
     <div class="pc-info">
-      <div class="pc-titles">${cfg.brand&&p.brand?`<div class="pc-brand">${brandT(p.brand)}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>
-      ${cfg.qa==='mini'?'<div class="pc-pricerow">':''}<div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>${cfg.qa==='mini'?'<button class="pc-qa" aria-label="Quick add"><i></i>Quick add</button></div>':''}
+      ${cfg.qa==='mini'?'<div class="pc-toprow">':''}<div class="pc-titles">${cfg.brand&&p.brand?`<div class="pc-brand">${brandT(p.brand)}</div>`:''}<div class="pc-name${cfg.nameCaps?' pc-name--caps':''}">${p.name}</div></div>${cfg.qa==='mini'?'<button class="pc-qa" aria-label="Quick add"><i></i>Add</button></div>':''}
+      <div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div>
       ${p.off?`<div class="pc-offer">${p.off}</div>`:''}
       ${p.sw?`<div class="pc-swatches${cfg.swatch==='round'?' pc-swatches--round':''}"><span class="set">${p.sw.map((c,si)=>`<span class="pc-swatch${si===0?' on':''}"><i style="background:${c}"></i></span>`).join('')}</span>${p.swMore?`<span class="pc-more">+${p.swMore}</span>`:''}</div>`:''}
       ${p.rating?`<div class="pc-stars"><span class="set"><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-fill.svg" alt=""><img src="${LIB}/icons-star-half.svg" alt=""><img src="${LIB}/icons-star-outline.svg" alt=""></span><span>(${p.rating})</span></div>`:''}
@@ -730,7 +730,10 @@ const q=new URLSearchParams(location.search);
 if(q.get('mode'))MODE=q.get('mode');
 if(q.get('brand'))document.documentElement.setAttribute('data-brand',q.get('brand'));
 if(q.get('qa')){const v=q.get('qa');if(v==='none'||v==='off')QA_ON='off';else{QA_ON='on';QA_STYLE=qaStyleOf(v)}} // ?qa=off|image|button|mini
+if(q.get('cat'))CAT_OVERRIDE=q.get('cat');
+if(window.PLP_PRESET){const P=window.PLP_PRESET;if(P.brand)document.documentElement.setAttribute('data-brand',P.brand);if(P.mode)MODE=P.mode;if(P.cat)CAT_OVERRIDE=P.cat;if(P.qaOn)QA_ON=P.qaOn;if(P.qaStyle)QA_STYLE=P.qaStyle;} // exported zips bake the configuration in
 render();
+try{parent.postMessage({plpReady:1},'*')}catch(e){}
 </script>
 <!-- C-06 mobile filter sheet (combined pattern — New format) -->
 <div class="sf-drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Filters">

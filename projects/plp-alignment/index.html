@@ -2,136 +2,317 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>P-05 · PLP review — live ⇄ new, seven fascias</title>
+<title>PLP UI updates · configurator — All Brands</title>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
+/* ============================================================
+   Review shell — configurator. Same model as Core PDP 2026:
+   WINDOW controls on top (brand, viewport, fold, export) · PAGE controls down the left.
+   ============================================================ */
+:root{--bg:#161616;--bar:#000;--panel:#000;--line:rgba(255,255,255,.14);--ink:#F7F7F7;--muted:#9A9A9A;--dim:#707070;--accent:#0D99FF;--ok:#1FA971}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{background:#161616;font-family:'Google Sans','Montserrat',system-ui,sans-serif;color:#B0B0B0;display:flex;flex-direction:column;overflow:hidden}
+body{background:var(--bg);font-family:'Google Sans','Montserrat',system-ui,sans-serif;color:var(--muted);display:grid;grid-template-rows:48px 1fr;grid-template-columns:360px 1fr;height:100%;overflow:hidden;font-size:12px}
 button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+a{color:var(--accent)}
 
-.strip{display:flex;align-items:center;gap:6px;padding:8px 14px;background:#000;font-size:11.5px;overflow-x:auto;flex:none;font-family:'Google Sans','Montserrat',system-ui,sans-serif}
-.strip b{color:#F7F7F7;font-weight:600;margin-right:2px;white-space:nowrap}
-.strip .chip{flex:none;padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px;color:#B0B0B0}
-.strip .chip.on{background:#F7F7F7;color:#000;border-color:#F7F7F7;font-weight:600}
-#brands{display:inline-flex;gap:6px;flex:none}
-.seg{display:inline-flex;flex:none;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden}
-.seg button{border:none;border-radius:0;padding:5px 12px;color:#B0B0B0}
-.seg button.on{background:#F7F7F7;color:#000;font-weight:700}
-.strip select{background:#161616;color:#F7F7F7;border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 8px;font:inherit;font-size:11.5px}
-.strip select:disabled{opacity:.4}
-.strip .div{width:1px;height:20px;background:rgba(255,255,255,.15);margin:0 6px;flex:none}
-.sizebox{font-size:10.5px;color:#707070;white-space:nowrap;font-variant-numeric:tabular-nums}
-.cfg{margin-left:auto;font-size:10.5px;color:#707070;white-space:nowrap;padding-left:12px}
-.openfull{color:#F7F7F7;text-decoration:underline;font-size:11px;white-space:nowrap;flex:none}
+/* ---- top bar: window controls ---- */
+.top{grid-column:1/3;display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--bar);border-bottom:1px solid var(--line)}
+.top .export{display:flex;align-items:center;gap:8px;background:var(--ink);color:#000;padding:6px 12px;border-radius:99px;font-weight:600;font-size:12px}
+.top .export:disabled{opacity:.5;cursor:progress}
+.top .export svg{width:13px;height:13px}
+.top .mid{margin:0 auto;display:flex;align-items:center;gap:10px}
+.seg{display:inline-flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden}
+.seg button{padding:5px 12px;color:#B0B0B0;font-size:11.5px;white-space:nowrap}
+.seg button.on{background:var(--ink);color:#000;font-weight:700}
+.seg button:disabled{opacity:.35;cursor:not-allowed}
+.top select{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 8px;font:inherit;font-size:11.5px}
+.top .ttl{font-weight:600;font-size:12px;color:var(--ink);white-space:nowrap}
+.top .w{font-size:10.5px;color:var(--dim);font-variant-numeric:tabular-nums;min-width:48px;text-align:right}
+.top .status{font-size:11px;color:var(--muted);white-space:nowrap}
+.top .chips{flex-wrap:nowrap}
+.top .div{width:1px;height:20px;background:rgba(255,255,255,.15);margin:0 4px;flex:none}
 
-.stage{flex:1;display:flex;align-items:stretch;justify-content:center;overflow:hidden;padding:0}
-.holder{display:flex;align-items:stretch;height:100%}
+/* ---- left panel: page controls ---- */
+.panel{background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:16px 14px 40px}
+.panel h1{font-size:17px;font-weight:700;letter-spacing:-.01em;margin:4px 0 2px;color:var(--ink)}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 14px}
+.ph h1{margin:0}
+.ph .open{padding:6px 12px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:var(--ink);font-size:11.5px;font-weight:600;white-space:nowrap;text-decoration:none}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px 12px 10px;margin-bottom:10px;background:#0E0E0E}
+.card h3{font-size:12.5px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;gap:8px}
+.card h3 .tag{font-size:9.5px;font-weight:600;color:#000;background:var(--ok);padding:2px 7px;border-radius:99px;white-space:nowrap}
+.card p{font-size:11px;color:var(--dim);line-height:1.45;margin-bottom:8px}
+.card .sub{font-size:11px;font-weight:600;color:var(--ink);margin:6px 0 0;padding-bottom:2px}
+.card .sub.second{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.14)}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:7px 0;cursor:pointer;border-top:1px solid rgba(255,255,255,.07);width:100%;text-align:left}
+.opt:first-child{border-top:none}
+.opt:disabled{opacity:.4;cursor:not-allowed}
+.opt .r{flex:none;width:16px;height:16px;border-radius:99px;border:1.5px solid #6A6A6A;margin-top:1px;position:relative}
+.opt.on .r{border-color:var(--accent);background:var(--accent)}
+.opt.on .r::after{content:"";position:absolute;inset:4px;border-radius:99px;background:#0A0A0A}
+.opt .t{flex:1;min-width:0}
+.opt .t b{display:block;font-size:12px;font-weight:500;color:#D8D8D8}
+.opt.on .t b{font-weight:600;color:var(--ink)}
+.opt .t span{display:block;font-size:10.5px;color:var(--dim);line-height:1.4}
+.opt .tag{font-size:9.5px;font-weight:600;color:#000;background:var(--ok);padding:2px 7px;border-radius:99px;align-self:center;white-space:nowrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px;color:#B0B0B0}
+.chip.on{background:var(--ink);color:#000;border-color:var(--ink);font-weight:600}
+.link{color:var(--accent);font-size:11.5px;text-decoration:underline;padding:0}
+.sum{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--dim);line-height:1.5;word-break:break-word;margin-top:4px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 2px}
+
+/* ---- mobile: the page fills the window; the panel slides over it from a settings tab ---- */
+#mtab,.mhead{display:none}
+@media(max-width:760px){
+  body{grid-template-columns:1fr;grid-template-rows:1fr}
+  .top{display:none}
+  .stage{padding:0}
+  .win,.holder,.device{width:100%!important}
+  .device{flex:1}
+  iframe{width:100%!important;box-shadow:none}
+  .stage .handle{display:none!important}
+  #mtab{display:grid;place-items:center;position:fixed;left:0;top:64px;z-index:70;width:44px;height:44px;background:#000;color:#FFF;border-radius:0 12px 12px 0;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  #mtab svg{width:22px;height:22px}
+  .panel{position:fixed;inset:0;z-index:80;border-right:none;transform:translateX(-100%);transition:transform .25s ease;padding-top:12px}
+  .panel.open{transform:none}
+  .mhead{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .mhead .chips{flex:1;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .mhead .export{display:flex;align-items:center;gap:6px;background:var(--ink);color:#000;padding:6px 12px;border-radius:99px;font-weight:600;font-size:12px;flex:none}
+  .mhead .export svg{width:13px;height:13px}
+  .mhead .mclose{flex:none;width:32px;height:32px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:var(--ink)}
+}
+/* ---- fold view: iOS 26 Safari frame ---- */
+.device{position:relative;display:flex;flex-direction:column;height:100%;background:#FFF}
+.device iframe{flex:1;min-height:0}
+.device .sb,.device .tb,.device .home,.device .chin{display:none}
+body.fold .stage{align-items:center}
+body.fold .win{height:auto}
+body.fold .device{height:calc(var(--k) * 874px);border-radius:calc(var(--k) * 44px);overflow:hidden;box-shadow:0 0 60px rgba(0,0,0,.5)}
+body.fold .device .sb,body.fold .device .tb,body.fold .device .home{display:flex}
+body.fold .device .chin{display:block;flex:none;height:calc(var(--k) * 82px);background:#FFF}
+body.fold .device iframe{box-shadow:none}
+.device .sb{height:calc(var(--k) * 62px);flex:none;background:#FFF;position:relative;align-items:center;justify-content:space-between;padding:0 calc(var(--k) * 30px) 0 calc(var(--k) * 48px);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif}
+.device .sb .time{font-size:calc(var(--k) * 17px);font-weight:600;color:#000;letter-spacing:-.02em;width:calc(var(--k) * 54px)}
+.device .sb .island{position:absolute;left:50%;top:calc(var(--k) * 11px);transform:translateX(-50%);width:calc(var(--k) * 124px);height:calc(var(--k) * 36px);background:#000;border-radius:99px}
+.device .sb .sys{display:flex;align-items:center;gap:calc(var(--k) * 6px)}
+.device .sb .sig{width:calc(var(--k) * 18px);height:calc(var(--k) * 12px)}
+.device .sb .wifi{width:calc(var(--k) * 16px);height:calc(var(--k) * 12px)}
+.device .sb .bat{width:calc(var(--k) * 28px);height:calc(var(--k) * 13px)}
+.device .tb{position:absolute;left:0;right:0;bottom:calc(var(--k) * 34px);height:calc(var(--k) * 48px);padding:0 calc(var(--k) * 28px);align-items:center;justify-content:space-between;gap:calc(var(--k) * 8px);pointer-events:none}
+.device .tb .circ{width:calc(var(--k) * 48px);height:calc(var(--k) * 48px);border-radius:99px;background:rgba(255,255,255,.92);box-shadow:0 1px 6px rgba(0,0,0,.18);display:grid;place-items:center;flex:none;backdrop-filter:blur(12px)}
+.device .tb .circ svg{width:calc(var(--k) * 12px);height:calc(var(--k) * 20px)}
+.device .tb .circ:last-child svg{width:calc(var(--k) * 22px);height:calc(var(--k) * 6px)}
+.device .tb .url{flex:1;height:calc(var(--k) * 48px);border-radius:99px;background:rgba(255,255,255,.92);box-shadow:0 1px 6px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--k) * 14px);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;font-size:calc(var(--k) * 17px);color:#000;backdrop-filter:blur(12px)}
+.device .tb .url .pg{width:calc(var(--k) * 20px);height:calc(var(--k) * 18px)}
+.device .tb .url .rl{width:calc(var(--k) * 20px);height:calc(var(--k) * 20px)}
+.device .home{position:absolute;left:50%;bottom:calc(var(--k) * 8px);transform:translateX(-50%);width:calc(var(--k) * 134px);height:calc(var(--k) * 5px);border-radius:99px;background:#000}
+/* ---- stage: plain frame, drag to resize ---- */
+.stage{position:relative;overflow:hidden;display:flex;align-items:stretch;justify-content:center;padding:0}
+.win{display:flex;height:100%;max-width:100%}
+.holder{display:flex;flex:1;min-height:0}
 iframe{border:none;display:block;height:100%;background:#FFF;box-shadow:0 0 60px rgba(0,0,0,.5)}
 .handle{width:16px;display:flex;align-items:center;justify-content:center;cursor:col-resize;flex:none}
 .handle i{width:5px;height:56px;border-radius:99px;background:#3A3A3A}
 .handle:hover i,.dragging .handle i{background:#6A6A6A}
 body.dragging{user-select:none;cursor:col-resize}
 body.dragging iframe{pointer-events:none}
+#exp{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:50}
+#exp[hidden]{display:none}
+#exp .box{background:#0A0A0A;border:1px solid var(--line);color:#FFF;padding:16px 22px;border-radius:12px;font-size:13px;display:flex;gap:12px;align-items:center;max-width:420px}
+#exp .sp{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#FFF;border-radius:99px;animation:sp .8s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+#hidden{position:fixed;left:-20000px;top:0;width:1px;height:1px;overflow:hidden}
 </style>
 </head>
 <body>
 
-<div class="strip">
-  <b>P-05</b>
-  <span class="seg" id="mode"><button data-m="live" class="on">Live now</button><button data-m="new">New format</button></span>
-  <span id="brands">
-    <button class="chip on" data-b="debenhams">Debenhams</button>
-    <button class="chip" data-b="boohoo">boohoo</button>
-    <button class="chip" data-b="boohooman">boohooMAN</button>
-    <button class="chip" data-b="plt">PLT</button>
-    <button class="chip" data-b="karenmillen">Karen Millen</button>
-    <button class="chip" data-b="warehouse">Warehouse</button>
-    <button class="chip" data-b="brandroom">Brand Room</button>
-  </span>
-  <span class="div"></span>
-  <select id="catsel" aria-label="Category nav style">
-    <option value="auto" selected>Top nav: auto</option>
-    <option value="roundels">Roundels — text below</option>
-    <option value="roundels-onimage">Roundels — text on</option>
-    <option value="pills">Pills</option>
-    <option value="links">Links</option>
-  </select>
-  <span class="div"></span>
-  <b>Quick add</b>
-  <span class="seg" id="qaon" title="Quick add on every product, or none"><button data-q="off">Off</button><button data-q="on">On</button></span>
-  <select id="qasty" aria-label="Quick add style" title="Quick add style — applies to every product">
-    <option value="image">On image — matches wishlist</option>
-    <option value="button">Button — under image</option>
-    <option value="mini">Mini — on price row</option>
-  </select>
-  <span class="div"></span>
-  <select id="preset" aria-label="Width preset">
-    <option value="390" selected>390 — mobile</option>
-    <option value="402">402</option>
-    <option value="440">440</option>
-    <option value="768">768 — tablet</option>
-    <option value="1024">1024</option>
-    <option value="1280">1280</option>
-    <option value="1440">1440 — desktop</option>
-    <option value="0">Fit window</option>
-  </select>
-  <span class="sizebox" id="sizebox"></span>
-  <span class="cfg" id="cfg"></span>
-</div>
-
-<div class="stage" id="stage">
-  <div class="holder">
-    <iframe id="frame" src="plp.html?brand=debenhams&mode=live" title="PLP preview"></iframe>
-    <div class="handle" id="hr" title="Drag to resize width"><i></i></div>
+<header class="top">
+  <span class="ttl">PLP UI updates · All Brands</span>
+  <div class="mid">
+    <span class="chips" id="brands">
+      <button class="chip on" data-b="debenhams">Debenhams</button>
+      <button class="chip" data-b="boohoo">boohoo</button>
+      <button class="chip" data-b="boohooman">boohooMAN</button>
+      <button class="chip" data-b="plt">PLT</button>
+      <button class="chip" data-b="karenmillen">Karen Millen</button>
+      <button class="chip" data-b="warehouse">Warehouse</button>
+      <button class="chip" data-b="brandroom">Brand Room</button>
+    </span>
+    <span class="div"></span>
+    <span class="seg" id="dev"><button data-w="0">Desktop</button><button data-w="390" class="on">Mobile</button></span>
+    <select id="preset" aria-label="Width preset" title="Exact width — or drag the handle on the preview">
+      <option value="390" selected>390</option><option value="402">402</option><option value="440">440</option><option value="768">768</option><option value="1024">1024</option><option value="1280">1280</option><option value="1440">1440</option><option value="0">Fit</option>
+    </select>
+    <span class="w" id="sizebox"></span>
+    <span class="seg" id="fold"><button data-f="0" class="on">Full page</button><button data-f="1">Fold</button></span>
   </div>
-</div>
+  <span class="status" id="status"></span>
+  <button class="export" id="exportbtn" title="Export full-page PNGs (mobile + desktop) and a zip of the code with this configuration"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 12.5h11"/></svg>Export</button>
+</header>
+
+<button id="mtab" aria-label="Open the configurator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+<aside class="panel">
+  <div class="mhead">
+    <span class="chips" id="brands-m"></span>
+    <button class="export" id="exportbtn2"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 12.5h11"/></svg>Export</button>
+    <button class="mclose" id="mclose" aria-label="Close">✕</button>
+  </div>
+  <div class="ph"><h1>Configure the PLP</h1><a class="open" id="openfull" href="plp.html" target="_blank" rel="noopener">Open page ↗</a></div>
+
+  <div class="card"><h3>Format</h3><p>Live replicates each fascia's real PLP (03 Sep capture). New is the aligned template: compact card, combined sort &amp; filter, the brief applied.</p><div id="modeopts"></div></div>
+  <div class="card"><h3>Category nav</h3><div id="catopts"></div></div>
+  <div class="card"><h3>Quick add <span class="tag">page-level</span></h3><p>Every product or none — never per card.</p><div id="qaopts"></div><div class="sub second">Style</div><div id="qastyle"></div></div>
+
+  <div class="foot"><span></span><button class="link" id="reset">Reset to fascia defaults</button></div>
+  <div class="sum" id="cfg"></div>
+</aside>
+
+<main class="stage" id="stage">
+  <div class="win" id="win">
+    <div class="holder">
+      <div class="device" id="device">
+        <div class="sb"><span class="time">9:41</span><span class="island"></span><span class="sys">
+          <svg class="sig" viewBox="0 0 18 12" fill="#000"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></svg>
+          <svg class="wifi" viewBox="0 0 16 12" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M4 7a5.8 5.8 0 0 1 8 0"/><circle cx="8" cy="10.2" r="1" fill="#000" stroke="none"/></svg>
+          <svg class="bat" viewBox="0 0 28 13"><rect x=".5" y=".5" width="24" height="12" rx="3.5" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="2" y="2" width="21" height="9" rx="2" fill="#000"/><path d="M26 4.5v4a2 2 0 0 0 0-4z" fill="#000" fill-opacity=".4"/></svg>
+        </span></div>
+        <iframe id="frame" title="PLP preview"></iframe>
+        <div class="tb"><span class="circ"><svg viewBox="0 0 12 20" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 2 10l8 8"/></svg></span><span class="url"><svg class="pg" viewBox="0 0 20 18" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="2" width="14" height="10" rx="1.5"/><path d="M6 6h8M6 9h5M7 16h6"/></svg><span id="urltxt">debenhams.com</span><svg class="rl" viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a6 6 0 1 1-1.8-4.3"/><path d="M15 2v4h-4"/></svg></span><span class="circ"><svg viewBox="0 0 22 6" fill="#000"><circle cx="3" cy="3" r="2.2"/><circle cx="11" cy="3" r="2.2"/><circle cx="19" cy="3" r="2.2"/></svg></span></div>
+        <div class="chin"></div>
+        <div class="home"></div>
+      </div>
+      <div class="handle" id="hr" title="Drag to resize width"><i></i></div>
+    </div>
+  </div>
+</main>
+
+<div id="exp" hidden><div class="box"><span class="sp"></span><span id="exptxt">Exporting…</span></div></div>
+<div id="hidden"></div>
 
 <script>
-let W=390, BRAND='debenhams', MODE='live', CAT='auto', QA_ON='auto', QA_STYLE='auto'; // quick add: page-level, auto follows the fascia config until touched // defaults to 390 mobile
-const frame=document.getElementById('frame'),stage=document.getElementById('stage'),
-      preset=document.getElementById('preset'),sizebox=document.getElementById('sizebox'),
-      cfg=document.getElementById('cfg');
+const MODES=[['live','Live now','What each site ships today'],['new','New format','The aligned template']];
+const CATS=[['auto','Fascia default'],['roundels','Roundels — text below'],['roundels-onimage','Roundels — text on image'],['pills','Pills'],['links','Links']];
+const QA_ON=[['auto','Fascia default'],['on','On — every product'],['off','Off']];
+const QA_STYLE=[['auto','Fascia default'],['image','On image','Bag-with-plus under the wishlist, takes its shape'],['button','Button','Full-width Add between image and titles'],['mini','Mini','Small Add pill on the titles row']];
+const DOMAIN={debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehouse.co.uk',brandroom:'thebrandroom.com'};
+const BRAND_NAME={debenhams:'Debenhams',boohoo:'boohoo',boohooman:'boohooMAN',plt:'PLT',karenmillen:'Karen Millen',warehouse:'Warehouse',brandroom:'Brand Room'};
 
+let FOLD=false, W=390;
+const CFG={brand:'debenhams',mode:'live',cat:'auto',qaOn:'auto',qaStyle:'auto'};
+let EFFECTIVE={qaOn:null,qaStyle:null}; // what the page reports it is actually doing (so 'fascia default' shows the outcome)
+const $=s=>document.querySelector(s);
+const frame=$('#frame'),stage=$('#stage'),win=$('#win'),preset=$('#preset'),sizebox=$('#sizebox'),cfg=$('#cfg');
+
+function radios(host,list,get,set,disabled){
+  host.innerHTML='';
+  list.forEach(([v,label,hint])=>{
+    const o=document.createElement('button');o.className='opt'+(get()===v?' on':'');o.setAttribute('role','radio');o.setAttribute('aria-checked',get()===v);
+    if(disabled)o.disabled=true;
+    o.innerHTML=`<span class="r"></span><span class="t"><b>${label}</b>${hint?`<span>${hint}</span>`:''}</span>`;
+    o.onclick=()=>{set(v);send();renderPanel();};host.appendChild(o);
+  });
+}
+function renderPanel(){
+  radios($('#modeopts'),MODES,()=>CFG.mode,v=>CFG.mode=v);
+  radios($('#catopts'),CATS,()=>CFG.cat,v=>CFG.cat=v);
+  const qaList=QA_ON.map(([v,l])=>v==='auto'&&EFFECTIVE.qaOn!==null?[v,l,EFFECTIVE.qaOn?'Currently on':'Currently off']:[v,l]);
+  radios($('#qaopts'),qaList,()=>CFG.qaOn,v=>CFG.qaOn=v);
+  const qaOff=EFFECTIVE.qaOn===false;
+  const stList=QA_STYLE.map(([v,l,h])=>v==='auto'&&EFFECTIVE.qaStyle?[v,l,'Currently '+EFFECTIVE.qaStyle]:[v,l,h]);
+  radios($('#qastyle'),stList,()=>CFG.qaStyle,v=>{CFG.qaStyle=v;if(v!=='auto')CFG.qaOn='on';},qaOff);
+  document.querySelectorAll('#brands .chip,#brands-m .chip').forEach(b=>b.classList.toggle('on',b.dataset.b===CFG.brand));
+  $('#openfull').href=pageURL();
+  $('#urltxt').textContent=DOMAIN[CFG.brand];
+}
+function pageURL(){const p=new URLSearchParams({brand:CFG.brand,mode:CFG.mode});if(CFG.cat!=='auto')p.set('cat',CFG.cat);if(CFG.qaOn==='off')p.set('qa','off');else if(CFG.qaStyle!=='auto')p.set('qa',CFG.qaStyle);return 'plp.html?'+p;}
 function apply(){
+  if(matchMedia('(max-width:760px)').matches){frame.style.width='100%';win.style.width='100%';return;}
   const avail=stage.clientWidth-16;
   const w=Math.min(W||avail,avail);
-  frame.style.width=w+'px';
+  frame.style.width=w+'px';win.style.width=(w+16)+'px';
+  const mobile=w<600;document.body.classList.toggle('fold',FOLD&&mobile);document.documentElement.style.setProperty('--k',(w/390).toFixed(4));
+  document.querySelectorAll('#fold button').forEach(b=>{b.classList.toggle('on',(+b.dataset.f===1)===(FOLD&&mobile));b.disabled=!mobile;});
   sizebox.textContent=`${Math.round(w)}px`;
+  document.querySelectorAll('#dev button').forEach(b=>b.classList.toggle('on',(b.dataset.w==='390'&&w<600)||(b.dataset.w==='0'&&w>=600)));
 }
-function send(){ frame.contentWindow.postMessage({plpSet:1,brand:BRAND,mode:MODE,cat:CAT,qaOn:QA_ON,qaStyle:QA_STYLE},'*'); }
-const qaon=document.getElementById('qaon'),qasty=document.getElementById('qasty');
-addEventListener('message',e=>{ if(e.data&&e.data.plpCfg){cfg.textContent=e.data.plpCfg;
-  // the page reports the effective quick-add state — the strip mirrors it (so 'auto' shows what the fascia actually does)
-  qaon.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.q===(e.data.qaOn?'on':'off')));
-  if(e.data.qaStyle)qasty.value=e.data.qaStyle; qasty.disabled=!e.data.qaOn;} });
+function send(f=frame){ try{f.contentWindow.postMessage({plpSet:1,brand:CFG.brand,mode:CFG.mode,cat:CFG.cat,qaOn:CFG.qaOn,qaStyle:CFG.qaStyle},'*');}catch(e){} }
+addEventListener('message',e=>{
+  const d=e.data;if(!d||e.source!==frame.contentWindow)return;
+  if(d.plpCfg){cfg.textContent=d.plpCfg;EFFECTIVE={qaOn:!!d.qaOn,qaStyle:d.qaStyle||null};renderPanel();}
+});
 
-document.querySelectorAll('#brands .chip').forEach(b=>b.onclick=()=>{
-  BRAND=b.dataset.b;
-  document.querySelectorAll('#brands .chip').forEach(x=>x.classList.toggle('on',x===b));
-  send();apply();
-});
-document.querySelectorAll('#mode button').forEach(b=>b.onclick=()=>{
-  MODE=b.dataset.m;
-  document.querySelectorAll('#mode button').forEach(x=>x.classList.toggle('on',x===b));
-  send();apply();
-});
+// brand chips — top bar and the mobile head share one list
+const bm=$('#brands-m');document.querySelectorAll('#brands .chip').forEach(b=>{const c=b.cloneNode(true);bm.appendChild(c);});
+document.querySelectorAll('#brands .chip,#brands-m .chip').forEach(b=>b.onclick=()=>{CFG.brand=b.dataset.b;send();renderPanel();});
+document.querySelectorAll('#dev button').forEach(b=>b.onclick=()=>{W=+b.dataset.w;preset.value=String(W);apply();});
 preset.onchange=()=>{W=+preset.value;apply();};
-document.getElementById('catsel').onchange=e=>{CAT=e.target.value;send();};
-qaon.querySelectorAll('button').forEach(b=>b.onclick=()=>{QA_ON=b.dataset.q;send();});
-qasty.onchange=e=>{QA_STYLE=e.target.value;QA_ON='on';send();};
-
-document.getElementById('hr').addEventListener('pointerdown',e=>{
+document.querySelectorAll('#fold button').forEach(b=>b.onclick=()=>{FOLD=b.dataset.f==='1';apply();});
+$('#reset').onclick=()=>{CFG.cat='auto';CFG.qaOn='auto';CFG.qaStyle='auto';send();renderPanel();};
+$('#hr').addEventListener('pointerdown',e=>{
   e.preventDefault();document.body.classList.add('dragging');
   const sx=e.clientX, sw=frame.offsetWidth;
-  const move=ev=>{W=Math.max(320,sw+(ev.clientX-sx));preset.value='0';preset.options[preset.selectedIndex].textContent='Fit window';apply();};
+  const move=ev=>{W=Math.max(320,sw+(ev.clientX-sx));preset.value='0';apply();};
   const up=()=>{document.body.classList.remove('dragging');removeEventListener('pointermove',move);removeEventListener('pointerup',up);};
   addEventListener('pointermove',move);addEventListener('pointerup',up);
 });
 addEventListener('resize',apply);
-frame.addEventListener('load',send);
-apply();
+frame.addEventListener('load',()=>send());
+frame.src='plp.html?brand=debenhams&mode=live&_='+Date.now(); // always a fresh copy of the page
+renderPanel();apply();
 
+/* ---------- Export: full-page PNGs (390 + 1440) + zip of the code with this configuration baked in ---------- */
+const status=$('#status'),exp=$('#exp'),exptxt=$('#exptxt');
+function loadFrame(w){
+  return new Promise(res=>{
+    const f=document.createElement('iframe');f.style.width=w+'px';f.style.height='900px';f.style.border='0';f.src=pageURL()+'&_='+Date.now();
+    $('#hidden').appendChild(f);
+    f.addEventListener('load',()=>{send(f);setTimeout(()=>{const h=f.contentDocument.documentElement.scrollHeight;f.style.height=(h+20)+'px';setTimeout(()=>res(f),600);},700);});
+  });
+}
+async function shot(w){
+  const f=await loadFrame(w);const doc=f.contentDocument;
+  const h=doc.documentElement.scrollHeight;
+  const canvas=await html2canvas(doc.documentElement,{width:w,height:h,windowWidth:w,windowHeight:h,scale:2,useCORS:true,backgroundColor:'#FFFFFF',logging:false});
+  f.remove();
+  return new Promise(r=>canvas.toBlob(b=>r(b),'image/png'));
+}
+function stamp(){const d=new Date();return d.toISOString().slice(0,16).replace('T','-').replace(':','');}
+async function doExport(){
+  const btn=$('#exportbtn');btn.disabled=true;exp.hidden=false;
+  try{
+    exptxt.textContent='Rendering mobile (390)…';const m=await shot(390);
+    exptxt.textContent='Rendering desktop (1440)…';const d=await shot(1440);
+    exptxt.textContent='Packaging code…';
+    const zip=new JSZip();const name=`plp-${CFG.brand}-${CFG.mode}-${stamp()}`;const root=zip.folder(name);
+    const state={...CFG,effective:EFFECTIVE,summary:cfg.textContent,exportedAt:new Date().toISOString()};
+    root.file('config.json',JSON.stringify(state,null,2));
+    root.file(`${name}-mobile-390.png`,m);root.file(`${name}-desktop-1440.png`,d);
+    let html=await (await fetch('plp.html')).text();
+    const SC='scr'+'ipt';
+    html=html.split('../../assets').join('assets'); // the zip carries the DS alongside the page
+    html=html.replace(`<${SC} src="data.js"></${SC}>`,`<${SC}>window.PLP_PRESET=${JSON.stringify({brand:CFG.brand,mode:CFG.mode,cat:CFG.cat,qaOn:CFG.qaOn,qaStyle:CFG.qaStyle})};</${SC}>\n<${SC} src="data.js"></${SC}>`);
+    root.file('plp.html',html);root.file('data.js',await (await fetch('data.js')).text());
+    root.file('README.txt',`PLP UI updates — All Brands · ${BRAND_NAME[CFG.brand]} · ${CFG.mode==='new'?'New format':'Live now'}\nExported ${state.exportedAt}\n\nOpen plp.html over HTTP (e.g. python3 -m http.server) to see this exact configuration.\nconfig.json is the decision record: fascia, format, category nav, quick add.\n\nConfiguration: ${cfg.textContent}\n`);
+    const files=await (await fetch('assets-manifest.json')).json();
+    let n=0;for(const fpath of files){exptxt.textContent=`Packaging assets… ${++n}/${files.length}`;const r=await fetch(fpath);if(r.ok)root.file(fpath.replace(/^\.\.\/\.\.\//,''),await r.blob());}
+    exptxt.textContent='Zipping…';
+    const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
+    const save=(b,fn)=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=fn;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},4000);};
+    save(m,`${name}-mobile-390.png`);await new Promise(r=>setTimeout(r,500));
+    save(d,`${name}-desktop-1440.png`);await new Promise(r=>setTimeout(r,500));
+    save(blob,`${name}.zip`);
+    status.textContent='Exported ✓ 2 PNGs + zip';
+  }catch(err){console.error(err);status.textContent='Export failed: '+err.message;}
+  finally{btn.disabled=false;exp.hidden=true;setTimeout(()=>status.textContent='',8000);}
+}
+$('#exportbtn').onclick=doExport;
+$('#exportbtn2').onclick=doExport;
+$('#mtab').onclick=()=>document.querySelector('.panel').classList.add('open');
+$('#mclose').onclick=()=>document.querySelector('.panel').classList.remove('open');
 </script>
 </body>
 </html>
