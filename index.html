@@ -86,6 +86,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 .grp.closed .items{display:none}
 .items a{display:flex;align-items:center;gap:9px;padding:7px 10px 7px 14px;border-radius:6px;font-size:14px;color:var(--ink-2);margin:1px 0;border-left:2px solid transparent;white-space:nowrap}
 .items a .tag{flex:none}
+.items .sub{display:block;padding:10px 10px 3px 14px;font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
 .items a:hover{background:var(--panel-2);color:var(--ink)}
 .items a.on{background:var(--raise);color:var(--ink);border-left-color:var(--aq)}
 .items a .ic{width:14px;text-align:center;color:var(--ink-3);font-size:11px;flex:none}
@@ -298,17 +299,18 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
     <button onclick="tg(this)"><span class="car">▾</span>Projects</button>
     <div class="items">
       <a href="#projects"><span class="ic">☰</span>All projects</a>
-      <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>PLP Alignment · P-05 <span class="tag wip">open</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/core-pdp-2026/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>Core PDP 2026 <span class="tag wip">open</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>Colour Alignment <span class="tag ok">signed off</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>Checkout 2026 · Promo</a>
+      <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>PLP UI updates - All Brands <span class="tag wip">open</span></a>
+      <a class="ext" href="https://jakerayner96.github.io/core-pdp-2026/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>PDP Layout and Components - MAN <span class="tag wip">open</span></a>
+      <a class="ext" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>CTA Colour Alignment - All Brands <span class="tag ok">signed off</span></a>
+      <a class="ext" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>New Checkout - Payment Section Update</a>
       <a class="ext" href="https://jakerayner96.github.io/vto-prototype/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>Virtual Try On</a>
       <a class="ext" href="https://jakerayner96.github.io/ai-generated-badge/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>AI Generated Badge <span class="tag dim">deck</span></a>
       <a class="ext" href="https://jakerayner96.github.io/Group-Design-System/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>Group Design System (v1) <span class="tag dim">retired</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/UX-Design-Request/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>UX Design Request <span class="tag dim">tool</span></a>
-      <a class="ext" href="https://github.com/jakerayner96/THEBRANDROOM" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>The Brand Room <span class="tag dim">repo</span></a>
+      <a class="ext" href="https://jakerayner96.github.io/UX-Design-Request/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>UX Design Request Form <span class="tag dim">tool</span></a>
+      <a class="ext" href="https://github.com/jakerayner96/THEBRANDROOM" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>The Brand Room - Launch Prototype <span class="tag dim">repo</span></a>
       <a class="ext" href="https://github.com/jakerayner96/plt-app-prototype" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>PLT app prototype <span class="tag dim">private</span></a>
-      <a class="ext" href="https://github.com/jakerayner96/debenhams-design-system-scraper" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>DS audit scraper <span class="tag dim">private</span></a>
+      <span class="sub">Tools</span>
+      <a class="ext" href="https://github.com/jakerayner96/debenhams-design-system-scraper" target="_blank" rel="noopener" title="Opens the repo in a new tab"><span class="ic">▸</span>DG Group Product Scraper <span class="tag dim">private</span></a>
     </div>
   </div>
   <div class="grp">
@@ -340,10 +342,10 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
     <h2 style="margin-top:0">Latest work <code>/changelog</code></h2>
     <div class="feed">
       <div class="fr"><time>2026-09-01</time><div class="t"><b>Design system folded into the site</b><small>Full token layer · type · spacing · radius · borders · motion · a11y · fascia modes — standalone repo retired</small></div><span class="pill ok">merged</span></div>
-      <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP Alignment opened</b><small>boohoo · boohooMAN · PLT · Warehouse · Brand Room → one core template</small></div><span class="pill wip">open</span></div>
-      <div class="fr"><time>2026-08-26</time><div class="t"><b>Colour Alignment merged</b><small>Signed-off styling · five brands × five screens · post-KM review</small></div><span class="pill ok">merged</span></div>
+      <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP UI updates - All Brands opened</b><small>boohoo · boohooMAN · PLT · Warehouse · Brand Room → one core template</small></div><span class="pill wip">open</span></div>
+      <div class="fr"><time>2026-08-26</time><div class="t"><b>CTA Colour Alignment - All Brands merged</b><small>Signed-off styling · five brands × five screens · post-KM review</small></div><span class="pill ok">merged</span></div>
       <div class="fr"><time>2026-08-26</time><div class="t"><b>Group tokens extracted</b><small>brands.ts → tokens.css · five-brand live switching</small></div><span class="pill ok">merged</span></div>
-      <div class="fr"><time>2026-08-24</time><div class="t"><b>Checkout 2026 · smart promo field</b><small>One field, two payment instruments</small></div><span class="pill">shipped</span></div>
+      <div class="fr"><time>2026-08-24</time><div class="t"><b>New Checkout - Payment Section Update · smart promo field</b><small>One field, two payment instruments</small></div><span class="pill">shipped</span></div>
     </div>
   </section>
 
@@ -354,9 +356,9 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
     <p class="lede">Everything that merged, shipped or opened — newest first. Every row links to the project page with its options and decision.</p>
     <div class="feed">
       <div class="fr"><time>2026-09-01</time><div class="t"><b>Design system folded into the site</b><small>Tokens + foundations + fascia modes absorbed from designsystem-debenhamsgroup</small></div><span class="pill ok">merged</span></div>
-      <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP Alignment opened</b><small>Target w/c 08 Sep · Scott's brief</small></div><span class="pill wip">open</span></div>
-      <div class="fr"><time>2026-08-26</time><div class="t"><b>Colour Alignment merged</b><small>KM review complete</small></div><span class="pill ok">merged</span></div>
-      <div class="fr"><time>2026-08-24</time><div class="t"><b>Checkout 2026 promo field shipped</b><small>Figma WChEtDPH… · 3990:58406</small></div><span class="pill">shipped</span></div>
+      <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP UI updates - All Brands opened</b><small>Target w/c 08 Sep · Scott's brief</small></div><span class="pill wip">open</span></div>
+      <div class="fr"><time>2026-08-26</time><div class="t"><b>CTA Colour Alignment - All Brands merged</b><small>KM review complete</small></div><span class="pill ok">merged</span></div>
+      <div class="fr"><time>2026-08-24</time><div class="t"><b>New Checkout - Payment Section Update shipped</b><small>Figma WChEtDPH… · 3990:58406</small></div><span class="pill">shipped</span></div>
       <div class="fr"><time>2026-08-20</time><div class="t"><b>VTO first-use journey shipped</b><small>Asset-embed pattern introduced</small></div><span class="pill">shipped</span></div>
     </div>
   </section>
@@ -1191,34 +1193,37 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <h1>Projects</h1>
     <p class="lede">Every prototype in the estate, one click away. Prototypes open in a new tab; the repo link is the record (brief, options, decisions).</p>
     <div class="launchgrid">
-      <div class="launch"><b>PLP Alignment · P-05</b><span class="lt">open</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/debenhamsgroup.design/tree/plp-alignment" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>Core PDP 2026</b><span class="lt">open</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/core-pdp-2026/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/core-pdp-2026" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>Colour Alignment</b><span class="lt">signed off</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/colour-alignment-prototype" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>Checkout 2026 · Promo</b><span class="lt">prototype</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/checkout-2026-promo-gift-card" target="_blank" rel="noopener">repo ↗</a></div></div>
+      <div class="launch"><b>PLP UI updates - All Brands</b><span class="lt">open</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/debenhamsgroup.design/tree/plp-alignment" target="_blank" rel="noopener">repo ↗</a></div></div>
+      <div class="launch"><b>PDP Layout and Components - MAN</b><span class="lt">open</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/core-pdp-2026/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/core-pdp-2026" target="_blank" rel="noopener">repo ↗</a></div></div>
+      <div class="launch"><b>CTA Colour Alignment - All Brands</b><span class="lt">signed off</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/colour-alignment-prototype" target="_blank" rel="noopener">repo ↗</a></div></div>
+      <div class="launch"><b>New Checkout - Payment Section Update</b><span class="lt">prototype</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/checkout-2026-promo-gift-card" target="_blank" rel="noopener">repo ↗</a></div></div>
       <div class="launch"><b>Virtual Try On</b><span class="lt">prototype</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/vto-prototype/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/vto-prototype" target="_blank" rel="noopener">repo ↗</a></div></div>
       <div class="launch"><b>AI Generated Badge</b><span class="lt">deck</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/ai-generated-badge/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/ai-generated-badge" target="_blank" rel="noopener">repo ↗</a></div></div>
       <div class="launch"><b>Group Design System (v1)</b><span class="lt">retired</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/Group-Design-System/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/Group-Design-System" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>UX Design Request</b><span class="lt">tool</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/UX-Design-Request/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/UX-Design-Request" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>The Brand Room</b><span class="lt">repo</span><div class="lk"><span class="nolive">no live build</span><a class="lnk" href="https://github.com/jakerayner96/THEBRANDROOM" target="_blank" rel="noopener">repo ↗</a></div></div>
+      <div class="launch"><b>UX Design Request Form</b><span class="lt">tool</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/UX-Design-Request/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/UX-Design-Request" target="_blank" rel="noopener">repo ↗</a></div></div>
+      <div class="launch"><b>The Brand Room - Launch Prototype</b><span class="lt">repo</span><div class="lk"><span class="nolive">no live build</span><a class="lnk" href="https://github.com/jakerayner96/THEBRANDROOM" target="_blank" rel="noopener">repo ↗</a></div></div>
       <div class="launch"><b>PLT app prototype</b><span class="lt">private</span><div class="lk"><span class="nolive">no live build</span><a class="lnk" href="https://github.com/jakerayner96/plt-app-prototype" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>DS audit scraper</b><span class="lt">private</span><div class="lk"><span class="nolive">no live build</span><a class="lnk" href="https://github.com/jakerayner96/debenhams-design-system-scraper" target="_blank" rel="noopener">repo ↗</a></div></div>
+    </div>
+    <h2>Tools <code>internal · not prototypes</code></h2>
+    <div class="launchgrid">
+      <div class="launch"><b>DG Group Product Scraper</b><span class="lt">private</span><div class="lk"><span class="nolive">no live build</span><a class="lnk" href="https://github.com/jakerayner96/debenhams-design-system-scraper" target="_blank" rel="noopener">repo ↗</a></div></div>
     </div>
     <h2>The record <code>briefs · options · chosen routes</code></h2>
     <p>Every brief as a record: what was explored, what won, and where it lives now. Delivered work merges to the master prototype.</p>
     <div class="tbl">
       <div class="tr h"><span></span><span>Project</span><span>Scope</span><span>When</span><span>Status</span></div>
-      <div class="tr" onclick="location.hash='p-plp'"><span class="id">P-05</span><span class="nm">PLP Alignment</span><span class="d">5 fascias → 1 core template · fonts, cards, grid as config</span><span class="id">Sep 26</span><span class="pill wip">open</span></div>
-      <div class="tr" onclick="location.hash='p-colour'"><span class="id">P-04</span><span class="nm">Colour Alignment</span><span class="d">Signed-off styling · 5 brands × 5 screens · golden-truth matrix</span><span class="id">Aug 26</span><span class="pill ok">merged</span></div>
-      <div class="tr" onclick="location.hash='p-checkout'"><span class="id">P-03</span><span class="nm">Checkout 2026 · Promo</span><span class="d">Smart promo / gift-card field</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
+      <div class="tr" onclick="location.hash='p-plp'"><span class="id">P-05</span><span class="nm">PLP UI updates - All Brands</span><span class="d">5 fascias → 1 core template · fonts, cards, grid as config</span><span class="id">Sep 26</span><span class="pill wip">open</span></div>
+      <div class="tr" onclick="location.hash='p-colour'"><span class="id">P-04</span><span class="nm">CTA Colour Alignment - All Brands</span><span class="d">Signed-off styling · 5 brands × 5 screens · golden-truth matrix</span><span class="id">Aug 26</span><span class="pill ok">merged</span></div>
+      <div class="tr" onclick="location.hash='p-checkout'"><span class="id">P-03</span><span class="nm">New Checkout - Payment Section Update</span><span class="d">Smart promo / gift-card field</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
       <div class="tr"><span class="id">P-02</span><span class="nm">Virtual Try-On</span><span class="d">First-use journey · asset-embed pattern</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
       <div class="tr"><span class="id">P-01</span><span class="nm">AI-Gen Labelling</span><span class="d">Estate-wide labelling policy deck</span><span class="id">Aug 26</span><span class="pill">delivered</span></div>
     </div>
   </section>
 
   <!-- PROJECT: PLP -->
-  <section class="page" id="p-plp" data-crumb="Projects / PLP Alignment">
+  <section class="page" id="p-plp" data-crumb="Projects / PLP UI updates - All Brands">
     <div class="kick">projects / P-05</div>
-    <h1>PLP Alignment</h1>
+    <h1>PLP UI updates - All Brands</h1>
     <p class="openrow"><a class="bd pri sm" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener">Open prototype ↗</a></p>
     <div class="meta"><span>status <b>open</b></span><span>brief <b>Scott · 01 Sep</b></span><span>target <b>w/c 08 Sep</b></span><span>fascias <b>5</b></span><span>branch <b><a href="https://github.com/jakerayner96/debenhamsgroup.design/tree/plp-alignment" target="_blank" rel="noopener" style="color:var(--aq)">plp-alignment</a></b></span></div>
     <p class="lede">Align boohoo, boohooMAN, PLT, Warehouse and The Brand Room onto one core PLP template. Differences become configuration, not forks. PLT is the reference implementation.</p>
@@ -1240,9 +1245,9 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
   </section>
 
   <!-- PROJECT: COLOUR -->
-  <section class="page" id="p-colour" data-crumb="Projects / Colour Alignment">
+  <section class="page" id="p-colour" data-crumb="Projects / CTA Colour Alignment - All Brands">
     <div class="kick">projects / P-04</div>
-    <h1>Colour Alignment</h1>
+    <h1>CTA Colour Alignment - All Brands</h1>
     <p class="openrow"><a class="bd pri sm" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener">Open prototype ↗</a></p>
     <div class="meta"><span>status <b>merged</b></span><span>sign-off <b>KM review · Aug 26</b></span><span>screens <b>PDP · Added · Bag · Checkout · Account</b></span></div>
     <p class="lede">Final signed-off styling per fascia across five core screens, plus the golden-truth button state matrix. The Colour page renders this project's output.</p>
@@ -1255,9 +1260,9 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
   </section>
 
   <!-- PROJECT: CHECKOUT -->
-  <section class="page" id="p-checkout" data-crumb="Projects / Checkout 2026">
+  <section class="page" id="p-checkout" data-crumb="Projects / New Checkout - Payment Section Update">
     <div class="kick">projects / P-03</div>
-    <h1>Checkout 2026 · Promo</h1>
+    <h1>New Checkout - Payment Section Update</h1>
     <p class="openrow"><a class="bd pri sm" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener">Open prototype ↗</a></p>
     <div class="meta"><span>status <b>shipped</b></span><span>figma <b>WChEtDPH… · 3990:58406</b></span></div>
     <p class="lede">One smart field between donation and payment that accepts a promo code or a gift card number and works out which it's been given. Single self-contained prototype.</p>
@@ -1313,11 +1318,11 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
         <div class="card">BHW font scale → PLT sizes, full site<div class="who">SCOTT · ECOMMERCE · SEP 01</div></div>
       </div>
       <div class="col"><h4>In progress <b>1</b></h4>
-        <div class="card">PLP Alignment — five fascias, one template<div class="who">JAKE · DESIGN · W/C 08 SEP</div></div>
+        <div class="card">PLP UI updates - All Brands — five fascias, one template<div class="who">JAKE · DESIGN · W/C 08 SEP</div></div>
       </div>
       <div class="col"><h4>Done <b>2</b></h4>
-        <div class="card">Colour Alignment — KM review complete<div class="who">MERGED AUG 26</div></div>
-        <div class="card">Checkout 2026 — promo / gift-card field<div class="who">SHIPPED AUG 26</div></div>
+        <div class="card">CTA Colour Alignment - All Brands — KM review complete<div class="who">MERGED AUG 26</div></div>
+        <div class="card">New Checkout - Payment Section Update — promo / gift-card field<div class="who">SHIPPED AUG 26</div></div>
       </div>
     </div>
   </section>
@@ -1372,9 +1377,9 @@ const REG=[
  {h:'footer',t:'Footer',k:'newsletter subscribe social payments sister brands c-08',ic:'▬',s:'Component'},
  {h:'library',t:'Extended library',k:'buttons payment forms field checkbox radio toggle select price size accordion sheet modal bag summary chips account deliver+ bnpl usp box toast banner c-09 c-10 c-11 c-12 c-13 c-14 c-15 c-16 c-17 c-18',ic:'▦',s:'Component'},
  {h:'projects',t:'All projects',k:'archive briefs',ic:'☰',s:'Projects'},
- {h:'p-plp',t:'PLP Alignment',k:'warehouse boohoo template p-05',ic:'▸',s:'Project'},
- {h:'p-colour',t:'Colour Alignment',k:'signed off km p-04',ic:'▸',s:'Project'},
- {h:'p-checkout',t:'Checkout 2026 · Promo',k:'gift card p-03',ic:'▸',s:'Project'},
+ {h:'p-plp',t:'PLP UI updates - All Brands',k:'plp alignment warehouse boohoo template p-05',ic:'▸',s:'Project'},
+ {h:'p-colour',t:'CTA Colour Alignment - All Brands',k:'colour alignment signed off km p-04',ic:'▸',s:'Project'},
+ {h:'p-checkout',t:'New Checkout - Payment Section Update',k:'checkout 2026 promo gift card p-03',ic:'▸',s:'Project'},
  {h:'brands',t:'Brand Centre',k:'fascias estate guidelines',ic:'✦',s:'Brands'},
  {h:'requests',t:'Requests board',k:'intake tickets status',ic:'▤',s:'Requests'},
 ];
