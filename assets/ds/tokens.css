@@ -471,3 +471,9 @@
 [data-brand="principles"]{--dplus-bg:#FBF6F0;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Lato',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#FBF6F0;--brand-light-3:#FBF6F0;}
 [data-brand="wallis"]{--dplus-bg:#F9EEF3;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Urbanist',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#F9EEF3;--brand-light-3:#F9EEF3;}
 [data-brand="warehouse"]{--dplus-bg:#FDFFF5;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#FDFFF5;--brand-light-3:#FDFFF5;}
+
+/* Deliver+ per-fascia type + surfaces read from the SEEL bag/checkout/modal nodes (10 Sep 2026) */
+[data-brand="plt"]{--dplus-white:#FFFDF7} /* PLT "Background White" — every white surface in the set */
+[data-brand="boohooman"],[data-brand="karenmillen"],[data-brand="dorothyperkins"],[data-brand="plt"]{--dplus-tick:#000} /* white checkbox fill → black tick */
+[data-brand="plt"],[data-brand="burton"],[data-brand="coast"],[data-brand="dorothyperkins"],[data-brand="dsgnstudio"],[data-brand="misspap"],[data-brand="nastygal"],[data-brand="oasis"],[data-brand="principles"],[data-brand="wallis"],[data-brand="warehouse"]{--dplus-p:12px}
+[data-brand="burton"],[data-brand="misspap"],[data-brand="dsgnstudio"]{--dplus-pw:500}
