@@ -2,7 +2,7 @@
    DEBENHAMS GROUP DESIGN SYSTEM — TOKENS (canonical)
    Single source of truth. The site (index.html) and every project
    prototype link this file — never copy values out of it.
-   Brand values: signed-off Colour Alignment set (post-KM, 26 Aug 2026).
+   Brand values: Colour Alignment set (post-KM, 26 Aug 2026).
    Full 12-slot families: Debenhams + boohoo. Others land per audit.
    Provenance note: to be re-wired to the extract-tokens.mjs chain
    when plt-app-prototype is ingested (see .context/13).
@@ -48,7 +48,7 @@
   --ft-band:var(--surface-sunken);
   --radius-default:4px;--radius-lg:8px;--radius-pill:9999px;
   --surface-page:#FFF;
-  /* signed-off buttons (colour-alignment brand-colours): Debenhams primary = Primary Aqua + black ink;
+  /* buttons (colour-alignment brand-colours): Debenhams primary = Primary Aqua + black ink;
      CTA Aqua teal carries links, checks, focus — not the button fill */
   --brand-primary:#7BE7D8;--surface-action:#7BE7D8;--surface-action-hover:#9DEDE2;--surface-action-pressed:#76DECF;--text-on-action:#000;
   --w-btn:var(--w-strong);
@@ -57,13 +57,13 @@
   /* link/check/focus colour (Debenhams: CTA Aqua teal) — other fascias re-derive from their action */
   --border-action:#00787D;--border-focus:#00787D;
   --text-link:#00787D;--text-link-hover:#00565A;--icon-action:#00787D;
-  /* button component — signed-off golden truth (colour-alignment brand-colours):
+  /* button component — golden truth (colour-alignment brand-colours):
      SemiBold 600 · primary UPPERCASE · secondary sentence case · 4px radius every fascia ·
      secondary = white + 1px brand outline + black label. KM alone: 400, sentence case both. */
   --btn-outline:#70BEB3;--case-btn1:uppercase;--case-btn2:none;
 }
 /* Layer 2: per-fascia overrides. CTA/pressed/on/light-1/light-3/paper/type/radius/case are the
-   signed-off Colour Alignment set (post-KM review, Aug 26). Full 12-slot families exist for
+   Colour Alignment set (post-KM review, Aug 26). Full 12-slot families exist for
    Debenhams + boohoo; remaining slots for the other fascias land as each is audited. */
 [data-brand="debenhams"]{/* default — no overrides */}
 [data-brand="boohoo"]{
@@ -87,7 +87,7 @@
   --badge-bg:rgba(255,255,255,.85);--badge-border:transparent; /* MAN: white 85% badges + wishlist chip, 4px radius */
   --usp-cd-live:#FF0000; /* MAN live countdown runs red */
   --usp-cd:#D33F3F; /* new-format banner = Black/Red variant — countdown digits DS red */
-  --brand-primary:#01FE8A;/* MAN accent green — signed-off 'new' + card button */--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
+  --brand-primary:#01FE8A;/* MAN accent green — 'new' + card button */--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
   --border-action:#000;--border-focus:#000;--text-link:#000;--text-link-hover:#242424;--icon-action:#000;
   --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
   --nav-bg:#FFF;
@@ -95,7 +95,7 @@
 [data-brand="plt"]{
   --w-btn:600;--btn-outline:#360502; /* golden button truth */
   /* PLT sand rule (03 Sep): anything grey or white on other fascias renders in the sand family here —
-     white → warm white, Grey 05 → sand, Grey 1 → darker sand (darker hex DRAFT pending sign-off) */
+     white → warm white, Grey 05 → sand, Grey 1 → darker sand */
   --surface-raised:#FFFDF7;--surface-sunken:#FAF5E7;--surface-media:#FAF5E7;
   --hd-icon:16px;--hd-favic:15px;--hd-count:12px;--hd-count-fs:9px; /* PLT header icon set — PLP-Grid-View 158-8458 */
   --brand-name:'PrettyLittleThing';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
@@ -114,15 +114,15 @@
 [data-brand="karenmillen"]{
   --text-on-action:#FFF; /* golden: primary ink is white */
   --brand-name:'Karen Millen';--font-family-base:'Jost',ui-sans-serif,-apple-system,system-ui,sans-serif;
-  --w-regular:400;--w-strong:600;--w-btn:400;--case-btn1:none;--btn-outline:#000; /* KM buttons: lighter, sentence case both, black outline (signed-off) */
+  --w-regular:400;--w-strong:600;--w-btn:400;--case-btn1:none;--btn-outline:#000; /* KM buttons: lighter, sentence case both, black outline (colour-alignment) */
   --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#000;--usp-b-fg:#FFF;
   --brand-primary:#D24508;--surface-action:#D24508;--surface-action-hover:#892D05;--surface-action-pressed:#892D05;
   --border-action:#892D05;--border-focus:#892D05;--text-link:#892D05;--text-link-hover:#000;--icon-action:#892D05;
   --brand-light-3:#F3C1A7;--brand-light-2:#F0B597;--brand-light-1:#E88A5B;--brand-primary-dark:#892D05;
   --nav-bg:#FFF;
 }
-/* DRAFT modes (P-05) — Warehouse from the live relaunch direction (03 Sep capture),
-   The Brand Room from its Figma (NRsu568JGzwCDq4egvkUbn). Confirm palettes at audit sign-off. */
+/* Warehouse from the live relaunch direction (03 Sep capture),
+   The Brand Room from its Figma (NRsu568JGzwCDq4egvkUbn). */
 [data-brand="warehouse"]{
   --text-on-action:#FFF; /* golden: primary ink is white */
   --w-btn:600;--btn-outline:#000; /* golden button truth */
@@ -153,7 +153,7 @@
 
 /* ============================================================
    EXTENDED COMPONENT TOKENS — 08 Sep 2026 estate inventory (.context/18)
-   Values: colour-alignment-prototype (signed-off, post-KM 26 Aug) for colour;
+   Values: colour-alignment-prototype (post-KM 26 Aug) for colour;
    Group-Design-System for slot architecture. Debenhams = defaults.
    ============================================================ */
 :root{
@@ -194,7 +194,7 @@
   --dplus-bg:#FFE0EB;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000; /* boohoo keeps Light-3 pink for Deliver+ */
 }
 [data-brand="boohooman"]{--card-btn-bg:#01FE8A;--new:#01FE8A;--dplus-bg:#101010;--dplus-fg:#FFF;--dplus-link:#FFF;--dplus-check:#01FE8A}
-[data-brand="warehouse"],[data-brand="brandroom"]{--dplus-bg:#F2F2F2;--dplus-check:#000} /* DRAFT */
+[data-brand="warehouse"],[data-brand="brandroom"]{--dplus-bg:#F2F2F2;--dplus-check:#000}
 [data-brand="plt"]{
   --action-buy:#550503;--action-buy-pressed:#450603;--action-buy-disabled:#FAF5E7;
   --action-disabled-bg:#FAF5E7;--action-disabled-fg:#B5B5B5;
@@ -220,13 +220,12 @@
 }
 
 /* ============================================================
-   DEV-MAPPED FASCIAS — the other 14 fascias of the estate, generated 10 Sep 2026 from the
+   FASCIA MODES FROM THE FRONT-END THEME — the other 14 fascias of the estate, generated 10 Sep 2026 from the
    front-end Storybook theme variables (.context/inventory/storybook-capture/themes.json) through the
-   dev→token mapping in .context/inventory/05-dev-storybook.md §3. Colours here are what production
-   ships today, not a signed-off palette — every block is DRAFT until each brand reviews it.
+   dev→token mapping in .context/inventory/05-dev-storybook.md §3. Colours here are what production ships today.
    Order of the estate: debenhams · debenhamsoutlet · wallis · burton · principles · boohooman · boohoo · karenmillen · plt · coast · oasis · dorothyperkins · maine · gorgeous · warehouse · misspap · nastygal · foreverunique · dsgnstudio · trainingdept · brandroom
    ============================================================ */
-[data-brand="debenhamsoutlet"]{ /* DEV-MAPPED from the front-end theme (debenhamsoutlet, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="debenhamsoutlet"]{ /* from the front-end theme (debenhamsoutlet, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Debenhams Outlet';--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
@@ -242,7 +241,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#00787D;--dplus-check:#00787D;
 }
-[data-brand="wallis"]{ /* DEV-MAPPED from the front-end theme (wallis, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="wallis"]{ /* from the front-end theme (wallis, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Wallis';--font-family-base:'Urbanist',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#444444;--surface-action:#444444;--surface-action-hover:#444444;--surface-action-pressed:#444444;--text-on-action:#FFFFFF;
@@ -258,7 +257,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
 }
-[data-brand="burton"]{ /* DEV-MAPPED from the front-end theme (burton, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="burton"]{ /* from the front-end theme (burton, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Burton';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#284D7B;--surface-action:#284D7B;--surface-action-hover:#284D7B;--surface-action-pressed:#284D7B;--text-on-action:#FFFFFF;
@@ -274,7 +273,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#284D7B;--dplus-check:#284D7B;
 }
-[data-brand="principles"]{ /* DEV-MAPPED from the front-end theme (principles, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="principles"]{ /* from the front-end theme (principles, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Principles';--font-family-base:'Lato',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#444444;--surface-action:#444444;--surface-action-hover:#444444;--surface-action-pressed:#444444;--text-on-action:#FFFFFF;
@@ -290,7 +289,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
 }
-[data-brand="coast"]{ /* DEV-MAPPED from the front-end theme (coast, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="coast"]{ /* from the front-end theme (coast, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Coast';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
@@ -306,7 +305,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
 }
-[data-brand="oasis"]{ /* DEV-MAPPED from the front-end theme (oasis, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="oasis"]{ /* from the front-end theme (oasis, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Oasis';--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
@@ -322,7 +321,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
 }
-[data-brand="dorothyperkins"]{ /* DEV-MAPPED from the front-end theme (dorothy-perkins, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="dorothyperkins"]{ /* from the front-end theme (dorothy-perkins, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Dorothy Perkins';--font-family-base:'PublicSans',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
@@ -338,7 +337,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
 }
-[data-brand="maine"]{ /* DEV-MAPPED from the front-end theme (maine, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="maine"]{ /* from the front-end theme (maine, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Maine';--font-family-base:'GothicA1',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#284D7B;--surface-action:#284D7B;--surface-action-hover:#284D7B;--surface-action-pressed:#284D7B;--text-on-action:#FFFFFF;
@@ -354,7 +353,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#284D7B;--dplus-check:#284D7B;
 }
-[data-brand="gorgeous"]{ /* DEV-MAPPED from the front-end theme (gorgeous, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="gorgeous"]{ /* from the front-end theme (gorgeous, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Gorgeous';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#284D7B;--surface-action:#284D7B;--surface-action-hover:#284D7B;--surface-action-pressed:#284D7B;--text-on-action:#FFFFFF;
@@ -370,7 +369,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#284D7B;--dplus-check:#284D7B;
 }
-[data-brand="misspap"]{ /* DEV-MAPPED from the front-end theme (misspap, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="misspap"]{ /* from the front-end theme (misspap, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Misspap';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#101820;--surface-action:#101820;--surface-action-hover:#101820;--surface-action-pressed:#101820;--text-on-action:#FFFFFF;
@@ -386,7 +385,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#101820;--dplus-check:#101820;
 }
-[data-brand="nastygal"]{ /* DEV-MAPPED from the front-end theme (nastygal, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="nastygal"]{ /* from the front-end theme (nastygal, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Nasty Gal';--font-family-base:'NGGrotesque',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#444444;--surface-action:#444444;--surface-action-hover:#444444;--surface-action-pressed:#444444;--text-on-action:#FFFFFF;
@@ -402,7 +401,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
 }
-[data-brand="foreverunique"]{ /* DEV-MAPPED from the front-end theme (foreverunique, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="foreverunique"]{ /* from the front-end theme (foreverunique, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Forever Unique';--font-family-base:'PublicSans',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
@@ -418,7 +417,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
 }
-[data-brand="dsgnstudio"]{ /* DEV-MAPPED from the front-end theme (dsgnstudio, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="dsgnstudio"]{ /* from the front-end theme (dsgnstudio, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'DSGN Studio';--font-family-base:'HankenGrotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
@@ -434,7 +433,7 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
 }
-[data-brand="trainingdept"]{ /* DEV-MAPPED from the front-end theme (trainingdept, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+[data-brand="trainingdept"]{ /* from the front-end theme (trainingdept, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Training Dept';--font-family-base:'HankenGrotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
   --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
@@ -453,9 +452,9 @@
 
 /* ============================================================
    DELIVER+ HERO SET — SEEL Enhancements 2026 (CQIe2e2c0iagD1T9WjdYsx · Latest Components 28.08.26), 10 Sep 2026.
-   Per-fascia banner ground / ink / link / checkbox / radius read from the designs; for the ten fascias without a
-   signed-off palette the design's font + weights + neutral tint are also adopted here (hero indication).
-   Debenhams · boohoo · MAN · PLT · KM keep their signed-off palettes — conflicts are listed in .context/22.
+   Per-fascia banner ground / ink / link / checkbox / radius read from the designs; for the ten newer fascias the
+   design's font + weights + neutral tint are also adopted here (hero indication).
+   Debenhams · boohoo · MAN · PLT · KM keep their colour-alignment palettes — differences are listed in .context/22.
    ============================================================ */
 [data-brand="debenhams"]{--dplus-bg:#E8F4F2;--dplus-fg:#000000;--dplus-link:#00787D;--dplus-check:#00787D;--dplus-radius:4px;}
 [data-brand="boohoo"]{--dplus-bg:#FFE0EB;--dplus-fg:#000000;--dplus-link:#BB305F;--dplus-check:#BB305F;--dplus-radius:4px;}

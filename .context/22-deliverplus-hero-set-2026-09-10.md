@@ -42,3 +42,9 @@ Not in the SEEL set: Debenhams Outlet, Maine, Gorgeous, Forever Unique, Training
 
 ## Tokens changed
 `--dplus-bg/-fg/-link/-check/-radius` for 15 fascias (design values). For the ten fascias without a signed-off palette: `--font-family-base`, `--w-regular/-mid/-strong/-btn`, `--surface-neutral`, `--brand-light-3` now follow the designs (hero indication). Debenhams / boohoo / MAN / PLT / KM palettes unchanged pending answers to 1–2 above.
+
+## Addendum — 10 Sep 2026 (later): single-SVG lockups, per-brand component pages, no sign-off language
+
+- **Lockups are now one SVG per fascia** at `assets/brands/deliverplus/<slug>.svg` (wordmark + DELIVER+ composed as nested `<svg>` at the design geometry; boohoo and the DSGN Studio wordmark are the PNGs Figma itself holds, embedded). `assets/ds/dplus-logos.js` is a flat list of `<img class="dpl dpl-<slug>">`. Fixed on the way: `calc(50%-…)` without spaces (invalid CSS — Coast/Warehouse/Principles/Oasis/Nasty Gal/Misspap/DSGN offset), un-inlined `<Logos>` React stubs (Nasty Gal, Principles had no wordmark), PLT monogram inset mis-parsed.
+- **Component pages** (`#c-*`): the page is now one full-width box per fascia, every variant/type side by side inside it, repeated down the page — Figma-file order of the estate, The Brand Room last. Markup is a collapsed `Markup` block under the stack. `notOn:['brandroom']` on the catalogue entry leaves that box empty (Deliver+ isn't offered on The Brand Room).
+- **No sign-off / draft language anywhere** in `index.html`, `tokens.css`, `components.css`, `catalogue.js`: the system is a single version of truth — Lego bricks. Brand centre says "21 fascias · 21 modes"; the old "signed off" / "dev-mapped draft" labels and tile badges are gone. Design-vs-live differences (above) stay as open questions, not as sign-off gates.

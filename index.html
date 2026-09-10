@@ -299,18 +299,24 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
 
 /* design-system IA: foundations merge · per-fascia component grids · sidebar sub-heads */
 .items .sub{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding:12px 14px 4px}
-.fxgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin:8px 0 28px}
+.fxstack{display:flex;flex-direction:column;gap:14px;margin:8px 0 28px}
+.fv{display:flex;flex-direction:column;gap:10px;min-width:0;max-width:100%}
+.fv.wide{flex-basis:100%}
+.fv .fvc{overflow-x:auto;max-width:100%}
+.fv .fvn{font:500 10.5px/1 var(--mono);letter-spacing:.04em;color:inherit;opacity:.6}
+.mk{margin:8px 0 24px}.mk summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--ink-2);padding:8px 0}.mk summary code{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:8px}
 .fx{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface-page,#fff)}
-.fx .fl{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#000;background:rgba(0,0,0,.05)}
-.fx .fl em{font-style:normal;font-weight:500;opacity:.55}
+.fx .fl{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;font:600 12.5px/1 var(--font-family-base,system-ui);color:#000;background:rgba(0,0,0,.05)}
+.fx .fl em{font-style:normal;font-weight:500;opacity:.55;font-size:11px}
 .fx .canvas{padding:18px;min-height:80px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;background:var(--surface-page,#fff)}
+.fx .canvas.fxc{justify-content:flex-start;align-items:flex-start;gap:28px 32px;padding:24px;color:#000}
 .fx.dark .fl{color:#fff;background:rgba(255,255,255,.08)}
+.fx.dark .canvas.fxc{color:#fff}
 .fsec{padding-top:12px;margin-top:28px;border-top:1px solid var(--line)}
 .fsec>h2:first-child{margin-top:0}
 .ftoc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
 .ftoc a{font-size:12.5px;padding:6px 12px;border:1px solid var(--line);border-radius:99px;color:var(--ink-2);text-decoration:none}
 .ftoc a:hover{color:var(--ink);border-color:var(--ink-3)}
-.wall .f em.draft{position:absolute;top:8px;right:8px;font:600 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.55);padding:4px 6px;border-radius:4px;font-style:normal}
 .wall .f{position:relative}
 </style>
 </head>
@@ -350,7 +356,7 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
       <a href="#projects"><span class="ic">☰</span>All projects</a>
       <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>PLP UI updates - All Brands <span class="tag wip">open</span></a>
       <a class="ext" href="https://jakerayner96.github.io/core-pdp-2026/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>PDP Layout and Components - MAN <span class="tag wip">open</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>CTA Colour Alignment - All Brands <span class="tag ok">signed off</span></a>
+      <a class="ext" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>CTA Colour Alignment - All Brands <span class="tag ok">merged</span></a>
       <a class="ext" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>New Checkout Payment Section Update</a>
       <a class="ext" href="https://jakerayner96.github.io/vto-prototype/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>Virtual Try On - All Brands <span class="tag wip">open</span></a>
       <a class="ext" href="https://jakerayner96.github.io/ai-generated-badge/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>AI Generated Badge <span class="tag dim">deck</span></a>
@@ -392,7 +398,7 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
     <div class="feed">
       <div class="fr"><time>2026-09-01</time><div class="t"><b>Design system folded into the site</b><small>Full token layer · type · spacing · radius · borders · motion · a11y · fascia modes — standalone repo retired</small></div><span class="pill ok">merged</span></div>
       <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP UI updates - All Brands opened</b><small>boohoo · boohooMAN · PLT · Warehouse · Brand Room → one core template</small></div><span class="pill wip">open</span></div>
-      <div class="fr"><time>2026-08-26</time><div class="t"><b>CTA Colour Alignment - All Brands merged</b><small>Signed-off styling · five brands × five screens · post-KM review</small></div><span class="pill ok">merged</span></div>
+      <div class="fr"><time>2026-08-26</time><div class="t"><b>CTA Colour Alignment - All Brands merged</b><small>Final styling · five brands × five screens · post-KM review</small></div><span class="pill ok">merged</span></div>
       <div class="fr"><time>2026-08-26</time><div class="t"><b>Group tokens extracted</b><small>brands.ts → tokens.css · five-brand live switching</small></div><span class="pill ok">merged</span></div>
       <div class="fr"><time>2026-08-24</time><div class="t"><b>New Checkout Payment Section Update · smart promo field</b><small>One field, two payment instruments</small></div><span class="pill">shipped</span></div>
     </div>
@@ -416,7 +422,7 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
   <section class="page" id="colour" data-crumb="System / Foundations / Colour">
     <div class="kick">system / foundations <b>· rendering <span class="bn">Debenhams</span></b></div>
     <h1>Colour</h1>
-    <p class="lede">Two layers: primitives named by what they are, semantic tokens named by role. Components consume only semantic tokens; the brand mode swaps what they resolve to. Brand values are the signed-off Colour Alignment set (post-KM review, Aug 26).</p>
+    <p class="lede">Two layers: primitives named by what they are, semantic tokens named by role. Components consume only semantic tokens; the brand mode swaps what they resolve to. Brand values are the Colour Alignment set (post-KM review, Aug 26).</p>
 
     <h2>Brand-resolved roles <code>live — switch brand in the sidebar</code></h2>
     <div class="tok">
@@ -523,7 +529,7 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
       <div class="sw"><i style="background:#A82A55"></i><div><b>CTA Touch Down</b><code>#A82A55</code></div></div>
       <div class="sw"><i style="background:#CB4870"></i><div><b>Primary Dark</b><code>#CB4870</code></div></div>
     </div>
-    <p>boohooMAN, PLT and Karen Millen carry their signed-off CTA set (rendered above when switched); their remaining primitive slots land as each fascia is audited. Removed from the primitive layer: KM mode overrides (re-mapped fresh via semantic layer) and Rewards colours (project dead).</p>
+    <p>boohooMAN, PLT and Karen Millen carry their colour-alignment CTA set (rendered above when switched); their remaining primitive slots land as each fascia is audited. Removed from the primitive layer: KM mode overrides (re-mapped fresh via semantic layer) and Rewards colours (project dead).</p>
   </section>
 
   <!-- TYPE -->
@@ -561,7 +567,7 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
     </div>
     <h2>Size primitives</h2>
     <p style="font-family:var(--mono);font-size:12px;color:var(--ink-2)">10 · 12 · 14 · 16 · 20 · 24 · 28 · 32 · 36 · 40 · 48</p>
-    <h2>Per-fascia resolution <code>signed-off · colour alignment, Aug 26</code></h2>
+    <h2>Per-fascia resolution <code>colour alignment, Aug 26</code></h2>
     <div class="props">
       <div class="pr5 pr h"><span>Fascia</span><span>Font</span><span>Regular</span><span>Strong</span><span>CTA case</span></div>
       <div class="pr5 pr"><code>debenhams</code><span>Geologica</span><span>300 Light</span><span>600 SemiBold</span><span>sentence</span></div>
@@ -777,8 +783,8 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <div class="tbl">
       <div class="tr h"><span></span><span>Page</span><span>Source</span><span>Updated</span><span>Status</span></div>
       <div class="tr"><span class="id">M-01</span><span class="nm">PLP</span><span class="d">Seeding from plt-app-prototype + Sep alignment brief</span><span class="id">—</span><span class="pill wip">building</span></div>
-      <div class="tr"><span class="id">M-02</span><span class="nm">PDP</span><span class="d">To seed from colour-alignment signed-off screens</span><span class="id">—</span><span class="pill">queued</span></div>
-      <div class="tr"><span class="id">M-03</span><span class="nm">Bag</span><span class="d">To seed from colour-alignment signed-off screens</span><span class="id">—</span><span class="pill">queued</span></div>
+      <div class="tr"><span class="id">M-02</span><span class="nm">PDP</span><span class="d">To seed from the colour-alignment screens</span><span class="id">—</span><span class="pill">queued</span></div>
+      <div class="tr"><span class="id">M-03</span><span class="nm">Bag</span><span class="d">To seed from the colour-alignment screens</span><span class="id">—</span><span class="pill">queued</span></div>
       <div class="tr"><span class="id">M-04</span><span class="nm">Checkout</span><span class="d">Promo/gift-card section shipped · rest to assemble</span><span class="id">Aug 26</span><span class="pill">queued</span></div>
       <div class="tr"><span class="id">M-05</span><span class="nm">Home</span><span class="d">To spec</span><span class="id">—</span><span class="pill">queued</span></div>
     </div>
@@ -1111,7 +1117,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
   <section class="page" id="library" data-crumb="System / Components / Extended library">
     <div class="kick">system / components / C-09 → C-18 <b>· rendering <span class="bn">Debenhams</span></b></div>
     <h1>Extended library</h1>
-    <p class="lede">Every component harvested from the estate on 08 Sep 2026 — ten repos read end to end (<code>.context/18-component-inventory.md</code>). Colour truth is the signed-off colour-alignment set; slot architecture follows Group-Design-System. Switch fascia with the brand button to see each skin. Nothing below carries a hardcoded brand colour.</p>
+    <p class="lede">Every component harvested from the estate on 08 Sep 2026 — ten repos read end to end (<code>.context/18-component-inventory.md</code>). Colour truth is the colour-alignment set; slot architecture follows Group-Design-System. Switch fascia with the brand button to see each skin. Nothing below carries a hardcoded brand colour.</p>
 
     <h2>C-09 · Button system <code>.bd</code></h2>
     <p>Six types from the golden matrix: <b>Buy It Now</b> (CTA colour), primary, secondary (white + brand outline), tertiary (Neutral fill, 40px), tertiary XS, text only. States: pressed, disabled (grey on every brand for tertiary), spinner — per Figma 12533:14818 the label gives way to a 24px arc and the fill drops to Neutral. Sizes <code>.sm</code> 6/12 · <code>.md</code> 8/16. Icon slot 20px (<code>.ic24</code> / <code>.ic16</code>). <code>.pay</code> is the fixed-navy checkout Pay CTA, 8px radius.</p>
@@ -1283,7 +1289,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <div class="launchgrid">
       <div class="launch"><b>PLP UI updates - All Brands</b><span class="lt">open</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/debenhamsgroup.design/tree/plp-alignment" target="_blank" rel="noopener">repo ↗</a></div></div>
       <div class="launch"><b>PDP Layout and Components - MAN</b><span class="lt">open</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/core-pdp-2026/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/core-pdp-2026" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>CTA Colour Alignment - All Brands</b><span class="lt">signed off</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/colour-alignment-prototype" target="_blank" rel="noopener">repo ↗</a></div></div>
+      <div class="launch"><b>CTA Colour Alignment - All Brands</b><span class="lt">merged</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/colour-alignment-prototype" target="_blank" rel="noopener">repo ↗</a></div></div>
       <div class="launch"><b>New Checkout Payment Section Update</b><span class="lt">prototype</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/checkout-2026-promo-gift-card" target="_blank" rel="noopener">repo ↗</a></div></div>
       <div class="launch"><b>Virtual Try On - All Brands</b><span class="lt">open</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/vto-prototype/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/vto-prototype" target="_blank" rel="noopener">repo ↗</a></div></div>
       <div class="launch"><b>AI Generated Badge</b><span class="lt">deck</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/ai-generated-badge/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/ai-generated-badge" target="_blank" rel="noopener">repo ↗</a></div></div>
@@ -1301,7 +1307,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <div class="tbl">
       <div class="tr h"><span></span><span>Project</span><span>Scope</span><span>When</span><span>Status</span></div>
       <div class="tr" onclick="location.hash='p-plp'"><span class="id">P-05</span><span class="nm">PLP UI updates - All Brands</span><span class="d">5 fascias → 1 core template · fonts, cards, grid as config</span><span class="id">Sep 26</span><span class="pill wip">open</span></div>
-      <div class="tr" onclick="location.hash='p-colour'"><span class="id">P-04</span><span class="nm">CTA Colour Alignment - All Brands</span><span class="d">Signed-off styling · 5 brands × 5 screens · golden-truth matrix</span><span class="id">Aug 26</span><span class="pill ok">merged</span></div>
+      <div class="tr" onclick="location.hash='p-colour'"><span class="id">P-04</span><span class="nm">CTA Colour Alignment - All Brands</span><span class="d">Final styling · 5 brands × 5 screens · golden-truth matrix</span><span class="id">Aug 26</span><span class="pill ok">merged</span></div>
       <div class="tr" onclick="location.hash='p-checkout'"><span class="id">P-03</span><span class="nm">New Checkout Payment Section Update</span><span class="d">Smart promo / gift-card field</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
       <div class="tr"><span class="id">P-02</span><span class="nm">Virtual Try-On</span><span class="d">First-use journey · asset-embed pattern</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
       <div class="tr"><span class="id">P-01</span><span class="nm">AI-Gen Labelling</span><span class="d">Estate-wide labelling policy deck</span><span class="id">Aug 26</span><span class="pill">delivered</span></div>
@@ -1337,8 +1343,8 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <div class="kick">projects / P-04</div>
     <h1>CTA Colour Alignment - All Brands</h1>
     <p class="openrow"><a class="bd pri sm" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener">Open prototype ↗</a></p>
-    <div class="meta"><span>status <b>merged</b></span><span>sign-off <b>KM review · Aug 26</b></span><span>screens <b>PDP · Added · Bag · Checkout · Account</b></span></div>
-    <p class="lede">Final signed-off styling per fascia across five core screens, plus the golden-truth button state matrix. The Colour page renders this project's output.</p>
+    <div class="meta"><span>status <b>merged</b></span><span>review <b>KM · Aug 26</b></span><span>screens <b>PDP · Added · Bag · Checkout · Account</b></span></div>
+    <p class="lede">Final styling per fascia across five core screens, plus the golden-truth button state matrix. The Colour page renders this project's output.</p>
     <h2>Routes explored</h2>
     <div class="opts">
       <div class="opt"><b>Before / After</b><p>Side-by-side with live colour picker for review sessions.</p></div>
@@ -1358,7 +1364,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 
   <!-- BRANDS -->
   <section class="page" id="brands" data-crumb="Brand Centre">
-    <div class="kick">brand centre <b>· 21 fascias · 7 signed-off modes · 14 dev-mapped drafts</b></div>
+    <div class="kick">brand centre <b>· 21 fascias · 21 modes</b></div>
     <h1>The estate</h1>
     <p class="lede">Every fascia's palette, type, tone and assets. Hover a cell; click through for the full guideline page.</p>
     <div class="wall">
@@ -1369,46 +1375,46 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
       <a class="f" href="#" data-b="karenmillen" onclick="setBrand('karenmillen');return false"><i style="background:linear-gradient(140deg,#D24508,#0A0A0A)"></i><img src="assets/brands/karenmillen.svg" alt=""><span>Karen Millen</span></a>
       <a class="f" href="#" data-b="warehouse" onclick="setBrand('warehouse');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/warehouse.svg" alt=""><span>Warehouse</span></a>
       <a class="f" href="#" data-b="brandroom" onclick="setBrand('brandroom');return false"><i style="background:linear-gradient(140deg,#0F0F0F,#0A0A0A)"></i><img src="assets/brands/brandroom.svg" alt=""><span>The Brand Room</span></a>
-      <a class="f" href="#" data-b="debenhamsoutlet" onclick="setBrand('debenhamsoutlet');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Debenhams Outlet</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="wallis" onclick="setBrand('wallis');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/wallis.svg" alt=""><span>Wallis</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="burton" onclick="setBrand('burton');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><img src="assets/brands/burton.svg" alt=""><span>Burton</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="principles" onclick="setBrand('principles');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/principles.svg" alt=""><span>Principles</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="coast" onclick="setBrand('coast');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/coast.svg" alt=""><span>Coast</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="oasis" onclick="setBrand('oasis');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/oasis.svg" alt=""><span>Oasis</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="dorothyperkins" onclick="setBrand('dorothyperkins');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/dorothyperkins.svg" alt=""><span>Dorothy Perkins</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="maine" onclick="setBrand('maine');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span style="margin-top:auto">Maine</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="gorgeous" onclick="setBrand('gorgeous');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span style="margin-top:auto">Gorgeous</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="misspap" onclick="setBrand('misspap');return false"><i style="background:linear-gradient(140deg,#101820,#0A0A0A)"></i><img src="assets/brands/misspap.svg" alt=""><span>Misspap</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="nastygal" onclick="setBrand('nastygal');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/nastygal.svg" alt=""><span>Nasty Gal</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="foreverunique" onclick="setBrand('foreverunique');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Forever Unique</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="dsgnstudio" onclick="setBrand('dsgnstudio');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">DSGN Studio</span><em class="draft">draft</em></a>
-      <a class="f" href="#" data-b="trainingdept" onclick="setBrand('trainingdept');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Training Dept</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="debenhamsoutlet" onclick="setBrand('debenhamsoutlet');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Debenhams Outlet</span></a>
+      <a class="f" href="#" data-b="wallis" onclick="setBrand('wallis');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/wallis.svg" alt=""><span>Wallis</span></a>
+      <a class="f" href="#" data-b="burton" onclick="setBrand('burton');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><img src="assets/brands/burton.svg" alt=""><span>Burton</span></a>
+      <a class="f" href="#" data-b="principles" onclick="setBrand('principles');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/principles.svg" alt=""><span>Principles</span></a>
+      <a class="f" href="#" data-b="coast" onclick="setBrand('coast');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/coast.svg" alt=""><span>Coast</span></a>
+      <a class="f" href="#" data-b="oasis" onclick="setBrand('oasis');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/oasis.svg" alt=""><span>Oasis</span></a>
+      <a class="f" href="#" data-b="dorothyperkins" onclick="setBrand('dorothyperkins');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/dorothyperkins.svg" alt=""><span>Dorothy Perkins</span></a>
+      <a class="f" href="#" data-b="maine" onclick="setBrand('maine');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span style="margin-top:auto">Maine</span></a>
+      <a class="f" href="#" data-b="gorgeous" onclick="setBrand('gorgeous');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span style="margin-top:auto">Gorgeous</span></a>
+      <a class="f" href="#" data-b="misspap" onclick="setBrand('misspap');return false"><i style="background:linear-gradient(140deg,#101820,#0A0A0A)"></i><img src="assets/brands/misspap.svg" alt=""><span>Misspap</span></a>
+      <a class="f" href="#" data-b="nastygal" onclick="setBrand('nastygal');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/nastygal.svg" alt=""><span>Nasty Gal</span></a>
+      <a class="f" href="#" data-b="foreverunique" onclick="setBrand('foreverunique');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Forever Unique</span></a>
+      <a class="f" href="#" data-b="dsgnstudio" onclick="setBrand('dsgnstudio');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">DSGN Studio</span></a>
+      <a class="f" href="#" data-b="trainingdept" onclick="setBrand('trainingdept');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Training Dept</span></a>
     </div>
     <h2>Modes <code>data-brand — the only theming mechanism</code></h2>
-    <p>One attribute on the root element themes everything: colours, font, weights, radius, case. No per-brand CSS files, no component forks. Five fascias are live modes today; the rest inherit Debenhams until audited.</p>
+    <p>One attribute on the root element themes everything: colours, font, weights, radius, case. No per-brand CSS files, no component forks. All 21 fascias are modes today.</p>
     <div class="tok">
       <div class="tk h"><span></span><span>Fascia</span><span>Font</span><span>Mode state</span></div>
-      <div class="tk"><i style="background:#7BE7D8"></i><code>debenhams</code><code>Geologica</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
-      <div class="tk"><i style="background:#000000"></i><code>boohoo</code><code>Montserrat</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
-      <div class="tk"><i style="background:#000000"></i><code>boohooman</code><code>Montserrat</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
-      <div class="tk"><i style="background:#550503"></i><code>plt</code><code>Roboto</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
-      <div class="tk"><i style="background:#D24508"></i><code>karenmillen</code><code>Jost</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
-      <div class="tk"><i style="background:#000000"></i><code>warehouse</code><code>Helvetica Neue</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
-      <div class="tk"><i style="background:#0F0F0F"></i><code>brandroom</code><code>Helvetica Neue</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
-      <div class="tk"><i style="background:#000000"></i><code>debenhamsoutlet</code><code>Geologica</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#444444"></i><code>wallis</code><code>Urbanist</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#284D7B"></i><code>burton</code><code>Montserrat</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#444444"></i><code>principles</code><code>Lato</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#000000"></i><code>coast</code><code>Roboto</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#000000"></i><code>oasis</code><code>Geologica</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#000000"></i><code>dorothyperkins</code><code>PublicSans</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#284D7B"></i><code>maine</code><code>GothicA1</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#284D7B"></i><code>gorgeous</code><code>Montserrat</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#101820"></i><code>misspap</code><code>Montserrat</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#444444"></i><code>nastygal</code><code>NGGrotesque</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#000000"></i><code>foreverunique</code><code>PublicSans</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#000000"></i><code>dsgnstudio</code><code>HankenGrotesk</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
-      <div class="tk"><i style="background:#000000"></i><code>trainingdept</code><code>HankenGrotesk</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#7BE7D8"></i><code>debenhams</code><code>Geologica</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>boohoo</code><code>Montserrat</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>boohooman</code><code>Montserrat</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
+      <div class="tk"><i style="background:#550503"></i><code>plt</code><code>Roboto</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
+      <div class="tk"><i style="background:#D24508"></i><code>karenmillen</code><code>Jost</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>warehouse</code><code>Helvetica Neue</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
+      <div class="tk"><i style="background:#0F0F0F"></i><code>brandroom</code><code>Helvetica Neue</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>debenhamsoutlet</code><code>Geologica</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#444444"></i><code>wallis</code><code>Urbanist</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#284D7B"></i><code>burton</code><code>Montserrat</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#444444"></i><code>principles</code><code>Lato</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>coast</code><code>Roboto</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>oasis</code><code>Geologica</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>dorothyperkins</code><code>PublicSans</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#284D7B"></i><code>maine</code><code>GothicA1</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#284D7B"></i><code>gorgeous</code><code>Montserrat</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#101820"></i><code>misspap</code><code>Montserrat</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#444444"></i><code>nastygal</code><code>NGGrotesque</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>foreverunique</code><code>PublicSans</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>dsgnstudio</code><code>HankenGrotesk</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>trainingdept</code><code>HankenGrotesk</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
     </div>
   </section>
 
@@ -1502,13 +1508,11 @@ C.forEach((c,i)=>{
   const devLink=c.dev.title!=='—'?`<a href="${DEV}${devId(c.dev.title)}--docs" target="_blank" rel="noopener">${c.dev.title} ↗</a>`:'no counterpart in the dev build yet';
   s.innerHTML=`<div class="kick"><a href="#gallery" style="color:inherit">component library</a> / ${c.group} <b>· rendering <span class="bn">Debenhams</span></b></div>
   <h1>${c.name}</h1><p class="lede">${c.summary}</p>
+  <p style="margin-top:-6px">Every variant and type side by side, then the same set repeated for each fascia — one <code>data-brand</code> attribute per box, nothing restyled per brand.</p>
+  <div class="fxstack"></div>
   <div class="wiki"><div style="min-width:0">
-    <div class="demo hero"><div class="hd"><i></i><i></i><i></i><span>canvas — ${c.name.toLowerCase()} · ${c.variants[0].name.toLowerCase()}</span><span class="bn">Debenhams</span></div><div class="canvas" style="overflow-x:auto">${c.variants[0].html}</div></div>
-    <h2>Every fascia <code>21 modes</code></h2>
-    <p style="margin-top:-6px">The same markup under each fascia's <code>data-brand</code> — nothing is restyled per brand. Seven modes are signed off; the rest are mapped from the front-end theme and marked draft.</p>
-    <div class="fxgrid"></div>
-    <h2>Variants <code>${c.variants.length}</code></h2>
-    <div class="vgrid">${c.variants.map(v=>`<div class="vcard${wide(v.html)?' wide':''}"><div class="canvas">${v.html}</div><div class="vn"><span>${v.name}</span><button onclick="this.closest('.vcard').classList.toggle('code')">html</button></div><pre class="codeblk">${esc(v.html.trim())}</pre></div>`).join('')}</div>
+    <details class="mk"><summary>Markup <code>${c.variants.length} variants</code></summary>
+    <div class="vgrid">${c.variants.map(v=>`<div class="vcard${wide(v.html)?' wide':''}"><div class="canvas">${v.html}</div><div class="vn"><span>${v.name}</span><button onclick="this.closest('.vcard').classList.toggle('code')">html</button></div><pre class="codeblk">${esc(v.html.trim())}</pre></div>`).join('')}</div></details>
     <h2>In the dev build <code>front-end storybook</code></h2>
     <div class="devbox">${st(c.dev.status)} &nbsp;<b>${devLink}</b><br>${c.dev.note}</div>
     <div style="display:flex;justify-content:space-between;margin-top:36px;font-size:13.5px"><a href="#c-${prev.slug}" style="color:var(--ink-3)">← ${prev.name}</a><a href="#c-${next.slug}" style="color:var(--ink-3)">${next.name} →</a></div>
@@ -1524,11 +1528,12 @@ C.forEach((c,i)=>{
     C.filter(c=>c.group===g).forEach(c=>{const a=document.createElement('a');a.href='#c-'+c.slug;a.innerHTML=`<span class="ic">▢</span>${c.name}`;host.insertBefore(a,anchor)})});
 })();
 /* every fascia, per component page — built lazily on first visit */
-const FASCIAS=[["debenhams","Debenhams",1],["boohoo","boohoo",1],["boohooman","boohooMAN",1],["plt","PrettyLittleThing",1],["karenmillen","Karen Millen",1],["warehouse","Warehouse",1],["brandroom","The Brand Room",1],["debenhamsoutlet","Debenhams Outlet",0],["wallis","Wallis",0],["burton","Burton",0],["principles","Principles",0],["coast","Coast",0],["oasis","Oasis",0],["dorothyperkins","Dorothy Perkins",0],["maine","Maine",0],["gorgeous","Gorgeous",0],["misspap","Misspap",0],["nastygal","Nasty Gal",0],["foreverunique","Forever Unique",0],["dsgnstudio","DSGN Studio",0],["trainingdept","Training Dept",0]];
+const FASCIAS=[["debenhams","Debenhams"],["boohoo","boohoo"],["boohooman","boohooMAN"],["plt","PrettyLittleThing"],["karenmillen","Karen Millen"],["warehouse","Warehouse"],["debenhamsoutlet","Debenhams Outlet"],["wallis","Wallis"],["burton","Burton"],["principles","Principles"],["coast","Coast"],["oasis","Oasis"],["dorothyperkins","Dorothy Perkins"],["maine","Maine"],["gorgeous","Gorgeous"],["misspap","Misspap"],["nastygal","Nasty Gal"],["foreverunique","Forever Unique"],["dsgnstudio","DSGN Studio"],["trainingdept","Training Dept"],["brandroom","The Brand Room"]];
 window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||sec.dataset.fx)return;sec.dataset.fx='1';const c=C.find(x=>'c-'+x.slug===h);if(!c)return;
-  const grid=sec.querySelector('.fxgrid');if(!grid)return;
-  grid.innerHTML=FASCIAS.map(([sl,nm,live])=>`<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>${live?'signed off':'dev-mapped draft'}</em></div><div class="canvas">${c.variants[0].html}</div></div>`).join('');
-  grid.querySelectorAll('.fx').forEach(fx=>{const bg=getComputedStyle(fx).backgroundColor;const m=bg.match(/\d+/g);if(m&&(.2126*m[0]+.7152*m[1]+.0722*m[2])/255<.5)fx.classList.add('dark')});
+  const host=sec.querySelector('.fxstack');if(!host)return;
+  host.innerHTML=FASCIAS.map(([sl,nm])=>{const off=(c.notOn||[]).includes(sl);
+    return `<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>${c.name}${off?' · not offered on this fascia':''}</em></div><div class="canvas fxc">${off?'':c.variants.map(v=>`<div class="fv${wide(v.html)?' wide':''}"><div class="fvc">${v.html}</div><span class="fvn">${v.name}</span></div>`).join('')}</div></div>`}).join('');
+  host.querySelectorAll('.fx').forEach(fx=>{const bg=getComputedStyle(fx).backgroundColor;const m=bg.match(/\d+/g);if(m&&(.2126*m[0]+.7152*m[1]+.0722*m[2])/255<.5)fx.classList.add('dark')});
 };
 /* dev overlay */
 const ov=document.getElementById('dev-overlay');
@@ -1567,7 +1572,7 @@ const REG=[
  {h:'library',t:'Extended library',k:'buttons payment forms field checkbox radio toggle select price size accordion sheet modal bag summary chips account deliver+ bnpl usp box toast banner c-09 c-10 c-11 c-12 c-13 c-14 c-15 c-16 c-17 c-18',ic:'▦',s:'Component'},
  {h:'projects',t:'All projects',k:'archive briefs',ic:'☰',s:'Projects'},
  {h:'p-plp',t:'PLP UI updates - All Brands',k:'plp alignment warehouse boohoo template p-05',ic:'▸',s:'Project'},
- {h:'p-colour',t:'CTA Colour Alignment - All Brands',k:'colour alignment signed off km p-04',ic:'▸',s:'Project'},
+ {h:'p-colour',t:'CTA Colour Alignment - All Brands',k:'colour alignment merged km p-04',ic:'▸',s:'Project'},
  {h:'p-checkout',t:'New Checkout Payment Section Update',k:'checkout 2026 promo gift card p-03',ic:'▸',s:'Project'},
  {h:'brands',t:'Brand Centre',k:'fascias estate guidelines',ic:'✦',s:'Brands'},
  {h:'requests',t:'Requests board',k:'intake tickets status',ic:'▤',s:'Requests'},
