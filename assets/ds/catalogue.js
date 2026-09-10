@@ -313,7 +313,7 @@ const DG_CATALOGUE = [
   variants:[{name:'In progress', html:'<div class="thresh" style="width:320px"><span>Spend <b>£12.01</b> more for free delivery</span><div class="track"><div class="fill" style="width:60%"></div></div></div>'}, {name:'Reached', html:'<div class="thresh thresh--ok" style="width:320px"><span class="tick"></span><span>Congratulations, you’re eligible for free delivery</span></div>'}],
   dev:{title:'Molecules/Delivery Progress', status:'partial', note:'Dev Delivery Progress is a step indicator (step: number). The threshold bar lives in the basket page.'} },
 
-{ slug:'deliver-plus', name:'Deliver+', group:'PDP modules', tier:'molecule', css:'.dplus · .dplus--checkout · .dplus-bag', figma:'CQIe2e2c0iagD1T9WjdYsx · Latest Components 28.08.26 (3209-10203 …)',
+{ slug:'deliver-plus', notOn:['brandroom'], name:'Deliver+', group:'PDP modules', tier:'molecule', css:'.dplus · .dplus--checkout · .dplus-bag', figma:'CQIe2e2c0iagD1T9WjdYsx · Latest Components 28.08.26 (3209-10203 …)',
   summary:'The SEEL Deliver+ set, exact to the 28 Aug 2026 designs: PDP banner, checkout banner with the opt-in checkbox, and the bag banner in mobile and desktop form — every fascia on its own ground, ink, link colour and lockup.',
   use:['PDP: under the buy buttons, above the USP box.','Checkout: the opt-in row with the price in the title.','Bag: the full benefits module, mobile stacked / desktop five-up.'],
   avoid:['Restyling the lockup — it is the brand\'s own vector, sized as designed.','Changing ground or link colour per instance: --dplus-* carries the design values per fascia.','Adding benefits: the five are contractual copy.'],
@@ -581,7 +581,7 @@ const DG_DEV_OVERLAY = [
 
 /* Dev theme variables (per fascia, RGB triplets consumed by Tailwind) → our semantic tokens. */
 const DG_TOKEN_MAP = [
- {dev:'--color-primary', ours:'--surface-action', note:'Button fill. Debenhams 7BE7D8 ✓ · PLT 550503 ✓ · MAN/WH/TBR 000 ✓ · boohoo 444444 ✗ (ours 000) · KM 000 ✗ (ours D24508 signed-off).'},
+ {dev:'--color-primary', ours:'--surface-action', note:'Button fill. Debenhams 7BE7D8 ✓ · PLT 550503 ✓ · MAN/WH/TBR 000 ✓ · boohoo 444444 ✗ (ours 000) · KM 000 ✗ (ours D24508).'},
  {dev:'--color-button-text-primary', ours:'--text-on-action', note:'Debenhams black ✓, others white ✓ (Warehouse F1F1F1 ~).'},
  {dev:'--color-cta-primary / --color-cta-accent', ours:'--text-link · --border-action · --icon-action', note:'Debenhams 00787D ✓.'},
  {dev:'--color-primary-dark', ours:'--surface-action-pressed · --brand-dark-3', note:'Debenhams 529C92 = our brand-dark-3 ✓.'},
@@ -597,7 +597,7 @@ const DG_TOKEN_MAP = [
  {dev:'--color-search-input-background / -text / -placeholder', ours:'--surface-media · --text-primary · --text-secondary', note:'F2F2F2 / 000 / 767676.'},
  {dev:'--color-facet-pill-bg-selected / -border-selected', ours:'--brand-neutral · --border-action', note:'Debenhams E8F4F2 / 00787D ✓.'},
  {dev:'--color-footer-help-header-background / -text', ours:'--ft-band', note:'Dev peach FFF1E8 on all fascias; Warehouse F1F1F1 + D6FF00 text. Ours: per-brand band.'},
- {dev:'--font-body / --font-serif / --font-cta / --font-heading', ours:'--font-family-base', note:'Same families (Geologica, Montserrat, Roboto, Jost, Archivo) except KM CTA/heading = WorkSans in dev ✗; Warehouse Roboto vs ours Helvetica (DRAFT).'},
+ {dev:'--font-body / --font-serif / --font-cta / --font-heading', ours:'--font-family-base', note:'Same families (Geologica, Montserrat, Roboto, Jost, Archivo) except KM CTA/heading = WorkSans in dev ✗; Warehouse Roboto — ours now Roboto too.'},
  {dev:'--font-weight-base / -semibold / -bold', ours:'--w-regular / --w-mid / --w-strong', note:'PLT 300 / 400 / 400 in dev vs ours 400 / 400 / 700 ✗.'},
  {dev:'--default-rounding', ours:'--radius-default', note:'PLT 0 · TBR 0 ✓ — identical square-mode rule.'},
  {dev:'--default-text-colour', ours:'--text-primary', note:'PLT 333333 vs ours 0F0F0F.'},

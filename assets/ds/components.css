@@ -3,14 +3,14 @@
    Consumes tokens.css only — no raw colour, font or radius values
    (the one exception is flagged inline). Load AFTER tokens.css.
 
-   C-01 Button (.bd) — signed-off: colour-alignment brand-colours (post-KM, 26 Aug)
+   C-01 Button (.bd) — colour-alignment brand-colours (post-KM, 26 Aug)
    (DS file → BUTTONS (new) · 9144-1807). Spec on the site: #button.
    New components built in project branches get promoted into this
    file when the brief merges.
    ============================================================ */
 
 /* C-01 Button */
-/* C-01 golden truth (colour-alignment brand-colours, signed-off 26 Aug): 50px, 16/24, 4px radius on
+/* C-01 golden truth (colour-alignment brand-colours, 26 Aug): 50px, 16/24, 4px radius on
    EVERY fascia (PLT/Brand Room square-radius modes do not zero buttons), primary uppercase (KM sentence). */
 .bd{font-family:var(--font-family-base);font-weight:var(--w-btn,var(--w-strong));font-size:16px;line-height:24px;padding:12px 24px;border-radius:4px;text-transform:var(--case-btn1,uppercase);letter-spacing:.02em;border:1px solid transparent;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
 .bd.pri{background:var(--surface-action);color:var(--text-on-action)}
