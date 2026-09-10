@@ -496,23 +496,78 @@
 .thresh--ok{flex-direction:row;align-items:center;gap:12px}
 .thresh--ok .tick{width:20px;height:20px;border-radius:99px;background:var(--tickc);display:grid;place-items:center;flex:none}
 .thresh--ok .tick::after{content:"";width:8px;height:4px;border-left:2px solid #FFF;border-bottom:2px solid #FFF;transform:translateY(-1px) rotate(-45deg)}
-.dplus{background:var(--dplus-bg);color:var(--dplus-fg);border-radius:4px;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
-.dplus .lockup{height:15px;width:auto;align-self:flex-start}
-.dplus .h{font-size:14px;font-weight:var(--w-strong)}
+/* Deliver+ — SEEL Enhancements 2026 exact (Latest Components 28.08.26). Ground/ink/link/checkbox/radius per fascia via --dplus-*;
+   the lockup is the brand's own vector (all fifteen are in the markup, the fascia mode reveals one). */
+.dplus{background:var(--dplus-bg);color:var(--dplus-fg);border-radius:var(--dplus-radius,4px);padding:16px 20px;display:flex;gap:24px;align-items:center;min-width:288px;font-family:var(--font-family-base)}
+.dplus .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
+.dplus .h{font-size:14px;font-weight:var(--w-strong);line-height:normal}
 .dplus ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.dplus li{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:15px}
-.dplus li::before{content:"✓";font-weight:700;flex:none}
-.dplus .more{font-size:14px;font-weight:var(--w-strong);color:var(--dplus-link)}
-.dplus .chk{border-color:var(--dplus-check);background:var(--dplus-check)}
-.dplus-mod{background:#FFF;border-radius:4px;overflow:hidden}
-.dplus-mod .band{background:var(--dplus-bg);color:var(--dplus-fg);padding:16px 20px;display:flex;flex-direction:column;gap:8px}
-.dplus-mod .body{padding:16px;display:flex;flex-direction:column;gap:12px}
-.dplus-mod .row{display:flex;align-items:center;gap:12px}
-.dplus-mod .puck{width:48px;height:48px;border-radius:99px;flex:none;background:#FFF;box-shadow:var(--shadow-puck);display:grid;place-items:center}
-.dplus-mod .puck img{width:24px;height:24px}
-.dplus-mod .t{font-size:14px;line-height:17px;font-weight:var(--w-strong);color:#000;margin:0}
-.dplus-mod .s{font-size:12px;line-height:16px;color:#000;margin:2px 0 0}
-.dplus-mod .powered{display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px;color:#595959;padding-bottom:16px}
+.dplus li{display:flex;align-items:center;gap:8px;font-size:12px;line-height:normal;font-weight:var(--w-regular)}
+.dplus li::before{content:"";width:16px;height:16px;flex:none;background:currentColor;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.2'><path d='M3 8.5l3.2 3L13 5'/></svg>") center/contain no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.2'><path d='M3 8.5l3.2 3L13 5'/></svg>") center/contain no-repeat}
+.dplus .more{font-size:12px;font-weight:var(--w-strong);line-height:1.4;color:var(--dplus-link);cursor:pointer}
+.dplus .foot{border-top:1px solid color-mix(in srgb,currentColor 25%,transparent);padding-top:12px;font-size:12px;font-style:italic;font-weight:var(--w-regular);opacity:.75;line-height:1.35}
+.dplus--checkout .chk{flex:none;border-color:var(--dplus-check);background:var(--dplus-check)}
+.dplus--checkout .chk[aria-checked="false"]{background:transparent;border-color:var(--dplus-check)}
+.dplus--checkout .h b{font-weight:var(--w-regular)}
+/* lockups: every brand's vector is present in the markup; the nearest data-brand reveals its own (define-all vars, no inheritance leak into nested tiles) */
+.dpl{display:none;position:relative;flex:none}
+.dpl img{position:absolute}
+.dpl-generic{display:var(--dpl-generic,none)}
+.dpl-boohoo{display:var(--dpl-boohoo,none)}
+.dpl-boohooman{display:var(--dpl-boohooman,none)}
+.dpl-burton{display:var(--dpl-burton,none)}
+.dpl-coast{display:var(--dpl-coast,none)}
+.dpl-debenhams{display:var(--dpl-debenhams,none)}
+.dpl-dorothyperkins{display:var(--dpl-dorothyperkins,none)}
+.dpl-dsgnstudio{display:var(--dpl-dsgnstudio,none)}
+.dpl-karenmillen{display:var(--dpl-karenmillen,none)}
+.dpl-misspap{display:var(--dpl-misspap,none)}
+.dpl-nastygal{display:var(--dpl-nastygal,none)}
+.dpl-oasis{display:var(--dpl-oasis,none)}
+.dpl-plt{display:var(--dpl-plt,none)}
+.dpl-principles{display:var(--dpl-principles,none)}
+.dpl-wallis{display:var(--dpl-wallis,none)}
+.dpl-warehouse{display:var(--dpl-warehouse,none)}
+[data-brand="boohoo"]{--dpl-boohoo:block;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="boohooman"]{--dpl-boohoo:none;--dpl-boohooman:block;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="burton"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:block;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="coast"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:block;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="debenhams"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:block;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="dorothyperkins"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:block;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="dsgnstudio"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:block;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="karenmillen"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:block;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="misspap"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:block;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="nastygal"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:block;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="oasis"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:block;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="plt"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:block;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="principles"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:block;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="wallis"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:block;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="warehouse"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:block;--dpl-generic:none;}
+[data-brand="debenhamsoutlet"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:block;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:none;}
+[data-brand="brandroom"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:block;}
+[data-brand="maine"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:block;}
+[data-brand="gorgeous"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:block;}
+[data-brand="foreverunique"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:block;}
+[data-brand="trainingdept"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:block;}
+/* bag banner: brand band + white body of benefit rows + Seel/Trustpilot foot */
+.dplus-bag{border-radius:var(--dplus-radius,4px);overflow:hidden;font-family:var(--font-family-base);background:#FFF}
+.dplus-bag .band{background:var(--dplus-bg);color:var(--dplus-fg);padding:24px;display:flex;flex-direction:column;gap:12px}
+.dplus-bag .band p{font-size:14px;font-weight:var(--w-regular);line-height:1.4;margin:0}
+.dplus-bag .body{padding:20px 24px;display:flex;flex-direction:column;gap:12px}
+.dplus-bag .row{display:flex;align-items:center;gap:12px}
+.dplus-bag .puck{width:48px;height:48px;border-radius:100px;flex:none;background:#FFF;box-shadow:0 0 14px -4px rgba(0,0,0,.18);display:grid;place-items:center}
+.dplus-bag .puck img{width:24px;height:24px}
+.dplus-bag .t{font-size:14px;line-height:1.2;font-weight:var(--w-strong);color:#000;margin:0}
+.dplus-bag .s{font-size:12px;line-height:1.3;color:#000;margin:4px 0 0;font-weight:var(--w-regular)}
+.dplus-bag .foot{padding:0 24px 20px;display:flex;flex-direction:column;gap:8px;align-items:center}
+.dplus-bag .tp{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
+.dplus-bag .tp img{height:20px;width:auto}
+.dplus-bag .tp .r{font-size:10px;line-height:1.2;color:#000}.dplus-bag .tp .r b{font-weight:var(--w-strong)}
+.dplus-bag .powered{font-size:12px;color:#6B6B6B;display:flex;gap:4px;align-items:center;white-space:nowrap}
+.dplus-bag .powered img{height:14px}
+.dplus-bag--desktop .body{flex-direction:row;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px}
+.dplus-bag--desktop .row{flex:1;flex-direction:column;text-align:center;gap:12px}
+.dplus-bag--desktop .band{flex-direction:row;align-items:center;gap:24px}
 .glance{display:flex;flex-direction:column;gap:16px;list-style:none;margin:0;padding:0}
 .glance li{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:var(--w-regular)}
 .glance li i{width:24px;height:24px;border-radius:99px;border:1px solid var(--border-default);display:grid;place-items:center;flex:none;font-style:normal;font-size:12px}

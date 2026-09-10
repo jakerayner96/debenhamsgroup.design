@@ -450,3 +450,25 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
 }
+
+/* ============================================================
+   DELIVER+ HERO SET — SEEL Enhancements 2026 (CQIe2e2c0iagD1T9WjdYsx · Latest Components 28.08.26), 10 Sep 2026.
+   Per-fascia banner ground / ink / link / checkbox / radius read from the designs; for the ten fascias without a
+   signed-off palette the design's font + weights + neutral tint are also adopted here (hero indication).
+   Debenhams · boohoo · MAN · PLT · KM keep their signed-off palettes — conflicts are listed in .context/22.
+   ============================================================ */
+[data-brand="debenhams"]{--dplus-bg:#E8F4F2;--dplus-fg:#000000;--dplus-link:#00787D;--dplus-check:#00787D;--dplus-radius:4px;}
+[data-brand="boohoo"]{--dplus-bg:#FFE0EB;--dplus-fg:#000000;--dplus-link:#BB305F;--dplus-check:#BB305F;--dplus-radius:4px;}
+[data-brand="boohooman"]{--dplus-bg:#000000;--dplus-fg:#FFFFFF;--dplus-link:#FFFFFF;--dplus-check:#FFFFFF;--dplus-radius:4px;}
+[data-brand="plt"]{--dplus-bg:#EAAFA4;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#FFFDF7;--dplus-radius:0px;}
+[data-brand="karenmillen"]{--dplus-bg:#000000;--dplus-fg:#FFFFFF;--dplus-link:#FFFFFF;--dplus-check:#FFFFFF;--dplus-radius:4px;}
+[data-brand="burton"]{--dplus-bg:#E2EAF4;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-neutral:#E2EAF4;--brand-light-3:#E2EAF4;}
+[data-brand="coast"]{--dplus-bg:#E2E0DC;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#E2E0DC;--brand-light-3:#E2E0DC;}
+[data-brand="dorothyperkins"]{--dplus-bg:#181729;--dplus-fg:#FFFFFF;--dplus-link:#FFFFFF;--dplus-check:#FFFFFF;--dplus-radius:0px;--font-family-base:'Public Sans',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#181729;--brand-light-3:#181729;}
+[data-brand="dsgnstudio"]{--dplus-bg:#F4F6F0;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Hanken Grotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-neutral:#F4F6F0;--brand-light-3:#F4F6F0;}
+[data-brand="misspap"]{--dplus-bg:#E7D5C6;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-neutral:#E7D5C6;--brand-light-3:#E7D5C6;}
+[data-brand="nastygal"]{--dplus-bg:#EEEEED;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#EEEEED;--brand-light-3:#EEEEED;}
+[data-brand="oasis"]{--dplus-bg:#EDE6DF;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#EDE6DF;--brand-light-3:#EDE6DF;}
+[data-brand="principles"]{--dplus-bg:#FBF6F0;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Lato',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#FBF6F0;--brand-light-3:#FBF6F0;}
+[data-brand="wallis"]{--dplus-bg:#F9EEF3;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Urbanist',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#F9EEF3;--brand-light-3:#F9EEF3;}
+[data-brand="warehouse"]{--dplus-bg:#FDFFF5;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#FDFFF5;--brand-light-3:#FDFFF5;}
