@@ -218,3 +218,235 @@
   --paypal:#EEEEEE; /* KM PayPal on light grey */
   --dplus-bg:linear-gradient(90deg,#000 36%,#161616 100%);--dplus-fg:#FFF;--dplus-link:#FFF;--dplus-check:#FFF;
 }
+
+/* ============================================================
+   DEV-MAPPED FASCIAS — the other 14 fascias of the estate, generated 10 Sep 2026 from the
+   front-end Storybook theme variables (.context/inventory/storybook-capture/themes.json) through the
+   dev→token mapping in .context/inventory/05-dev-storybook.md §3. Colours here are what production
+   ships today, not a signed-off palette — every block is DRAFT until each brand reviews it.
+   Order of the estate: debenhams · debenhamsoutlet · wallis · burton · principles · boohooman · boohoo · karenmillen · plt · coast · oasis · dorothyperkins · maine · gorgeous · warehouse · misspap · nastygal · foreverunique · dsgnstudio · trainingdept · brandroom
+   ============================================================ */
+[data-brand="debenhamsoutlet"]{ /* DEV-MAPPED from the front-end theme (debenhamsoutlet, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Debenhams Outlet';--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#00787D;--text-link-hover:#000000;--border-action:#00787D;--border-focus:#00787D;--icon-action:#00787D;--btn-outline:#00787D;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#BC0000;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#00787D;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#00787D;--dot:#7BE7D8;--new:#00787D;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#00787D;--dplus-check:#00787D;
+}
+[data-brand="wallis"]{ /* DEV-MAPPED from the front-end theme (wallis, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Wallis';--font-family-base:'Urbanist',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#444444;--surface-action:#444444;--surface-action-hover:#444444;--surface-action-pressed:#444444;--text-on-action:#FFFFFF;
+  --text-link:#444444;--text-link-hover:#444444;--border-action:#444444;--border-focus:#444444;--icon-action:#444444;--btn-outline:#444444;
+  --brand-primary-dark:#444444;--brand-dark-3:#444444;--brand-light-1:#444444;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#444444;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#444444;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#444444;--action-buy-pressed:#444444;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#444444;--text-link-disabled:#B5B5B5;--tickc:#444444;--vto:#444444;--dot:#284D7B;--new:#444444;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
+}
+[data-brand="burton"]{ /* DEV-MAPPED from the front-end theme (burton, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Burton';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#284D7B;--surface-action:#284D7B;--surface-action-hover:#284D7B;--surface-action-pressed:#284D7B;--text-on-action:#FFFFFF;
+  --text-link:#284D7B;--text-link-hover:#284D7B;--border-action:#284D7B;--border-focus:#284D7B;--icon-action:#284D7B;--btn-outline:#284D7B;
+  --brand-primary-dark:#284D7B;--brand-dark-3:#284D7B;--brand-light-1:#284D7B;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#333333;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#284D7B;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#284D7B;--action-buy-pressed:#284D7B;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#284D7B;--text-link-disabled:#B5B5B5;--tickc:#284D7B;--vto:#284D7B;--dot:#284D7B;--new:#284D7B;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#284D7B;--dplus-check:#284D7B;
+}
+[data-brand="principles"]{ /* DEV-MAPPED from the front-end theme (principles, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Principles';--font-family-base:'Lato',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#444444;--surface-action:#444444;--surface-action-hover:#444444;--surface-action-pressed:#444444;--text-on-action:#FFFFFF;
+  --text-link:#444444;--text-link-hover:#444444;--border-action:#444444;--border-focus:#444444;--icon-action:#444444;--btn-outline:#444444;
+  --brand-primary-dark:#444444;--brand-dark-3:#444444;--brand-light-1:#444444;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#444444;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#444444;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#444444;--action-buy-pressed:#444444;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#444444;--text-link-disabled:#B5B5B5;--tickc:#444444;--vto:#444444;--dot:#284D7B;--new:#444444;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
+}
+[data-brand="coast"]{ /* DEV-MAPPED from the front-end theme (coast, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Coast';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#000000;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+[data-brand="oasis"]{ /* DEV-MAPPED from the front-end theme (oasis, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Oasis';--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#FFFFFF;--nav-fg:#000000;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+[data-brand="dorothyperkins"]{ /* DEV-MAPPED from the front-end theme (dorothy-perkins, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Dorothy Perkins';--font-family-base:'PublicSans',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#000000;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+[data-brand="maine"]{ /* DEV-MAPPED from the front-end theme (maine, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Maine';--font-family-base:'GothicA1',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#284D7B;--surface-action:#284D7B;--surface-action-hover:#284D7B;--surface-action-pressed:#284D7B;--text-on-action:#FFFFFF;
+  --text-link:#284D7B;--text-link-hover:#284D7B;--border-action:#284D7B;--border-focus:#284D7B;--icon-action:#284D7B;--btn-outline:#284D7B;
+  --brand-primary-dark:#284D7B;--brand-dark-3:#284D7B;--brand-light-1:#284D7B;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#002644;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#284D7B;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#284D7B;--action-buy-pressed:#284D7B;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#284D7B;--text-link-disabled:#B5B5B5;--tickc:#284D7B;--vto:#284D7B;--dot:#284D7B;--new:#284D7B;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#284D7B;--dplus-check:#284D7B;
+}
+[data-brand="gorgeous"]{ /* DEV-MAPPED from the front-end theme (gorgeous, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Gorgeous';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#284D7B;--surface-action:#284D7B;--surface-action-hover:#284D7B;--surface-action-pressed:#284D7B;--text-on-action:#FFFFFF;
+  --text-link:#284D7B;--text-link-hover:#284D7B;--border-action:#284D7B;--border-focus:#284D7B;--icon-action:#284D7B;--btn-outline:#284D7B;
+  --brand-primary-dark:#284D7B;--brand-dark-3:#284D7B;--brand-light-1:#284D7B;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#4B0082;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#284D7B;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#284D7B;--action-buy-pressed:#284D7B;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#284D7B;--text-link-disabled:#B5B5B5;--tickc:#284D7B;--vto:#284D7B;--dot:#284D7B;--new:#284D7B;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#284D7B;--dplus-check:#284D7B;
+}
+[data-brand="misspap"]{ /* DEV-MAPPED from the front-end theme (misspap, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Misspap';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#101820;--surface-action:#101820;--surface-action-hover:#101820;--surface-action-pressed:#101820;--text-on-action:#FFFFFF;
+  --text-link:#101820;--text-link-hover:#101820;--border-action:#101820;--border-focus:#101820;--icon-action:#101820;--btn-outline:#101820;
+  --brand-primary-dark:#101820;--brand-dark-3:#101820;--brand-light-1:#101820;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#000000;--nav-fg:#FFFFFF;
+  --surface-page:#000000;--surface-sunken:#F8F8F8;--ft-band:#C22527;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#101820;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#101820;--action-buy-pressed:#101820;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#101820;--text-link-disabled:#B5B5B5;--tickc:#101820;--vto:#101820;--dot:#C22527;--new:#101820;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#101820;--dplus-check:#101820;
+}
+[data-brand="nastygal"]{ /* DEV-MAPPED from the front-end theme (nastygal, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Nasty Gal';--font-family-base:'NGGrotesque',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#444444;--surface-action:#444444;--surface-action-hover:#444444;--surface-action-pressed:#444444;--text-on-action:#FFFFFF;
+  --text-link:#444444;--text-link-hover:#444444;--border-action:#444444;--border-focus:#444444;--icon-action:#444444;--btn-outline:#444444;
+  --brand-primary-dark:#444444;--brand-dark-3:#444444;--brand-light-1:#444444;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#444444;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#444444;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#444444;--action-buy-pressed:#444444;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#444444;--text-link-disabled:#B5B5B5;--tickc:#444444;--vto:#444444;--dot:#284D7B;--new:#444444;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
+}
+[data-brand="foreverunique"]{ /* DEV-MAPPED from the front-end theme (foreverunique, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Forever Unique';--font-family-base:'PublicSans',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#000000;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+[data-brand="dsgnstudio"]{ /* DEV-MAPPED from the front-end theme (dsgnstudio, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'DSGN Studio';--font-family-base:'HankenGrotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#FFFFFF;--nav-fg:#000000;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+[data-brand="trainingdept"]{ /* DEV-MAPPED from the front-end theme (trainingdept, 09 Sep) via .context/inventory/05 §3 — DRAFT pending brand sign-off */
+  --brand-name:'Training Dept';--font-family-base:'HankenGrotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#FFFFFF;--nav-fg:#000000;
+  --surface-page:#000000;--surface-sunken:#F8F8F8;--ft-band:#000000;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
