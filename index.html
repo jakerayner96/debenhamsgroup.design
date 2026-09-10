@@ -296,6 +296,22 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
 .tmx .tr{grid-template-columns:1.2fr 1.2fr 2.4fr;height:auto;min-height:44px;padding:8px 16px;cursor:default;font-size:13px;gap:10px}
 .tmx code{font-family:var(--mono);font-size:11.5px;color:var(--aq);word-break:break-all}
 @media(max-width:920px){.wiki{grid-template-columns:1fr}.omx .tr,.tmx .tr{grid-template-columns:1fr}}
+
+/* design-system IA: foundations merge · per-fascia component grids · sidebar sub-heads */
+.items .sub{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding:12px 14px 4px}
+.fxgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin:8px 0 28px}
+.fx{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface-page,#fff)}
+.fx .fl{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#000;background:rgba(0,0,0,.05)}
+.fx .fl em{font-style:normal;font-weight:500;opacity:.55}
+.fx .canvas{padding:18px;min-height:80px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;background:var(--surface-page,#fff)}
+.fx.dark .fl{color:#fff;background:rgba(255,255,255,.08)}
+.fsec{padding-top:12px;margin-top:28px;border-top:1px solid var(--line)}
+.fsec>h2:first-child{margin-top:0}
+.ftoc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.ftoc a{font-size:12.5px;padding:6px 12px;border:1px solid var(--line);border-radius:99px;color:var(--ink-2);text-decoration:none}
+.ftoc a:hover{color:var(--ink);border-color:var(--ink-3)}
+.wall .f em.draft{position:absolute;top:8px;right:8px;font:600 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.55);padding:4px 6px;border-radius:4px;font-style:normal}
+.wall .f{position:relative}
 </style>
 </head>
 <body>
@@ -317,22 +333,15 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
     </div>
   </div>
   <div class="grp">
-    <button onclick="tg(this)"><span class="car">▾</span>System</button>
-    <div class="items">
-      <a href="#colour"><span class="ic">◈</span>Colour <span class="tag ok">live</span></a>
-      <a href="#type"><span class="ic">Aa</span>Typography <span class="tag ok">live</span></a>
-      <a href="#spacing"><span class="ic">⇥</span>Spacing <span class="tag ok">live</span></a>
-      <a href="#radius"><span class="ic">◜</span>Radius <span class="tag ok">live</span></a>
-      <a href="#borders"><span class="ic">▭</span>Borders <span class="tag ok">live</span></a>
-      <a href="#motion"><span class="ic">◐</span>Motion <span class="tag ok">live</span></a>
-      <a href="#a11y"><span class="ic">✓</span>Accessibility <span class="tag ok">live</span></a>
-      <a href="#install"><span class="ic">⤓</span>Using the system</a>
-      <a href="#components"><span class="ic">▦</span>Components</a>
-      <a href="#prototypes"><span class="ic">▣</span>Master prototypes <span class="tag wip">wip</span></a>
-      <a href="#gallery"><span class="ic">▦</span>Component library <span class="tag ok">new</span></a>
-      <a href="#dev-overlay"><span class="ic">⇄</span>Dev alignment <span class="tag ok">new</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/" target="_blank" rel="noopener" title="Opens the DG Group Design System Storybook in a new tab"><span class="ic">▣</span>Storybook <span class="tag ok">live</span></a>
+    <button onclick="tg(this)"><span class="car">▾</span>Design system</button>
+    <div class="items" id="dsItems">
+      <a href="#foundations"><span class="ic">◈</span>Foundations <span class="tag ok">live</span></a>
+      <a href="#gallery"><span class="ic">▦</span>All components <span class="tag ok">live</span></a>
+      <!-- component pages are appended here from assets/ds/catalogue.js -->
       <a href="#icons"><span class="ic">✳</span>Icons <span class="tag ok">live</span></a>
+      <a href="#prototypes"><span class="ic">▣</span>Master prototypes <span class="tag wip">wip</span></a>
+      <a href="#dev-overlay"><span class="ic">⇄</span>Dev alignment</a>
+      <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/" target="_blank" rel="noopener" title="Opens our Storybook in a new tab"><span class="ic">▤</span>Storybook</a>
     </div>
   </div>
   <div class="grp">
@@ -1257,6 +1266,15 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">.context/inventory/05-dev-storybook.md</code> — the full ingest: every component with its props, per-fascia theme variables, 1440 + 390 renders of all 178 stories. <a style="color:var(--aq)" href="https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/" target="_blank" rel="noopener">DG Group Design System Storybook ↗</a> — generated from the same catalogue (<code style="font-family:var(--mono);font-size:12px;color:var(--aq)">storybook/</code>).</p>
   </section>
 
+  <!-- FOUNDATIONS (single page — the eight foundation sections are merged in at load) -->
+  <section class="page" id="foundations" data-crumb="Design system / Foundations">
+    <div class="kick">design system <b>· foundations</b></div>
+    <h1>Foundations</h1>
+    <p class="lede">The general rules every component is built from — colour, typography, spacing, radius, borders, motion, accessibility, and how to use the system. One page; jump with the chips.</p>
+    <div class="ftoc" id="ftoc"></div>
+    <div id="fbody"></div>
+  </section>
+
   <!-- PROJECTS INDEX -->
   <section class="page" id="projects" data-crumb="Projects">
     <div class="kick">projects <b>· options + chosen route, always</b></div>
@@ -1340,40 +1358,57 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 
   <!-- BRANDS -->
   <section class="page" id="brands" data-crumb="Brand Centre">
-    <div class="kick">brand centre <b>· 16 fascias · 4 markets</b></div>
+    <div class="kick">brand centre <b>· 21 fascias · 7 signed-off modes · 14 dev-mapped drafts</b></div>
     <h1>The estate</h1>
     <p class="lede">Every fascia's palette, type, tone and assets. Hover a cell; click through for the full guideline page.</p>
     <div class="wall">
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#00787D,#0A2523)"></i><img src="assets/brands/debenhams.svg" alt=""><span>Debenhams</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#BB305F,#2A0E18)"></i><img src="assets/brands/boohoo.svg" alt=""><span>boohoo</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#2E2E2E,#000)"></i><img src="assets/brands/boohooman.svg" alt=""><span>boohooMAN</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#550503,#140100)"></i><img src="assets/brands/plt.svg" alt=""><span>PrettyLittleThing</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#8E330B,#1E0B03)"></i><img src="assets/brands/karenmillen.svg" alt=""><span>Karen Millen</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#4A4A46,#111)"></i><img src="assets/brands/warehouse.svg" alt=""><span>Warehouse</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#6E5E4E,#141210)"></i><img src="assets/brands/coast.svg" alt=""><span>Coast</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3E4A42,#0D110E)"></i><img src="assets/brands/oasis.svg" alt=""><span>Oasis</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3A3E4A,#0C0D11)"></i><img src="assets/brands/burton.svg" alt=""><span>Burton</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#4A3A44,#110C10)"></i><img src="assets/brands/dorothyperkins.svg" alt=""><span>Dorothy Perkins</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#443E30,#100F0B)"></i><img src="assets/brands/wallis.svg" alt=""><span>Wallis</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#503A3A,#120D0D)"></i><img src="assets/brands/nastygal.svg" alt=""><span>Nasty Gal</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#3A4A50,#0C1012)"></i><img src="assets/brands/misspap.svg" alt=""><span>Misspap</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#46503A,#0F110C)"></i><img src="assets/brands/principles.svg" alt=""><span>Principles</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#2F2F4A,#0B0B12)"></i><img src="assets/brands/brandroom.svg" alt=""><span>The Brand Room</span></a>
-      <a class="f" href="#"><i style="background:linear-gradient(140deg,#333,#0A0A0A)"></i><span style="margin-top:auto">DSGN Studio</span></a>
+      <a class="f" href="#" data-b="debenhams" onclick="setBrand('debenhams');return false"><i style="background:linear-gradient(140deg,#7BE7D8,#0A0A0A)"></i><img src="assets/brands/debenhams.svg" alt=""><span>Debenhams</span></a>
+      <a class="f" href="#" data-b="boohoo" onclick="setBrand('boohoo');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/boohoo.svg" alt=""><span>boohoo</span></a>
+      <a class="f" href="#" data-b="boohooman" onclick="setBrand('boohooman');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/boohooman.svg" alt=""><span>boohooMAN</span></a>
+      <a class="f" href="#" data-b="plt" onclick="setBrand('plt');return false"><i style="background:linear-gradient(140deg,#550503,#0A0A0A)"></i><img src="assets/brands/plt.svg" alt=""><span>PrettyLittleThing</span></a>
+      <a class="f" href="#" data-b="karenmillen" onclick="setBrand('karenmillen');return false"><i style="background:linear-gradient(140deg,#D24508,#0A0A0A)"></i><img src="assets/brands/karenmillen.svg" alt=""><span>Karen Millen</span></a>
+      <a class="f" href="#" data-b="warehouse" onclick="setBrand('warehouse');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/warehouse.svg" alt=""><span>Warehouse</span></a>
+      <a class="f" href="#" data-b="brandroom" onclick="setBrand('brandroom');return false"><i style="background:linear-gradient(140deg,#0F0F0F,#0A0A0A)"></i><img src="assets/brands/brandroom.svg" alt=""><span>The Brand Room</span></a>
+      <a class="f" href="#" data-b="debenhamsoutlet" onclick="setBrand('debenhamsoutlet');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Debenhams Outlet</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="wallis" onclick="setBrand('wallis');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/wallis.svg" alt=""><span>Wallis</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="burton" onclick="setBrand('burton');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><img src="assets/brands/burton.svg" alt=""><span>Burton</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="principles" onclick="setBrand('principles');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/principles.svg" alt=""><span>Principles</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="coast" onclick="setBrand('coast');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/coast.svg" alt=""><span>Coast</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="oasis" onclick="setBrand('oasis');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/oasis.svg" alt=""><span>Oasis</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="dorothyperkins" onclick="setBrand('dorothyperkins');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/dorothyperkins.svg" alt=""><span>Dorothy Perkins</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="maine" onclick="setBrand('maine');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span style="margin-top:auto">Maine</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="gorgeous" onclick="setBrand('gorgeous');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span style="margin-top:auto">Gorgeous</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="misspap" onclick="setBrand('misspap');return false"><i style="background:linear-gradient(140deg,#101820,#0A0A0A)"></i><img src="assets/brands/misspap.svg" alt=""><span>Misspap</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="nastygal" onclick="setBrand('nastygal');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/nastygal.svg" alt=""><span>Nasty Gal</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="foreverunique" onclick="setBrand('foreverunique');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Forever Unique</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="dsgnstudio" onclick="setBrand('dsgnstudio');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">DSGN Studio</span><em class="draft">draft</em></a>
+      <a class="f" href="#" data-b="trainingdept" onclick="setBrand('trainingdept');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Training Dept</span><em class="draft">draft</em></a>
     </div>
     <h2>Modes <code>data-brand — the only theming mechanism</code></h2>
     <p>One attribute on the root element themes everything: colours, font, weights, radius, case. No per-brand CSS files, no component forks. Five fascias are live modes today; the rest inherit Debenhams until audited.</p>
     <div class="tok">
       <div class="tk h"><span></span><span>Fascia</span><span>Font</span><span>Mode state</span></div>
-      <div class="tk"><i style="background:#7BE7D8"></i><code>debenhams</code><code>Geologica</code><span class="role">Live — full 12-slot palette · 4pt</span></div>
-      <div class="tk"><i style="background:#F8B5CC"></i><code>boohoo</code><code>Montserrat</code><span class="role">Live — full 12-slot palette · 4pt</span></div>
-      <div class="tk"><i style="background:#0A0A0A"></i><code>boohooman</code><code>Montserrat</code><span class="role">Live — signed-off CTA set · palette slots TBD · 4pt</span></div>
-      <div class="tk"><i style="background:#550503"></i><code>plt</code><code>Roboto</code><span class="role">Live — signed-off CTA set · square radius · uppercase CTAs</span></div>
-      <div class="tk"><i style="background:#8E330B"></i><code>karenmillen</code><code>Jost</code><span class="role">Live — signed-off CTA set · palette slots TBD · 4pt</span></div>
-      <div class="tk"><i style="background:#3A3E4A"></i><code>burton · coast · dorothyperkins · misspap</code><code>TBD</code><span class="role">Scaffolded — inherit Debenhams until audited</span></div>
-      <div class="tk"><i style="background:#503A3A"></i><code>nastygal · oasis · principles · wallis · warehouse</code><code>TBD</code><span class="role">Scaffolded — inherit Debenhams until audited</span></div>
-      <div class="tk"><i style="background:#2F2F4A"></i><code>brandroom</code><code>TBD</code><span class="role">Scaffolded — square radius confirmed</span></div>
-      <div class="tk"><i style="background:#333"></i><code>dsgnstudio</code><code>TBD</code><span class="role">Scaffolded — logo still to source</span></div>
+      <div class="tk"><i style="background:#7BE7D8"></i><code>debenhams</code><code>Geologica</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>boohoo</code><code>Montserrat</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>boohooman</code><code>Montserrat</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
+      <div class="tk"><i style="background:#550503"></i><code>plt</code><code>Roboto</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
+      <div class="tk"><i style="background:#D24508"></i><code>karenmillen</code><code>Jost</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>warehouse</code><code>Helvetica Neue</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
+      <div class="tk"><i style="background:#0F0F0F"></i><code>brandroom</code><code>Helvetica Neue</code><span class="role">Live — signed-off colour set (colour-alignment, 26 Aug)</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>debenhamsoutlet</code><code>Geologica</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#444444"></i><code>wallis</code><code>Urbanist</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#284D7B"></i><code>burton</code><code>Montserrat</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#444444"></i><code>principles</code><code>Lato</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>coast</code><code>Roboto</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>oasis</code><code>Geologica</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>dorothyperkins</code><code>PublicSans</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#284D7B"></i><code>maine</code><code>GothicA1</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#284D7B"></i><code>gorgeous</code><code>Montserrat</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#101820"></i><code>misspap</code><code>Montserrat</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#444444"></i><code>nastygal</code><code>NGGrotesque</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>foreverunique</code><code>PublicSans</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>dsgnstudio</code><code>HankenGrotesk</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
+      <div class="tk"><i style="background:#000000"></i><code>trainingdept</code><code>HankenGrotesk</code><span class="role">Draft — mapped from the front-end theme (dev primary / CTA / nav / footer band); brand sign-off pending</span></div>
     </div>
   </section>
 
@@ -1407,10 +1442,26 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
   </button>
   <div class="fab-menu" id="fabMenu" role="menu" aria-label="Demo brand">
     <button data-b="debenhams" class="on" role="menuitem"><span>Debenhams</span><span class="appic" style="background:#7BE7D8"><img src="assets/brands/debenhams.svg" alt=""></span></button>
-    <button data-b="boohoo" role="menuitem"><span>boohoo</span><span class="appic" style="background:#F8B5CC"><img src="assets/brands/boohoo.svg" alt=""></span></button>
-    <button data-b="boohooman" role="menuitem"><span>boohooMAN</span><span class="appic dk" style="background:#0A0A0A;outline:1px solid var(--line-2)"><img src="assets/brands/boohooman.svg" alt=""></span></button>
+    <button data-b="boohoo" role="menuitem"><span>boohoo</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/boohoo.svg" alt=""></span></button>
+    <button data-b="boohooman" role="menuitem"><span>boohooMAN</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/boohooman.svg" alt=""></span></button>
     <button data-b="plt" role="menuitem"><span>PrettyLittleThing</span><span class="appic dk" style="background:#550503"><img src="assets/brands/plt.svg" alt=""></span></button>
-    <button data-b="karenmillen" role="menuitem"><span>Karen Millen</span><span class="appic dk" style="background:#8E330B"><img src="assets/brands/karenmillen.svg" alt=""></span></button>
+    <button data-b="karenmillen" role="menuitem"><span>Karen Millen</span><span class="appic dk" style="background:#D24508"><img src="assets/brands/karenmillen.svg" alt=""></span></button>
+    <button data-b="warehouse" role="menuitem"><span>Warehouse</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/warehouse.svg" alt=""></span></button>
+    <button data-b="brandroom" role="menuitem"><span>The Brand Room</span><span class="appic dk" style="background:#0F0F0F;outline:1px solid var(--line-2)"><img src="assets/brands/brandroom.svg" alt=""></span></button>
+    <button data-b="debenhamsoutlet" role="menuitem"><span>Debenhams Outlet</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">DO</b></span></button>
+    <button data-b="wallis" role="menuitem"><span>Wallis</span><span class="appic dk" style="background:#444444"><img src="assets/brands/wallis.svg" alt=""></span></button>
+    <button data-b="burton" role="menuitem"><span>Burton</span><span class="appic dk" style="background:#284D7B"><img src="assets/brands/burton.svg" alt=""></span></button>
+    <button data-b="principles" role="menuitem"><span>Principles</span><span class="appic dk" style="background:#444444"><img src="assets/brands/principles.svg" alt=""></span></button>
+    <button data-b="coast" role="menuitem"><span>Coast</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/coast.svg" alt=""></span></button>
+    <button data-b="oasis" role="menuitem"><span>Oasis</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/oasis.svg" alt=""></span></button>
+    <button data-b="dorothyperkins" role="menuitem"><span>Dorothy Perkins</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/dorothyperkins.svg" alt=""></span></button>
+    <button data-b="maine" role="menuitem"><span>Maine</span><span class="appic dk" style="background:#284D7B"><b style="font:700 9px/1 var(--mono);color:#fff">M</b></span></button>
+    <button data-b="gorgeous" role="menuitem"><span>Gorgeous</span><span class="appic dk" style="background:#284D7B"><b style="font:700 9px/1 var(--mono);color:#fff">G</b></span></button>
+    <button data-b="misspap" role="menuitem"><span>Misspap</span><span class="appic dk" style="background:#101820"><img src="assets/brands/misspap.svg" alt=""></span></button>
+    <button data-b="nastygal" role="menuitem"><span>Nasty Gal</span><span class="appic dk" style="background:#444444"><img src="assets/brands/nastygal.svg" alt=""></span></button>
+    <button data-b="foreverunique" role="menuitem"><span>Forever Unique</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">FU</b></span></button>
+    <button data-b="dsgnstudio" role="menuitem"><span>DSGN Studio</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">DS</b></span></button>
+    <button data-b="trainingdept" role="menuitem"><span>Training Dept</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">TD</b></span></button>
   </div>
 </div>
 
@@ -1445,13 +1496,16 @@ window.fitTiles=function(){document.querySelectorAll('#gallery .ctile .cv').forE
 const wl=(title,items,cls,glyph)=>`<div class="wlist ${cls||''}"><h5>${title}</h5><ul>${items.map((x,i)=>`<li><i>${glyph===null?String(i+1).padStart(2,'0'):glyph}</i>${x}</li>`).join('')}</ul></div>`;
 const wide=h=>/width:\s*([5-9]\d{2}|\d{4})px/.test(h);
 C.forEach((c,i)=>{
-  const s=document.createElement('section');s.className='page';s.id='c-'+c.slug;s.dataset.crumb='System / Component library / '+c.name;
+  const s=document.createElement('section');s.className='page';s.id='c-'+c.slug;s.dataset.crumb='Design system / '+c.group+' / '+c.name;
   const prev=C[(i-1+C.length)%C.length],next=C[(i+1)%C.length];
   const devLink=c.dev.title!=='—'?`<a href="${DEV}${devId(c.dev.title)}--docs" target="_blank" rel="noopener">${c.dev.title} ↗</a>`:'no counterpart in the dev build yet';
   s.innerHTML=`<div class="kick"><a href="#gallery" style="color:inherit">component library</a> / ${c.group} <b>· rendering <span class="bn">Debenhams</span></b></div>
   <h1>${c.name}</h1><p class="lede">${c.summary}</p>
   <div class="wiki"><div style="min-width:0">
     <div class="demo hero"><div class="hd"><i></i><i></i><i></i><span>canvas — ${c.name.toLowerCase()} · ${c.variants[0].name.toLowerCase()}</span><span class="bn">Debenhams</span></div><div class="canvas" style="overflow-x:auto">${c.variants[0].html}</div></div>
+    <h2>Every fascia <code>21 modes</code></h2>
+    <p style="margin-top:-6px">The same markup under each fascia's <code>data-brand</code> — nothing is restyled per brand. Seven modes are signed off; the rest are mapped from the front-end theme and marked draft.</p>
+    <div class="fxgrid"></div>
     <h2>Variants <code>${c.variants.length}</code></h2>
     <div class="vgrid">${c.variants.map(v=>`<div class="vcard${wide(v.html)?' wide':''}"><div class="canvas">${v.html}</div><div class="vn"><span>${v.name}</span><button onclick="this.closest('.vcard').classList.toggle('code')">html</button></div><pre class="codeblk">${esc(v.html.trim())}</pre></div>`).join('')}</div>
     <h2>In the dev build <code>front-end storybook</code></h2>
@@ -1463,6 +1517,18 @@ C.forEach((c,i)=>{
   </aside></div>`;
   main.appendChild(s);
 });
+/* sidebar: one entry per component, grouped */
+(function(){const host=document.getElementById('dsItems');if(!host)return;const anchor=host.querySelector('a[href="#icons"]');
+  groups.forEach(g=>{const sub=document.createElement('div');sub.className='sub';sub.textContent=g;host.insertBefore(sub,anchor);
+    C.filter(c=>c.group===g).forEach(c=>{const a=document.createElement('a');a.href='#c-'+c.slug;a.innerHTML=`<span class="ic">▢</span>${c.name}`;host.insertBefore(a,anchor)})});
+})();
+/* every fascia, per component page — built lazily on first visit */
+const FASCIAS=[["debenhams","Debenhams",1],["boohoo","boohoo",1],["boohooman","boohooMAN",1],["plt","PrettyLittleThing",1],["karenmillen","Karen Millen",1],["warehouse","Warehouse",1],["brandroom","The Brand Room",1],["debenhamsoutlet","Debenhams Outlet",0],["wallis","Wallis",0],["burton","Burton",0],["principles","Principles",0],["coast","Coast",0],["oasis","Oasis",0],["dorothyperkins","Dorothy Perkins",0],["maine","Maine",0],["gorgeous","Gorgeous",0],["misspap","Misspap",0],["nastygal","Nasty Gal",0],["foreverunique","Forever Unique",0],["dsgnstudio","DSGN Studio",0],["trainingdept","Training Dept",0]];
+window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||sec.dataset.fx)return;sec.dataset.fx='1';const c=C.find(x=>'c-'+x.slug===h);if(!c)return;
+  const grid=sec.querySelector('.fxgrid');if(!grid)return;
+  grid.innerHTML=FASCIAS.map(([sl,nm,live])=>`<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>${live?'signed off':'dev-mapped draft'}</em></div><div class="canvas">${c.variants[0].html}</div></div>`).join('');
+  grid.querySelectorAll('.fx').forEach(fx=>{const bg=getComputedStyle(fx).backgroundColor;const m=bg.match(/\d+/g);if(m&&(.2126*m[0]+.7152*m[1]+.0722*m[2])/255<.5)fx.classList.add('dark')});
+};
 /* dev overlay */
 const ov=document.getElementById('dev-overlay');
 const cnt=x=>O.filter(o=>o.status===x).length;
@@ -1472,7 +1538,7 @@ ov.querySelector('.tmx').innerHTML=`<div class="tr h"><span>Dev variable</span><
 /* demo links inside catalogue canvases are inert */
 main.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&a.closest('.canvas,.cv')&&a.closest('.page[id^="c-"],#gallery'))e.preventDefault();});
 /* search registry */
-window.DG_REG=[{h:'gallery',t:'Component library',k:'gallery wiki all components visual',ic:'▦',s:'System'},{h:'dev-overlay',t:'Dev alignment',k:'storybook front-end dev overlay tokens tailwind react mapping',ic:'⇄',s:'System'}].concat(C.map(c=>({h:'c-'+c.slug,t:c.name,k:(c.group+' '+c.css+' '+c.dev.title+' '+c.variants.map(v=>v.name).join(' ')).toLowerCase(),ic:'▢',s:'Component'})));
+window.DG_REG=[{h:'gallery',t:'Component library',k:'gallery wiki all components visual',ic:'▦',s:'Design system'},{h:'dev-overlay',t:'Dev alignment',k:'storybook front-end dev overlay tokens tailwind react mapping',ic:'⇄',s:'Design system'}].concat(C.map(c=>({h:'c-'+c.slug,t:c.name,k:(c.group+' '+c.css+' '+c.dev.title+' '+c.variants.map(v=>v.name).join(' ')).toLowerCase(),ic:'▢',s:'Component'})));
 })();
 </script>
 <script>
@@ -1480,22 +1546,22 @@ window.DG_REG=[{h:'gallery',t:'Component library',k:'gallery wiki all components
 const REG=[
  {h:'home',t:'Home',k:'overview dashboard',ic:'⌂',s:'Overview'},
  {h:'shipping',t:'Shipping',k:'changelog merged',ic:'↗',s:'Overview'},
- {h:'colour',t:'Colour',k:'tokens palette semantic primitives neutrals status aqua pink',ic:'◈',s:'System'},
- {h:'type',t:'Typography',k:'text styles fonts scale roles weights geologica montserrat roboto jost',ic:'Aa',s:'System'},
- {h:'spacing',t:'Spacing',k:'4pt scale gaps margins icon sizes z-index breakpoints',ic:'⇥',s:'System'},
- {h:'radius',t:'Radius',k:'corners square plt pill',ic:'◜',s:'System'},
- {h:'borders',t:'Borders',k:'dividers widths keyline focus',ic:'▭',s:'System'},
- {h:'motion',t:'Motion',k:'animation durations easing reduced',ic:'◐',s:'System'},
- {h:'a11y',t:'Accessibility',k:'wcag aa contrast focus touch targets',ic:'✓',s:'System'},
- {h:'install',t:'Using the system',k:'npm install tokens tailwind data-brand setup',ic:'⤓',s:'System'},
- {h:'components',t:'Components',k:'library index',ic:'▦',s:'System'},
- {h:'prototypes',t:'Master prototypes',k:'plp pdp bag checkout canonical master',ic:'▣',s:'System'},
+ {h:'colour',t:'Colour',k:'tokens palette semantic primitives neutrals status aqua pink',ic:'◈',s:'Design system'},
+ {h:'type',t:'Typography',k:'text styles fonts scale roles weights geologica montserrat roboto jost',ic:'Aa',s:'Design system'},
+ {h:'spacing',t:'Spacing',k:'4pt scale gaps margins icon sizes z-index breakpoints',ic:'⇥',s:'Design system'},
+ {h:'radius',t:'Radius',k:'corners square plt pill',ic:'◜',s:'Design system'},
+ {h:'borders',t:'Borders',k:'dividers widths keyline focus',ic:'▭',s:'Design system'},
+ {h:'motion',t:'Motion',k:'animation durations easing reduced',ic:'◐',s:'Design system'},
+ {h:'a11y',t:'Accessibility',k:'wcag aa contrast focus touch targets',ic:'✓',s:'Design system'},
+ {h:'install',t:'Using the system',k:'npm install tokens tailwind data-brand setup',ic:'⤓',s:'Design system'},
+ {h:'components',t:'Components',k:'library index',ic:'▦',s:'Design system'},
+ {h:'prototypes',t:'Master prototypes',k:'plp pdp bag checkout canonical master',ic:'▣',s:'Design system'},
  {h:'button',t:'Button',k:'cta primary states c-01',ic:'▢',s:'Component'},
  {h:'product-card',t:'Product card',k:'plp card favourite wishlist quick add taggstar swatches ratings c-02',ic:'▢',s:'Component'},
  {h:'header',t:'PLP header',k:'logo search usp banner nav menu c-05',ic:'▢',s:'Component'},
  {h:'sort-filter',t:'Sort & filter',k:'dropdowns drawer sheet next day delivery c-06',ic:'▢',s:'Component'},
  {h:'badges',t:'Badges',k:'ai generated watermark tags petite sale sponsored c-07',ic:'▢',s:'Component'},
- {h:'icons',t:'Icons',k:'icon library chevron wishlist bag search 1pt stroke',ic:'✳',s:'System'},
+ {h:'icons',t:'Icons',k:'icon library chevron wishlist bag search 1pt stroke',ic:'✳',s:'Design system'},
  {h:'footer',t:'Footer',k:'newsletter subscribe social payments sister brands c-08',ic:'▬',s:'Component'},
  {h:'library',t:'Extended library',k:'buttons payment forms field checkbox radio toggle select price size accordion sheet modal bag summary chips account deliver+ bnpl usp box toast banner c-09 c-10 c-11 c-12 c-13 c-14 c-15 c-16 c-17 c-18',ic:'▦',s:'Component'},
  {h:'projects',t:'All projects',k:'archive briefs',ic:'☰',s:'Projects'},
@@ -1508,9 +1574,26 @@ const REG=[
 if(window.DG_REG)REG.push(...window.DG_REG);
 
 /* ---- routing ---- */
+/* ---- Foundations: merge the eight foundation pages into one ---- */
+(function(){
+  const F=[['colour','Colour'],['type','Typography'],['spacing','Spacing'],['radius','Radius'],['borders','Borders'],['motion','Motion'],['a11y','Accessibility'],['install','Using the system']];
+  const body=document.getElementById('fbody'),toc=document.getElementById('ftoc');
+  if(!body)return;
+  F.forEach(([id,t])=>{const sec=document.getElementById(id);if(!sec)return;
+    const w=document.createElement('div');w.className='fsec';w.id='f-'+id;
+    const h=document.createElement('h2');h.textContent=t;w.appendChild(h);
+    [...sec.children].forEach(ch=>{if(ch.classList.contains('kick')||ch.tagName==='H1')return;w.appendChild(ch)});
+    body.appendChild(w);sec.remove();
+    toc.insertAdjacentHTML('beforeend',`<a href="#f-${id}" onclick="event.preventDefault();document.getElementById('f-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${t}</a>`);
+  });
+})();
+window.DG_LEGACY={colour:'foundations',type:'foundations',spacing:'foundations',radius:'foundations',borders:'foundations',motion:'foundations',a11y:'foundations',install:'foundations',components:'gallery',library:'gallery'};
+window.setBrand=function(slug){const b=document.querySelector('#fabMenu button[data-b="'+slug+'"]');if(b)b.click();};
 const pages=[...document.querySelectorAll('.page')];
 function route(){
-  const h=(location.hash||'#home').slice(1);
+  let h=(location.hash||'#home').slice(1);
+  if(window.DG_LEGACY&&window.DG_LEGACY[h]){location.hash='#'+window.DG_LEGACY[h];return}
+  if(h.startsWith('c-')&&window.buildFascias)window.buildFascias(h);
   const pg=document.getElementById(h);
   if(pg&&!pg.classList.contains('page')){pg.scrollIntoView({block:'start'});return} // in-page anchor — keep current view
   pages.forEach(p=>p.classList.toggle('on',p.id===h));
