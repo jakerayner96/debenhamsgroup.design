@@ -302,6 +302,10 @@ p{color:var(--ink-2);max-width:660px;margin-bottom:10px;font-size:15px}
 .fxstack{display:flex;flex-direction:column;gap:14px;margin:8px 0 28px}
 .fv{display:flex;flex-direction:column;gap:10px;min-width:0;max-width:100%}
 .fv.wide{flex-basis:100%}
+.fvg{display:flex;flex-direction:column;gap:28px;min-width:0;max-width:100%}
+.fxoff{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.fxoff em{font-style:normal;font-weight:400;color:var(--ink-3)}
+.fvg.wide{flex-basis:100%}
 .fv .fvc{overflow-x:auto;max-width:100%}
 .fv .fvn{font:500 10.5px/1 var(--mono);letter-spacing:.04em;color:inherit;opacity:.6}
 .mk{margin:8px 0 24px}.mk summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--ink-2);padding:8px 0}.mk summary code{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:8px}
@@ -1531,10 +1535,17 @@ C.forEach((c,i)=>{
 const FASCIAS=[["debenhams","Debenhams"],["boohoo","boohoo"],["boohooman","boohooMAN"],["plt","PrettyLittleThing"],["karenmillen","Karen Millen"],["warehouse","Warehouse"],["debenhamsoutlet","Debenhams Outlet"],["wallis","Wallis"],["burton","Burton"],["principles","Principles"],["coast","Coast"],["oasis","Oasis"],["dorothyperkins","Dorothy Perkins"],["maine","Maine"],["gorgeous","Gorgeous"],["misspap","Misspap"],["nastygal","Nasty Gal"],["foreverunique","Forever Unique"],["dsgnstudio","DSGN Studio"],["trainingdept","Training Dept"],["brandroom","The Brand Room"]];
 window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||sec.dataset.fx)return;sec.dataset.fx='1';const c=C.find(x=>'c-'+x.slug===h);if(!c)return;
   const host=sec.querySelector('.fxstack');if(!host)return;
-  host.innerHTML=FASCIAS.map(([sl,nm])=>{const off=(c.notOn||[]).includes(sl);
-    return `<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>${c.name}${off?' · not offered on this fascia':''}</em></div><div class="canvas fxc">${off?'':c.variants.map(v=>`<div class="fv${wide(v.html)?' wide':''}"><div class="fvc">${v.html}</div><span class="fvn">${v.name}</span></div>`).join('')}</div></div>`}).join('');
+  const off=sl=>(c.notOn||[]).includes(sl);const order=[...FASCIAS.filter(f=>!off(f[0])),...FASCIAS.filter(f=>off(f[0]))];
+  const item=v=>`<div class="fv${wide(v.html)?' wide':''}"><div class="fvc">${v.html}</div><span class="fvn">${v.name}</span></div>`;
+  const groups=[];c.variants.forEach(v=>{const g=groups[groups.length-1];if(v.col&&g&&g.col===v.col)g.items.push(v);else groups.push({col:v.col,items:[v]})});
+  const body=groups.map(g=>g.col?`<div class="fvg${g.items.some(v=>wide(v.html))?' wide':''}">${g.items.map(item).join('')}</div>`:item(g.items[0])).join('');
+  host.innerHTML=order.map(([sl,nm])=>off(sl)?`<div class="fxoff"><span>${nm}</span><em>${c.name} not active on ${nm}</em></div>`:`<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>${c.name}</em></div><div class="canvas fxc">${body}</div></div>`).join('');
   host.querySelectorAll('.fx').forEach(fx=>{const bg=getComputedStyle(fx).backgroundColor;const m=bg.match(/\d+/g);if(m&&(.2126*m[0]+.7152*m[1]+.0722*m[2])/255<.5)fx.classList.add('dark')});
 };
+/* controls in the catalogue demos are live: checkbox / toggle flip, radios are exclusive within their list */
+document.addEventListener('click',e=>{const el=e.target.closest('.chk,.tog,.rad');if(!el)return;
+  if(el.matches('.rad')){const scope=el.closest('.rad-row')?.parentElement||el.parentElement;scope.querySelectorAll('.rad').forEach(r=>{r.classList.remove('on');r.setAttribute('aria-checked','false')});el.classList.add('on');el.setAttribute('aria-checked','true');return}
+  const on=!(el.classList.contains('on')||el.getAttribute('aria-checked')==='true');el.classList.toggle('on',on);el.setAttribute('aria-checked',on?'true':'false')});
 /* dev overlay */
 const ov=document.getElementById('dev-overlay');
 const cnt=x=>O.filter(o=>o.status===x).length;

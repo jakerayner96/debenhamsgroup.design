@@ -506,9 +506,11 @@
 .dplus li::before{content:"";width:16px;height:16px;flex:none;background:currentColor;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.2'><path d='M3 8.5l3.2 3L13 5'/></svg>") center/contain no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.2'><path d='M3 8.5l3.2 3L13 5'/></svg>") center/contain no-repeat}
 .dplus .more{font-size:12px;font-weight:var(--w-strong);line-height:1.4;color:var(--dplus-link);cursor:pointer}
 .dplus .foot{border-top:1px solid color-mix(in srgb,currentColor 25%,transparent);padding-top:12px;font-size:12px;font-style:italic;font-weight:var(--w-regular);opacity:.75;line-height:1.35}
-.dplus--checkout .chk{flex:none;border-color:var(--dplus-check);background:var(--dplus-check)}
-.dplus--checkout .chk[aria-checked="false"]{background:transparent;border-color:var(--dplus-check)}
-.dplus--checkout .h b{font-weight:var(--w-regular)}
+.dplus--checkout .top{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%} /* design: lockup left, 24px checkbox top-right */
+.dplus--checkout .chk{flex:none;width:24px;height:24px;border-radius:3px;border:1px solid #B5B5B5;background:var(--dplus-white,#FFF)}
+.dplus--checkout .chk.on,.dplus--checkout .chk[aria-checked="true"]{background:var(--dplus-check);border-color:var(--dplus-check)}
+.dplus--checkout .chk::after{border-color:var(--dplus-tick,#FFF)}
+.dplus--checkout .h b{font-weight:inherit}
 /* lockups: every brand's vector is present in the markup; the nearest data-brand reveals its own (define-all vars, no inheritance leak into nested tiles) */
 .dpl{display:none;position:relative;flex:none}
 .dpl img{position:absolute}
@@ -550,12 +552,12 @@
 [data-brand="foreverunique"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:block;}
 [data-brand="trainingdept"]{--dpl-boohoo:none;--dpl-boohooman:none;--dpl-burton:none;--dpl-coast:none;--dpl-debenhams:none;--dpl-dorothyperkins:none;--dpl-dsgnstudio:none;--dpl-karenmillen:none;--dpl-misspap:none;--dpl-nastygal:none;--dpl-oasis:none;--dpl-plt:none;--dpl-principles:none;--dpl-wallis:none;--dpl-warehouse:none;--dpl-generic:block;}
 /* bag banner: brand band + white body of benefit rows + Seel/Trustpilot foot */
-.dplus-bag{border-radius:var(--dplus-radius,4px);overflow:hidden;font-family:var(--font-family-base);background:#FFF}
+.dplus-bag{border-radius:var(--dplus-radius,4px);overflow:hidden;font-family:var(--font-family-base);background:var(--dplus-white,#FFF)} /* --dplus-white: the fascia's "Background White" (PLT #FFFDF7) */
 .dplus-bag .band{background:var(--dplus-bg);color:var(--dplus-fg);padding:24px;display:flex;flex-direction:column;gap:12px}
-.dplus-bag .band p{font-size:14px;font-weight:var(--w-regular);line-height:1.4;margin:0}
+.dplus-bag .band p{color:inherit;font-size:var(--dplus-p,14px);font-weight:var(--dplus-pw,400);line-height:normal;margin:0;max-width:none} /* design: Regular 14 (Debs/bh/MAN/KM) · 12 elsewhere · Medium on Burton/Misspap/DSGN */
 .dplus-bag .body{padding:20px 24px;display:flex;flex-direction:column;gap:12px}
 .dplus-bag .row{display:flex;align-items:center;gap:12px}
-.dplus-bag .puck{width:48px;height:48px;border-radius:100px;flex:none;background:#FFF;box-shadow:0 0 14px -4px rgba(0,0,0,.18);display:grid;place-items:center}
+.dplus-bag .puck{width:48px;height:48px;border-radius:100px;flex:none;background:var(--dplus-white,#FFF);box-shadow:0 0 14px -4px rgba(0,0,0,.18);display:grid;place-items:center}
 .dplus-bag .puck img{width:24px;height:24px}
 .dplus-bag .t{font-size:14px;line-height:1.2;font-weight:var(--w-strong);color:#000;margin:0}
 .dplus-bag .s{font-size:12px;line-height:1.3;color:#000;margin:4px 0 0;font-weight:var(--w-regular)}
@@ -639,3 +641,9 @@
 .tile{flex:none;width:clamp(180px,55vw,230px);display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--text-primary)}
 .tile img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--surface-media);display:block}
 .tile span{font-size:12px;font-weight:var(--w-strong);text-transform:uppercase;text-align:center;padding:0 16px}
+
+/* Deliver+ PDP + checkout modal (SEEL 3209:13791): the bag module as a dialog — 388 mobile / 480 desktop, 4px radius, 16px close in the band */
+.dplus-bag--modal .band{position:relative;padding-right:52px}
+.dplus-bag .x{position:absolute;top:24px;right:24px;width:16px;height:16px;border:0;padding:0;background:none;cursor:pointer;color:inherit;display:grid;place-items:center}
+.dplus-bag .x::before,.dplus-bag .x::after{content:"";position:absolute;width:14px;height:1.5px;background:currentColor;transform:rotate(45deg)}
+.dplus-bag .x::after{transform:rotate(-45deg)}

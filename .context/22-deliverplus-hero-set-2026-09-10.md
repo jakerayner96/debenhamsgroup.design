@@ -48,3 +48,23 @@ Not in the SEEL set: Debenhams Outlet, Maine, Gorgeous, Forever Unique, Training
 - **Lockups are now one SVG per fascia** at `assets/brands/deliverplus/<slug>.svg` (wordmark + DELIVER+ composed as nested `<svg>` at the design geometry; boohoo and the DSGN Studio wordmark are the PNGs Figma itself holds, embedded). `assets/ds/dplus-logos.js` is a flat list of `<img class="dpl dpl-<slug>">`. Fixed on the way: `calc(50%-…)` without spaces (invalid CSS — Coast/Warehouse/Principles/Oasis/Nasty Gal/Misspap/DSGN offset), un-inlined `<Logos>` React stubs (Nasty Gal, Principles had no wordmark), PLT monogram inset mis-parsed.
 - **Component pages** (`#c-*`): the page is now one full-width box per fascia, every variant/type side by side inside it, repeated down the page — Figma-file order of the estate, The Brand Room last. Markup is a collapsed `Markup` block under the stack. `notOn:['brandroom']` on the catalogue entry leaves that box empty (Deliver+ isn't offered on The Brand Room).
 - **No sign-off / draft language anywhere** in `index.html`, `tokens.css`, `components.css`, `catalogue.js`: the system is a single version of truth — Lego bricks. Brand centre says "21 fascias · 21 modes"; the old "signed off" / "dev-mapped draft" labels and tile badges are gone. Design-vs-live differences (above) stay as open questions, not as sign-off gates.
+
+## Addendum 2 — 10 Sep 2026: exact-to-design fixes, modal, live controls, fascia activation
+
+- **Bag/modal band copy** ("Shop with confidence…"): the site's global `p{color:var(--ink-2)}` was greying it and Debenhams' `--w-regular:300` thinned it. Now `color:inherit`, weight `--dplus-pw` (400; 500 Burton/Misspap/DSGN Studio), size `--dplus-p` (14 Debs/boohoo/MAN/KM; 12 elsewhere) — read per fascia from the SEEL bag nodes.
+- **Checkout banner** (3209:161446): lockup left, 24px checkbox top-right in the same row (`.top`), unselected by default (white / #B5B5B5 border / 3px radius), selected = `--dplus-check` with the tick in `--dplus-tick` (black on MAN/KM/DP/PLT whose check is white). Title incl. price is one SemiBold run.
+- **PLT surfaces**: `--dplus-white:#FFFDF7` (the design's "Background White") drives the bag body, pucks and checkbox — never pure white on PLT.
+- **PDP + checkout modal** (3209:13791) added: `.dplus-bag--modal`, 388 mobile / 480 desktop, 16px close in the band.
+- **Variant order** on the page: PDP › PDP modal › Bag › Checkout, mobile above desktop (catalogue `col:` groups render as columns). PDP/checkout desktop = the same fluid component at 480 (the design has one PDP/checkout frame; 480 is the modal's desktop width).
+- **Controls are live** in every catalogue demo: `.chk` / `.tog` flip, `.rad` exclusive within its list (delegated handler in index.html).
+- **Fascia activation**: fascias without Deliver+ (`notOn`) render as a one-line "Deliver+ not active on <Fascia>" row at the bottom, no white box. Live-PDP check 10 Sep (Playwright, category → first PDP, "Deliver+" in rendered text): see the table below.
+
+| Fascia | Live PDP checked | Deliver+ (Seel) present | Page shows |
+|---|---|---|---|
+| Debenhams · boohoo · boohooMAN · PLT · Karen Millen · Wallis · Burton · Coast · Oasis · Dorothy Perkins · Misspap · Nasty Gal · DSGN Studio | yes | yes | full set |
+| Warehouse | yes | yes (lockup is an image, so text match missed it; Seel footer present) | full set |
+| The Brand Room · Training Dept | yes | no | "not active" row |
+| Principles · Maine · Gorgeous · Forever Unique | no PDP on their own domain (principles.co.uk / maine.co.uk / gorgeous.co.uk / foreverunique.co.uk) | — | "not active" row |
+| Debenhams Outlet | outlet has no separate storefront (debenhams.com/outlet → Debenhams PDP) | Jake: not on Outlet | "not active" row |
+
+Open: Principles has a lockup in the SEEL set but no live PDP of its own — if it launches Deliver+ via debenhams.com, drop it from `notOn`.
