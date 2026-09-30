@@ -1714,7 +1714,7 @@ window.DG_FASCIAS=FASCIAS;
 /* a wrapping flex row can't shrink-wrap in CSS, so after layout each playground is sized to its rightmost item (+ canvas padding) */
 window.hugBoxes=function(){document.querySelectorAll('.page.on .fx').forEach(fx=>{fx.style.width='';const c=fx.querySelector('.canvas.fxc');if(!c||!c.children.length)return;
   const L=fx.getBoundingClientRect().left;let R=0;[...c.children].forEach(el=>{R=Math.max(R,el.getBoundingClientRect().right)});
-  const pad=parseFloat(getComputedStyle(c).paddingRight)||24;const w=Math.max(320,Math.ceil(R-L+pad+2));if(w>0&&w<fx.getBoundingClientRect().width-1)fx.style.width=w+'px'})};
+  const pad=parseFloat(getComputedStyle(c).paddingRight)||24;const w=Math.max(320,Math.ceil(R-L+pad+2));if(w>0)fx.style.width=w+'px'})};
 let _hz;addEventListener('resize',()=>{clearTimeout(_hz);_hz=setTimeout(()=>window.hugBoxes(),120)});
 /* relative luminance of an element's background — handles rgb() and the color(srgb …) form that color-mix() computes to */
 window.dgLum=function(el){const bg=getComputedStyle(el).backgroundColor;let m;if((m=bg.match(/color\(srgb ([\d.]+) ([\d.]+) ([\d.]+)/)))return .2126*m[1]+.7152*m[2]+.0722*m[3];if((m=bg.match(/[\d.]+/g))&&m.length>=3)return (.2126*m[0]+.7152*m[1]+.0722*m[2])/255;return 1};
