@@ -333,6 +333,16 @@
 .bd img,.bd svg{width:20px;height:20px;display:block;flex:none}
 .bd.ic24 img,.bd.ic24 svg{width:24px;height:24px}.bd.ic24{gap:4px}
 .bd.ic16 img,.bd.ic16 svg{width:16px;height:16px}
+/* icon slot: inline SVG drawn with currentColor so it always takes the label colour (white label → white icon). 16px is the default slot; ic20 / ic24 mirror the Figma states. */
+.bd .ico{width:16px;height:16px;display:block;flex:none;color:inherit}
+.bd .ico path,.bd .ico circle{stroke:currentColor;vector-effect:non-scaling-stroke}
+.bd.ic20 .ico{width:20px;height:20px}.bd.ic24 .ico{width:24px;height:24px}
+.bd.ic16,.bd.ic20,.bd.ic24{gap:8px}
+/* CTA stack — every full-width CTA is 358 × 50 like the Figma component frame (12533:14818); tertiary / XS hug and centre */
+.bd-stack{display:flex;flex-direction:column;align-items:center;gap:20px;width:358px;max-width:100%}
+.bd-stack .bd{width:100%}
+.bd-stack .bd.ter,.bd-stack .bd.xs,.bd-stack .bd.sm{width:auto}
+.bd.cta{width:358px;max-width:100%}
 .bd.pri:active{background:var(--surface-action-pressed)}
 .bd.pri[disabled],.bd.pri.dis{background:var(--action-disabled-bg);color:var(--action-disabled-fg);cursor:not-allowed}
 .bd.buy{background:var(--action-buy);color:#FFF;text-transform:var(--case-btn1,uppercase)}

@@ -378,7 +378,7 @@ p{color:var(--ink-2);max-width:680px;margin-bottom:10px;font-size:14.5px}
 .wlist li i{flex:none;font-style:normal;width:18px;text-align:center;color:var(--ok);font-size:12px;margin-top:2px}
 .wlist.no li i{color:var(--bad)}
 .wlist.an li i{color:var(--aq);font-family:var(--mono);font-size:10px}
-.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin:14px 0}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px;margin:14px 0}
 .vcard{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--card);box-shadow:var(--hi);min-width:0}
 .vcard .canvas{padding:28px;min-height:150px;overflow-x:auto}
 .vcard .vn{padding:9px 14px;font-family:var(--mono);font-size:11px;color:var(--ink-3);border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
@@ -1730,8 +1730,8 @@ window.DG_REG=[{h:'gallery',t:'Component library',k:'gallery wiki all components
   }
   const host=document.getElementById('collage'),C=window.DG_CATALOGUE;
   if(!host||!C)return;
-  const pick=[['button',0],['toggle',0],['checkbox',0],['badges',0],['chip',0],['price',0],['ratings',0],['quantity',0],['filter-pill',0],['text-link',0],['icon-button',0],['tag-pill',0]];
-  host.innerHTML=pick.map(([slug,i])=>{const c=C.find(x=>x.slug===slug);if(!c)return'';const v=c.variants[i]||c.variants[0];return `<div class="ci" title="${c.name}">${v.html}</div>`}).join('')+`<span class="fig br">live · <span class="bn">Debenhams</span></span>`;
+  const pick=[['button','<button class="bd pri">Add to bag</button>'],['toggle',0],['checkbox',0],['badges',0],['chip',0],['price',0],['ratings',0],['quantity',0],['filter-pill',0],['text-link',0],['icon-button',0],['tag-pill',0]];
+  host.innerHTML=pick.map(([slug,i])=>{const c=C.find(x=>x.slug===slug);if(!c)return'';const html=typeof i==='string'?i:(c.variants[i]||c.variants[0]).html;return `<div class="ci" title="${c.name}">${html}</div>`}).join('')+`<span class="fig br">live · <span class="bn">Debenhams</span></span>`;
 })();
 </script>
 <script>

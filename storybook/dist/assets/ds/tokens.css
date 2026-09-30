@@ -2,7 +2,7 @@
    DEBENHAMS GROUP DESIGN SYSTEM — TOKENS (canonical)
    Single source of truth. The site (index.html) and every project
    prototype link this file — never copy values out of it.
-   Brand values: signed-off Colour Alignment set (post-KM, 26 Aug 2026).
+   Brand values: Colour Alignment set (post-KM, 26 Aug 2026).
    Full 12-slot families: Debenhams + boohoo. Others land per audit.
    Provenance note: to be re-wired to the extract-tokens.mjs chain
    when plt-app-prototype is ingested (see .context/13).
@@ -48,7 +48,7 @@
   --ft-band:var(--surface-sunken);
   --radius-default:4px;--radius-lg:8px;--radius-pill:9999px;
   --surface-page:#FFF;
-  /* signed-off buttons (colour-alignment brand-colours): Debenhams primary = Primary Aqua + black ink;
+  /* buttons (colour-alignment brand-colours): Debenhams primary = Primary Aqua + black ink;
      CTA Aqua teal carries links, checks, focus — not the button fill */
   --brand-primary:#7BE7D8;--surface-action:#7BE7D8;--surface-action-hover:#9DEDE2;--surface-action-pressed:#76DECF;--text-on-action:#000;
   --w-btn:var(--w-strong);
@@ -57,13 +57,13 @@
   /* link/check/focus colour (Debenhams: CTA Aqua teal) — other fascias re-derive from their action */
   --border-action:#00787D;--border-focus:#00787D;
   --text-link:#00787D;--text-link-hover:#00565A;--icon-action:#00787D;
-  /* button component — signed-off golden truth (colour-alignment brand-colours):
+  /* button component — golden truth (colour-alignment brand-colours):
      SemiBold 600 · primary UPPERCASE · secondary sentence case · 4px radius every fascia ·
      secondary = white + 1px brand outline + black label. KM alone: 400, sentence case both. */
   --btn-outline:#70BEB3;--case-btn1:uppercase;--case-btn2:none;
 }
 /* Layer 2: per-fascia overrides. CTA/pressed/on/light-1/light-3/paper/type/radius/case are the
-   signed-off Colour Alignment set (post-KM review, Aug 26). Full 12-slot families exist for
+   Colour Alignment set (post-KM review, Aug 26). Full 12-slot families exist for
    Debenhams + boohoo; remaining slots for the other fascias land as each is audited. */
 [data-brand="debenhams"]{/* default — no overrides */}
 [data-brand="boohoo"]{
@@ -87,7 +87,7 @@
   --badge-bg:rgba(255,255,255,.85);--badge-border:transparent; /* MAN: white 85% badges + wishlist chip, 4px radius */
   --usp-cd-live:#FF0000; /* MAN live countdown runs red */
   --usp-cd:#D33F3F; /* new-format banner = Black/Red variant — countdown digits DS red */
-  --brand-primary:#01FE8A;/* MAN accent green — signed-off 'new' + card button */--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
+  --brand-primary:#01FE8A;/* MAN accent green — 'new' + card button */--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
   --border-action:#000;--border-focus:#000;--text-link:#000;--text-link-hover:#242424;--icon-action:#000;
   --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;
   --nav-bg:#FFF;
@@ -95,7 +95,7 @@
 [data-brand="plt"]{
   --w-btn:600;--btn-outline:#360502; /* golden button truth */
   /* PLT sand rule (03 Sep): anything grey or white on other fascias renders in the sand family here —
-     white → warm white, Grey 05 → sand, Grey 1 → darker sand (darker hex DRAFT pending sign-off) */
+     white → warm white, Grey 05 → sand, Grey 1 → darker sand */
   --surface-raised:#FFFDF7;--surface-sunken:#FAF5E7;--surface-media:#FAF5E7;
   --hd-icon:16px;--hd-favic:15px;--hd-count:12px;--hd-count-fs:9px; /* PLT header icon set — PLP-Grid-View 158-8458 */
   --brand-name:'PrettyLittleThing';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
@@ -114,15 +114,15 @@
 [data-brand="karenmillen"]{
   --text-on-action:#FFF; /* golden: primary ink is white */
   --brand-name:'Karen Millen';--font-family-base:'Jost',ui-sans-serif,-apple-system,system-ui,sans-serif;
-  --w-regular:400;--w-strong:600;--w-btn:400;--case-btn1:none;--btn-outline:#000; /* KM buttons: lighter, sentence case both, black outline (signed-off) */
+  --w-regular:400;--w-strong:600;--w-btn:400;--case-btn1:none;--btn-outline:#000; /* KM buttons: lighter, sentence case both, black outline (colour-alignment) */
   --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#000;--usp-b-fg:#FFF;
   --brand-primary:#D24508;--surface-action:#D24508;--surface-action-hover:#892D05;--surface-action-pressed:#892D05;
   --border-action:#892D05;--border-focus:#892D05;--text-link:#892D05;--text-link-hover:#000;--icon-action:#892D05;
   --brand-light-3:#F3C1A7;--brand-light-2:#F0B597;--brand-light-1:#E88A5B;--brand-primary-dark:#892D05;
   --nav-bg:#FFF;
 }
-/* DRAFT modes (P-05) — Warehouse from the live relaunch direction (03 Sep capture),
-   The Brand Room from its Figma (NRsu568JGzwCDq4egvkUbn). Confirm palettes at audit sign-off. */
+/* Warehouse from the live relaunch direction (03 Sep capture),
+   The Brand Room from its Figma (NRsu568JGzwCDq4egvkUbn). */
 [data-brand="warehouse"]{
   --text-on-action:#FFF; /* golden: primary ink is white */
   --w-btn:600;--btn-outline:#000; /* golden button truth */
@@ -153,7 +153,7 @@
 
 /* ============================================================
    EXTENDED COMPONENT TOKENS — 08 Sep 2026 estate inventory (.context/18)
-   Values: colour-alignment-prototype (signed-off, post-KM 26 Aug) for colour;
+   Values: colour-alignment-prototype (post-KM 26 Aug) for colour;
    Group-Design-System for slot architecture. Debenhams = defaults.
    ============================================================ */
 :root{
@@ -194,7 +194,7 @@
   --dplus-bg:#FFE0EB;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000; /* boohoo keeps Light-3 pink for Deliver+ */
 }
 [data-brand="boohooman"]{--card-btn-bg:#01FE8A;--new:#01FE8A;--dplus-bg:#101010;--dplus-fg:#FFF;--dplus-link:#FFF;--dplus-check:#01FE8A}
-[data-brand="warehouse"],[data-brand="brandroom"]{--dplus-bg:#F2F2F2;--dplus-check:#000} /* DRAFT */
+[data-brand="warehouse"],[data-brand="brandroom"]{--dplus-bg:#F2F2F2;--dplus-check:#000}
 [data-brand="plt"]{
   --action-buy:#550503;--action-buy-pressed:#450603;--action-buy-disabled:#FAF5E7;
   --action-disabled-bg:#FAF5E7;--action-disabled-fg:#B5B5B5;
@@ -218,3 +218,262 @@
   --paypal:#EEEEEE; /* KM PayPal on light grey */
   --dplus-bg:linear-gradient(90deg,#000 36%,#161616 100%);--dplus-fg:#FFF;--dplus-link:#FFF;--dplus-check:#FFF;
 }
+
+/* ============================================================
+   FASCIA MODES FROM THE FRONT-END THEME — the other 14 fascias of the estate, generated 10 Sep 2026 from the
+   front-end Storybook theme variables (.context/inventory/storybook-capture/themes.json) through the
+   dev→token mapping in .context/inventory/05-dev-storybook.md §3. Colours here are what production ships today.
+   Order of the estate: debenhams · debenhamsoutlet · wallis · burton · principles · boohooman · boohoo · karenmillen · plt · coast · oasis · dorothyperkins · maine · gorgeous · warehouse · misspap · nastygal · foreverunique · dsgnstudio · trainingdept · brandroom
+   ============================================================ */
+[data-brand="debenhamsoutlet"]{ /* from the front-end theme (debenhamsoutlet, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Debenhams Outlet';--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#00787D;--text-link-hover:#000000;--border-action:#00787D;--border-focus:#00787D;--icon-action:#00787D;--btn-outline:#00787D;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#BC0000;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#00787D;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#00787D;--dot:#7BE7D8;--new:#00787D;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#00787D;--dplus-check:#00787D;
+}
+[data-brand="wallis"]{ /* from the front-end theme (wallis, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Wallis';--font-family-base:'Urbanist',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#444444;--surface-action:#444444;--surface-action-hover:#444444;--surface-action-pressed:#444444;--text-on-action:#FFFFFF;
+  --text-link:#444444;--text-link-hover:#444444;--border-action:#444444;--border-focus:#444444;--icon-action:#444444;--btn-outline:#444444;
+  --brand-primary-dark:#444444;--brand-dark-3:#444444;--brand-light-1:#444444;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#444444;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#444444;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#444444;--action-buy-pressed:#444444;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#444444;--text-link-disabled:#B5B5B5;--tickc:#444444;--vto:#444444;--dot:#284D7B;--new:#444444;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
+}
+[data-brand="burton"]{ /* from the front-end theme (burton, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Burton';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#284D7B;--surface-action:#284D7B;--surface-action-hover:#284D7B;--surface-action-pressed:#284D7B;--text-on-action:#FFFFFF;
+  --text-link:#284D7B;--text-link-hover:#284D7B;--border-action:#284D7B;--border-focus:#284D7B;--icon-action:#284D7B;--btn-outline:#284D7B;
+  --brand-primary-dark:#284D7B;--brand-dark-3:#284D7B;--brand-light-1:#284D7B;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#333333;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#284D7B;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#284D7B;--action-buy-pressed:#284D7B;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#284D7B;--text-link-disabled:#B5B5B5;--tickc:#284D7B;--vto:#284D7B;--dot:#284D7B;--new:#284D7B;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#284D7B;--dplus-check:#284D7B;
+}
+[data-brand="principles"]{ /* from the front-end theme (principles, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Principles';--font-family-base:'Lato',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#444444;--surface-action:#444444;--surface-action-hover:#444444;--surface-action-pressed:#444444;--text-on-action:#FFFFFF;
+  --text-link:#444444;--text-link-hover:#444444;--border-action:#444444;--border-focus:#444444;--icon-action:#444444;--btn-outline:#444444;
+  --brand-primary-dark:#444444;--brand-dark-3:#444444;--brand-light-1:#444444;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#444444;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#444444;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#444444;--action-buy-pressed:#444444;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#444444;--text-link-disabled:#B5B5B5;--tickc:#444444;--vto:#444444;--dot:#284D7B;--new:#444444;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
+}
+[data-brand="coast"]{ /* from the front-end theme (coast, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Coast';--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#000000;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+[data-brand="oasis"]{ /* from the front-end theme (oasis, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Oasis';--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#FFFFFF;--nav-fg:#000000;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+[data-brand="dorothyperkins"]{ /* from the front-end theme (dorothy-perkins, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Dorothy Perkins';--font-family-base:'PublicSans',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#000000;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+[data-brand="maine"]{ /* from the front-end theme (maine, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Maine';--font-family-base:'GothicA1',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#284D7B;--surface-action:#284D7B;--surface-action-hover:#284D7B;--surface-action-pressed:#284D7B;--text-on-action:#FFFFFF;
+  --text-link:#284D7B;--text-link-hover:#284D7B;--border-action:#284D7B;--border-focus:#284D7B;--icon-action:#284D7B;--btn-outline:#284D7B;
+  --brand-primary-dark:#284D7B;--brand-dark-3:#284D7B;--brand-light-1:#284D7B;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#002644;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#284D7B;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#284D7B;--action-buy-pressed:#284D7B;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#284D7B;--text-link-disabled:#B5B5B5;--tickc:#284D7B;--vto:#284D7B;--dot:#284D7B;--new:#284D7B;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#284D7B;--dplus-check:#284D7B;
+}
+[data-brand="gorgeous"]{ /* from the front-end theme (gorgeous, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Gorgeous';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#284D7B;--surface-action:#284D7B;--surface-action-hover:#284D7B;--surface-action-pressed:#284D7B;--text-on-action:#FFFFFF;
+  --text-link:#284D7B;--text-link-hover:#284D7B;--border-action:#284D7B;--border-focus:#284D7B;--icon-action:#284D7B;--btn-outline:#284D7B;
+  --brand-primary-dark:#284D7B;--brand-dark-3:#284D7B;--brand-light-1:#284D7B;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#4B0082;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#284D7B;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#284D7B;--action-buy-pressed:#284D7B;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#284D7B;--text-link-disabled:#B5B5B5;--tickc:#284D7B;--vto:#284D7B;--dot:#284D7B;--new:#284D7B;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#284D7B;--dplus-check:#284D7B;
+}
+[data-brand="misspap"]{ /* from the front-end theme (misspap, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Misspap';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#101820;--surface-action:#101820;--surface-action-hover:#101820;--surface-action-pressed:#101820;--text-on-action:#FFFFFF;
+  --text-link:#101820;--text-link-hover:#101820;--border-action:#101820;--border-focus:#101820;--icon-action:#101820;--btn-outline:#101820;
+  --brand-primary-dark:#101820;--brand-dark-3:#101820;--brand-light-1:#101820;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#000000;--nav-fg:#FFFFFF;
+  --surface-page:#000000;--surface-sunken:#F8F8F8;--ft-band:#C22527;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#101820;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#101820;--action-buy-pressed:#101820;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#101820;--text-link-disabled:#B5B5B5;--tickc:#101820;--vto:#101820;--dot:#C22527;--new:#101820;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#101820;--dplus-check:#101820;
+}
+[data-brand="nastygal"]{ /* from the front-end theme (nastygal, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Nasty Gal';--font-family-base:'NGGrotesque',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#444444;--surface-action:#444444;--surface-action-hover:#444444;--surface-action-pressed:#444444;--text-on-action:#FFFFFF;
+  --text-link:#444444;--text-link-hover:#444444;--border-action:#444444;--border-focus:#444444;--icon-action:#444444;--btn-outline:#444444;
+  --brand-primary-dark:#444444;--brand-dark-3:#444444;--brand-light-1:#444444;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#444444;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#444444;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#444444;--action-buy-pressed:#444444;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#444444;--text-link-disabled:#B5B5B5;--tickc:#444444;--vto:#444444;--dot:#284D7B;--new:#444444;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
+}
+[data-brand="foreverunique"]{ /* from the front-end theme (foreverunique, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Forever Unique';--font-family-base:'PublicSans',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#000000;--nav-fg:#FFFFFF;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+[data-brand="dsgnstudio"]{ /* from the front-end theme (dsgnstudio, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'DSGN Studio';--font-family-base:'HankenGrotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#FFFFFF;--nav-fg:#000000;
+  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+[data-brand="trainingdept"]{ /* from the front-end theme (trainingdept, 09 Sep) via .context/inventory/05 §3 */
+  --brand-name:'Training Dept';--font-family-base:'HankenGrotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
+  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#000000;--surface-action-pressed:#000000;--text-on-action:#FFFFFF;
+  --text-link:#000000;--text-link-hover:#000000;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
+  --brand-primary-dark:#000000;--brand-dark-3:#000000;--brand-light-1:#000000;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
+  --nav-bg:#FFFFFF;--nav-fg:#000000;
+  --surface-page:#000000;--surface-sunken:#F8F8F8;--ft-band:#000000;
+  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
+  
+  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
+  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
+  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+}
+
+/* ============================================================
+   DELIVER+ HERO SET — SEEL Enhancements 2026 (CQIe2e2c0iagD1T9WjdYsx · Latest Components 28.08.26), 10 Sep 2026.
+   Per-fascia banner ground / ink / link / checkbox / radius read from the designs; for the ten newer fascias the
+   design's font + weights + neutral tint are also adopted here (hero indication).
+   Debenhams · boohoo · MAN · PLT · KM keep their colour-alignment palettes — differences are listed in .context/22.
+   ============================================================ */
+[data-brand="debenhams"]{--dplus-bg:#E8F4F2;--dplus-fg:#000000;--dplus-link:#00787D;--dplus-check:#00787D;--dplus-radius:4px;}
+[data-brand="boohoo"]{--dplus-bg:#FFE0EB;--dplus-fg:#000000;--dplus-link:#BB305F;--dplus-check:#BB305F;--dplus-radius:4px;}
+[data-brand="boohooman"]{--dplus-bg:#000000;--dplus-fg:#FFFFFF;--dplus-link:#FFFFFF;--dplus-check:#FFFFFF;--dplus-radius:4px;}
+[data-brand="plt"]{--dplus-bg:#EAAFA4;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#FFFDF7;--dplus-radius:0px;}
+[data-brand="karenmillen"]{--dplus-bg:#000000;--dplus-fg:#FFFFFF;--dplus-link:#FFFFFF;--dplus-check:#FFFFFF;--dplus-radius:4px;}
+[data-brand="burton"]{--dplus-bg:#E2EAF4;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-neutral:#E2EAF4;--brand-light-3:#E2EAF4;}
+[data-brand="coast"]{--dplus-bg:#E2E0DC;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#E2E0DC;--brand-light-3:#E2E0DC;}
+[data-brand="dorothyperkins"]{--dplus-bg:#181729;--dplus-fg:#FFFFFF;--dplus-link:#FFFFFF;--dplus-check:#FFFFFF;--dplus-radius:0px;--font-family-base:'Public Sans',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#181729;--brand-light-3:#181729;}
+[data-brand="dsgnstudio"]{--dplus-bg:#F4F6F0;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Hanken Grotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-neutral:#F4F6F0;--brand-light-3:#F4F6F0;}
+[data-brand="misspap"]{--dplus-bg:#E7D5C6;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-neutral:#E7D5C6;--brand-light-3:#E7D5C6;}
+[data-brand="nastygal"]{--dplus-bg:#EEEEED;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#EEEEED;--brand-light-3:#EEEEED;}
+[data-brand="oasis"]{--dplus-bg:#EDE6DF;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#EDE6DF;--brand-light-3:#EDE6DF;}
+[data-brand="principles"]{--dplus-bg:#FBF6F0;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Lato',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#FBF6F0;--brand-light-3:#FBF6F0;}
+[data-brand="wallis"]{--dplus-bg:#F9EEF3;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Urbanist',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#F9EEF3;--brand-light-3:#F9EEF3;}
+[data-brand="warehouse"]{--dplus-bg:#FDFFF5;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#FDFFF5;--brand-light-3:#FDFFF5;}
+
+/* Deliver+ per-fascia type + surfaces read from the SEEL bag/checkout/modal nodes (10 Sep 2026) */
+[data-brand="plt"]{--dplus-white:#FFFDF7} /* PLT "Background White" — every white surface in the set */
+[data-brand="boohooman"],[data-brand="karenmillen"],[data-brand="dorothyperkins"],[data-brand="plt"]{--dplus-tick:#000} /* white checkbox fill → black tick */
+[data-brand="plt"],[data-brand="burton"],[data-brand="coast"],[data-brand="dorothyperkins"],[data-brand="dsgnstudio"],[data-brand="misspap"],[data-brand="nastygal"],[data-brand="oasis"],[data-brand="principles"],[data-brand="wallis"],[data-brand="warehouse"]{--dplus-p:12px}
+[data-brand="burton"],[data-brand="misspap"],[data-brand="dsgnstudio"]{--dplus-pw:500}
