@@ -88,15 +88,16 @@ body.nosb .side{display:none}
 body.nosb .sbopen{display:grid}
 /* ---------- sidebar (PDS: surface panel, plain text accordion, no icons) ---------- */
 .side{background:color-mix(in srgb,var(--bg) 62%,transparent);backdrop-filter:blur(28px) saturate(1.1);-webkit-backdrop-filter:blur(28px) saturate(1.1);overflow-y:auto;overflow-x:hidden;padding:12px 24px 40px;display:flex;flex-direction:column}
-.shead{padding:0 0 28px;margin:0}
-.shead .rowa{display:flex;align-items:center;gap:14px;margin:0}
+.shead{padding:0 0 22px;margin:0}
+.shead .rowa{display:flex;align-items:center;gap:8px;margin:0}
 .shead .wm{display:flex;align-items:center;gap:0;font-family:var(--sans);font-weight:600;font-size:15px;letter-spacing:-.005em;text-transform:none;color:var(--ink);min-width:0;white-space:nowrap}
 .shead .wm i{display:none}
 .shead .wm span{color:var(--ink);font-weight:600}
 .shead .searchbtn{display:none}
 .searchbtn{display:none}
 .grp{margin:0}
-.grp.solo .items{padding:0 0 16px}
+.grp+.grp{border-top:1px solid var(--low);margin-top:6px;padding-top:10px}
+.homebtn.on{background:var(--wash-2);border-color:var(--low)}
 .grp>button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:-.005em;text-transform:none;color:var(--ink);border-radius:0}
 .grp>button:hover{color:var(--ink)}
 .grp>button .car{display:none}
@@ -115,7 +116,7 @@ body.nosb .sbopen{display:grid}
 .nav .items a.ext::after,.items a.ext::after{content:"↗";margin-left:auto;font-size:12px;color:var(--ink-3);flex:none}
 .items a.ext .tag~*{margin-left:0}
 /* sidebar foot (PDS: version switcher + release button + external link + legal) */
-.sfoot{margin-top:auto;padding-top:28px;border-top:1px solid var(--low);display:flex;flex-direction:column;gap:12px}
+.sfoot{display:none}
 .sfoot label{font-size:16px;color:var(--ink);display:block;margin-bottom:6px}
 .sel{position:relative}
 .sel select{width:100%;appearance:none;-webkit-appearance:none;background:var(--solid);color:var(--ink);border:1px solid var(--med);border-radius:var(--r-sm);padding:10px 40px 10px 12px;font:400 16px var(--sans);cursor:pointer}
@@ -284,7 +285,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
   radial-gradient(70% 90% at 90% 60%,rgba(0,0,0,.5),transparent 70%),
   linear-gradient(180deg,rgba(0,0,0,.2),transparent 22%,transparent 40%,var(--bg) 78%)}
 .ptitle{font-family:var(--disp);font-size:clamp(48px,6vw,88px);line-height:1;letter-spacing:-.03em;font-weight:300;color:var(--ink);margin:0}
-.ptitle small{display:block;font-size:17px;letter-spacing:0;text-transform:none;font-weight:500;margin-bottom:18px;color:var(--accent)}
+.ptitle small{display:block;font-size:17px;letter-spacing:0;text-transform:none;font-weight:500;margin-bottom:18px;color:var(--ink)}
 .rel{display:flex;align-items:center;justify-content:space-between;gap:24px;width:min(520px,100%);padding:22px 24px;border-radius:var(--r);background:var(--frost);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:var(--ink);box-shadow:var(--shadow);transition:background .15s}
 .rel:hover{background:var(--surface-2)}
 .rel b{display:block;font-size:16px;font-weight:600}
@@ -294,13 +295,28 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 /* link tiles */
 .ltiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 var(--gut);max-width:1120px}
 .ltiles.four{grid-template-columns:repeat(2,1fr);margin-top:40px}.ltiles.two{grid-template-columns:repeat(2,1fr)}
-.hsec{font-size:14px;font-weight:500;color:var(--ink-3);margin:56px var(--gut) 14px!important;letter-spacing:.02em}
+.hsec{font-size:22px;font-weight:600;color:var(--ink);margin:56px var(--gut) 16px!important;letter-spacing:-.01em}
+.btiles{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin:0 var(--gut);max-width:1120px}
+.btile{aspect-ratio:1;border-radius:var(--r);background:var(--surface);border:1px solid color-mix(in srgb,var(--ink) 6%,transparent);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:14px;color:var(--ink);text-align:center;transition:background .15s}
+.btile:hover{background:var(--surface-2)}
+.btile img{height:18px;width:auto;max-width:78%;object-fit:contain}
+:root:not([data-theme="light"]) .btile img{filter:invert(1)}
+.btile span{font-size:12px;color:var(--ink-2);line-height:1.3}
+.btile.noimg span{font-size:14px;color:var(--ink);font-weight:500}
+.ptiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 var(--gut) 0;max-width:1120px}
+.ptile{display:flex;flex-direction:column;gap:14px;padding:18px 20px 16px;min-height:120px;border-radius:var(--r);background:var(--surface);border:1px solid color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink);transition:background .15s;position:relative}
+.ptile:hover{background:var(--surface-2)}
+.ptile b{font-size:16px;font-weight:600;letter-spacing:-.01em;margin-top:auto;padding-right:28px}
+.ptile .pill{align-self:flex-start}
+.ptile .ar{position:absolute;right:18px;bottom:16px;color:var(--ink-3);font-size:18px}
+.ptile:hover .ar{color:var(--accent)}
+.ptile.more{justify-content:center}.ptile.more b{margin:0}
 #home>.hsec:first-of-type{margin-top:40px!important}
 .ltile.wide{margin:0 var(--gut);max-width:1120px;min-height:0}
 .ltile{position:relative;display:flex;flex-direction:column;border-radius:var(--r);background:var(--surface);overflow:hidden;min-height:220px;color:inherit;transition:background .15s;border:1px solid color-mix(in srgb,var(--ink) 6%,transparent)}
-.ltile .ico{width:44px;height:44px;border-radius:10px;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);display:grid;place-items:center;margin:24px 24px 0}
-.ltile .ico svg{width:24px;height:24px}.ltile .ico svg *{stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.ltile .ico b{font-family:var(--font-family-base);font-size:20px;font-weight:var(--w-strong);letter-spacing:-.02em}
+.ltile .ico{width:56px;height:56px;border-radius:12px;background:var(--wash);color:var(--ink);display:grid;place-items:center;margin:24px 24px 0}
+.ltile .ico svg{width:30px;height:30px}.ltile .ico svg *{stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ltile .ico b{font-family:var(--font-family-base);font-size:26px;font-weight:var(--w-strong);letter-spacing:-.02em}
 .ltile:hover{background:var(--surface-2)}
 .ltile.span2{grid-column:span 2}
 .ltile .lt-head{padding:20px 24px 0;font-size:14px;color:var(--ink-2);display:flex;justify-content:space-between;align-items:center;gap:12px}
@@ -357,7 +373,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .pal .ft{display:flex;gap:16px;padding:10px 16px;border-top:1px solid var(--low);font-size:12px;color:var(--ink-3)}
 
 @media(max-width:920px){.shell{grid-template-columns:1fr}.side{display:none}.sbopen{display:grid}.hdr{display:none}body.sbm .side{display:flex;position:fixed;inset:0;z-index:90;width:100%}body.sbm .sbopen{display:none}.page{padding:32px 20px 100px}.page.rail.on{display:block}.toc{display:none}.stats,.opts,.board{grid-template-columns:1fr 1fr}.wall{grid-template-columns:repeat(2,1fr)}.tr{grid-template-columns:1fr 96px}.tr .id,.tr .d,.tr .dots{display:none}
-  #home>*:not(.phero):not(.ltiles){margin-left:20px;margin-right:20px}.ltiles.four,.ltiles.two{grid-template-columns:1fr}.ltile.wide{margin:0 20px}.logocloud.row{grid-template-columns:repeat(3,1fr)}.hsec{margin-left:20px!important;margin-right:20px!important}.phero{margin-top:0;padding:84px 20px 8px}.ltiles{grid-template-columns:1fr;margin:20px 20px 0}.ltile.span2{grid-column:auto}.hdrbtns{top:10px;right:10px}.fab-name{display:none}.fab-btn{padding:0 8px 0 4px}}
+  #home>*:not(.phero):not(.ltiles){margin-left:20px;margin-right:20px}.ltiles.four,.ltiles.two{grid-template-columns:1fr}.ltile.wide{margin:0 20px}.btiles{grid-template-columns:repeat(3,1fr);margin:0 20px}.ptiles{grid-template-columns:1fr;margin:0 20px}.logocloud.row{grid-template-columns:repeat(3,1fr)}.hsec{margin-left:20px!important;margin-right:20px!important}.phero{margin-top:0;padding:84px 20px 8px}.ltiles{grid-template-columns:1fr;margin:20px 20px 0}.ltile.span2{grid-column:auto}.hdrbtns{top:10px;right:10px}.fab-name{display:none}.fab-btn{padding:0 8px 0 4px}}
 @media(prefers-reduced-motion:reduce){.page.on{animation:none}}
 
 /* project launcher */
@@ -447,6 +463,21 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .ftoc a::before{content:"↳";color:var(--accent)}
 .ftoc a:hover{text-decoration:underline;text-underline-offset:3px}
 .wall .f{position:relative}
+/* brand centre self-serve kit */
+.kits{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+.kit{border-radius:var(--r);background:var(--surface);border:1px solid color-mix(in srgb,var(--ink) 6%,transparent);overflow:hidden;display:flex;flex-direction:column}
+.kprev{display:grid;grid-template-columns:1fr 1fr;height:100px}
+.kd{background:#000;display:grid;place-items:center}.kl{background:#fff;display:grid;place-items:center}
+.kd img{filter:invert(1)}.kprev img{height:20px;width:auto;max-width:70%;object-fit:contain}
+.kd.none{grid-column:1/-1;color:var(--ink-3);font-size:13px;background:var(--surface-2)}
+.kbody{padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px}
+.kbody b{font-size:18px;font-weight:600}
+.krow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.krow>span{font-size:13px;color:var(--ink-3);min-width:78px}
+.kbtn{font:500 13px var(--sans);padding:6px 12px;border-radius:var(--r-sm);border:1px solid var(--med);color:var(--ink);background:transparent;cursor:pointer;display:inline-flex;gap:6px;align-items:center;transition:border-color .12s,background .12s}
+.kbtn:hover{border-color:var(--ink);background:var(--wash)}.kbtn small{color:var(--ink-3);font-size:12px}
+.krow em{font-style:normal;font-size:13px;color:var(--ink-3)}
+@media(max-width:920px){.kits{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -457,16 +488,25 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
   <div class="shead">
     <div class="rowa">
       <button class="ibtn" onclick="toggleSb()" aria-label="Hide navigation" title="Hide navigation"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button>
-      <a class="wm" href="#home">Debenhams Group<span>&nbsp;Design</span></a>
-    </div>
-  </div>
-  <div class="grp solo">
-    <div class="items">
-      <a href="#home" class="on">Home</a>
+      <a class="ibtn homebtn" href="#home" aria-label="Home" title="Home"><svg viewBox="0 0 24 24"><path d="m3.5 11 8.5-7 8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-6h4v6"/></svg></a>
     </div>
   </div>
   <div class="grp">
-    <button onclick="tg(this)"><span class="car">▾</span>Deliverables</button>
+    <button onclick="tg(this)"><span class="car">▾</span>Design system</button>
+    <div class="items" id="dsItems">
+      <a href="#foundations">Foundations <span class="tag ok">live</span></a>
+      <a href="#f-type">Typography</a>
+      <a href="#f-colour">Colour</a>
+      <a href="#gallery">All components <span class="tag ok">live</span></a>
+      <!-- component pages are appended here from assets/ds/catalogue.js -->
+      <a href="#icons">Icons <span class="tag ok">live</span></a>
+      <a href="#brands">Brand Centre</a>
+      <a href="#dev-overlay">Dev alignment</a>
+      <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/" target="_blank" rel="noopener" title="Opens our Storybook in a new tab"><span class="ic">▤</span>Storybook</a>
+    </div>
+  </div>
+  <div class="grp">
+    <button onclick="tg(this)"><span class="car">▾</span>Projects</button>
     <div class="items">
       <a href="#projects">All projects</a>
       <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>PLP UI updates - All Brands <span class="tag wip">open</span></a>
@@ -486,26 +526,6 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
       <a class="ext" href="https://github.com/jakerayner96/debenhams-design-system-scraper" target="_blank" rel="noopener" title="Opens the repo in a new tab"><span class="ic">▸</span>DG Group Product Scraper <span class="tag dim">private</span></a>
     </div>
   </div>
-  <div class="grp">
-    <button onclick="tg(this)"><span class="car">▾</span>Design system</button>
-    <div class="items" id="dsItems">
-      <a href="#foundations">Foundations <span class="tag ok">live</span></a>
-      <a href="#f-type">Typography</a>
-      <a href="#f-colour">Colour</a>
-      <a href="#gallery">All components <span class="tag ok">live</span></a>
-      <!-- component pages are appended here from assets/ds/catalogue.js -->
-      <a href="#icons">Icons <span class="tag ok">live</span></a>
-      <a href="#brands">Brand Centre</a>
-      <a href="#dev-overlay">Dev alignment</a>
-      <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/" target="_blank" rel="noopener" title="Opens our Storybook in a new tab"><span class="ic">▤</span>Storybook</a>
-    </div>
-  </div>
-  <div class="sfoot">
-    <div><label for="brandSel">Switch brand</label><div class="sel"><select id="brandSel" onchange="setBrand(this.value)" aria-label="Demo brand"></select></div></div>
-    <a class="sbtn" href="https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg> Open Storybook</a>
-    <a class="sext" href="https://github.com/jakerayner96/debenhamsgroup.design" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg> github.com/jakerayner96</a>
-    <div class="smeta">© 2026 Debenhams Group · UX<br><a href="#requests">Requests</a><a href="#dev-overlay">Dev alignment</a><a href="#shipping">Shipping log</a></div>
-  </div>
 </aside>
 
 <!-- ============ MAIN ============ -->
@@ -521,20 +541,37 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
     <div class="ltiles four">
       <a class="ltile" href="#gallery">
         <div class="ico"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><path d="M17 13.5v7M13.5 17h7"/></svg></div>
-        <div class="lt-foot"><b>Components <span class="ar">→</span></b><small>49 components, live in any of the 21 fascias, on the system's own tokens.</small></div>
+        <div class="lt-foot"><b>Components <span class="ar">→</span></b><small>Buttons, inputs, product cards and more.</small></div>
       </a>
       <a class="ltile" href="#f-type">
         <div class="ico"><b>Aa</b></div>
-        <div class="lt-foot"><b>Typography <span class="ar">→</span></b><small>One role set for every brand. Family and weight change with the fascia.</small></div>
+        <div class="lt-foot"><b>Typography <span class="ar">→</span></b><small>Typography rules.</small></div>
       </a>
       <a class="ltile" href="#f-colour">
         <div class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="9.5" r="5.5"/><circle cx="15" cy="9.5" r="5.5"/><circle cx="12" cy="14.5" r="5.5"/></svg></div>
-        <div class="lt-foot"><b>Colour <span class="ar">→</span></b><small>Named primitives, role-named semantic tokens. The brand mode swaps the values.</small></div>
+        <div class="lt-foot"><b>Colour <span class="ar">→</span></b><small>Brand colour palettes.</small></div>
       </a>
       <a class="ltile" href="#foundations">
         <div class="ico"><svg viewBox="0 0 24 24"><path d="m12 3.5 8.5 4.5L12 12.5 3.5 8z"/><path d="M3.5 12 12 16.5l8.5-4.5M3.5 16 12 20.5l8.5-4.5"/></svg></div>
-        <div class="lt-foot"><b>Foundations <span class="ar">→</span></b><small>Spacing, radius, borders, motion and accessibility. The rules every component is built from.</small></div>
+        <div class="lt-foot"><b>Foundations <span class="ar">→</span></b><small>Spacing, radius, borders and motion.</small></div>
       </a>
+    </div>
+
+    <h2 class="hsec">Brand Centre</h2>
+    <div class="btiles" id="btiles"></div>
+
+    <h2 class="hsec">Projects</h2>
+    <div class="ptiles">
+      <a class="ptile" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener"><span class="pill wip">open</span><b>PLP UI updates · All Brands</b><span class="ar">↗</span></a>
+      <a class="ptile" href="https://jakerayner96.github.io/core-pdp-2026/" target="_blank" rel="noopener"><span class="pill wip">open</span><b>PDP Layout and Components · MAN</b><span class="ar">↗</span></a>
+      <a class="ptile" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener"><span class="pill ok">merged</span><b>CTA Colour Alignment · All Brands</b><span class="ar">↗</span></a>
+      <a class="ptile" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener"><span class="pill ">prototype</span><b>New Checkout Payment Section Update</b><span class="ar">↗</span></a>
+      <a class="ptile" href="https://jakerayner96.github.io/vto-prototype/" target="_blank" rel="noopener"><span class="pill wip">open</span><b>Virtual Try On · All Brands</b><span class="ar">↗</span></a>
+      <a class="ptile" href="https://jakerayner96.github.io/ai-generated-badge/" target="_blank" rel="noopener"><span class="pill ">deck</span><b>AI Generated Badge</b><span class="ar">↗</span></a>
+      <a class="ptile" href="https://jakerayner96.github.io/Group-Design-System/" target="_blank" rel="noopener"><span class="pill ">retired</span><b>Group Design System (v1)</b><span class="ar">↗</span></a>
+      <a class="ptile" href="https://jakerayner96.github.io/UX-Design-Request/" target="_blank" rel="noopener"><span class="pill ">tool</span><b>UX Design Request Form</b><span class="ar">↗</span></a>
+      <a class="ptile" href="https://github.com/jakerayner96/THEBRANDROOM" target="_blank" rel="noopener"><span class="pill ">repo</span><b>The Brand Room · Launch Prototype</b><span class="ar">↗</span></a>
+      <a class="ptile more" href="#projects"><b>All projects</b><span class="ar">→</span></a>
     </div>
   </section>
 
@@ -1500,7 +1537,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
   <section class="page" id="brands" data-crumb="Brand Centre">
     <div class="kick">brand centre <b>· 21 fascias · 21 modes</b></div>
     <h1>The estate</h1>
-    <p class="lede">Every fascia's palette, type, tone and assets. Hover a cell; click through for the full guideline page.</p>
+    <p class="lede">Every fascia in the group. Pick one to preview it across the system, download its logo in black or white as SVG or PNG, and open its brand guidelines.</p>
     <div class="wall">
       <a class="f" href="#" data-b="debenhams" onclick="setBrand('debenhams');return false"><i style="background:linear-gradient(140deg,#7BE7D8,#0A0A0A)"></i><img src="assets/brands/debenhams.svg" alt=""><span>Debenhams</span></a>
       <a class="f" href="#" data-b="boohoo" onclick="setBrand('boohoo');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/boohoo.svg" alt=""><span>boohoo</span></a>
@@ -1550,6 +1587,8 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
       <div class="tk"><i style="background:#000000"></i><code>dsgnstudio</code><code>HankenGrotesk</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
       <div class="tk"><i style="background:#000000"></i><code>trainingdept</code><code>HankenGrotesk</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
     </div>
+    <h2 id="logokit-h">Logos and guidelines <code>self-serve · black or white · SVG or PNG</code></h2>
+    <div class="kits" id="logokit"></div>
   </section>
 
   <!-- REQUESTS -->
@@ -1700,6 +1739,18 @@ window.DG_REG=[{h:'gallery',t:'Component library',k:'gallery wiki all components
 })();
 </script>
 <script>
+/* logo download: recolour the DS SVG (dark fills → chosen colour, transparent background) and hand it over as SVG, or rasterise it to a ≥2000px PNG */
+window.dlLogo=async function(slug,colour,fmt){
+  const txt=await (await fetch('assets/brands/'+slug+'.svg')).text();
+  const to=colour==='white'?'#FFFFFF':'#000000';
+  const svg=txt.replace(/fill="(black|#000|#000000|#242424|#010101|#0f0f0f|#1a1a1a)"/gi,'fill="'+to+'"').replace(/stroke="(black|#000|#000000|#242424|#010101)"/gi,'stroke="'+to+'"');
+  const save=(blob,name)=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)};
+  const name=slug+'-logo-'+colour;
+  if(fmt==='svg'){save(new Blob([svg],{type:'image/svg+xml'}),name+'.svg');return}
+  const img=new Image();const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+  img.onload=()=>{const k=Math.max(4,Math.ceil(2000/(img.naturalWidth||500)));const c=document.createElement('canvas');c.width=(img.naturalWidth||500)*k;c.height=(img.naturalHeight||100)*k;c.getContext('2d').drawImage(img,0,0,c.width,c.height);c.toBlob(b=>{save(b,name+'.png');URL.revokeObjectURL(url)},'image/png')};
+  img.src=url;
+};
 window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width:920px)').matches?'sbm':'nosb')};
 /* ---- chrome: theme (dark default, remembered), brand select in the sidebar, live component collage on the home tile ---- */
 (function(){
@@ -1708,8 +1759,19 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   const tb=document.getElementById('themeBtn');
   if(tb)tb.onclick=()=>{const light=document.documentElement.getAttribute('data-theme')!=='light';document.documentElement.setAttribute('data-theme',light?'light':'dark');try{localStorage.setItem(KEY,light?'light':'dark')}catch(e){}
     document.querySelectorAll('.fx').forEach(fx=>fx.classList.remove('dark'));document.querySelectorAll('.fx').forEach(fx=>{const bg=getComputedStyle(fx).backgroundColor;const m=bg.match(/\d+/g);if(m&&(.2126*m[0]+.7152*m[1]+.0722*m[2])/255<.5)fx.classList.add('dark')})};
-  const bs=document.getElementById('brandSel');
-  if(bs&&window.DG_FASCIAS)bs.innerHTML=window.DG_FASCIAS.map(([sl,nm])=>`<option value="${sl}">${nm}</option>`).join('');
+  const kit=document.getElementById('logokit');
+  if(kit&&window.DG_FASCIAS){
+    const HAS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse','brandroom','wallis','burton','principles','coast','oasis','dorothyperkins','misspap','nastygal'];
+    const G='assets/brands/guidelines/';
+    const GUIDES={debenhams:[['Brand guidelines 2025',G+'debenhams-brand-guidelines-2025.pdf','18 MB']],boohoo:[['Brand guidelines · condensed',G+'boohoo-brand-guidelines-condensed.pdf','20 MB']],boohooman:[['Brand guidelines',G+'boohooman-brand-guidelines.pdf','4 MB']],plt:[['Brand bible',G+'plt-brand-bible.pdf','17 MB'],['Identity pack',G+'plt-identity-pack.pdf','5 MB']]};
+    kit.innerHTML=window.DG_FASCIAS.map(([sl,nm])=>{const has=HAS.includes(sl);
+      const g=(GUIDES[sl]||[]).map(([t,u,sz])=>`<a class="kbtn" href="${u}" target="_blank" rel="noopener">${t} <small>PDF · ${sz}</small></a>`).join('');
+      const prev=has?`<span class="kd"><img src="assets/brands/${sl}.svg" alt=""></span><span class="kl"><img src="assets/brands/${sl}.svg" alt=""></span>`:`<span class="kd none">Logo artwork to come</span>`;
+      const dl=has?`<div class="krow"><span>Logo</span><button class="kbtn" onclick="dlLogo('${sl}','black','svg')">SVG · black</button><button class="kbtn" onclick="dlLogo('${sl}','white','svg')">SVG · white</button><button class="kbtn" onclick="dlLogo('${sl}','black','png')">PNG · black</button><button class="kbtn" onclick="dlLogo('${sl}','white','png')">PNG · white</button></div>`:'';
+      return `<div class="kit" data-b="${sl}"><div class="kprev">${prev}</div><div class="kbody"><b>${nm}</b>${dl}<div class="krow"><span>Guidelines</span>${g||'<em>not on file yet</em>'}</div></div></div>`}).join('');
+  }
+  const bt=document.getElementById('btiles');
+  if(bt&&window.DG_FASCIAS)bt.innerHTML=window.DG_FASCIAS.map(([sl,nm])=>`<a class="btile" href="#brands" onclick="setBrand('${sl}')"><img src="assets/brands/${sl}.svg" alt="" onerror="this.parentNode.classList.add('noimg');this.remove()"><span>${nm}</span></a>`).join('');
   const host=document.getElementById('collage'),C=window.DG_CATALOGUE;
   if(!host||!C)return;
   const pick=[['button','<button class="bd pri">Add to bag</button>'],['toggle',0],['checkbox',0],['badges',0],['chip',0],['price',0],['ratings',0],['quantity',0],['filter-pill',0],['text-link',0],['icon-button',0],['tag-pill',0]];
@@ -1775,7 +1837,7 @@ function route(){
   document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));
   if(h.startsWith('c-')){const g=document.querySelector('.side .items a[href="#gallery"]');if(g)g.classList.add('on')}
   const _c=document.getElementById('crumbs'); if(_c)_c.innerHTML=(pg?.dataset.crumb||'Home').split(' / ').map((c,i,a)=>i===a.length-1?`<b>${c}</b>`:c).join(' <span style="opacity:.4">/</span> ');
-  document.getElementById('main').scrollTop=0;document.body.classList.remove('sbm');document.body.classList.toggle('on-home',h==='home');
+  document.getElementById('main').scrollTop=0;document.body.classList.remove('sbm');document.body.classList.toggle('on-home',h==='home');document.querySelectorAll('.homebtn').forEach(b=>b.classList.toggle('on',h==='home'));
   if(window.fitTiles)requestAnimationFrame(fitTiles);
 }
 addEventListener('hashchange',route);
