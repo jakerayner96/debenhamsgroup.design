@@ -1298,7 +1298,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <p>Scheme colours are fixed and never brand tokens (DS 9144-1931): PayPal #FFC439 (KM runs PayPal on #EEEEEE via <code>--paypal</code>), Apple Pay black, Google Pay white with #3C4043 border, Klarna #0B051D, Clearpay #B2FCE4. <code>.pay--mini</code> 114px, <code>.pay--glass</code> 25px radius + blur for floating chrome. Artwork is the frame's own exports in <code>assets/ds/icons/payments/</code>.</p>
     <div class="demo"><div class="hd"><i></i><i></i><i></i><span>canvas — wallets · payment-option chips</span><span class="bn">Debenhams</span></div>
       <div class="canvas" style="flex-direction:column;align-items:stretch;gap:8px;max-width:358px">
-        <button class="pay pay--paypal"><img src="assets/ds/icons/payments/paypal-word-1.svg" alt="PayPal"></button>
+        <button class="pay pay--paypal"><img src="assets/ds/icons/payments/paypal-wordmark.svg" alt="PayPal"></button>
         <button class="pay pay--apple"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button>
         <button class="pay pay--gpay"><img src="assets/ds/icons/payments/gpay-g.svg" alt=""><img src="assets/ds/icons/payments/gpay-word.svg" alt="Google Pay"></button>
         <button class="pay pay--klarna"><img src="assets/ds/icons/payments/klarna-badge.svg" alt="Klarna"></button>
@@ -1673,7 +1673,7 @@ C.forEach((c,i)=>{
   const devLink=c.dev.title!=='—'?`<a href="${DEV}${devId(c.dev.title)}--docs" target="_blank" rel="noopener">${c.dev.title} ↗</a>`:'no counterpart in the dev build yet';
   s.innerHTML=`<div class="kick"><a href="#gallery" style="color:inherit">component library</a> / ${c.group} <b>· rendering <span class="bn">Debenhams</span></b></div>
   <h1>${c.name}</h1><p class="lede">${c.summary}</p>
-  <p style="margin-top:-6px">Every variant and type side by side, then the same set repeated for each fascia — one <code>data-brand</code> attribute per box, nothing restyled per brand.</p>
+  <p style="margin-top:-6px">${c.universal?'Scheme colours only — the same artwork on every fascia, so it is shown once.':'Every variant and type side by side, then the same set repeated for each fascia — one <code>data-brand</code> attribute per box, nothing restyled per brand.'}</p>
   <div class="fxstack"></div>
   <div class="wiki"><div style="min-width:0">
     <details class="mk"><summary>Markup <code>${c.variants.length} variants</code></summary>
@@ -1698,9 +1698,13 @@ window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||se
   const host=sec.querySelector('.fxstack');if(!host)return;
   const off=sl=>(c.notOn||[]).includes(sl);const order=[...FASCIAS.filter(f=>!off(f[0])),...FASCIAS.filter(f=>off(f[0]))];
   const item=v=>`<div class="fv${wide(v.html)?' wide':''}"><div class="fvc">${v.html}</div><span class="fvn">${v.name}</span></div>`;
-  const groups=[];c.variants.forEach(v=>{const g=groups[groups.length-1];if(v.col&&g&&g.col===v.col)g.items.push(v);else groups.push({col:v.col,items:[v]})});
-  const body=groups.map(g=>g.col?`<div class="fvg${g.items.some(v=>wide(v.html))?' wide':''}">${g.items.map(item).join('')}</div>`:item(g.items[0])).join('');
-  host.innerHTML=order.map(([sl,nm])=>off(sl)?`<div class="fxoff"><span>${nm}</span><em>${c.name} not active on ${nm}</em></div>`:`<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>${c.name}</em></div><div class="canvas fxc">${body}</div></div>`).join('');
+  /* a variant can be limited to some fascias: only:[slugs] shows it there alone, not:[slugs] hides it there */
+  const bodyFor=sl=>{const vs=c.variants.filter(v=>(v.only?v.only.includes(sl):true)&&!(v.not||[]).includes(sl));
+    const groups=[];vs.forEach(v=>{const g=groups[groups.length-1];if(v.col&&g&&g.col===v.col)g.items.push(v);else groups.push({col:v.col,items:[v]})});
+    return groups.map(g=>g.col?`<div class="fvg${g.items.some(v=>wide(v.html))?' wide':''}">${g.items.map(item).join('')}</div>`:item(g.items[0])).join('')};
+  /* universal components (scheme-coloured, no brand tokens) render once, not per fascia */
+  if(c.universal){host.innerHTML=`<div class="fx"><div class="fl"><span>Every fascia</span><em>${c.name} · scheme colours, no brand tokens</em></div><div class="canvas fxc">${bodyFor(document.documentElement.getAttribute('data-brand'))}</div></div>`;return}
+  host.innerHTML=order.map(([sl,nm])=>off(sl)?`<div class="fxoff"><span>${nm}</span><em>${c.name} not active on ${nm}</em></div>`:`<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>${c.name}</em></div><div class="canvas fxc">${bodyFor(sl)}</div></div>`).join('');
   host.querySelectorAll('.fx').forEach(fx=>{const bg=getComputedStyle(fx).backgroundColor;const m=bg.match(/\d+/g);if(m&&(.2126*m[0]+.7152*m[1]+.0722*m[2])/255<.5)fx.classList.add('dark')});
 };
 /* controls in the catalogue demos are live: checkbox / toggle flip, radios are exclusive within their list */

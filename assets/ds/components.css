@@ -19,9 +19,10 @@
 .bd.sec{background:var(--surface-page,#FFF);color:#000;border-color:var(--btn-outline,var(--border-action));text-transform:var(--case-btn2,none)} /* secondary: white, brand outline, black label, sentence case */
 .bd.dis{background:var(--surface-action-disabled);color:#767676;cursor:not-allowed} /* #767676: golden-truth disabled label — reconcile vs text/disabled Grey 3, see Button spec */
 .bd.spn{background:var(--surface-action);color:var(--text-on-action);min-width:110px}
-.bd.spn i{display:inline-block;width:13px;height:13px;border:2px solid var(--text-on-action);border-right-color:transparent;border-radius:99px;animation:sp .7s linear infinite;vertical-align:-2px}
+.bd.spn i{display:inline-block;vertical-align:middle} /* drawn by the shared .spin rule below */
 .bd:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 @keyframes sp{to{transform:rotate(1turn)}}
+@keyframes spin-ease{0%{transform:rotate(0)}100%{transform:rotate(1turn)}}
 
 /* ============================================================
    C-02 Product Card (.pc)
@@ -362,9 +363,17 @@
 .bd.sm{height:auto;padding:6px 12px;font-size:12px;line-height:16px}
 .bd.md{height:40px;padding:8px 16px;font-size:14px;line-height:24px}
 .bd.full{width:100%}
-/* spinner state per Figma 12533:14818 — label gives way to a 24px arc, primary fill drops to Neutral */
+/* spinner — the DS icon (icons-spinner.svg: 3px ring, quarter arc top-right) drawn in CSS so it takes the current text colour.
+   20px in a button (Figma shows 24; Jake asked for a touch smaller). Track = text colour at 28%, arc = text colour.
+   1.2s ease-in-out rotation: it accelerates through the turn and settles, rather than a flat linear spin. */
+.spin,.bd.spn i{display:inline-block;width:20px;height:20px;border:0;border-radius:99px;flex:none;vertical-align:middle;
+  background:conic-gradient(from 0deg,currentColor 0 90deg,color-mix(in srgb,currentColor 28%,transparent) 90deg 360deg);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));
+  animation:spin-ease 1.2s cubic-bezier(.6,.05,.35,1) infinite}
+.spin.lg{width:32px;height:32px}
+@media(prefers-reduced-motion:reduce){.spin,.bd.spn i{animation-duration:2.4s;animation-timing-function:linear}}
+/* spinner state per Figma 12533:14818 — label gives way to the arc, primary fill drops to Neutral */
 .bd.spn{background:var(--surface-neutral);color:var(--text-primary);min-width:0;pointer-events:none;border-color:var(--surface-neutral)}
-.bd.spn i{width:24px;height:24px;border:2px solid var(--text-primary);border-right-color:transparent;border-radius:99px;animation:sp .75s linear infinite;vertical-align:middle}
 .bd.spn.sec{background:var(--surface-page)}
 .lnk{font-size:12px;font-weight:var(--link-w,var(--w-strong));color:var(--text-link);text-decoration:none;cursor:pointer}
 .lnk:hover{color:var(--text-link-hover)}
