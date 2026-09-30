@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Debenhams Group Design</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400;500&family=Geologica:wght@300;400;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ds/tokens.css">
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
@@ -12,23 +12,23 @@
    Two themes on <html data-theme>, dark by default. Neutrals follow the PDS theme scale
    (base · surface · contrast low / medium / high · primary); notification colours likewise. */
 :root,[data-theme="dark"]{
-  --bg:#0E0E12;--surface:#212225;--surface-2:#2A2B30;--low:#404044;--med:#7C7F84;--high:#AFB0B3;
-  --ink:#FBFCFF;--ink-2:#AFB0B3;--ink-3:#7C7F84;
-  --ok:#01BA1D;--warn:#F7CB47;--bad:#FC4040;--info:#2193FF;
-  --frost:rgba(33,34,37,.72);--shadow:0 12px 40px -16px rgba(0,0,0,.8);
+  --bg:#000;--surface:rgba(255,255,255,.045);--surface-2:rgba(255,255,255,.08);--low:rgba(255,255,255,.09);--med:rgba(255,255,255,.32);--high:rgba(255,255,255,.6);
+  --solid:#0B0B0C;--ink:#FFF;--ink-2:rgba(255,255,255,.72);--ink-3:rgba(255,255,255,.46);
+  --ok:#01BA1D;--warn:#F7CB47;--bad:#FC4040;--info:#2193FF;--accent:#7BE7D8;
+  --frost:rgba(10,10,11,.72);--shadow:0 12px 40px -16px rgba(0,0,0,.9);
   color-scheme:dark;
 }
 [data-theme="light"]{
-  --bg:#FFFFFF;--surface:#EEEFF2;--surface-2:#E3E4E9;--low:#D8D8DB;--med:#6B6D70;--high:#535457;
-  --ink:#010205;--ink-2:#535457;--ink-3:#6B6D70;
-  --ok:#197E10;--warn:#F3BE00;--bad:#CC1922;--info:#2762EC;
+  --bg:#FFFFFF;--surface:rgba(0,0,0,.045);--surface-2:rgba(0,0,0,.08);--low:rgba(0,0,0,.1);--med:rgba(0,0,0,.35);--high:rgba(0,0,0,.6);
+  --solid:#F3F3F4;--ink:#0F0F0F;--ink-2:rgba(15,15,15,.72);--ink-3:rgba(15,15,15,.5);
+  --ok:#197E10;--warn:#C89A00;--bad:#CC1922;--info:#2762EC;--accent:#00787D;
   --frost:rgba(238,239,242,.78);--shadow:0 12px 40px -18px rgba(0,0,0,.28);
   color-scheme:light;
 }
 :root{
   --line:var(--low);--line-2:var(--med);
   --aq:var(--info);--wash:color-mix(in srgb,var(--ink) 8%,transparent);--wash-2:color-mix(in srgb,var(--ink) 13%,transparent);
-  --sans:'Geist',ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --sans:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   --disp:var(--sans);
   --r-sm:4px;--r:12px;--r-lg:24px;
@@ -46,7 +46,7 @@ button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 ::selection{background:color-mix(in srgb,var(--info) 35%,transparent)}
 ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:var(--low);border-radius:9px;border:2px solid var(--bg)}
 kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--low);border-radius:4px;padding:1px 6px;color:var(--ink-3)}
-:focus-visible{outline:2px solid var(--info);outline-offset:2px;border-radius:4px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
 
 /* ---------- icon buttons (PDS: frosted 36px squares, radius 4) ---------- */
 .ibtn{width:36px;height:36px;border-radius:var(--r-sm);display:grid;place-items:center;background:var(--frost);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:var(--ink);border:1px solid transparent;transition:background .15s,border-color .15s;flex:none}
@@ -65,7 +65,7 @@ kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--low);border-ra
 .appic img{width:74%;height:auto;max-height:60%;object-fit:contain}
 .appic.dk img{filter:invert(1)}
 .fab-btn .appic{width:26px;height:26px;border-radius:3px;flex:none}
-.fab-menu{display:none;flex-direction:column;gap:1px;padding:6px;background:var(--surface);border:1px solid var(--low);border-radius:var(--r);box-shadow:var(--shadow);max-height:min(520px,74vh);overflow-y:auto;min-width:240px}
+.fab-menu{display:none;flex-direction:column;gap:1px;padding:6px;background:var(--solid);border:1px solid var(--low);border-radius:var(--r);box-shadow:var(--shadow);max-height:min(520px,74vh);overflow-y:auto;min-width:240px}
 .fab.open .fab-menu{display:flex;animation:fabin .2s var(--ease-standard)}
 @keyframes fabin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .fab-menu button{display:flex;align-items:center;justify-content:space-between;flex-direction:row-reverse;gap:11px;padding:6px 8px 6px 8px;border-radius:var(--r-sm);cursor:pointer;font-size:15px;color:var(--ink-2);transition:background .12s,color .12s}
@@ -112,7 +112,7 @@ body.nosb .sbopen{display:grid}
 .sfoot{margin-top:auto;padding-top:28px;border-top:1px solid var(--low);display:flex;flex-direction:column;gap:12px}
 .sfoot label{font-size:16px;color:var(--ink);display:block;margin-bottom:6px}
 .sel{position:relative}
-.sel select{width:100%;appearance:none;-webkit-appearance:none;background:var(--surface);color:var(--ink);border:1px solid var(--med);border-radius:var(--r-sm);padding:10px 40px 10px 12px;font:400 16px var(--sans);cursor:pointer}
+.sel select{width:100%;appearance:none;-webkit-appearance:none;background:var(--solid);color:var(--ink);border:1px solid var(--med);border-radius:var(--r-sm);padding:10px 40px 10px 12px;font:400 16px var(--sans);cursor:pointer}
 .sel select:hover{border-color:var(--ink)}
 .sel::after{content:"";position:absolute;right:14px;top:50%;width:8px;height:8px;border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);transform:translateY(-70%) rotate(45deg);pointer-events:none}
 .sbtn{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 12px;border-radius:var(--r-sm);background:var(--wash);color:var(--ink);font-size:16px;transition:background .12s}
@@ -128,8 +128,8 @@ body.nosb .sbopen{display:grid}
 .main{overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;position:relative;min-width:0}
 .hdr{position:sticky;top:0;z-index:20;height:60px;display:grid;place-items:center;pointer-events:none}
 .hdr a{pointer-events:auto;display:block}
-.hdr img{height:14px;width:auto;max-width:180px;display:block;object-fit:contain;transition:opacity .2s}
-[data-theme="dark"] .hdr img,:root:not([data-theme="light"]) .hdr img{filter:invert(1)}
+.hdr img{height:22px;width:auto;display:block;object-fit:contain}
+[data-theme="light"] .hdr img{filter:invert(1)}
 .page{display:none;padding:56px var(--gut) 160px;max-width:calc(1120px + 2*var(--gut))}
 .page.on{display:block;animation:pgin .3s var(--ease-standard) both}
 .page.rail{display:none;grid-template-columns:1fr 190px;gap:48px}
@@ -267,7 +267,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 
 /* ================= HOME (PDS landing: full-bleed art, one huge light title, a floating release card, link tiles) ================= */
 #home{padding-top:0;padding-left:0;padding-right:0;max-width:none}
-#home>*:not(.phero):not(.ltiles){margin-left:var(--gut);margin-right:var(--gut);max-width:1120px}
+#home>*:not(.phero):not(.ltiles):not(.ltile){margin-left:var(--gut);margin-right:var(--gut);max-width:1120px}
 .phero{position:relative;height:min(78vh,760px);min-height:520px;margin-top:-60px;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;padding:120px var(--gut) 56px}
 .phero .art{position:absolute;inset:0;z-index:-1;overflow:hidden;background:color-mix(in srgb,var(--brand-primary) 30%,#000)}
 .phero .art::before{content:"";position:absolute;inset:-6%;
@@ -279,7 +279,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
   radial-gradient(70% 90% at 90% 60%,rgba(0,0,0,.55),transparent 70%),
   linear-gradient(180deg,rgba(0,0,0,.25),transparent 30%,transparent 55%,var(--bg) 100%)}
 .ptitle{font-family:var(--disp);font-size:clamp(56px,7.5vw,112px);line-height:1;letter-spacing:-.03em;font-weight:300;color:#fff;margin:0;text-shadow:0 2px 40px rgba(0,0,0,.25)}
-.ptitle small{display:block;font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:22px;color:rgba(255,255,255,.85)}
+.ptitle small{display:block;font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:22px;color:var(--accent)}
 .rel{display:flex;align-items:center;justify-content:space-between;gap:24px;width:min(520px,100%);padding:22px 24px;border-radius:var(--r);background:var(--frost);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:var(--ink);box-shadow:var(--shadow);transition:background .15s}
 .rel:hover{background:var(--surface-2)}
 .rel b{display:block;font-size:16px;font-weight:600}
@@ -287,15 +287,19 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .rel .ar{font-size:22px;font-weight:300;transition:transform .15s}
 .rel:hover .ar{transform:translateX(4px)}
 /* link tiles */
-.ltiles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px var(--gut) 0;max-width:1120px}
-.ltile{position:relative;display:flex;flex-direction:column;border-radius:var(--r);background:var(--surface);overflow:hidden;min-height:280px;color:inherit;transition:background .15s}
+.ltiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 var(--gut);max-width:1120px}
+.ltiles.four{grid-template-columns:repeat(4,1fr)}.ltiles.two{grid-template-columns:repeat(2,1fr)}
+.hsec{font-size:14px;font-weight:500;color:var(--ink-3);margin:56px var(--gut) 14px!important;letter-spacing:.02em}
+#home>.hsec:first-of-type{margin-top:40px!important}
+.ltile.wide{margin:0 var(--gut);max-width:1120px;min-height:0}
+.ltile{position:relative;display:flex;flex-direction:column;border-radius:var(--r);background:var(--surface);overflow:hidden;min-height:240px;color:inherit;transition:background .15s}
 .ltile:hover{background:var(--surface-2)}
 .ltile.span2{grid-column:span 2}
 .ltile .lt-head{padding:20px 24px 0;font-size:14px;color:var(--ink-2);display:flex;justify-content:space-between;align-items:center;gap:12px}
 .ltile .lt-foot{padding:20px 24px 24px;margin-top:auto;display:flex;flex-direction:column;gap:4px}
 .ltile .lt-foot b{font-size:20px;font-weight:600;letter-spacing:-.01em;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .ltile .lt-foot b .ar{margin-left:auto;font-weight:300;font-size:22px;transition:transform .15s}
-.ltile:hover .lt-foot b .ar{transform:translateX(4px)}
+.ltile:hover .lt-foot b .ar{transform:translateX(4px);color:var(--accent)}
 .ltile .lt-foot small{font-size:14px;color:var(--ink-2);line-height:1.45}
 .ltile .go{position:absolute;inset:0;z-index:2}
 /* live component collage on the fascia's page surface */
@@ -304,14 +308,15 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .collage>.ci{display:flex;align-items:center;justify-content:center;flex:none;max-width:100%}
 .collage .fig{color:#8A8A8A}
 .fx-found{margin:16px 24px 0;flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center}
-.swatchrow{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.swatchrow{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;padding:8px 24px 0;margin-top:auto}
 .swatchrow i{display:block;aspect-ratio:1;border-radius:6px;border:1px solid var(--low)}
-.glyph{display:flex;align-items:baseline;gap:18px;padding:16px;background:var(--surface-page);border-radius:8px;color:var(--text-primary);font-family:var(--font-family-base)}
+.glyph{display:flex;align-items:baseline;gap:12px;padding:8px 24px 0;margin-top:auto;color:var(--ink);font-family:var(--font-family-base)}
 .glyph b{font-size:44px;line-height:1;font-weight:var(--w-strong);letter-spacing:-.02em}
-.glyph span{font-size:12px;color:var(--text-secondary);font-weight:var(--w-regular);line-height:1.4}
+.glyph span{font-size:12px;color:var(--ink-3);font-weight:var(--w-regular);line-height:1.4;white-space:nowrap}
 .glyph code{font-family:var(--mono);font-size:10px;color:var(--text-secondary);margin-left:auto}
 .logocloud{margin:16px 24px 0;flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.logocloud span{background:var(--bg);border-radius:6px;display:grid;place-items:center;min-height:56px;padding:10px}
+.logocloud.row{grid-template-columns:repeat(9,1fr);flex:none}
+.logocloud span{background:var(--surface);border-radius:6px;display:grid;place-items:center;min-height:56px;padding:10px}
 .logocloud img{height:13px;width:auto;max-width:80%;object-fit:contain}
 :root:not([data-theme="light"]) .logocloud img{filter:invert(1)}
 .mini{margin:8px 24px 0;list-style:none;display:flex;flex-direction:column;flex:1}
@@ -333,7 +338,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 /* ================= SEARCH OVERLAY ================= */
 .ovl{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;z-index:100;padding-top:14vh}
 .ovl.on{display:block}
-.pal{width:min(640px,92vw);margin:0 auto;background:var(--surface);border:1px solid var(--low);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);animation:fabin .2s var(--ease-standard)}
+.pal{width:min(640px,92vw);margin:0 auto;background:var(--solid);border:1px solid var(--low);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);animation:fabin .2s var(--ease-standard)}
 .pal input{width:100%;background:transparent;border:none;outline:none;color:var(--ink);font:400 18px var(--sans);padding:18px 20px;border-bottom:1px solid var(--low)}
 .pal input::placeholder{color:var(--ink-3)}
 .pal .res{max-height:360px;overflow-y:auto;padding:8px}
@@ -344,7 +349,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .pal .ft{display:flex;gap:16px;padding:10px 16px;border-top:1px solid var(--low);font-size:12px;color:var(--ink-3)}
 
 @media(max-width:920px){.shell{grid-template-columns:1fr}.side{display:none}.sbopen{display:grid}.hdr{display:none}body.sbm .side{display:flex;position:fixed;inset:0;z-index:90;width:100%}body.sbm .sbopen{display:none}.page{padding:32px 20px 100px}.page.rail.on{display:block}.toc{display:none}.stats,.opts,.board{grid-template-columns:1fr 1fr}.wall{grid-template-columns:repeat(2,1fr)}.tr{grid-template-columns:1fr 96px}.tr .id,.tr .d,.tr .dots{display:none}
-  #home>*:not(.phero):not(.ltiles){margin-left:20px;margin-right:20px}.phero{margin-top:0;padding:96px 20px 32px;min-height:440px;height:min(70vh,640px)}.ltiles{grid-template-columns:1fr;margin:20px 20px 0}.ltile.span2{grid-column:auto}.hdrbtns{top:10px;right:10px}.fab-name{display:none}.fab-btn{padding:0 8px 0 4px}}
+  #home>*:not(.phero):not(.ltiles){margin-left:20px;margin-right:20px}.ltiles.four,.ltiles.two{grid-template-columns:1fr}.ltile.wide{margin:0 20px}.logocloud.row{grid-template-columns:repeat(3,1fr)}.hsec{margin-left:20px!important;margin-right:20px!important}.phero{margin-top:0;padding:96px 20px 32px;min-height:440px;height:min(70vh,640px)}.ltiles{grid-template-columns:1fr;margin:20px 20px 0}.ltile.span2{grid-column:auto}.hdrbtns{top:10px;right:10px}.fab-name{display:none}.fab-btn{padding:0 8px 0 4px}}
 @media(prefers-reduced-motion:reduce){.page.on{animation:none}}
 
 /* project launcher */
@@ -419,11 +424,11 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .mk{margin:8px 0 24px}.mk summary{cursor:pointer;font-size:16px;font-weight:600;color:var(--ink);padding:8px 0}.mk summary code{font-family:var(--sans);font-size:14px;color:var(--ink-3);margin-left:8px;font-weight:400}
 /* playground (PDS: 1px contrast-low border, radius 12, header strip, example canvas) */
 .fx{border:1px solid var(--low);border-radius:var(--r);overflow:hidden;background:var(--surface-page,#fff)}
-.fx .fl{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font:600 14px/1 var(--font-family-base,system-ui);color:var(--ink);background:var(--surface);border-bottom:1px solid var(--low)}
-.fx .fl em{font-style:normal;font-weight:400;color:var(--ink-3);font-size:13px}
+.fx .fl{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font:600 14px/1 var(--font-family-base,system-ui);color:#000;background:rgba(0,0,0,.05);border-bottom:1px solid rgba(0,0,0,.08)}
+.fx .fl em{font-style:normal;font-weight:400;opacity:.55;font-size:13px}
 .fx .canvas{padding:20px;min-height:80px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;background:var(--surface-page,#fff)}
 .fx .canvas.fxc{justify-content:flex-start;align-items:flex-start;gap:28px 32px;padding:24px;color:#000}
-.fx.dark .fl{color:var(--ink);background:var(--surface)}
+.fx.dark .fl{color:#fff;background:rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.1)}
 .fx.dark .canvas.fxc{color:#fff}
 .fsec{padding-top:8px;margin-top:40px;border-top:1px solid var(--low)}
 .fsec>h2:first-child{margin-top:24px}
@@ -431,7 +436,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .ftoc{display:flex;flex-direction:column;gap:8px;margin:0 0 48px}
 .ftoc::before{content:"Table of contents";font-size:20px;font-weight:600;margin-bottom:6px}
 .ftoc a{font-size:16px;color:var(--ink);text-decoration:none;display:flex;gap:10px;align-items:center;border:none;padding:0;background:none;border-radius:0}
-.ftoc a::before{content:"↳";color:var(--ink-3)}
+.ftoc a::before{content:"↳";color:var(--accent)}
 .ftoc a:hover{text-decoration:underline;text-underline-offset:3px}
 .wall .f{position:relative}
 </style>
@@ -506,7 +511,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 
 <!-- ============ MAIN ============ -->
 <main class="main" id="main">
-  <header class="hdr"><a href="#home" aria-label="Home"><img class="brandlogo" src="assets/brands/debenhams.svg" alt=""></a></header>
+  <header class="hdr"><a href="#home" aria-label="Home"><img class="grouplogo" src="assets/brands/debenhamsgroup-white.png" alt="Debenhams Group"></a></header>
 
   <!-- HOME -->
   <section class="page on" id="home" data-crumb="Home">
@@ -516,32 +521,41 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
       <a class="rel" href="#shipping"><div><b>Latest work</b><span class="s">Core PDP 2026 exported to Figma as components · 18 Sep</span></div><span class="ar">→</span></a>
     </div>
 
-    <div class="ltiles">
-      <div class="ltile span2">
-        <div class="lt-head"><span>Rendered live in <span class="bn">Debenhams</span> · switch brand top right</span><span class="pill ok">49 live</span></div>
-        <div class="collage" id="collage"></div>
-        <div class="lt-foot"><b>Components <span class="ar">→</span></b><small>Every component in the system, as real markup on the system's own tokens.</small></div>
-        <a class="go" href="#gallery" aria-label="Open the component library"></a>
-      </div>
+    <h2 class="hsec">Core</h2>
+    <div class="ltiles four">
+      <a class="ltile" href="#gallery">
+        <div class="lt-head"><span>49 components · 21 fascias</span></div>
+        <div class="lt-foot"><b>Components <span class="ar">→</span></b><small>Every component, live in any brand, on the system's own tokens.</small></div>
+      </a>
+      <a class="ltile" href="#f-type">
+        <div class="lt-head"><span>Roles · weights · per-fascia families</span></div>
+        <div class="glyph"><b>Aa</b><span><span class="bn">Debenhams</span><br>display · body · caption</span></div>
+        <div class="lt-foot"><b>Typography <span class="ar">→</span></b><small>One role set. Family and weight change with the fascia.</small></div>
+      </a>
+      <a class="ltile" href="#f-colour">
+        <div class="lt-head"><span>Primitives · semantic roles</span></div>
+        <div class="swatchrow">
+          <i style="background:var(--brand-light-4)"></i><i style="background:var(--brand-light-2)"></i><i style="background:var(--brand-primary)"></i><i style="background:var(--brand-dark-2)"></i><i style="background:var(--brand-primary-dark)"></i><i style="background:var(--surface-action)"></i><i style="background:var(--text-link)"></i><i style="background:var(--text-primary)"></i>
+        </div>
+        <div class="lt-foot"><b>Colour <span class="ar">→</span></b><small>Named primitives, role-named tokens. The brand mode swaps the values.</small></div>
+      </a>
       <a class="ltile" href="#foundations">
-        <div class="lt-head"><span>Colour · type · spacing · motion</span></div>
-        <div class="fx-found">
-          <div class="swatchrow">
-            <i style="background:var(--brand-light-4)"></i><i style="background:var(--brand-light-2)"></i><i style="background:var(--brand-primary)"></i><i style="background:var(--brand-dark-2)"></i><i style="background:var(--brand-primary-dark)"></i><i style="background:var(--surface-action)"></i><i style="background:var(--text-link)"></i><i style="background:var(--text-primary)"></i>
-          </div>
-          <div class="glyph"><b>Aa</b><span><span class="bn">Debenhams</span><br>display · body · caption</span><code class="val" data-v="--surface-action"></code></div>
-        </div>
-        <div class="lt-foot"><b>Foundations <span class="ar">→</span></b><small>Two token layers. One attribute per fascia.</small></div>
+        <div class="lt-head"><span>Spacing · radius · borders · motion · a11y</span></div>
+        <div class="lt-foot"><b>Foundations <span class="ar">→</span></b><small>The general rules every component is built from.</small></div>
       </a>
-      <a class="ltile" href="#brands">
-        <div class="lt-head"><span>21 fascias · 4 markets</span></div>
-        <div class="logocloud">
-          <span><img src="assets/brands/debenhams.svg" alt=""></span><span><img src="assets/brands/boohoo.svg" alt=""></span><span><img src="assets/brands/boohooman.svg" alt=""></span>
-          <span><img src="assets/brands/plt.svg" alt=""></span><span><img src="assets/brands/karenmillen.svg" alt=""></span><span><img src="assets/brands/warehouse.svg" alt=""></span>
-          <span><img src="assets/brands/coast.svg" alt=""></span><span><img src="assets/brands/oasis.svg" alt=""></span><span><img src="assets/brands/nastygal.svg" alt=""></span>
-        </div>
-        <div class="lt-foot"><b>Brand Centre <span class="ar">→</span></b><small>Palette, type and tone for every brand in the estate.</small></div>
-      </a>
+    </div>
+
+    <h2 class="hsec">Brand Centre</h2>
+    <a class="ltile wide" href="#brands">
+      <div class="lt-head"><span>21 fascias · 4 markets</span></div>
+      <div class="logocloud row">
+        <span><img src="assets/brands/debenhams.svg" alt=""></span><span><img src="assets/brands/boohoo.svg" alt=""></span><span><img src="assets/brands/boohooman.svg" alt=""></span><span><img src="assets/brands/plt.svg" alt=""></span><span><img src="assets/brands/karenmillen.svg" alt=""></span><span><img src="assets/brands/warehouse.svg" alt=""></span><span><img src="assets/brands/coast.svg" alt=""></span><span><img src="assets/brands/oasis.svg" alt=""></span><span><img src="assets/brands/nastygal.svg" alt=""></span>
+      </div>
+      <div class="lt-foot"><b>The estate <span class="ar">→</span></b><small>Palette, type and tone for every brand in the group.</small></div>
+    </a>
+
+    <h2 class="hsec">Work</h2>
+    <div class="ltiles two">
       <a class="ltile" href="#projects">
         <div class="lt-head"><span>Briefs, options, chosen routes</span><span class="pill wip">4 open</span></div>
         <ul class="mini">
@@ -562,13 +576,6 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
         </ul>
         <div class="lt-foot"><b>Master prototypes <span class="ar">→</span></b><small>Briefs branch from these. Winners merge back.</small></div>
       </a>
-    </div>
-
-    <div class="stats">
-      <div class="stat"><b>49</b><span>Components</span></div>
-      <div class="stat"><b>21</b><span>Fascia modes</span></div>
-      <div class="stat"><b>79</b><span>Dev components mapped</span></div>
-      <div class="stat"><b>10</b><span>Projects</span></div>
     </div>
 
     <h2>Latest work <code>everything that merged, shipped or opened</code></h2>
@@ -1814,7 +1821,7 @@ function route(){
   if(window.DG_LEGACY&&window.DG_LEGACY[h]){location.hash='#'+window.DG_LEGACY[h];return}
   if(h.startsWith('c-')&&window.buildFascias)window.buildFascias(h);
   const pg=document.getElementById(h);
-  if(pg&&!pg.classList.contains('page')){pg.scrollIntoView({block:'start'});return} // in-page anchor — keep current view
+  if(pg&&!pg.classList.contains('page')){const host=pg.closest('.page');if(host&&!host.classList.contains('on')){pages.forEach(p=>p.classList.toggle('on',p===host));document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+host.id));document.body.classList.remove('sbm')}requestAnimationFrame(()=>pg.scrollIntoView({block:'start'}));return} // in-page anchor — show its page, then scroll
   pages.forEach(p=>p.classList.toggle('on',p.id===h));
   document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));
   if(h.startsWith('c-')){const g=document.querySelector('.side .items a[href="#gallery"]');if(g)g.classList.add('on')}
