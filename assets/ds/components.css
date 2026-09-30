@@ -404,11 +404,11 @@
 .fld{position:relative;display:flex;flex-direction:column;justify-content:center;height:50px;padding:8px 16px;background:var(--surface-raised);border:1px solid var(--border-strong);border-radius:var(--radius-default);box-sizing:border-box;cursor:text;transition:border-color var(--dur-fast)}
 .fld:focus-within{border-color:var(--text-primary)}
 .fld.invalid{border-color:var(--text-error)}
-.fld input,.fld textarea{font:inherit;font-size:14px;line-height:18px;color:var(--text-primary);border:0;outline:0;padding:0;margin:0;background:none;width:100%;order:2}
-.fld .lbl{font-size:14px;line-height:18px;color:var(--text-secondary);pointer-events:none;transition:font-size var(--dur-fast),line-height var(--dur-fast);order:1}
-.fld input::placeholder{color:transparent}
-.fld input:placeholder-shown+.lbl{position:absolute;left:16px;top:50%;transform:translateY(-50%)}
-.fld input:not(:placeholder-shown)+.lbl,.fld:focus-within .lbl{position:static;transform:none;font-size:12px;line-height:15px}
+/* floating label: centred while empty and idle; on focus (or once there is a value) it glides to the top and shrinks, and the caret sits beneath it */
+.fld input,.fld textarea{font:inherit;font-size:14px;line-height:18px;color:var(--text-primary);border:0;outline:0;padding:15px 0 0;margin:0;background:none;width:100%}
+.fld .lbl{position:absolute;left:16px;right:16px;top:50%;transform:translateY(-50%);font-size:14px;line-height:18px;color:var(--text-secondary);pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:top var(--dur-base) var(--ease-standard),transform var(--dur-base) var(--ease-standard),font-size var(--dur-base) var(--ease-standard),line-height var(--dur-base) var(--ease-standard)}
+.fld input::placeholder,.fld textarea::placeholder{color:transparent}
+.fld:focus-within .lbl,.fld input:not(:placeholder-shown)+.lbl,.fld textarea:not(:placeholder-shown)+.lbl{top:8px;transform:none;font-size:12px;line-height:15px}
 .fld--pin input{letter-spacing:.3em}
 .fld-err{font-size:14px;line-height:18px;color:var(--text-error);margin-top:8px}
 .fsel{position:relative;display:flex;align-items:center;height:50px;padding:0 44px 0 16px;background:var(--surface-raised);border:1px solid var(--border-strong);border-radius:var(--radius-default);font-size:16px;color:var(--text-primary);cursor:pointer;box-sizing:border-box}
@@ -434,7 +434,7 @@
 .qty span{height:28px;min-width:16px;padding:0 4px;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong);background:var(--surface-raised);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:var(--w-mid)}
 .promo{display:flex;gap:8px;align-items:flex-start}
 .promo .fld{flex:1}
-.promo .bd{width:95px;flex:none;padding:8px 0}
+.promo .bd,.promo .bd.sm,.promo .bd.md{width:95px;flex:none;height:50px;padding:0 8px;line-height:24px} /* Apply matches the 50px field exactly */
 .sfield{height:50px;border-radius:var(--radius-lg);padding:8px 16px;display:flex;align-items:center;gap:10px;box-sizing:border-box;font-size:16px;font-weight:var(--w-regular);color:var(--field-text)}
 .sfield--grey{background:var(--field-grey)}.sfield--white{background:#FFF;border:1px solid var(--field-border)}
 .sfield-lbl{font-size:14px;color:var(--navy)}.sfield-help{font-size:12px;color:var(--navy)}
