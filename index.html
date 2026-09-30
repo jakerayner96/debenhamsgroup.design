@@ -19,7 +19,7 @@
   color-scheme:dark;
 }
 [data-theme="light"]{
-  --bg:#FFFFFF;--surface:rgba(0,0,0,.045);--surface-2:rgba(0,0,0,.08);--low:rgba(0,0,0,.1);--med:rgba(0,0,0,.35);--high:rgba(0,0,0,.6);
+  --bg:#F0F0F2;--surface:rgba(0,0,0,.045);--surface-2:rgba(0,0,0,.08);--low:rgba(0,0,0,.1);--med:rgba(0,0,0,.35);--high:rgba(0,0,0,.6);
   --solid:#F3F3F4;--ink:#0F0F0F;--ink-2:rgba(15,15,15,.72);--ink-3:rgba(15,15,15,.5);
   --ok:#197E10;--warn:#C89A00;--bad:#CC1922;--info:#2762EC;--accent:#00787D;
   --frost:rgba(238,239,242,.78);--shadow:0 12px 40px -18px rgba(0,0,0,.28);
@@ -197,7 +197,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .demo .hd i{display:none}
 .demo .hd span{margin-left:0}
 .demo .hd .bn{margin-left:auto;color:var(--ink)}
-.canvas{background:var(--surface-page);padding:44px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:center;position:relative;font-family:var(--font-family-base)}
+.canvas{background:color-mix(in srgb,var(--surface-page) 94%,#000);padding:44px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:center;position:relative;font-family:var(--font-family-base)}
 .fig{position:absolute;font-family:var(--mono);font-size:10px;color:#999;letter-spacing:.04em}
 .fig.tl{top:12px;left:14px}.fig.br{bottom:12px;right:14px}
 
@@ -398,7 +398,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
 .ctile{border-radius:var(--r);background:var(--surface);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:background .15s;color:inherit}
 .ctile:hover{background:var(--surface-2)}
-.ctile .cv{background:var(--surface-page);height:210px;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;font-family:var(--font-family-base);position:relative;pointer-events:none;color:var(--text-primary);margin:8px 8px 0;border-radius:8px}
+.ctile .cv{background:color-mix(in srgb,var(--surface-page) 94%,#000);height:210px;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;font-family:var(--font-family-base);position:relative;pointer-events:none;color:var(--text-primary);margin:8px 8px 0;border-radius:8px}
 .ctile .cv .fit{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;transform-origin:center;flex:none}
 .ctile .cm{padding:16px;display:flex;flex-direction:column;gap:4px}
 .ctile .cm b{font-size:16px;font-weight:600}
@@ -447,10 +447,10 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .fv .fvn{font:500 11px/1 var(--mono);letter-spacing:.04em;color:inherit;opacity:.6}
 .mk{margin:8px 0 24px}.mk summary{cursor:pointer;font-size:16px;font-weight:600;color:var(--ink);padding:8px 0}.mk summary code{font-family:var(--sans);font-size:14px;color:var(--ink-3);margin-left:8px;font-weight:400}
 /* playground (PDS: 1px contrast-low border, radius 12, header strip, example canvas) */
-.fx{border:1px solid var(--low);border-radius:var(--r);overflow:hidden;background:var(--surface-page,#fff)}
+.fx{border:1px solid var(--low);border-radius:var(--r);overflow:hidden;background:color-mix(in srgb,var(--surface-page,#fff) 94%,#000)}
 .fx .fl{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font:600 14px/1 var(--font-family-base,system-ui);color:#000;background:rgba(0,0,0,.05);border-bottom:1px solid rgba(0,0,0,.08)}
 .fx .fl em{font-style:normal;font-weight:400;opacity:.55;font-size:13px}
-.fx .canvas{padding:20px;min-height:80px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;background:var(--surface-page,#fff)}
+.fx .canvas{padding:20px;min-height:80px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;background:color-mix(in srgb,var(--surface-page,#fff) 94%,#000)}
 .fx .canvas.fxc{justify-content:flex-start;align-items:flex-start;gap:28px 32px;padding:24px;color:#000}
 .fx.dark .fl{color:#fff;background:rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.1)}
 .fx.dark .canvas.fxc{color:#fff}
@@ -1709,6 +1709,8 @@ C.forEach((c,i)=>{
 /* every fascia, per component page — built lazily on first visit */
 const FASCIAS=[["debenhams","Debenhams"],["boohoo","boohoo"],["boohooman","boohooMAN"],["plt","PrettyLittleThing"],["karenmillen","Karen Millen"],["warehouse","Warehouse"],["debenhamsoutlet","Debenhams Outlet"],["wallis","Wallis"],["burton","Burton"],["principles","Principles"],["coast","Coast"],["oasis","Oasis"],["dorothyperkins","Dorothy Perkins"],["maine","Maine"],["gorgeous","Gorgeous"],["misspap","Misspap"],["nastygal","Nasty Gal"],["foreverunique","Forever Unique"],["dsgnstudio","DSGN Studio"],["trainingdept","Training Dept"],["brandroom","The Brand Room"]];
 window.DG_FASCIAS=FASCIAS;
+/* relative luminance of an element's background — handles rgb() and the color(srgb …) form that color-mix() computes to */
+window.dgLum=function(el){const bg=getComputedStyle(el).backgroundColor;let m;if((m=bg.match(/color\(srgb ([\d.]+) ([\d.]+) ([\d.]+)/)))return .2126*m[1]+.7152*m[2]+.0722*m[3];if((m=bg.match(/[\d.]+/g))&&m.length>=3)return (.2126*m[0]+.7152*m[1]+.0722*m[2])/255;return 1};
 window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||sec.dataset.fx)return;sec.dataset.fx='1';const c=C.find(x=>'c-'+x.slug===h);if(!c)return;
   const host=sec.querySelector('.fxstack');if(!host)return;
   const off=sl=>(c.notOn||[]).includes(sl);const order=[...FASCIAS.filter(f=>!off(f[0])),...FASCIAS.filter(f=>off(f[0]))];
@@ -1720,7 +1722,7 @@ window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||se
   /* universal components (scheme-coloured, no brand tokens) render once, not per fascia */
   if(c.universal){host.innerHTML=`<div class="fx"><div class="fl"><span>Every fascia</span><em>${c.name} · scheme colours, no brand tokens</em></div><div class="canvas fxc">${bodyFor(document.documentElement.getAttribute('data-brand'))}</div></div>`;return}
   host.innerHTML=order.map(([sl,nm])=>off(sl)?`<div class="fxoff"><span>${nm}</span><em>${c.name} not active on ${nm}</em></div>`:`<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>${c.name}</em></div><div class="canvas fxc">${bodyFor(sl)}</div></div>`).join('');
-  host.querySelectorAll('.fx').forEach(fx=>{const bg=getComputedStyle(fx).backgroundColor;const m=bg.match(/\d+/g);if(m&&(.2126*m[0]+.7152*m[1]+.0722*m[2])/255<.5)fx.classList.add('dark')});
+  host.querySelectorAll('.fx').forEach(fx=>{if(window.dgLum(fx)<.5)fx.classList.add('dark')});
 };
 /* controls in the catalogue demos are live: checkbox / toggle flip, radios are exclusive within their list */
 document.addEventListener('click',e=>{const el=e.target.closest('.chk,.tog,.rad');if(!el)return;
@@ -1758,7 +1760,7 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   if(t==='light')document.documentElement.setAttribute('data-theme','light');
   const tb=document.getElementById('themeBtn');
   if(tb)tb.onclick=()=>{const light=document.documentElement.getAttribute('data-theme')!=='light';document.documentElement.setAttribute('data-theme',light?'light':'dark');try{localStorage.setItem(KEY,light?'light':'dark')}catch(e){}
-    document.querySelectorAll('.fx').forEach(fx=>fx.classList.remove('dark'));document.querySelectorAll('.fx').forEach(fx=>{const bg=getComputedStyle(fx).backgroundColor;const m=bg.match(/\d+/g);if(m&&(.2126*m[0]+.7152*m[1]+.0722*m[2])/255<.5)fx.classList.add('dark')})};
+    document.querySelectorAll('.fx').forEach(fx=>fx.classList.toggle('dark',window.dgLum(fx)<.5))};
   const kit=document.getElementById('logokit');
   if(kit&&window.DG_FASCIAS){
     const HAS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse','brandroom','wallis','burton','principles','coast','oasis','dorothyperkins','misspap','nastygal'];
