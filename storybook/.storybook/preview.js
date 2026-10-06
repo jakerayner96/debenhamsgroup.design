@@ -8,7 +8,7 @@ import '../../assets/ds/components.css';
 if (typeof document !== 'undefined' && !document.getElementById('dg-fonts')) {
   const l = document.createElement('link');
   l.id = 'dg-fonts'; l.rel = 'stylesheet';
-  l.href = 'https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;500;600&family=Archivo:wght@400;600;700&display=swap';
+  l.href = 'https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;600&family=Archivo:wght@300..800&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;500;600&family=Archivo:wght@400;600;700&display=swap';
   document.head.appendChild(l);
 }
 

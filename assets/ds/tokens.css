@@ -139,7 +139,7 @@
   --text-on-action:#FFF; /* golden: primary ink is white */
   --w-btn:600;--btn-outline:#000; /* golden button truth */
   --brand-name:'The Brand Room';
-  --font-family-base:'Helvetica Neue',Helvetica,Arial,ui-sans-serif,sans-serif;
+  --font-family-base:'Archivo',ui-sans-serif,-apple-system,system-ui,sans-serif; /* Jake 06 Oct: The Brand Room is set in Archivo, not Helvetica Neue */
   --w-regular:400;--w-mid:400;--w-strong:700;--cta-case:uppercase;
   --radius-default:0px;--radius-lg:0px;--radius-pill:0px; /* square-radius mode — confirmed */
   --brand-primary:#0A0A0A;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
@@ -223,7 +223,7 @@
    FASCIA MODES FROM THE FRONT-END THEME — the other 14 fascias of the estate, generated 10 Sep 2026 from the
    front-end Storybook theme variables (.context/inventory/storybook-capture/themes.json) through the
    dev→token mapping in .context/inventory/05-dev-storybook.md §3. Colours here are what production ships today.
-   Order of the estate: debenhams · debenhamsoutlet · wallis · burton · principles · boohooman · boohoo · karenmillen · plt · coast · oasis · dorothyperkins · maine · gorgeous · warehouse · misspap · nastygal · foreverunique · dsgnstudio · trainingdept · brandroom
+   Order of the estate: debenhams · debenhamsoutlet · wallis · burton · principles · boohooman · boohoo · karenmillen · plt · coast · oasis · dorothyperkins · maine · gorgeous · warehouse · misspap · foreverunique · dsgnstudio · trainingdept · brandroom
    ============================================================ */
 [data-brand="debenhamsoutlet"]{ /* from the front-end theme (debenhamsoutlet, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Debenhams Outlet';--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
@@ -385,22 +385,6 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#101820;--dplus-check:#101820;
 }
-[data-brand="nastygal"]{ /* from the front-end theme (nastygal, 09 Sep) via .context/inventory/05 §3 */
-  --brand-name:'Nasty Gal';--font-family-base:'NGGrotesque',ui-sans-serif,-apple-system,system-ui,sans-serif;
-  --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
-  --brand-primary:#444444;--surface-action:#444444;--surface-action-hover:#444444;--surface-action-pressed:#444444;--text-on-action:#FFFFFF;
-  --text-link:#444444;--text-link-hover:#444444;--border-action:#444444;--border-focus:#444444;--icon-action:#444444;--btn-outline:#444444;
-  --brand-primary-dark:#444444;--brand-dark-3:#444444;--brand-light-1:#444444;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
-  --nav-bg:#444444;--nav-fg:#FFFFFF;
-  --surface-page:#FFFFFF;--surface-sunken:#F8F8F8;--ft-band:#FFF1E8;
-  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#444444;--usp-b-fg:#FFFFFF;
-  
-  --action-buy:#444444;--action-buy-pressed:#444444;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
-  --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
-  --text-link-pressed:#444444;--text-link-disabled:#B5B5B5;--tickc:#444444;--vto:#444444;--dot:#284D7B;--new:#444444;
-  --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
-  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
-}
 [data-brand="foreverunique"]{ /* from the front-end theme (foreverunique, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Forever Unique';--font-family-base:'PublicSans',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-mid:500;--w-strong:700;--w-btn:600;
@@ -466,7 +450,6 @@
 [data-brand="dorothyperkins"]{--dplus-bg:#181729;--dplus-fg:#FFFFFF;--dplus-link:#FFFFFF;--dplus-check:#FFFFFF;--dplus-radius:0px;--font-family-base:'Public Sans',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#181729;--brand-light-3:#181729;}
 [data-brand="dsgnstudio"]{--dplus-bg:#F4F6F0;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Hanken Grotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-neutral:#F4F6F0;--brand-light-3:#F4F6F0;}
 [data-brand="misspap"]{--dplus-bg:#E7D5C6;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-neutral:#E7D5C6;--brand-light-3:#E7D5C6;}
-[data-brand="nastygal"]{--dplus-bg:#EEEEED;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#EEEEED;--brand-light-3:#EEEEED;}
 [data-brand="oasis"]{--dplus-bg:#EDE6DF;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#EDE6DF;--brand-light-3:#EDE6DF;}
 [data-brand="principles"]{--dplus-bg:#FBF6F0;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Lato',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#FBF6F0;--brand-light-3:#FBF6F0;}
 [data-brand="wallis"]{--dplus-bg:#F9EEF3;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Urbanist',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#F9EEF3;--brand-light-3:#F9EEF3;}
@@ -475,5 +458,5 @@
 /* Deliver+ per-fascia type + surfaces read from the SEEL bag/checkout/modal nodes (10 Sep 2026) */
 [data-brand="plt"]{--dplus-white:#FFFDF7} /* PLT "Background White" — every white surface in the set */
 [data-brand="boohooman"],[data-brand="karenmillen"],[data-brand="dorothyperkins"],[data-brand="plt"]{--dplus-tick:#000} /* white checkbox fill → black tick */
-[data-brand="plt"],[data-brand="burton"],[data-brand="coast"],[data-brand="dorothyperkins"],[data-brand="dsgnstudio"],[data-brand="misspap"],[data-brand="nastygal"],[data-brand="oasis"],[data-brand="principles"],[data-brand="wallis"],[data-brand="warehouse"]{--dplus-p:12px}
+[data-brand="plt"],[data-brand="burton"],[data-brand="coast"],[data-brand="dorothyperkins"],[data-brand="dsgnstudio"],[data-brand="misspap"],[data-brand="oasis"],[data-brand="principles"],[data-brand="wallis"],[data-brand="warehouse"]{--dplus-p:12px}
 [data-brand="burton"],[data-brand="misspap"],[data-brand="dsgnstudio"]{--dplus-pw:500}

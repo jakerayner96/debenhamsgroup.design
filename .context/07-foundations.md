@@ -21,7 +21,6 @@ There are **16 facias** across the group, all consuming this design system.
 | Coast | TBD | default |
 | Dorothy Perkins | TBD | default |
 | Misspap | TBD | default |
-| NastyGal | TBD | default |
 | Oasis | TBD | default |
 | Principles | TBD | default |
 | Wallis | TBD | default |

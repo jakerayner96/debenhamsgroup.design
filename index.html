@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Debenhams Group Design</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geologica:slnt,wght,CRSV,SHRP@-12..0,100..900,0..1,0..100&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geologica:slnt,wght,CRSV,SHRP@-12..0,100..900,0..1,0..100&family=Archivo:wght@300..800&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ds/tokens.css">
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
@@ -32,7 +32,7 @@
   --mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   --disp:var(--sans);
   --r-sm:4px;--r:12px;--r-lg:24px;
-  --sb:320px;--gut:min(116px,8vw);
+  --sb:400px;--gut:min(116px,8vw);
   --panel:var(--surface);--panel-2:var(--surface-2);--raise:var(--surface-2);--card:var(--surface);--hi:none;
 }
 /* ============ DESIGN SYSTEM TOKENS — extracted to assets/ds/tokens.css (linked in <head>) ============
@@ -77,10 +77,10 @@ kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--low);border-ra
 
 /* ================= SHELL ================= */
 .shell{display:grid;grid-template-columns:var(--sb) 1fr;height:100vh;position:relative;z-index:1}
-.bgart{position:fixed;inset:0;z-index:0;overflow:hidden;background:color-mix(in srgb,var(--brand-primary) 22%,#000);opacity:0;transition:opacity .5s var(--ease-standard);pointer-events:none}
-body.on-home .bgart{opacity:1}
-[data-theme="light"] body.on-home .bgart{opacity:.38}
-[data-theme="light"] .bgart{background:color-mix(in srgb,var(--brand-primary) 40%,#fff)}
+.bgart{position:fixed;inset:0;z-index:0;overflow:hidden;background:color-mix(in srgb,var(--art,var(--brand-primary)) 22%,#000);opacity:0;transition:opacity .5s var(--ease-standard);pointer-events:none}
+.bgart{opacity:.55}body.on-home .bgart{opacity:1} /* every page gets the brand tint; home at full strength */
+[data-theme="light"] .bgart{opacity:.2}[data-theme="light"] body.on-home .bgart{opacity:.38}
+[data-theme="light"] .bgart{background:color-mix(in srgb,var(--art,var(--brand-primary)) 40%,#fff)}
 [data-theme="light"] .bgart::after{background:radial-gradient(70% 90% at 90% 60%,rgba(255,255,255,.5),transparent 70%),linear-gradient(180deg,rgba(255,255,255,.3),transparent 22%,transparent 40%,var(--bg) 78%)}
 body.nosb .shell{grid-template-columns:1fr}
 body.nosb .side{display:none}
@@ -249,7 +249,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 
 /* brand wall */
 /* brand pages */
-.bhero{height:220px;border-radius:var(--r);background:var(--brand-primary);display:flex;align-items:center;justify-content:space-between;padding:0 48px;margin:8px 0 28px;overflow:hidden;border:1px solid color-mix(in srgb,var(--ink) 6%,transparent)}
+.bhero{height:220px;border-radius:var(--r);background:var(--art,var(--brand-primary));display:flex;align-items:center;justify-content:space-between;padding:0 48px;margin:8px 0 28px;overflow:hidden;border:1px solid color-mix(in srgb,var(--ink) 6%,transparent)}
 .bhero img{height:44px;width:auto;max-width:60%;object-fit:contain}.bhero.dark img{filter:invert(1)}
 .bhero .bhn,.bhero .bglyph{font-family:var(--font-family-base);color:#000;font-size:40px;font-weight:600}.bhero .bglyph{font-size:96px;font-weight:400;opacity:.85}
 .bhero.dark .bhn,.bhero.dark .bglyph{color:#fff}
@@ -296,13 +296,13 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .phero{position:relative;margin-top:-60px;padding:112px var(--gut) 8px}
 .bgart::before{content:"";position:absolute;inset:-6%;
   background:
-    repeating-linear-gradient(90deg,color-mix(in srgb,var(--brand-primary) 92%,#fff) 0 1.5%,color-mix(in srgb,var(--brand-primary) 30%,#000) 1.5% 4%,color-mix(in srgb,var(--brand-primary) 70%,#000) 4% 6.5%,color-mix(in srgb,var(--brand-primary) 45%,#000) 6.5% 9%),
-    linear-gradient(90deg,color-mix(in srgb,var(--brand-primary) 85%,#fff),color-mix(in srgb,var(--brand-primary) 10%,#000));
+    repeating-linear-gradient(90deg,color-mix(in srgb,var(--art,var(--brand-primary)) 92%,#fff) 0 1.5%,color-mix(in srgb,var(--art,var(--brand-primary)) 30%,#000) 1.5% 4%,color-mix(in srgb,var(--art,var(--brand-primary)) 70%,#000) 4% 6.5%,color-mix(in srgb,var(--art,var(--brand-primary)) 45%,#000) 6.5% 9%),
+    linear-gradient(90deg,color-mix(in srgb,var(--art,var(--brand-primary)) 85%,#fff),color-mix(in srgb,var(--art,var(--brand-primary)) 10%,#000));
   background-blend-mode:soft-light;filter:blur(18px) saturate(1.1);transform:skewX(-2deg) scale(1.04)}
 .bgart::after{content:"";position:absolute;inset:0;background:
   radial-gradient(70% 90% at 90% 60%,rgba(0,0,0,.5),transparent 70%),
   linear-gradient(180deg,rgba(0,0,0,.2),transparent 22%,transparent 40%,var(--bg) 78%)}
-.ptitle{font-family:'Geologica',var(--sans);font-size:clamp(38px,5.4vw,92px);line-height:.96;letter-spacing:-.04em;font-weight:800;text-transform:uppercase;font-variation-settings:"slnt" -12,"CRSV" 1,"SHRP" 0;font-feature-settings:"ss02" 1,"ss04" 1,"ss06" 1;color:var(--ink);margin:0} /* DS Figma 401:447 — Geologica ExtraBold Italic, caps, −4% */
+.ptitle{font-family:'Geologica',var(--sans);font-size:clamp(36px,6.1cqw,96px);line-height:.96;letter-spacing:-.04em;font-weight:800;text-transform:uppercase;font-variation-settings:"slnt" -12,"CRSV" 1,"SHRP" 0;font-feature-settings:"ss02" 1,"ss04" 1,"ss06" 1;color:var(--ink);margin:0} /* DS Figma 401:447 — Geologica ExtraBold Italic, caps, −4% */
 .ptitle small{display:block;font-size:17px;letter-spacing:0;text-transform:none;font-weight:500;margin-bottom:18px;color:var(--ink)}
 .rel{display:flex;align-items:center;justify-content:space-between;gap:24px;width:min(520px,100%);padding:22px 24px;border-radius:var(--r);background:var(--frost);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:var(--ink);box-shadow:var(--shadow);transition:background .15s}
 .rel:hover{background:var(--surface-2)}
@@ -526,9 +526,21 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .kd img[src$="debenhamsgroup-stacked.svg"],.kl img[src$="debenhamsgroup-stacked.svg"]{height:64px}
 /* sidebar: each group heading sticks to the top while its items scroll under it */
 .grp>button{position:sticky;top:-12px;z-index:2;margin:0 -24px;padding:10px 24px;width:calc(100% + 48px);background:none}
+/* items fade out as they reach the stuck heading: --cut is set on scroll (where the heading's bottom falls inside the list) */
+.grp .items.cut{--cut:0px;-webkit-mask-image:linear-gradient(to bottom,transparent var(--cut),#000 calc(var(--cut) + 28px));mask-image:linear-gradient(to bottom,transparent var(--cut),#000 calc(var(--cut) + 28px))}
 
-.ptbl .tr{grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) 24px;color:var(--ink)}.ptbl .tr:last-child{border-bottom:0}.ptbl .ar{color:var(--ink-3);text-align:right}.ptbl .tr:hover .ar{color:var(--accent)}
-@container (max-width:560px){.ptbl .tr{grid-template-columns:minmax(0,1fr) auto 24px;gap:12px}.ptbl .tr>span:nth-child(2){display:none}}
+.ptbl .tr{grid-template-columns:minmax(0,2fr) minmax(0,1fr) 24px;color:var(--ink)}.ptbl .tr:last-child{border-bottom:0}.ptbl .ar{color:var(--ink-3);text-align:right}.ptbl .tr:hover .ar{color:var(--accent)}
+@container (max-width:560px){.ptbl .tr{grid-template-columns:minmax(0,1fr) auto 24px;gap:12px}}
+
+/* sidebar head: group mark (DS Figma DG Logo 11809:2663, left-aligned), then home · search · theme · brand */
+.sblogo{display:block;margin:4px 0 18px}.sblogo img{height:30px;width:auto;display:block;filter:invert(1)}[data-theme="light"] .sblogo img{filter:none}
+.shead .rowa{position:relative}
+.shead .fab{flex:1;min-width:0;position:static;align-items:stretch}
+.shead .fab-btn{width:100%;min-width:0}.shead .fab-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;text-align:left}
+.shead .fab-menu{position:absolute;left:0;right:0;top:44px;z-index:30;min-width:0}
+
+body.sbm .hdrbtns{display:none}
+.shead .fab-name{display:block}
 </style>
 </head>
 <body>
@@ -537,9 +549,39 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 <!-- ============ SIDEBAR ============ -->
 <aside class="side">
   <div class="shead">
+    <a class="sblogo" href="#home" aria-label="Debenhams Group — home"><img src="assets/brands/debenhamsgroup-left.svg" alt="Debenhams Group"></a>
     <div class="rowa">
       <button class="ibtn" onclick="toggleSb()" aria-label="Hide navigation" title="Hide navigation"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button>
       <a class="ibtn homebtn" href="#home" aria-label="Home" title="Home"><svg viewBox="0 0 24 24"><path d="m3.5 11 8.5-7 8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-6h4v6"/></svg></a>
+          <button class="ibtn" onclick="openPal()" aria-label="Search" title="Search ⌘K"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="ibtn" id="themeBtn" aria-label="Switch theme" title="Light / dark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/></svg></button>
+      <div class="fab" id="fab">
+        <button class="fab-btn" id="fabBtn" title="Switch demo brand · on a component page this jumps to that brand's box" aria-haspopup="true" aria-expanded="false" aria-label="Switch demo brand">
+          <span class="appic" id="fabIc" style="background:#7BE7D8"><img src="assets/brands/debenhams.svg" alt=""></span><span class="fab-name" id="fabName">Debenhams</span><span class="fab-car"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5 5 6.5 8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <div class="fab-menu" id="fabMenu" role="menu" aria-label="Demo brand">
+          <button data-b="debenhams" class="on" role="menuitem"><span>Debenhams</span><span class="appic" style="background:#7BE7D8"><img src="assets/brands/debenhams.svg" alt=""></span></button>
+          <button data-b="boohoo" role="menuitem"><span>boohoo</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/boohoo.svg" alt=""></span></button>
+          <button data-b="boohooman" role="menuitem"><span>boohooMAN</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/boohooman.svg" alt=""></span></button>
+          <button data-b="plt" role="menuitem"><span>PrettyLittleThing</span><span class="appic dk" style="background:#550503"><img src="assets/brands/plt.svg" alt=""></span></button>
+          <button data-b="karenmillen" role="menuitem"><span>Karen Millen</span><span class="appic dk" style="background:#D24508"><img src="assets/brands/karenmillen.svg" alt=""></span></button>
+          <button data-b="warehouse" role="menuitem"><span>Warehouse</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/warehouse.svg" alt=""></span></button>
+          <button data-b="brandroom" role="menuitem"><span>The Brand Room</span><span class="appic dk" style="background:#0F0F0F;outline:1px solid var(--line-2)"><img src="assets/brands/brandroom.svg" alt=""></span></button>
+          <button data-b="debenhamsoutlet" role="menuitem"><span>Debenhams Outlet</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/debenhamsoutlet.svg" alt=""></span></button>
+          <button data-b="wallis" role="menuitem"><span>Wallis</span><span class="appic dk" style="background:#444444"><img src="assets/brands/wallis.svg" alt=""></span></button>
+          <button data-b="burton" role="menuitem"><span>Burton</span><span class="appic dk" style="background:#284D7B"><img src="assets/brands/burton.svg" alt=""></span></button>
+          <button data-b="principles" role="menuitem"><span>Principles</span><span class="appic dk" style="background:#444444"><img src="assets/brands/principles.svg" alt=""></span></button>
+          <button data-b="coast" role="menuitem"><span>Coast</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/coast.svg" alt=""></span></button>
+          <button data-b="oasis" role="menuitem"><span>Oasis</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/oasis.svg" alt=""></span></button>
+          <button data-b="dorothyperkins" role="menuitem"><span>Dorothy Perkins</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/dorothyperkins.svg" alt=""></span></button>
+          <button data-b="maine" role="menuitem"><span>Maine</span><span class="appic dk" style="background:#284D7B"><b style="font:700 9px/1 var(--mono);color:#fff">M</b></span></button>
+          <button data-b="gorgeous" role="menuitem"><span>Gorgeous</span><span class="appic dk" style="background:#284D7B"><b style="font:700 9px/1 var(--mono);color:#fff">G</b></span></button>
+          <button data-b="misspap" role="menuitem"><span>Misspap</span><span class="appic dk" style="background:#101820"><img src="assets/brands/misspap.svg" alt=""></span></button>
+          <button data-b="foreverunique" role="menuitem"><span>Forever Unique</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">FU</b></span></button>
+          <button data-b="dsgnstudio" role="menuitem"><span>DSGN Studio</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/dsgnstudio.svg" alt=""></span></button>
+          <button data-b="trainingdept" role="menuitem"><span>Training Dept</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">TD</b></span></button>
+        </div>
+      </div>
     </div>
   </div>
   <div class="grp">
@@ -571,7 +613,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 
 <!-- ============ MAIN ============ -->
 <main class="main" id="main">
-  <header class="hdr"><a href="#home" aria-label="Home"><img class="grouplogo" src="assets/brands/debenhamsgroup-white.png" alt="Debenhams Group"></a></header>
+  <header class="hdr"></header>
 
   <!-- HOME -->
   <section class="page on" id="home" data-crumb="Home">
@@ -1479,12 +1521,12 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <h2>The record <code>briefs · options · chosen routes</code></h2>
     <p>Every brief as a record: what was explored, what won, and where it lives now. Delivered work merges to the master prototype.</p>
     <div class="tbl">
-      <div class="tr h"><span></span><span>Project</span><span>Scope</span><span>When</span><span>Status</span></div>
-      <div class="tr" onclick="location.hash='p-plp'"><span class="id">P-05</span><span class="nm">PLP Redesign</span><span class="d">5 fascias → 1 core template · fonts, cards, grid as config</span><span class="id">Sep 26</span><span class="pill wip">open</span></div>
-      <div class="tr" onclick="location.hash='p-colour'"><span class="id">P-04</span><span class="nm">CTA Colour Alignment</span><span class="d">Final styling · 5 brands × 5 screens · golden-truth matrix</span><span class="id">Aug 26</span><span class="pill ok">merged</span></div>
-      <div class="tr" onclick="location.hash='p-checkout'"><span class="id">P-03</span><span class="nm">New Checkout</span><span class="d">Smart promo / gift-card field</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
-      <div class="tr"><span class="id">P-02</span><span class="nm">VTO</span><span class="d">First-use journey · asset-embed pattern</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
-      <div class="tr"><span class="id">P-01</span><span class="nm">AI Generated Badge</span><span class="d">Estate-wide labelling policy deck</span><span class="id">Aug 26</span><span class="pill">delivered</span></div>
+      <div class="tr h"><span></span><span>Project</span><span>Scope</span><span>When</span></div>
+      <div class="tr" onclick="location.hash='p-plp'"><span class="id">P-05</span><span class="nm">PLP Redesign</span><span class="d">5 fascias → 1 core template · fonts, cards, grid as config</span><span class="id">Sep 26</span></div>
+      <div class="tr" onclick="location.hash='p-colour'"><span class="id">P-04</span><span class="nm">CTA Colour Alignment</span><span class="d">Final styling · 5 brands × 5 screens · golden-truth matrix</span><span class="id">Aug 26</span></div>
+      <div class="tr" onclick="location.hash='p-checkout'"><span class="id">P-03</span><span class="nm">New Checkout</span><span class="d">Smart promo / gift-card field</span><span class="id">Aug 26</span></div>
+      <div class="tr"><span class="id">P-02</span><span class="nm">VTO</span><span class="d">First-use journey · asset-embed pattern</span><span class="id">Aug 26</span></div>
+      <div class="tr"><span class="id">P-01</span><span class="nm">AI Generated Badge</span><span class="d">Estate-wide labelling policy deck</span><span class="id">Aug 26</span></div>
     </div>
   </section>
 
@@ -1538,7 +1580,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 
   <!-- BRANDS -->
   <section class="page" id="brands" data-crumb="Brand Centre / All brands">
-    <div class="kick">brand centre <b>· 21 fascias · 21 modes</b></div>
+    <div class="kick">brand centre <b>· 20 fascias · 20 modes</b></div>
     <h1>All brands</h1>
     <p class="lede">Every fascia in the group. Pick one for its own page: logo downloads in black or white as SVG or PNG, brand guidelines, colour and type. Opening a brand also previews it across the system.</p>
     <div class="wall">
@@ -1560,13 +1602,12 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
       <a class="f" href="#b-maine" data-b="maine"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span>Maine</span></a>
       <a class="f" href="#b-gorgeous" data-b="gorgeous"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span>Gorgeous</span></a>
       <a class="f" href="#b-misspap" data-b="misspap"><i style="background:linear-gradient(140deg,#101820,#0A0A0A)"></i><img src="assets/brands/misspap.svg" alt=""><span>Misspap</span></a>
-      <a class="f" href="#b-nastygal" data-b="nastygal"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/nastygal.svg" alt=""><span>Nasty Gal</span></a>
       <a class="f" href="#b-foreverunique" data-b="foreverunique"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span>Forever Unique</span></a>
       <a class="f" href="#b-dsgnstudio" data-b="dsgnstudio"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/dsgnstudio.svg" alt=""><span>DSGN Studio</span></a>
       <a class="f" href="#b-trainingdept" data-b="trainingdept"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span>Training Dept</span></a>
     </div>
     <h2>Modes <code>data-brand — the only theming mechanism</code></h2>
-    <p>One attribute on the root element themes everything: colours, font, weights, radius, case. No per-brand CSS files, no component forks. All 21 fascias are modes today.</p>
+    <p>One attribute on the root element themes everything: colours, font, weights, radius, case. No per-brand CSS files, no component forks. All 20 fascias are modes today.</p>
     <div class="tok">
       <div class="tk h"><span></span><span>Fascia</span><span>Font</span><span>Mode state</span></div>
       <div class="tk"><i style="background:#7BE7D8"></i><code>debenhams</code><code>Geologica</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
@@ -1575,7 +1616,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
       <div class="tk"><i style="background:#550503"></i><code>plt</code><code>Roboto</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
       <div class="tk"><i style="background:#D24508"></i><code>karenmillen</code><code>Jost</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
       <div class="tk"><i style="background:#000000"></i><code>warehouse</code><code>Helvetica Neue</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
-      <div class="tk"><i style="background:#0F0F0F"></i><code>brandroom</code><code>Helvetica Neue</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
+      <div class="tk"><i style="background:#0F0F0F"></i><code>brandroom</code><code>Archivo</code><span class="role">Colour set from the colour-alignment prototype (Aug 26)</span></div>
       <div class="tk"><i style="background:#000000"></i><code>debenhamsoutlet</code><code>Geologica</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
       <div class="tk"><i style="background:#444444"></i><code>wallis</code><code>Urbanist</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
       <div class="tk"><i style="background:#284D7B"></i><code>burton</code><code>Montserrat</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
@@ -1586,7 +1627,6 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
       <div class="tk"><i style="background:#284D7B"></i><code>maine</code><code>GothicA1</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
       <div class="tk"><i style="background:#284D7B"></i><code>gorgeous</code><code>Montserrat</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
       <div class="tk"><i style="background:#101820"></i><code>misspap</code><code>Montserrat</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
-      <div class="tk"><i style="background:#444444"></i><code>nastygal</code><code>NGGrotesque</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
       <div class="tk"><i style="background:#000000"></i><code>foreverunique</code><code>PublicSans</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
       <div class="tk"><i style="background:#000000"></i><code>dsgnstudio</code><code>HankenGrotesk</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
       <div class="tk"><i style="background:#000000"></i><code>trainingdept</code><code>HankenGrotesk</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
@@ -1599,37 +1639,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 <!-- ============ BRAND SWITCHER FAB ============ -->
 <button class="ibtn sbopen" onclick="toggleSb()" aria-label="Show navigation"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button>
 <div class="hdrbtns">
-  <button class="ibtn" onclick="openPal()" aria-label="Search" title="Search ⌘K"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
   <a class="ibtn" href="https://github.com/jakerayner96/debenhamsgroup.design" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M9 19c-4.5 1.5-4.5-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a>
-  <button class="ibtn" id="themeBtn" aria-label="Switch theme" title="Light / dark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/></svg></button>
-<div class="fab" id="fab">
-  <button class="fab-btn" id="fabBtn" title="Switch demo brand · on a component page this jumps to that brand's box" aria-haspopup="true" aria-expanded="false" aria-label="Switch demo brand">
-    <span class="appic" id="fabIc" style="background:#7BE7D8"><img src="assets/brands/debenhams.svg" alt=""></span><span class="fab-name" id="fabName">Debenhams</span><span class="fab-car"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5 5 6.5 8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-  </button>
-  <div class="fab-menu" id="fabMenu" role="menu" aria-label="Demo brand">
-    <button data-b="debenhams" class="on" role="menuitem"><span>Debenhams</span><span class="appic" style="background:#7BE7D8"><img src="assets/brands/debenhams.svg" alt=""></span></button>
-    <button data-b="boohoo" role="menuitem"><span>boohoo</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/boohoo.svg" alt=""></span></button>
-    <button data-b="boohooman" role="menuitem"><span>boohooMAN</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/boohooman.svg" alt=""></span></button>
-    <button data-b="plt" role="menuitem"><span>PrettyLittleThing</span><span class="appic dk" style="background:#550503"><img src="assets/brands/plt.svg" alt=""></span></button>
-    <button data-b="karenmillen" role="menuitem"><span>Karen Millen</span><span class="appic dk" style="background:#D24508"><img src="assets/brands/karenmillen.svg" alt=""></span></button>
-    <button data-b="warehouse" role="menuitem"><span>Warehouse</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/warehouse.svg" alt=""></span></button>
-    <button data-b="brandroom" role="menuitem"><span>The Brand Room</span><span class="appic dk" style="background:#0F0F0F;outline:1px solid var(--line-2)"><img src="assets/brands/brandroom.svg" alt=""></span></button>
-    <button data-b="debenhamsoutlet" role="menuitem"><span>Debenhams Outlet</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/debenhamsoutlet.svg" alt=""></span></button>
-    <button data-b="wallis" role="menuitem"><span>Wallis</span><span class="appic dk" style="background:#444444"><img src="assets/brands/wallis.svg" alt=""></span></button>
-    <button data-b="burton" role="menuitem"><span>Burton</span><span class="appic dk" style="background:#284D7B"><img src="assets/brands/burton.svg" alt=""></span></button>
-    <button data-b="principles" role="menuitem"><span>Principles</span><span class="appic dk" style="background:#444444"><img src="assets/brands/principles.svg" alt=""></span></button>
-    <button data-b="coast" role="menuitem"><span>Coast</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/coast.svg" alt=""></span></button>
-    <button data-b="oasis" role="menuitem"><span>Oasis</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/oasis.svg" alt=""></span></button>
-    <button data-b="dorothyperkins" role="menuitem"><span>Dorothy Perkins</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/dorothyperkins.svg" alt=""></span></button>
-    <button data-b="maine" role="menuitem"><span>Maine</span><span class="appic dk" style="background:#284D7B"><b style="font:700 9px/1 var(--mono);color:#fff">M</b></span></button>
-    <button data-b="gorgeous" role="menuitem"><span>Gorgeous</span><span class="appic dk" style="background:#284D7B"><b style="font:700 9px/1 var(--mono);color:#fff">G</b></span></button>
-    <button data-b="misspap" role="menuitem"><span>Misspap</span><span class="appic dk" style="background:#101820"><img src="assets/brands/misspap.svg" alt=""></span></button>
-    <button data-b="nastygal" role="menuitem"><span>Nasty Gal</span><span class="appic dk" style="background:#444444"><img src="assets/brands/nastygal.svg" alt=""></span></button>
-    <button data-b="foreverunique" role="menuitem"><span>Forever Unique</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">FU</b></span></button>
-    <button data-b="dsgnstudio" role="menuitem"><span>DSGN Studio</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/dsgnstudio.svg" alt=""></span></button>
-    <button data-b="trainingdept" role="menuitem"><span>Training Dept</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">TD</b></span></button>
-  </div>
-</div>
 </div>
 
 <!-- ============ SEARCH ============ -->
@@ -1689,7 +1699,7 @@ C.forEach((c,i)=>{
     C.filter(c=>c.group===g).forEach(c=>{const a=document.createElement('a');a.href='#c-'+c.slug;a.innerHTML=`<span class="ic">▢</span>${c.name}`;host.insertBefore(a,anchor)})});
 })();
 /* every fascia, per component page — built lazily on first visit */
-const FASCIAS=[["debenhams","Debenhams"],["boohoo","boohoo"],["boohooman","boohooMAN"],["plt","PrettyLittleThing"],["karenmillen","Karen Millen"],["warehouse","Warehouse"],["debenhamsoutlet","Debenhams Outlet"],["wallis","Wallis"],["burton","Burton"],["principles","Principles"],["coast","Coast"],["oasis","Oasis"],["dorothyperkins","Dorothy Perkins"],["maine","Maine"],["gorgeous","Gorgeous"],["misspap","Misspap"],["nastygal","Nasty Gal"],["foreverunique","Forever Unique"],["dsgnstudio","DSGN Studio"],["trainingdept","Training Dept"],["brandroom","The Brand Room"]];
+const FASCIAS=[["debenhams","Debenhams"],["boohoo","boohoo"],["boohooman","boohooMAN"],["plt","PrettyLittleThing"],["karenmillen","Karen Millen"],["warehouse","Warehouse"],["debenhamsoutlet","Debenhams Outlet"],["wallis","Wallis"],["burton","Burton"],["principles","Principles"],["coast","Coast"],["oasis","Oasis"],["dorothyperkins","Dorothy Perkins"],["maine","Maine"],["gorgeous","Gorgeous"],["misspap","Misspap"],["foreverunique","Forever Unique"],["dsgnstudio","DSGN Studio"],["trainingdept","Training Dept"],["brandroom","The Brand Room"]];
 window.DG_FASCIAS=FASCIAS;
 /* a wrapping flex row can't shrink-wrap in CSS, so after layout each playground is sized to its rightmost item (+ canvas padding) */
 window.hugBoxes=function(){document.querySelectorAll('.page.on .fx').forEach(fx=>{fx.style.width='';const c=fx.querySelector('.canvas.fxc');if(!c||!c.children.length)return;
@@ -1740,6 +1750,12 @@ window.dlLogo=async function(slug,colour,fmt){
   img.onload=()=>{const k=Math.max(4,Math.ceil(2000/(img.naturalWidth||500)));const c=document.createElement('canvas');c.width=(img.naturalWidth||500)*k;c.height=(img.naturalHeight||100)*k;c.getContext('2d').drawImage(img,0,0,c.width,c.height);c.toBlob(b=>{save(b,name+'.png');URL.revokeObjectURL(url)},'image/png')};
   img.src=url;
 };
+/* sidebar: clip each group's items under its sticky heading */
+(function(){const sd=document.querySelector('.side');if(!sd)return;let raf=0;
+  const cut=()=>{raf=0;sd.querySelectorAll('.grp').forEach(g=>{const b=g.querySelector(':scope>button'),it=g.querySelector(':scope>.items');if(!b||!it)return;
+    const c=Math.max(0,b.getBoundingClientRect().bottom-it.getBoundingClientRect().top);it.style.setProperty('--cut',c+'px');it.classList.toggle('cut',c>0)})};
+  const q=()=>{if(!raf)raf=requestAnimationFrame(cut)};
+  sd.addEventListener('scroll',q,{passive:true});addEventListener('resize',q);sd.addEventListener('click',()=>setTimeout(q,0));q()})();
 window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width:920px)').matches?'sbm':'nosb')};
 /* ---- chrome: theme (dark default, remembered), brand select in the sidebar, live component collage on the home tile ---- */
 (function(){
@@ -1782,14 +1798,13 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   ];
   const F=window.DG_FASCIAS||[];
   const CORE=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse','brandroom'];
-  const HAS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse','brandroom','wallis','burton','principles','coast','oasis','dorothyperkins','misspap','nastygal','dsgnstudio','debenhamsoutlet'];
+  const HAS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse','brandroom','wallis','burton','principles','coast','oasis','dorothyperkins','misspap','dsgnstudio','debenhamsoutlet'];
   const G='assets/brands/guidelines/';
   const GUIDES={debenhams:[['Brand guidelines 2025',G+'debenhams-brand-guidelines-2025.pdf','18 MB']],boohoo:[['Brand guidelines · condensed',G+'boohoo-brand-guidelines-condensed.pdf','20 MB']],boohooman:[['Brand guidelines',G+'boohooman-brand-guidelines.pdf','4 MB']],plt:[['Brand bible',G+'plt-brand-bible.pdf','17 MB'],['Identity pack',G+'plt-identity-pack.pdf','5 MB']]};
   const ext=(u,t)=>`class="ext" href="${u}" target="_blank" rel="noopener" title="${t}"`;
   const sbLink=x=>x.u?`<a ${ext(x.u,'Opens in a new tab')}><span class="ic">▸</span>${x.n}</a>`
     :x.pg?`<a href="#${x.pg}">${x.n}</a>`:`<a ${ext(x.r,'Opens the repo in a new tab')}><span class="ic">▸</span>${x.n}</a>`;
-  const tile=x=>{const h=x.u||(x.pg?'#'+x.pg:x.r),o=!x.pg||x.u;return `<a class="ptile" href="${h}"${o?' target="_blank" rel="noopener"':''}>${x.d?`<span class="pdate">Last worked on ${fd(x.d)}</span>`:''}<b>${x.n}</b><span class="ar">${o?'↗':'→'}</span></a>`};
-  const card=x=>`<div class="launch"><b>${x.n}</b><span class="lt">${x.st}${x.d?' · last worked on '+fd(x.d):''}</span>${x.ds?`<p class="ld">${x.ds}</p>`:''}<div class="lk">${x.u?`<a class="bd pri sm" href="${x.u}" target="_blank" rel="noopener">Open ↗</a>`:x.pg?`<a class="bd pri sm" href="#${x.pg}">Open →</a>`:'<span class="nolive">no live build</span>'}${x.r?`<a class="lnk" href="${x.r}" target="_blank" rel="noopener">repo ↗</a>`:''}${x.u&&x.pg?`<a class="lnk" href="#${x.pg}">record →</a>`:''}</div></div>`;
+  const card=x=>`<div class="launch"><b>${x.n}</b>${x.d?`<span class="lt">Latest Version · ${fd(x.d)}</span>`:`<span class="lt">${x.st}</span>`}${x.ds?`<p class="ld">${x.ds}</p>`:''}<div class="lk">${x.u?`<a class="bd pri sm" href="${x.u}" target="_blank" rel="noopener">Open ↗</a>`:x.pg?`<a class="bd pri sm" href="#${x.pg}">Open →</a>`:'<span class="nolive">no live build</span>'}${x.r?`<a class="lnk" href="${x.r}" target="_blank" rel="noopener">repo ↗</a>`:''}${x.u&&x.pg?`<a class="lnk" href="#${x.pg}">record →</a>`:''}</div></div>`;
   const put=(id,html)=>{const el=document.getElementById(id);if(el)el.innerHTML=html};
 
   put('sbProjects',P.map(sbLink).join('')+'<a href="#projects">All projects</a>');
@@ -1797,8 +1812,8 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   put('sbBrands','<a href="#b-debenhamsgroup">Debenhams Group</a><span class="sub">Core brands</span>'+F.filter(f=>CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')
     +'<span class="sub">More fascias</span>'+F.filter(f=>!CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')+'<a href="#brands">All brands</a>');
   /* home: the six most recently worked-on projects as a table */
-  const row=x=>{const h=x.u||(x.pg?'#'+x.pg:x.r),o=!x.pg||x.u;return `<a class="tr" href="${h}"${o?' target="_blank" rel="noopener"':''}><span class="nm">${x.n}</span><span class="d">${x.st}</span><span class="d">${fd(x.d)}</span><span class="ar">${o?'↗':'→'}</span></a>`};
-  put('homeProjects','<div class="tr h"><span>Project</span><span>Status</span><span>Last worked on</span><span></span></div>'+P.slice(0,6).map(row).join(''));
+  const row=x=>{const h=x.u||(x.pg?'#'+x.pg:x.r),o=!x.pg||x.u;return `<a class="tr" href="${h}"${o?' target="_blank" rel="noopener"':''}><span class="nm">${x.n}</span><span class="d">${fd(x.d)}</span><span class="ar">${o?'↗':'→'}</span></a>`};
+  put('homeProjects','<div class="tr h"><span>Project</span><span>Latest Version</span><span></span></div>'+P.slice(0,6).map(row).join(''));
   put('projGrid',P.map(card).join(''));
 
   const main=document.getElementById('main'),end=main.querySelector('section.page:last-of-type');
@@ -1938,6 +1953,10 @@ function paint(){
   const n=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
   document.querySelectorAll('.bn').forEach(b=>b.textContent=n);
   const fn=document.getElementById('fabName');if(fn)fn.textContent=n;
+  /* black-themed fascias would paint a black backdrop behind a black sidebar: tint those with Principles' dark grey */
+  {const hx=cs.getPropertyValue('--brand-primary').trim(),m=hx.match(/^#?([0-9a-f]{6})$/i);let dark=false;
+   if(m){const v=parseInt(m[1],16),r=v>>16&255,g=v>>8&255,b=v&255;dark=(.2126*r+.7152*g+.0722*b)/255<.12}
+   document.documentElement.style.setProperty('--art',dark?'#444444':'var(--brand-primary)')}
   const slug=document.documentElement.getAttribute('data-brand');
   document.querySelectorAll('.brandlogo').forEach(i=>{i.onerror=()=>{i.style.opacity='0'};i.onload=()=>{i.style.opacity='1'};i.src='assets/brands/'+slug+'.svg'});
   const bs=document.getElementById('brandSel');if(bs)bs.value=slug;
