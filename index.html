@@ -572,6 +572,14 @@ body.sbm .hdrbtns{display:none}
 /* home projects table: headings match the row size, in caps; names one weight lighter than before */
 .ptbl .tr.h{font-size:15px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;color:var(--ink)}
 .ptbl .tr .nm{font-weight:400}
+
+#icons [hidden]{display:none!important} /* tiles are display:flex, which would otherwise beat the hidden attribute */
+#icons .icotile[data-src]{cursor:pointer;position:relative;transition:background .12s,border-color .12s}
+#icons .icotile[data-src]:hover{background:var(--surface-2);border-color:var(--med)}
+#icons .icotile.got{border-color:var(--accent)!important}
+.icodl{display:none}.icodl svg{width:18px;height:18px;display:block}.icodl svg *{stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.icolist .icodl{display:grid;place-items:center;color:var(--ink-3);flex:none;margin-left:14px}.icolist .icotile:hover .icodl{color:var(--ink)}
+.icolist .icotile small{margin-left:auto}
 </style>
 </head>
 <body>
@@ -1941,7 +1949,13 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   head.insertAdjacentHTML('beforeend',`<div class="icobar"><div class="icoseg" role="group" aria-label="View"><button data-v="tile" class="on" aria-pressed="true">Tiles</button><button data-v="list" aria-pressed="false">List</button></div><div class="icosearch"><button class="ibtn" aria-label="Search icons" title="Search by name or meaning"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button><input type="search" placeholder="Search icons — name or meaning" aria-label="Search icons"></div></div>`);
   const grids=[...sec.querySelectorAll('.icogrid')];
   grids.forEach(g=>[...g.children].forEach(t=>{const n=(t.querySelector('code')||{}).textContent||'';t.dataset.n=n.toLowerCase();t.dataset.k=(n+' '+(KW[n]||'')+' '+(t.querySelector('img')?.alt||'')).toLowerCase();
-    if(KW[n]&&!t.querySelector('small'))t.insertAdjacentHTML('beforeend',`<small>${KW[n]}</small>`)}));
+    if(KW[n]&&!t.querySelector('small'))t.insertAdjacentHTML('beforeend',`<small>${KW[n]}</small>`);
+    const src=t.querySelector('img')?.getAttribute('src');if(src){const ext=src.split('.').pop().toUpperCase();t.dataset.src=src;t.title='Download '+(n||'icon')+' ('+ext+')';t.setAttribute('role','button');t.tabIndex=0;
+      t.insertAdjacentHTML('beforeend',`<span class="icodl" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></svg></span>`)}}));
+  /* click (or Enter) on any icon downloads its file */
+  const dl=t=>{const a=document.createElement('a');a.href=t.dataset.src;a.download=t.dataset.src.split('/').pop();document.body.appendChild(a);a.click();a.remove();t.classList.add('got');setTimeout(()=>t.classList.remove('got'),900)};
+  sec.addEventListener('click',e=>{const t=e.target.closest('.icotile[data-src]');if(t)dl(t)});
+  sec.addEventListener('keydown',e=>{const t=e.target.closest&&e.target.closest('.icotile[data-src]');if(t&&(e.key==='Enter'||e.key===' ')){e.preventDefault();dl(t)}});
   const sort=dir=>grids.forEach(g=>[...g.children].sort((a,b)=>a.dataset.n.localeCompare(b.dataset.n)*(dir==='asc'?1:-1)).forEach(t=>g.appendChild(t)));
   sort('asc');
   const setView=v=>{sec.classList.toggle('icolist',v==='list');head.querySelectorAll('.icoseg button').forEach(b=>{b.classList.toggle('on',b.dataset.v===v);b.setAttribute('aria-pressed',b.dataset.v===v)});try{localStorage.setItem('dg-icoview',v)}catch(e){}};
