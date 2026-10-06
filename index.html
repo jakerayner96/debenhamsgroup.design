@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Debenhams Group Design</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geologica:slnt,wght,CRSV,SHRP@-12..0,100..900,0..1,0..100&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&family=Jost:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ds/tokens.css">
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
@@ -248,6 +248,24 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .meta b{color:var(--ink);font-weight:400}
 
 /* brand wall */
+/* brand pages */
+.bhero{height:220px;border-radius:var(--r);background:var(--brand-primary);display:flex;align-items:center;justify-content:space-between;padding:0 48px;margin:8px 0 28px;overflow:hidden;border:1px solid color-mix(in srgb,var(--ink) 6%,transparent)}
+.bhero img{height:44px;width:auto;max-width:60%;object-fit:contain}.bhero.dark img{filter:invert(1)}
+.bhero .bhn,.bhero .bglyph{font-family:var(--font-family-base);color:#000;font-size:40px;font-weight:600}.bhero .bglyph{font-size:96px;font-weight:400;opacity:.85}
+.bhero.dark .bhn,.bhero.dark .bglyph{color:#fff}
+.bpage .openrow .bd{box-shadow:0 0 0 1px var(--med)} /* black-action fascias would vanish on the black page */
+.bpage .kit{max-width:640px}.bpage .kits .kit{max-width:none}.kbody .kn{font-size:13px;color:var(--ink-3);margin-top:-6px}.bpage .kprev{height:140px}
+.bsw{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.bsw>div{background:var(--surface);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:4px}
+.bsw i{display:block;height:64px;border-radius:calc(var(--r) - 4px);margin-bottom:8px;border:1px solid color-mix(in srgb,var(--ink) 10%,transparent)}
+.bsw b{font-size:14px;font-weight:500}.bsw code{font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.btype{background:var(--surface);border-radius:var(--r);padding:28px;font-family:var(--font-family-base);color:var(--ink)}
+.btype{padding:8px 28px}.btype .br{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:18px 0;border-top:1px solid color-mix(in srgb,var(--ink) 8%,transparent)}.btype .br:first-child{border-top:0}
+.btype .brl{display:flex;flex-direction:column;gap:2px;font-family:var(--sans)}.btype .brl code{font-family:var(--mono);font-size:12px;color:var(--ink)}.btype .brl small{font-size:12px;color:var(--ink-3)}.btype .br>span{overflow-wrap:anywhere;min-width:0}
+@media(max-width:920px){.btype{padding:4px 18px}.btype .br{grid-template-columns:1fr;gap:8px}}
+.launch .ld{font-size:14px;color:var(--ink-2);margin:0}
+@media(max-width:920px){.bsw{grid-template-columns:repeat(2,1fr)}.bhero{padding:0 24px;height:160px}.bhero .bglyph{font-size:64px}}
+/* brand wall (overview) */
 .wall{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .f{aspect-ratio:16/9;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:18px;font-size:15px;color:var(--ink);position:relative;overflow:hidden;background:var(--surface);border-radius:var(--r);transition:color .2s}
 .f i{position:absolute;inset:0;opacity:0;transition:opacity .3s var(--ease-standard)}
@@ -284,7 +302,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .bgart::after{content:"";position:absolute;inset:0;background:
   radial-gradient(70% 90% at 90% 60%,rgba(0,0,0,.5),transparent 70%),
   linear-gradient(180deg,rgba(0,0,0,.2),transparent 22%,transparent 40%,var(--bg) 78%)}
-.ptitle{font-family:var(--disp);font-size:clamp(48px,6vw,88px);line-height:1;letter-spacing:-.03em;font-weight:300;color:var(--ink);margin:0}
+.ptitle{font-family:'Geologica',var(--sans);font-size:clamp(38px,5.4vw,92px);line-height:.96;letter-spacing:-.04em;font-weight:800;text-transform:uppercase;font-variation-settings:"slnt" -12,"CRSV" 1,"SHRP" 0;font-feature-settings:"ss02" 1,"ss04" 1,"ss06" 1;color:var(--ink);margin:0} /* DS Figma 401:447 — Geologica ExtraBold Italic, caps, −4% */
 .ptitle small{display:block;font-size:17px;letter-spacing:0;text-transform:none;font-weight:500;margin-bottom:18px;color:var(--ink)}
 .rel{display:flex;align-items:center;justify-content:space-between;gap:24px;width:min(520px,100%);padding:22px 24px;border-radius:var(--r);background:var(--frost);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:var(--ink);box-shadow:var(--shadow);transition:background .15s}
 .rel:hover{background:var(--surface-2)}
@@ -480,6 +498,34 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .kbtn:hover{border-color:var(--ink);background:var(--wash)}.kbtn small{color:var(--ink-3);font-size:12px}
 .krow em{font-style:normal;font-size:13px;color:var(--ink-3)}
 @media(max-width:920px){.kits{grid-template-columns:1fr}}
+
+/* home: full width inside the gutters; every row shares the same wrap points (container queries, so the sidebar toggle counts too) */
+#home{container-type:inline-size}
+#home>*:not(.phero):not(.ltiles):not(.ltile),.ltiles,.btiles,.ptiles,.ltile.wide{max-width:none}
+.ltiles.four{grid-template-columns:repeat(4,1fr)}
+.btiles{grid-template-columns:repeat(8,minmax(0,1fr))}.btile{min-width:0}.btile.grp{grid-column:span 3;aspect-ratio:auto}.btile.grp img{height:30px} /* 8 columns = two per entry tile above; the group cube spans three so 21 fascias + group = 24 cells: clean rows at 8 / 4 / 3 columns */
+.ltiles.four .lt-foot b{font-size:20px;flex-wrap:nowrap}.ltiles.four .lt-foot small{font-size:14px}
+.ptiles{grid-template-columns:repeat(3,1fr)}
+.ltiles,.btiles,.ptiles{gap:12px}
+.hsec{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.hall{font-size:14px;font-weight:500;color:var(--ink-2);letter-spacing:0;white-space:nowrap}.hall:hover{color:var(--accent)}
+.ptile .pdate{font-size:13px;color:var(--ink-3)}
+@container (max-width:1000px){.ltiles.four{grid-template-columns:repeat(2,1fr)}.btiles{grid-template-columns:repeat(4,minmax(0,1fr))}.btile.grp img{height:24px}.ptiles{grid-template-columns:repeat(2,1fr)}}
+@container (max-width:560px){.ltiles.four,.ptiles{grid-template-columns:1fr}.btiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* brand tiles are logo-only, centred; the name stays for screen readers and for fascias without artwork */
+.f{justify-content:center;align-items:center;text-align:center}
+.f img{height:24px;max-width:62%;object-position:center}
+.f img[src$="debenhamsgroup.svg"],.f img[src$="debenhamsoutlet.svg"],.f img[src$="burton.svg"]{height:36px}
+.f:has(img) span,.btile:has(img) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.f span{font-size:16px;font-weight:500}
+.btile img[src$="debenhamsoutlet.svg"],.btile img[src$="burton.svg"]{height:28px}
+.btile{padding:10px}.btile img{max-width:86%;height:20px}.btile.grp img{height:30px}
+
+.flaggrid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}.flaggrid .icotile img{width:32px;height:23px;filter:none;opacity:1;border-radius:2px;box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 10%,transparent)}.flaggrid .icotile code{font-family:var(--sans);font-size:11px;word-break:normal}
+.kd img[src$="debenhamsgroup-stacked.svg"],.kl img[src$="debenhamsgroup-stacked.svg"]{height:64px}
+/* sidebar: each group heading sticks to the top while its items scroll under it */
+.grp>button{position:sticky;top:-12px;z-index:2;margin:0 -24px;padding:10px 24px;width:calc(100% + 48px);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 </style>
 </head>
 <body>
@@ -496,37 +542,27 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
   <div class="grp">
     <button onclick="tg(this)"><span class="car">▾</span>Design system</button>
     <div class="items" id="dsItems">
-      <a href="#foundations">Foundations <span class="tag ok">live</span></a>
+      <a href="#foundations">Foundations</a>
       <a href="#f-type">Typography</a>
       <a href="#f-colour">Colour</a>
-      <a href="#gallery">All components <span class="tag ok">live</span></a>
+      <a href="#icons">Icons</a>
+      <a href="#gallery">All components</a>
       <!-- component pages are appended here from assets/ds/catalogue.js -->
-      <a href="#icons">Icons <span class="tag ok">live</span></a>
-      <a href="#brands">Brand Centre</a>
       <a href="#dev-overlay">Dev alignment</a>
       <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/" target="_blank" rel="noopener" title="Opens our Storybook in a new tab"><span class="ic">▤</span>Storybook</a>
     </div>
   </div>
   <div class="grp">
+    <button onclick="tg(this)"><span class="car">▾</span>Brand Centre</button>
+    <div class="items" id="sbBrands"><!-- one page per fascia, built from DG_FASCIAS --></div>
+  </div>
+  <div class="grp">
     <button onclick="tg(this)"><span class="car">▾</span>Projects</button>
-    <div class="items">
-      <a href="#projects">All projects</a>
-      <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>PLP UI updates - All Brands <span class="tag wip">open</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/core-pdp-2026/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>PDP Layout and Components - MAN <span class="tag wip">open</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>CTA Colour Alignment - All Brands <span class="tag ok">merged</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>New Checkout Payment Section Update</a>
-      <a class="ext" href="https://jakerayner96.github.io/vto-prototype/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>Virtual Try On - All Brands <span class="tag wip">open</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/ai-generated-badge/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>AI Generated Badge <span class="tag dim">deck</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/Group-Design-System/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>Group Design System (v1) <span class="tag dim">retired</span></a>
-      <a class="ext" href="https://jakerayner96.github.io/UX-Design-Request/" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>UX Design Request Form <span class="tag dim">tool</span></a>
-      <a class="ext" href="https://github.com/jakerayner96/THEBRANDROOM" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>The Brand Room - Launch Prototype <span class="tag dim">repo</span></a>
-      <a class="ext" href="https://github.com/jakerayner96/plt-app-prototype" target="_blank" rel="noopener" title="Opens the live prototype in a new tab"><span class="ic">▸</span>PLT app prototype <span class="tag dim">private</span></a>
-      <a href="#prototypes">Master prototypes <span class="tag wip">wip</span></a>
-      <a href="#requests">Requests board</a>
-      <a href="#shipping">Shipping log</a>
-      <span class="sub">Tools</span>
-      <a class="ext" href="https://github.com/jakerayner96/debenhams-design-system-scraper" target="_blank" rel="noopener" title="Opens the repo in a new tab"><span class="ic">▸</span>DG Group Product Scraper <span class="tag dim">private</span></a>
-    </div>
+    <div class="items" id="sbProjects"><!-- built from DG_PROJECTS --></div>
+  </div>
+  <div class="grp">
+    <button onclick="tg(this)"><span class="car">▾</span>Planning and Tools</button>
+    <div class="items" id="sbTools"><!-- built from DG_TOOLS --></div>
   </div>
 </aside>
 
@@ -537,7 +573,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
   <!-- HOME -->
   <section class="page on" id="home" data-crumb="Home">
     <div class="phero">
-      <h1 class="ptitle"><small>Debenhams Group</small>Design System</h1>
+      <h1 class="ptitle">Group Design System</h1>
     </div>
 
     <div class="ltiles four">
@@ -559,34 +595,26 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
       </a>
     </div>
 
-    <h2 class="hsec">Brand Centre</h2>
+    <h2 class="hsec">Brand Centre <a class="hall" href="#brands">All brands →</a></h2>
     <div class="btiles" id="btiles"></div>
 
-    <h2 class="hsec">Projects</h2>
-    <div class="ptiles">
-      <a class="ptile" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener"><span class="pill wip">open</span><b>PLP UI updates · All Brands</b><span class="ar">↗</span></a>
-      <a class="ptile" href="https://jakerayner96.github.io/core-pdp-2026/" target="_blank" rel="noopener"><span class="pill wip">open</span><b>PDP Layout and Components · MAN</b><span class="ar">↗</span></a>
-      <a class="ptile" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener"><span class="pill ok">merged</span><b>CTA Colour Alignment · All Brands</b><span class="ar">↗</span></a>
-      <a class="ptile" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener"><span class="pill ">prototype</span><b>New Checkout Payment Section Update</b><span class="ar">↗</span></a>
-      <a class="ptile" href="https://jakerayner96.github.io/vto-prototype/" target="_blank" rel="noopener"><span class="pill wip">open</span><b>Virtual Try On · All Brands</b><span class="ar">↗</span></a>
-      <a class="ptile" href="https://jakerayner96.github.io/ai-generated-badge/" target="_blank" rel="noopener"><span class="pill ">deck</span><b>AI Generated Badge</b><span class="ar">↗</span></a>
-      <a class="ptile" href="https://jakerayner96.github.io/Group-Design-System/" target="_blank" rel="noopener"><span class="pill ">retired</span><b>Group Design System (v1)</b><span class="ar">↗</span></a>
-      <a class="ptile" href="https://jakerayner96.github.io/UX-Design-Request/" target="_blank" rel="noopener"><span class="pill ">tool</span><b>UX Design Request Form</b><span class="ar">↗</span></a>
-      <a class="ptile" href="https://github.com/jakerayner96/THEBRANDROOM" target="_blank" rel="noopener"><span class="pill ">repo</span><b>The Brand Room · Launch Prototype</b><span class="ar">↗</span></a>
-      <a class="ptile more" href="#projects"><b>All projects</b><span class="ar">→</span></a>
-    </div>
+    <h2 class="hsec">Latest projects <a class="hall" href="#projects">All projects →</a></h2>
+    <div class="ptiles" id="homeProjects"></div>
+
+    <h2 class="hsec">Planning and Tools <a class="hall" href="#tools">All Planning and Tools →</a></h2>
+    <div class="ptiles" id="homeTools"></div>
   </section>
 
   <!-- SHIPPING (alias page) -->
-  <section class="page" id="shipping" data-crumb="Overview / Shipping">
-    <div class="kick">overview <b>· shipping</b></div>
-    <h1>Shipping</h1>
+  <section class="page" id="shipping" data-crumb="Planning and Tools / Shipping log">
+    <div class="kick"><a href="#tools" style="color:inherit">planning and tools</a> <b>· shipping log</b></div>
+    <h1>Shipping log</h1>
     <p class="lede">Everything that merged, shipped or opened — newest first. Every row links to the project page with its options and decision.</p>
     <div class="feed">
       <div class="fr"><time>2026-09-01</time><div class="t"><b>Design system folded into the site</b><small>Tokens + foundations + fascia modes absorbed from designsystem-debenhamsgroup</small></div><span class="pill ok">merged</span></div>
-      <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP UI updates - All Brands opened</b><small>Target w/c 08 Sep · Scott's brief</small></div><span class="pill wip">open</span></div>
-      <div class="fr"><time>2026-08-26</time><div class="t"><b>CTA Colour Alignment - All Brands merged</b><small>KM review complete</small></div><span class="pill ok">merged</span></div>
-      <div class="fr"><time>2026-08-24</time><div class="t"><b>New Checkout Payment Section Update shipped</b><small>Figma WChEtDPH… · 3990:58406</small></div><span class="pill">shipped</span></div>
+      <div class="fr"><time>2026-09-01</time><div class="t"><b>PLP Redesign opened</b><small>Target w/c 08 Sep · Scott's brief</small></div><span class="pill wip">open</span></div>
+      <div class="fr"><time>2026-08-26</time><div class="t"><b>CTA Colour Alignment merged</b><small>KM review complete</small></div><span class="pill ok">merged</span></div>
+      <div class="fr"><time>2026-08-24</time><div class="t"><b>New Checkout shipped</b><small>Figma WChEtDPH… · 3990:58406</small></div><span class="pill">shipped</span></div>
       <div class="fr"><time>2026-08-20</time><div class="t"><b>VTO first-use journey shipped</b><small>Asset-embed pattern introduced</small></div><span class="pill">shipped</span></div>
     </div>
   </section>
@@ -948,21 +976,6 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     </div>
   </section>
 
-  <!-- MASTER PROTOTYPES -->
-  <section class="page" id="prototypes" data-crumb="System / Master prototypes">
-    <div class="kick">system <b>· the canonical core pages — briefs branch from these, chosen routes merge back</b></div>
-    <h1>Master prototypes</h1>
-    <p class="lede">The latest agreed version of every core page, built from system components. New briefs load the master, build options on a branch, and merge the winner back — nothing gets rebuilt from memory.</p>
-    <div class="tbl">
-      <div class="tr h"><span></span><span>Page</span><span>Source</span><span>Updated</span><span>Status</span></div>
-      <div class="tr"><span class="id">M-01</span><span class="nm">PLP</span><span class="d">Seeding from plt-app-prototype + Sep alignment brief</span><span class="id">—</span><span class="pill wip">building</span></div>
-      <div class="tr"><span class="id">M-02</span><span class="nm">PDP</span><span class="d">To seed from the colour-alignment screens</span><span class="id">—</span><span class="pill">queued</span></div>
-      <div class="tr"><span class="id">M-03</span><span class="nm">Bag</span><span class="d">To seed from the colour-alignment screens</span><span class="id">—</span><span class="pill">queued</span></div>
-      <div class="tr"><span class="id">M-04</span><span class="nm">Checkout</span><span class="d">Promo/gift-card section shipped · rest to assemble</span><span class="id">Aug 26</span><span class="pill">queued</span></div>
-      <div class="tr"><span class="id">M-05</span><span class="nm">Home</span><span class="d">To spec</span><span class="id">—</span><span class="pill">queued</span></div>
-    </div>
-  </section>
-
   <!-- BUTTON (with right rail) -->
   <section class="page rail" id="button" data-crumb="System / Components / Button">
     <div>
@@ -1232,6 +1245,9 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <h2>Payment badges</h2>
     <p class="lede">Figma <code>aIHmkCaTy9c5EWOxAGw0So</code> · node <code>669-2707</code> (Payment Icons). Raster exports at 3x in <code>assets/ds/icons/pay/</code>, shown at 30px tall in the footer band (C-08) in live order. iDEAL-Wero and Tink exist in Figma but aren't used on boohooMAN.</p>
     <div class="icogrid paygrid" style="grid-template-columns:repeat(auto-fill,minmax(96px,1fr))"><div class="icotile"><img src="assets/ds/icons/pay/visa.png" alt="Visa"><code>visa</code></div><div class="icotile"><img src="assets/ds/icons/pay/mastercard.png" alt="Mastercard"><code>mastercard</code></div><div class="icotile"><img src="assets/ds/icons/pay/amex.png" alt="American Express"><code>amex</code></div><div class="icotile"><img src="assets/ds/icons/pay/maestro.png" alt="Maestro"><code>maestro</code></div><div class="icotile"><img src="assets/ds/icons/pay/visa-electron.png" alt="Visa Electron"><code>visa-electron</code></div><div class="icotile"><img src="assets/ds/icons/pay/apple-pay.png" alt="Apple Pay"><code>apple-pay</code></div><div class="icotile"><img src="assets/ds/icons/pay/payplus.png" alt="Pay+"><code>payplus</code></div><div class="icotile"><img src="assets/ds/icons/pay/paypal.png" alt="PayPal"><code>paypal</code></div><div class="icotile"><img src="assets/ds/icons/pay/klarna.png" alt="Klarna"><code>klarna</code></div><div class="icotile"><img src="assets/ds/icons/pay/clearpay.png" alt="Clearpay"><code>clearpay</code></div><div class="icotile"><img src="assets/ds/icons/pay/google-pay.png" alt="Google Pay"><code>google-pay</code></div></div>
+    <h2 id="flags">Country flags <code>202 · 24 × 17</code></h2>
+    <p class="lede">Figma <code>aIHmkCaTy9c5EWOxAGw0So</code> · node <code>5353-2781</code> (Country Flags, component set <code>Flags</code>). Flat SVGs in <code>assets/ds/icons/flags/</code>, one per country, named by slug (<code>united-kingdom.svg</code>). Globe and EU first, then A–Z. Square, country-selector and PLT header variants in the same frame are built from these.</p>
+    <div class="icogrid flaggrid"><div class="icotile"><img src="assets/ds/icons/flags/globe.svg" alt="Globe" loading="lazy"><code>Globe</code></div><div class="icotile"><img src="assets/ds/icons/flags/european-union.svg" alt="European Union" loading="lazy"><code>European Union</code></div><div class="icotile"><img src="assets/ds/icons/flags/afghanistan.svg" alt="Afghanistan" loading="lazy"><code>Afghanistan</code></div><div class="icotile"><img src="assets/ds/icons/flags/albania.svg" alt="Albania" loading="lazy"><code>Albania</code></div><div class="icotile"><img src="assets/ds/icons/flags/algeria.svg" alt="Algeria" loading="lazy"><code>Algeria</code></div><div class="icotile"><img src="assets/ds/icons/flags/andorra.svg" alt="Andorra" loading="lazy"><code>Andorra</code></div><div class="icotile"><img src="assets/ds/icons/flags/angola.svg" alt="Angola" loading="lazy"><code>Angola</code></div><div class="icotile"><img src="assets/ds/icons/flags/antigua-and-barbuda.svg" alt="Antigua and Barbuda" loading="lazy"><code>Antigua and Barbuda</code></div><div class="icotile"><img src="assets/ds/icons/flags/argentina.svg" alt="Argentina" loading="lazy"><code>Argentina</code></div><div class="icotile"><img src="assets/ds/icons/flags/armenia.svg" alt="Armenia" loading="lazy"><code>Armenia</code></div><div class="icotile"><img src="assets/ds/icons/flags/aruba.svg" alt="Aruba" loading="lazy"><code>Aruba</code></div><div class="icotile"><img src="assets/ds/icons/flags/australia.svg" alt="Australia" loading="lazy"><code>Australia</code></div><div class="icotile"><img src="assets/ds/icons/flags/austria.svg" alt="Austria" loading="lazy"><code>Austria</code></div><div class="icotile"><img src="assets/ds/icons/flags/azerbaijan.svg" alt="Azerbaijan" loading="lazy"><code>Azerbaijan</code></div><div class="icotile"><img src="assets/ds/icons/flags/bahamas.svg" alt="Bahamas" loading="lazy"><code>Bahamas</code></div><div class="icotile"><img src="assets/ds/icons/flags/bahrain.svg" alt="Bahrain" loading="lazy"><code>Bahrain</code></div><div class="icotile"><img src="assets/ds/icons/flags/bangladesh.svg" alt="Bangladesh" loading="lazy"><code>Bangladesh</code></div><div class="icotile"><img src="assets/ds/icons/flags/barbados.svg" alt="Barbados" loading="lazy"><code>Barbados</code></div><div class="icotile"><img src="assets/ds/icons/flags/belarus.svg" alt="Belarus" loading="lazy"><code>Belarus</code></div><div class="icotile"><img src="assets/ds/icons/flags/belgium.svg" alt="Belgium" loading="lazy"><code>Belgium</code></div><div class="icotile"><img src="assets/ds/icons/flags/belize.svg" alt="Belize" loading="lazy"><code>Belize</code></div><div class="icotile"><img src="assets/ds/icons/flags/benin.svg" alt="Benin" loading="lazy"><code>Benin</code></div><div class="icotile"><img src="assets/ds/icons/flags/bhutan.svg" alt="Bhutan" loading="lazy"><code>Bhutan</code></div><div class="icotile"><img src="assets/ds/icons/flags/bolivia.svg" alt="Bolivia" loading="lazy"><code>Bolivia</code></div><div class="icotile"><img src="assets/ds/icons/flags/bosnia-and-herzegovina.svg" alt="Bosnia and Herzegovina" loading="lazy"><code>Bosnia and Herzegovina</code></div><div class="icotile"><img src="assets/ds/icons/flags/botswana.svg" alt="Botswana" loading="lazy"><code>Botswana</code></div><div class="icotile"><img src="assets/ds/icons/flags/bouvet-island.svg" alt="Bouvet Island" loading="lazy"><code>Bouvet Island</code></div><div class="icotile"><img src="assets/ds/icons/flags/brazil.svg" alt="Brazil" loading="lazy"><code>Brazil</code></div><div class="icotile"><img src="assets/ds/icons/flags/brunei.svg" alt="Brunei" loading="lazy"><code>Brunei</code></div><div class="icotile"><img src="assets/ds/icons/flags/bulgaria.svg" alt="Bulgaria" loading="lazy"><code>Bulgaria</code></div><div class="icotile"><img src="assets/ds/icons/flags/burkina-faso.svg" alt="Burkina Faso" loading="lazy"><code>Burkina Faso</code></div><div class="icotile"><img src="assets/ds/icons/flags/burundi.svg" alt="Burundi" loading="lazy"><code>Burundi</code></div><div class="icotile"><img src="assets/ds/icons/flags/cambodia.svg" alt="Cambodia" loading="lazy"><code>Cambodia</code></div><div class="icotile"><img src="assets/ds/icons/flags/cameroon.svg" alt="Cameroon" loading="lazy"><code>Cameroon</code></div><div class="icotile"><img src="assets/ds/icons/flags/canada.svg" alt="Canada" loading="lazy"><code>Canada</code></div><div class="icotile"><img src="assets/ds/icons/flags/cape-verde.svg" alt="Cape Verde" loading="lazy"><code>Cape Verde</code></div><div class="icotile"><img src="assets/ds/icons/flags/central-african-republic.svg" alt="Central African Republic" loading="lazy"><code>Central African Republic</code></div><div class="icotile"><img src="assets/ds/icons/flags/chad.svg" alt="Chad" loading="lazy"><code>Chad</code></div><div class="icotile"><img src="assets/ds/icons/flags/chile.svg" alt="Chile" loading="lazy"><code>Chile</code></div><div class="icotile"><img src="assets/ds/icons/flags/china.svg" alt="China" loading="lazy"><code>China</code></div><div class="icotile"><img src="assets/ds/icons/flags/colombia.svg" alt="Colombia" loading="lazy"><code>Colombia</code></div><div class="icotile"><img src="assets/ds/icons/flags/comoros.svg" alt="Comoros" loading="lazy"><code>Comoros</code></div><div class="icotile"><img src="assets/ds/icons/flags/congo.svg" alt="Congo" loading="lazy"><code>Congo</code></div><div class="icotile"><img src="assets/ds/icons/flags/costa-rica.svg" alt="Costa Rica" loading="lazy"><code>Costa Rica</code></div><div class="icotile"><img src="assets/ds/icons/flags/croatia.svg" alt="Croatia" loading="lazy"><code>Croatia</code></div><div class="icotile"><img src="assets/ds/icons/flags/cuba.svg" alt="Cuba" loading="lazy"><code>Cuba</code></div><div class="icotile"><img src="assets/ds/icons/flags/curacao.svg" alt="Curacao" loading="lazy"><code>Curacao</code></div><div class="icotile"><img src="assets/ds/icons/flags/cyprus.svg" alt="Cyprus" loading="lazy"><code>Cyprus</code></div><div class="icotile"><img src="assets/ds/icons/flags/czechia.svg" alt="Czechia" loading="lazy"><code>Czechia</code></div><div class="icotile"><img src="assets/ds/icons/flags/dr-congo.svg" alt="DR Congo" loading="lazy"><code>DR Congo</code></div><div class="icotile"><img src="assets/ds/icons/flags/denmark.svg" alt="Denmark" loading="lazy"><code>Denmark</code></div><div class="icotile"><img src="assets/ds/icons/flags/djibouti.svg" alt="Djibouti" loading="lazy"><code>Djibouti</code></div><div class="icotile"><img src="assets/ds/icons/flags/dominica.svg" alt="Dominica" loading="lazy"><code>Dominica</code></div><div class="icotile"><img src="assets/ds/icons/flags/dominican-republic.svg" alt="Dominican Republic" loading="lazy"><code>Dominican Republic</code></div><div class="icotile"><img src="assets/ds/icons/flags/ecuador.svg" alt="Ecuador" loading="lazy"><code>Ecuador</code></div><div class="icotile"><img src="assets/ds/icons/flags/egypt.svg" alt="Egypt" loading="lazy"><code>Egypt</code></div><div class="icotile"><img src="assets/ds/icons/flags/el-salvador.svg" alt="El Salvador" loading="lazy"><code>El Salvador</code></div><div class="icotile"><img src="assets/ds/icons/flags/equatorial-guinea.svg" alt="Equatorial Guinea" loading="lazy"><code>Equatorial Guinea</code></div><div class="icotile"><img src="assets/ds/icons/flags/eritrea.svg" alt="Eritrea" loading="lazy"><code>Eritrea</code></div><div class="icotile"><img src="assets/ds/icons/flags/estonia.svg" alt="Estonia" loading="lazy"><code>Estonia</code></div><div class="icotile"><img src="assets/ds/icons/flags/eswatini.svg" alt="Eswatini" loading="lazy"><code>Eswatini</code></div><div class="icotile"><img src="assets/ds/icons/flags/ethiopia.svg" alt="Ethiopia" loading="lazy"><code>Ethiopia</code></div><div class="icotile"><img src="assets/ds/icons/flags/fiji.svg" alt="Fiji" loading="lazy"><code>Fiji</code></div><div class="icotile"><img src="assets/ds/icons/flags/finland.svg" alt="Finland" loading="lazy"><code>Finland</code></div><div class="icotile"><img src="assets/ds/icons/flags/france.svg" alt="France" loading="lazy"><code>France</code></div><div class="icotile"><img src="assets/ds/icons/flags/gabon.svg" alt="Gabon" loading="lazy"><code>Gabon</code></div><div class="icotile"><img src="assets/ds/icons/flags/gambia.svg" alt="Gambia" loading="lazy"><code>Gambia</code></div><div class="icotile"><img src="assets/ds/icons/flags/georgia.svg" alt="Georgia" loading="lazy"><code>Georgia</code></div><div class="icotile"><img src="assets/ds/icons/flags/germany.svg" alt="Germany" loading="lazy"><code>Germany</code></div><div class="icotile"><img src="assets/ds/icons/flags/ghana.svg" alt="Ghana" loading="lazy"><code>Ghana</code></div><div class="icotile"><img src="assets/ds/icons/flags/greece.svg" alt="Greece" loading="lazy"><code>Greece</code></div><div class="icotile"><img src="assets/ds/icons/flags/grenada.svg" alt="Grenada" loading="lazy"><code>Grenada</code></div><div class="icotile"><img src="assets/ds/icons/flags/guatemala.svg" alt="Guatemala" loading="lazy"><code>Guatemala</code></div><div class="icotile"><img src="assets/ds/icons/flags/guinea.svg" alt="Guinea" loading="lazy"><code>Guinea</code></div><div class="icotile"><img src="assets/ds/icons/flags/guinea-bissau.svg" alt="Guinea-Bissau" loading="lazy"><code>Guinea-Bissau</code></div><div class="icotile"><img src="assets/ds/icons/flags/guyana.svg" alt="Guyana" loading="lazy"><code>Guyana</code></div><div class="icotile"><img src="assets/ds/icons/flags/haiti.svg" alt="Haiti" loading="lazy"><code>Haiti</code></div><div class="icotile"><img src="assets/ds/icons/flags/holy-see.svg" alt="Holy See" loading="lazy"><code>Holy See</code></div><div class="icotile"><img src="assets/ds/icons/flags/honduras.svg" alt="Honduras" loading="lazy"><code>Honduras</code></div><div class="icotile"><img src="assets/ds/icons/flags/hong-kong.svg" alt="Hong Kong" loading="lazy"><code>Hong Kong</code></div><div class="icotile"><img src="assets/ds/icons/flags/hungary.svg" alt="Hungary" loading="lazy"><code>Hungary</code></div><div class="icotile"><img src="assets/ds/icons/flags/iceland.svg" alt="Iceland" loading="lazy"><code>Iceland</code></div><div class="icotile"><img src="assets/ds/icons/flags/india.svg" alt="India" loading="lazy"><code>India</code></div><div class="icotile"><img src="assets/ds/icons/flags/indonesia.svg" alt="Indonesia" loading="lazy"><code>Indonesia</code></div><div class="icotile"><img src="assets/ds/icons/flags/iran.svg" alt="Iran" loading="lazy"><code>Iran</code></div><div class="icotile"><img src="assets/ds/icons/flags/iraq.svg" alt="Iraq" loading="lazy"><code>Iraq</code></div><div class="icotile"><img src="assets/ds/icons/flags/ireland.svg" alt="Ireland" loading="lazy"><code>Ireland</code></div><div class="icotile"><img src="assets/ds/icons/flags/israel.svg" alt="Israel" loading="lazy"><code>Israel</code></div><div class="icotile"><img src="assets/ds/icons/flags/italy.svg" alt="Italy" loading="lazy"><code>Italy</code></div><div class="icotile"><img src="assets/ds/icons/flags/ivory-coast.svg" alt="Ivory Coast" loading="lazy"><code>Ivory Coast</code></div><div class="icotile"><img src="assets/ds/icons/flags/jamaica.svg" alt="Jamaica" loading="lazy"><code>Jamaica</code></div><div class="icotile"><img src="assets/ds/icons/flags/japan.svg" alt="Japan" loading="lazy"><code>Japan</code></div><div class="icotile"><img src="assets/ds/icons/flags/jordan.svg" alt="Jordan" loading="lazy"><code>Jordan</code></div><div class="icotile"><img src="assets/ds/icons/flags/kazakhstan.svg" alt="Kazakhstan" loading="lazy"><code>Kazakhstan</code></div><div class="icotile"><img src="assets/ds/icons/flags/kenya.svg" alt="Kenya" loading="lazy"><code>Kenya</code></div><div class="icotile"><img src="assets/ds/icons/flags/kiribati.svg" alt="Kiribati" loading="lazy"><code>Kiribati</code></div><div class="icotile"><img src="assets/ds/icons/flags/kuwait.svg" alt="Kuwait" loading="lazy"><code>Kuwait</code></div><div class="icotile"><img src="assets/ds/icons/flags/kyrgyzstan.svg" alt="Kyrgyzstan" loading="lazy"><code>Kyrgyzstan</code></div><div class="icotile"><img src="assets/ds/icons/flags/laos.svg" alt="Laos" loading="lazy"><code>Laos</code></div><div class="icotile"><img src="assets/ds/icons/flags/latvia.svg" alt="Latvia" loading="lazy"><code>Latvia</code></div><div class="icotile"><img src="assets/ds/icons/flags/lebanon.svg" alt="Lebanon" loading="lazy"><code>Lebanon</code></div><div class="icotile"><img src="assets/ds/icons/flags/lesotho.svg" alt="Lesotho" loading="lazy"><code>Lesotho</code></div><div class="icotile"><img src="assets/ds/icons/flags/liberia.svg" alt="Liberia" loading="lazy"><code>Liberia</code></div><div class="icotile"><img src="assets/ds/icons/flags/libya.svg" alt="Libya" loading="lazy"><code>Libya</code></div><div class="icotile"><img src="assets/ds/icons/flags/liechtenstein.svg" alt="Liechtenstein" loading="lazy"><code>Liechtenstein</code></div><div class="icotile"><img src="assets/ds/icons/flags/lithuania.svg" alt="Lithuania" loading="lazy"><code>Lithuania</code></div><div class="icotile"><img src="assets/ds/icons/flags/luxembourg.svg" alt="Luxembourg" loading="lazy"><code>Luxembourg</code></div><div class="icotile"><img src="assets/ds/icons/flags/madagascar.svg" alt="Madagascar" loading="lazy"><code>Madagascar</code></div><div class="icotile"><img src="assets/ds/icons/flags/malawi.svg" alt="Malawi" loading="lazy"><code>Malawi</code></div><div class="icotile"><img src="assets/ds/icons/flags/malaysia.svg" alt="Malaysia" loading="lazy"><code>Malaysia</code></div><div class="icotile"><img src="assets/ds/icons/flags/maldives.svg" alt="Maldives" loading="lazy"><code>Maldives</code></div><div class="icotile"><img src="assets/ds/icons/flags/mali.svg" alt="Mali" loading="lazy"><code>Mali</code></div><div class="icotile"><img src="assets/ds/icons/flags/malta.svg" alt="Malta" loading="lazy"><code>Malta</code></div><div class="icotile"><img src="assets/ds/icons/flags/marshall-islands.svg" alt="Marshall Islands" loading="lazy"><code>Marshall Islands</code></div><div class="icotile"><img src="assets/ds/icons/flags/mauritania.svg" alt="Mauritania" loading="lazy"><code>Mauritania</code></div><div class="icotile"><img src="assets/ds/icons/flags/mauritius.svg" alt="Mauritius" loading="lazy"><code>Mauritius</code></div><div class="icotile"><img src="assets/ds/icons/flags/mexico.svg" alt="Mexico" loading="lazy"><code>Mexico</code></div><div class="icotile"><img src="assets/ds/icons/flags/micronesia.svg" alt="Micronesia" loading="lazy"><code>Micronesia</code></div><div class="icotile"><img src="assets/ds/icons/flags/moldova.svg" alt="Moldova" loading="lazy"><code>Moldova</code></div><div class="icotile"><img src="assets/ds/icons/flags/monaco.svg" alt="Monaco" loading="lazy"><code>Monaco</code></div><div class="icotile"><img src="assets/ds/icons/flags/mongolia.svg" alt="Mongolia" loading="lazy"><code>Mongolia</code></div><div class="icotile"><img src="assets/ds/icons/flags/montenegro.svg" alt="Montenegro" loading="lazy"><code>Montenegro</code></div><div class="icotile"><img src="assets/ds/icons/flags/morocco.svg" alt="Morocco" loading="lazy"><code>Morocco</code></div><div class="icotile"><img src="assets/ds/icons/flags/mozambique.svg" alt="Mozambique" loading="lazy"><code>Mozambique</code></div><div class="icotile"><img src="assets/ds/icons/flags/myanmar.svg" alt="Myanmar" loading="lazy"><code>Myanmar</code></div><div class="icotile"><img src="assets/ds/icons/flags/namibia.svg" alt="Namibia" loading="lazy"><code>Namibia</code></div><div class="icotile"><img src="assets/ds/icons/flags/nauru.svg" alt="Nauru" loading="lazy"><code>Nauru</code></div><div class="icotile"><img src="assets/ds/icons/flags/nepal.svg" alt="Nepal" loading="lazy"><code>Nepal</code></div><div class="icotile"><img src="assets/ds/icons/flags/netherlands.svg" alt="Netherlands" loading="lazy"><code>Netherlands</code></div><div class="icotile"><img src="assets/ds/icons/flags/new-zealand.svg" alt="New Zealand" loading="lazy"><code>New Zealand</code></div><div class="icotile"><img src="assets/ds/icons/flags/nicaragua.svg" alt="Nicaragua" loading="lazy"><code>Nicaragua</code></div><div class="icotile"><img src="assets/ds/icons/flags/niger.svg" alt="Niger" loading="lazy"><code>Niger</code></div><div class="icotile"><img src="assets/ds/icons/flags/nigeria.svg" alt="Nigeria" loading="lazy"><code>Nigeria</code></div><div class="icotile"><img src="assets/ds/icons/flags/north-korea.svg" alt="North Korea" loading="lazy"><code>North Korea</code></div><div class="icotile"><img src="assets/ds/icons/flags/north-macedonia.svg" alt="North Macedonia" loading="lazy"><code>North Macedonia</code></div><div class="icotile"><img src="assets/ds/icons/flags/norway.svg" alt="Norway" loading="lazy"><code>Norway</code></div><div class="icotile"><img src="assets/ds/icons/flags/oman.svg" alt="Oman" loading="lazy"><code>Oman</code></div><div class="icotile"><img src="assets/ds/icons/flags/pakistan.svg" alt="Pakistan" loading="lazy"><code>Pakistan</code></div><div class="icotile"><img src="assets/ds/icons/flags/palau.svg" alt="Palau" loading="lazy"><code>Palau</code></div><div class="icotile"><img src="assets/ds/icons/flags/palestine.svg" alt="Palestine" loading="lazy"><code>Palestine</code></div><div class="icotile"><img src="assets/ds/icons/flags/panama.svg" alt="Panama" loading="lazy"><code>Panama</code></div><div class="icotile"><img src="assets/ds/icons/flags/papua-new-guinea.svg" alt="Papua New Guinea" loading="lazy"><code>Papua New Guinea</code></div><div class="icotile"><img src="assets/ds/icons/flags/paraguay.svg" alt="Paraguay" loading="lazy"><code>Paraguay</code></div><div class="icotile"><img src="assets/ds/icons/flags/peru.svg" alt="Peru" loading="lazy"><code>Peru</code></div><div class="icotile"><img src="assets/ds/icons/flags/philippines.svg" alt="Philippines" loading="lazy"><code>Philippines</code></div><div class="icotile"><img src="assets/ds/icons/flags/poland.svg" alt="Poland" loading="lazy"><code>Poland</code></div><div class="icotile"><img src="assets/ds/icons/flags/portugal.svg" alt="Portugal" loading="lazy"><code>Portugal</code></div><div class="icotile"><img src="assets/ds/icons/flags/qatar.svg" alt="Qatar" loading="lazy"><code>Qatar</code></div><div class="icotile"><img src="assets/ds/icons/flags/romania.svg" alt="Romania" loading="lazy"><code>Romania</code></div><div class="icotile"><img src="assets/ds/icons/flags/russia.svg" alt="Russia" loading="lazy"><code>Russia</code></div><div class="icotile"><img src="assets/ds/icons/flags/rwanda.svg" alt="Rwanda" loading="lazy"><code>Rwanda</code></div><div class="icotile"><img src="assets/ds/icons/flags/saint-lucia.svg" alt="Saint Lucia" loading="lazy"><code>Saint Lucia</code></div><div class="icotile"><img src="assets/ds/icons/flags/saint-vincent-and-the-grenadines.svg" alt="Saint Vincent and the Grenadines" loading="lazy"><code>Saint Vincent and the Grenadines</code></div><div class="icotile"><img src="assets/ds/icons/flags/samoa.svg" alt="Samoa" loading="lazy"><code>Samoa</code></div><div class="icotile"><img src="assets/ds/icons/flags/san-marino.svg" alt="San Marino" loading="lazy"><code>San Marino</code></div><div class="icotile"><img src="assets/ds/icons/flags/sao-tome-and-principe.svg" alt="Sao Tome and Principe" loading="lazy"><code>Sao Tome and Principe</code></div><div class="icotile"><img src="assets/ds/icons/flags/saudi-arabia.svg" alt="Saudi Arabia" loading="lazy"><code>Saudi Arabia</code></div><div class="icotile"><img src="assets/ds/icons/flags/senegal.svg" alt="Senegal" loading="lazy"><code>Senegal</code></div><div class="icotile"><img src="assets/ds/icons/flags/serbia.svg" alt="Serbia" loading="lazy"><code>Serbia</code></div><div class="icotile"><img src="assets/ds/icons/flags/seychelles.svg" alt="Seychelles" loading="lazy"><code>Seychelles</code></div><div class="icotile"><img src="assets/ds/icons/flags/sierra-leone.svg" alt="Sierra Leone" loading="lazy"><code>Sierra Leone</code></div><div class="icotile"><img src="assets/ds/icons/flags/singapore.svg" alt="Singapore" loading="lazy"><code>Singapore</code></div><div class="icotile"><img src="assets/ds/icons/flags/sint-maarten.svg" alt="Sint Maarten" loading="lazy"><code>Sint Maarten</code></div><div class="icotile"><img src="assets/ds/icons/flags/slovakia.svg" alt="Slovakia" loading="lazy"><code>Slovakia</code></div><div class="icotile"><img src="assets/ds/icons/flags/slovenia.svg" alt="Slovenia" loading="lazy"><code>Slovenia</code></div><div class="icotile"><img src="assets/ds/icons/flags/solomon-islands.svg" alt="Solomon Islands" loading="lazy"><code>Solomon Islands</code></div><div class="icotile"><img src="assets/ds/icons/flags/somalia.svg" alt="Somalia" loading="lazy"><code>Somalia</code></div><div class="icotile"><img src="assets/ds/icons/flags/south-africa.svg" alt="South Africa" loading="lazy"><code>South Africa</code></div><div class="icotile"><img src="assets/ds/icons/flags/south-korea.svg" alt="South Korea" loading="lazy"><code>South Korea</code></div><div class="icotile"><img src="assets/ds/icons/flags/south-sudan.svg" alt="South Sudan" loading="lazy"><code>South Sudan</code></div><div class="icotile"><img src="assets/ds/icons/flags/spain.svg" alt="Spain" loading="lazy"><code>Spain</code></div><div class="icotile"><img src="assets/ds/icons/flags/sri-lanka.svg" alt="Sri Lanka" loading="lazy"><code>Sri Lanka</code></div><div class="icotile"><img src="assets/ds/icons/flags/sudan.svg" alt="Sudan" loading="lazy"><code>Sudan</code></div><div class="icotile"><img src="assets/ds/icons/flags/suriname.svg" alt="Suriname" loading="lazy"><code>Suriname</code></div><div class="icotile"><img src="assets/ds/icons/flags/sweden.svg" alt="Sweden" loading="lazy"><code>Sweden</code></div><div class="icotile"><img src="assets/ds/icons/flags/switzerland.svg" alt="Switzerland" loading="lazy"><code>Switzerland</code></div><div class="icotile"><img src="assets/ds/icons/flags/syria.svg" alt="Syria" loading="lazy"><code>Syria</code></div><div class="icotile"><img src="assets/ds/icons/flags/tajikistan.svg" alt="Tajikistan" loading="lazy"><code>Tajikistan</code></div><div class="icotile"><img src="assets/ds/icons/flags/tanzania.svg" alt="Tanzania" loading="lazy"><code>Tanzania</code></div><div class="icotile"><img src="assets/ds/icons/flags/thailand.svg" alt="Thailand" loading="lazy"><code>Thailand</code></div><div class="icotile"><img src="assets/ds/icons/flags/timor-leste.svg" alt="Timor-Leste" loading="lazy"><code>Timor-Leste</code></div><div class="icotile"><img src="assets/ds/icons/flags/togo.svg" alt="Togo" loading="lazy"><code>Togo</code></div><div class="icotile"><img src="assets/ds/icons/flags/tonga.svg" alt="Tonga" loading="lazy"><code>Tonga</code></div><div class="icotile"><img src="assets/ds/icons/flags/trinidad-and-tobago.svg" alt="Trinidad and Tobago" loading="lazy"><code>Trinidad and Tobago</code></div><div class="icotile"><img src="assets/ds/icons/flags/tunisia.svg" alt="Tunisia" loading="lazy"><code>Tunisia</code></div><div class="icotile"><img src="assets/ds/icons/flags/turkey.svg" alt="Turkey" loading="lazy"><code>Turkey</code></div><div class="icotile"><img src="assets/ds/icons/flags/turkmenistan.svg" alt="Turkmenistan" loading="lazy"><code>Turkmenistan</code></div><div class="icotile"><img src="assets/ds/icons/flags/tuvalu.svg" alt="Tuvalu" loading="lazy"><code>Tuvalu</code></div><div class="icotile"><img src="assets/ds/icons/flags/uganda.svg" alt="Uganda" loading="lazy"><code>Uganda</code></div><div class="icotile"><img src="assets/ds/icons/flags/ukraine.svg" alt="Ukraine" loading="lazy"><code>Ukraine</code></div><div class="icotile"><img src="assets/ds/icons/flags/united-arab-emirates.svg" alt="United Arab Emirates" loading="lazy"><code>United Arab Emirates</code></div><div class="icotile"><img src="assets/ds/icons/flags/united-kingdom.svg" alt="United Kingdom" loading="lazy"><code>United Kingdom</code></div><div class="icotile"><img src="assets/ds/icons/flags/united-states.svg" alt="United States" loading="lazy"><code>United States</code></div><div class="icotile"><img src="assets/ds/icons/flags/uruguay.svg" alt="Uruguay" loading="lazy"><code>Uruguay</code></div><div class="icotile"><img src="assets/ds/icons/flags/uzbekistan.svg" alt="Uzbekistan" loading="lazy"><code>Uzbekistan</code></div><div class="icotile"><img src="assets/ds/icons/flags/vanuatu.svg" alt="Vanuatu" loading="lazy"><code>Vanuatu</code></div><div class="icotile"><img src="assets/ds/icons/flags/venezuela.svg" alt="Venezuela" loading="lazy"><code>Venezuela</code></div><div class="icotile"><img src="assets/ds/icons/flags/vietnam.svg" alt="Vietnam" loading="lazy"><code>Vietnam</code></div><div class="icotile"><img src="assets/ds/icons/flags/virgin-islands.svg" alt="Virgin Islands" loading="lazy"><code>Virgin Islands</code></div><div class="icotile"><img src="assets/ds/icons/flags/yemen.svg" alt="Yemen" loading="lazy"><code>Yemen</code></div><div class="icotile"><img src="assets/ds/icons/flags/zambia.svg" alt="Zambia" loading="lazy"><code>Zambia</code></div><div class="icotile"><img src="assets/ds/icons/flags/zimbabwe.svg" alt="Zimbabwe" loading="lazy"><code>Zimbabwe</code></div></div>
     <h2>Usage</h2>
     <div class="props">
       <div class="pr h"><span>Rule</span><span></span><span>Detail</span></div>
@@ -1458,39 +1474,24 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
   <section class="page" id="projects" data-crumb="Projects">
     <div class="kick">projects <b>· options + chosen route, always</b></div>
     <h1>Projects</h1>
-    <p class="lede">Every prototype in the estate, one click away. Prototypes open in a new tab; the repo link is the record (brief, options, decisions).</p>
-    <div class="launchgrid">
-      <div class="launch"><b>PLP UI updates - All Brands</b><span class="lt">open</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/debenhamsgroup.design/tree/plp-alignment" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>PDP Layout and Components - MAN</b><span class="lt">open</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/core-pdp-2026/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/core-pdp-2026" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>CTA Colour Alignment - All Brands</b><span class="lt">merged</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/colour-alignment-prototype" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>New Checkout Payment Section Update</b><span class="lt">prototype</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/checkout-2026-promo-gift-card" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>Virtual Try On - All Brands</b><span class="lt">open</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/vto-prototype/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/vto-prototype" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>AI Generated Badge</b><span class="lt">deck</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/ai-generated-badge/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/ai-generated-badge" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>Group Design System (v1)</b><span class="lt">retired</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/Group-Design-System/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/Group-Design-System" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>UX Design Request Form</b><span class="lt">tool</span><div class="lk"><a class="bd pri sm" href="https://jakerayner96.github.io/UX-Design-Request/" target="_blank" rel="noopener">Open prototype ↗</a><a class="lnk" href="https://github.com/jakerayner96/UX-Design-Request" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>The Brand Room - Launch Prototype</b><span class="lt">repo</span><div class="lk"><span class="nolive">no live build</span><a class="lnk" href="https://github.com/jakerayner96/THEBRANDROOM" target="_blank" rel="noopener">repo ↗</a></div></div>
-      <div class="launch"><b>PLT app prototype</b><span class="lt">private</span><div class="lk"><span class="nolive">no live build</span><a class="lnk" href="https://github.com/jakerayner96/plt-app-prototype" target="_blank" rel="noopener">repo ↗</a></div></div>
-    </div>
-    <h2>Tools <code>internal · not prototypes</code></h2>
-    <div class="launchgrid">
-      <div class="launch"><b>DG Group Product Scraper</b><span class="lt">private</span><div class="lk"><span class="nolive">no live build</span><a class="lnk" href="https://github.com/jakerayner96/debenhams-design-system-scraper" target="_blank" rel="noopener">repo ↗</a></div></div>
-    </div>
+    <p class="lede">Every project in the estate, one click away. Prototypes open in a new tab; the repo link is the record (brief, options, decisions).</p>
+    <div class="launchgrid" id="projGrid"></div>
     <h2>The record <code>briefs · options · chosen routes</code></h2>
     <p>Every brief as a record: what was explored, what won, and where it lives now. Delivered work merges to the master prototype.</p>
     <div class="tbl">
       <div class="tr h"><span></span><span>Project</span><span>Scope</span><span>When</span><span>Status</span></div>
-      <div class="tr" onclick="location.hash='p-plp'"><span class="id">P-05</span><span class="nm">PLP UI updates - All Brands</span><span class="d">5 fascias → 1 core template · fonts, cards, grid as config</span><span class="id">Sep 26</span><span class="pill wip">open</span></div>
-      <div class="tr" onclick="location.hash='p-colour'"><span class="id">P-04</span><span class="nm">CTA Colour Alignment - All Brands</span><span class="d">Final styling · 5 brands × 5 screens · golden-truth matrix</span><span class="id">Aug 26</span><span class="pill ok">merged</span></div>
-      <div class="tr" onclick="location.hash='p-checkout'"><span class="id">P-03</span><span class="nm">New Checkout Payment Section Update</span><span class="d">Smart promo / gift-card field</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
-      <div class="tr"><span class="id">P-02</span><span class="nm">Virtual Try-On</span><span class="d">First-use journey · asset-embed pattern</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
-      <div class="tr"><span class="id">P-01</span><span class="nm">AI-Gen Labelling</span><span class="d">Estate-wide labelling policy deck</span><span class="id">Aug 26</span><span class="pill">delivered</span></div>
+      <div class="tr" onclick="location.hash='p-plp'"><span class="id">P-05</span><span class="nm">PLP Redesign</span><span class="d">5 fascias → 1 core template · fonts, cards, grid as config</span><span class="id">Sep 26</span><span class="pill wip">open</span></div>
+      <div class="tr" onclick="location.hash='p-colour'"><span class="id">P-04</span><span class="nm">CTA Colour Alignment</span><span class="d">Final styling · 5 brands × 5 screens · golden-truth matrix</span><span class="id">Aug 26</span><span class="pill ok">merged</span></div>
+      <div class="tr" onclick="location.hash='p-checkout'"><span class="id">P-03</span><span class="nm">New Checkout</span><span class="d">Smart promo / gift-card field</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
+      <div class="tr"><span class="id">P-02</span><span class="nm">VTO</span><span class="d">First-use journey · asset-embed pattern</span><span class="id">Aug 26</span><span class="pill">shipped</span></div>
+      <div class="tr"><span class="id">P-01</span><span class="nm">AI Generated Badge</span><span class="d">Estate-wide labelling policy deck</span><span class="id">Aug 26</span><span class="pill">delivered</span></div>
     </div>
   </section>
 
   <!-- PROJECT: PLP -->
-  <section class="page" id="p-plp" data-crumb="Projects / PLP UI updates - All Brands">
+  <section class="page" id="p-plp" data-crumb="Projects / PLP Redesign">
     <div class="kick">projects / P-05</div>
-    <h1>PLP UI updates - All Brands</h1>
+    <h1>PLP Redesign</h1>
     <p class="openrow"><a class="bd pri sm" href="https://jakerayner96.github.io/debenhamsgroup.design/projects/plp-alignment/" target="_blank" rel="noopener">Open prototype ↗</a></p>
     <div class="meta"><span>status <b>open</b></span><span>brief <b>Scott · 01 Sep</b></span><span>target <b>w/c 08 Sep</b></span><span>fascias <b>5</b></span><span>branch <b><a href="https://github.com/jakerayner96/debenhamsgroup.design/tree/plp-alignment" target="_blank" rel="noopener" style="color:var(--aq)">plp-alignment</a></b></span></div>
     <p class="lede">Align boohoo, boohooMAN, PLT, Warehouse and The Brand Room onto one core PLP template. Differences become configuration, not forks. PLT is the reference implementation.</p>
@@ -1512,9 +1513,9 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
   </section>
 
   <!-- PROJECT: COLOUR -->
-  <section class="page" id="p-colour" data-crumb="Projects / CTA Colour Alignment - All Brands">
+  <section class="page" id="p-colour" data-crumb="Projects / CTA Colour Alignment">
     <div class="kick">projects / P-04</div>
-    <h1>CTA Colour Alignment - All Brands</h1>
+    <h1>CTA Colour Alignment</h1>
     <p class="openrow"><a class="bd pri sm" href="https://jakerayner96.github.io/colour-alignment-prototype/brand-colours.html" target="_blank" rel="noopener">Open prototype ↗</a></p>
     <div class="meta"><span>status <b>merged</b></span><span>review <b>KM · Aug 26</b></span><span>screens <b>PDP · Added · Bag · Checkout · Account</b></span></div>
     <p class="lede">Final styling per fascia across five core screens, plus the golden-truth button state matrix. The Colour page renders this project's output.</p>
@@ -1527,41 +1528,42 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
   </section>
 
   <!-- PROJECT: CHECKOUT -->
-  <section class="page" id="p-checkout" data-crumb="Projects / New Checkout Payment Section Update">
+  <section class="page" id="p-checkout" data-crumb="Projects / New Checkout">
     <div class="kick">projects / P-03</div>
-    <h1>New Checkout Payment Section Update</h1>
+    <h1>New Checkout</h1>
     <p class="openrow"><a class="bd pri sm" href="https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html" target="_blank" rel="noopener">Open prototype ↗</a></p>
     <div class="meta"><span>status <b>shipped</b></span><span>figma <b>WChEtDPH… · 3990:58406</b></span></div>
     <p class="lede">One smart field between donation and payment that accepts a promo code or a gift card number and works out which it's been given. Single self-contained prototype.</p>
   </section>
 
   <!-- BRANDS -->
-  <section class="page" id="brands" data-crumb="Brand Centre">
+  <section class="page" id="brands" data-crumb="Brand Centre / All brands">
     <div class="kick">brand centre <b>· 21 fascias · 21 modes</b></div>
-    <h1>The estate</h1>
-    <p class="lede">Every fascia in the group. Pick one to preview it across the system, download its logo in black or white as SVG or PNG, and open its brand guidelines.</p>
+    <h1>All brands</h1>
+    <p class="lede">Every fascia in the group. Pick one for its own page: logo downloads in black or white as SVG or PNG, brand guidelines, colour and type. Opening a brand also previews it across the system.</p>
     <div class="wall">
-      <a class="f" href="#" data-b="debenhams" onclick="setBrand('debenhams');return false"><i style="background:linear-gradient(140deg,#7BE7D8,#0A0A0A)"></i><img src="assets/brands/debenhams.svg" alt=""><span>Debenhams</span></a>
-      <a class="f" href="#" data-b="boohoo" onclick="setBrand('boohoo');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/boohoo.svg" alt=""><span>boohoo</span></a>
-      <a class="f" href="#" data-b="boohooman" onclick="setBrand('boohooman');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/boohooman.svg" alt=""><span>boohooMAN</span></a>
-      <a class="f" href="#" data-b="plt" onclick="setBrand('plt');return false"><i style="background:linear-gradient(140deg,#550503,#0A0A0A)"></i><img src="assets/brands/plt.svg" alt=""><span>PrettyLittleThing</span></a>
-      <a class="f" href="#" data-b="karenmillen" onclick="setBrand('karenmillen');return false"><i style="background:linear-gradient(140deg,#D24508,#0A0A0A)"></i><img src="assets/brands/karenmillen.svg" alt=""><span>Karen Millen</span></a>
-      <a class="f" href="#" data-b="warehouse" onclick="setBrand('warehouse');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/warehouse.svg" alt=""><span>Warehouse</span></a>
-      <a class="f" href="#" data-b="brandroom" onclick="setBrand('brandroom');return false"><i style="background:linear-gradient(140deg,#0F0F0F,#0A0A0A)"></i><img src="assets/brands/brandroom.svg" alt=""><span>The Brand Room</span></a>
-      <a class="f" href="#" data-b="debenhamsoutlet" onclick="setBrand('debenhamsoutlet');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Debenhams Outlet</span></a>
-      <a class="f" href="#" data-b="wallis" onclick="setBrand('wallis');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/wallis.svg" alt=""><span>Wallis</span></a>
-      <a class="f" href="#" data-b="burton" onclick="setBrand('burton');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><img src="assets/brands/burton.svg" alt=""><span>Burton</span></a>
-      <a class="f" href="#" data-b="principles" onclick="setBrand('principles');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/principles.svg" alt=""><span>Principles</span></a>
-      <a class="f" href="#" data-b="coast" onclick="setBrand('coast');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/coast.svg" alt=""><span>Coast</span></a>
-      <a class="f" href="#" data-b="oasis" onclick="setBrand('oasis');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/oasis.svg" alt=""><span>Oasis</span></a>
-      <a class="f" href="#" data-b="dorothyperkins" onclick="setBrand('dorothyperkins');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/dorothyperkins.svg" alt=""><span>Dorothy Perkins</span></a>
-      <a class="f" href="#" data-b="maine" onclick="setBrand('maine');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span style="margin-top:auto">Maine</span></a>
-      <a class="f" href="#" data-b="gorgeous" onclick="setBrand('gorgeous');return false"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span style="margin-top:auto">Gorgeous</span></a>
-      <a class="f" href="#" data-b="misspap" onclick="setBrand('misspap');return false"><i style="background:linear-gradient(140deg,#101820,#0A0A0A)"></i><img src="assets/brands/misspap.svg" alt=""><span>Misspap</span></a>
-      <a class="f" href="#" data-b="nastygal" onclick="setBrand('nastygal');return false"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/nastygal.svg" alt=""><span>Nasty Gal</span></a>
-      <a class="f" href="#" data-b="foreverunique" onclick="setBrand('foreverunique');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Forever Unique</span></a>
-      <a class="f" href="#" data-b="dsgnstudio" onclick="setBrand('dsgnstudio');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">DSGN Studio</span></a>
-      <a class="f" href="#" data-b="trainingdept" onclick="setBrand('trainingdept');return false"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span style="margin-top:auto">Training Dept</span></a>
+      <a class="f" href="#b-debenhamsgroup" data-b="debenhamsgroup"><i style="background:linear-gradient(140deg,#7BE7D8,#0A0A0A)"></i><img src="assets/brands/debenhamsgroup.svg" alt=""><span>Debenhams Group</span></a>
+      <a class="f" href="#b-debenhams" data-b="debenhams"><i style="background:linear-gradient(140deg,#7BE7D8,#0A0A0A)"></i><img src="assets/brands/debenhams.svg" alt=""><span>Debenhams</span></a>
+      <a class="f" href="#b-boohoo" data-b="boohoo"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/boohoo.svg" alt=""><span>boohoo</span></a>
+      <a class="f" href="#b-boohooman" data-b="boohooman"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/boohooman.svg" alt=""><span>boohooMAN</span></a>
+      <a class="f" href="#b-plt" data-b="plt"><i style="background:linear-gradient(140deg,#550503,#0A0A0A)"></i><img src="assets/brands/plt.svg" alt=""><span>PrettyLittleThing</span></a>
+      <a class="f" href="#b-karenmillen" data-b="karenmillen"><i style="background:linear-gradient(140deg,#D24508,#0A0A0A)"></i><img src="assets/brands/karenmillen.svg" alt=""><span>Karen Millen</span></a>
+      <a class="f" href="#b-warehouse" data-b="warehouse"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/warehouse.svg" alt=""><span>Warehouse</span></a>
+      <a class="f" href="#b-brandroom" data-b="brandroom"><i style="background:linear-gradient(140deg,#0F0F0F,#0A0A0A)"></i><img src="assets/brands/brandroom.svg" alt=""><span>The Brand Room</span></a>
+      <a class="f" href="#b-debenhamsoutlet" data-b="debenhamsoutlet"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/debenhamsoutlet.svg" alt=""><span>Debenhams Outlet</span></a>
+      <a class="f" href="#b-wallis" data-b="wallis"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/wallis.svg" alt=""><span>Wallis</span></a>
+      <a class="f" href="#b-burton" data-b="burton"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><img src="assets/brands/burton.svg" alt=""><span>Burton</span></a>
+      <a class="f" href="#b-principles" data-b="principles"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/principles.svg" alt=""><span>Principles</span></a>
+      <a class="f" href="#b-coast" data-b="coast"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/coast.svg" alt=""><span>Coast</span></a>
+      <a class="f" href="#b-oasis" data-b="oasis"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/oasis.svg" alt=""><span>Oasis</span></a>
+      <a class="f" href="#b-dorothyperkins" data-b="dorothyperkins"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/dorothyperkins.svg" alt=""><span>Dorothy Perkins</span></a>
+      <a class="f" href="#b-maine" data-b="maine"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span>Maine</span></a>
+      <a class="f" href="#b-gorgeous" data-b="gorgeous"><i style="background:linear-gradient(140deg,#284D7B,#0A0A0A)"></i><span>Gorgeous</span></a>
+      <a class="f" href="#b-misspap" data-b="misspap"><i style="background:linear-gradient(140deg,#101820,#0A0A0A)"></i><img src="assets/brands/misspap.svg" alt=""><span>Misspap</span></a>
+      <a class="f" href="#b-nastygal" data-b="nastygal"><i style="background:linear-gradient(140deg,#444444,#0A0A0A)"></i><img src="assets/brands/nastygal.svg" alt=""><span>Nasty Gal</span></a>
+      <a class="f" href="#b-foreverunique" data-b="foreverunique"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span>Forever Unique</span></a>
+      <a class="f" href="#b-dsgnstudio" data-b="dsgnstudio"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><img src="assets/brands/dsgnstudio.svg" alt=""><span>DSGN Studio</span></a>
+      <a class="f" href="#b-trainingdept" data-b="trainingdept"><i style="background:linear-gradient(140deg,#000000,#0A0A0A)"></i><span>Training Dept</span></a>
     </div>
     <h2>Modes <code>data-brand — the only theming mechanism</code></h2>
     <p>One attribute on the root element themes everything: colours, font, weights, radius, case. No per-brand CSS files, no component forks. All 21 fascias are modes today.</p>
@@ -1589,28 +1591,6 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
       <div class="tk"><i style="background:#000000"></i><code>dsgnstudio</code><code>HankenGrotesk</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
       <div class="tk"><i style="background:#000000"></i><code>trainingdept</code><code>HankenGrotesk</code><span class="role">Colour set mapped from the front-end theme (primary / CTA / nav / footer band)</span></div>
     </div>
-    <h2 id="logokit-h">Logos and guidelines <code>self-serve · black or white · SVG or PNG</code></h2>
-    <div class="kits" id="logokit"></div>
-  </section>
-
-  <!-- REQUESTS -->
-  <section class="page" id="requests" data-crumb="Requests / Board">
-    <div class="kick">requests <b>· intake wired to the existing worker</b></div>
-    <h1>Requests</h1>
-    <p class="lede">Ask, track, receive. Intake runs on the UX Design Request worker; this board is the status view over that data.</p>
-    <div class="board">
-      <div class="col"><h4>New <b>2</b></h4>
-        <div class="card">Warehouse footer — square corners + black CTA<div class="who">SCOTT · ECOMMERCE · SEP 01</div></div>
-        <div class="card">BHW font scale → PLT sizes, full site<div class="who">SCOTT · ECOMMERCE · SEP 01</div></div>
-      </div>
-      <div class="col"><h4>In progress <b>1</b></h4>
-        <div class="card">PLP UI updates - All Brands — five fascias, one template<div class="who">JAKE · DESIGN · W/C 08 SEP</div></div>
-      </div>
-      <div class="col"><h4>Done <b>2</b></h4>
-        <div class="card">CTA Colour Alignment - All Brands — KM review complete<div class="who">MERGED AUG 26</div></div>
-        <div class="card">New Checkout Payment Section Update — promo / gift-card field<div class="who">SHIPPED AUG 26</div></div>
-      </div>
-    </div>
   </section>
 
 </main>
@@ -1634,7 +1614,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <button data-b="karenmillen" role="menuitem"><span>Karen Millen</span><span class="appic dk" style="background:#D24508"><img src="assets/brands/karenmillen.svg" alt=""></span></button>
     <button data-b="warehouse" role="menuitem"><span>Warehouse</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/warehouse.svg" alt=""></span></button>
     <button data-b="brandroom" role="menuitem"><span>The Brand Room</span><span class="appic dk" style="background:#0F0F0F;outline:1px solid var(--line-2)"><img src="assets/brands/brandroom.svg" alt=""></span></button>
-    <button data-b="debenhamsoutlet" role="menuitem"><span>Debenhams Outlet</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">DO</b></span></button>
+    <button data-b="debenhamsoutlet" role="menuitem"><span>Debenhams Outlet</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/debenhamsoutlet.svg" alt=""></span></button>
     <button data-b="wallis" role="menuitem"><span>Wallis</span><span class="appic dk" style="background:#444444"><img src="assets/brands/wallis.svg" alt=""></span></button>
     <button data-b="burton" role="menuitem"><span>Burton</span><span class="appic dk" style="background:#284D7B"><img src="assets/brands/burton.svg" alt=""></span></button>
     <button data-b="principles" role="menuitem"><span>Principles</span><span class="appic dk" style="background:#444444"><img src="assets/brands/principles.svg" alt=""></span></button>
@@ -1646,7 +1626,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <button data-b="misspap" role="menuitem"><span>Misspap</span><span class="appic dk" style="background:#101820"><img src="assets/brands/misspap.svg" alt=""></span></button>
     <button data-b="nastygal" role="menuitem"><span>Nasty Gal</span><span class="appic dk" style="background:#444444"><img src="assets/brands/nastygal.svg" alt=""></span></button>
     <button data-b="foreverunique" role="menuitem"><span>Forever Unique</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">FU</b></span></button>
-    <button data-b="dsgnstudio" role="menuitem"><span>DSGN Studio</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">DS</b></span></button>
+    <button data-b="dsgnstudio" role="menuitem"><span>DSGN Studio</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><img src="assets/brands/dsgnstudio.svg" alt=""></span></button>
     <button data-b="trainingdept" role="menuitem"><span>Training Dept</span><span class="appic dk" style="background:#000000;outline:1px solid var(--line-2)"><b style="font:700 9px/1 var(--mono);color:#fff">TD</b></span></button>
   </div>
 </div>
@@ -1655,7 +1635,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 <!-- ============ SEARCH ============ -->
 <div class="ovl" id="ovl" onclick="if(event.target===this)closePal()">
   <div class="pal">
-    <input id="q" placeholder="Search components, projects, brands, requests…" autocomplete="off">
+    <input id="q" placeholder="Search components, brands, projects, tools…" autocomplete="off">
     <div class="res" id="res"></div>
     <div class="ft"><span>↑↓ navigate</span><span>↵ open</span><span>esc close</span></div>
   </div>
@@ -1704,7 +1684,7 @@ C.forEach((c,i)=>{
   main.appendChild(s);
 });
 /* sidebar: one entry per component, grouped */
-(function(){const host=document.getElementById('dsItems');if(!host)return;const anchor=host.querySelector('a[href="#icons"]');
+(function(){const host=document.getElementById('dsItems');if(!host)return;const anchor=host.querySelector('a[href="#dev-overlay"]');
   groups.forEach(g=>{const sub=document.createElement('div');sub.className='sub';sub.textContent=g;host.insertBefore(sub,anchor);
     C.filter(c=>c.group===g).forEach(c=>{const a=document.createElement('a');a.href='#c-'+c.slug;a.innerHTML=`<span class="ic">▢</span>${c.name}`;host.insertBefore(a,anchor)})});
 })();
@@ -1752,7 +1732,7 @@ window.DG_REG=[{h:'gallery',t:'Component library',k:'gallery wiki all components
 window.dlLogo=async function(slug,colour,fmt){
   const txt=await (await fetch('assets/brands/'+slug+'.svg')).text();
   const to=colour==='white'?'#FFFFFF':'#000000';
-  const svg=txt.replace(/fill="(black|#000|#000000|#242424|#010101|#0f0f0f|#1a1a1a)"/gi,'fill="'+to+'"').replace(/stroke="(black|#000|#000000|#242424|#010101)"/gi,'stroke="'+to+'"');
+  const svg=colour==='original'?txt:txt.replace(/fill="(black|#000|#000000|#242424|#010101|#0f0f0f|#1a1a1a)"/gi,'fill="'+to+'"').replace(/stroke="(black|#000|#000000|#242424|#010101)"/gi,'stroke="'+to+'"');
   const save=(blob,name)=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)};
   const name=slug+'-logo-'+colour;
   if(fmt==='svg'){save(new Blob([svg],{type:'image/svg+xml'}),name+'.svg');return}
@@ -1768,19 +1748,8 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   const tb=document.getElementById('themeBtn');
   if(tb)tb.onclick=()=>{const light=document.documentElement.getAttribute('data-theme')!=='light';document.documentElement.setAttribute('data-theme',light?'light':'dark');try{localStorage.setItem(KEY,light?'light':'dark')}catch(e){}
     document.querySelectorAll('.fx').forEach(fx=>fx.classList.toggle('dark',window.dgLum(fx)<.5))};
-  const kit=document.getElementById('logokit');
-  if(kit&&window.DG_FASCIAS){
-    const HAS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse','brandroom','wallis','burton','principles','coast','oasis','dorothyperkins','misspap','nastygal'];
-    const G='assets/brands/guidelines/';
-    const GUIDES={debenhams:[['Brand guidelines 2025',G+'debenhams-brand-guidelines-2025.pdf','18 MB']],boohoo:[['Brand guidelines · condensed',G+'boohoo-brand-guidelines-condensed.pdf','20 MB']],boohooman:[['Brand guidelines',G+'boohooman-brand-guidelines.pdf','4 MB']],plt:[['Brand bible',G+'plt-brand-bible.pdf','17 MB'],['Identity pack',G+'plt-identity-pack.pdf','5 MB']]};
-    kit.innerHTML=window.DG_FASCIAS.map(([sl,nm])=>{const has=HAS.includes(sl);
-      const g=(GUIDES[sl]||[]).map(([t,u,sz])=>`<a class="kbtn" href="${u}" target="_blank" rel="noopener">${t} <small>PDF · ${sz}</small></a>`).join('');
-      const prev=has?`<span class="kd"><img src="assets/brands/${sl}.svg" alt=""></span><span class="kl"><img src="assets/brands/${sl}.svg" alt=""></span>`:`<span class="kd none">Logo artwork to come</span>`;
-      const dl=has?`<div class="krow"><span>Logo</span><button class="kbtn" onclick="dlLogo('${sl}','black','svg')">SVG · black</button><button class="kbtn" onclick="dlLogo('${sl}','white','svg')">SVG · white</button><button class="kbtn" onclick="dlLogo('${sl}','black','png')">PNG · black</button><button class="kbtn" onclick="dlLogo('${sl}','white','png')">PNG · white</button></div>`:'';
-      return `<div class="kit" data-b="${sl}"><div class="kprev">${prev}</div><div class="kbody"><b>${nm}</b>${dl}<div class="krow"><span>Guidelines</span>${g||'<em>not on file yet</em>'}</div></div></div>`}).join('');
-  }
   const bt=document.getElementById('btiles');
-  if(bt&&window.DG_FASCIAS)bt.innerHTML=window.DG_FASCIAS.map(([sl,nm])=>`<a class="btile" href="#brands" onclick="setBrand('${sl}')"><img src="assets/brands/${sl}.svg" alt="" onerror="this.parentNode.classList.add('noimg');this.remove()"><span>${nm}</span></a>`).join('');
+  if(bt&&window.DG_FASCIAS)bt.innerHTML=[['debenhamsgroup','Debenhams Group']].concat(window.DG_FASCIAS).map(([sl,nm])=>`<a class="btile${sl==='debenhamsgroup'?' grp':''}" href="#b-${sl}"><img src="assets/brands/${sl}.svg" alt="" onerror="this.parentNode.classList.add('noimg');this.remove()"><span>${nm}</span></a>`).join('');
   const host=document.getElementById('collage'),C=window.DG_CATALOGUE;
   if(!host||!C)return;
   const pick=[['button','<button class="bd pri">Add to bag</button>'],['toggle',0],['checkbox',0],['badges',0],['chip',0],['price',0],['ratings',0],['quantity',0],['filter-pill',0],['text-link',0],['icon-button',0],['tag-pill',0]];
@@ -1788,10 +1757,118 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
 })();
 </script>
 <script>
+/* ---- IA: Brand Centre · Projects · Planning and Tools. Add a project, tool or fascia here and the sidebar, home tiles, landing pages and search all pick it up. ---- */
+(function(){
+  const GH='https://jakerayner96.github.io/',RP='https://github.com/jakerayner96/';
+  /* status → pill colour: ok = merged/live, wip = open, plain otherwise */
+  const P=window.DG_PROJECTS=[
+    {n:'PLP Redesign',d:'2026-09-18T15:55',st:'open',u:GH+'debenhamsgroup.design/projects/plp-alignment/',r:RP+'debenhamsgroup.design/tree/plp-alignment',pg:'p-plp',k:'plp alignment warehouse boohoo template p-05'},
+    {n:'PDP Redesign',d:'2026-09-18T15:54',st:'open',u:GH+'core-pdp-2026/',r:RP+'core-pdp-2026',k:'pdp core 2026 man layout components'},
+    {n:'CTA Colour Alignment',d:'2026-08-27',st:'merged',u:GH+'colour-alignment-prototype/brand-colours.html',r:RP+'colour-alignment-prototype',pg:'p-colour',k:'colour alignment merged km p-04'},
+    {n:'New Checkout',d:'2026-08-14',st:'shipped',u:GH+'checkout-2026-promo-gift-card/checkout-gift-card.html',r:RP+'checkout-2026-promo-gift-card',pg:'p-checkout',k:'checkout 2026 promo gift card payment p-03'},
+    {n:'VTO',d:'2026-09-10',st:'open',u:GH+'vto-prototype/',r:RP+'vto-prototype',k:'virtual try on stylist vto'},
+    {n:'AI Generated Badge',d:'2026-09-01T13:33',st:'deck',u:GH+'ai-generated-badge/',r:RP+'ai-generated-badge',k:'ai generated badge labelling'},
+    {n:'Design Request Form',d:'2026-07-14',st:'tool',u:GH+'UX-Design-Request/',r:RP+'UX-Design-Request',k:'ux design request form intake'},
+    {n:'The Brand Room',d:'2026-09-01T14:32',st:'repo',r:RP+'THEBRANDROOM',k:'the brand room launch prototype'},
+    {n:'PLT App',d:'2026-09-05',st:'private',r:RP+'plt-app-prototype',k:'plt app prototype expo react native'}
+  ];
+  /* d = when the last version was worked on (last push / commit); newest first everywhere */
+  P.sort((a,b)=>b.d.localeCompare(a.d));
+  const fd=d=>new Date(d.slice(0,10)+'T12:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  const T=window.DG_TOOLS=[
+    {n:'Trello board',st:'PM tool',u:'https://trello.com/b/699d774274279339e0ae8171/ux-workflow-2026',ds:'UX workflow 2026 — requests, priorities and status. The team\'s planning board.',k:'trello requests board workflow planning tickets'},
+    {n:'Shipping log',st:'log',pg:'shipping',ds:'Everything that merged, shipped or opened, newest first.',k:'shipping changelog merged'},
+    {n:'DG Group Product Scraper',st:'private',r:RP+'debenhams-design-system-scraper',ds:'Playwright scraper: screenshots, DOM and computed CSS at six breakpoints per page.',k:'scraper playwright audit'}
+  ];
+  const F=window.DG_FASCIAS||[];
+  const CORE=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse','brandroom'];
+  const HAS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse','brandroom','wallis','burton','principles','coast','oasis','dorothyperkins','misspap','nastygal','dsgnstudio','debenhamsoutlet'];
+  const G='assets/brands/guidelines/';
+  const GUIDES={debenhams:[['Brand guidelines 2025',G+'debenhams-brand-guidelines-2025.pdf','18 MB']],boohoo:[['Brand guidelines · condensed',G+'boohoo-brand-guidelines-condensed.pdf','20 MB']],boohooman:[['Brand guidelines',G+'boohooman-brand-guidelines.pdf','4 MB']],plt:[['Brand bible',G+'plt-brand-bible.pdf','17 MB'],['Identity pack',G+'plt-identity-pack.pdf','5 MB']]};
+  const ext=(u,t)=>`class="ext" href="${u}" target="_blank" rel="noopener" title="${t}"`;
+  const sbLink=x=>x.u?`<a ${ext(x.u,'Opens in a new tab')}><span class="ic">▸</span>${x.n}</a>`
+    :x.pg?`<a href="#${x.pg}">${x.n}</a>`:`<a ${ext(x.r,'Opens the repo in a new tab')}><span class="ic">▸</span>${x.n}</a>`;
+  const tile=x=>{const h=x.u||(x.pg?'#'+x.pg:x.r),o=!x.pg||x.u;return `<a class="ptile" href="${h}"${o?' target="_blank" rel="noopener"':''}>${x.d?`<span class="pdate">Last worked on ${fd(x.d)}</span>`:''}<b>${x.n}</b><span class="ar">${o?'↗':'→'}</span></a>`};
+  const card=x=>`<div class="launch"><b>${x.n}</b><span class="lt">${x.st}${x.d?' · last worked on '+fd(x.d):''}</span>${x.ds?`<p class="ld">${x.ds}</p>`:''}<div class="lk">${x.u?`<a class="bd pri sm" href="${x.u}" target="_blank" rel="noopener">Open ↗</a>`:x.pg?`<a class="bd pri sm" href="#${x.pg}">Open →</a>`:'<span class="nolive">no live build</span>'}${x.r?`<a class="lnk" href="${x.r}" target="_blank" rel="noopener">repo ↗</a>`:''}${x.u&&x.pg?`<a class="lnk" href="#${x.pg}">record →</a>`:''}</div></div>`;
+  const put=(id,html)=>{const el=document.getElementById(id);if(el)el.innerHTML=html};
+
+  put('sbProjects',P.map(sbLink).join('')+'<a href="#projects">All projects</a>');
+  put('sbTools',T.map(sbLink).join('')+'<a href="#tools">All Planning and Tools</a>');
+  put('sbBrands','<a href="#b-debenhamsgroup">Debenhams Group</a><span class="sub">Core brands</span>'+F.filter(f=>CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')
+    +'<span class="sub">More fascias</span>'+F.filter(f=>!CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')+'<a href="#brands">All brands</a>');
+  put('homeProjects',P.slice(0,6).map(tile).join(''));
+  put('homeTools',T.map(tile).join(''));
+  put('projGrid',P.map(card).join(''));
+
+  const main=document.getElementById('main'),end=main.querySelector('section.page:last-of-type');
+  const add=html=>main.insertAdjacentHTML('beforeend',html);
+  /* Planning and Tools landing */
+  add(`<section class="page" id="tools" data-crumb="Planning and Tools">
+    <div class="kick">planning and tools <b>· how the work gets planned and fed</b></div>
+    <h1>Planning and Tools</h1>
+    <p class="lede">Not projects — the boards, logs and tooling that support them. The Trello board is where requests and priorities live for now; it may move elsewhere later.</p>
+    <div class="launchgrid">${T.map(card).join('')}</div>
+  </section>`);
+
+  /* the group itself — corporate lockups from the DS file, ICONS & LOGOS page (470:841): Debenhams_Group 6028:15439 primary · DG Logo 11298:528 centred · 11303:532 left-aligned · 11809:2663 white · 12608:4001 monogram */
+  const GL=[['debenhamsgroup-stacked','Primary lockup','The DG mark above the wordmark. Covers, splash screens, large formats.',1],['debenhamsgroup','Centred lockup','Default. GROUP sits centred under the wordmark.',1],['debenhamsgroup-left','Left-aligned lockup','For left-aligned layouts: headers, documents, email.',1],['debenhamsgroup-d','Monogram','The D on its own: avatars, favicons, small spaces.',1],['debenhamsgroup-monogram','Monogram tile','The D on Debenhams aqua, as drawn. App icons and social avatars.',0]];
+  const glKit=([f,t,u,mono])=>`<div class="kit"><div class="kprev">${mono?`<span class="kd"><img src="assets/brands/${f}.svg" alt=""></span><span class="kl"><img src="assets/brands/${f}.svg" alt=""></span>`:`<span class="kd none" style="background:#000"><img src="assets/brands/${f}.svg" alt="" style="height:64px;filter:none"></span>`}</div><div class="kbody"><b>${t}</b><small class="kn">${u}</small><div class="krow"><span>Download</span>${mono?['svg','png'].flatMap(x=>['black','white'].map(c=>`<button class="kbtn" onclick="dlLogo('${f}','${c}','${x}')">${x.toUpperCase()} · ${c}</button>`)).join(''):['svg','png'].map(x=>`<button class="kbtn" onclick="dlLogo('${f}','original','${x}')">${x.toUpperCase()} · as drawn</button>`).join('')}</div></div></div>`;
+  add(`<section class="page bpage" id="b-debenhamsgroup" data-crumb="Brand Centre / Debenhams Group">
+    <div class="kick"><a href="#brands" style="color:inherit">brand centre</a> <b>· the group</b></div>
+    <div class="bhero dark" style="background:#000"><img src="assets/brands/debenhamsgroup.svg" alt="Debenhams Group" style="height:56px"><img src="assets/brands/debenhamsgroup-monogram.svg" alt="" style="height:96px;filter:none"></div>
+    <h1>Debenhams Group</h1>
+    <p class="lede">The group mark, for anything that speaks for the whole estate rather than one fascia: this site, decks, documents, email. The primary lockup with the DG mark, centred and left-aligned wordmark lockups, and the D monogram.</p>
+    <div class="meta"><span>source <b>DS file · ICONS &amp; LOGOS · DG Logo</b></span><span>colour <b>black or white; tile in Debenhams aqua #7BE7D8</b></span></div>
+    <h2>Logos <code>self-serve · black or white · SVG or PNG</code></h2>
+    <div class="kits">${GL.map(glKit).join('')}</div>
+  </section>`);
+  /* one page per fascia: logo kit, guidelines, live colour + type from its data-brand mode */
+  /* the full role set from Foundations › Typography (mobile / desktop px, weight) — rendered at desktop size in the fascia's own font + weights */
+  const ROLES=[['display-lg',32,48,'s','Hero, marketing pages','Wardrobe icons'],['display-md',28,40,'s','Section openers','The new season edit'],['display-sm',24,32,'s','Editorial leads','Dressed for the weekend'],
+    ['heading-xl',20,28,'s','Page titles','Women\'s dresses'],['heading-lg',18,24,'s','Section titles','You might also like'],['heading-md',16,20,'s','Subsection titles','Delivery options'],
+    ['heading-sm',16,16,'s','Card titles','Delivery & returns'],['heading-xs',14,14,'s','Inline section labels','Size guide'],['body-lg',16,16,'r','Long-form body','Cut from a soft, breathable cotton with a relaxed fit through the body.'],
+    ['body-md',14,14,'r','Default body','Free returns within 28 days. Star buys are final sale — check the label before you commit.'],['body-md-strong',14,14,'s','Emphasis','Order before 10pm for next-day delivery'],
+    ['body-sm',12,12,'r','Compact body','Model wears a UK 8 and is 5\'9"'],['caption',12,12,'r','Captions, T&Cs, legal','Selected lines only. T&Cs apply.'],['micro',10,10,'r','Smallest legal labels','Prices include VAT']];
+  const SW=[['--brand-primary','Brand primary'],['--brand-primary-dark','Primary dark'],['--surface-action','Action'],['--text-on-action','On action'],['--surface-page','Page'],['--text-primary','Text'],['--text-link','Link'],['--brand-neutral','Neutral']];
+  F.forEach(([sl,nm],i)=>{const has=HAS.includes(sl);
+    const g=(GUIDES[sl]||[]).map(([t,u,sz])=>`<a class="kbtn" href="${u}" target="_blank" rel="noopener">${t} <small>PDF · ${sz}</small></a>`).join('');
+    const prev=has?`<span class="kd"><img src="assets/brands/${sl}.svg" alt=""></span><span class="kl"><img src="assets/brands/${sl}.svg" alt=""></span>`:`<span class="kd none">Logo artwork to come</span>`;
+    const dl=has?['svg','png'].flatMap(f=>['black','white'].map(c=>`<button class="kbtn" onclick="dlLogo('${sl}','${c}','${f}')">${f.toUpperCase()} · ${c}</button>`)).join(''):'<em>artwork to come</em>';
+    const prevB=F[(i-1+F.length)%F.length],nextB=F[(i+1)%F.length];
+    add(`<section class="page bpage" id="b-${sl}" data-crumb="Brand Centre / ${nm}">
+      <div class="kick"><a href="#brands" style="color:inherit">brand centre</a> <b>· ${CORE.includes(sl)?'core brand':'fascia'}</b></div>
+      <div class="bhero" data-brand="${sl}">${has?`<img src="assets/brands/${sl}.svg" alt="${nm}">`:`<span class="bhn">${nm}</span>`}<span class="bglyph">Aa</span></div>
+      <h1>${nm}</h1>
+      <div class="meta bmeta" data-brand="${sl}"><span>mode <b><code>data-brand="${sl}"</code></b></span><span>font <b data-v="--font-family-base"></b></span><span>radius <b data-v="--radius-default"></b></span><span>action <b data-v="--surface-action"></b></span></div>
+      <p class="openrow"><a class="bd pri sm" href="#gallery">See ${nm} across the components →</a></p>
+      <h2>Logo <code>self-serve · black or white · SVG or PNG</code></h2>
+      <div class="kit"><div class="kprev">${prev}</div><div class="kbody"><div class="krow"><span>Download</span>${dl}</div></div></div>
+      <h2>Guidelines</h2>
+      <div class="krow">${g||'<em>Not on file yet.</em>'}</div>
+      <h2>Colour <code>live from the ${sl} mode</code></h2>
+      <div class="bsw" data-brand="${sl}">${SW.map(([v,l])=>`<div><i style="background:var(${v})"></i><b>${l}</b><code data-v="${v}"></code></div>`).join('')}</div>
+      <h2>Typography</h2>
+      <div class="meta bmeta" data-brand="${sl}"><span>family <b data-v="--font-family-base"></b></span><span>regular <b data-v="--w-regular"></b></span><span>strong <b data-v="--w-strong"></b></span><span>sizes <b>same for every fascia</b></span></div>
+      <div class="btype" data-brand="${sl}">${ROLES.map(([r,m,d,w,use,txt])=>`<div class="br"><div class="brl"><code>${r}</code><small>${m} / ${d} · ${w==='s'?'strong':'regular'}</small><small>${use}</small></div><span style="font-size:${d}px;line-height:${d>=24?1.15:1.35};font-weight:var(--w-${w==='s'?'strong':'regular'})">${txt}</span></div>`).join('')}</div>
+      <div style="display:flex;justify-content:space-between;margin-top:36px;font-size:13.5px"><a href="#b-${prevB[0]}" style="color:var(--ink-3)">← ${prevB[1]}</a><a href="#b-${nextB[0]}" style="color:var(--ink-3)">${nextB[1]} →</a></div>
+    </section>`)});
+  /* fill the live token readouts the first time a brand page opens */
+  window.fillBrand=function(id){const sec=document.getElementById(id);if(!sec||sec.dataset.filled)return;sec.dataset.filled='1';
+    sec.querySelectorAll('[data-v]').forEach(el=>{const src=el.closest('[data-brand]');let v=getComputedStyle(src).getPropertyValue(el.dataset.v).trim();
+      if(el.dataset.v==='--font-family-base')v=v.split(',')[0].replace(/['"]/g,'');el.textContent=v.toUpperCase().startsWith('#')?v.toUpperCase():v});
+    const hero=sec.querySelector('.bhero');if(hero&&window.dgLum&&window.dgLum(hero)<.5)hero.classList.add('dark')};
+
+  window.DG_IA_REG=[{h:'b-debenhamsgroup',t:'Debenhams Group',k:'group logo lockup monogram corporate dg',ic:'✦',s:'Brand Centre'},{h:'tools',t:'Planning and Tools',k:'trello board shipping scraper planning',ic:'☰',s:'Planning and Tools'}]
+    .concat(P.map(x=>({h:x.pg,u:x.pg?null:(x.u||x.r),t:x.n,k:x.k,ic:'▸',s:'Project'})))
+    .concat(T.filter(x=>!x.pg).map(x=>({u:x.u||x.r,t:x.n,k:x.k,ic:'↗',s:'Planning and Tools'})))
+    .concat(F.map(([sl,nm])=>({h:'b-'+sl,t:nm,k:'brand fascia logo guidelines '+sl,ic:'✦',s:'Brand Centre'})));
+})();
+</script>
+<script>
 /* ---- registry (drives search + routing) ---- */
 const REG=[
  {h:'home',t:'Home',k:'overview dashboard',ic:'⌂',s:'Overview'},
- {h:'shipping',t:'Shipping',k:'changelog merged',ic:'↗',s:'Overview'},
+ {h:'shipping',t:'Shipping log',k:'changelog merged',ic:'↗',s:'Planning and Tools'},
  {h:'colour',t:'Colour',k:'tokens palette semantic primitives neutrals status aqua pink',ic:'◈',s:'Design system'},
  {h:'type',t:'Typography',k:'text styles fonts scale roles weights geologica montserrat roboto jost',ic:'Aa',s:'Design system'},
  {h:'spacing',t:'Spacing',k:'4pt scale gaps margins icon sizes z-index breakpoints',ic:'⇥',s:'Design system'},
@@ -1801,23 +1878,19 @@ const REG=[
  {h:'a11y',t:'Accessibility',k:'wcag aa contrast focus touch targets',ic:'✓',s:'Design system'},
  {h:'install',t:'Using the system',k:'npm install tokens tailwind data-brand setup',ic:'⤓',s:'Design system'},
  {h:'components',t:'Components',k:'library index',ic:'▦',s:'Design system'},
- {h:'prototypes',t:'Master prototypes',k:'plp pdp bag checkout canonical master',ic:'▣',s:'Design system'},
  {h:'button',t:'Button',k:'cta primary states c-01',ic:'▢',s:'Component'},
  {h:'product-card',t:'Product card',k:'plp card favourite wishlist quick add taggstar swatches ratings c-02',ic:'▢',s:'Component'},
  {h:'header',t:'PLP header',k:'logo search usp banner nav menu c-05',ic:'▢',s:'Component'},
  {h:'sort-filter',t:'Sort & filter',k:'dropdowns drawer sheet next day delivery c-06',ic:'▢',s:'Component'},
  {h:'badges',t:'Badges',k:'ai generated watermark tags petite sale sponsored c-07',ic:'▢',s:'Component'},
- {h:'icons',t:'Icons',k:'icon library chevron wishlist bag search 1pt stroke',ic:'✳',s:'Design system'},
+ {h:'icons',t:'Icons',k:'icon library chevron wishlist bag search 1pt stroke flags country flag',ic:'✳',s:'Design system'},
  {h:'footer',t:'Footer',k:'newsletter subscribe social payments sister brands c-08',ic:'▬',s:'Component'},
  {h:'library',t:'Extended library',k:'buttons payment forms field checkbox radio toggle select price size accordion sheet modal bag summary chips account deliver+ bnpl usp box toast banner c-09 c-10 c-11 c-12 c-13 c-14 c-15 c-16 c-17 c-18',ic:'▦',s:'Component'},
  {h:'projects',t:'All projects',k:'archive briefs',ic:'☰',s:'Projects'},
- {h:'p-plp',t:'PLP UI updates - All Brands',k:'plp alignment warehouse boohoo template p-05',ic:'▸',s:'Project'},
- {h:'p-colour',t:'CTA Colour Alignment - All Brands',k:'colour alignment merged km p-04',ic:'▸',s:'Project'},
- {h:'p-checkout',t:'New Checkout Payment Section Update',k:'checkout 2026 promo gift card p-03',ic:'▸',s:'Project'},
- {h:'brands',t:'Brand Centre',k:'fascias estate guidelines',ic:'✦',s:'Brands'},
- {h:'requests',t:'Requests board',k:'intake tickets status',ic:'▤',s:'Requests'},
+ {h:'brands',t:'All brands',k:'brand centre fascias estate guidelines modes',ic:'✦',s:'Brand Centre'},
 ];
 if(window.DG_REG)REG.push(...window.DG_REG);
+if(window.DG_IA_REG)REG.push(...window.DG_IA_REG);
 
 /* ---- routing ---- */
 /* ---- Foundations: merge the eight foundation pages into one ---- */
@@ -1833,13 +1906,14 @@ if(window.DG_REG)REG.push(...window.DG_REG);
     toc.insertAdjacentHTML('beforeend',`<a href="#f-${id}" onclick="event.preventDefault();document.getElementById('f-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${t}</a>`);
   });
 })();
-window.DG_LEGACY={colour:'foundations',type:'foundations',spacing:'foundations',radius:'foundations',borders:'foundations',motion:'foundations',a11y:'foundations',install:'foundations',components:'gallery',library:'gallery'};
+window.DG_LEGACY={colour:'foundations',type:'foundations',spacing:'foundations',radius:'foundations',borders:'foundations',motion:'foundations',a11y:'foundations',install:'foundations',components:'gallery',library:'gallery',prototypes:'projects',requests:'tools'};
 window.setBrand=function(slug){const b=document.querySelector('#fabMenu button[data-b="'+slug+'"]');if(b)b.click();};
 const pages=[...document.querySelectorAll('.page')];
 function route(){
   let h=(location.hash||'#home').slice(1);
   if(window.DG_LEGACY&&window.DG_LEGACY[h]){location.hash='#'+window.DG_LEGACY[h];return}
   if(h.startsWith('c-')&&window.buildFascias)window.buildFascias(h);
+  if(h.startsWith('b-')&&document.getElementById(h)){window.setBrand(h.slice(2));if(window.fillBrand)window.fillBrand(h)}
   const pg=document.getElementById(h);
   if(pg&&!pg.classList.contains('page')){const host=pg.closest('.page');if(host&&!host.classList.contains('on')){pages.forEach(p=>p.classList.toggle('on',p===host));document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+host.id));document.body.classList.remove('sbm')}requestAnimationFrame(()=>pg.scrollIntoView({block:'start'}));return} // in-page anchor — show its page, then scroll
   pages.forEach(p=>p.classList.toggle('on',p.id===h));
@@ -1888,11 +1962,12 @@ const ovl=document.getElementById('ovl'),q=document.getElementById('q'),res=docu
 let sel=0,hits=[];
 function openPal(){ovl.classList.add('on');q.value='';draw('');q.focus()}
 function closePal(){ovl.classList.remove('on')}
+function go(r){if(r.u)window.open(r.u,'_blank','noopener');else location.hash=r.h}
 function draw(v){
   hits=REG.filter(r=>(r.t+' '+r.k).toLowerCase().includes(v.toLowerCase()));
   sel=0;
-  res.innerHTML=hits.map((r,i)=>`<div class="ri${i===0?' sel':''}" data-h="${r.h}"><span class="ic">${r.ic}</span>${r.t}<small>${r.s}</small></div>`).join('')||'<div class="ri" style="color:var(--ink-3)">No results</div>';
-  res.querySelectorAll('.ri[data-h]').forEach(el=>el.onclick=()=>{location.hash=el.dataset.h;closePal()});
+  res.innerHTML=hits.map((r,i)=>`<div class="ri${i===0?' sel':''}" data-h="${r.h||''}" data-u="${r.u||''}"><span class="ic">${r.ic}</span>${r.t}<small>${r.s}</small></div>`).join('')||'<div class="ri" style="color:var(--ink-3)">No results</div>';
+  res.querySelectorAll('.ri[data-h]').forEach(el=>el.onclick=()=>{go(hits[[...res.children].indexOf(el)]);closePal()});
 }
 q.addEventListener('input',()=>draw(q.value));
 addEventListener('keydown',e=>{
@@ -1902,7 +1977,7 @@ addEventListener('keydown',e=>{
   if(e.key==='Escape')closePal();
   if(e.key==='ArrowDown'){sel=Math.min(sel+1,hits.length-1);mark()}
   if(e.key==='ArrowUp'){sel=Math.max(sel-1,0);mark()}
-  if(e.key==='Enter'&&hits[sel]){location.hash=hits[sel].h;closePal()}
+  if(e.key==='Enter'&&hits[sel]){go(hits[sel]);closePal()}
 });
 function mark(){res.querySelectorAll('.ri').forEach((el,i)=>el.classList.toggle('sel',i===sel))}
 

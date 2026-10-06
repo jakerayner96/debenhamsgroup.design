@@ -1,0 +1,11 @@
+<svg width="24" height="17.1429" viewBox="0 0 24 17.1429" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Flags">
+<rect width="24" height="17.1429" fill="#F93939"/>
+<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M0 0H24V9.14286H0V0Z" fill="#1A47B8"/>
+<g id="Group 3">
+<path id="Vector_2" fill-rule="evenodd" clip-rule="evenodd" d="M6.85714 5.71429H16.381V11.4286H6.85714V5.71429Z" fill="white"/>
+<path id="Vector_3" fill-rule="evenodd" clip-rule="evenodd" d="M10.6668 7.61902H12.5715V11.4285H10.6668V7.61902Z" fill="#FFDA2C"/>
+<path id="Vector_4" fill-rule="evenodd" clip-rule="evenodd" d="M8.76179 8.57143C8.76179 6.99429 10.0304 5.71429 11.6189 5.71429C13.1961 5.71429 14.4761 6.98286 14.4761 8.57143V11.4286H8.76179V8.57143ZM10.6666 8.58095C10.6666 8.04762 11.1085 7.61905 11.6189 7.61905C12.1446 7.61905 12.5713 8.02667 12.5713 8.58095V11.4286H10.6666V8.58095Z" fill="#249F58"/>
+</g>
+</g>
+</svg>
