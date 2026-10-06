@@ -9,7 +9,7 @@ The Debenhams Group UX site: design system docs, project archive (options + chos
 
 - **`assets/ds/catalogue.js`** — the component catalogue: one entry per component (HTML variants on `components.css`, when to use / avoid / anatomy, matching dev-Storybook component + status). Renders the site's Component library + 49 wiki pages + Dev alignment page, and generates **`storybook/`** (our DG Group Design System Storybook — `cd storybook && npm run gen|storybook|build-storybook`; `stories/`, `node_modules/`, `storybook-static/` are gitignored). Add components there, never in `storybook/stories/`.
 - **`.context/inventory/05-dev-storybook.md`** — the front-end Storybook (web-storybook.jamesb.play.dbztech.net) read end to end: React + Tailwind, per-fascia RGB CSS variables, 79 components with props, token map, overlay.
-- **`assets/brands/`** — fascia logo SVGs, named by `data-brand` slug (no dashes: `boohooman`, `karenmillen`, `dorothyperkins`, `brandroom`…). Group lockups are `debenhamsgroup*.svg`; still missing: Maine, Gorgeous, Forever Unique, Training Dept. Country flags live in `assets/ds/icons/flags/`.
+- **`assets/brands/`** — fascia logo SVGs, named by `data-brand` slug (no dashes: `boohooman`, `karenmillen`, `dorothyperkins`, `brandroom`…). Group lockups are `debenhamsgroup*.svg`; still missing: Maine, Gorgeous, Forever Unique. Training Dept added 06 Oct (Figma 13367:11536). Country flags live in `assets/ds/icons/flags/`.
 - **`.context/07-foundations.md`** — the locked foundations spec the site pages render.
 - **`designsystem-debenhamsgroup/`** — **RETIRED.** The older Next/Fumadocs monorepo; its tokens, brand modes, foundations and docs content were absorbed into `index.html` (see log 13). Kept only as reference until Jake deletes it — don't build on it, don't run it.
 
@@ -23,6 +23,7 @@ The Debenhams Group UX site: design system docs, project archive (options + chos
 - **End of session:** decisions and state go into a `.context/` session log (next number), and CLAUDE.md's pointer updates to it. Chat history is disposable; the repo is not.
 
 ## Rules that always apply
+- **Prototypes use the standard review shell** — fascia chips · Desktop/Mobile · width preset · Full page/Fold · Export (zip: 390 + 1440 full-page PNGs) on top, page configuration on the left, resizable frame. Use the `review-prototype` skill (`~/.claude/skills/review-prototype/`, templates inside); references: core-pdp-2026 and `projects/usp-banner/`.
 - **Code first, Figma downstream.** Production is canonical; the Figma library mirrors it.
 - **Ship fast over perfect.** Jake pushes back on over-engineering and over-clarification. "Go" means proceed; make judgment calls, state assumptions, execute to a defined endpoint.
 - **Single-file HTML prototypes, no build step** is the house style for options and reviews. Only the eventual production site gets a real build.

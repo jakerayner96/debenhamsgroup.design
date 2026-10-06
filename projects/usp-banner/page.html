@@ -47,6 +47,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 .ct.on{opacity:1;transform:translate(-50%,0)}
 a.hd-usp{text-decoration:none;cursor:pointer}
 a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
+.pgfoot>*,.pgfoot>*>*{width:100%!important;max-width:none!important}
 .hd-usp.cav-missing .usp-cav{color:#D33F3F;font-weight:var(--w-strong)}
 </style>
 </head>
@@ -87,7 +88,7 @@ function banner(bar,i){
   return `<${tag} class="hd-usp ${mod}${star&&!b.caveat?' cav-missing':''}"${b.href?` href="${esc(b.href)}" data-href="${esc(b.href)}"`:''}>${row}${cd}${cav}</${tag}>`;
 }
 const banners=()=>`<div id="usps">${S.banners.map(banner).join('')}</div>`;
-setInterval(()=>{if(!S.banners.some(b=>b.on&&b.rotate&&(b.items||[]).length>1))return;ROT=ROT.map(n=>n+1);const u=document.getElementById('usps');if(u){u.outerHTML=banners();if(window.DG_usp)window.DG_usp(document.getElementById('usps'))}},4000);
+setInterval(()=>{if(EXPORTING||!S.banners.some(b=>b.on&&b.rotate&&(b.items||[]).length>1))return;ROT=ROT.map(n=>n+1);const u=document.getElementById('usps');if(u){u.outerHTML=banners();if(window.DG_usp)window.DG_usp(document.getElementById('usps'))}},4000);
 
 function header(){
   let h=desk()?V('header',1):V('header',0);
@@ -119,7 +120,7 @@ const PAGES={
   pdp:()=>{const p=P()[1]||{};return `<div class="wrap">${V('breadcrumb',0)}<div class="pdp"><div class="pdp-img"><img src="${IMG(p.img??1)}" alt=""><img src="${IMG(4)}" alt=""></div>
     <div class="buy"><div><div class="pc-brand" style="font-size:14px">${esc(p.brand||'')}</div><div class="h1" style="margin-top:2px">${esc(p.name||'Product')}</div></div>
     <div data-slot>${V('price',0)}</div><div data-slot>${V('colour-swatches',1)}</div><div data-slot>${V('size-selector',0)}</div>
-    <div class="stack" data-slot>${V('button',0)}</div><div data-slot>${V('usp-box',0)}</div><div data-slot>${V('accordion',0)}</div></div></div></div>`},
+    <div class="stack" data-slot data-btns>${V('button',0)}</div><div data-slot>${V('usp-box',0)}</div><div data-slot>${V('accordion',0)}</div></div></div></div>`},
   bag:()=>{const ps=P().slice(0,2);return `<div class="wrap"><div class="h1">Your bag (${ps.length})</div><div class="bag"><div class="stack">
     <div data-slot>${V('threshold',0)}</div>${ps.map((p,i)=>`<div class="bag-item"><img src="${IMG(p.img??i)}" alt=""><div class="info">${p.brand?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`).join('')}</div>
     <div class="stack"><div data-slot>${V('order-summary',0)}</div><div data-slot>${V('promo-field',0)}</div><div class="stack" data-slot>${V('payment-buttons',0)}</div></div></div></div>`},
@@ -129,13 +130,19 @@ const PAGES={
 function render(){
   document.documentElement.setAttribute('data-brand',S.brand);
   const body=(PAGES[S.page]||PAGES.home)();
-  document.getElementById('app').innerHTML=header()+body+`<div style="margin-top:40px">${strip(V('footer',0))}</div>`;
+  document.getElementById('app').innerHTML=header()+body+`<div class="pgfoot" style="margin-top:40px">${strip(V('footer',0))}</div>`;
   document.querySelectorAll('.brandlogo').forEach(i=>i.src=logo());
+  document.querySelectorAll('[data-btns]').forEach(h=>{[...h.querySelectorAll('.bd')].slice(2).forEach(x=>(x.closest('.fv')||x).remove())}); /* PDP keeps Buy it now + Add to bag */
   if(window.DG_usp)window.DG_usp(document);
 }
 render();
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});
-addEventListener('message',e=>{if(e.data&&e.data.usp){S=Object.assign(S,e.data.usp);render()}});
+let EXPORTING=false;
+/* shell contract (review-prototype skill): {protoSet} in, {protoReady} on load, {protoPing} → {protoPong,h} */
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;ROT=[0,0];render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
 /* banner click-through: show the destination instead of leaving the prototype */
 document.addEventListener('click',e=>{const a=e.target.closest('a[data-href]');if(a){e.preventDefault();const t=document.getElementById('ct');t.textContent='Click-through → '+a.dataset.href;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800)}
   else if(e.target.closest('a[href="#"],button'))e.preventDefault()});
