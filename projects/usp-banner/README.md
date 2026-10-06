@@ -15,3 +15,11 @@ Configurator in the PLP / Core PDP model: window controls on top (brand, Desktop
 
 ## Live check (06 Oct 2026, 390 wide)
 Debenhams / boohoo / boohooMAN / KM run 16px copy, 42–50px bars, a pipe separator and "Use Code:"; PLT runs 12px light, 18–36px. The DS version follows the Figma: 12/15, dash, "Code:", strong countdown.
+
+## Live content (v2, 06 Oct)
+`live.js` holds each fascia's live banners (homepage, 390 wide, 06 Oct) converted to DS types: "Shop Now" stripped, "Use Code:" → "Code: XYZ", countdowns to their own row, click-throughs kept, generic caveats added where the live copy has an asterisk but no caveat. Debenhams grey (4 rotating) + black · boohoo black (3) · boohooMAN black (3) + grey · PLT grey + black (live peach/cream mapped to the two tones) · Karen Millen black (3) · Warehouse black (2) · Brand Room placeholder (its homepage didn't expose the banner).
+
+## Rules the prototype enforces
+- At most two banners, never the same tone: one grey (Grey 05 / Grey 1), one black (Black / Black-Red). Turning on the second gives it the other tone; the tone in use is disabled in its colour menu.
+- No inline links — no "Shop now". The whole bar is the click-through.
+- Each banner holds a list of messages (live bars rotate): pick one to edit, add or remove, or rotate every 4s.

@@ -69,8 +69,12 @@ const IMG=i=>`projects/plp-alignment/img/${S.brand}/p${i}.jpg`;
 const logo=()=>`assets/brands/${S.brand}.svg`;
 
 /* ---- USP banner from a state object — the DS markup exactly (components.css .hd-usp / usp.js) ---- */
-function banner(b){
-  if(!b||!b.on)return '';
+let ROT=[0,0];
+/* a banner holds a list of messages (live bars rotate); show the selected one, or the rotation's current one */
+function msgOf(b,i){const L=b.items||[b];return b.rotate&&L.length>1?L[ROT[i]%L.length]:(L[b.idx||0]||L[0])}
+function banner(bar,i){
+  if(!bar||!bar.on)return '';
+  const b=Object.assign({},msgOf(bar,i),{colour:bar.colour});
   const mod={fascia:'',alt:'hd-usp--b',g05:'usp--g05',g1:'usp--g1',black:'usp--black',red:'usp--red'}[b.colour||'fascia']||'';
   const parts=[`<span class="usp-t">${esc(b.t1)}</span>`];
   if(b.type==='double')parts.push(`<span class="usp-t">${esc(b.t2)}</span>`);
@@ -82,7 +86,8 @@ function banner(b){
   const tag=b.href?'a':'div';
   return `<${tag} class="hd-usp ${mod}${star&&!b.caveat?' cav-missing':''}"${b.href?` href="${esc(b.href)}" data-href="${esc(b.href)}"`:''}>${row}${cd}${cav}</${tag}>`;
 }
-const banners=()=>S.banners.map(banner).join('');
+const banners=()=>`<div id="usps">${S.banners.map(banner).join('')}</div>`;
+setInterval(()=>{if(!S.banners.some(b=>b.on&&b.rotate&&(b.items||[]).length>1))return;ROT=ROT.map(n=>n+1);const u=document.getElementById('usps');if(u){u.outerHTML=banners();if(window.DG_usp)window.DG_usp(document.getElementById('usps'))}},4000);
 
 function header(){
   let h=desk()?V('header',1):V('header',0);

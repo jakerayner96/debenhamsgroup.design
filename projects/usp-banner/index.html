@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* Review shell — same model as the PLP / Core PDP configurators:
-   WINDOW controls on top (brand, viewport) · PAGE + BANNER controls down the left · the page renders in the frame. */
+   WINDOW controls on top (brand chips, viewport) · PAGE + BANNER controls down the left · the page renders in the frame. */
 :root{--bg:#161616;--bar:#000;--panel:#000;--line:rgba(255,255,255,.14);--ink:#F7F7F7;--muted:#9A9A9A;--dim:#707070;--accent:#0D99FF;--ok:#1FA971;--warn:#E8A23B}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -16,28 +16,37 @@ a{color:var(--accent)}
 .top{grid-column:1/3;display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--bar);border-bottom:1px solid var(--line)}
 .top .ttl{font-weight:600;font-size:12px;color:var(--ink);white-space:nowrap}
 .top .mid{margin:0 auto;display:flex;align-items:center;gap:10px}
-.top select,.panel select,.panel input{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:5px 8px;font:inherit;font-size:11.5px}
+.top .div{width:1px;height:20px;background:rgba(255,255,255,.15);margin:0 4px;flex:none}
 .top .open{padding:6px 12px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:var(--ink);font-size:11.5px;font-weight:600;white-space:nowrap;text-decoration:none}
+.panel select,.panel input{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:5px 8px;font:inherit;font-size:11.5px}
+.panel option:disabled{color:#555}
 .seg{display:inline-flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden}
 .seg button{padding:5px 12px;color:#B0B0B0;font-size:11.5px;white-space:nowrap}
 .seg button.on{background:var(--ink);color:#000;font-weight:700}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.top .chips{flex-wrap:nowrap}
+.chip{padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px;color:#B0B0B0;white-space:nowrap}
+.chip.on{background:var(--ink);color:#000;border-color:var(--ink);font-weight:600}
+.chip.add{border-style:dashed}
 .panel{background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:16px 14px 40px}
 .panel h1{font-size:17px;font-weight:700;letter-spacing:-.01em;margin:4px 0 4px;color:var(--ink)}
 .panel .intro{font-size:11px;color:var(--dim);line-height:1.45;margin-bottom:14px}
-.card{border:1px solid var(--line);border-radius:10px;padding:12px 12px 12px;margin-bottom:10px;background:#0E0E0E}
+.mhead{display:none}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;background:#0E0E0E}
 .card h3{font-size:12.5px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
-.card p{font-size:11px;color:var(--dim);line-height:1.45;margin-bottom:8px}
-.chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px;color:#B0B0B0}
-.chip.on{background:var(--ink);color:#000;border-color:var(--ink);font-weight:600}
+.card h3 small{font-weight:400;color:var(--dim);font-size:10.5px;margin-left:6px}
 .f{display:flex;flex-direction:column;gap:4px;margin-top:10px}
 .f>span{font-size:11px;color:#C8C8C8;font-weight:500}
 .f input,.f select{width:100%}
 .f small{font-size:10.5px;color:var(--dim)}
 .f small.warn{color:var(--warn)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.sw{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink);cursor:pointer}
-.sw input{display:none}.sw i{width:30px;height:18px;border-radius:99px;background:#3A3A3A;position:relative;transition:.15s}.sw i::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:99px;background:#fff;transition:.15s}
+.msgs{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}
+.msgs .lbl{font-size:11px;color:#C8C8C8;font-weight:500;margin-right:2px}
+.msgs .chip{padding:3px 9px;font-size:11px}
+.msgs .rm{margin-left:auto;font-size:10.5px;color:var(--dim);text-decoration:underline}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink);cursor:pointer;font-weight:400}
+.sw input{display:none}.sw i{width:30px;height:18px;border-radius:99px;background:#3A3A3A;position:relative;transition:.15s;flex:none}.sw i::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:99px;background:#fff;transition:.15s}
 .sw input:checked+i{background:var(--accent)}.sw input:checked+i::after{left:14px}
 .card.off .body{opacity:.35;pointer-events:none}
 .rules{font-size:10.5px;color:var(--dim);line-height:1.55}.rules b{color:#C8C8C8;font-weight:600}
@@ -46,6 +55,7 @@ iframe{border:none;display:block;height:calc(100vh - 96px);background:#FFF;box-s
 #mtab{display:none}
 @media(max-width:760px){
   body{grid-template-columns:1fr;grid-template-rows:1fr}.top{display:none}.stage{padding:0}iframe{width:100%!important;height:100vh;box-shadow:none}
+  .mhead{display:block;margin-bottom:12px}.mhead .chips{flex-wrap:wrap}
   #mtab{display:grid;place-items:center;position:fixed;left:0;top:64px;z-index:70;width:44px;height:44px;background:#000;color:#FFF;border-radius:0 12px 12px 0}
   .panel{position:fixed;inset:0;z-index:80;transform:translateX(-100%);transition:transform .25s ease}body.pan .panel{transform:none}
 }
@@ -55,74 +65,87 @@ iframe{border:none;display:block;height:calc(100vh - 96px);background:#FFF;box-s
 <header class="top">
   <span class="ttl">USP banner · in situ</span>
   <div class="mid">
-    <select id="brand" aria-label="Brand"></select>
+    <span class="chips" id="brands"></span>
+    <span class="div"></span>
     <span class="seg" id="dev"><button data-w="0">Desktop</button><button data-w="390" class="on">Mobile</button></span>
   </div>
   <a class="open" id="openpg" href="page.html" target="_blank" rel="noopener">Open page ↗</a>
 </header>
 <aside class="panel" id="panel">
+  <div class="mhead"><span class="chips" id="brands-m"></span></div>
   <h1>USP banner</h1>
-  <p class="intro">The DS USP banner (Figma 11982-37171) on every core page, every brand. Pick the page, then set each banner's type, copy, colour and click-through. Everything in the frame is a design-system component.</p>
+  <p class="intro">The DS USP banner (Figma 11982-37171) on every core page, loaded with each fascia's live banners (06 Oct). Change the page, then each banner's colour, messages, type, copy and click-through. Everything in the frame is a design-system component.</p>
   <div class="card"><h3>Page</h3><div class="chips" id="pages"></div></div>
-  <div class="card"><h3>Presets</h3><div class="chips" id="presets"></div></div>
   <div id="bns"></div>
   <div class="card"><h3>Rules</h3><div class="rules">
-    <b>Height</b> follows the copy — one line is 23px on mobile. <b>Separator</b> is the 4px dash; once a row wraps it becomes a line break. <b>Code</b> is always “Code: XYZ”. <b>Countdown</b> sits on its own row. <b>Asterisk</b> — any * in the copy attaches the caveat line to the bottom of that banner; no caveat, no asterisk.
+    <b>Two at most, never the same tone</b> — one grey, one black. Adding a second banner gives it the other tone; the tone in use is disabled in its menu.
+    <b>No inline links</b> — no "Shop now": the whole bar is the click-through.
+    <b>Height</b> follows the copy (one line = 23px on mobile). <b>Separator</b> is the 4px dash. <b>Code</b> is always "Code: XYZ". <b>Countdown</b> sits on its own row.
+    <b>Asterisk</b> — any * attaches the caveat line to the bottom of that banner; no caveat, no asterisk.
   </div></div>
+  <div class="card"><h3>Reset</h3><button class="chip" id="reset">Back to the live banners for this brand</button></div>
 </aside>
 <main class="stage"><iframe id="frame" title="Page preview"></iframe></main>
 <button id="mtab" aria-label="Settings">⚙</button>
+<script src="live.js"></script>
 <script>
-const BRANDS=[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PrettyLittleThing'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','The Brand Room']];
+const BRANDS=[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']];
 const PAGES=[['home','Home'],['plp','PLP'],['pdp','PDP'],['bag','Bag'],['account','Account']];
 const TYPES=[['single','Single text'],['double','Double text'],['code','Text + code'],['countdown','Text + countdown'],['codecountdown','Text + code + countdown']];
-const COLS=[['fascia','Fascia (bar A)'],['alt','Fascia (bar B)'],['g05','Grey 05'],['g1','Grey 1'],['black','Black'],['red','Black / Red']];
-const B=(o)=>Object.assign({on:true,type:'single',colour:'fascia',t1:'',t2:'',code:'',hours:12,href:'',caveat:''},o);
-const PRESETS={
-  'Single':[B({type:'single',t1:'Free delivery on orders over £50',href:'/delivery'})],
-  'Double':[B({type:'double',t1:'Free delivery over £50',t2:'Free returns',href:'/delivery'})],
-  'Text + code':[B({type:'code',colour:'black',t1:'Extra 20% off everything*',code:'FAST',href:'/sale',caveat:'*Excludes sale, beauty and marketplace items.'})],
-  'Text + countdown':[B({type:'countdown',colour:'red',t1:'48% off for 48 hours',hours:30,href:'/offers'})],
-  'Stacked pair':[B({type:'countdown',colour:'red',t1:'48% off 100s of styles*',hours:30,href:'/offers',caveat:'*Excludes sale & selected lines.'}),B({type:'code',colour:'fascia',t1:'Extra 10% off everything',code:'EXTRA10',href:'/sale'})],
-  'Long copy':[B({type:'code',colour:'black',t1:'£1 express delivery on home & electricals orders over £25',code:'1EXPRESS',href:'/delivery'})]
-};
-let S={brand:'debenhams',page:'home',w:390,banners:JSON.parse(JSON.stringify(PRESETS['Stacked pair']))};
-try{const s=JSON.parse(localStorage.getItem('dg-usp-proto')||'null');if(s)S=Object.assign(S,s)}catch(e){}
-while(S.banners.length<2)S.banners.push(B({on:false,t1:'Free returns within 28 days'}));
+const COLS=[['g05','Grey 05','grey'],['g1','Grey 1','grey'],['black','Black','black'],['red','Black / Red','black']];
+const fam=c=>(COLS.find(x=>x[0]===c)||[])[2];
+const MSG=o=>Object.assign({type:'single',t1:'',t2:'',code:'',hours:12,href:'',caveat:''},o);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const live=b=>{const L=clone((window.USP_LIVE||{})[b]||[]);while(L.length<2)L.push({on:false,colour:L.length&&fam(L[0].colour)==='black'?'g05':'black',rotate:false,idx:0,items:[MSG({t1:'Free delivery on orders over £50',href:'/delivery'})]});return L};
+let S={brand:'debenhams',page:'home',w:390,by:{}};
+try{const s=JSON.parse(localStorage.getItem('dg-usp-proto2')||'null');if(s)S=Object.assign(S,s)}catch(e){}
+const BN=()=>S.by[S.brand]||(S.by[S.brand]=live(S.brand));
 
 const $=s=>document.querySelector(s),frame=$('#frame');
-const save=()=>{try{localStorage.setItem('dg-usp-proto',JSON.stringify(S))}catch(e){}};
-const qs=()=>'?s='+encodeURIComponent(JSON.stringify({brand:S.brand,page:S.page,banners:S.banners}));
+const save=()=>{try{localStorage.setItem('dg-usp-proto2',JSON.stringify(S))}catch(e){}};
+const payload=()=>({brand:S.brand,page:S.page,banners:BN()});
+const qs=()=>'?s='+encodeURIComponent(JSON.stringify(payload()));
 function load(){frame.style.width=(S.w||Math.max(1024,$('.stage').clientWidth-48))+'px';frame.src='page.html'+qs();$('#openpg').href='page.html'+qs()}
-function push(){save();$('#openpg').href='page.html'+qs();try{frame.contentWindow.postMessage({usp:{brand:S.brand,page:S.page,banners:S.banners}},'*')}catch(e){load()}}
+function push(){save();$('#openpg').href='page.html'+qs();try{frame.contentWindow.postMessage({usp:payload()},'*')}catch(e){load()}}
 
-$('#brand').innerHTML=BRANDS.map(([v,n])=>`<option value="${v}">${n}</option>`).join('');$('#brand').value=S.brand;
-$('#brand').onchange=e=>{S.brand=e.target.value;push()};
+function brands(){['#brands','#brands-m'].forEach(id=>{$(id).innerHTML=BRANDS.map(([v,n])=>`<button class="chip${S.brand===v?' on':''}" data-b="${v}">${n}</button>`).join('');
+  $(id).querySelectorAll('button').forEach(b=>b.onclick=()=>{S.brand=b.dataset.b;brands();bns();push()})})}
 document.querySelectorAll('#dev button').forEach(b=>{b.classList.toggle('on',+b.dataset.w===(S.w||0));b.onclick=()=>{S.w=+b.dataset.w;document.querySelectorAll('#dev button').forEach(x=>x.classList.toggle('on',x===b));save();load()}});
 function pages(){$('#pages').innerHTML=PAGES.map(([v,n])=>`<button class="chip${S.page===v?' on':''}" data-p="${v}">${n}</button>`).join('');$('#pages').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.page=b.dataset.p;pages();push()})}
-$('#presets').innerHTML=Object.keys(PRESETS).map(k=>`<button class="chip" data-k="${k}">${k}</button>`).join('');
-$('#presets').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.banners=JSON.parse(JSON.stringify(PRESETS[b.dataset.k]));while(S.banners.length<2)S.banners.push(B({on:false,t1:'Free returns within 28 days'}));bns();push()});
+$('#reset').onclick=()=>{S.by[S.brand]=live(S.brand);bns();push()};
 
+const q=v=>String(v??'').replace(/"/g,'&quot;');
 function bns(){
-  $('#bns').innerHTML=S.banners.map((b,i)=>{const cd=b.type==='countdown'||b.type==='codecountdown',code=b.type==='code'||b.type==='codecountdown',star=/\*/.test(b.t1+(b.type==='double'?b.t2:''));
-    return `<div class="card${b.on?'':' off'}" data-i="${i}"><h3>Banner ${i+1}<label class="sw"><input type="checkbox" data-k="on"${b.on?' checked':''}><i></i></label></h3><div class="body">
-    <div class="row2"><label class="f"><span>Type</span><select data-k="type">${TYPES.map(([v,n])=>`<option value="${v}"${b.type===v?' selected':''}>${n}</option>`).join('')}</select></label>
-    <label class="f"><span>Colour</span><select data-k="colour">${COLS.map(([v,n])=>`<option value="${v}"${b.colour===v?' selected':''}>${n}</option>`).join('')}</select></label></div>
-    <label class="f"><span>Text</span><input data-k="t1" value="${(b.t1||'').replace(/"/g,'&quot;')}" placeholder="Free delivery on orders over £50"></label>
-    ${b.type==='double'?`<label class="f"><span>Second text</span><input data-k="t2" value="${(b.t2||'').replace(/"/g,'&quot;')}"><small>Joined to the first by the dash.</small></label>`:''}
-    ${code?`<label class="f"><span>Code</span><input data-k="code" value="${b.code||''}" placeholder="FAST"><small>Shown as “Code: ${(b.code||'XYZ').toUpperCase()}”.</small></label>`:''}
-    ${cd?`<label class="f"><span>Countdown — hours left</span><input data-k="hours" type="number" min="0" step="1" value="${b.hours}"></label>`:''}
-    <label class="f"><span>Click-through</span><input data-k="href" value="${b.href||''}" placeholder="/sale"><small>The whole bar is the link. Leave empty for a plain bar.</small></label>
-    <label class="f"><span>Caveat${star?' (required — the copy has a *)':''}</span><input data-k="caveat" value="${(b.caveat||'').replace(/"/g,'&quot;')}" placeholder="*Excludes sale and selected lines."><small class="${star&&!b.caveat?'warn':''}">${star?(b.caveat?'Attached to the bottom of this banner.':'Add the caveat — an asterisk needs one.'):'Add a * to the copy to attach a caveat line.'}</small></label>
+  const L=BN();
+  $('#bns').innerHTML=L.map((b,i)=>{const o=L[1-i],taken=o&&o.on?fam(o.colour):null,m=b.items[b.idx]||b.items[0];
+    const cd=m.type==='countdown'||m.type==='codecountdown',code=m.type==='code'||m.type==='codecountdown',star=/\*/.test(m.t1+(m.type==='double'?m.t2:''));
+    return `<div class="card${b.on?'':' off'}" data-i="${i}"><h3><span>Banner ${i+1}<small>${b.on?(fam(b.colour)==='grey'?'grey':'black'):'off'}</small></span><label class="sw"><input type="checkbox" data-b="on"${b.on?' checked':''}><i></i></label></h3><div class="body">
+    <label class="f"><span>Colour</span><select data-b="colour">${COLS.map(([v,n,f])=>`<option value="${v}"${b.colour===v?' selected':''}${taken===f?' disabled':''}>${n}${taken===f?' — used by banner '+(2-i):''}</option>`).join('')}</select></label>
+    <div class="msgs"><span class="lbl">Messages</span>${b.items.map((x,j)=>`<button class="chip${j===b.idx?' on':''}" data-m="${j}">${j+1}</button>`).join('')}<button class="chip add" data-add>+</button>${b.items.length>1?`<button class="rm" data-rm>Remove ${b.idx+1}</button>`:''}</div>
+    ${b.items.length>1?`<div class="f"><label class="sw"><input type="checkbox" data-b="rotate"${b.rotate?' checked':''}><i></i>Rotate through the messages (4s)</label></div>`:''}
+    <label class="f"><span>Type</span><select data-k="type">${TYPES.map(([v,n])=>`<option value="${v}"${m.type===v?' selected':''}>${n}</option>`).join('')}</select></label>
+    <label class="f"><span>Text</span><input data-k="t1" value="${q(m.t1)}" placeholder="Free delivery on orders over £50"></label>
+    ${m.type==='double'?`<label class="f"><span>Second text</span><input data-k="t2" value="${q(m.t2)}"><small>Joined to the first by the dash.</small></label>`:''}
+    ${code?`<label class="f"><span>Code</span><input data-k="code" value="${q(m.code)}" placeholder="FAST"><small>Shown as “Code: ${q((m.code||'XYZ').toUpperCase())}”.</small></label>`:''}
+    ${cd?`<label class="f"><span>Countdown — hours left</span><input data-k="hours" type="number" min="0" step="0.5" value="${m.hours}"></label>`:''}
+    <label class="f"><span>Click-through</span><input data-k="href" value="${q(m.href)}" placeholder="/sale"><small>The whole bar is the link — no "Shop now" in the copy.</small></label>
+    <label class="f"><span>Caveat${star?' (required — the copy has a *)':''}</span><input data-k="caveat" value="${q(m.caveat)}" placeholder="*Excludes sale and selected lines."><small class="${star&&!m.caveat?'warn':''}">${star?(m.caveat?'Attached to the bottom of this banner.':'Add the caveat — an asterisk needs one.'):'Add a * to the copy to attach a caveat line.'}</small></label>
     </div></div>`}).join('');
-  $('#bns').querySelectorAll('.card').forEach(card=>{const i=+card.dataset.i;card.querySelectorAll('[data-k]').forEach(el=>{
-    const k=el.dataset.k,ev=el.tagName==='SELECT'||el.type==='checkbox'?'change':'input';
-    el.addEventListener(ev,()=>{S.banners[i][k]=el.type==='checkbox'?el.checked:(k==='hours'?+el.value:el.value);
-      if(ev==='change'||k==='t1'||k==='t2'||k==='caveat'){const f=document.activeElement&&document.activeElement.dataset.k;const pos=document.activeElement&&document.activeElement.selectionStart;bns();
-        if(f&&ev==='input'){const n=$(`#bns .card[data-i="${i}"] [data-k="${f}"]`);if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}}}
-      push()})})});
+  $('#bns').querySelectorAll('.card').forEach(card=>{const i=+card.dataset.i,b=L[i];
+    card.querySelector('[data-b="on"]').onchange=e=>{b.on=e.target.checked;const o=L[1-i];
+      if(b.on&&o&&o.on&&fam(o.colour)===fam(b.colour))b.colour=fam(o.colour)==='grey'?'black':'g05';   // never two of the same tone
+      bns();push()};
+    card.querySelector('[data-b="colour"]').onchange=e=>{b.colour=e.target.value;bns();push()};
+    const rot=card.querySelector('[data-b="rotate"]');if(rot)rot.onchange=e=>{b.rotate=e.target.checked;push()};
+    card.querySelectorAll('[data-m]').forEach(x=>x.onclick=()=>{b.idx=+x.dataset.m;b.rotate=false;bns();push()});
+    card.querySelector('[data-add]').onclick=()=>{b.items.push(MSG({t1:'New message',href:'/'}));b.idx=b.items.length-1;bns();push()};
+    const rm=card.querySelector('[data-rm]');if(rm)rm.onclick=()=>{b.items.splice(b.idx,1);b.idx=Math.max(0,b.idx-1);if(b.items.length<2)b.rotate=false;bns();push()};
+    card.querySelectorAll('[data-k]').forEach(el=>{const k=el.dataset.k,ev=el.tagName==='SELECT'?'change':'input';
+      el.addEventListener(ev,()=>{const m=b.items[b.idx];m[k]=k==='hours'?+el.value:(k==='code'?el.value.toUpperCase():el.value);
+        if(ev==='change'||['t1','t2','caveat'].includes(k)){const pos=el.selectionStart;bns();if(ev==='input'){const n=$(`#bns .card[data-i="${i}"] [data-k="${k}"]`);if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}}}
+        push()})})});
 }
-pages();bns();load();
+brands();pages();bns();load();
 $('#mtab').onclick=()=>document.body.classList.toggle('pan');
 addEventListener('resize',()=>{if(!S.w)frame.style.width=Math.max(1024,$('.stage').clientWidth-48)+'px'});
 </script>
