@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../../">
+<title>USP banner · in situ</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* In-situ page shell for the USP banner prototype. Everything visible is a DS component (components.css + catalogue.js);
+   only the page scaffolding (columns, gaps, the hero placeholder) lives here. */
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+.wrap{padding:0 16px}
+@media(min-width:1024px){.wrap{padding:0 40px;max-width:1440px;margin:0 auto}}
+.sec{margin:24px 0}
+.h1{font-size:24px;font-weight:var(--w-strong);margin:16px 0 4px}
+.lede{font-size:14px;color:var(--text-secondary);margin:0 0 12px}
+.hero{position:relative;aspect-ratio:4/5;background:linear-gradient(160deg,var(--brand-light-3,#eee),var(--brand-light-1,#ccc));display:flex;flex-direction:column;justify-content:flex-end;gap:12px;padding:24px 16px;overflow:hidden}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .cap{position:relative;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+.hero .cap b{display:block;font-size:32px;line-height:1.05;font-weight:var(--w-strong);text-transform:var(--cta-case)}
+.hero .bd{position:relative;align-self:flex-start;min-width:160px}
+@media(min-width:1024px){.hero{aspect-ratio:21/8;padding:48px}.hero .cap b{font-size:48px}}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:44%;gap:8px;overflow-x:auto;scrollbar-width:none}
+@media(min-width:1024px){.rail{grid-auto-columns:calc((100% - 24px)/4)}}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 8px}
+@media(min-width:1024px){.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 16px}}
+.pc{width:auto!important}
+.pdp{display:grid;gap:16px}
+@media(min-width:1024px){.pdp{grid-template-columns:1.3fr 1fr;gap:40px;align-items:start}}
+.pdp-img{display:grid;grid-template-columns:1fr;gap:4px;margin:0 -16px}
+.pdp-img img{width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--surface-media);display:block}
+@media(min-width:1024px){.pdp-img{grid-template-columns:1fr 1fr;margin:0}}
+.buy{display:flex;flex-direction:column;gap:16px}
+.buy .bd{width:100%}
+.bag{display:grid;gap:24px}
+@media(min-width:1024px){.bag{grid-template-columns:1.4fr 1fr;align-items:start;gap:40px}}
+.bag-item{width:auto!important}
+.stack{display:flex;flex-direction:column;gap:16px}
+.stack>*{width:auto!important;max-width:100%}
+[data-slot] *{max-width:100%}
+/* the click-through toast — tells the reviewer where the banner would go */
+.ct{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;transition:.25s;background:#111;color:#fff;font:500 13px var(--font-family-base);padding:10px 16px;border-radius:8px;z-index:999;pointer-events:none;max-width:90vw;text-align:center}
+.ct.on{opacity:1;transform:translate(-50%,0)}
+a.hd-usp{text-decoration:none;cursor:pointer}
+a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
+.hd-usp.cav-missing .usp-cav{color:#D33F3F;font-weight:var(--w-strong)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="ct" id="ct"></div>
+<script src="assets/ds/catalogue.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script src="assets/ds/usp.js"></script>
+<script>
+const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C.find(x=>x.slug===slug);return c?c.variants[i].html:''};
+const strip=h=>h.replace(/ style="width:[^"]*"/,'');
+const esc=s=>String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+let S={brand:'debenhams',page:'home',banners:[]};
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}
+
+const desk=()=>innerWidth>=1024;
+const P=()=>(window.PRODUCTS_ALL||{})[S.brand]||[];
+const IMG=i=>`projects/plp-alignment/img/${S.brand}/p${i}.jpg`;
+const logo=()=>`assets/brands/${S.brand}.svg`;
+
+/* ---- USP banner from a state object — the DS markup exactly (components.css .hd-usp / usp.js) ---- */
+function banner(b){
+  if(!b||!b.on)return '';
+  const mod={fascia:'',alt:'hd-usp--b',g05:'usp--g05',g1:'usp--g1',black:'usp--black',red:'usp--red'}[b.colour||'fascia']||'';
+  const parts=[`<span class="usp-t">${esc(b.t1)}</span>`];
+  if(b.type==='double')parts.push(`<span class="usp-t">${esc(b.t2)}</span>`);
+  if(b.type==='code'||b.type==='codecountdown')parts.push(`<span class="usp-code">Code: <b>${esc((b.code||'').toUpperCase())}</b></span>`);
+  const row=`<span class="usp-row">${parts.join('<span class="usp-sep"></span>')}</span>`;
+  const cd=(b.type==='countdown'||b.type==='codecountdown')?`<span class="usp-cd" data-left="${Math.max(0,Math.round((+b.hours||0)*3600))}"></span>`:'';
+  const star=/\*/.test((b.t1||'')+(b.t2||''));
+  const cav=star?`<span class="usp-cav">${esc(b.caveat)||'*Caveat required — every asterisk needs one'}</span>`:'';
+  const tag=b.href?'a':'div';
+  return `<${tag} class="hd-usp ${mod}${star&&!b.caveat?' cav-missing':''}"${b.href?` href="${esc(b.href)}" data-href="${esc(b.href)}"`:''}>${row}${cd}${cav}</${tag}>`;
+}
+const banners=()=>S.banners.map(banner).join('');
+
+function header(){
+  let h=desk()?V('header',1):V('header',0);
+  h=strip(h).replace(/ style="[^"]*border[^"]*"/,'').replace(/assets\/brands\/debenhams\.svg/,logo());
+  h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');   // drop the catalogue's sample bar
+  /* each fascia's own header glyphs: PLT runs its 16px set, MAN / KM / Brand Room a bookmark for wishlist */
+  if(S.brand==='plt')h=h.replace('icons/search.svg','icons/plt-search.svg').replace('icons/account.svg','icons/plt-account.svg').replace('icons/heart-24.svg','icons/plt-heart.svg').replace('icons/bag.svg','icons/plt-bag.svg');
+  else if(['boohooman','karenmillen','brandroom'].includes(S.brand))h=h.replace('icons/heart-24.svg','icons/bookmark.svg');
+  return h.replace(/<\/div>$/,banners()+'</div>');
+}
+
+function card(p,i){
+  if(!p)return '';
+  const sale=p.was?' sale':'';
+  return `<article class="pc pc--compact"><div class="pc-img"><img class="ph" src="${IMG(p.img??i)}" alt="" loading="lazy">
+    <div class="pc-actions"><button class="pc-iconbtn pc-iconbtn--sq" aria-label="Add to wishlist"><img src="assets/ds/icons/bookmark.svg" alt=""></button></div></div>
+    <div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${p.brand?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div>
+    <div class="pc-price${sale}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${p.pct?`<span class="pct">${esc(p.pct)}</span>`:''}</div></div></article>`;
+}
+
+const PAGES={
+  home:()=>`<div class="hero"><img src="${IMG(3)}" alt=""><div class="cap"><b>New season</b>The edit, in every size</div><button class="bd pri">Shop now</button></div>
+    <div class="wrap"><div class="sec">${V('category-nav',0)}</div>
+    <div class="sec"><div class="h1">Trending now</div><div class="rail">${P().slice(0,8).map(card).join('')}</div></div>
+    <div class="sec"><div class="h1">Just in</div><div class="rail">${P().slice(8,16).map(card).join('')}</div></div></div>`,
+  plp:()=>`<div class="wrap">${V('breadcrumb',0)}<div class="h1">Women's clothing</div><p class="lede">${P().length} styles</p>
+    <div class="sec" data-slot>${desk()?V('sort-filter',0):V('sort-filter',3)}</div>
+    <div class="grid">${P().slice(0,16).map(card).join('')}</div></div>`,
+  pdp:()=>{const p=P()[1]||{};return `<div class="wrap">${V('breadcrumb',0)}<div class="pdp"><div class="pdp-img"><img src="${IMG(p.img??1)}" alt=""><img src="${IMG(4)}" alt=""></div>
+    <div class="buy"><div><div class="pc-brand" style="font-size:14px">${esc(p.brand||'')}</div><div class="h1" style="margin-top:2px">${esc(p.name||'Product')}</div></div>
+    <div data-slot>${V('price',0)}</div><div data-slot>${V('colour-swatches',1)}</div><div data-slot>${V('size-selector',0)}</div>
+    <div class="stack" data-slot>${V('button',0)}</div><div data-slot>${V('usp-box',0)}</div><div data-slot>${V('accordion',0)}</div></div></div></div>`},
+  bag:()=>{const ps=P().slice(0,2);return `<div class="wrap"><div class="h1">Your bag (${ps.length})</div><div class="bag"><div class="stack">
+    <div data-slot>${V('threshold',0)}</div>${ps.map((p,i)=>`<div class="bag-item"><img src="${IMG(p.img??i)}" alt=""><div class="info">${p.brand?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`).join('')}</div>
+    <div class="stack"><div data-slot>${V('order-summary',0)}</div><div data-slot>${V('promo-field',0)}</div><div class="stack" data-slot>${V('payment-buttons',0)}</div></div></div></div>`},
+  account:()=>`<div class="wrap"><div class="h1">Hi Jake</div><p class="lede">Your account</p><div class="stack"><div data-slot>${V('account-card',0)}</div><div data-slot>${V('account-row',0)}</div></div></div>`
+};
+
+function render(){
+  document.documentElement.setAttribute('data-brand',S.brand);
+  const body=(PAGES[S.page]||PAGES.home)();
+  document.getElementById('app').innerHTML=header()+body+`<div style="margin-top:40px">${strip(V('footer',0))}</div>`;
+  document.querySelectorAll('.brandlogo').forEach(i=>i.src=logo());
+  if(window.DG_usp)window.DG_usp(document);
+}
+render();
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});
+addEventListener('message',e=>{if(e.data&&e.data.usp){S=Object.assign(S,e.data.usp);render()}});
+/* banner click-through: show the destination instead of leaving the prototype */
+document.addEventListener('click',e=>{const a=e.target.closest('a[data-href]');if(a){e.preventDefault();const t=document.getElementById('ct');t.textContent='Click-through → '+a.dataset.href;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800)}
+  else if(e.target.closest('a[href="#"],button'))e.preventDefault()});
+</script>
+</body>
+</html>

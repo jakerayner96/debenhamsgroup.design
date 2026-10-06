@@ -1183,8 +1183,8 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
             </div>
           </div>
           <div class="hd-usp">Lorem ipsum dolor sit amet</div>
-          <div class="hd-usp hd-usp--b">Lorem ipsum dolor sit amet<span class="usp-sep"></span>Code: <b>FAST</b></div>
-          <div class="hd-usp"><span class="usp-cav" style="padding:0">*Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>
+          <div class="hd-usp hd-usp--b"><span class="usp-row"><span class="usp-t">Lorem ipsum dolor sit amet</span><span class="usp-sep"></span><span class="usp-code">Code: <b>FAST</b></span></span></div>
+          <div class="hd-usp"><span class="usp-row"><span class="usp-t">Lorem ipsum dolor sit amet*</span></span><span class="usp-cav">*Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>
         </div>
       </div>
     </div>
@@ -1211,8 +1211,8 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
       <div class="pr h"><span>Type</span><span>Content</span><span>Rule</span></div>
       <div class="pr"><code>Single / Double Text</code><span>12px regular; Double joins two texts with the dash</span><span>Separator is the 4px dash (<code>.usp-sep</code>, 8px side gaps) — never a mid-dot</span></div>
       <div class="pr"><code>Text + Code</code><span>"Code:" regular · code value <b>strong</b></span><span>Joined to the text by the dash separator</span></div>
-      <div class="pr"><code>Text + Countdown</code><span>12:34:21:08 — strong digits, 5px colon columns (<code>.usp-cd</code>)</span><span>Countdown is a second row, 4px gap · Black/Red variant sets digits <code>--usp-cd</code> red</span></div>
-      <div class="pr"><code>Caveat</code><span>10px caption line (<code>.usp-cav</code>), bottom of the banner</span><span><b>Asterisk rule (design + dev):</b> a * in banner copy exists only on the Caveat-paired type, and the caption text is a required prop. Built without a caption, an asterisk must not be enterable — strip it.</span></div>
+      <div class="pr"><code>Text + Countdown</code><span>12:34:21:08 — strong digits, 5px colon columns (<code>.usp-cd</code>)</span><span>Countdown is its own row, 2px under the text · ticks via <code>usp.js</code> (<code>data-left</code> / <code>data-to</code>) · Black/Red variant sets digits <code>--usp-cd</code> red</span></div>
+      <div class="pr"><code>Caveat</code><span>10px caption line (<code>.usp-cav</code>) attached inside the bottom of the banner that carries the *</span><span><b>Asterisk rule (design + dev):</b> a * in banner copy exists only on the Caveat-paired type, and the caption text is a required prop. Built without a caption, an asterisk must not be enterable — strip it.</span></div>
     </div>
     <h2>Per-fascia differences <code>all token-driven</code></h2>
     <div class="props">
@@ -1691,6 +1691,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 
 <script src="assets/ds/dplus-logos.js"></script>
 <script src="assets/ds/catalogue.js"></script>
+<script src="assets/ds/usp.js"></script>
 <script>
 /* ---- component library: gallery + wiki pages + dev overlay, rendered from assets/ds/catalogue.js ---- */
 (function(){
@@ -1758,6 +1759,7 @@ window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||se
   if(c.universal){host.innerHTML=`<div class="fx"><div class="fl"><span>Every fascia</span><em>${c.name} · scheme colours, no brand tokens</em></div><div class="canvas fxc">${bodyFor(document.documentElement.getAttribute('data-brand'))}</div></div>`;return}
   host.innerHTML=order.map(([sl,nm])=>off(sl)?`<div class="fxoff" data-brand="${sl}"><span>${nm}</span><em>${c.name} not active on ${nm}</em></div>`:`<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>${c.name}</em></div><div class="canvas fxc">${bodyFor(sl)}</div></div>`).join('');
   host.querySelectorAll('.fx').forEach(fx=>{if(window.dgLum(fx)<.5)fx.classList.add('dark')});
+  if(window.DG_usp)requestAnimationFrame(()=>window.DG_usp(host));
 };
 /* controls in the catalogue demos are live: checkbox / toggle flip, radios are exclusive within their list */
 document.addEventListener('click',e=>{const el=e.target.closest('.chk,.tog,.rad');if(!el)return;
@@ -1824,6 +1826,7 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
     {n:'AI Generated Badge',d:'2026-09-01T13:33',st:'deck',u:GH+'ai-generated-badge/',r:RP+'ai-generated-badge',k:'ai generated badge labelling'},
     {n:'Design Request Form',d:'2026-07-14',st:'tool',u:GH+'UX-Design-Request/',r:RP+'UX-Design-Request',k:'ux design request form intake'},
     {n:'The Brand Room',d:'2026-09-01T14:32',st:'repo',r:RP+'THEBRANDROOM',k:'the brand room launch prototype'},
+    {n:'USP Banner',d:'2026-10-06T14:00',st:'open',u:GH+'debenhamsgroup.design/projects/usp-banner/',r:RP+'debenhamsgroup.design/tree/main/projects/usp-banner',k:'usp banner countdown code caveat header promo in situ prototype'},
     {n:'Gift Card Email',d:'2026-09-28T11:24',st:'open',u:GH+'debenhams-giftcard-email/',r:RP+'debenhams-giftcard-email',k:'gift card email template refund esp crm debenhams'},
     {n:'PLT App',d:'2026-09-05',st:'private',r:RP+'plt-app-prototype',k:'plt app prototype expo react native'}
   ];
@@ -1881,9 +1884,9 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   const MS=window.DG_MEMBERSHIPS=[
     {b:'debenhams',n:'Debenhams Unlimited',logo:'assets/brands/memberships/prem-logo-deb.png',bg:'assets/brands/memberships/prem-bg-deb.jpg',ic:'icons-unlimited-infinity',c:{box:'#DCDCDC',ink:'#000000',cta:'#000000',ctaInk:'#FFFFFF'},copy:'Enjoy unlimited delivery for an entire year from just £14.99'},
     {b:'debenhams',n:'Unlimited+',ic:'icons-unlimited-plus',c:{box:'#DCDCDC',ink:'#000000',cta:'#000000',ctaInk:'#FFFFFF'},copy:'New tier — artwork, colours and benefits to confirm',tbc:1},
-    {b:'boohoo',n:'Premier Club',logo:'assets/brands/memberships/prem-logo-bh.png',bg:'assets/brands/memberships/prem-bg-bh.jpg',ic:'icons-unlimited',c:{box:'#E1D8CF',ink:'#000000',cta:'#8D113A',ctaInk:'#FFFFFF'},copy:'Enjoy unlimited delivery for an entire year from just £9.99'},
+    {b:'boohoo',n:'Premier Club',logo:'assets/brands/memberships/prem-logo-bh.png',bg:'assets/brands/memberships/prem-bg-bh.jpg',ic:'icons-delivery-fast',c:{box:'#E1D8CF',ink:'#000000',cta:'#8D113A',ctaInk:'#FFFFFF'},copy:'Enjoy unlimited delivery for an entire year from just £9.99'},
     {b:'boohooman',n:'Premier',logo:'assets/brands/memberships/prem-logo-bm.png',bg:'assets/brands/memberships/prem-bg-bm.jpg',ic:'icon-boohooman-premier',c:{box:'#CECECE',ink:'#000000',cta:'#000000',ctaInk:'#FFFFFF'},copy:'Enjoy unlimited delivery for an entire year from just £9.99'},
-    {b:'plt',n:'Royalty',logo:'assets/brands/memberships/prem-logo-plt.png',bg:'assets/brands/memberships/prem-bg-plt.jpg',ic:'icons-plt-royalty',extra:[['Royalty mark','assets/brands/memberships/plt-royalty-mark.png'],['Royalty lockup','assets/brands/memberships/plt-royalty-lockup.png']],c:{box:'#20090C',ink:'#FFFFFF',cta:'#FFFFFF',ctaInk:'#000000'},copy:'Enjoy unlimited delivery for an entire year from just £9.99'},
+    {b:'plt',n:'Royalty',logo:'assets/brands/memberships/prem-logo-plt.png',bg:'assets/brands/memberships/prem-bg-plt.jpg',ic:'icons-plt-royalty',extra:[['Royalty emblem','assets/brands/memberships/plt-royalty-emblem.svg'],['Royalty mark','assets/brands/memberships/plt-royalty-mark.png'],['Royalty lockup','assets/brands/memberships/plt-royalty-lockup.png']],c:{box:'#20090C',ink:'#FFFFFF',cta:'#FFFFFF',ctaInk:'#000000'},copy:'Enjoy unlimited delivery for an entire year from just £9.99'},
     {b:'karenmillen',n:'Premier',logo:'assets/brands/memberships/prem-logo-km.png',ic:'icons-unlimited',c:{box:'#000000',ink:'#FFFFFF',cta:'#FFFFFF',ctaInk:'#000000'},copy:'Enjoy unlimited delivery for an entire year from just £14.99'}
   ];
   const fname=Object.fromEntries(F);

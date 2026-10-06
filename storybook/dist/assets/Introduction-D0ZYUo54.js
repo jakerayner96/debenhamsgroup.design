@@ -1,4 +1,4 @@
-import{j as e,M as n}from"./index-BJrmSj9p.js";import{useMDXComponents as d}from"./index-nufyxw1x.js";import"./iframe-Djh4DgZ8.js";import"./index-DoTOmpKs.js";import"./index-Bhqu_tAV.js";function r(s){const t={code:"code",h1:"h1",h2:"h2",li:"li",p:"p",strong:"strong",ul:"ul",...d(),...s.components};return e.jsxs(e.Fragment,{children:[e.jsx(n,{title:"DG/Introduction"}),`
+import{j as e,M as n}from"./index-BgZz0dU9.js";import{useMDXComponents as d}from"./index-DPjIXH5I.js";import"./iframe-C3JfCV7R.js";import"./index-DoTOmpKs.js";import"./index-Bhqu_tAV.js";function r(s){const t={code:"code",h1:"h1",h2:"h2",li:"li",p:"p",strong:"strong",ul:"ul",...d(),...s.components};return e.jsxs(e.Fragment,{children:[e.jsx(n,{title:"DG/Introduction"}),`
 `,e.jsx(t.h1,{id:"dg-group-design-system",children:"DG Group Design System"}),`
 `,e.jsxs(t.p,{children:["The Debenhams Group component library, rendered from the canonical CSS (",e.jsx(t.code,{children:"assets/ds/tokens.css"})," + ",e.jsx(t.code,{children:"components.css"}),`).
 Every story is plain HTML on our class names — the visual target for the React/Tailwind implementation in the
