@@ -36,8 +36,10 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 @media(min-width:1024px){.pdp-img{grid-template-columns:1fr 1fr;margin:0}}
 .buy{display:flex;flex-direction:column;gap:16px}
 .buy .bd{width:100%}
+.bagpg{padding:0 16px}
 .bag{display:grid;gap:24px}
-@media(min-width:1024px){.bag{grid-template-columns:1.4fr 1fr;align-items:start;gap:40px}}
+.bagcol{margin-top:24px}
+@media(min-width:1024px){.bagpg{max-width:1024px;margin:0 auto}.bag{grid-template-columns:minmax(0,1fr) 390px;align-items:start;gap:16px}.bagcol{margin:0;background:var(--surface-sunken,#FAFAFA)}}
 .bag-item{width:auto!important}
 .stack{display:flex;flex-direction:column;gap:16px}
 .stack>*{width:auto!important;max-width:100%}
@@ -49,6 +51,10 @@ a.hd-usp{text-decoration:none;cursor:pointer}
 a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pgfoot>*,.pgfoot>*>*{width:100%!important;max-width:none!important}
 .hd-usp.cav-missing .usp-cav{color:#D33F3F;font-weight:var(--w-strong)}
+/* rows = DS .usp-stack / .usp-cells (components.css + usp.js); cell shades come from each fascia's --usp-a-bg / --usp-a-bg2 */
+#usps .hd-usp{text-transform:none} /* the copy carries each fascia's live casing */
+/* PLP + PDP are the real prototypes (plp-alignment new format · Core PDP 2026), embedded with their own header + footer hidden */
+.emb{display:block;width:100%;height:2400px;border:0}
 </style>
 </head>
 <body>
@@ -57,6 +63,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 <script src="assets/ds/catalogue.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
 <script src="assets/ds/usp.js"></script>
+<script src="projects/usp-banner/home.js"></script>
+<script src="projects/usp-banner/bag.js"></script>
 <script>
 const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C.find(x=>x.slug===slug);return c?c.variants[i].html:''};
 const strip=h=>h.replace(/ style="width:[^"]*"/,'');
@@ -70,25 +78,32 @@ const IMG=i=>`projects/plp-alignment/img/${S.brand}/p${i}.jpg`;
 const logo=()=>`assets/brands/${S.brand}.svg`;
 
 /* ---- USP banner from a state object — the DS markup exactly (components.css .hd-usp / usp.js) ---- */
-let ROT=[0,0];
-/* a banner holds a list of messages (live bars rotate); show the selected one, or the rotation's current one */
-function msgOf(b,i){const L=b.items||[b];return b.rotate&&L.length>1?L[ROT[i]%L.length]:(L[b.idx||0]||L[0])}
-function banner(bar,i){
-  if(!bar||!bar.on)return '';
-  const b=Object.assign({},msgOf(bar,i),{colour:bar.colour});
-  const mod={fascia:'',alt:'hd-usp--b',g05:'usp--g05',g1:'usp--g1',black:'usp--black',red:'usp--red'}[b.colour||'fascia']||'';
+/* one message as a DS bar */
+function bar1(m,colour,on){
+  const b=Object.assign({},m),nc=S.caveats===false;   /* caveats off: drop the asterisks and the caveat line */
+  if(nc){b.t1=(b.t1||'').replace(/\*/g,'').trim();b.t2=(b.t2||'').replace(/\*/g,'').trim()}
+  const mod={fascia:'',alt:'hd-usp--b',top:'hd-usp--top',g05:'usp--g05',g1:'usp--g1',black:'usp--black',red:'usp--red'}[colour||'fascia']||'';
   const parts=[`<span class="usp-t">${esc(b.t1)}</span>`];
   if(b.type==='double')parts.push(`<span class="usp-t">${esc(b.t2)}</span>`);
   if(b.type==='code'||b.type==='codecountdown')parts.push(`<span class="usp-code">Code: <b>${esc((b.code||'').toUpperCase())}</b></span>`);
   const row=`<span class="usp-row">${parts.join('<span class="usp-sep"></span>')}</span>`;
   const cd=(b.type==='countdown'||b.type==='codecountdown')?`<span class="usp-cd" data-left="${Math.max(0,Math.round((+b.hours||0)*3600))}"></span>`:'';
-  const star=/\*/.test((b.t1||'')+(b.t2||''));
-  const cav=star?`<span class="usp-cav">${esc(b.caveat)||'*Caveat required — every asterisk needs one'}</span>`:'';
+  const star=/\*/.test((b.t1||'')+(b.type==='double'?b.t2||'':''));
+  const cav=star?`<span class="usp-cav">${esc(b.caveat)||'*Caveat required, every asterisk needs one'}</span>`:'';
   const tag=b.href?'a':'div';
-  return `<${tag} class="hd-usp ${mod}${star&&!b.caveat?' cav-missing':''}"${b.href?` href="${esc(b.href)}" data-href="${esc(b.href)}"`:''}>${row}${cd}${cav}</${tag}>`;
+  return `<${tag} class="hd-usp ${mod}${star&&!b.caveat?' cav-missing':''}${on?' on':''}"${b.href?` href="${esc(b.href)}" data-href="${esc(b.href)}"`:''}>${row}${cd}${cav}</${tag}>`;
+}
+/* a row holds a list of messages (live: row 1 usually rotates, row 2 is fixed). Desktop lays them out as cells across the bar, like live;
+   mobile stacks every message in one grid cell and shows one, so the bar is always the height of its tallest message — rotating never moves the page */
+function banner(row,i){
+  if(!row||!row.on)return '';
+  const L=row.items&&row.items.length?row.items:[row];
+  if(L.length<2)return `<div class="usp-row1">${bar1(L[0],row.colour,1)}</div>`;
+  if(desk())return `<div class="usp-row1 usp-cells${(row.colour||'fascia')==='fascia'?' usp-cells--alt':''}">${L.map(m=>bar1(m,row.colour,1)).join('')}</div>`;
+  const cur=(row.rotate?0:(row.idx||0))%L.length;
+  return `<div class="usp-row1 usp-stack"${row.rotate&&!EXPORTING?' data-rotate="5000"':''}>${L.map((m,j)=>bar1(m,row.colour,j===cur)).join('')}</div>`;
 }
 const banners=()=>`<div id="usps">${S.banners.map(banner).join('')}</div>`;
-setInterval(()=>{if(EXPORTING||!S.banners.some(b=>b.on&&b.rotate&&(b.items||[]).length>1))return;ROT=ROT.map(n=>n+1);const u=document.getElementById('usps');if(u){u.outerHTML=banners();if(window.DG_usp)window.DG_usp(document.getElementById('usps'))}},4000);
 
 function header(){
   let h=desk()?V('header',1):V('header',0);
@@ -109,39 +124,52 @@ function card(p,i){
     <div class="pc-price${sale}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${p.pct?`<span class="pct">${esc(p.pct)}</span>`:''}</div></div></article>`;
 }
 
+/* ---- embedded pages: the live prototypes, same origin (core-pdp-2026 is a sibling Pages repo: /core-pdp-2026/) ---- */
+const EMB={plp:()=>`projects/plp-alignment/plp.html?brand=${S.brand}&mode=new`,pdp:()=>`../core-pdp-2026/pdp.html?mode=new`};
+const HIDE={plp:'header.hd,#uspb,footer.ft{display:none!important}',pdp:'header.hdr,footer.ft,#edbar{display:none!important}'};
+function embed(f){const k=f.dataset.emb;let done;f._ready=new Promise(r=>done=r);
+  f.addEventListener('load',()=>{let d;try{d=f.contentDocument;d.documentElement}catch(e){d=null}
+    if(!d){f.style.height='2400px';return done()}                       /* cross-origin (local server without the sibling repo): show it as is */
+    const st=d.createElement('style');st.textContent=HIDE[k]+'html,body{overflow:hidden!important}';d.head.appendChild(st);
+    d.addEventListener('click',e=>{const a=e.target.closest('a[href="#"]');if(a)e.preventDefault()});
+    const fit=()=>{const h=Math.ceil(d.body.getBoundingClientRect().height);if(h&&Math.abs(h-f.offsetHeight)>1)f.style.height=h+'px'};
+    fit();new ResizeObserver(fit).observe(d.body);
+    const imgs=()=>[...d.images].filter(i=>i.loading!=='lazy'||i.getBoundingClientRect().top<4000).every(i=>i.complete);
+    const t0=Date.now(),w=setInterval(()=>{if(imgs()||Date.now()-t0>8000){clearInterval(w);fit();done()}},100)})}
+
 const PAGES={
-  home:()=>`<div class="hero"><img src="${IMG(3)}" alt=""><div class="cap"><b>New season</b>The edit, in every size</div><button class="bd pri">Shop now</button></div>
-    <div class="wrap"><div class="sec">${V('category-nav',0)}</div>
-    <div class="sec"><div class="h1">Trending now</div><div class="rail">${P().slice(0,8).map(card).join('')}</div></div>
-    <div class="sec"><div class="h1">Just in</div><div class="rail">${P().slice(8,16).map(card).join('')}</div></div></div>`,
-  plp:()=>`<div class="wrap">${V('breadcrumb',0)}<div class="h1">Women's clothing</div><p class="lede">${P().length} styles</p>
-    <div class="sec" data-slot>${desk()?V('sort-filter',0):V('sort-filter',3)}</div>
-    <div class="grid">${P().slice(0,16).map(card).join('')}</div></div>`,
-  pdp:()=>{const p=P()[1]||{};return `<div class="wrap">${V('breadcrumb',0)}<div class="pdp"><div class="pdp-img"><img src="${IMG(p.img??1)}" alt=""><img src="${IMG(4)}" alt=""></div>
-    <div class="buy"><div><div class="pc-brand" style="font-size:14px">${esc(p.brand||'')}</div><div class="h1" style="margin-top:2px">${esc(p.name||'Product')}</div></div>
-    <div data-slot>${V('price',0)}</div><div data-slot>${V('colour-swatches',1)}</div><div data-slot>${V('size-selector',0)}</div>
-    <div class="stack" data-slot data-btns>${V('button',0)}</div><div data-slot>${V('usp-box',0)}</div><div data-slot>${V('accordion',0)}</div></div></div></div>`},
-  bag:()=>{const ps=P().slice(0,2);return `<div class="wrap"><div class="h1">Your bag (${ps.length})</div><div class="bag"><div class="stack">
-    <div data-slot>${V('threshold',0)}</div>${ps.map((p,i)=>`<div class="bag-item"><img src="${IMG(p.img??i)}" alt=""><div class="info">${p.brand?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`).join('')}</div>
-    <div class="stack"><div data-slot>${V('order-summary',0)}</div><div data-slot>${V('promo-field',0)}</div><div class="stack" data-slot>${V('payment-buttons',0)}</div></div></div></div>`},
+  home:()=>window.renderHome?renderHome(S.brand,desk()):'',  /* each fascia's live homepage (home.js, captured 06 Oct) */
+  plp:()=>`<iframe class="emb" data-emb="plp" title="PLP" src="${EMB.plp()}"></iframe>`,
+  pdp:()=>`<iframe class="emb" data-emb="pdp" title="PDP" src="${EMB.pdp()}"></iframe>`,
+  /* bag: live layout (06 Oct /basket) — 1024 container, items | 390px summary column on grey; mobile: total + checkout under the title, summary full-bleed after the items. Summary = bag.js */
+  bag:()=>{const ps=P().slice(0,2),it=ps.map(p=>({price:p.price,was:p.was})),items=ps.map((p,i)=>`<div class="bag-item"><img src="${IMG(p.img??i)}" alt=""><div class="info">${p.brand?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`).join('');
+    const sum=window.renderBagSummary?renderBagSummary(S.brand,it,desk()):V('order-summary',0);
+    return desk()?`<div class="bagpg"><div class="h1">Your Bag (${ps.length})</div><div class="bag"><div class="stack"><div data-slot>${V('threshold',0)}</div>${items}</div><div class="bagcol">${sum}</div></div></div>`
+      :`<div class="bagpg"><div class="h1">Your Bag (${ps.length})</div>${window.renderBagTop?renderBagTop(S.brand,it):''}<div class="stack"><div data-slot>${V('threshold',0)}</div>${items}</div></div><div class="bagcol">${sum}</div>`},
   account:()=>`<div class="wrap"><div class="h1">Hi Jake</div><p class="lede">Your account</p><div class="stack"><div data-slot>${V('account-card',0)}</div><div data-slot>${V('account-row',0)}</div></div></div>`
 };
 
+/* header (banners) redraws on every change; the body only when page / brand / breakpoint change — an embedded page never reloads for a banner edit */
+let BODY='',EXPORTING=false;
 function render(){
   document.documentElement.setAttribute('data-brand',S.brand);
-  const body=(PAGES[S.page]||PAGES.home)();
-  document.getElementById('app').innerHTML=header()+body+`<div class="pgfoot" style="margin-top:40px">${strip(V('footer',0))}</div>`;
+  const app=document.getElementById('app');
+  [['HOME_CSS','homecss'],['BAG_CSS','bagcss']].forEach(([k,id])=>{if(window[k]&&!document.getElementById(id)){const st=document.createElement('style');st.id=id;st.textContent=window[k];document.head.appendChild(st)}});
+  if(!app.firstChild)app.innerHTML='<div id="hdr"></div><div id="body"></div><div class="pgfoot" style="margin-top:40px"></div>';
+  document.getElementById('hdr').innerHTML=header();
+  const key=S.page+'|'+S.brand+'|'+(EMB[S.page]?'':desk());
+  if(key!==BODY){BODY=key;const b=document.getElementById('body');b.innerHTML=(PAGES[S.page]||PAGES.home)();b.querySelectorAll('iframe[data-emb]').forEach(embed);
+    app.querySelector('.pgfoot').innerHTML=strip(V('footer',0))}
   document.querySelectorAll('.brandlogo').forEach(i=>i.src=logo());
   document.querySelectorAll('[data-btns]').forEach(h=>{[...h.querySelectorAll('.bd')].slice(2).forEach(x=>(x.closest('.fv')||x).remove())}); /* PDP keeps Buy it now + Add to bag */
   if(window.DG_usp)window.DG_usp(document);
 }
 render();
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});
-let EXPORTING=false;
 /* shell contract (review-prototype skill): {protoSet} in, {protoReady} on load, {protoPing} → {protoPong,h} */
 addEventListener('message',e=>{const d=e.data||{};
-  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;ROT=[0,0];render()}
-  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)Promise.all([...document.querySelectorAll('iframe[data-emb]')].map(f=>f._ready)).then(()=>parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*'))});
 addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
 /* banner click-through: show the destination instead of leaving the prototype */
 document.addEventListener('click',e=>{const a=e.target.closest('a[data-href]');if(a){e.preventDefault();const t=document.getElementById('ct');t.textContent='Click-through → '+a.dataset.href;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800)}

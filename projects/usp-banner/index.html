@@ -163,9 +163,13 @@ body.fold .device iframe{box-shadow:none}
 <script>
 /* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
 const TYPES=[['single','Single text'],['double','Double text'],['code','Text + code'],['countdown','Text + countdown'],['codecountdown','Text + code + countdown']];
-const COLS=[['g05','Grey 05','grey'],['g1','Grey 1','grey'],['black','Black','black'],['red','Black / Red','black']];
+/* colours: the fascia's own bars (tokens.css --usp-a / --usp-b / --usp-top — each keeps its live colour) + the Figma colourways.
+   tone per fascia for the two-row rule (never the same tone twice); PLT's peach + cream are two tones */
+const COLS=[['fascia','Fascia bar'],['alt','Fascia bar B'],['top','Fascia top bar'],['g05','Grey 05'],['g1','Grey 1'],['black','Black'],['red','Black / Red']];
+const TONE={debenhams:{fascia:'grey',alt:'black',top:'grey'},boohoo:{fascia:'black',alt:'pink',top:'black'},boohooman:{fascia:'black',alt:'grey',top:'black'},
+  plt:{fascia:'cream',alt:'cream',top:'peach'},karenmillen:{fascia:'black',alt:'black',top:'black'},warehouse:{fascia:'black',alt:'black',top:'black'},brandroom:{fascia:'black',alt:'black',top:'black'}};
 const PAGES=[['home','Home'],['plp','PLP'],['pdp','PDP'],['bag','Bag'],['account','Account']];
-const fam=c=>(COLS.find(x=>x[0]===c)||[])[2];
+const fam=c=>({g05:'grey',g1:'grey',black:'black',red:'black'})[c]||((TONE[S.brand]||{})[c])||'grey';
 const MSG=o=>Object.assign({type:'single',t1:'',t2:'',code:'',hours:12,href:'',caveat:''},o);
 const live=b=>{const L=JSON.parse(JSON.stringify((window.USP_LIVE||{})[b]||[]));while(L.length<2)L.push({on:false,colour:L.length&&fam(L[0].colour)==='black'?'g05':'black',rotate:false,idx:0,items:[MSG({t1:'Free delivery on orders over £50',href:'/delivery'})]});return L};
 const P={
@@ -174,9 +178,9 @@ const P={
   page:'page.html',
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
-  files:['page.html','live.js','README.md'],
-  store:'proto-usp-banner',
-  initial:b=>({page:'home',banners:live(b)}),
+  files:['page.html','live.js','home.js','bag.js','README.md'],
+  store:'proto-usp-banner-v3', // v3 (07 Oct): new live content + row model — old saves would hide it
+  initial:b=>({page:'home',caveats:true,banners:live(b)}),
 };
 const q=v=>String(v??'').replace(/"/g,'&quot;');
 /* left panel: page, then the two banners — one grey + one black at most, messages per banner, no inline links */
@@ -184,24 +188,26 @@ function renderPanel(host,S,update){
   const C=S.cfg,L=C.banners,redo=()=>{renderPanel(host,S,update)};
   host.innerHTML=`<h1>USP banner</h1><p class="intro">The DS USP banner (Figma 11982-37171) on every core page, loaded with each fascia's live banners (06 Oct). Change the page, then each banner's colour, messages, type, copy and click-through.</p>
   <div class="card"><h3>Page</h3><div class="chips">${PAGES.map(([v,n])=>`<button class="chip${C.page===v?' on':''}" data-p="${v}">${n}</button>`).join('')}</div></div>
+  <div class="card${C.caveats===false?' off':''}"><h3><span>Caveats<small>${C.caveats===false?'off':'on'}</small></span><label class="sw"><input type="checkbox" id="cavsw"${C.caveats!==false?' checked':''}><i></i></label></h3><div class="body"><p class="intro" style="margin:0">Off removes every asterisk and its caveat line, so the banners can be compared with and without.</p></div></div>
   ${L.map((b,i)=>{const o=L[1-i],taken=o&&o.on?fam(o.colour):null,m=b.items[b.idx]||b.items[0];
     const cd=m.type==='countdown'||m.type==='codecountdown',code=m.type==='code'||m.type==='codecountdown',star=/\*/.test(m.t1+(m.type==='double'?m.t2:''));
-    return `<div class="card${b.on?'':' off'}" data-i="${i}"><h3><span>Banner ${i+1}<small>${b.on?fam(b.colour):'off'}</small></span><label class="sw"><input type="checkbox" data-b="on"${b.on?' checked':''}><i></i></label></h3><div class="body">
-    <label class="f"><span>Colour</span><select data-b="colour">${COLS.map(([v,n,f])=>`<option value="${v}"${b.colour===v?' selected':''}${taken===f?' disabled':''}>${n}${taken===f?' — used by banner '+(2-i):''}</option>`).join('')}</select></label>
+    return `<div class="card${b.on?'':' off'}" data-i="${i}"><h3><span>Row ${i+1}<small>${b.on?fam(b.colour):'off'}</small></span><label class="sw"><input type="checkbox" data-b="on"${b.on?' checked':''}><i></i></label></h3><div class="body">
+    <label class="f"><span>Colour</span><select data-b="colour">${COLS.map(([v,n])=>{const f=fam(v);return `<option value="${v}"${b.colour===v?' selected':''}${taken===f?' disabled':''}>${n} (${f})${taken===f?' — used by row '+(2-i):''}</option>`}).join('')}</select></label>
     <div class="msgs"><span class="lbl">Messages</span>${b.items.map((x,j)=>`<button class="chip${j===b.idx?' on':''}" data-m="${j}">${j+1}</button>`).join('')}<button class="chip add" data-add>+</button>${b.items.length>1?`<button class="rm" data-rm>Remove ${b.idx+1}</button>`:''}</div>
-    ${b.items.length>1?`<div class="f"><label class="sw"><input type="checkbox" data-b="rotate"${b.rotate?' checked':''}><i></i>Rotate through the messages (4s)</label></div>`:''}
+    ${b.items.length>1?`<div class="f"><label class="sw"><input type="checkbox" data-b="rotate"${b.rotate?' checked':''}><i></i>Rotate on mobile (4s) — desktop shows them side by side</label></div>`:''}
     <label class="f"><span>Type</span><select data-k="type">${TYPES.map(([v,n])=>`<option value="${v}"${m.type===v?' selected':''}>${n}</option>`).join('')}</select></label>
     <label class="f"><span>Text</span><input data-k="t1" value="${q(m.t1)}" placeholder="Free delivery on orders over £50"></label>
     ${m.type==='double'?`<label class="f"><span>Second text</span><input data-k="t2" value="${q(m.t2)}"><small>Joined to the first by the dash.</small></label>`:''}
     ${code?`<label class="f"><span>Code</span><input data-k="code" value="${q(m.code)}" placeholder="FAST"><small>Shown as “Code: ${q((m.code||'XYZ').toUpperCase())}”.</small></label>`:''}
     ${cd?`<label class="f"><span>Countdown — hours left</span><input data-k="hours" type="number" min="0" step="0.5" value="${m.hours}"></label>`:''}
     <label class="f"><span>Click-through</span><input data-k="href" value="${q(m.href)}" placeholder="/sale"><small>The whole bar is the link — no "Shop now" in the copy.</small></label>
-    <label class="f"><span>Caveat${star?' (required — the copy has a *)':''}</span><input data-k="caveat" value="${q(m.caveat)}" placeholder="*Excludes sale and selected lines."><small class="${star&&!m.caveat?'warn':''}">${star?(m.caveat?'Attached to the bottom of this banner.':'Add the caveat — an asterisk needs one.'):'Add a * to the copy to attach a caveat line.'}</small></label>
+    <label class="f"><span>Caveat${star?' (required — the copy has a *)':''}</span><input data-k="caveat" value="${q(m.caveat)}" placeholder="*Excludes sale and selected lines"><small class="${star&&!m.caveat?'warn':''}">${star?(m.caveat?'Attached to the bottom of this banner.':'Add the caveat — an asterisk needs one.'):'Add a * to the copy to attach a caveat line.'}</small></label>
     </div></div>`}).join('')}
-  <div class="card"><h3>Rules</h3><div class="rules"><b>Two at most, never the same tone</b> — one grey, one black; a second banner takes the other tone and the tone in use is disabled. <b>No inline links</b> — no "Shop now": the whole bar is the click-through. <b>Height</b> follows the copy (one line = 23px on mobile). <b>Separator</b> is the 4px dash. <b>Code</b> is "Code: XYZ". <b>Countdown</b> on its own row. <b>Asterisk</b> attaches the caveat to that banner.</div></div>
+  <div class="card"><h3>Rules</h3><div class="rules"><b>Two rows at most, never the same tone</b> — each row keeps its fascia colour; the tone in use is disabled for the other row. <b>Row 1 usually rotates, row 2 is fixed.</b> <b>Rotating rows never jump</b> — the bar holds the height of its tallest message; desktop lays the messages out across the bar. <b>No inline links</b> — no "Shop now": the whole bar is the click-through. <b>Height</b> follows the copy (one line = 23px on mobile). <b>Separator</b> is the 4px dash. <b>Code</b> is "Code: XYZ". <b>Countdown</b> on its own row. <b>Asterisk</b> attaches the caveat to that banner. <b>Caveat copy</b>: no em dashes, no full stop.</div></div>
   <div class="card"><h3>Reset</h3><button class="chip" id="reset">Back to the live banners for this brand</button></div>`;
   host.querySelectorAll('[data-p]').forEach(x=>x.onclick=()=>{C.page=x.dataset.p;redo();update()});
-  host.querySelector('#reset').onclick=()=>{S.cfg={page:C.page,banners:live(S.brand)};redo();update()};
+  host.querySelector('#reset').onclick=()=>{S.cfg={page:C.page,caveats:C.caveats,banners:live(S.brand)};redo();update()};
+  host.querySelector('#cavsw').onchange=e=>{C.caveats=e.target.checked;redo();update()};
   host.querySelectorAll('.card[data-i]').forEach(card=>{const i=+card.dataset.i,b=L[i];
     card.querySelector('[data-b="on"]').onchange=e=>{b.on=e.target.checked;const o=L[1-i];if(b.on&&o&&o.on&&fam(o.colour)===fam(b.colour))b.colour=fam(o.colour)==='grey'?'black':'g05';redo();update()};
     card.querySelector('[data-b="colour"]').onchange=e=>{b.colour=e.target.value;redo();update()};
@@ -259,7 +265,15 @@ function loadFrame(w){return new Promise((res,rej)=>{const f=document.createElem
     if(e.data.protoPong){clearTimeout(t);removeEventListener('message',onMsg);f.style.height=(e.data.h+20)+'px';setTimeout(()=>res(f),700)}};
   addEventListener('message',onMsg)})}
 async function shot(w){const f=await loadFrame(w),doc=f.contentDocument,h=doc.documentElement.scrollHeight;
-  const c=await html2canvas(doc.documentElement,{width:w,height:h,windowWidth:w,windowHeight:h,scale:2,useCORS:true,backgroundColor:'#FFFFFF',logging:false});f.remove();
+  const o={scale:2,useCORS:true,backgroundColor:'#FFFFFF',logging:false};
+  const c=await html2canvas(doc.documentElement,Object.assign({width:w,height:h,windowWidth:w,windowHeight:h},o));
+  /* embedded pages (PLP / PDP iframes): html2canvas leaves iframes blank, so render each one's own document and paste it at its box */
+  for(const e of doc.querySelectorAll('iframe[data-emb]')){let d;try{d=e.contentDocument}catch(x){}if(!d)continue;
+    const r=e.getBoundingClientRect(),ew=Math.round(r.width),eh=Math.round(r.height);
+    if(!d.querySelector('base')){const bs=d.createElement('base');bs.href=d.URL;d.head.prepend(bs)} /* html2canvas's copy would resolve relative URLs against this page */
+    const ec=await html2canvas(d.documentElement,Object.assign({width:ew,height:eh,windowWidth:ew,windowHeight:eh},o));
+    const x=c.getContext('2d');x.setTransform(1,0,0,1,0,0);x.drawImage(ec,r.left*2,(r.top+doc.documentElement.scrollTop)*2,ew*2,eh*2)} /* html2canvas leaves its scale on the context */
+  f.remove();
   return new Promise(r=>c.toBlob(r,'image/png'))}
 const stamp=()=>new Date().toISOString().slice(0,16).replace('T','-').replace(':','');
 async function doExport(){const btns=[$('#exportbtn'),$('#exportbtn2')];btns.forEach(b=>b.disabled=true);exp.hidden=false;

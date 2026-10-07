@@ -177,6 +177,20 @@
 .usp-cd b{font-weight:var(--w-strong);color:var(--usp-cd,inherit)}
 .hd-usp .usp-cd{line-height:17px}@media(min-width:1024px){.hd-usp .usp-cd{line-height:20px}} /* Figma countdown bar = 4 + 15 + 2 + 17 + 4 = 42 */
 .usp-cd i{font-style:normal;width:5px;text-align:center;padding-bottom:2px;color:inherit} /* colons stay banner-ink; only the digits take --usp-cd (Black/Red) */
+/* Rows (Figma 13005-165658) — at most two; row 1 usually rotates, row 2 is fixed.
+   .usp-stack = a rotating row on mobile: every message shares one grid cell, so the bar is always the height of its tallest message
+   and rotating never moves the page. usp.js advances .on every 5s (data-rotate="ms"); the incoming message fades in over the outgoing
+   one, which stays solid underneath (.was) — no background flash between them.
+   .usp-cells = the same row on desktop: its messages laid across the bar as equal cells; --alt alternates usp-a / usp-a2 cell shades. */
+.usp-stack{display:grid}
+.usp-stack>.hd-usp{grid-area:1/1;visibility:hidden}
+.usp-stack>.hd-usp.was{visibility:visible;z-index:0}
+.usp-stack>.hd-usp.on{visibility:visible;z-index:1}
+.usp-stack>.hd-usp.on.in{animation:usp-xfade 700ms cubic-bezier(.4,0,.2,1) both}
+@keyframes usp-xfade{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.usp-stack>.hd-usp.on.in{animation:none}}
+.usp-cells{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
+.usp-cells--alt>.hd-usp:nth-child(even){background:var(--usp-a-bg2,var(--usp-a-bg))}
 .hd-bar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;gap:16px}
 .hd-left{display:flex;align-items:center;gap:16px;min-width:0}
 .hd-burger{width:24px;height:24px;min-width:24px;background:none;border:none;padding:0;cursor:pointer}
