@@ -529,8 +529,9 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 /* items fade out as they reach the stuck heading: --cut is set on scroll (where the heading's bottom falls inside the list) */
 .grp .items.cut{--cut:0px;-webkit-mask-image:linear-gradient(to bottom,transparent var(--cut),#000 calc(var(--cut) + 28px));mask-image:linear-gradient(to bottom,transparent var(--cut),#000 calc(var(--cut) + 28px))}
 
-.ptbl .tr{grid-template-columns:minmax(0,2fr) minmax(0,1fr) 24px;color:var(--ink)}.ptbl .tr:last-child{border-bottom:0}.ptbl .ar{color:var(--ink-3);text-align:right}.ptbl .tr:hover .ar{color:var(--accent)}
-@container (max-width:560px){.ptbl .tr{grid-template-columns:minmax(0,1fr) auto 24px;gap:12px}}
+.ptbl .tr{cursor:default;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,.8fr);color:var(--ink)}.ptbl .tr:last-child{border-bottom:0}.ptbl .ar{color:var(--ink-3);text-align:right}.ptbl .tr:hover .ar{color:var(--accent)}
+@container (max-width:560px){.ptbl .tr{grid-template-columns:minmax(0,1fr) auto auto;gap:12px}.ptbl .tr>:nth-child(2){display:none}}
+.ptbl .tl{color:var(--ink-2);font-size:14px;white-space:nowrap}.ptbl .tl:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}.ptbl .tl.none{color:var(--ink-3)}
 
 /* sidebar head: group mark (DS Figma DG Logo 11809:2663, left-aligned), then home · search · theme · brand */
 .sblogo{display:block;margin:4px 0 18px}.sblogo img{height:30px;width:auto;display:block;filter:invert(1)}[data-theme="light"] .sblogo img{filter:none}
@@ -1818,17 +1819,17 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   const GH='https://jakerayner96.github.io/',RP='https://github.com/jakerayner96/';
   /* status → pill colour: ok = merged/live, wip = open, plain otherwise */
   const P=window.DG_PROJECTS=[
-    {n:'PLP Redesign',d:'2026-09-18T15:55',st:'open',u:GH+'debenhamsgroup.design/projects/plp-alignment/',r:RP+'debenhamsgroup.design/tree/plp-alignment',pg:'p-plp',k:'plp alignment warehouse boohoo template p-05'},
-    {n:'PDP Redesign',d:'2026-09-18T15:54',st:'open',u:GH+'core-pdp-2026/',r:RP+'core-pdp-2026',k:'pdp core 2026 man layout components'},
-    {n:'CTA Colour Alignment',d:'2026-08-27',st:'merged',u:GH+'colour-alignment-prototype/brand-colours.html',r:RP+'colour-alignment-prototype',pg:'p-colour',k:'colour alignment merged km p-04'},
-    {n:'New Checkout',d:'2026-08-14',st:'shipped',u:GH+'checkout-2026-promo-gift-card/checkout-gift-card.html',r:RP+'checkout-2026-promo-gift-card',pg:'p-checkout',k:'checkout 2026 promo gift card payment p-03'},
-    {n:'VTO',d:'2026-09-10',st:'open',u:GH+'vto-prototype/',r:RP+'vto-prototype',k:'virtual try on stylist vto'},
-    {n:'AI Generated Badge',d:'2026-09-01T13:33',st:'deck',u:GH+'ai-generated-badge/',r:RP+'ai-generated-badge',k:'ai generated badge labelling'},
+    {n:'PLP Redesign',f:'https://www.figma.com/design/GP04SeG99nevXl4yuwY3sM/PLP-MASTER--21.10-25-?node-id=291-18049',d:'2026-09-18T15:55',st:'open',u:GH+'debenhamsgroup.design/projects/plp-alignment/',r:RP+'debenhamsgroup.design/tree/plp-alignment',pg:'p-plp',k:'plp alignment warehouse boohoo template p-05'},
+    {n:'PDP Redesign',f:'https://www.figma.com/design/vVJJ1bgaTGCbGd68bsNiVT',d:'2026-09-18T15:54',st:'open',u:GH+'core-pdp-2026/',r:RP+'core-pdp-2026',k:'pdp core 2026 man layout components'},
+    {n:'CTA Colour Alignment',f:'https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=12681-158518',d:'2026-08-27',st:'merged',u:GH+'colour-alignment-prototype/brand-colours.html',r:RP+'colour-alignment-prototype',pg:'p-colour',k:'colour alignment merged km p-04'},
+    {n:'New Checkout',f:'https://www.figma.com/design/WChEtDPH0LcErdYFS9SESn?node-id=3990-58406',d:'2026-08-14',st:'shipped',u:GH+'checkout-2026-promo-gift-card/checkout-gift-card.html',r:RP+'checkout-2026-promo-gift-card',pg:'p-checkout',k:'checkout 2026 promo gift card payment p-03'},
+    {n:'VTO',f:'https://www.figma.com/design/LxHqA4rFpRYNWJu8vzn18X/VTO---Virtual-Wardrobe?node-id=15203-69093',d:'2026-09-10',st:'open',u:GH+'vto-prototype/',r:RP+'vto-prototype',k:'virtual try on stylist vto'},
+    {n:'AI Generated Badge',f:'https://www.figma.com/design/d0zY0vt8hoz0gq8ycTimxS/AI-Generated-Watermark?node-id=25-11775',d:'2026-09-01T13:33',st:'deck',u:GH+'ai-generated-badge/',r:RP+'ai-generated-badge',k:'ai generated badge labelling'},
     {n:'Design Request Form',d:'2026-07-14',st:'tool',u:GH+'UX-Design-Request/',r:RP+'UX-Design-Request',k:'ux design request form intake'},
-    {n:'The Brand Room',d:'2026-09-01T14:32',st:'repo',r:RP+'THEBRANDROOM',k:'the brand room launch prototype'},
-    {n:'USP Banner',d:'2026-10-06T14:00',st:'open',u:GH+'debenhamsgroup.design/projects/usp-banner/',r:RP+'debenhamsgroup.design/tree/main/projects/usp-banner',k:'usp banner countdown code caveat header promo in situ prototype'},
-    {n:'Gift Card Email',d:'2026-09-28T11:24',st:'open',u:GH+'debenhams-giftcard-email/',r:RP+'debenhams-giftcard-email',k:'gift card email template refund esp crm debenhams'},
-    {n:'PLT App',d:'2026-09-05',st:'private',r:RP+'plt-app-prototype',k:'plt app prototype expo react native'}
+    {n:'The Brand Room',f:'https://www.figma.com/design/NRsu568JGzwCDq4egvkUbn/The-Brand-Room?node-id=552-16411',d:'2026-09-01T14:32',st:'repo',r:RP+'THEBRANDROOM',k:'the brand room launch prototype'},
+    {n:'USP Banner',f:'https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=11982-37171',d:'2026-10-06T14:00',st:'open',u:GH+'debenhamsgroup.design/projects/usp-banner/',r:RP+'debenhamsgroup.design/tree/main/projects/usp-banner',k:'usp banner countdown code caveat header promo in situ prototype'},
+    {n:'Gift Card Email',f:'https://www.figma.com/design/XbDt0A59FmPQN3pj7RevaG',d:'2026-09-28T11:24',st:'open',u:GH+'debenhams-giftcard-email/',r:RP+'debenhams-giftcard-email',k:'gift card email template refund esp crm debenhams'},
+    {n:'PLT App',f:'https://www.figma.com/design/Hd0yRD6JgyyyJMWhWzFcNe/Homepage-2.0?node-id=753-39609',d:'2026-09-05',st:'private',r:RP+'plt-app-prototype',k:'plt app prototype expo react native'}
   ];
   /* d = when the last version was worked on (last push / commit); newest first everywhere */
   P.sort((a,b)=>b.d.localeCompare(a.d));
@@ -1846,7 +1847,7 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   const ext=(u,t)=>`class="ext" href="${u}" target="_blank" rel="noopener" title="${t}"`;
   const sbLink=x=>x.u?`<a ${ext(x.u,'Opens in a new tab')}><span class="ic">▸</span>${x.n}</a>`
     :x.pg?`<a href="#${x.pg}">${x.n}</a>`:`<a ${ext(x.r,'Opens the repo in a new tab')}><span class="ic">▸</span>${x.n}</a>`;
-  const card=x=>`<div class="launch"><b>${x.n}</b>${x.d?`<span class="lt">Latest Version · ${fd(x.d)}</span>`:`<span class="lt">${x.st}</span>`}${x.ds?`<p class="ld">${x.ds}</p>`:''}<div class="lk">${x.u?`<a class="bd pri sm" href="${x.u}" target="_blank" rel="noopener">Open ↗</a>`:x.pg?`<a class="bd pri sm" href="#${x.pg}">Open →</a>`:'<span class="nolive">no live build</span>'}${x.r?`<a class="lnk" href="${x.r}" target="_blank" rel="noopener">repo ↗</a>`:''}${x.u&&x.pg?`<a class="lnk" href="#${x.pg}">record →</a>`:''}</div></div>`;
+  const card=x=>`<div class="launch"><b>${x.n}</b>${x.d?`<span class="lt">Latest Version · ${fd(x.d)}</span>`:`<span class="lt">${x.st}</span>`}${x.ds?`<p class="ld">${x.ds}</p>`:''}<div class="lk">${x.u?`<a class="bd pri sm" href="${x.u}" target="_blank" rel="noopener">Prototype ↗</a>`:x.pg?`<a class="bd pri sm" href="#${x.pg}">Open →</a>`:'<span class="nolive">no live build</span>'}${x.f?`<a class="lnk" href="${x.f}" target="_blank" rel="noopener">Figma ↗</a>`:(P.includes(x)?'<span class="nolive">no Figma file yet</span>':'')}${x.r?`<a class="lnk" href="${x.r}" target="_blank" rel="noopener">repo ↗</a>`:''}${x.u&&x.pg?`<a class="lnk" href="#${x.pg}">record →</a>`:''}</div></div>`;
   const put=(id,html)=>{const el=document.getElementById(id);if(el)el.innerHTML=html};
 
   put('sbProjects',P.map(sbLink).join('')+'<a href="#projects">All projects</a>');
@@ -1854,8 +1855,9 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   put('sbBrands','<a href="#b-debenhamsgroup">Debenhams Group</a><a href="#memberships">Memberships</a><span class="sub">Core brands</span>'+F.filter(f=>CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')
     +'<span class="sub">More fascias</span>'+F.filter(f=>!CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')+'<a href="#brands">All brands</a>');
   /* home: the six most recently worked-on projects as a table */
-  const row=x=>{const h=x.u||(x.pg?'#'+x.pg:x.r),o=!x.pg||x.u;return `<a class="tr" href="${h}"${o?' target="_blank" rel="noopener"':''}><span class="nm">${x.n}</span><span class="d">${fd(x.d)}</span><span class="ar">${o?'↗':'→'}</span></a>`};
-  put('homeProjects','<div class="tr h"><span>Project</span><span>Latest Version</span><span></span></div>'+P.slice(0,6).map(row).join(''));
+  const tlink=(u,t)=>u?`<a class="tl" href="${u}" target="_blank" rel="noopener">${t} ↗</a>`:'<span class="tl none">—</span>';
+  const row=x=>`<div class="tr"><span class="nm">${x.n}</span><span class="d">${fd(x.d)}</span>${tlink(x.u||x.r,x.u?'Prototype':'Repo')}${tlink(x.f,'Figma')}</div>`;
+  put('homeProjects','<div class="tr h"><span>Project</span><span>Latest Version</span><span>Prototype</span><span>Figma</span></div>'+P.slice(0,6).map(row).join(''));
   put('projGrid',P.map(card).join(''));
 
   const main=document.getElementById('main'),end=main.querySelector('section.page:last-of-type');
