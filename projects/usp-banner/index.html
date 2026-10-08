@@ -179,8 +179,8 @@ const P={
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','live.js','home.js','bag.js','README.md'],
-  store:'proto-usp-banner-v3', // v3 (07 Oct): new live content + row model — old saves would hide it
-  initial:b=>({page:'home',auto:5,caveats:true,banners:live(b)}),
+  store:'proto-usp-banner-v4', // v4 (08 Oct): caveats off by default — older saves carried caveats on
+  initial:b=>({page:'home',auto:5,caveats:false,banners:live(b)}),
 };
 const q=v=>String(v??'').replace(/"/g,'&quot;');
 /* left panel: page, then the two banners — one grey + one black at most, messages per banner, no inline links */
@@ -190,7 +190,7 @@ function renderPanel(host,S,update){
   <div class="card"><h3>Page</h3><div class="chips">${PAGES.map(([v,n])=>`<button class="chip${C.page===v?' on':''}" data-p="${v}">${n}</button>`).join('')}</div></div>
   <div class="card"><h3><span>Position<small>${L.filter(b=>b.on).every(b=>b.pos==='above')?'all above the menu':L.filter(b=>b.on).some(b=>b.pos==='above')?'mixed':'all below the menu'}</small></span></h3><div class="chips"><button class="chip" data-allpos="below">All below menu</button><button class="chip" data-allpos="above">All above menu</button></div><p class="intro" style="margin:8px 0 0">Or set each row on its own in its card below.</p></div>
   <div class="card"><h3><span>Auto animate<small>${(C.auto??5)?(C.auto??5)+'s per message':'off — swipe only'}</small></span></h3><div class="chips">${[0,1,2,3,4,5].map(n=>`<button class="chip${(C.auto??5)===n?' on':''}" data-auto="${n}">${n}s</button>`).join('')}</div><p class="intro" style="margin:8px 0 0">Seconds each message shows before a rotating row moves on. 0 = no auto animate; swipe left / right on mobile always steps through.</p></div>
-  <div class="card${C.caveats===false?' off':''}"><h3><span>Caveats<small>${C.caveats===false?'off':'on'}</small></span><label class="sw"><input type="checkbox" id="cavsw"${C.caveats!==false?' checked':''}><i></i></label></h3><div class="body"><p class="intro" style="margin:0">Off removes every asterisk and its caveat line, so the banners can be compared with and without.</p></div></div>
+  <div class="card${C.caveats!==true?' off':''}"><h3><span>Caveats<small>${C.caveats===true?'on':'off'}</small></span><label class="sw"><input type="checkbox" id="cavsw"${C.caveats===true?' checked':''}><i></i></label></h3><div class="body"><p class="intro" style="margin:0">Off removes every asterisk and its caveat line, so the banners can be compared with and without.</p></div></div>
   ${L.map((b,i)=>{const o=L[1-i],taken=o&&o.on?fam(o.colour):null,m=b.items[b.idx]||b.items[0];
     const cd=m.type==='countdown'||m.type==='codecountdown',code=m.type==='code'||m.type==='codecountdown',star=/\*/.test(m.t1+(m.type==='double'?m.t2:''));
     return `<div class="card${b.on?'':' off'}" data-i="${i}"><h3><span>Row ${i+1}<small>${b.on?fam(b.colour):'off'}</small></span><label class="sw"><input type="checkbox" data-b="on"${b.on?' checked':''}><i></i></label></h3><div class="body">

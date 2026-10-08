@@ -80,7 +80,7 @@ const logo=()=>`assets/brands/${S.brand}.svg`;
 /* ---- USP banner from a state object — the DS markup exactly (components.css .hd-usp / usp.js) ---- */
 /* one message as a DS bar */
 function bar1(m,colour,on){
-  const b=Object.assign({},m),nc=S.caveats===false;   /* caveats off: drop the asterisks and the caveat line */
+  const b=Object.assign({},m),nc=S.caveats!==true;   /* caveats are off unless switched on: drop the asterisks and the caveat line */
   if(nc){b.t1=(b.t1||'').replace(/\*/g,'').trim();b.t2=(b.t2||'').replace(/\*/g,'').trim()}
   const mod={fascia:'',alt:'hd-usp--b',top:'hd-usp--top',g05:'usp--g05',g1:'usp--g1',black:'usp--black',red:'usp--red'}[colour||'fascia']||'';
   const parts=[`<span class="usp-t">${esc(b.t1)}</span>`];
