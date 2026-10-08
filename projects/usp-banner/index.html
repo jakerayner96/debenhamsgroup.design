@@ -178,7 +178,7 @@ const P={
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','home.js','bag.js','README.md'],
-  store:'proto-usp-banner-v5', // v5 (08 Oct): banner content re-captured + moved to the DS (assets/ds/usp-live.js)
+  store:'proto-usp-banner-v6', // v6 (08 Oct pm): live re-check + per-row countdown colour
   initial:b=>({page:'home',auto:5,caveats:false,banners:live(b)}),
 };
 const q=v=>String(v??'').replace(/"/g,'&quot;');
@@ -191,15 +191,16 @@ function renderPanel(host,S,update){
   <div class="card"><h3><span>Auto animate<small>${(C.auto??5)?(C.auto??5)+'s per message':'off — swipe only'}</small></span></h3><div class="chips">${[0,1,2,3,4,5].map(n=>`<button class="chip${(C.auto??5)===n?' on':''}" data-auto="${n}">${n}s</button>`).join('')}</div><p class="intro" style="margin:8px 0 0">Seconds each message shows before a rotating row moves on. 0 = no auto animate; swipe left / right on mobile always steps through.</p></div>
   <div class="card${C.caveats!==true?' off':''}"><h3><span>Caveats<small>${C.caveats===true?'on':'off'}</small></span><label class="sw"><input type="checkbox" id="cavsw"${C.caveats===true?' checked':''}><i></i></label></h3><div class="body"><p class="intro" style="margin:0">Off removes every asterisk and its caveat line, so the banners can be compared with and without.</p></div></div>
   ${L.map((b,i)=>{const o=L[1-i],taken=o&&o.on?fam(o.colour):null,m=b.items[b.idx]||b.items[0];
-    const cd=m.type==='countdown'||m.type==='codecountdown',code=m.type==='code'||m.type==='codecountdown',star=/\*/.test(m.t1+(m.type==='double'?m.t2:''));
+    const cd=m.type==='countdown'||m.type==='codecountdown',code=m.type==='code'||m.type==='codecountdown',star=/\*/.test(m.t1+(m.type==='double'||cd?m.t2:''));
     return `<div class="card${b.on?'':' off'}" data-i="${i}"><h3><span>Row ${i+1}<small>${b.on?fam(b.colour):'off'}</small></span><label class="sw"><input type="checkbox" data-b="on"${b.on?' checked':''}><i></i></label></h3><div class="body">
     <div class="f"><span class="lbl">Position</span><div class="chips"><button class="chip${(b.pos||'below')==='below'?' on':''}" data-pos="below">Below menu</button><button class="chip${b.pos==='above'?' on':''}" data-pos="above">Above menu</button></div></div>
     <label class="f"><span>Colour</span><select data-b="colour">${COLS.map(([v,n])=>{const f=fam(v);return `<option value="${v}"${b.colour===v?' selected':''}${taken===f?' disabled':''}>${n} (${f})${taken===f?' — used by row '+(2-i):''}</option>`}).join('')}</select></label>
+    ${fam(b.colour)==='dark'&&b.colour!=='red'&&b.items.some(x=>/countdown/.test(x.type))?`<div class="f"><span class="lbl">Countdown text</span><div class="chips"><button class="chip${(b.cd||'white')==='white'?' on':''}" data-cd="white">White</button><button class="chip${b.cd==='red'?' on':''}" data-cd="red">Red</button></div><small>Black bars only — any other colour runs a black countdown.</small></div>`:''}
     <div class="msgs"><span class="lbl">Messages</span>${b.items.map((x,j)=>`<button class="chip${j===b.idx?' on':''}" data-m="${j}">${j+1}</button>`).join('')}<button class="chip add" data-add>+</button>${b.items.length>1?`<button class="rm" data-rm>Remove ${b.idx+1}</button>`:''}</div>
     ${b.items.length>1?`<div class="f"><label class="sw"><input type="checkbox" data-b="rotate"${b.rotate?' checked':''}><i></i>Rotate on mobile (Auto animate sets the time) — desktop shows them side by side</label></div>`:''}
     <label class="f"><span>Type</span><select data-k="type">${TYPES.map(([v,n])=>`<option value="${v}"${m.type===v?' selected':''}>${n}</option>`).join('')}</select></label>
     <label class="f"><span>Text</span><input data-k="t1" value="${q(m.t1)}" placeholder="Free delivery on orders over £50"></label>
-    ${m.type==='double'?`<label class="f"><span>Second text</span><input data-k="t2" value="${q(m.t2)}"><small>Joined to the first by the dash.</small></label>`:''}
+    ${m.type==='double'||cd?`<label class="f"><span>Second text${cd?' (optional)':''}</span><input data-k="t2" value="${q(m.t2)}"><small>Joined to the first by the dash.</small></label>`:''}
     ${code?`<label class="f"><span>Code</span><input data-k="code" value="${q(m.code)}" placeholder="FAST"><small>Shown as “Code: ${q((m.code||'XYZ').toUpperCase())}”.</small></label>`:''}
     ${cd?`<label class="f"><span>Countdown — hours left</span><input data-k="hours" type="number" min="0" step="0.5" value="${m.hours}"></label>`:''}
     <label class="f"><span>Click-through</span><input data-k="href" value="${q(m.href)}" placeholder="/sale"><small>The whole bar is the link — no "Shop now" in the copy.</small></label>
@@ -215,6 +216,7 @@ function renderPanel(host,S,update){
   host.querySelectorAll('.card[data-i]').forEach(card=>{const i=+card.dataset.i,b=L[i];
     card.querySelector('[data-b="on"]').onchange=e=>{b.on=e.target.checked;const o=L[1-i];if(b.on&&o&&o.on&&fam(o.colour)===fam(b.colour))b.colour=fam(o.colour)==='light'?'black':'g05';redo();update()};
     card.querySelector('[data-b="colour"]').onchange=e=>{b.colour=e.target.value;redo();update()};
+    card.querySelectorAll('[data-cd]').forEach(x=>x.onclick=()=>{b.cd=x.dataset.cd;redo();update()});
     card.querySelectorAll('[data-pos]').forEach(x=>x.onclick=()=>{b.pos=x.dataset.pos;redo();update()});
     const rot=card.querySelector('[data-b="rotate"]');if(rot)rot.onchange=e=>{b.rotate=e.target.checked;update()};
     card.querySelectorAll('[data-m]').forEach(x=>x.onclick=()=>{b.idx=+x.dataset.m;b.rotate=false;redo();update()});

@@ -1,7 +1,8 @@
-/* DG USP banners — each fascia's live header bars, as DS rows. Captured from the live sites at 1440, 08 Oct 2026.
+/* DG USP banners — each fascia's live header bars, as DS rows. Captured from the live sites at 1440, 08 Oct 2026 (afternoon re-check: copy, colours, countdown colours).
    Render with assets/ds/usp.js: <div data-usp-banners="plt"></div> (or DG_uspHTML(rows, opts)) — see the USP banner page in the component library.
    Row 1 = [0], row 2 = [1] (one row on boohoo, KM, Warehouse, Brand Room; PLT row 1 is the fixed peach countdown, row 2 rotates).
-   Row: on · colour (fascia = --usp-a, alt = --usp-b, top = --usp-top, or g05 / g1 / black / red) · pos (below | above the menu) · rotate · items[].
+   Row: on · colour (fascia = --usp-a, alt = --usp-b, top = --usp-top, or g05 / g1 / black / red) · pos (below | above the menu) · rotate ·
+   cd (dark bars only: 'white' | 'red' countdown digits, from live) · items[].
    Item types: single · double (t1 – t2) · code · countdown · codecountdown. Copy keeps live casing; "Shop Now" / "Use Code:" / "Download Now"
    removed (the bar is the link, "Code: XYZ"); generic caveat fills an asterisk the live bar doesn't explain; caveats carry no em dash or full stop.
    Midnight countdowns are computed at load. href = path on the fascia's live domain (DG_USP_DOMAINS). */
@@ -9,7 +10,7 @@
 const MID=(()=>{const n=new Date(),m=new Date(n);m.setHours(24,0,0,0);return +((m-n)/3600000).toFixed(3)})(); // hours to tonight's midnight
 root.DG_USP_DOMAINS={debenhams:'https://www.debenhams.com',boohoo:'https://www.boohoo.com',boohooman:'https://www.boohooman.com',plt:'https://www.prettylittlething.com',karenmillen:'https://www.karenmillen.com',warehouse:'https://www.warehousefashion.com',brandroom:'https://www.thebrandroom.com'};
 root.DG_USP_CAPTURED='2026-10-08';
-/* light / dark per colour slot and fascia: drives the two-row rule (never the same tone twice) and the countdown colour (red digits only on dark bars) */
+/* light / dark per colour slot and fascia: drives the two-row rule (never the same tone twice) and the countdown colour (light bars black; dark bars white, or red with cd:'red') */
 root.DG_USP_TONE={_:{fascia:'light',alt:'dark',top:'light'},debenhams:{fascia:'light',alt:'dark',top:'light'},boohoo:{fascia:'dark',alt:'light',top:'dark'},boohooman:{fascia:'dark',alt:'light',top:'dark'},
   plt:{fascia:'light',alt:'light',top:'light'},karenmillen:{fascia:'dark',alt:'dark',top:'dark'},warehouse:{fascia:'dark',alt:'dark',top:'dark'},brandroom:{fascia:'dark',alt:'dark',top:'dark'}};
 root.DG_USP_LIVE={
@@ -22,21 +23,21 @@ root.DG_USP_LIVE={
    "idx": 0,
    "items": [
     {
-     "type": "code",
-     "t1": "£10 Off Orders Over £100",
-     "t2": "",
-     "code": "SAVE10",
-     "hours": 12,
-     "href": "/categories/brands-at-debenhams?usp_bagoffer",
-     "caveat": ""
-    },
-    {
      "type": "single",
      "t1": "Autumn Steals Up To 70% Off",
      "t2": "",
      "code": "",
      "hours": 12,
      "href": "/categories/promotion-2?usp_mixedoffer",
+     "caveat": ""
+    },
+    {
+     "type": "single",
+     "t1": "Up To 70% Off Top Fashion + Extra 15% Off",
+     "t2": "",
+     "code": "",
+     "hours": 12,
+     "href": "/categories/extra-off-brands-at-debenhams?usp_fashionoffer",
      "caveat": ""
     },
     {
@@ -57,7 +58,8 @@ root.DG_USP_LIVE={
      "href": "/pages/informational/payments/clearpay?usp_clearpay",
      "caveat": ""
     }
-   ]
+   ],
+   "cd": "red"
   },
   {
    "on": true,
@@ -75,7 +77,8 @@ root.DG_USP_LIVE={
      "href": "/categories/home?usp_1express",
      "caveat": ""
     }
-   ]
+   ],
+   "cd": "red"
   }
  ],
  "boohoo": [
@@ -113,7 +116,8 @@ root.DG_USP_LIVE={
      "href": "/pages/informational/premier-delivery",
      "caveat": ""
     }
-   ]
+   ],
+   "cd": "white"
   }
  ],
  "boohooman": [
@@ -151,7 +155,8 @@ root.DG_USP_LIVE={
      "href": "/categories/view-all?USP3",
      "caveat": ""
     }
-   ]
+   ],
+   "cd": "red"
   },
   {
    "on": true,
@@ -169,7 +174,8 @@ root.DG_USP_LIVE={
      "href": "/categories/boohooman-new-season?USP4",
      "caveat": "*Excludes sale & selected lines"
     }
-   ]
+   ],
+   "cd": "red"
   }
  ],
  "plt": [
@@ -189,7 +195,8 @@ root.DG_USP_LIVE={
      "href": "/categories/womens-new-in?homepage_topstrip",
      "caveat": ""
     }
-   ]
+   ],
+   "cd": "white"
   },
   {
    "on": true,
@@ -216,7 +223,8 @@ root.DG_USP_LIVE={
      "href": "/categories/womens-new-in",
      "caveat": "*Selected lines only, exclusions apply"
     }
-   ]
+   ],
+   "cd": "white"
   }
  ],
  "karenmillen": [
@@ -238,14 +246,15 @@ root.DG_USP_LIVE={
     },
     {
      "type": "countdown",
-     "t1": "£2.99 express delivery on orders over £150*",
-     "t2": "",
+     "t1": "£2.99 express delivery*",
+     "t2": "on orders over £150*",
      "code": "",
      "hours": MID,
      "href": "/categories/karen-millen-flash-promo-2?web_topstrip",
      "caveat": "*Selected lines only, exclusions apply"
     }
-   ]
+   ],
+   "cd": "white"
   }
  ],
  "warehouse": [
@@ -274,7 +283,8 @@ root.DG_USP_LIVE={
      "href": "/categories/womens-new-in?homepage_topstrip",
      "caveat": "*Selected lines only, exclusions apply"
     }
-   ]
+   ],
+   "cd": "white"
   }
  ],
  "brandroom": [
@@ -312,7 +322,8 @@ root.DG_USP_LIVE={
      "href": "/categories/brands-lacoste",
      "caveat": ""
     }
-   ]
+   ],
+   "cd": "white"
   }
  ]
 };
