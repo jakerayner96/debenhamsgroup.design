@@ -182,7 +182,8 @@
    and rotating never moves the page. usp.js advances .on every 5s (data-rotate="ms"); the incoming message fades in over the outgoing
    one, which stays solid underneath (.was) — no background flash between them.
    .usp-cells = the same row on desktop: its messages laid across the bar as equal cells; --alt alternates usp-a / usp-a2 cell shades. */
-.usp-stack{display:grid}
+.usp-stack{display:grid;touch-action:pan-y;user-select:none;-webkit-user-select:none} /* horizontal swipes go to the row (usp.js), vertical still scrolls */
+.usp-stack a,.usp-stack img{-webkit-user-drag:none}
 .usp-stack>.hd-usp{grid-area:1/1;visibility:hidden}
 .usp-stack>.hd-usp.was{visibility:visible;z-index:0}
 .usp-stack>.hd-usp.on{visibility:visible;z-index:1}

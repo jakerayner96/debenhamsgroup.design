@@ -52,7 +52,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pgfoot>*,.pgfoot>*>*{width:100%!important;max-width:none!important}
 .hd-usp.cav-missing .usp-cav{color:#D33F3F;font-weight:var(--w-strong)}
 /* rows = DS .usp-stack / .usp-cells (components.css + usp.js); cell shades come from each fascia's --usp-a-bg / --usp-a-bg2 */
-#usps .hd-usp{text-transform:none} /* the copy carries each fascia's live casing */
+.usps .hd-usp{text-transform:none} /* the copy carries each fascia's live casing */
 /* PLP + PDP are the real prototypes (plp-alignment new format · Core PDP 2026), embedded with their own header + footer hidden */
 .emb{display:block;width:100%;height:2400px;border:0}
 </style>
@@ -101,9 +101,10 @@ function banner(row,i){
   if(L.length<2)return `<div class="usp-row1">${bar1(L[0],row.colour,1)}</div>`;
   if(desk())return `<div class="usp-row1 usp-cells${(row.colour||'fascia')==='fascia'?' usp-cells--alt':''}">${L.map(m=>bar1(m,row.colour,1)).join('')}</div>`;
   const cur=(row.rotate?0:(row.idx||0))%L.length;
-  return `<div class="usp-row1 usp-stack"${row.rotate&&!EXPORTING?' data-rotate="5000"':''}>${L.map((m,j)=>bar1(m,row.colour,j===cur)).join('')}</div>`;
+  return `<div class="usp-row1 usp-stack"${row.rotate&&!EXPORTING&&(S.auto??5)>0?` data-rotate="${(S.auto??5)*1000}"`:''}>${L.map((m,j)=>bar1(m,row.colour,j===cur)).join('')}</div>`;
 }
-const banners=()=>`<div id="usps">${S.banners.map(banner).join('')}</div>`;
+/* each row sits below the menu (default) or above it — above = the top of the page, over the logo row */
+const banners=(pos='below')=>`<div class="usps" id="${pos==='above'?'usps-top':'usps'}">${S.banners.map((r,i)=>((r&&r.pos)||'below')===pos?banner(r,i):'').join('')}</div>`;
 
 function header(){
   let h=desk()?V('header',1):V('header',0);
@@ -112,7 +113,7 @@ function header(){
   /* each fascia's own header glyphs: PLT runs its 16px set, MAN / KM / Brand Room a bookmark for wishlist */
   if(S.brand==='plt')h=h.replace('icons/search.svg','icons/plt-search.svg').replace('icons/account.svg','icons/plt-account.svg').replace('icons/heart-24.svg','icons/plt-heart.svg').replace('icons/bag.svg','icons/plt-bag.svg');
   else if(['boohooman','karenmillen','brandroom'].includes(S.brand))h=h.replace('icons/heart-24.svg','icons/bookmark.svg');
-  return h.replace(/<\/div>$/,banners()+'</div>');
+  return banners('above')+h.replace(/<\/div>$/,banners('below')+'</div>');
 }
 
 function card(p,i){
