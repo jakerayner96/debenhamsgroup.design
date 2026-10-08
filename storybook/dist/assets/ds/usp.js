@@ -5,7 +5,10 @@
       (a dash at the start or end of a line reads as a typo). Re-run on resize.
    3. Rotation: <div class="usp-stack" data-rotate="5000"> holding .hd-usp messages (one .on) crossfades to the next every 5s
       (the outgoing one stays solid underneath as .was). Pauses while the tab is hidden; stops once the row leaves the page.
-   4. Swipe: on any .usp-stack with 2+ messages, swipe left = next, right = previous (restarts the 5s timer; the swipe never fires the link). */
+   4. Swipe: on any .usp-stack with 2+ messages, swipe left = next, right = previous (restarts the 5s timer; the swipe never fires the link).
+   5. Render (drop-in): with assets/ds/usp-live.js loaded, <div data-usp-banners="plt"></div> fills itself with that fascia's live rows
+      (data-usp-pos="below" (default) | "above" — rows set to that position; data-usp-caveats="on"; data-usp-auto="0–5"; re-renders at the
+      1024 breakpoint). Or DG_uspHTML(rows, {brand, desk, caveats, auto, link}) → {above, below} HTML. Red countdown digits only on dark bars. */
 (function(){
   const pad=n=>String(n).padStart(2,'0');
   const draw=(el,s)=>{s=Math.max(0,s);const p=[Math.floor(s/86400),Math.floor(s%86400/3600),Math.floor(s%3600/60),s%60].map(pad);
@@ -31,6 +34,36 @@
     st.addEventListener('click',e=>{if(Date.now()-t<500){e.preventDefault();e.stopPropagation()}},true);
     st.addEventListener('dragstart',e=>e.preventDefault())})}
   window.DG_usp=function(root){cds(root);wrap(root);rot(root);swipe(root)};
+  /* ---- 5. render ---- */
+  const esc=v=>String(v??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  const MOD={fascia:'',alt:'hd-usp--b',top:'hd-usp--top',g05:'usp--g05',g1:'usp--g1',black:'usp--black',red:'usp--red'};
+  const tone=(brand,c)=>({g05:'light',g1:'light',black:'dark',red:'dark'})[c]||(((window.DG_USP_TONE||{})[brand]||(window.DG_USP_TONE||{})._||{})[c||'fascia'])||'light';
+  window.DG_uspTone=tone;
+  function bar(m,colour,on,o){const b=Object.assign({},m);
+    if(!o.caveats){b.t1=(b.t1||'').replace(/\*/g,'').trim();b.t2=(b.t2||'').replace(/\*/g,'').trim()}       // caveats off: no asterisks, no caveat line
+    const parts=['<span class="usp-t">'+esc(b.t1)+'</span>'];
+    if(b.type==='double')parts.push('<span class="usp-t">'+esc(b.t2)+'</span>');
+    if(b.type==='code'||b.type==='codecountdown')parts.push('<span class="usp-code">Code: <b>'+esc((b.code||'').toUpperCase())+'</b></span>');
+    const cd=(b.type==='countdown'||b.type==='codecountdown')?'<span class="usp-cd" data-left="'+Math.max(0,Math.round((+b.hours||0)*3600))+'"></span>':'';
+    const star=/\*/.test((b.t1||'')+(b.type==='double'?b.t2||'':''));
+    const cav=star&&(b.caveat||o.flag)?'<span class="usp-cav">'+(esc(b.caveat)||'*Caveat required, every asterisk needs one')+'</span>':'';
+    const dom=(window.DG_USP_DOMAINS||{})[o.brand],href=b.href?(o.link==='path'||!dom||/^https?:/.test(b.href)?b.href:dom+b.href):'';
+    const cls='hd-usp '+(MOD[colour||'fascia']||'')+' usp-'+tone(o.brand,colour)+(star&&!b.caveat&&o.flag?' cav-missing':'')+(on?' on':'');
+    return href?'<a class="'+cls+'" href="'+esc(href)+'" data-href="'+esc(b.href)+'">'+'<span class="usp-row">'+parts.join('<span class="usp-sep"></span>')+'</span>'+cd+cav+'</a>'
+               :'<div class="'+cls+'"><span class="usp-row">'+parts.join('<span class="usp-sep"></span>')+'</span>'+cd+cav+'</div>'}
+  function rowHTML(r,o){const L=r.items&&r.items.length?r.items:[r];
+    if(L.length<2)return '<div class="usp-row1">'+bar(L[0],r.colour,1,o)+'</div>';
+    if(o.desk)return '<div class="usp-row1 usp-cells'+((r.colour||'fascia')==='fascia'?' usp-cells--alt':'')+'">'+L.map(m=>bar(m,r.colour,1,o)).join('')+'</div>';
+    const cur=(r.rotate?0:(r.idx||0))%L.length,ms=r.rotate&&o.auto>0?o.auto*1000:0;
+    return '<div class="usp-row1 usp-stack"'+(ms?' data-rotate="'+ms+'"':'')+'>'+L.map((m,j)=>bar(m,r.colour,j===cur,o)).join('')+'</div>'}
+  window.DG_uspHTML=function(rows,o){o=Object.assign({brand:document.documentElement.dataset.brand,desk:innerWidth>=1024,caveats:false,auto:5,link:'live',flag:false},o||{});
+    if(typeof rows==='string'){o.brand=rows;rows=(window.DG_USP_LIVE||{})[rows]||[]}
+    const out={above:'',below:''};(rows||[]).forEach(r=>{if(r&&r.on!==false)out[r.pos==='above'?'above':'below']+=rowHTML(r,o)});return out};
+  function mount(){document.querySelectorAll('[data-usp-banners]').forEach(el=>{const d=el.dataset,brand=d.uspBanners||document.documentElement.dataset.brand;
+    el.innerHTML=window.DG_uspHTML(brand,{brand,caveats:d.uspCaveats==='on',auto:d.uspAuto!=null?+d.uspAuto:5})[d.uspPos==='above'?'above':'below'];el.classList.add('usps');window.DG_usp(el)})}
+  window.DG_uspMount=mount;
+  matchMedia('(min-width:1024px)').addEventListener('change',()=>{if(document.querySelector('[data-usp-banners]'))mount()});
   let t;addEventListener('resize',()=>{clearTimeout(t);t=setTimeout(()=>wrap(),120)});
-  if(document.readyState!=='loading')window.DG_usp();else document.addEventListener('DOMContentLoaded',()=>window.DG_usp());
+  const boot=()=>{if(document.querySelector('[data-usp-banners]'))mount();window.DG_usp()};
+  if(document.readyState!=='loading')boot();else document.addEventListener('DOMContentLoaded',boot);
 })();

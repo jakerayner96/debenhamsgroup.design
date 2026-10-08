@@ -47,12 +47,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 /* the click-through toast — tells the reviewer where the banner would go */
 .ct{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;transition:.25s;background:#111;color:#fff;font:500 13px var(--font-family-base);padding:10px 16px;border-radius:8px;z-index:999;pointer-events:none;max-width:90vw;text-align:center}
 .ct.on{opacity:1;transform:translate(-50%,0)}
-a.hd-usp{text-decoration:none;cursor:pointer}
-a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pgfoot>*,.pgfoot>*>*{width:100%!important;max-width:none!important}
-.hd-usp.cav-missing .usp-cav{color:#D33F3F;font-weight:var(--w-strong)}
-/* rows = DS .usp-stack / .usp-cells (components.css + usp.js); cell shades come from each fascia's --usp-a-bg / --usp-a-bg2 */
-.usps .hd-usp{text-transform:none} /* the copy carries each fascia's live casing */
 /* PLP + PDP are the real prototypes (plp-alignment new format · Core PDP 2026), embedded with their own header + footer hidden */
 .emb{display:block;width:100%;height:2400px;border:0}
 </style>
@@ -62,6 +57,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 <div class="ct" id="ct"></div>
 <script src="assets/ds/catalogue.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
+<script src="assets/ds/usp-live.js"></script>
 <script src="assets/ds/usp.js"></script>
 <script src="projects/usp-banner/home.js"></script>
 <script src="projects/usp-banner/bag.js"></script>
@@ -77,34 +73,9 @@ const P=()=>(window.PRODUCTS_ALL||{})[S.brand]||[];
 const IMG=i=>`projects/plp-alignment/img/${S.brand}/p${i}.jpg`;
 const logo=()=>`assets/brands/${S.brand}.svg`;
 
-/* ---- USP banner from a state object — the DS markup exactly (components.css .hd-usp / usp.js) ---- */
-/* one message as a DS bar */
-function bar1(m,colour,on){
-  const b=Object.assign({},m),nc=S.caveats!==true;   /* caveats are off unless switched on: drop the asterisks and the caveat line */
-  if(nc){b.t1=(b.t1||'').replace(/\*/g,'').trim();b.t2=(b.t2||'').replace(/\*/g,'').trim()}
-  const mod={fascia:'',alt:'hd-usp--b',top:'hd-usp--top',g05:'usp--g05',g1:'usp--g1',black:'usp--black',red:'usp--red'}[colour||'fascia']||'';
-  const parts=[`<span class="usp-t">${esc(b.t1)}</span>`];
-  if(b.type==='double')parts.push(`<span class="usp-t">${esc(b.t2)}</span>`);
-  if(b.type==='code'||b.type==='codecountdown')parts.push(`<span class="usp-code">Code: <b>${esc((b.code||'').toUpperCase())}</b></span>`);
-  const row=`<span class="usp-row">${parts.join('<span class="usp-sep"></span>')}</span>`;
-  const cd=(b.type==='countdown'||b.type==='codecountdown')?`<span class="usp-cd" data-left="${Math.max(0,Math.round((+b.hours||0)*3600))}"></span>`:'';
-  const star=/\*/.test((b.t1||'')+(b.type==='double'?b.t2||'':''));
-  const cav=star?`<span class="usp-cav">${esc(b.caveat)||'*Caveat required, every asterisk needs one'}</span>`:'';
-  const tag=b.href?'a':'div';
-  return `<${tag} class="hd-usp ${mod}${star&&!b.caveat?' cav-missing':''}${on?' on':''}"${b.href?` href="${esc(b.href)}" data-href="${esc(b.href)}"`:''}>${row}${cd}${cav}</${tag}>`;
-}
-/* a row holds a list of messages (live: row 1 usually rotates, row 2 is fixed). Desktop lays them out as cells across the bar, like live;
-   mobile stacks every message in one grid cell and shows one, so the bar is always the height of its tallest message — rotating never moves the page */
-function banner(row,i){
-  if(!row||!row.on)return '';
-  const L=row.items&&row.items.length?row.items:[row];
-  if(L.length<2)return `<div class="usp-row1">${bar1(L[0],row.colour,1)}</div>`;
-  if(desk())return `<div class="usp-row1 usp-cells${(row.colour||'fascia')==='fascia'?' usp-cells--alt':''}">${L.map(m=>bar1(m,row.colour,1)).join('')}</div>`;
-  const cur=(row.rotate?0:(row.idx||0))%L.length;
-  return `<div class="usp-row1 usp-stack"${row.rotate&&!EXPORTING&&(S.auto??5)>0?` data-rotate="${(S.auto??5)*1000}"`:''}>${L.map((m,j)=>bar1(m,row.colour,j===cur)).join('')}</div>`;
-}
-/* each row sits below the menu (default) or above it — above = the top of the page, over the logo row */
-const banners=(pos='below')=>`<div class="usps" id="${pos==='above'?'usps-top':'usps'}">${S.banners.map((r,i)=>((r&&r.pos)||'below')===pos?banner(r,i):'').join('')}</div>`;
+/* ---- USP banners: the DS renderer (assets/ds/usp.js DG_uspHTML) — exactly what "implement the USP banners" drops into any prototype.
+   Rows below the menu (default) or above it (top of the page, over the logo row). Paths, not live URLs: the click-through toast shows them. */
+const banners=(pos='below')=>`<div class="usps" id="${pos==='above'?'usps-top':'usps'}">${DG_uspHTML(S.banners,{brand:S.brand,desk:desk(),caveats:S.caveats===true,auto:EXPORTING?0:(S.auto??5),link:'path',flag:true})[pos]}</div>`;
 
 function header(){
   let h=desk()?V('header',1):V('header',0);

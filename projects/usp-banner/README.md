@@ -37,3 +37,10 @@ Debenhams / boohoo / boohooMAN / KM run 16px copy, 42–50px bars, a pipe separa
 - **Caveats:** no em dashes, no full stop ("*Selected lines only, exclusions apply").
 - **Controls (08 Oct):** *Position* — each row below the menu (default) or above it (top of the page, over the logo row), or all rows at once · *Auto animate* — 0–5s per message on a rotating row (0 = off, swipe only; default 5) · *Caveats* on/off (off by default).
 - **Swipe** (DS `usp.js`): on mobile, swipe a multi-message row left for the next message, right for the previous; restarts the timer and never fires the bar's link.
+
+## DS drop-in (08 Oct)
+The banners are now a DS drop-in, and this prototype renders through it — so anywhere else they look exactly like here.
+- **Data:** `assets/ds/usp-live.js` — each fascia's live rows (re-scraped 08 Oct), domains, light/dark tone per colour slot. This prototype's `live.js` is gone; the shell seeds from the DS file.
+- **Renderer:** `assets/ds/usp.js` — `<div data-usp-banners="plt">` (+ `data-usp-pos="above"`, `data-usp-caveats="on"`, `data-usp-auto="0–5"`), or `DG_uspHTML(brandOrRows, {desk, caveats, auto})`.
+- **Countdown colour:** red digits only on black bars; every other colour runs black digits (bars are tagged `.usp-light` / `.usp-dark`).
+- 08 Oct content: Debenhams SAVE10 (timer expired → text + code) · Autumn Steals · Beauty BEAUTY5 · Clearpay / row 2 SPEEDY + countdown · boohoo EXTRA · 20% off · Premier · MAN Free delivery · App exclusive · Brands at MAN / row 2 20% off all menswear · PLT midnight countdown / 20–30% off · BONUS10 · KM 30% off coats & jackets · £2.99 express + countdown · Warehouse unchanged · Brand Room Autumn Edit · Sweaty Betty · Lacoste (rotating). Midnight countdowns compute at load.

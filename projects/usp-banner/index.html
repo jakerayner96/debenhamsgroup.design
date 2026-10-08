@@ -159,27 +159,26 @@ body.fold .device iframe{box-shadow:none}
 </main>
 <div id="exp" hidden><div class="box"><span class="sp"></span><span id="exptxt">Exporting…</span></div></div>
 <div id="hidden"></div>
-<script src="live.js"></script>
+<script src="../../assets/ds/usp-live.js"></script>
 <script>
 /* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
 const TYPES=[['single','Single text'],['double','Double text'],['code','Text + code'],['countdown','Text + countdown'],['codecountdown','Text + code + countdown']];
 /* colours: the fascia's own bars (tokens.css --usp-a / --usp-b / --usp-top — each keeps its live colour) + the Figma colourways.
    tone per fascia for the two-row rule (never the same tone twice); PLT's peach + cream are two tones */
 const COLS=[['fascia','Fascia bar'],['alt','Fascia bar B'],['top','Fascia top bar'],['g05','Grey 05'],['g1','Grey 1'],['black','Black'],['red','Black / Red']];
-const TONE={debenhams:{fascia:'grey',alt:'black',top:'grey'},boohoo:{fascia:'black',alt:'pink',top:'black'},boohooman:{fascia:'black',alt:'grey',top:'black'},
-  plt:{fascia:'cream',alt:'cream',top:'peach'},karenmillen:{fascia:'black',alt:'black',top:'black'},warehouse:{fascia:'black',alt:'black',top:'black'},brandroom:{fascia:'black',alt:'black',top:'black'}};
+const TONE=window.DG_USP_TONE||{}; // DS: assets/ds/usp-live.js
 const PAGES=[['home','Home'],['plp','PLP'],['pdp','PDP'],['bag','Bag'],['account','Account']];
-const fam=c=>({g05:'grey',g1:'grey',black:'black',red:'black'})[c]||((TONE[S.brand]||{})[c])||'grey';
+const fam=c=>({g05:'light',g1:'light',black:'dark',red:'dark'})[c]||(S.brand==='plt'&&c==='top'?'peach':((TONE[S.brand]||TONE._||{})[c]))||'light'; // PLT peach + cream count as two tones
 const MSG=o=>Object.assign({type:'single',t1:'',t2:'',code:'',hours:12,href:'',caveat:''},o);
-const live=b=>{const L=JSON.parse(JSON.stringify((window.USP_LIVE||{})[b]||[]));while(L.length<2)L.push({on:false,colour:L.length&&fam(L[0].colour)==='black'?'g05':'black',rotate:false,idx:0,items:[MSG({t1:'Free delivery on orders over £50',href:'/delivery'})]});return L};
+const live=b=>{const L=JSON.parse(JSON.stringify((window.DG_USP_LIVE||{})[b]||[]));while(L.length<2)L.push({on:false,colour:L.length&&fam(L[0].colour)==='dark'?'g05':'black',rotate:false,idx:0,items:[MSG({t1:'Free delivery on orders over £50',href:'/delivery'})]});return L};
 const P={
   name:'usp-banner',
   title:'USP banner · in situ',
   page:'page.html',
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
-  files:['page.html','live.js','home.js','bag.js','README.md'],
-  store:'proto-usp-banner-v4', // v4 (08 Oct): caveats off by default — older saves carried caveats on
+  files:['page.html','home.js','bag.js','README.md'],
+  store:'proto-usp-banner-v5', // v5 (08 Oct): banner content re-captured + moved to the DS (assets/ds/usp-live.js)
   initial:b=>({page:'home',auto:5,caveats:false,banners:live(b)}),
 };
 const q=v=>String(v??'').replace(/"/g,'&quot;');
@@ -214,7 +213,7 @@ function renderPanel(host,S,update){
   host.querySelectorAll('[data-auto]').forEach(x=>x.onclick=()=>{C.auto=+x.dataset.auto;redo();update()});
   host.querySelector('#cavsw').onchange=e=>{C.caveats=e.target.checked;redo();update()};
   host.querySelectorAll('.card[data-i]').forEach(card=>{const i=+card.dataset.i,b=L[i];
-    card.querySelector('[data-b="on"]').onchange=e=>{b.on=e.target.checked;const o=L[1-i];if(b.on&&o&&o.on&&fam(o.colour)===fam(b.colour))b.colour=fam(o.colour)==='grey'?'black':'g05';redo();update()};
+    card.querySelector('[data-b="on"]').onchange=e=>{b.on=e.target.checked;const o=L[1-i];if(b.on&&o&&o.on&&fam(o.colour)===fam(b.colour))b.colour=fam(o.colour)==='light'?'black':'g05';redo();update()};
     card.querySelector('[data-b="colour"]').onchange=e=>{b.colour=e.target.value;redo();update()};
     card.querySelectorAll('[data-pos]').forEach(x=>x.onclick=()=>{b.pos=x.dataset.pos;redo();update()});
     const rot=card.querySelector('[data-b="rotate"]');if(rot)rot.onchange=e=>{b.rotate=e.target.checked;update()};
