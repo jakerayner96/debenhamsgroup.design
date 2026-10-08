@@ -184,9 +184,10 @@
    .usp-cells = the same row on desktop: its messages laid across the bar as equal cells; --alt alternates usp-a / usp-a2 cell shades. */
 .usp-stack{display:grid;touch-action:pan-y;user-select:none;-webkit-user-select:none} /* horizontal swipes go to the row (usp.js), vertical still scrolls */
 .usp-stack a,.usp-stack img{-webkit-user-drag:none}
-/* countdown colour: red digits only on dark (black) bars; every light bar's countdown is the bar ink (black). The renderer tags each bar .usp-light / .usp-dark */
-.usp--g05,.usp--g1,.usp-light{--usp-cd:currentColor}
-html[data-brand="boohoo"] .hd-usp--b,html[data-brand="boohooman"] .hd-usp--b,html[data-brand="plt"] .hd-usp{--usp-cd:currentColor} /* hand-written markup: these fascias' light bars */
+/* countdown colour: light bars run the bar ink (black); dark bars run white, or red (#D33F3F) when the row asks for it (.usp-cd-red — the renderer
+   sets it from the row's cd: 'red', and the Black / Red colourway always). Overrides any fascia-wide --usp-cd. */
+.usp-light,.usp-dark,.usp--g05,.usp--g1{--usp-cd:currentColor}
+.usp-dark.usp-cd-red,.usp--red{--usp-cd:#D33F3F}
 /* rendered banners (usp.js): the whole bar is the link, copy keeps each fascia's live casing */
 a.hd-usp{text-decoration:none;cursor:pointer}
 a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
