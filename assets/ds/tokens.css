@@ -23,8 +23,14 @@
   /* media + callout surfaces (product imagery placeholder Grey 1 · Taggstar bar Grey 6) */
   --surface-media:#F2F2F2;--surface-callout:#323232;
   /* spacing — 4pt base */
-  --space-2:2px;--space-4:4px;--space-8:8px;--space-12:12px;--space-16:16px;--space-20:20px;--space-24:24px;
-  --space-32:32px;--space-40:40px;--space-48:48px;--space-64:64px;--space-80:80px;--space-96:96px;--space-128:128px;
+  /* SPACING — measured in GAPS. 1 gap = 4px = Tailwind spacing unit 1 (p-1 · m-1 · gap-1 · space-x-1 = 0.25rem at a 16px root).
+     Always quote both: "gap 4 (16px)". gap-N = N × 4px; the scale is Tailwind's own keys, so gap-N here === Tailwind N.
+     --space-<px> names stay as aliases for existing CSS. Tailwind preset: assets/ds/tailwind.preset.js. */
+  --gap-unit:4px;
+  --gap-0:0px;--gap-0_5:2px;--gap-1:4px;--gap-1_5:6px;--gap-2:8px;--gap-3:12px;--gap-4:16px;--gap-5:20px;--gap-6:24px;
+  --gap-8:32px;--gap-10:40px;--gap-12:48px;--gap-16:64px;--gap-20:80px;--gap-24:96px;--gap-32:128px;
+  --space-2:var(--gap-0_5);--space-4:var(--gap-1);--space-8:var(--gap-2);--space-12:var(--gap-3);--space-16:var(--gap-4);--space-20:var(--gap-5);--space-24:var(--gap-6);
+  --space-32:var(--gap-8);--space-40:var(--gap-10);--space-48:var(--gap-12);--space-64:var(--gap-16);--space-80:var(--gap-20);--space-96:var(--gap-24);--space-128:var(--gap-32);
   /* border width */
   --border-w:1px;--border-w-emphasis:2px;--border-w-focus:2px;
   /* motion */

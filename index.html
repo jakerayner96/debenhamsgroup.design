@@ -581,6 +581,8 @@ body.sbm .hdrbtns{display:none}
 .icodl{display:none}.icodl svg{width:18px;height:18px;display:block}.icodl svg *{stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .icolist .icodl{display:grid;place-items:center;color:var(--ink-3);flex:none;margin-left:14px}.icolist .icotile:hover .icodl{color:var(--ink)}
 .icolist .icotile small{margin-left:auto}
+.pr.gp{grid-template-columns:80px 64px minmax(0,1.3fr) minmax(0,1fr) minmax(0,2fr)}
+#f-spacing .bar span,#spacing .bar span{min-width:128px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -865,35 +867,16 @@ body.sbm .hdrbtns{display:none}
   <section class="page" id="spacing" data-crumb="System / Foundations / Spacing">
     <div class="kick">system / foundations</div>
     <h1>Spacing</h1>
-    <p class="lede">4pt base, named by pixel value — no t-shirt sizes. Multiples of 8 carry most component spacing; 4 is reserved for tight inline gaps.</p>
-    <div class="bars">
-      <div class="bar"><span>space-2</span><i style="width:2px"></i></div>
-      <div class="bar"><span>space-4</span><i style="width:4px"></i></div>
-      <div class="bar"><span>space-8</span><i style="width:8px"></i></div>
-      <div class="bar"><span>space-12</span><i style="width:12px"></i></div>
-      <div class="bar"><span>space-16</span><i style="width:16px"></i></div>
-      <div class="bar"><span>space-20</span><i style="width:20px"></i></div>
-      <div class="bar"><span>space-24</span><i style="width:24px"></i></div>
-      <div class="bar"><span>space-32</span><i style="width:32px"></i></div>
-      <div class="bar"><span>space-40</span><i style="width:40px"></i></div>
-      <div class="bar"><span>space-48</span><i style="width:48px"></i></div>
-      <div class="bar"><span>space-64</span><i style="width:64px"></i></div>
-      <div class="bar"><span>space-80</span><i style="width:80px"></i></div>
-      <div class="bar"><span>space-96</span><i style="width:96px"></i></div>
-      <div class="bar"><span>space-128</span><i style="width:128px"></i></div>
-    </div>
-    <h2>Common use</h2>
+    <p class="lede">We measure spacing in <b>gaps</b>. <b>1 gap = 4px</b>, so gap N = N × 4px. It is the same unit as Tailwind's spacing scale (1 = 0.25rem = 4px at a 16px root), so <b>gap N is Tailwind N</b>: gap 4 = 16px = <code>p-4</code> / <code>gap-4</code> / <code>m-4</code>. Every spacing value is quoted in both: <b>gap 4 (16px)</b>.</p>
+    <div class="bars"><div class="bar"><span>gap 0.5 · 2px</span><i style="width:2px"></i></div><div class="bar"><span>gap 1 · 4px</span><i style="width:4px"></i></div><div class="bar"><span>gap 1.5 · 6px</span><i style="width:6px"></i></div><div class="bar"><span>gap 2 · 8px</span><i style="width:8px"></i></div><div class="bar"><span>gap 3 · 12px</span><i style="width:12px"></i></div><div class="bar"><span>gap 4 · 16px</span><i style="width:16px"></i></div><div class="bar"><span>gap 5 · 20px</span><i style="width:20px"></i></div><div class="bar"><span>gap 6 · 24px</span><i style="width:24px"></i></div><div class="bar"><span>gap 8 · 32px</span><i style="width:32px"></i></div><div class="bar"><span>gap 10 · 40px</span><i style="width:40px"></i></div><div class="bar"><span>gap 12 · 48px</span><i style="width:48px"></i></div><div class="bar"><span>gap 16 · 64px</span><i style="width:64px"></i></div><div class="bar"><span>gap 20 · 80px</span><i style="width:80px"></i></div><div class="bar"><span>gap 24 · 96px</span><i style="width:96px"></i></div><div class="bar"><span>gap 32 · 128px</span><i style="width:128px"></i></div></div>
+    <h2>The scale <code>gap · px · Tailwind · token</code></h2>
     <div class="props">
-      <div class="pr h"><span>Token</span><span>Value</span><span>Use</span></div>
-      <div class="pr"><code>space-4</code><span>4px</span><span>Tight inline gaps — icon + label</span></div>
-      <div class="pr"><code>space-8</code><span>8px</span><span>Tight component padding</span></div>
-      <div class="pr"><code>space-12</code><span>12px</span><span>Standard inline gap</span></div>
-      <div class="pr"><code>space-16</code><span>16px</span><span>Default component padding · mobile margin</span></div>
-      <div class="pr"><code>space-24</code><span>24px</span><span>Default desktop margin (small) · section separation</span></div>
-      <div class="pr"><code>space-32</code><span>32px</span><span>Section breaks</span></div>
-      <div class="pr"><code>space-48</code><span>48px</span><span>Layout-level spacing</span></div>
-      <div class="pr"><code>space-96</code><span>96px</span><span>Desktop side gutter at 1440+ — content scales inside</span></div>
+      <div class="pr gp h"><span>Gap</span><span>px</span><span>Tailwind</span><span>Token</span><span>Use</span></div><div class="pr gp"><code>gap 0.5</code><span>2px</span><code>p-0.5 · gap-0.5 · m-0.5</code><code>--gap-0_5</code><span>Hairline nudges — rating stars, countdown under its text</span></div><div class="pr gp"><code>gap 1</code><span>4px</span><code>p-1 · gap-1 · m-1</code><code>--gap-1</code><span>Tight inline gaps — icon + label · USP bar top/bottom</span></div><div class="pr gp"><code>gap 1.5</code><span>6px</span><code>p-1.5 · gap-1.5 · m-1.5</code><code>--gap-1_5</code><span>Desktop USP bar top/bottom</span></div><div class="pr gp"><code>gap 2</code><span>8px</span><code>p-2 · gap-2 · m-2</code><code>--gap-2</code><span>Tight component padding · card actions inset · promo field gap</span></div><div class="pr gp"><code>gap 3</code><span>12px</span><code>p-3 · gap-3 · m-3</code><code>--gap-3</code><span>Standard inline gap</span></div><div class="pr gp"><code>gap 4</code><span>16px</span><code>p-4 · gap-4 · m-4</code><code>--gap-4</code><span>Default component padding · mobile page margin</span></div><div class="pr gp"><code>gap 5</code><span>20px</span><code>p-5 · gap-5 · m-5</code><code>--gap-5</code><span>Modal padding · medium padding</span></div><div class="pr gp"><code>gap 6</code><span>24px</span><code>p-6 · gap-6 · m-6</code><code>--gap-6</code><span>Default desktop margin (small) · section separation</span></div><div class="pr gp"><code>gap 8</code><span>32px</span><code>p-8 · gap-8 · m-8</code><code>--gap-8</code><span>Section breaks</span></div><div class="pr gp"><code>gap 10</code><span>40px</span><code>p-10 · gap-10 · m-10</code><code>--gap-10</code><span>Large section spacing</span></div><div class="pr gp"><code>gap 12</code><span>48px</span><code>p-12 · gap-12 · m-12</code><code>--gap-12</code><span>Layout-level spacing</span></div><div class="pr gp"><code>gap 16</code><span>64px</span><code>p-16 · gap-16 · m-16</code><code>--gap-16</code><span>Hero / page-level spacing</span></div><div class="pr gp"><code>gap 20</code><span>80px</span><code>p-20 · gap-20 · m-20</code><code>--gap-20</code><span>Page-level spacing</span></div><div class="pr gp"><code>gap 24</code><span>96px</span><code>p-24 · gap-24 · m-24</code><code>--gap-24</code><span>Desktop side gutter at 1440+ — content scales inside</span></div><div class="pr gp"><code>gap 32</code><span>128px</span><code>p-32 · gap-32 · m-32</code><code>--gap-32</code><span>Largest layout spacing</span></div>
     </div>
+    <h2>In Tailwind <code>assets/ds/tailwind.preset.js</code></h2>
+    <p>Add the preset to the front end's config — <code>presets:[require('./assets/ds/tailwind.preset.js')]</code> — and load <code>tokens.css</code>. It maps every DS step to its <code>--gap-*</code> token, so <code>p-4</code> resolves to <code>var(--gap-4)</code> (16px). It extends Tailwind rather than replacing it, so existing classes keep compiling.</p>
+    <p><b>Off the DS scale in today's front-end build</b> (from the dev Storybook's compiled CSS): <code>2.5</code> (10px) · <code>3.5</code> (14px) · <code>7</code> (28px) · <code>9</code> (36px) · <code>11</code> (44px) · <code>14</code> (56px). They still work; each should move to the nearest DS step when that component is next touched.</p>
+    <p><b>Writing it down:</b> designs, specs, the catalogue and Storybook quote spacing as <b>gap N (Npx)</b>. Sizes (a 50px field, a 24px icon) and type (12/15) stay in px — they aren't spacing.</p>
     <h2>Icon sizes</h2>
     <div class="rchips">
       <div class="rchip"><i style="height:12px;width:12px;margin:22px auto 7px;border-radius:2px"></i>12</div>

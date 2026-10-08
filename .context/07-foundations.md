@@ -142,27 +142,30 @@ All brands use the same role sizes. Differences across brands are font family + 
 
 ---
 
-## 2. Spacing scale ✅
+## 2. Spacing scale ✅ — measured in GAPS (rule, 08 Oct 2026)
 
-4pt base. Named by px value, not t-shirt sizes.
+**1 gap = 4px. gap N = N × 4px.** It is Tailwind's spacing unit (1 = 0.25rem = 4px at a 16px root), so **gap N = Tailwind N** (`p-N` · `m-N` · `gap-N` · `space-x-N`). Every spacing value is written in both: **gap 4 (16px)**. Sizes (field heights, icon sizes) and type stay in px — they are not spacing. Tokens: `--gap-N` in `tokens.css` (`--gap-0_5` for 2px); the old `--space-<px>` names alias them. Tailwind: `assets/ds/tailwind.preset.js` (extends the default scale; DS steps resolve to the tokens).
 
-| Token | Value | Common use |
-|---|---|---|
-| `space-0` | 0 | Reset |
-| `space-2` | 2pt | Hairline gaps |
-| `space-4` | 4pt | Tight inline gaps (icon + label) |
-| `space-8` | 8pt | Tight component padding |
-| `space-12` | 12pt | Standard inline gap |
-| `space-16` | 16pt | Default component padding, default mobile margin |
-| `space-20` | 20pt | Section internal padding |
-| `space-24` | 24pt | Default desktop margin (small), section separation |
-| `space-32` | 32pt | Section breaks |
-| `space-40` | 40pt | Major section breaks |
-| `space-48` | 48pt | Layout-level spacing |
-| `space-64` | 64pt | Hero/layout breathing room |
-| `space-80` | 80pt | Large layout |
-| `space-96` | 96pt | Desktop margin at 1440+ (rounded from 95pt to align to 8-multiples) |
-| `space-128` | 128pt | Reserved for editorial layouts |
+| Gap | px | Tailwind | Token | Common use |
+|---|---|---|---|---|
+| gap 0 | 0 | `0` | `--gap-0` | Reset |
+| gap 0.5 | 2px | `0.5` | `--gap-0_5` | Hairline gaps |
+| gap 1 | 4px | `1` | `--gap-1` | Tight inline gaps (icon + label) |
+| gap 1.5 | 6px | `1.5` | `--gap-1_5` | Desktop USP bar top/bottom |
+| gap 2 | 8px | `2` | `--gap-2` | Tight component padding |
+| gap 3 | 12px | `3` | `--gap-3` | Standard inline gap |
+| gap 4 | 16px | `4` | `--gap-4` | Default component padding, default mobile margin |
+| gap 5 | 20px | `5` | `--gap-5` | Section internal padding |
+| gap 6 | 24px | `6` | `--gap-6` | Default desktop margin (small), section separation |
+| gap 8 | 32px | `8` | `--gap-8` | Section breaks |
+| gap 10 | 40px | `10` | `--gap-10` | Major section breaks |
+| gap 12 | 48px | `12` | `--gap-12` | Layout-level spacing |
+| gap 16 | 64px | `16` | `--gap-16` | Hero/layout breathing room |
+| gap 20 | 80px | `20` | `--gap-20` | Large layout |
+| gap 24 | 96px | `24` | `--gap-24` | Desktop margin at 1440+ |
+| gap 32 | 128px | `32` | `--gap-32` | Reserved for editorial layouts |
+
+Off the scale in today's front-end build (dev Storybook compiled CSS, 08 Oct): `2.5` (10px) · `3.5` (14px) · `7` (28px) · `9` (36px) · `11` (44px) · `14` (56px) — still compile; move each to the nearest DS step when its component is next touched.
 
 ---
 
