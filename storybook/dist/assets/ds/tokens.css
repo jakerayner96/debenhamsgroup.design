@@ -377,7 +377,7 @@
   --brand-primary-dark:#101820;--brand-dark-3:#101820;--brand-light-1:#101820;--brand-light-2:#F8F8F8;--brand-light-3:#F8F8F8;
   --nav-bg:#000000;--nav-fg:#FFFFFF;
   --surface-page:#000000;--surface-sunken:#F8F8F8;--ft-band:#C22527;
-  --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#101820;--usp-b-fg:#FFFFFF;
+  --usp-a-bg:#E7D5C6;--usp-a-bg2:#E7D5C6; /* USP strip = Misspap beige #E7D5C6 (Jake, 08 Oct 2026) */--usp-a-fg:#0F0F0F;--usp-b-bg:#101820;--usp-b-fg:#FFFFFF;
   
   --action-buy:#101820;--action-buy-pressed:#101820;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
   --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
