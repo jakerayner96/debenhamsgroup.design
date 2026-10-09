@@ -507,7 +507,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .sz.on{border:2px solid var(--text-primary);font-weight:var(--w-strong)}
 .sz.oos{color:var(--text-disabled)}
 .sz.oos--strike::after{content:"";position:absolute;left:-20%;right:-20%;top:50%;height:1px;background:var(--text-disabled);transform:rotate(-33deg)}
-.sz .bell{position:absolute;right:3px;top:3px;width:14px;height:14px}
+/* OOS has two states (Coming Soon - Back in Stock 2ddMaYHCL1pPI00dqPdmNt 344:357437): .oos = just out of stock · .oos.oos--notify = out of stock + the DS notification bell (icons-notification.svg, 14px top-right) — tapping it opens notify-me / back in stock. Never the info "i". */
+.sz .bell,.sz.oos--notify .bell{position:absolute;right:3px;top:3px;width:14px;height:14px}
+.sz.oos--notify{cursor:pointer}
 .sz--dark{background:#242424;border-color:transparent;color:#FFF}.sz--dark.on{background:var(--surface-action);color:var(--text-on-action);border-color:transparent}
 .cswatches{display:flex;gap:8px;flex-wrap:wrap}
 .cswatch{width:60px;height:89px;border-radius:var(--radius-default);border:1px solid var(--border-subtle);overflow:hidden;position:relative;padding:0;background:var(--surface-media);cursor:pointer}
