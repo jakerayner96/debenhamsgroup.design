@@ -16,7 +16,7 @@
 .bd.pri{background:var(--surface-action);color:var(--text-on-action)}
 .bd.pri:hover{background:var(--surface-action-hover)}
 .bd.pri:active{background:var(--surface-action-pressed)}
-.bd.sec{background:var(--surface-page,#FFF);color:#000;border-color:var(--btn-outline,var(--border-action));text-transform:var(--case-btn2,none)} /* secondary: white, brand outline, black label, sentence case */
+.bd.sec{background:transparent;color:#000;border-color:var(--btn-outline,var(--border-action));text-transform:var(--case-btn2,none)} /* secondary: no fill of its own — takes whatever it sits on (white page, PLT sand panel), brand outline, black label, sentence case */
 .bd.dis{background:var(--surface-action-disabled);color:#767676;cursor:not-allowed} /* #767676: golden-truth disabled label — reconcile vs text/disabled Grey 3, see Button spec */
 .bd.spn{background:var(--surface-action);color:var(--text-on-action);min-width:110px}
 .bd.spn i{display:inline-block;vertical-align:middle} /* drawn by the shared .spin rule below */
