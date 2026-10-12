@@ -1332,26 +1332,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <div class="demo">
       <div class="hd"><i></i><i></i><i></i><span>canvas — footer</span><span class="bn">Debenhams</span></div>
       <div class="canvas" style="display:block;padding:0">
-        <footer class="ft" style="margin:0">
-          <div class="ft-news" style="--plp-margin:24px">
-            <div><h3>Let's get to know each other</h3><p>Sign up to receive emails from us, so you never miss out on the good stuff.</p></div>
-            <div><div class="ft-sub"><input type="email" placeholder="Please enter your email address" aria-label="Email address"><button class="bd pri">Subscribe</button></div>
-            <p class="ft-legal">By submitting your details, you agree to receive marketing communications from <span class="bn">Debenhams</span> &amp; our family of brands by email.</p></div>
-          </div>
-          <div class="ft-cols" style="--plp-margin:24px">
-            <div class="ft-col"><h4>Let us help you</h4><a href="#footer">Help</a><a href="#footer">Returns</a><a href="#footer">Delivery</a><a href="#footer">Size Guide</a></div>
-            <div class="ft-col"><h4>About us</h4><a href="#footer">About Us</a><a href="#footer">Careers</a><a href="#footer">Rewards</a></div>
-            <div class="ft-col"><h4>Privacy &amp; legal</h4><a href="#footer">Privacy Policy</a><a href="#footer">Terms</a><a href="#footer">Cookies</a></div>
-            <div class="ft-col"><h4>My account</h4><a href="#footer">Order History</a><a href="#footer">Track My Order</a></div>
-            <div class="ft-col"><h4>Follow us on social media</h4>
-              <div class="ft-social"><img src="assets/ds/icons/lib/social-instagram.svg" alt=""><img src="assets/ds/icons/lib/social-pintrest.svg" alt=""><img src="assets/ds/icons/lib/social-facebook.svg" alt=""><img src="assets/ds/icons/lib/you-tube.svg" alt=""><img src="assets/ds/icons/lib/social-tik-tok.svg" alt=""><img src="assets/ds/icons/lib/social-x.svg" alt=""></div>
-              <h4>Download our app</h4><span class="ft-badge"> App Store</span><span class="ft-badge">▶ Google Play</span>
-            </div>
-          </div>
-          <div class="ft-brands"><img src="assets/brands/dorothyperkins.svg" alt=""><img src="assets/brands/wallis.svg" alt=""><img src="assets/brands/oasis.svg" alt=""><img src="assets/brands/coast.svg" alt=""><img src="assets/brands/burton.svg" alt=""><img src="assets/brands/warehouse.svg" alt=""></div>
-          <div class="ft-pay"><img src="assets/ds/icons/pay/visa.png" alt="Visa"><img src="assets/ds/icons/pay/mastercard.png" alt="Mastercard"><img src="assets/ds/icons/pay/amex.png" alt="American Express"><img src="assets/ds/icons/pay/maestro.png" alt="Maestro"><img src="assets/ds/icons/pay/visa-electron.png" alt="Visa Electron"><img src="assets/ds/icons/pay/apple-pay.png" alt="Apple Pay"><img src="assets/ds/icons/pay/payplus.png" alt="Pay+"><img src="assets/ds/icons/pay/paypal.png" alt="PayPal"><img src="assets/ds/icons/pay/klarna.png" alt="Klarna"><img src="assets/ds/icons/pay/clearpay.png" alt="Clearpay"><img src="assets/ds/icons/pay/google-pay.png" alt="Google Pay"></div><!-- live boohooman.com order, 09 Sep 2026 -->
-          <div class="ft-base"><img class="brandlogo" src="assets/brands/debenhams.svg" alt=""><small>Copyright © 2026 <span class="bn">Debenhams</span></small></div>
-        </footer>
+        <footer data-ftr style="margin:0"></footer>
       </div>
     </div>
     <h2>Per-fascia behaviour</h2>
@@ -1674,6 +1655,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 </div>
 
 <script src="assets/ds/dplus-logos.js"></script>
+<script src="assets/ds/footer.js"></script>
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/usp.js"></script>
 <script>
@@ -1744,6 +1726,7 @@ window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||se
   host.innerHTML=order.map(([sl,nm])=>off(sl)?`<div class="fxoff" data-brand="${sl}"><span>${nm}</span><em>${c.name} not active on ${nm}</em></div>`:`<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>${c.name}</em></div><div class="canvas fxc">${bodyFor(sl)}</div></div>`).join('');
   host.querySelectorAll('.fx').forEach(fx=>{if(window.dgLum(fx)<.5)fx.classList.add('dark')});
   if(window.DG_usp)requestAnimationFrame(()=>window.DG_usp(host));
+  if(window.DG_footer)host.querySelectorAll('.fx[data-brand] [data-ftr]').forEach(el=>window.DG_footer(el,el.closest('.fx').dataset.brand));
 };
 /* controls in the catalogue demos are live: checkbox / toggle flip, radios are exclusive within their list */
 document.addEventListener('click',e=>{const el=e.target.closest('.chk,.tog,.rad');if(!el)return;
@@ -2034,6 +2017,7 @@ function paint(){
   const n=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
   document.querySelectorAll('.bn').forEach(b=>b.textContent=n);
   const fn=document.getElementById('fabName');if(fn)fn.textContent=n;
+  if(window.DG_footer)document.querySelectorAll('#footer [data-ftr]').forEach(el=>window.DG_footer(el,document.documentElement.getAttribute('data-brand')));
   /* black-themed fascias would paint a black backdrop behind a black sidebar: tint those with Principles' dark grey */
   {const hx=cs.getPropertyValue('--brand-primary').trim(),m=hx.match(/^#?([0-9a-f]{6})$/i);let dark=false;
    if(m){const v=parseInt(m[1],16),r=v>>16&255,g=v>>8&255,b=v&255;dark=(.2126*r+.7152*g+.0722*b)/255<.12&&Math.max(r,g,b)-Math.min(r,g,b)<24} /* near-black and neutral: PLT's dark red keeps its colour */

@@ -468,3 +468,6 @@
 [data-brand="boohooman"],[data-brand="karenmillen"],[data-brand="dorothyperkins"],[data-brand="plt"]{--dplus-tick:#000} /* white checkbox fill → black tick */
 [data-brand="plt"],[data-brand="burton"],[data-brand="coast"],[data-brand="dorothyperkins"],[data-brand="dsgnstudio"],[data-brand="misspap"],[data-brand="oasis"],[data-brand="principles"],[data-brand="wallis"],[data-brand="warehouse"]{--dplus-p:12px}
 [data-brand="burton"],[data-brand="misspap"],[data-brand="dsgnstudio"]{--dplus-pw:500}
+/* footer band (C-08 .ftr): Figma Grey 1 on every fascia; PLT live runs its cream band */
+:root{--ftr-band:#F2F2F2}
+[data-brand="plt"]{--ftr-band:#FAF5E7}

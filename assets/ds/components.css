@@ -319,6 +319,104 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .hd-count::after{content:attr(data-n);position:absolute;top:4px;right:2px;width:var(--hd-count,14px);height:var(--hd-count,14px);border-radius:50%;background:var(--icon-primary);color:var(--text-inverse);font-size:var(--hd-count-fs,8px);font-weight:var(--w-mid);display:grid;place-items:center;padding:0;line-height:1} /* always 1:1 */
 
 /* ============================================================
+   C-08 Footer v2 (.ftr) — Figma DS 664-1064 (Desktop 664-1062 · Mobile 664-1063), content live 12 Oct 2026.
+   Render with assets/ds/footer.js (<footer data-ftr>). One component, container-query responsive:
+   ≥ 1024 = desktop, below = mobile. Spacing in gaps (1 gap = 4px). The older .ft block below stays for legacy pages.
+   ============================================================ */
+.ftr{container-type:inline-size;display:block;background:var(--surface-page);color:var(--text-primary);font-family:var(--font-family-base);font-weight:var(--w-regular)}
+.ftr,.ftr *{box-sizing:border-box}
+.ftr :is(h3,p,small,b,span,li,a,button){color:var(--text-primary)} /* own ink — never inherit a host canvas colour */
+.ftr .bd{color:var(--text-on-action)}
+.ftr a{color:inherit;text-decoration:none}
+.ftr ul{list-style:none;margin:0;padding:0}
+.ftr h3,.ftr p{margin:0}
+.ftr-in{width:100%;max-width:1440px;margin:0 auto;padding:0 var(--gap-4,16px)}
+/* newsletter band — mobile: gap 8 (32px) top/bottom, centred stack, gap 4 (16px) between */
+.ftr-news{background:var(--ftr-band,#F2F2F2)}
+.ftr-news .ftr-in{display:flex;flex-direction:column;gap:var(--gap-4,16px);padding-top:var(--gap-8,32px);padding-bottom:var(--gap-8,32px);text-align:center}
+.ftr-copy{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
+.ftr-copy h3{font-size:24px;line-height:1.25;font-weight:var(--w-strong)}
+.ftr-copy p{font-size:16px;line-height:1.35}
+.ftr-form{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
+.ftr-sub{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
+.ftr-sub input{width:100%;height:50px;padding:0 var(--gap-4,16px);border:1px solid var(--border-control,#B5B5B5);border-radius:var(--radius-default);background:var(--surface-raised);font:inherit;font-size:16px;color:var(--text-primary)}
+.ftr-sub input::placeholder{color:#767676}
+.ftr-sub .bd{width:100%;height:50px;padding:0 var(--gap-6,24px)}
+.ftr-legal{font-size:14px;line-height:1.4}
+.ftr-legal a{text-decoration:underline;text-underline-offset:2px}
+/* body — mobile order: sister brands + payments, accordions, apps, country, social */
+.ftr-main{display:flex;flex-direction:column;padding:0}
+.ftr-cols{order:2;border-top:1px solid var(--border-subtle,#E7E7E7);margin-top:var(--gap-8,32px)}
+.ftr-col{border-bottom:1px solid var(--border-subtle,#E7E7E7)}
+.ftr-h{width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--gap-4,16px);padding:var(--gap-4,16px);background:none;border:0;cursor:pointer;font:inherit;font-size:16px;font-weight:var(--w-mid);color:inherit;text-align:left}
+.ftr-cols.caps .ftr-h{text-transform:uppercase}
+.ftr-chev{width:16px;height:16px;flex:none;background:currentColor;-webkit-mask:url(icons/lib/icons-down.svg) center/contain no-repeat;mask:url(icons/lib/icons-down.svg) center/contain no-repeat;transition:transform var(--dur-base,.2s)}
+.ftr-col.open .ftr-chev{transform:rotate(180deg)}
+.ftr-col ul{display:none;padding:0 var(--gap-4,16px) var(--gap-4,16px)}
+.ftr-col.open ul{display:block}
+.ftr-col li a{display:block;font-size:16px;line-height:24px;padding:5.5px 0} /* 35px row (Figma), wraps at 24 */
+.ftr-rail{order:3;display:flex;flex-direction:column;align-items:center;gap:var(--gap-10,40px);padding:var(--gap-8,32px) var(--gap-4,16px) 0;text-align:center}
+.ftr-blk{display:flex;flex-direction:column;align-items:center;gap:var(--gap-4,16px)}
+.ftr-h4{font-size:16px;line-height:25px;font-weight:var(--w-mid)}
+/* footer headings are always bold on live, even where the fascia's "strong" weight is lighter */
+.ftr{--ftr-strong:max(var(--w-strong),600)}
+.ftr-icons{display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center}
+.ftr-icons img{width:24px;height:24px;display:block;object-fit:contain}
+.ftr-badges{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.ftr-badges img{height:40px;width:auto;display:block}
+.ftr-select{display:flex;align-items:center;gap:var(--gap-2,8px);width:100%;max-width:358px;height:50px;padding:0 var(--gap-3,12px);border:1px solid var(--border-control,#B5B5B5);border-radius:var(--radius-default);background:var(--surface-raised);font:inherit;font-size:16px;color:inherit;cursor:pointer;text-align:left}
+.ftr-select img{width:32px;height:23px;flex:none}
+.ftr-select span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ftr-strip{order:1;display:flex;flex-direction:column;align-items:center;gap:var(--gap-8,32px);padding-top:var(--gap-8,32px);padding-bottom:0}
+.ftr-sis{display:flex;flex-wrap:wrap;gap:var(--gap-4,16px);align-items:center;justify-content:center}
+.ftr-sis img{height:12px;width:auto;max-width:64px;object-fit:contain}
+.ftr-pay{display:flex;flex-wrap:wrap;gap:var(--gap-2,8px);justify-content:center}
+.ftr-pay img{width:46px;height:32px;display:block;object-fit:contain}
+.ftr-base{display:flex;flex-direction:column;align-items:center;gap:var(--gap-4,16px);padding:var(--gap-8,32px) var(--gap-4,16px) var(--gap-6,24px)}
+.ftr-logo{height:21px;width:auto;max-width:144px;object-fit:contain}
+.ftr-base small{font-size:14px;text-transform:uppercase}
+/* mobile order (Figma 664-1063): band · sister brands + payments · accordions + rail · logo */
+.ftr{display:flex;flex-direction:column}
+.ftr>.ftr-news{order:0}.ftr>.ftr-strip{order:1}.ftr>.ftr-main{order:2}.ftr>.ftr-base{order:3}
+/* PLT runs a quieter band title */
+[data-ftr-brand="plt"] .ftr-copy h3{font-size:16px;font-weight:var(--w-regular)}
+
+/* ---- desktop ≥ 1024: Figma 664-1062 ---- */
+@container (min-width:1024px){
+  .ftr-in{padding:0 var(--gap-20,80px)}
+  .ftr-news .ftr-in{flex-direction:row;align-items:center;justify-content:space-between;gap:var(--gap-10,40px);text-align:left}
+  .ftr-copy{max-width:532px}
+  .ftr-copy h3{font-size:36px;line-height:1.2;font-weight:var(--ftr-strong);white-space:nowrap}
+  .ftr-copy p{font-size:18px;line-height:28px}
+  .ftr-form{max-width:588px;width:100%;text-align:center}
+  .ftr-sub{flex-direction:row}
+  .ftr-sub input{flex:1;min-width:0}
+  .ftr-sub .bd{width:auto;flex:none}
+  .ftr>.ftr-main{order:1}.ftr>.ftr-strip{order:2}
+  .ftr-main{flex-direction:row;justify-content:space-between;gap:var(--gap-8,32px);padding:var(--gap-10,40px) var(--gap-20,80px) 0}
+  .ftr-cols{order:0;display:flex;gap:var(--gap-8,32px);border:0;margin:0}
+  .ftr-col{border:0;min-width:0;max-width:220px}
+  .ftr-h{padding:0 0 var(--gap-4,16px);cursor:default;font-weight:var(--ftr-strong);line-height:25px;pointer-events:none}
+  .ftr-h .ftr-chev{display:none}
+  .ftr-col ul,.ftr-col.open ul{display:block;padding:0}
+  .ftr-rail{order:1;align-items:flex-start;text-align:left;gap:var(--gap-10,40px);padding:0;flex:none;max-width:248px}
+  .ftr-blk{align-items:flex-start}
+  .ftr-h4{font-weight:var(--ftr-strong)}
+  .ftr-icons,.ftr-badges{justify-content:flex-start}
+  .ftr-badges{flex-direction:column;align-items:flex-start;gap:var(--gap-3,12px)}
+  .ftr-select{width:248px}
+  .ftr-strip{flex-direction:row;justify-content:space-between;align-items:center;gap:var(--gap-6,24px);margin-top:var(--gap-10,40px);padding-top:var(--gap-10,40px);position:relative}
+  .ftr-strip::before{content:"";position:absolute;top:0;left:var(--gap-12,48px);right:var(--gap-12,48px);border-top:1px solid var(--border-subtle,#E7E7E7)}
+  .ftr-strip>span:empty{display:none}
+  .ftr-strip:has(>span:empty){justify-content:flex-end}
+  .ftr-sis{gap:var(--gap-5,20px);justify-content:flex-start;flex-wrap:nowrap}
+  .ftr-sis img{height:14px;max-width:96px}
+  .ftr-pay{flex-wrap:nowrap}
+  .ftr-base{padding:var(--gap-10,40px) var(--gap-20,80px) var(--gap-12,48px)}
+  .ftr-logo{height:23px;max-width:180px}
+}
+
+/* ============================================================
    C-08 Footer (.ft) — Figma 664-1064 (Debenhams) · live-checked
    across fascias 03 Sep. One template: newsletter band, link
    columns + social/app rail, sister-brands (Debenhams only),
