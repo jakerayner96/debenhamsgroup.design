@@ -342,6 +342,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .ftr-sub{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
 .ftr-sub input{width:100%;height:50px;padding:0 var(--gap-4,16px);border:1px solid var(--border-control,#B5B5B5);border-radius:var(--radius-default);background:var(--surface-raised);font:inherit;font-size:16px;color:var(--text-primary)}
 .ftr-sub input::placeholder{color:#767676}
+.ftr-sub input:focus{border-color:#000;outline:0;caret-color:#2797FF} /* black only while typing, back to Grey 3 on blur */
 .ftr-sub .bd{width:100%;height:50px;padding:0 var(--gap-6,24px)}
 .ftr-legal{font-size:14px;line-height:1.4}
 .ftr-legal a{text-decoration:underline;text-underline-offset:2px}
@@ -532,19 +533,25 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .or-row::before,.or-row::after{content:"";flex:1;height:1px;background:var(--border-subtle)}
 
 /* ---- C-11 Form controls ---- */
-.fld{position:relative;display:flex;flex-direction:column;justify-content:center;height:50px;padding:8px 16px;background:var(--surface-raised);border:1px solid var(--border-strong);border-radius:var(--radius-default);box-sizing:border-box;cursor:text;transition:border-color var(--dur-fast)}
-.fld:focus-within{border-color:var(--text-primary)}
-.fld.invalid{border-color:var(--text-error)}
+/* Input field — Figma DS 9925-5828 (Input field set, Type=Standard): 50px, padding gap 2 (8px) top/bottom · gap 4 (16px) sides, radius 4 (brand).
+   Outline is Grey 3 (#B5B5B5) at rest AND when filled; it turns black only while the field is focused (typing, caret in it) and
+   drops back to grey on blur. Error = #D33F3F outline + 14 regular message gap 2 (8px) under. Inactive = Grey 1 fill, grey text. */
+.fld{position:relative;display:flex;flex-direction:column;justify-content:center;height:50px;padding:var(--gap-2,8px) var(--gap-4,16px);background:var(--surface-raised);border:1px solid var(--border-control,#B5B5B5);border-radius:var(--radius-default);box-sizing:border-box;cursor:text;transition:border-color var(--dur-fast)}
+.fld:focus-within{border-color:#000}
+.fld.invalid,.fld.invalid:focus-within{border-color:var(--text-error)}
+.fld.inactive,.fld:has(input:disabled),.fld:has(textarea:disabled){background:#F2F2F2;border-color:var(--border-control,#B5B5B5);cursor:default}
+.fld.inactive input,.fld input:disabled,.fld textarea:disabled{color:var(--text-secondary,#6B6B6B);-webkit-text-fill-color:var(--text-secondary,#6B6B6B)}
 /* floating label: centred while empty and idle; on focus (or once there is a value) it glides to the top and shrinks, and the caret sits beneath it */
-.fld input,.fld textarea{font:inherit;font-size:14px;line-height:18px;color:var(--text-primary);border:0;outline:0;padding:15px 0 0;margin:0;background:none;width:100%}
+.fld input,.fld textarea{font:inherit;font-size:14px;line-height:18px;color:#000;caret-color:#2797FF;border:0;outline:0;padding:15px 0 0;margin:0;background:none;width:100%}
 .fld .lbl{position:absolute;left:16px;right:16px;top:50%;transform:translateY(-50%);font-size:14px;line-height:18px;color:var(--text-secondary);pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:top var(--dur-base) var(--ease-standard),transform var(--dur-base) var(--ease-standard),font-size var(--dur-base) var(--ease-standard),line-height var(--dur-base) var(--ease-standard)}
 .fld input::placeholder,.fld textarea::placeholder{color:transparent}
 .fld:focus-within .lbl,.fld input:not(:placeholder-shown)+.lbl,.fld textarea:not(:placeholder-shown)+.lbl{top:8px;transform:none;font-size:12px;line-height:15px}
 .fld--pin input{letter-spacing:.3em}
 .fld-err{font-size:14px;line-height:18px;color:var(--text-error);margin-top:8px}
-.fsel{position:relative;display:flex;align-items:center;height:50px;padding:0 44px 0 16px;background:var(--surface-raised);border:1px solid var(--border-strong);border-radius:var(--radius-default);font-size:16px;color:var(--text-primary);cursor:pointer;box-sizing:border-box}
+.fsel{position:relative;display:flex;align-items:center;height:50px;padding:0 44px 0 16px;background:var(--surface-raised);border:1px solid var(--border-control,#B5B5B5);border-radius:var(--radius-default);font-size:16px;color:var(--text-primary);cursor:pointer;box-sizing:border-box}
 .fsel::after{content:"";position:absolute;right:16px;top:50%;width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg)}
 .fsel select{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer;font-size:16px} /* native select drives it (mobile-first pattern) */
+.fsel:focus-within{border-color:#000} /* same rule as the field: black only while open / focused */
 /* Checkbox — Figma DS 669-892 (box 5915-6387, tick 5915-6388 = Icons / Tick, 1pt): 24px, radius 3 (brand-scaled), 1px Grey 3 when off;
    on = action-colour fill with the white 1pt tick, the exact Figma path on the 24 grid (same tick as icons-tick-circle-fill). */
 .chk{width:24px;height:24px;flex:none;position:relative;border-radius:calc(var(--radius-default)*.75);border:1px solid var(--border-control,#B5B5B5);background:var(--surface-raised);padding:0;cursor:pointer}

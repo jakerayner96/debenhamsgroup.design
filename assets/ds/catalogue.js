@@ -96,11 +96,13 @@ const DG_CATALOGUE = [
   summary:'Floating-label input. The label shrinks from 14 to 12 as the value arrives; errors turn the keyline red and add a message underneath.',
   use:['Every text entry: email, address, promo code, search inside forms.'],
   avoid:['Placeholder text as the only label.','Error colour without an error message.'],
-  anatomy:['50px container · 1px keyline · 4px radius (brand)','Label floats to the top-left on focus / filled','Inline error 12px in --text-error under the field'],
+  anatomy:['50px · padding gap 2 (8px) top/bottom, gap 4 (16px) sides · radius 4 (brand) · Figma 9925-5828','Outline Grey 3 #B5B5B5 at rest and when filled — black only while focused (caret in the field), back to grey on blur','Label 14 grey #6B6B6B, floats to 12 on focus / filled; value 14 black; caret #2797FF','Error: #D33F3F outline + 14 regular message gap 2 (8px) under · Inactive: Grey 1 #F2F2F2 fill, grey text'],
   variants:[
     {name:'Empty', html:'<label class="fld" style="width:280px"><input placeholder=" "><span class="lbl">Email address</span></label>'},
     {name:'Filled', html:'<label class="fld" style="width:280px"><input placeholder=" " value="jake@debenhams.com"><span class="lbl">Email address</span></label>'},
     {name:'Error', html:'<div style="width:280px"><label class="fld invalid"><input placeholder=" " value="SUMMER"><span class="lbl">Promo code</span></label><div class="fld-err">Sorry, we don’t recognise that code</div></div>'},
+    {name:'Inactive', html:'<label class="fld inactive" style="width:280px"><input placeholder=" " value="jake@debenhams.com" disabled><span class="lbl">Email address</span></label>'},
+    {name:'Error · empty', html:'<div style="width:280px"><label class="fld invalid"><input placeholder=" "><span class="lbl">Email address</span></label><div class="fld-err">This field is required</div></div>'},
   ],
   dev:{title:'Atoms/Input Field', status:'match', note:'Dev has label / errors / readOnlyValue / hyphenatedInput / errorOnlyBorder. Molecules/Date Select is three of these — compose, not a new component.'} },
 
