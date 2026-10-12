@@ -67,19 +67,35 @@ body.exporting .ai-pill--soft{box-shadow:none;border:1px solid var(--border-subt
 
 /* ---------- PDP ---------- */
 .pdp{display:grid;gap:16px;padding-top:8px}
-@media(min-width:1024px){.pdp{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px;align-items:start;padding-top:16px}}
-.gal{display:grid;grid-template-columns:1fr;gap:8px;margin:0 -16px}
-@media(min-width:1024px){.gal{grid-template-columns:64px 1fr;gap:16px;margin:0}}
-.gal .th{display:none;flex-direction:column;gap:8px}@media(min-width:1024px){.gal .th{display:flex}}
-.gal .th img{width:64px;height:96px;object-fit:cover;border:1px solid transparent}.gal .th img.on{border-color:#000}
-.gal .main{position:relative;background:var(--surface-media)}
-.gal .main img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover}
-.gal .dots{position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:6px}
-.gal .dots i{width:6px;height:6px;border-radius:99px;background:rgba(0,0,0,.25)}.gal .dots i:first-child{background:#000}
-@media(min-width:1024px){.gal .dots{display:none}}
-.onimg{position:absolute;z-index:2}
-.onimg.br{right:12px;bottom:36px}.onimg.tl{left:12px;top:12px}
-@media(min-width:1024px){.onimg.br{bottom:16px;right:16px}.onimg.tl{left:16px;top:16px}}
+@media(min-width:1024px){.pdp{grid-template-columns:minmax(0,1fr) 450px;gap:64px;align-items:start;padding-top:16px}}
+/* gallery = live debenhams.com (12 Oct) / Core PDP 2026: mobile peek rail (66% slides, 8px gap, from the edge) + 4px progress bar, no dots;
+   desktop 100px thumb column + main image + white round arrows */
+.galwrap{margin:0 -16px}
+.gal{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.gal::-webkit-scrollbar{display:none}
+.gal .slide{flex:0 0 66%;aspect-ratio:2/3;scroll-snap-align:start;position:relative;overflow:hidden;background:var(--surface-media)}
+.gal .slide img{display:block;width:100%;height:100%;object-fit:cover}
+.pag{padding:16px 16px 0}
+.pag .track{height:4px;background:var(--border-subtle);border-radius:var(--radius-pill);position:relative;overflow:hidden}
+.pag .fill{position:absolute;inset:0 auto 0 0;width:25%;background:var(--text-primary);border-radius:var(--radius-pill);transition:width .2s}
+.thumbs,.arrow{display:none}
+.galmain{position:relative}
+.onimg{position:absolute;z-index:2;left:8px;right:8px;bottom:8px;display:flex;flex-wrap:nowrap;gap:6px}
+.galmain .onimg .ai-pill{height:32px;font-size:13px;padding:0 10px 0 8px;gap:4px}.galmain .onimg .ai-icon{width:16px!important;height:16px!important}
+@media(min-width:1024px){
+  .galwrap{margin:0;display:grid;grid-template-columns:100px minmax(0,1fr);gap:24px;align-items:start}
+  .thumbs{display:flex;flex-direction:column;gap:8px}
+  .thumbs button{width:100px;aspect-ratio:2/3;padding:0;background:var(--surface-media);overflow:hidden;border:2px solid transparent;cursor:pointer}
+  .thumbs button.on{border-color:var(--text-primary)}
+  .thumbs img{display:block;width:100%;height:100%;object-fit:cover}
+  .gal{overflow:hidden;scroll-snap-type:none;gap:0}
+  .gal .slide{flex:0 0 100%}
+  .pag{display:none}
+  .arrow{display:grid;place-items:center;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:var(--radius-pill);background:#FFF;box-shadow:var(--shadow-tile);border:0;padding:0;cursor:pointer;z-index:3}
+  .arrow img{width:16px;height:16px}.arrow.l{left:12px}.arrow.r{right:12px}
+  .onimg{left:16px;right:16px;bottom:16px;gap:8px}
+  .galmain .onimg .ai-pill{height:36px;font-size:14px;padding:0 16px 0 12px;gap:6px}.galmain .onimg .ai-icon{width:18px!important;height:18px!important}
+}
 .buy{display:flex;flex-direction:column;gap:16px}
 .buy .bd{width:100%}
 .pbrand{font-size:16px;font-weight:600}.pname{font-size:16px;font-weight:300;margin-top:2px}
@@ -97,7 +113,6 @@ body.exporting .ai-pill--soft{box-shadow:none;border:1px solid var(--border-subt
 .acc-set .acc-h{display:flex;width:100%;justify-content:space-between;align-items:center;padding:16px 0;font:600 15px var(--font-family-base);background:none;border:0;color:inherit}
 .acc-set .acc-h img{width:16px;height:16px}.acc-set .acc.open .acc-h img{transform:rotate(180deg)}
 .acc-set .acc-b{padding:0 0 16px;font-size:14px;font-weight:300;line-height:1.6}
-.gal .th img{overflow:hidden}
 .hd-search>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 
 /* ---------- PLP ---------- */
@@ -108,7 +123,7 @@ body.exporting .ai-pill--soft{box-shadow:none;border:1px solid var(--border-subt
 .nba .set{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .nba .sep{width:1px;height:28px;background:var(--border-subtle);margin:0 4px}
 .grid .nba{grid-column:1/-1}
-.pc-img .onimg.br{bottom:8px;right:8px}
+.pc-img .onimg.br{bottom:8px;right:8px;left:auto}
 
 /* ---------- Home: custom prompts ---------- */
 .cp-strip{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:10px 16px;background:var(--ai-gradient);color:var(--text-primary);font-size:14px;text-align:center}
@@ -310,8 +325,13 @@ function pdp(){
     ${S.pdpAsk?`<div class="prompt-item"><button class="prompt-link ai-pill ai-pill--soft ai-pill--wrap ai-open" data-q=""><span class="prompt-link__icon">${spk(16)}</span><span class="prompt-link__text">Ask anything</span></button></div>`:''}</div></div>`:'';
   const ssBtn=ON('shopSimilar')?`<button class="ai-pill ai-pill--soft" ${F('shopSimilar','A · on image')} data-q="Shop similar">${spk(16)}Shop similar</button>`:'';
   const vtoBtn=ON('vto')?`<button class="ai-pill ai-pill--soft" ${F('vto','A · on image')} data-q="Try it on" data-vto="1">${spk(16)}${esc(S.vtoLabel)}</button>`:'';
-  const gal=`<div class="gal"><div class="th"><img class="on" src="${IMG(1)}" alt=""><img src="${IMG(1)}" alt="" style="object-position:50% 15%"><img src="${IMG(1)}" alt="" style="object-position:50% 85%"></div>
-    <div class="main"><img src="${IMG(1)}" alt="">${S.ssPos==='image'&&ssBtn?`<span class="onimg br">${ssBtn}</span>`:''}${S.vtoPos==='image'&&vtoBtn?`<span class="onimg tl">${vtoBtn}</span>`:''}<div class="dots"><i></i><i></i><i></i><i></i></div></div></div>`;
+  /* one product shot in the data set: four crops of it stand in for the live four-image gallery */
+  const SH=['','object-position:50% 12%;transform:scale(1.7);transform-origin:50% 18%','object-position:50% 50%;transform:scale(1.35)','object-position:50% 95%;transform:scale(1.6);transform-origin:50% 92%'];
+  const ai=[S.vtoPos==='image'&&vtoBtn,S.ssPos==='image'&&ssBtn].filter(Boolean).join('');
+  const gal=`<div class="galwrap"><div class="thumbs">${SH.map((st,i)=>`<button class="${i?'':'on'}" data-slide="${i}" aria-label="Image ${i+1}"><img src="${IMG(1)}" alt="" style="${st}"></button>`).join('')}</div>
+    <div class="galmain"><div class="gal" id="gal">${SH.map((st,i)=>`<div class="slide"><img src="${IMG(1)}" alt="${esc(p.name)} — image ${i+1}" style="${st}">${!i&&ai?`<span class="onimg">${ai}</span>`:''}</div>`).join('')}</div>
+      <button class="arrow l" data-step="-1" aria-label="Previous"><img src="assets/ds/icons/lib/icons-left.svg" alt=""></button><button class="arrow r" data-step="1" aria-label="Next"><img src="assets/ds/icons/lib/icons-right.svg" alt=""></button></div>
+    <div class="pag"><div class="track"><div class="fill" id="pagfill"></div></div></div></div>`;
   const ctaRow=[S.vtoPos==='cta'&&ON('vto')?`<button class="ai-pill ai-pill--soft ai-cta" ${F('vto','B · under CTA')} data-q="Try it on" data-vto="1">${spk(16)}${esc(S.vtoLabel)}</button>`:'',S.ssPos==='cta'&&ON('shopSimilar')?`<button class="ai-pill ai-pill--soft ai-cta" ${F('shopSimilar','B · under CTA')} data-q="Shop similar">${spk(16)}Shop similar</button>`:''].filter(Boolean);
   const info=`<div class="buy"><div class="prow"><div><div class="pbrand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div></div><img src="assets/ds/icons/heart-24.svg" alt="" width="24"></div>
     ${V('ratings',0)}
@@ -377,6 +397,7 @@ function render(){
   gid=0;
   document.getElementById('app').innerHTML=`${header()}<div id="body">${(PAGES[S.page]||pdp)()}</div><div class="pgfoot">${strip(V('footer',0))}</div><div id="chat"></div>`;
   if(window.DG_uspMount)DG_uspMount();
+  galSync();
   if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
   drawChat();
   if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el){el.scrollIntoView({block:'center',behavior:EXPORTING?'auto':'smooth'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}}
@@ -386,6 +407,12 @@ let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)
 addEventListener('message',e=>{const d=e.data||{};
   if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;if(BASE)CFG=AG.build(BASE,S.agent);if(BASE)render()}
   if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+/* gallery: progress bar follows the rail; thumbs + arrows step it (desktop) */
+function galIdx(){const g=document.getElementById('gal');if(!g)return 0;const s=g.querySelector('.slide');const w=s.offsetWidth+(parseFloat(getComputedStyle(g).columnGap)||0);return Math.min(Math.round(g.scrollLeft/w),g.children.length-1)}
+function galSync(){const g=document.getElementById('gal'),f=document.getElementById('pagfill');if(!g||!f)return;const i=galIdx(),n=g.children.length;f.style.width=((i+1)/n*100)+'%';document.querySelectorAll('.thumbs button').forEach((b,k)=>b.classList.toggle('on',k===i))}
+function galGo(i){const g=document.getElementById('gal');if(!g)return;const n=g.children.length,k=Math.max(0,Math.min(i,n-1));g.scrollTo({left:g.children[k].offsetLeft-g.children[0].offsetLeft,behavior:EXPORTING?'auto':'smooth'})}
+document.addEventListener('scroll',e=>{if(e.target&&e.target.id==='gal')requestAnimationFrame(galSync)},true);
+document.addEventListener('click',e=>{const t=e.target.closest('[data-slide]');if(t){e.stopPropagation();galGo(+t.dataset.slide);return}const a=e.target.closest('[data-step]');if(a){e.stopPropagation();galGo(galIdx()+(+a.dataset.step))}},true);
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
   const qb=e.target.closest('[data-q]');
