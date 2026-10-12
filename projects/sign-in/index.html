@@ -159,8 +159,7 @@ body.fold .device iframe{box-shadow:none}
 <div id="hidden"></div>
 <script>
 /* ======================= PROJECT CONFIG, the only part a new prototype edits ======================= */
-/* Starting point per fascia = play (12 Oct 2026): link fascias open on A (PLT with password off), the rest on B. */
-const LIVE={debenhams:{link:true,pw:true},plt:{link:true,pw:false},boohoo:{link:false,pw:true},boohooman:{link:false,pw:false},karenmillen:{link:false,pw:true}};
+/* One config for every fascia (Jake): switching fascia changes only the brand skin, never the page or the logic. */
 const P={
   name:'sign-in',
   title:'Sign in',
@@ -169,8 +168,8 @@ const P={
   domains:{debenhams:'debenhams.web.play.dbztech.net',plt:'prettylittlething.web.play.dbztech.net',boohoo:'boohooww.web.play.dbztech.net',boohooman:'boohooman.web.play.dbztech.net',karenmillen:'karenmillen.web.play.dbztech.net'},
   files:['page.html','README.md'],
   store:'proto-sign-in',
-  initial:b=>{const f=Object.assign({},LIVE[b]);return {flags:f,primary:f.link?'link':'pw',screen:'signin',context:'page',
-    social:{apple:true,google:true,facebook:true,klarna:true},socialMode:'all',expiry:15,filled:false,usp:true,email:'jake.rayner@debenhams.com'}},
+  initial:()=>({flags:{link:true,pw:true},primary:'link',screen:'signin',context:'page',
+    social:{apple:true,google:true,facebook:true,klarna:true},socialMode:'all',expiry:15,filled:false,usp:true,email:'jake.rayner@debenhams.com'}),
 };
 /* same rules as page.html R(): both weightings have the link; password can be switched off on A only (B is the password form) */
 function rules(c){const primary=c.primary==='pw'?'pw':'link';return {primary,link:true,pw:primary==='pw'||!!c.flags.pw}}
@@ -179,12 +178,10 @@ function renderPanel(host,S,update){
   const opt=(k,v,t,d,dis)=>`<button class="opt${c[k]===v?' on':''}" data-k="${k}" data-v="${v}"${dis?' disabled style="opacity:.4;cursor:not-allowed"':''}><span class="r"></span><span class="t"><b>${t}</b><span>${d}</span></span></button>`;
   const sw=(id,on,t,dis)=>`<label class="sw"${dis?' style="opacity:.4;cursor:not-allowed"':''}><input type="checkbox" data-sw="${id}"${on?' checked':''}${dis?' disabled':''}><i></i>${t}</label>`;
   const A=r.primary==='link';
-  /* the switch is global (like Desktop / Mobile): a fascia change keeps Sign in or Checkout */
-  if(S.flowCo!==undefined&&(c.context==='checkout')!==S.flowCo){if(S.flowCo){c.ctxSign=c.context;c.context='checkout'}else c.context=c.ctxSign&&c.ctxSign!=='checkout'?c.ctxSign:'page';setTimeout(update)}
   const CO=c.context==='checkout';
   /* top-bar Sign in / Checkout switch: Checkout = the signed-out checkout entry; Sign in returns to the last sign-in context (page or modal) */
   document.querySelectorAll('.flow button').forEach(b=>{b.classList.toggle('on',(b.dataset.c==='checkout')===CO);
-    b.onclick=()=>{S.flowCo=b.dataset.c==='checkout';if(b.dataset.c==='checkout'){if(!CO)c.ctxSign=c.context;c.context='checkout'}else c.context=c.ctxSign&&c.ctxSign!=='checkout'?c.ctxSign:'page';update();renderPanel(host,S,update)}});
+    b.onclick=()=>{if(b.dataset.c==='checkout'){if(!CO)c.ctxSign=c.context;c.context='checkout'}else c.context=c.ctxSign&&c.ctxSign!=='checkout'?c.ctxSign:'page';update();renderPanel(host,S,update)}});
   const scr=[['signin','Sign in','The form'],['error','Incorrect details','Password mode only, one generic message',!r.pw],['sent','Link sent','The same screen whether or not the account exists',!r.link],['forgot','Forgot password','Reset form',!r.pw],['reset','Reset sent','Same non-revealing confirmation',!r.pw]];
   if(scr.find(x=>x[0]===c.screen&&x[3])){c.screen='signin';setTimeout(update)}
   host.innerHTML=`<h1>Sign in</h1><p class="intro">One form, two weightings. Pick the weighting; on A you can switch password off. Links inside the page switch method and screen too.</p>
@@ -215,7 +212,7 @@ function renderPanel(host,S,update){
 let S={brand:new URLSearchParams(location.search).get('brand')||'',w:390,fold:false,by:{}};
 try{const s=JSON.parse(localStorage.getItem(P.store)||'null');if(s)S=Object.assign(S,s,{brand:S.brand||s.brand})}catch(e){}
 if(!P.brands.some(b=>b[0]===S.brand))S.brand=P.brands[0][0];
-Object.defineProperty(S,'cfg',{get(){return S.by[S.brand]||(S.by[S.brand]=P.initial(S.brand))},set(v){S.by[S.brand]=v},enumerable:false});
+Object.defineProperty(S,'cfg',{get(){return S.by._all||(S.by._all=P.initial())},set(v){S.by._all=v},enumerable:false});   /* shared by every fascia */
 const $=s=>document.querySelector(s),frame=$('#frame'),stage=$('#stage'),win=$('#win'),preset=$('#preset');
 const save=()=>{try{localStorage.setItem(P.store,JSON.stringify({brand:S.brand,w:S.w,fold:S.fold,by:S.by}))}catch(e){}};
 const state=()=>Object.assign({brand:S.brand},S.cfg);

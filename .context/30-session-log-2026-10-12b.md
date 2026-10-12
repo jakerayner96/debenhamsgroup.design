@@ -34,3 +34,5 @@
 - Checkout: sign in CTAs back to primary (Jake); guest still leads by position.
 - Karen Millen added (play 12 Oct: password only, link off → starts on B). KM header wishlist = bookmark; footer / USP from the DS live sets.
 - PLT: social tiles + Continue with Klarna square (0 radius), tiles fill with the field colour (--surface-raised #FFFDF7). Checkout header: no bottom rule (all fascias).
+- One shared config for every fascia (Jake): switching fascia changes only the brand skin; the page, weighting, screen, context and social choice stay put (`S.by._all`). Per-fascia play defaults dropped; everything starts on A with password on.
+- Create an account moved below the social buttons (page + catalogue variants).

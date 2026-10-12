@@ -75,7 +75,7 @@ function social(){const s=S.social||{},tiles=[];
 const CO=()=>S.context==='checkout';
 /* checkout: guest card first, sign in CTAs stay primary (Jake); no create-account link there (that comes after the order) */
 const cta=()=>'bd pri';
-const foot=()=>CO()?social():`<p class="auth-alt">New to ${NAME[S.brand]}? <a class="lnk" href="#" data-act="create">Create an account</a></p>${social()}`;
+const foot=()=>CO()?social():`${social()}<p class="auth-alt">New to ${NAME[S.brand]}? <a class="lnk" href="#" data-act="create">Create an account</a></p>`;   /* create account sits under the social buttons */
 const signT=()=>CO()?'Have an Account?':'Sign In';
 /* checkout header: logo + Secure checkout (live Debenhams /checkout, 12 Oct) */
 const coHeader=()=>`<header class="co-hd"><img class="co-logo" src="assets/brands/${S.brand}.svg" alt="${NAME[S.brand]}"><span class="co-sec"><img src="assets/ds/icons/lib/icons-lock.svg" alt="">Secure checkout</span></header>`;

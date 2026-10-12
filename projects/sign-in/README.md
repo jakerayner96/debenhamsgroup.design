@@ -3,7 +3,7 @@
 **Live:** jakerayner96.github.io/debenhamsgroup.design/projects/sign-in/ · built 12 Oct 2026
 
 ## Brief
-New sign-in page across the fascias, built on DS components. Each fascia starts from its play configuration (12 Oct 2026): link fascias open on A, the others on B.
+New sign-in page across the fascias, built on DS components. The play configuration per fascia (12 Oct 2026) is below for reference. The prototype uses **one shared config for every fascia**, so switching fascia only changes the brand skin and the UI and logic can be toggled independently.
 
 | Fascia | Play | Password sign in | Sign in link |
 |---|---|---|---|
@@ -17,7 +17,7 @@ Two weightings:
 - **A · Link first.** Email field, then **Send link**, then "Sign in with password instead" as a link below the button.
 - **B · Password first.** Email and password, then the "Forgot password? | Email me a sign in link" link row (Checkout 2026 pattern), then **Sign in**.
 
-Clicking the secondary link swaps the form in place. Create account is a link under the CTA (Gymshark pattern). The separate "New to X?" block is gone.
+Clicking the secondary link swaps the form in place. Create account is a link under the social buttons (Gymshark pattern). The separate "New to X?" block is gone.
 
 ## Checkout entry (top bar: Sign in | Checkout)
 A signed-out customer heading to checkout (live Debenhams /checkout, 12 Oct 2026): checkout header (logo + lock + "Secure checkout"). **Guest checkout card first**: email and **Continue as guest**. Then the **Have an account?** card, which is the same sign-in form with the same A/B weighting and password switch.
