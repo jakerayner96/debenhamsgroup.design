@@ -11,6 +11,7 @@ New sign-in page across the fascias, built on DS components. Each fascia starts 
 | PLT | prettylittlething.web.play.dbztech.net | off | on |
 | boohoo | boohooww.web.play.dbztech.net | on | off |
 | boohooMAN | boohooman.web.play.dbztech.net | off | off → play falls back to the legacy email + password form |
+| Karen Millen | karenmillen.web.play.dbztech.net | on | off |
 
 Two weightings:
 - **A · Link first.** Email field, then **Send link**, then "Sign in with password instead" as a link below the button.

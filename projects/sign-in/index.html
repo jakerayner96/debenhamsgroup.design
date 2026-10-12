@@ -160,13 +160,13 @@ body.fold .device iframe{box-shadow:none}
 <script>
 /* ======================= PROJECT CONFIG, the only part a new prototype edits ======================= */
 /* Starting point per fascia = play (12 Oct 2026): link fascias open on A (PLT with password off), the rest on B. */
-const LIVE={debenhams:{link:true,pw:true},plt:{link:true,pw:false},boohoo:{link:false,pw:true},boohooman:{link:false,pw:false}};
+const LIVE={debenhams:{link:true,pw:true},plt:{link:true,pw:false},boohoo:{link:false,pw:true},boohooman:{link:false,pw:false},karenmillen:{link:false,pw:true}};
 const P={
   name:'sign-in',
   title:'Sign in',
   page:'page.html',
-  brands:[['debenhams','Debenhams'],['plt','PLT'],['boohoo','boohoo'],['boohooman','boohooMAN']],
-  domains:{debenhams:'debenhams.web.play.dbztech.net',plt:'prettylittlething.web.play.dbztech.net',boohoo:'boohooww.web.play.dbztech.net',boohooman:'boohooman.web.play.dbztech.net'},
+  brands:[['debenhams','Debenhams'],['plt','PLT'],['boohoo','boohoo'],['boohooman','boohooMAN'],['karenmillen','Karen Millen']],
+  domains:{debenhams:'debenhams.web.play.dbztech.net',plt:'prettylittlething.web.play.dbztech.net',boohoo:'boohooww.web.play.dbztech.net',boohooman:'boohooman.web.play.dbztech.net',karenmillen:'karenmillen.web.play.dbztech.net'},
   files:['page.html','README.md'],
   store:'proto-sign-in',
   initial:b=>{const f=Object.assign({},LIVE[b]);return {flags:f,primary:f.link?'link':'pw',screen:'signin',context:'page',

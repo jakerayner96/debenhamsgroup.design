@@ -32,3 +32,4 @@
 - Divider copy: "Or continue with" in sentence case (`.or-div` no longer uppercased).
 - Copy pass (Jake): Title Case headers (Sign In · Have an Account? · Guest Checkout · Reset Your Password). Link first: "Enter your email address and we’ll send you a one-time link to sign in." + **Send link**. Sent: "We’ve Emailed You a Sign-In Link" / "…a Password Reset Link", "Use the link we sent to [email] to sign in / reset your password. It expires in [X] minutes." (X = panel field, default 15), small print "Not received it? Check your spam folder or make sure your email address is correct.", then Resend link | Use a different email. Divider "or continue with" (lower-case o). Same sent screen for every email, so it still doesn't reveal accounts.
 - Checkout: sign in CTAs back to primary (Jake); guest still leads by position.
+- Karen Millen added (play 12 Oct: password only, link off → starts on B). KM header wishlist = bookmark; footer / USP from the DS live sets.

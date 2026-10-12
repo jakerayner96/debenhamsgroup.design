@@ -36,7 +36,7 @@ const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C&&C.find(x=>x.slug===slug);r
 const strip=h=>h.replace(/ style="width:[^"]*"/,'');
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const desk=()=>innerWidth>=1024;
-const NAME={debenhams:'Debenhams',plt:'PrettyLittleThing',boohoo:'boohoo',boohooman:'boohooMAN'};
+const NAME={debenhams:'Debenhams',plt:'PrettyLittleThing',boohoo:'boohoo',boohooman:'boohooMAN',karenmillen:'Karen Millen'};
 let S={brand:'debenhams',flags:{link:true,pw:true},primary:'link',screen:'signin',expiry:15,context:'page',
   social:{apple:true,google:true,facebook:true,klarna:true},filled:false,usp:true,email:'jake.rayner@debenhams.com'};
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes, never decode twice
@@ -52,7 +52,7 @@ function header(){
   let h=strip(desk()?V('header',1):V('header',0)).replace(/ style="[^"]*border[^"]*"/,'').replace(/assets\/brands\/debenhams\.svg/,`assets/brands/${S.brand}.svg`);
   h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
   if(S.brand==='plt')h=h.replace('icons/search.svg','icons/plt-search.svg').replace('icons/account.svg','icons/plt-account.svg').replace('icons/heart-24.svg','icons/plt-heart.svg').replace('icons/bag.svg','icons/plt-bag.svg');
-  else if(S.brand==='boohooman')h=h.replace('icons/heart-24.svg','icons/bookmark.svg');
+  else if(['boohooman','karenmillen'].includes(S.brand))h=h.replace('icons/heart-24.svg','icons/bookmark.svg');
   if(S.usp)h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
   return h;
 }
