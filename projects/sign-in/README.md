@@ -37,7 +37,7 @@ Weighting A/B with the password switch inside it (A only) · screen (sign in, in
 Footer = the DS footer drop-in (`assets/ds/footer.js`, `<footer data-ftr>`).
 
 New component **C-19 Sign in** in `assets/ds/components.css` (`.auth`, `.fld--pw`, `.lnk-row`, `.or-div`, `.soc`,, `.auth-modal`) and catalogue entry `sign-in`. Also adds the Apple glyph `assets/ds/icons/lib/social-apple.svg`.
-Spacing: gap 4 (16px) between blocks · gap 3 (12px) between fields and in the link row · gap 4 (16px) between social tiles. Social tiles are 54px tall. At 1024 and up the form is a 480px card on `--surface-sunken`, padded gap 8 / gap 6 (32/24px).
+Spacing: gap 4 (16px) between blocks · gap 3 (12px) between fields and in the link row · gap 4 (16px) between social tiles. Social tiles are 54px tall. At 1024 and up the form is a 480px card on `--surface-sunken`, padded gap 6 (24px) all round. Gap 6 (24px) above "New to X? Create an account".
 
 ## Figma sources
 - Social-Login `P2RiX62irafEZQjyLRhRx7`: 112-6838 (sign in, social tiles), 112-6710 / 112-6873 (create account, mobile / desktop), 2032-1885 (sign in with the link row), 2032-2027 (social tiles, built exactly)

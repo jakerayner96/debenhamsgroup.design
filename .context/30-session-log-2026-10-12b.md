@@ -36,3 +36,5 @@
 - PLT: social tiles + Continue with Klarna square (0 radius), tiles fill with the field colour (--surface-raised #FFFDF7). Checkout header: no bottom rule (all fascias).
 - One shared config for every fascia (Jake): switching fascia changes only the brand skin; the page, weighting, screen, context and social choice stay put (`S.by._all`). Per-fascia play defaults dropped; everything starts on A with password on.
 - Create an account moved below the social buttons (page + catalogue variants).
+- Card padding gap 6 (24px) all round at ≥1024 (was 32/24); mobile 24 top/bottom, 16 sides. Gap above "New to X? Create an account" = gap 6 (24px), 1.5× the block gap.
+- Page loads assets/ds/header.js (DS header drop-in, C-05, landed in 07f3331) and uses DG_headerHTML for the main + checkout headers when present; falls back to the catalogue header / own .co-hd when it is not. V() made safe for empty variants.

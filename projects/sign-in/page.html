@@ -24,6 +24,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(assets/ds/ic
 <body>
 <div id="app"></div>
 <div id="ct"></div>
+<script src="assets/ds/header.js"></script>   <!-- DS header drop-in (C-05); the page falls back to the catalogue header if it is not there -->
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/usp-live.js"></script>
 <script src="assets/ds/usp.js"></script>
@@ -32,7 +33,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(assets/ds/ic
 /* ---- page contract with the shell (review-prototype) ----
    in:  ?s=<json state>  ·  {protoSet:state, exporting?}  ·  {protoPing:1}      out: {protoReady:1} · {protoPong:1,h}
    Clicks inside the page move between screens locally (LOCAL); any change from the panel resets to the panel's screen. */
-const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C&&C.find(x=>x.slug===slug);return c?c.variants[i].html:''};
+const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C&&C.find(x=>x.slug===slug);return (c&&c.variants[i]||{}).html||''};
 const strip=h=>h.replace(/ style="width:[^"]*"/,'');
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const desk=()=>innerWidth>=1024;
@@ -49,6 +50,8 @@ function R(){const primary=S.primary==='pw'?'pw':'link';
   return {primary,link:true,pw:primary==='pw'||!!S.flags.pw}}
 
 function header(){
+  const dev=desk()?'desktop':'mobile',usp=S.usp?`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`:'';
+  if(window.DG_headerHTML)return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${DG_headerHTML(S.brand,'main',dev)}</header>${usp}`;   /* DS header (header.js): each fascia's live header */
   let h=strip(desk()?V('header',1):V('header',0)).replace(/ style="[^"]*border[^"]*"/,'').replace(/assets\/brands\/debenhams\.svg/,`assets/brands/${S.brand}.svg`);
   h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
   if(S.brand==='plt')h=h.replace('icons/search.svg','icons/plt-search.svg').replace('icons/account.svg','icons/plt-account.svg').replace('icons/heart-24.svg','icons/plt-heart.svg').replace('icons/bag.svg','icons/plt-bag.svg');
@@ -78,7 +81,7 @@ const cta=()=>'bd pri';
 const foot=()=>CO()?social():`${social()}<p class="auth-alt">New to ${NAME[S.brand]}? <a class="lnk" href="#" data-act="create">Create an account</a></p>`;   /* create account sits under the social buttons */
 const signT=()=>CO()?'Have an Account?':'Sign In';
 /* checkout header: logo + Secure checkout (live Debenhams /checkout, 12 Oct) */
-const coHeader=()=>`<header class="co-hd"><img class="co-logo" src="assets/brands/${S.brand}.svg" alt="${NAME[S.brand]}"><span class="co-sec"><img src="assets/ds/icons/lib/icons-lock.svg" alt="">Secure checkout</span></header>`;
+const coHeader=()=>window.DG_headerHTML?`<header class="hd hd--checkout${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="checkout" data-hd-device="${desk()?'desktop':'mobile'}">${DG_headerHTML(S.brand,'checkout')}</header>`:`<header class="co-hd"><img class="co-logo" src="assets/brands/${S.brand}.svg" alt="${NAME[S.brand]}"><span class="co-sec"><img src="assets/ds/icons/lib/icons-lock.svg" alt="">Secure checkout</span></header>`;
 const guest=()=>`<div class="auth-hd"><h2 class="auth-h">Guest Checkout</h2></div><p class="auth-sub">You can create an account once you have placed your order.</p>
   <div class="auth-fields">${fld('email','Email address',S.filled)}</div><button class="bd pri" data-act="guest">Continue as guest</button>`;
 const title=(t)=>`<div class="auth-hd"><h1 class="auth-h">${t}</h1>${S.context==='modal'?'<button class="auth-x" data-act="close" aria-label="Close"></button>':''}</div>`;
