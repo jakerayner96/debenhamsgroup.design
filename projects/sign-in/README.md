@@ -20,15 +20,15 @@ Clicking the secondary link swaps the form in place. Create account is a link un
 
 ## Rules
 - **No email-first branching.** We never ask for the email first and then branch to a password field or create account, because that tells an attacker which emails have an account or a password. The customer picks the method before we look anything up.
-- **The same answer either way.** Link sent and reset sent read "If an account exists for …". A wrong password reads "The email or password you entered is incorrect".
+- **The same answer either way.** Link sent and reset sent are one message: the title plus "If the email address entered matches our records, we’ll send you a unique link…". No links; back is the browser’s back button. A wrong password reads "The email or password you entered is incorrect".
 - **Switching password off.** On A, the Password sign in switch drops "Sign in with password instead", "Forgot password?" and the reset screens, so the link is the only way in. Use it if there is a security risk. On B the password switch is locked on and the Sign in link switch controls the link row instead.
 - If only one method exists, no secondary link is shown.
 
 ## Panel
-Weighting A/B · password switch (A) / sign in link switch (B) · screen (sign in, incorrect details, link sent, forgot password, reset sent) · context (page or modal) · social tiles (Apple, Google, Facebook, Klarna) · 6-digit code in the link email · filled fields · USP banners.
+Weighting A/B · password switch (A) / sign in link switch (B) · screen (sign in, incorrect details, link sent, forgot password, reset sent) · context (page or modal) · social tiles (Apple, Google, Facebook, Klarna) · filled fields · USP banners.
 
 ## DS
-New component **C-19 Sign in** in `assets/ds/components.css` (`.auth`, `.fld--pw`, `.lnk-row`, `.or-div`, `.soc`, `.otp`, `.auth-modal`) and catalogue entry `sign-in`. Also adds the Apple glyph `assets/ds/icons/lib/social-apple.svg`.
+New component **C-19 Sign in** in `assets/ds/components.css` (`.auth`, `.fld--pw`, `.lnk-row`, `.or-div`, `.soc`,, `.auth-modal`) and catalogue entry `sign-in`. Also adds the Apple glyph `assets/ds/icons/lib/social-apple.svg`.
 Spacing: gap 4 (16px) between blocks · gap 3 (12px) between fields and in the link row · gap 4 (16px) between social tiles. Social tiles are 54px tall. At 1024 and up the form is a 480px card on `--surface-sunken`, padded gap 8 / gap 6 (32/24px).
 
 ## Figma sources

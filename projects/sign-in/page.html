@@ -36,7 +36,7 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&g
 const desk=()=>innerWidth>=1024;
 const NAME={debenhams:'Debenhams',plt:'PrettyLittleThing',boohoo:'boohoo',boohooman:'boohooMAN'};
 let S={brand:'debenhams',flags:{link:true,pw:true},primary:'link',screen:'signin',context:'page',
-  social:{apple:true,google:true,facebook:true,klarna:true},otp:false,filled:false,usp:true,email:'jake.rayner@debenhams.com'};
+  social:{apple:true,google:true,facebook:true,klarna:true},filled:false,usp:true,email:'jake.rayner@debenhams.com'};
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes, never decode twice
 let EXPORTING=false,LOCAL={};
 
@@ -69,22 +69,19 @@ function social(){const s=S.social||{},tiles=[];
   return `<div class="or-div">or</div><div class="soc-row">${tiles.map(([n,i])=>`<button class="soc" data-act="soc" data-n="${n}" aria-label="Sign in with ${n}">${i}</button>`).join('')}</div>`}
 
 const foot0=()=>V('footer',0).replace(/width:1000px;?/,'').replace(/assets\/brands\/debenhams\.svg/g,`assets/brands/${S.brand}.svg`);
-const foot=()=>`<p class="auth-alt">New to ${NAME[S.brand]}? <a class="lnk" href="#" data-act="create">Create an account</a></p>${social()}<p class="auth-family">You can now sign in and shop with one account across our entire <a href="#" data-act="family">family of brands</a>.</p>`;
+const foot=()=>`<p class="auth-alt">New to ${NAME[S.brand]}? <a class="lnk" href="#" data-act="create">Create an account</a></p>${social()}`;
 const title=(t)=>`<div class="auth-hd"><h1 class="auth-h">${t}</h1>${S.context==='modal'?'<button class="auth-x" data-act="close" aria-label="Close"></button>':''}</div>`;
 
 function screen(){const r=R(),mode=LOCAL.mode||r.primary,scr=LOCAL.screen||S.screen,fill=S.filled||scr!=='signin';
-  /* link sent / reset sent, identical whether or not the account exists */
-  if(scr==='sent'||scr==='reset'){const reset=scr==='reset';
-    return `${title('Check your inbox')}
-      <p class="auth-sub">If an account exists for <b>${esc(S.email)}</b>, we’ve sent ${reset?'a link to reset your password':'a sign in link'}. It expires in 15 minutes.</p>
-      ${!reset&&S.otp?`<p class="auth-sub" style="margin:0">Or enter the 6-digit code from the email to sign in on this device.</p><div class="otp">${'<input inputmode="numeric" maxlength="1" aria-label="Digit">'.repeat(6)}</div>`:''}
-      <div class="lnk-row"><button class="lnk" data-act="resend">${reset?'Resend email':'Resend link'}</button><span class="sep"></span><button class="lnk" data-act="back">Use a different email</button></div>${!reset&&r.pw?'<div class="lnk-row"><button class="lnk" data-act="pw">Sign in with password instead</button></div>':''}
-      <p class="auth-fine">Can’t see it? Check your junk folder.</p>`}
+  /* link sent / reset sent: one message, identical whether or not the account exists; back = the browser back button */
+  if(scr==='sent'||scr==='reset')return `${title('Check your inbox')}<p class="auth-sub">${scr==='reset'
+      ?'If the email address entered matches our records, we’ll send you a link to reset your password. If you don’t receive an email from us shortly, please check your spam folder or if you have entered the correct email address.'
+      :'If the email address entered matches our records, we’ll send you a unique link to sign in to your account. If you don’t receive an email from us shortly, please check your spam folder or if you have entered the correct email address.'}</p>`;
   if(scr==='forgot'&&r.pw)return `${title('Reset your password')}<p class="auth-sub">Enter your email and we’ll send you a link to reset your password.</p>
       <div class="auth-fields">${fld('email','Email address',fill)}</div><button class="bd pri" data-act="reset">Send reset link</button>
       <div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="back">Back to sign in</button>${r.link?'<span class="sep"></span><button class="lnk" data-act="link">Email me a sign in link</button>':''}</div>`;
   const err=scr==='error'&&mode==='pw'?`<div class="msg msg--error"><i></i><div class="body"><span>The email or password you entered is incorrect. Try again${r.link?', or email yourself a sign in link':', or reset your password'}.</span></div></div>`:'';
-  if(mode==='link')return `${title('Sign in')}<p class="auth-sub">We’ll email you a one-time link, so there’s no password to type or remember. A safer way to sign in.</p>
+  if(mode==='link')return `${title('Sign in')}<p class="auth-sub">We’ll email you a one-time link, to sign in.</p>
       <div class="auth-fields">${fld('email','Email address',fill)}</div>
       <button class="bd pri" data-act="send">Email me a sign in link</button>
       ${r.pw?'<div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="pw">Sign in with password instead</button></div>':''}${foot()}`;
@@ -111,16 +108,15 @@ addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
 
 const toast=t=>{const c=document.getElementById('ct');c.textContent=t;c.classList.add('on');clearTimeout(c._h);c._h=setTimeout(()=>c.classList.remove('on'),1800)};
 const go=o=>{LOCAL=Object.assign(LOCAL,o);render();if(!desk()&&S.context!=='modal')scrollTo(0,0)};
-document.addEventListener('input',e=>{if(e.target.type==='email'&&e.target.value)S.email=e.target.value;
-  if(e.target.closest('.otp')&&e.target.value){const n=e.target.nextElementSibling;if(n)n.focus();else{toast('Code accepted → signed in')}}});
+document.addEventListener('input',e=>{if(e.target.type==='email'&&e.target.value)S.email=e.target.value;});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');
   if(!b){if(e.target.closest('a[href="#"],button'))e.preventDefault();return}
   e.preventDefault();const a=b.dataset.act;
   ({eye:()=>{const i=b.parentElement.querySelector('input'),on=i.type==='password';i.type=on?'text':'password';if(on&&/•/.test(i.value))i.value='Summer2026!';b.querySelector('img').src=`assets/ds/icons/lib/icons-${on?'hide':'show'}.svg`;b.setAttribute('aria-label',on?'Hide password':'Show password')},
     pw:()=>go({mode:'pw',screen:'signin'}),link:()=>go({mode:'link',screen:'signin'}),
     send:()=>go({screen:'sent'}),forgot:()=>go({screen:'forgot'}),reset:()=>go({screen:'reset'}),back:()=>go({screen:'signin'}),
-    signin:()=>toast('→ Signed in'),resend:()=>toast('Sent again. The previous link no longer works'),
-    create:()=>toast('→ Create an account page'),family:()=>toast('→ Our family of brands'),soc:()=>toast('→ Sign in with '+b.dataset.n),close:()=>toast('Close the dialog')}[a]||(()=>{}))()});
+    signin:()=>toast('→ Signed in'),
+    create:()=>toast('→ Create an account page'),soc:()=>toast('→ Sign in with '+b.dataset.n),close:()=>toast('Close the dialog')}[a]||(()=>{}))()});
 </script>
 </body>
 </html>

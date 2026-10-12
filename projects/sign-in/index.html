@@ -167,7 +167,7 @@ const P={
   files:['page.html','README.md'],
   store:'proto-sign-in',
   initial:b=>{const f=Object.assign({},LIVE[b]);return {flags:f,primary:f.link?'link':'pw',screen:'signin',context:'page',
-    social:{apple:true,google:true,facebook:true,klarna:true},otp:false,filled:false,usp:true,email:'jake.rayner@debenhams.com'}},
+    social:{apple:true,google:true,facebook:true,klarna:true},filled:false,usp:true,email:'jake.rayner@debenhams.com'}},
 };
 /* same rules as page.html R(): A always has the link and switches password; B always has password and switches the link */
 function rules(c){const primary=c.primary==='pw'?'pw':'link';return {primary,link:primary==='link'||!!c.flags.link,pw:primary==='pw'||!!c.flags.pw}}
@@ -176,7 +176,7 @@ function renderPanel(host,S,update){
   const opt=(k,v,t,d,dis)=>`<button class="opt${c[k]===v?' on':''}" data-k="${k}" data-v="${v}"${dis?' disabled style="opacity:.4;cursor:not-allowed"':''}><span class="r"></span><span class="t"><b>${t}</b><span>${d}</span></span></button>`;
   const sw=(id,on,t,dis)=>`<label class="sw"${dis?' style="opacity:.4;cursor:not-allowed"':''}><input type="checkbox" data-sw="${id}"${on?' checked':''}${dis?' disabled':''}><i></i>${t}</label>`;
   const A=r.primary==='link';
-  const scr=[['signin','Sign in','The form'],['error','Incorrect details','Password mode only, one generic message',!r.pw],['sent','Link sent','“If an account exists…”, the same answer either way',!r.link],['forgot','Forgot password','Reset form',!r.pw],['reset','Reset sent','Same non-revealing confirmation',!r.pw]];
+  const scr=[['signin','Sign in','The form'],['error','Incorrect details','Password mode only, one generic message',!r.pw],['sent','Link sent','One message, the same whether or not the account exists',!r.link],['forgot','Forgot password','Reset form',!r.pw],['reset','Reset sent','Same non-revealing confirmation',!r.pw]];
   if(scr.find(x=>x[0]===c.screen&&x[3])){c.screen='signin';setTimeout(update)}
   host.innerHTML=`<h1>Sign in</h1><p class="intro">One form, two weightings. Pick the weighting, then switch the secondary method on or off. Links inside the page switch method and screen too.</p>
   <div class="card"><h3>Weighting</h3>
@@ -189,11 +189,11 @@ function renderPanel(host,S,update){
   <div class="card"><h3>Screen</h3>${scr.map(([v,t,d,dis])=>opt('screen',v,t,d,dis)).join('')}</div>
   <div class="card"><h3>Context</h3>${opt('context','page','Page','/login: header, form, footer')}${opt('context','modal','Modal','Header account icon / checkout: the same form in a dialog')}</div>
   <div class="card"><h3>Social sign in</h3><div class="chips">${['apple','google','facebook','klarna'].map(k=>`<button class="chip${c.social[k]?' on':''}" data-soc="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
-  <div class="card"><h3>Options</h3><div style="display:flex;flex-direction:column;gap:10px">${sw('otp',c.otp,'Link email also carries a 6-digit code',!r.link)}${sw('filled',c.filled,'Show fields filled')}${sw('usp',c.usp,'USP banners (live content)')}</div>
-    <div class="f"><span>Email used on confirmations</span><input data-in="email" value="${c.email.replace(/"/g,'&quot;')}"></div></div>
+  <div class="card"><h3>Options</h3><div style="display:flex;flex-direction:column;gap:10px">${sw('filled',c.filled,'Show fields filled')}${sw('usp',c.usp,'USP banners (live content)')}</div>
+    <div class="f"><span>Email shown in filled fields</span><input data-in="email" value="${c.email.replace(/"/g,'&quot;')}"></div></div>
   <div class="card"><h3>Rules this design holds</h3><div class="rules">
     <b>No email-first branching.</b> We never look the email up before the customer chooses a method, so the page can’t reveal which emails have an account or a password.<br>
-    <b>Same answer either way.</b> Link sent / reset sent always read “If an account exists for…”. Wrong password reads “email or password incorrect”.<br>
+    <b>Same answer either way.</b> Link sent / reset sent always read “If the email address entered matches our records…”, as one message (back is the browser’s back button). Wrong password reads “email or password incorrect”.<br>
     <b>Create account is a link</b> under the CTA, not a second block.<br>
     <b>Spacing:</b> gap 4 (16px) between blocks · gap 3 (12px) between fields and in the link row · 480 card on grey at ≥1024.</div></div>`;
   host.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{if(b.disabled)return;set(b.dataset.k,b.dataset.v)});

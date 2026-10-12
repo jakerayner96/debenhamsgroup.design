@@ -767,7 +767,6 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .auth-x::before,.auth-x::after{content:"";position:absolute;left:3px;top:11px;width:18px;height:1.5px;background:currentColor;transform:rotate(45deg)}.auth-x::after{transform:rotate(-45deg)}
 .auth-fields{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
 .auth .bd{width:100%}
-.auth-fine{font-size:12px;line-height:16px;color:var(--text-secondary);margin:calc(var(--gap-2,8px) * -1) 0 0}
 /* password field: the show / hide eye sits in the field's right edge */
 .fld--pw{padding-right:52px}
 .fld--pw .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
@@ -778,8 +777,6 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .lnk-row .sep{width:1px;height:16px;background:var(--border-default)}
 .auth-alt{font-size:14px;line-height:20px;text-align:center;margin:0}
 .auth-alt .lnk{font-size:14px}
-.auth-family{font-size:14px;line-height:20px;margin:0}
-.auth-family a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 /* OR divider */
 .or-div{display:flex;align-items:center;gap:var(--gap-4,16px);font-size:14px;line-height:18px;color:var(--text-secondary);text-transform:uppercase}
 .or-div::before,.or-div::after{content:"";flex:1;height:1px;background:var(--border-subtle)}
@@ -791,13 +788,6 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .soc .ic{width:24px;height:24px;flex:none;display:flex;align-items:flex-start;justify-content:flex-start}
 .soc .ic--21{width:21px;height:21px}
 .soc .ic img{display:block}
-/* 6-digit code (Checkout 2026 1669-43700), offered next to the link so a customer reading email on another device can still sign in here */
-.otp{display:flex;gap:var(--gap-2,8px)}
-.otp input{flex:1;min-width:0;height:66px;border:1px solid var(--border-strong);border-radius:var(--radius-default);text-align:center;font:inherit;font-size:24px;color:var(--text-primary);background:var(--surface-raised);outline:0}
-.otp input:focus{border-color:var(--text-primary)}
-.auth-wait{display:flex;align-items:center;gap:var(--gap-3,12px);font-size:14px}
-.auth-wait i{width:20px;height:20px;border-radius:99px;border:2px solid var(--border-default);border-top-color:var(--text-primary);animation:auth-sp .8s linear infinite;flex:none}
-@keyframes auth-sp{to{transform:rotate(360deg)}}
 /* modal context (checkout / header account icon): the same form in a dialog over the dimmed page */
 .auth-modal{position:absolute;inset:0;z-index:var(--z-modal);background:var(--surface-overlay);display:flex;align-items:flex-start;justify-content:center;padding:var(--gap-4,16px)}
 .auth-modal .auth{border-radius:var(--radius-default);box-shadow:var(--shadow-float,0 8px 30px rgba(0,0,0,.2));padding:var(--gap-6,24px)}
