@@ -99,7 +99,7 @@ function screen(){const r=R(),mode=LOCAL.mode||r.primary,scr=LOCAL.screen||S.scr
   if(mode==='link')return `${title(signT())}<p class="auth-sub">Enter your email address and we’ll send you a one-time link to sign in.</p>
       <div class="auth-fields">${fld('email','Email address',fill)}</div>
       <button class="${cta()}" data-act="send">Send link</button>
-      ${foot(r.pw?'<div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="pw">Sign in with password</button></div>':'')}`;
+      ${foot(r.pw?'<div class="lnk-row auth-pw" style="justify-content:center"><button class="lnk" data-act="pw">Sign in with password</button></div>':'')}`;
   return `${title(signT())}${err}
       <div class="auth-fields">${fld('email','Email address',fill)}${fld('password','Password',fill)}</div>
       <div class="lnk-row"><button class="lnk" data-act="forgot">Forgot password?</button>${r.link?'<span class="sep"></span><button class="lnk" data-act="link">Email me a sign in link</button>':''}</div>

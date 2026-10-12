@@ -43,3 +43,4 @@
 - Link sent title back to "Check Your Inbox" (reset sent keeps "We’ve Emailed You a Password Reset Link"). Every white box (.auth: page, modal, checkout cards) padded gap 6 (24px) all round at every width.
 - Every white box takes the brand radius at every width (--radius-default: 4px Debenhams / boohoo / MAN / KM, 0 PLT).
 - Link first: "Sign in with password" moved below the social buttons, directly above "New to X? Create an account" (checkout: under the social buttons).
+- Spacing: the extra gap 2 (8px) moved from "New to X? Create an account" to "Sign in with password" (`.auth-pw`), so 24px above the password link, 16px above create account.
