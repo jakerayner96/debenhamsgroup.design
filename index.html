@@ -1022,7 +1022,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
       <div class="tr" onclick="location.hash='product-card'"><span class="id">C-02</span><span class="nm">Product card</span><span class="d">The hero asset — Figma-exact, variable layers as config, used on every PLP + carousel</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
       <div class="tr"><span class="id">C-03</span><span class="nm">Smart promo field</span><span class="d">Promo code or gift card — detects which it's given</span><span class="dots"><i style="background:#00787D"></i></span><span class="pill ok">live</span></div>
       <div class="tr"><span class="id">C-04</span><span class="nm">PLP template</span><span class="d">One core template · seven fascia configs · building on branch plp-alignment</span><span class="dots"><i style="background:#26282B"></i></span><span class="pill wip">wip</span></div>
-      <div class="tr" onclick="location.hash='header'"><span class="id">C-05</span><span class="nm">PLP header</span><span class="d">Logo · pill search · icons · nav · USP banners — one template, brand-token styled</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
+      <div class="tr" onclick="location.hash='c-header'"><span class="id">C-05</span><span class="nm">Header</span><span class="d">Main header + checkout header · mobile + desktop · every fascia</span><span class="id">Oct 12</span><span class="pill ok">live</span></div>
       <div class="tr" onclick="location.hash='sort-filter'"><span class="id">C-06</span><span class="nm">Sort &amp; filter</span><span class="d">Combined pattern — desktop dropdown row, mobile sheet with drill-ins</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
       <div class="tr" onclick="location.hash='badges'"><span class="id">C-07</span><span class="nm">Badges</span><span class="d">Image-overlay tags + AI-generated banner — stack rules, per-brand theming</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
       <div class="tr" onclick="location.hash='footer'"><span class="id">C-08</span><span class="nm">Footer</span><span class="d">Newsletter band · link columns · social + app rail · payments · sister brands (Deb)</span><span class="dots"><i style="background:#00787D"></i><i style="background:#BB305F"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#8E330B"></i></span><span class="pill ok">live</span></div>
@@ -1146,68 +1146,6 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <p>Image 2:3 on <code style="font-family:var(--mono);color:var(--aq)">surface/media</code> · card gap 12 · info gap 8 · title gap 4 · text 14px — brand <code style="font-family:var(--mono);color:var(--aq)">w-strong</code>, name <code style="font-family:var(--mono);color:var(--aq)">w-regular</code> 2-line clamp, was-price <code style="font-family:var(--mono);color:var(--aq)">w-mid</code> strikethrough · sale price + percent in status red · actions 32px circles, top 8 right 8, gap 8.</p>
     <h2>Source</h2>
     <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">assets/ds/components.css → .pc</code> · Figma: <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=5992-10841" target="_blank" rel="noopener">DS file → Product Card · 5992-10841</a> · <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=12999-146812" target="_blank" rel="noopener">variable layers on · 12999-146812</a></p>
-  </section>
-
-  <!-- PLP HEADER -->
-  <section class="page" id="header" data-crumb="System / Components / PLP header">
-    <div class="kick">system / components / C-05 <b>· rendering <span class="bn">Debenhams</span></b></div>
-    <h1>PLP header</h1>
-    <p class="lede">One header template for every fascia: logo, pill search, account/wishlist/bag, category nav, USP banners. Brand tokens carry the identity — including each fascia's USP banner colours and wishlist icon.</p>
-    <div class="demo">
-      <div class="hd"><i></i><i></i><i></i><span>canvas — mobile header + USP banners · 390</span><span class="bn">Debenhams</span></div>
-      <div class="canvas" style="padding:24px">
-        <div class="hd" style="width:390px;max-width:100%;border:1px solid var(--border-subtle)">
-          <div class="hd-bar">
-            <div class="hd-left"><button class="hd-burger" aria-label="Menu"><img src="assets/ds/icons/hamburger.svg" alt=""></button><img class="hd-logo brandlogo" src="assets/brands/debenhams.svg" alt=""></div>
-            <div class="hd-icons">
-              <button aria-label="Search"><img src="assets/ds/icons/search.svg" alt=""></button>
-              <button aria-label="Account"><img src="assets/ds/icons/account.svg" alt=""></button>
-              <button aria-label="Wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button>
-              <button aria-label="Bag"><img src="assets/ds/icons/bag.svg" alt=""></button>
-            </div>
-          </div>
-          <div class="hd-usp">Lorem ipsum dolor sit amet</div>
-          <div class="hd-usp hd-usp--b"><span class="usp-row"><span class="usp-t">Lorem ipsum dolor sit amet</span><span class="usp-sep"></span><span class="usp-code">Code: <b>FAST</b></span></span></div>
-          <div class="hd-usp"><span class="usp-row"><span class="usp-t">Lorem ipsum dolor sit amet*</span></span><span class="usp-cav">*Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="demo">
-      <div class="hd"><i></i><i></i><i></i><span>canvas — desktop bar + nav</span><span class="bn">Debenhams</span></div>
-      <div class="canvas" style="padding:24px;display:block">
-        <div class="hd" style="border:1px solid var(--border-subtle)">
-          <div class="hd-bar hd-bar--desktop" style="--plp-margin:24px">
-            <img class="hd-logo brandlogo" src="assets/brands/debenhams.svg" alt="">
-            <div class="hd-search"><span>Search over 10,000+ brands...</span><span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="assets/ds/icons/search.svg" alt=""></span></div>
-            <div class="hd-icons">
-              <button aria-label="Account"><img src="assets/ds/icons/account.svg" alt=""></button>
-              <button aria-label="Wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button>
-              <button aria-label="Bag"><img src="assets/ds/icons/bag.svg" alt=""></button>
-            </div>
-          </div>
-          <nav class="hd-nav"><a class="sale" href="#header">Sale</a><a href="#header">New</a><a href="#header">Women</a><a href="#header">Men</a><a href="#header">Kids</a><a href="#header">Shoes</a><a href="#header">Beauty</a><a href="#header">Home</a><a href="#header">Brands</a></nav>
-          <div class="hd-usp">Lorem ipsum dolor sit amet</div>
-        </div>
-      </div>
-    </div>
-    <h2>USP banner types <code>Figma 11982-37171</code></h2>
-    <div class="props">
-      <div class="pr h"><span>Type</span><span>Content</span><span>Rule</span></div>
-      <div class="pr"><code>Single / Double Text</code><span>12px regular; Double joins two texts with the dash</span><span>Separator is the 4px dash (<code>.usp-sep</code>, 8px side gaps) — never a mid-dot</span></div>
-      <div class="pr"><code>Text + Code</code><span>"Code:" regular · code value <b>strong</b></span><span>Joined to the text by the dash separator</span></div>
-      <div class="pr"><code>Text + Countdown</code><span>12:34:21:08 — strong digits, 5px colon columns (<code>.usp-cd</code>)</span><span>Countdown is its own row, 2px under the text · ticks via <code>usp.js</code> (<code>data-left</code> / <code>data-to</code>) · Black/Red variant sets digits <code>--usp-cd</code> red</span></div>
-      <div class="pr"><code>Caveat</code><span>10px caption line (<code>.usp-cav</code>) attached inside the bottom of the banner that carries the *</span><span><b>Asterisk rule (design + dev):</b> a * in banner copy exists only on the Caveat-paired type, and the caption text is a required prop. Built without a caption, an asterisk must not be enterable — strip it.</span></div>
-    </div>
-    <h2>Per-fascia differences <code>all token-driven</code></h2>
-    <div class="props">
-      <div class="pr h"><span>Slot</span><span>Mechanism</span><span>Values</span></div>
-      <div class="pr"><code>usp banners</code><span>--usp-a / --usp-b</span><span>Deb grey+black · boohoo black+pink · PLT peach+cream · Warehouse dark grey · Brand Room black</span></div>
-      <div class="pr"><code>wishlist icon</code><span>icon swap</span><span>Heart: Debenhams, boohoo, PLT · Bookmark: boohooMAN, KM, Warehouse, Brand Room</span></div>
-      <div class="pr"><code>nav strip</code><span>--brand-light-2 + --cta-case</span><span>Debenhams aqua tint · PLT uppercase · Brand Room uppercase</span></div>
-      <div class="pr"><code>margins</code><span>--plp-margin</span><span>16px to 1439 · 95px at 1440+ (PLP MASTER margins spec)</span></div>
-    </div>
-    <h2>Source</h2>
-    <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">assets/ds/components.css → .hd</code> · Figma: <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=3793-3545" target="_blank" rel="noopener">Header · 3793-3545</a> · <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=11982-37171" target="_blank" rel="noopener">USP banner · 11982-37171</a> · <a style="color:var(--aq)" href="https://www.figma.com/design/GP04SeG99nevXl4yuwY3sM/PLP-MASTER--21.10-25-?node-id=291-18049" target="_blank" rel="noopener">Margins · 291-18049</a></p>
   </section>
 
   <!-- SORT & FILTER -->
@@ -1633,6 +1571,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 
 <script src="assets/ds/dplus-logos.js"></script>
 <script src="assets/ds/footer.js"></script>
+<script src="assets/ds/header.js"></script>
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/usp.js"></script>
 <script>
@@ -1641,7 +1580,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 const C=window.DG_CATALOGUE,O=window.DG_DEV_OVERLAY,T=window.DG_TOKEN_MAP;
 const DEV='https://web-storybook.jamesb.play.dbztech.net/?path=/docs/';
 const devId=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-const SPEC={button:'button','product-card':'product-card',header:'header','sort-filter':'sort-filter',badges:'badges','usp-banner':'header','ai-strip':'badges'};
+const SPEC={button:'button','product-card':'product-card','sort-filter':'sort-filter',badges:'badges','ai-strip':'badges'};
 const esc=x=>x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const groups=[...new Set(C.map(c=>c.group))];
 const st=x=>`<span class="dv ${x}">${x==='ours'?'ours only':x.replace('-',' ')}</span>`;
@@ -1706,6 +1645,7 @@ window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||se
   host.querySelectorAll('.fx').forEach(fx=>{if(window.dgLum(fx)<.5)fx.classList.add('dark')});
   if(window.DG_usp)requestAnimationFrame(()=>window.DG_usp(host));
   if(window.DG_footer)host.querySelectorAll('.fx[data-brand] [data-ftr]').forEach(el=>window.DG_footer(el,el.closest('.fx').dataset.brand));
+  if(window.DG_header)host.querySelectorAll('.fx[data-brand] [data-hd-device]').forEach(el=>window.DG_header(el,el.closest('.fx').dataset.brand));
 };
 /* controls in the catalogue demos are live: checkbox / toggle flip, radios are exclusive within their list */
 document.addEventListener('click',e=>{const el=e.target.closest('.chk,.tog,.rad');if(!el)return;
@@ -1939,7 +1879,6 @@ const REG=[
  {h:'components',t:'Components',k:'library index',ic:'▦',s:'Design system'},
  {h:'button',t:'Button',k:'cta primary states c-01',ic:'▢',s:'Component'},
  {h:'product-card',t:'Product card',k:'plp card favourite wishlist quick add taggstar swatches ratings c-02',ic:'▢',s:'Component'},
- {h:'header',t:'PLP header',k:'logo search usp banner nav menu c-05',ic:'▢',s:'Component'},
  {h:'sort-filter',t:'Sort & filter',k:'dropdowns drawer sheet next day delivery c-06',ic:'▢',s:'Component'},
  {h:'badges',t:'Badges',k:'ai generated watermark tags petite sale sponsored c-07',ic:'▢',s:'Component'},
  {h:'icons',t:'Icons',k:'icon library chevron wishlist bag search 1pt stroke flags country flag',ic:'✳',s:'Design system'},
@@ -1964,7 +1903,7 @@ if(window.DG_IA_REG)REG.push(...window.DG_IA_REG);
     toc.insertAdjacentHTML('beforeend',`<a href="#f-${id}" onclick="event.preventDefault();document.getElementById('f-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${t}</a>`);
   });
 })();
-window.DG_LEGACY={colour:'foundations',type:'foundations',spacing:'foundations',radius:'foundations',borders:'foundations',motion:'foundations',a11y:'foundations',install:'foundations',components:'gallery',library:'gallery',prototypes:'projects',requests:'tools',footer:'c-footer'}; /* the old hand-written Footer page folded into the catalogue page (12 Oct) */
+window.DG_LEGACY={colour:'foundations',type:'foundations',spacing:'foundations',radius:'foundations',borders:'foundations',motion:'foundations',a11y:'foundations',install:'foundations',components:'gallery',library:'gallery',prototypes:'projects',requests:'tools',footer:'c-footer',header:'c-header'}; /* old hand-written PLP header page folded into the one Header page (12 Oct) */ /* the old hand-written Footer page folded into the catalogue page (12 Oct) */
 window.setBrand=function(slug){const b=document.querySelector('#fabMenu button[data-b="'+slug+'"]');if(b)b.click();};
 const pages=[...document.querySelectorAll('.page')];
 function route(){

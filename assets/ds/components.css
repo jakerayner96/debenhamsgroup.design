@@ -129,7 +129,8 @@
 .pc--flush .pc-taggstar,.pc--flush .pc-add{margin:0 4px}
 
 /* ============================================================
-   C-03 PLP Header (.hd) — one template, brand tokens style it
+   C-05 Header (.hd) — main header + checkout header, mobile + desktop. Render with assets/ds/header.js
+   (<header data-hd>); content = each fascia's live header, 12 Oct 2026. Brand tokens style it
    Figma: header 3793-3545 · USP banner 11982-37171 (same file)
    ============================================================ */
 .hd{background:var(--surface-page);font-family:var(--font-family-base);color:var(--text-primary)}
@@ -205,7 +206,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .hd-left{display:flex;align-items:center;gap:16px;min-width:0}
 .hd-burger{width:24px;height:24px;min-width:24px;background:none;border:none;padding:0;cursor:pointer}
 .hd-burger img{width:100%;height:100%;display:block;object-fit:none} /* 24-grid glyph at native size — library SVGs are trimmed to the glyph, never scale them up */
-.hd-logo{height:15px;width:auto;max-width:106px;object-fit:contain;object-position:left;display:block} /* Header component / production: 106×15 mobile */
+.hd-logo{width:106px;height:auto;max-height:33px;object-fit:contain;object-position:left center;display:block} /* live: every fascia's logo is fitted to 106 wide on mobile (height follows the mark) */
+.hd-logo-txt{width:auto;font-weight:var(--w-strong);font-size:16px;white-space:nowrap}
+.hd-flag{width:24px!important;height:17px!important;object-fit:contain!important}
 .hd-icons{display:flex;align-items:center}
 .hd-icons button{width:38px;height:40px;display:grid;place-items:center;background:none;border:none;cursor:pointer;padding:0} /* production: 24 icon + 7px side padding, py-2 */
 .hd-icons img{width:var(--hd-icon,24px);height:var(--hd-icon,24px);display:block;object-fit:none} /* native glyph size inside the 24 box (bookmark 15×21, bag 20×23) — matches production, no optical fudge */
@@ -213,14 +216,21 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .hd-icons button:focus-visible,.hd-burger:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 /* desktop bar (≥1024): logo · centred pill search · icons */
 .hd-bar--desktop{height:88px;padding:16px var(--plp-margin,16px);max-width:2000px;margin:0 auto}
-.hd-bar--desktop .hd-logo{height:20px;max-width:141px} /* Header component: 141×20 */
+.hd-bar--desktop{gap:var(--gap-10,40px)}
+.hd--desktop .hd-bar--desktop{padding:var(--gap-4,16px) 52px} /* live 1440: logo and icons sit 52px in (gap 13) */
+.hd-bar--desktop .hd-logo{width:141px;max-height:40px;flex:none} /* live: 141 wide on desktop for every fascia */
 .hd-search{flex:1;max-width:800px;margin:0 auto;height:56px;/* production: h-14 */background:var(--surface-media);border:none;border-radius:var(--radius-pill);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;font-family:var(--font-family-base);font-size:16px;font-weight:var(--w-regular);color:var(--text-secondary);cursor:text}
 .hd-search .ics{display:flex;gap:20px;align-items:center}
 .hd-search img{width:24px;height:24px;display:block;object-fit:none}
 .hd-search--underline{background:transparent;border-radius:0;border-bottom:var(--border-w) solid var(--icon-primary);padding:0 4px} /* PLT pattern */
-.hd-nav{display:flex;gap:16px;align-items:center;justify-content:center;height:40px;max-width:2000px;margin:0 auto;background:var(--nav-bg);color:var(--nav-fg);font-size:15px;font-weight:var(--w-mid);text-transform:var(--cta-case);overflow-x:auto;padding:0 16px}
+.hd-nav{display:flex;gap:var(--gap-4,16px);align-items:center;justify-content:center;height:40px;background:var(--nav-bg);color:var(--nav-fg);font-size:16px;font-weight:var(--w-regular);overflow-x:auto;padding:0 var(--gap-4,16px)} /* live case is in the data (header.js) — no forced transform */
+.hd-nav--bold{font-weight:700}
+[data-hd-brand="plt"] .hd-nav,[data-brand="plt"] .hd-nav{font-size:12px;font-weight:300}
+.hd-nav a.hl{background:#CCF500;color:#000;padding:0 var(--gap-2,8px);align-self:stretch;display:flex;align-items:center} /* Warehouse Outlet */
 .hd-nav a{color:inherit;text-decoration:none;white-space:nowrap}
-.hd-nav a.sale{color:var(--text-error);font-weight:var(--w-strong)}
+.hd-nav a.sale{color:#FF0000;font-weight:var(--w-strong)}
+[data-hd-brand="debenhams"] .hd-nav a.sale{color:#D33F3F;font-weight:inherit}
+[data-hd-brand="karenmillen"] .hd-nav a.sale,[data-hd-brand="plt"] .hd-nav a.sale{color:inherit;font-weight:700} /* KM black bold · PLT white bold */
 .hd-nav a:hover{text-decoration:underline}
 
 /* ============================================================
@@ -862,9 +872,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
    One form, two weightings: .auth--link (email me a sign in link first, password as a link under the field) and .auth--pw (email + password first,
    "Forgot password? | Email me a sign in link" link row under the fields). Never email-first-then-branch: the page must not reveal whether an account exists.
    Create account is a centred link under the CTA (no separate block). Mobile = full-width white; ≥1024 = 480 card on --surface-sunken. */
-.auth{display:flex;flex-direction:column;gap:var(--gap-4,16px);width:100%;max-width:480px;margin:0 auto;background:var(--surface-raised);padding:var(--gap-6,24px) var(--gap-4,16px) var(--gap-8,32px);box-sizing:border-box;color:var(--text-primary)}
+.auth{display:flex;flex-direction:column;gap:var(--gap-4,16px);width:100%;max-width:480px;margin:0 auto;background:var(--surface-raised);padding:var(--gap-6,24px) var(--gap-4,16px);box-sizing:border-box;color:var(--text-primary)}
 .auth-pg{background:var(--surface-raised)}
-@media(min-width:1024px){.auth-pg{background:var(--surface-sunken);padding:var(--gap-10,40px) 0 var(--gap-16,64px)}.auth{padding:var(--gap-8,32px) var(--gap-6,24px);border-radius:var(--radius-default)}}
+@media(min-width:1024px){.auth-pg{background:var(--surface-sunken);padding:var(--gap-10,40px) 0 var(--gap-16,64px)}.auth{padding:var(--gap-6,24px);border-radius:var(--radius-default)}}
 .auth-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--gap-4,16px)}
 .auth-h{font-size:24px;line-height:30px;font-weight:var(--w-strong);margin:0}
 .auth-sub{font-size:14px;line-height:20px;margin:calc(var(--gap-2,8px) * -1) 0 0;color:var(--text-primary)}
@@ -883,7 +893,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .lnk-row .sep{width:1px;height:16px;background:var(--border-default)}
 /* small print under a message (link sent / reset sent): 12/16, light 300, Grey 5 #6B6B6B (--text-secondary, the body-text floor), the same on every fascia */
 .auth-note{font-size:12px;line-height:16px;font-weight:300;color:var(--text-secondary,#6B6B6B);margin:calc(var(--gap-2,8px) * -1) 0 0}
-.auth-alt{font-size:14px;line-height:20px;text-align:center;margin:0}
+.auth-alt{font-size:14px;line-height:20px;text-align:center;margin:var(--gap-2,8px) 0 0} /* 1.5× the block gap above it: gap 4 + gap 2 = gap 6 (24px) */
 .auth-alt .lnk{font-size:14px}
 /* OR divider */
 .or-div{display:flex;align-items:center;gap:var(--gap-4,16px);font-size:14px;line-height:18px;color:var(--text-secondary);white-space:nowrap}
@@ -913,6 +923,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .co-logo{height:20px;width:auto;max-width:141px;display:block}
 .co-sec{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:12px;line-height:16px;text-transform:uppercase;letter-spacing:.02em;color:var(--text-primary)}
 .co-sec img{width:20px;height:20px}
+/* header.js variants pin the layout to the variant, not the viewport */
+.hd--checkout.hd--desktop .co-hd{padding:0 var(--gap-20,80px)}.hd--checkout.hd--desktop .co-logo{position:absolute;left:50%;transform:translateX(-50%)}.hd--checkout.hd--desktop .co-sec{margin-left:auto}
+.hd--checkout[data-hd-device="mobile"] .co-hd{padding:0 var(--gap-4,16px)}.hd--checkout[data-hd-device="mobile"] .co-logo{position:static;transform:none;height:auto;width:106px;max-height:33px;max-width:none;object-fit:contain;object-position:left center} /* same logo size as the main mobile header */.hd--checkout[data-hd-device="mobile"] .co-sec{margin-left:0}
 .co-pg{background:var(--surface-sunken);min-height:calc(100vh - 54px);padding:var(--gap-4,16px) 0 var(--gap-16,64px)}
 .co-grid{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
 .co-grid .auth{max-width:none;margin:0}
