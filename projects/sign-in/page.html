@@ -73,8 +73,8 @@ function social(){const s=S.social||{},tiles=[];
   return `<div class="or-div">or continue with</div><div class="soc-row">${tiles.map(([n,i])=>`<button class="soc" data-act="soc" data-n="${n}" aria-label="Sign in with ${n}">${i}</button>`).join('')}</div>`}
 
 const CO=()=>S.context==='checkout';
-/* checkout: the guest card leads, so the sign in CTAs drop to secondary and there's no create-account link (that comes after the order) */
-const cta=()=>CO()?'bd sec':'bd pri';
+/* checkout: guest card first, sign in CTAs stay primary (Jake); no create-account link there (that comes after the order) */
+const cta=()=>'bd pri';
 const foot=()=>CO()?social():`<p class="auth-alt">New to ${NAME[S.brand]}? <a class="lnk" href="#" data-act="create">Create an account</a></p>${social()}`;
 const signT=()=>CO()?'Have an Account?':'Sign In';
 /* checkout header: logo + Secure checkout (live Debenhams /checkout, 12 Oct) */

@@ -904,7 +904,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .auth-modal{position:absolute;inset:0;z-index:var(--z-modal);background:var(--surface-overlay);display:flex;align-items:flex-start;justify-content:center;padding:var(--gap-4,16px)}
 .auth-modal .auth{border-radius:var(--radius-default);box-shadow:var(--shadow-float,0 8px 30px rgba(0,0,0,.2));padding:var(--gap-6,24px)}
 @media(min-width:1024px){.auth-modal{padding-top:var(--gap-20,80px)}}
-/* checkout entry (signed out → checkout): checkout header + guest card first, then the sign in card. Guest is the primary CTA; sign in CTAs drop to secondary.
+/* checkout entry (signed out → checkout): checkout header + guest card first, then the sign in card. Both cards use primary CTAs.
    Mobile: full-width white cards stacked on --surface-sunken, gap 4 (16px) between. ≥1024: two equal cards side by side, max 1356, gap 6 (24px), top padding gap 12 (48px). */
 .co-hd{position:relative;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gap-4,16px);background:var(--surface-raised);border-bottom:1px solid var(--border-subtle)}
 .co-logo{height:20px;width:auto;max-width:141px;display:block}

@@ -19,8 +19,8 @@ Two weightings:
 Clicking the secondary link swaps the form in place. Create account is a link under the CTA (Gymshark pattern). The separate "New to X?" block is gone.
 
 ## Checkout entry (top bar: Sign in | Checkout)
-A signed-out customer heading to checkout (live Debenhams /checkout, 12 Oct 2026): checkout header (logo + lock + "Secure checkout"). **Guest checkout card first**: email and **Continue as guest**, the only primary CTA on the page. Then the **Have an account?** card, which is the same sign-in form with the same A/B weighting and password switch.
-- Guest leads for conversion. The sign-in CTAs drop to secondary there, and there's no create-account link ("You can create an account once you have placed your order").
+A signed-out customer heading to checkout (live Debenhams /checkout, 12 Oct 2026): checkout header (logo + lock + "Secure checkout"). **Guest checkout card first**: email and **Continue as guest**. Then the **Have an account?** card, which is the same sign-in form with the same A/B weighting and password switch.
+- Guest leads for conversion (it's first). Both CTAs are primary. There's no create-account link ("You can create an account once you have placed your order").
 - Mobile stacks guest above sign in. At 1024 and up they sit side by side (max 1356, gap 6 (24px)).
 
 ## Rules
