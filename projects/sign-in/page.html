@@ -63,14 +63,14 @@ const fld=(type,label,val,extra='')=>type==='password'
 
 function social(){const s=S.social||{},tiles=[];
   /* Klarna only: the full-width "Continue with Klarna" button (Sign-In-Link 4421-999) */
-  if(S.socialMode==='klarna')return `<div class="or-div">or</div><button class="soc-klarna" data-act="soc" data-n="Klarna"><span>Continue with</span><img src="assets/ds/icons/payments/klarna-badge.svg" alt="Klarna"></button>`;
+  if(S.socialMode==='klarna')return `<div class="or-div">Or continue with</div><button class="soc-klarna" data-act="soc" data-n="Klarna"><span>Continue with</span><img src="assets/ds/icons/payments/klarna-badge.svg" alt="Klarna"></button>`;
   const ic=(f,c='')=>`<span class="ic${c}"><img src="assets/ds/icons/lib/${f}.svg" alt=""></span>`;
   if(s.apple)tiles.push(['Apple',ic('social-apple')]);
   if(s.google)tiles.push(['Google',ic('social-google')]);
   if(s.facebook)tiles.push(['Facebook',ic('social-facebook-circle')]);
   if(s.klarna)tiles.push(['Klarna',ic('social-klarna',' ic--21')]);
   if(!tiles.length)return '';
-  return `<div class="or-div">or</div><div class="soc-row">${tiles.map(([n,i])=>`<button class="soc" data-act="soc" data-n="${n}" aria-label="Sign in with ${n}">${i}</button>`).join('')}</div>`}
+  return `<div class="or-div">Or continue with</div><div class="soc-row">${tiles.map(([n,i])=>`<button class="soc" data-act="soc" data-n="${n}" aria-label="Sign in with ${n}">${i}</button>`).join('')}</div>`}
 
 const CO=()=>S.context==='checkout';
 /* checkout: the guest card leads, so the sign in CTAs drop to secondary and there's no create-account link (that comes after the order) */

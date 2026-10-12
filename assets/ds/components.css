@@ -886,7 +886,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .auth-alt{font-size:14px;line-height:20px;text-align:center;margin:0}
 .auth-alt .lnk{font-size:14px}
 /* OR divider */
-.or-div{display:flex;align-items:center;gap:var(--gap-4,16px);font-size:14px;line-height:18px;color:var(--text-secondary);text-transform:uppercase}
+.or-div{display:flex;align-items:center;gap:var(--gap-4,16px);font-size:14px;line-height:18px;color:var(--text-secondary);white-space:nowrap}
 .or-div::before,.or-div::after{content:"";flex:1;height:1px;background:var(--border-subtle)}
 /* social sign in: equal icon tiles (112-6838 / 2032-2027) */
 .soc-row{display:flex;gap:var(--gap-4,16px)}
