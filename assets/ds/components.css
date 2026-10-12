@@ -876,7 +876,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
    One form, two weightings: .auth--link (email me a sign in link first, password as a link under the field) and .auth--pw (email + password first,
    "Forgot password? | Email me a sign in link" link row under the fields). Never email-first-then-branch: the page must not reveal whether an account exists.
    Create account is a centred link under the CTA (no separate block). Mobile = full-width white; ≥1024 = 480 card on --surface-sunken. */
-.auth{display:flex;flex-direction:column;gap:var(--gap-4,16px);width:100%;max-width:480px;margin:0 auto;background:var(--surface-raised);padding:var(--gap-6,24px);border-radius:var(--radius-default);box-sizing:border-box;color:var(--text-primary)}
+.auth{display:flex;flex-direction:column;gap:var(--gap-4,16px);width:100%;max-width:480px;margin:0 auto;background:var(--surface-raised);padding:var(--gap-6,24px) var(--gap-4,16px);border-radius:var(--radius-default);box-sizing:border-box;color:var(--text-primary)}
 .auth-pg{background:var(--surface-raised)}
 @media(min-width:1024px){.auth-pg{background:var(--surface-sunken);padding:var(--gap-10,40px) 0 var(--gap-16,64px)}.auth{padding:var(--gap-6,24px)}}
 .auth-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--gap-4,16px)}
@@ -897,7 +897,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .lnk-row .sep{width:1px;height:16px;background:var(--border-default)}
 /* small print under a message (link sent / reset sent): 12/16, light 300, Grey 5 #6B6B6B (--text-secondary, the body-text floor), the same on every fascia */
 .auth-note{font-size:12px;line-height:16px;font-weight:300;color:var(--text-secondary,#6B6B6B);margin:calc(var(--gap-2,8px) * -1) 0 0}
-.auth-alt{font-size:14px;line-height:20px;text-align:center;margin:0}
+.auth-alt{font-size:14px;line-height:20px;text-align:center;margin:var(--gap-2,8px) 0 0} /* 24px above "New to X?" (gap 4 + gap 2) when it follows the social buttons… */
+.auth-pw+.auth-alt{margin-top:0} /* …but 16px when "Sign in with password" sits above it (that link takes the 24px) */
 .auth-pw{margin-top:var(--gap-2,8px)} /* "Sign in with password" under the social buttons: 1.5× the block gap above it, gap 4 + gap 2 = gap 6 (24px) */
 .auth-alt .lnk{font-size:14px}
 /* OR divider */

@@ -45,3 +45,4 @@
 - Link first: "Sign in with password" moved below the social buttons, directly above "New to X? Create an account" (checkout: under the social buttons).
 - Spacing: the extra gap 2 (8px) moved from "New to X? Create an account" to "Sign in with password" (`.auth-pw`), so 24px above the password link, 16px above create account.
 - DS footer (C-08): newsletter band --ftr-band now = --surface-sunken (#FAFAFA, PLT #FAF5E7) to match the page background (was Grey 1 #F2F2F2). Footer body stays --surface-page.
+- Mobile: white boxes 24px top / bottom, 16px sides (≥1024 stays 24 all round). "New to X?" keeps 24px above it when the password link is not there (password mode); 16px when it is (`.auth-pw+.auth-alt`).
