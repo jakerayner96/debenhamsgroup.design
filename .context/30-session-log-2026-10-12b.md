@@ -5,13 +5,12 @@
 ## Decisions
 - **One form, two weightings.** A = link first: email, then the CTA, then "Sign in with password instead" as a link below it. B = password first: email + password, then the "Forgot password? | Email me a sign in link" link row, then the CTA. The secondary link swaps the form in place.
 - **No email-first branching** (it reveals which emails have accounts or passwords). Confirmations always read "If an account exists for…". Wrong password reads "email or password incorrect".
-- **Security switch** (panel): it removes the password route on a fascia that has the link (forces A, plus an optional notice). It's disabled when the link is off.
-- **Fascia flags** default to play: Debenhams both on · PLT link only · boohoo password only · boohooMAN both off = the legacy password form (shown as password only, panel warns).
+- **Panel order:** Weighting A/B first, then Methods: the password switch is live on A (off = link only, which covers the security case) and locked on for B; the sign in link switch is live on B and locked on for A. Fascias start from play: Debenhams A + password, PLT A without password, boohoo and boohooMAN B without the link (boohooMAN both off on play = legacy password form).
 - Create account is a link under the CTA. The "New to X?" block is dropped.
-- Context: page or modal. Social: Apple, Google, Facebook, Klarna (Klarna as a tile or a full-width "Sign in with Klarna"). Optional 6-digit code on the link-sent screen (Checkout 2026 1669-43700).
+- Context: page or modal. Social: Apple, Google, Facebook, Klarna. Optional 6-digit code on the link-sent screen (Checkout 2026 1669-43700).
 
 ## DS changes
-- components.css **C-19 Sign in**: `.auth` `.auth-pg` `.auth-h/-sub/-alt/-family/-fine` `.fld--pw .eye` `.lnk-row .sep` `.or-div` `.soc` `.soc--wide/--klarna` `.otp` `.auth-modal`. Additive only, so nothing else changes.
+- components.css **C-19 Sign in**: `.auth` `.auth-pg` `.auth-h/-sub/-alt/-family/-fine` `.fld--pw .eye` `.lnk-row .sep` `.or-div` `.soc` `.otp` `.auth-modal`. Additive only, so nothing else changes.
 - catalogue.js entry `sign-in` (Account group, 3 variants). New icon `icons/lib/social-apple.svg` (lib/apple.svg is a fruit outline).
 - Footer catalogue sample carries `width:1000px` and the Debenhams logo. In-situ pages need to strip the width and swap the logo (done in sign-in page.html; shopping-agent has the same 1000px footer at desktop).
 
@@ -22,3 +21,4 @@
 ## Follow-ups (12 Oct)
 - Social tiles now match Social-Login 2032-2027 exactly on every fascia: 54px, white, 1px #E2E2E2, 4px radius, Figma marks (`social-apple/-google/-facebook-circle/-klarna.svg`).
 - Link first: "Sign in with password instead" moved below the CTA, centred.
+- Security switch card and Klarna full-width option removed (Jake): the method switches cover security; Klarna is always a tile.

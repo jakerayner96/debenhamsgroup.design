@@ -783,7 +783,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 /* OR divider */
 .or-div{display:flex;align-items:center;gap:var(--gap-4,16px);font-size:14px;line-height:18px;color:var(--text-secondary);text-transform:uppercase}
 .or-div::before,.or-div::after{content:"";flex:1;height:1px;background:var(--border-subtle)}
-/* social sign in, equal icon tiles (112-6838) or a full-width labelled button (2032-1885 "Sign in with Klarna") */
+/* social sign in: equal icon tiles (112-6838 / 2032-2027) */
 .soc-row{display:flex;gap:var(--gap-4,16px)}
 /* tiles = Social-Login 2032-2027 exact on every fascia (like the payment buttons, never brand tokens): 54px, white, 1px #E2E2E2, 4px radius, padding gap 2 / gap 4 (8/16px),
    24px icon slot (.ic) holding the Figma marks at their own size: social-apple / social-google (23.52×24, left in the slot) / social-facebook-circle 24 · social-klarna 21 */
@@ -791,10 +791,6 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .soc .ic{width:24px;height:24px;flex:none;display:flex;align-items:flex-start;justify-content:flex-start}
 .soc .ic--21{width:21px;height:21px}
 .soc .ic img{display:block}
-.soc--wide{width:100%;height:50px;display:flex;align-items:center;justify-content:center;gap:var(--gap-3,12px);font:inherit;font-size:16px;font-weight:var(--w-mid);color:var(--text-primary)}
-.soc--klarna{background:#0B051D;border-color:#0B051D;color:#FFF}
-.soc--klarna img{width:auto;height:30px}
-.soc-col{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
 /* 6-digit code (Checkout 2026 1669-43700), offered next to the link so a customer reading email on another device can still sign in here */
 .otp{display:flex;gap:var(--gap-2,8px)}
 .otp input{flex:1;min-width:0;height:66px;border:1px solid var(--border-strong);border-radius:var(--radius-default);text-align:center;font:inherit;font-size:24px;color:var(--text-primary);background:var(--surface-raised);outline:0}
