@@ -1684,7 +1684,9 @@ C.forEach((c,i)=>{
 const FASCIAS=[["debenhams","Debenhams"],["boohoo","boohoo"],["boohooman","boohooMAN"],["plt","PrettyLittleThing"],["karenmillen","Karen Millen"],["warehouse","Warehouse"],["debenhamsoutlet","Debenhams Outlet"],["wallis","Wallis"],["burton","Burton"],["principles","Principles"],["coast","Coast"],["oasis","Oasis"],["dorothyperkins","Dorothy Perkins"],["maine","Maine"],["gorgeous","Gorgeous"],["misspap","Misspap"],["foreverunique","Forever Unique"],["dsgnstudio","DSGN Studio"],["trainingdept","Training Dept"],["brandroom","The Brand Room"]];
 window.DG_FASCIAS=FASCIAS;
 /* a wrapping flex row can't shrink-wrap in CSS, so after layout each playground is sized to its rightmost item (+ canvas padding) */
-window.hugBoxes=function(){document.querySelectorAll('.page.on .fx').forEach(fx=>{fx.style.width='';const c=fx.querySelector('.canvas.fxc');if(!c||!c.children.length)return;
+/* desktop footer shown at its real 1440 layout, scaled to the full width of its box */
+window.fitFooters=function(root){(root||document).querySelectorAll('.ftr-fit').forEach(w=>{const f=w.firstElementChild;if(!f)return;w.style.zoom=1;const k=Math.min(1,w.parentElement.clientWidth/1440);w.style.zoom=k})};
+window.hugBoxes=function(){document.querySelectorAll('.page.on .fx').forEach(fx=>{fx.style.width='';if(fx.querySelector('.ftr-fit')){window.fitFooters(fx);return} /* full-width desktop footer: the box takes the page width and the 1440 footer scales into it */const c=fx.querySelector('.canvas.fxc');if(!c||!c.children.length)return;
   const L=fx.getBoundingClientRect().left;let R=0;[...c.children].forEach(el=>{R=Math.max(R,el.getBoundingClientRect().right)});
   const pad=parseFloat(getComputedStyle(c).paddingRight)||24;const w=Math.max(320,Math.ceil(R-L+pad+2));if(w>0)fx.style.width=w+'px'})};
 let _hz;addEventListener('resize',()=>{clearTimeout(_hz);_hz=setTimeout(()=>window.hugBoxes(),120)});

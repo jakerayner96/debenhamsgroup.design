@@ -325,6 +325,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
    ============================================================ */
 .ftr{container-type:inline-size;display:block;background:var(--surface-page);color:var(--text-primary);font-family:var(--font-family-base);font-weight:var(--w-regular)}
 .ftr,.ftr *{box-sizing:border-box}
+.ftr-fit{display:block;max-width:none}.fv:has(.ftr-fit){flex-basis:100%;width:100%}.fv:has(.ftr-fit) .fvc{overflow:hidden}
 .ftr :is(h3,p,small,b,span,li,a,button){color:var(--text-primary)} /* own ink — never inherit a host canvas colour */
 .ftr .bd{color:var(--text-on-action)}
 .ftr a{color:inherit;text-decoration:none}
