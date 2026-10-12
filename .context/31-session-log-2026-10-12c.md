@@ -21,6 +21,11 @@ All five fascias at 390 (iPhone 13 emulation) and 1440 with the DS header + foot
 - Other sessions were live in the working tree (Sign in prototype, Training Dept logo hunks in `index.html`, `components.css`, `catalogue.js`). This session committed only its own files; the `DG_PROJECTS` entry was staged as a patch so the Training Dept hunks stayed uncommitted for their owner.
 - Not promoted to the DS yet: the programme band (`.mband`, same anatomy as the Account 2026 `.mbox .band`) — belongs in `components.css` as the membership box band once that file is free.
 
+## Second pass (Jake, same day)
+- "Needs the header from the design system too and look like a content page on the site, not just on its own" → site chrome on by default: DS header + the fascia's live USP rows via the drop-in (`usp-live.js` + `usp.js`, re-mounted after each render with `DG_uspHTML` / `DG_usp` since usp.js only self-mounts on DOMContentLoaded; auto 0 while exporting), breadcrumb `.bc` (Delivery / programme), the site `.wrap` container, DS footer. Type moved onto the DS scale (display-lg / display-md / body-lg), section padding gap 12 / gap 16. Store key → `proto-membership-landing-v2`.
+- "Remove the banner above the title and just have the logo somewhere on the page" → the programme band is gone; the wordmark sits on the closing band (programme box colour, so the white PLT Royalty / KM Premier marks read). Panel toggle renamed Programme lockup.
+- Re-verified with Playwright (five fascias × 390 / 1440: USP rows 4 / 3 / 4 / 3 / 2, lockup loads, calculator moves; shell: Unlimited+ swap, Fold, Export zip with both PNGs; no errors) and on the live Pages URL.
+
 ## Open
 - Unlimited+ price, colours and benefits (page keeps the Unlimited copy under the + wordmark).
 - Whether the live landing pages should carry each fascia's USP banners under the header (not added; the drop-in is one line if wanted).

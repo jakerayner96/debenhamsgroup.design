@@ -20,20 +20,21 @@ body{font-family:var(--font-family-base);color:var(--text-primary);font-size:17p
 img{max-width:100%}
 a{color:inherit}
 :focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:3px}
-.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.wrap{padding:0 16px}@media(min-width:1024px){.wrap{padding:0 40px;max-width:1440px;margin:0 auto}}
+.crumbs .bc{padding:16px 0 0}
 .mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
 b,strong{font-weight:var(--w-strong)}
 
-/* programme band — the live membership box band (account-2026 .mbox .band): art or box colour, lockup at its live height */
-.mband{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;min-height:50px;background:var(--mb-bg) center/cover no-repeat;color:var(--mb-ink);border-radius:var(--radius-default);margin-bottom:28px}
-.mband img{height:var(--mb-h,40px);width:auto;max-width:60%;object-fit:contain;object-position:left center;display:block}
-.mband span{font-size:14px;font-weight:var(--w-strong);text-transform:uppercase;white-space:nowrap;letter-spacing:.02em}
+/* programme lockup — the live wordmark at its live height, on the closing band (its box colour keeps the white PLT / KM marks legible) */
+.closing .mlogo{display:block;height:var(--mb-h,40px);width:auto;max-width:70%;object-fit:contain;object-position:left center;margin:0 0 20px}
 
 /* hero */
-.hero{padding:64px 0 88px}
+.hero{padding:24px 0 64px}
 .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
-.hero h1{font-size:clamp(44px,6.4vw,88px);line-height:.94;font-weight:var(--w-strong);letter-spacing:-.035em;margin:0 0 28px;text-transform:var(--cta-case)}
-.lede{font-size:20px;max-width:34ch;margin:0 0 32px}
+.hero h1{font-size:32px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.02em;margin:0 0 20px;text-transform:var(--cta-case)} /* display-lg: 32 mobile / 48 desktop */
+@media(min-width:1024px){.hero h1{font-size:48px;line-height:1.05;margin-bottom:24px}}
+.lede{font-size:16px;max-width:40ch;margin:0 0 24px} /* body-lg */
+@media(min-width:1024px){.lede{font-size:18px}}
 .ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .ctas .bd,.closing .bd{min-height:52px;text-decoration:none}
 .fine{font-size:14px;color:var(--text-secondary);margin-top:20px;max-width:46ch}
@@ -67,17 +68,19 @@ input[type=range]{flex:1;accent-color:var(--text-primary);height:28px;margin:0}
 .calc-note{font-size:14px;color:var(--text-secondary);margin:14px 0 0}
 
 /* sections */
-section.band{padding:88px 0;border-top:1px solid var(--border-default)}
+section.band{padding:48px 0;border-top:1px solid var(--border-default)}
+@media(min-width:1024px){section.band{padding:64px 0}}
 section.band.mist{background:var(--surface-sunken);border-top:0}
-h2{font-size:clamp(32px,4vw,52px);line-height:1;font-weight:var(--w-strong);letter-spacing:-.03em;margin:0 0 16px;text-transform:var(--cta-case)}
-.intro{max-width:52ch;color:var(--text-secondary);margin:0 0 48px;font-size:18px}
+h2{font-size:28px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.02em;margin:0 0 12px;text-transform:var(--cta-case)} /* display-md: 28 mobile / 40 desktop */
+@media(min-width:1024px){h2{font-size:40px;line-height:1.05}}
+.intro{max-width:52ch;color:var(--text-secondary);margin:0 0 32px;font-size:16px}
 .intro a{color:var(--text-link);font-weight:var(--link-w,var(--w-strong))}
 
 /* perks */
 .perks{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:2px solid var(--text-primary)}
 .perk-main{padding:32px 32px 36px 0}
 .perk-main + .perk-main{padding-left:32px;padding-right:0;border-left:1px solid var(--border-default)}
-.perk-main h3{font-size:28px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.02em;margin:0 0 10px}
+.perk-main h3{font-size:24px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.02em;margin:0 0 10px}
 .perk-main p{margin:0;max-width:40ch}
 .perk-list{grid-column:1/-1;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border-default)}
 .perk-list li{padding:24px 24px 8px 0}
@@ -88,7 +91,7 @@ h2{font-size:clamp(32px,4vw,52px);line-height:1;font-weight:var(--w-strong);lett
 /* steps */
 .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;counter-reset:s}
 .steps li{counter-increment:s;padding-top:20px;border-top:2px solid var(--text-primary)}
-.steps li::before{content:counter(s);display:block;font-size:44px;line-height:1;font-weight:var(--w-strong);margin-bottom:18px}
+.steps li::before{content:counter(s);display:block;font-size:32px;line-height:1;font-weight:var(--w-strong);margin-bottom:18px}
 .steps h3{font-size:20px;font-weight:var(--w-strong);margin:0 0 6px}
 .steps p{margin:0;color:var(--text-secondary)}
 
@@ -100,7 +103,8 @@ h2{font-size:clamp(32px,4vw,52px);line-height:1;font-weight:var(--w-strong);lett
 .faq .acc-b{font-size:17px;line-height:1.55;color:var(--text-secondary);max-width:60ch;padding-bottom:22px}
 
 /* closing — the programme's box colour + ink, CTA in its live CTA colours */
-.closing{background:var(--mb-box);color:var(--mb-boxink);padding:80px 0}
+.closing{background:var(--mb-box);color:var(--mb-boxink);padding:48px 0}
+@media(min-width:1024px){.closing{padding:64px 0}}
 .closing .wrap{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap}
 .closing h2{margin:0;max-width:16ch}
 .closing .bd{background:var(--mb-cta);color:var(--mb-ctaink);border-color:var(--mb-cta);min-height:52px}
@@ -112,7 +116,7 @@ h2{font-size:clamp(32px,4vw,52px);line-height:1;font-weight:var(--w-strong);lett
 
 /* responsive — the source breaks at 900 / 480 */
 @media (max-width:900px){
-  .hero{padding:40px 0 64px}
+  .hero{padding:16px 0 48px}
   .hero .wrap,.faq-grid{grid-template-columns:1fr;gap:40px}
   .perks{grid-template-columns:1fr}
   .perk-main,.perk-main + .perk-main{padding:28px 0;border-left:0}
@@ -121,20 +125,20 @@ h2{font-size:clamp(32px,4vw,52px);line-height:1;font-weight:var(--w-strong);lett
   .perk-list li,.perk-list li + li{padding:20px 0;border-left:0}
   .perk-list li + li{border-top:1px solid var(--border-default)}
   .steps{grid-template-columns:1fr}
-  section.band{padding:64px 0}
 }
 @media (max-width:480px){
   body{font-size:16px}
   .lede{font-size:18px}
   .ctas .bd{width:100%}
   .receipt{padding:22px 18px 36px;font-size:13px}
-  .mband img{max-width:55%}
 }
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script src="assets/ds/catalogue.js"></script>
+<script src="assets/ds/usp-live.js"></script>
+<script src="assets/ds/usp.js"></script>
 <script>
 /* ---- page contract with the shell (index.html) ----
    in:  ?s=<json state>  ·  postMessage {protoSet:state, exporting?:bool}  ·  postMessage {protoPing:1}
@@ -158,7 +162,7 @@ const PROG={
 };
 window.DG_PROG=PROG;
 
-let S={brand:'debenhams',tier:'std',price:null,fee:5.99,orders:6,max:30,headline:'',stores:null,band:true,calc:true,included:true,join:true,faq:true,closing:true,chrome:false},EXPORTING=false;
+let S={brand:'debenhams',tier:'std',price:null,fee:5.99,orders:6,max:30,headline:'',stores:null,band:true,calc:true,included:true,join:true,faq:true,closing:true,chrome:true},EXPORTING=false;
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}  // URLSearchParams already decodes — never decode twice
 let cur=null; // slider position the customer has moved to (reset when the panel changes the default)
 
@@ -184,7 +188,6 @@ function page(){
   };
   const style=Object.entries(vars).map(([k,v])=>`${k}:${v}`).join(';');
   const headline=S.headline||'Free delivery on every order for a year.';
-  const band=S.band?`<div class="mband"><img src="${p.logo}" alt="${esc(p.full)}"><span>${gbp(p.price)} a year</span></div>`:'';
   const calc=S.calc?`
       <div class="calc" aria-labelledby="calc-label">
         <label class="calc-q" id="calc-label" for="orders">How many orders do you place a year?</label>
@@ -203,7 +206,6 @@ function page(){
       </div>`:'';
   const hero=`<section class="hero" aria-labelledby="hero-title"><div class="wrap">
       <div>
-        ${band}
         <h1 id="hero-title">${esc(headline)}</h1>
         <p class="lede">${esc(p.full)} is <strong>${gbp(p.price)} a year</strong>. Next day and standard delivery are included on everything you order, starting with the order you join on.</p>
         <div class="ctas"><a class="bd pri" href="#join">Join ${esc(p.name)} for ${gbp(p.price)}</a><a class="bd sec" href="#included">See what's included</a></div>
@@ -245,14 +247,15 @@ function page(){
         ${acc("I'm already a member. Can I buy it again?","Not until your current membership ends. You'll be able to join again once your 12 months are up.")}
       </div></div></section>`:'';
   const closing=S.closing?`<section class="closing" aria-labelledby="close-title"><div class="wrap">
-      <div><h2 id="close-title">A year of free delivery for ${gbp(p.price)}.</h2><p>That's less than ${WORDS[n0]||n0} next day deliveries.</p></div>
+      <div>${S.band?`<img class="mlogo" src="${p.logo}" alt="${esc(p.full)}">`:''}<h2 id="close-title">A year of free delivery for ${gbp(p.price)}.</h2><p>That's less than ${WORDS[n0]||n0} next day deliveries.</p></div>
       <a class="bd pri" href="#">Join ${esc(p.name)}</a>
     </div></section>`:'';
   const legal=`<div class="legal"><div class="wrap">
       <p>Savings based on UK next day delivery at ${gbp(fee)} per order and ${esc(p.full)} at ${gbp(p.price)} for 12 months. Next day delivery is subject to order cut-off times.</p>
       <p>Existing members can't buy ${esc(p.name)} again until their current membership has ended.</p>
     </div></div>`;
-  return `<div style="${style}">${S.chrome?`<div class="pghead">${header()}</div>`:''}<main>${hero}${included}${join}${faq}${closing}</main>${legal}${S.chrome?`<div class="pgfoot">${strip(V('footer',0))}</div>`:''}</div>`;
+  const crumbs=`<div class="wrap crumbs"><nav class="bc" aria-label="Breadcrumb"><a href="#">Delivery</a><span class="sep">/</span><span class="cur">${esc(p.full)}</span></nav></div>`;
+  return `<div style="${style}">${S.chrome?`<div class="pghead">${header()}<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>${crumbs}`:''}<main>${hero}${included}${join}${faq}${closing}</main>${legal}${S.chrome?`<div class="pgfoot">${strip(V('footer',0))}</div>`:''}</div>`;
 }
 
 let prev=0;
@@ -274,6 +277,7 @@ function render(){
   document.documentElement.setAttribute('data-brand',S.brand);
   document.getElementById('app').innerHTML=page();
   document.querySelectorAll('.brandlogo').forEach(i=>i.src=`assets/brands/${S.brand}.svg`);
+  document.querySelectorAll('[data-usp-banners]').forEach(el=>{if(!window.DG_uspHTML)return;el.innerHTML=DG_uspHTML(S.brand,{brand:S.brand,auto:+el.dataset.uspAuto})['below'];el.classList.add('usps');DG_usp(el)});
   const slider=document.getElementById('orders');if(slider){prev=0;slider.addEventListener('input',calc);calc()}
   document.querySelectorAll('.acc-h').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
   document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1),t=id&&document.getElementById(id);if(!t){e.preventDefault();return}e.preventDefault();t.scrollIntoView({behavior:EXPORTING?'auto':'smooth'})}));

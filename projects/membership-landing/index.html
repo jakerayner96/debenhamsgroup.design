@@ -167,15 +167,15 @@ const P={
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com'},
   files:['page.html','README.md'],
-  store:'proto-membership-landing-v1',
-  initial:b=>({tier:'std',price:null,fee:5.99,orders:6,max:30,headline:'',stores:null,band:true,calc:true,included:true,join:true,faq:true,closing:true,chrome:false}),
+  store:'proto-membership-landing-v2', // v2: site chrome (header + USP banners + breadcrumb + footer) on by default
+  initial:b=>({tier:'std',price:null,fee:5.99,orders:6,max:30,headline:'',stores:null,band:true,calc:true,included:true,join:true,faq:true,closing:true,chrome:true}),
 };
 const q=v=>String(v??'').replace(/"/g,'&quot;');
 const need=(price,fee)=>Math.floor(price/fee)+1;
 function renderPanel(host,S,update){
   const C=S.cfg,pr=PROG[S.brand]||PROG.debenhams,price=C.price??pr.price,fee=+C.fee||5.99,n0=need(price,fee),redo=()=>renderPanel(host,S,update);
   const sw=(k,l,d)=>`<label class="opt${C[k]?' on':''}" style="align-items:center"><span class="t"><b>${l}</b>${d?`<span>${d}</span>`:''}</span><span class="sw"><input type="checkbox" data-sw="${k}"${C[k]?' checked':''}><i></i></span></label>`;
-  host.innerHTML=`<h1>Membership landing</h1><p class="intro">The Debenhams Unlimited "free delivery for a year" page rebuilt on the DS, skinned per fascia with each programme's live lockup, art and colours (Brand Centre › Memberships). Switch fascia, breakpoint and fold on top; Export for the PNGs + code.</p>
+  host.innerHTML=`<h1>Membership landing</h1><p class="intro">The Debenhams Unlimited "free delivery for a year" page rebuilt as a content page on the DS site (header, live USP banners, breadcrumb, footer), skinned per fascia with each programme's live lockup, art and colours (Brand Centre › Memberships). Switch fascia, breakpoint and fold on top; Export for the PNGs + code.</p>
   <div class="card"><h3><span>Programme<small>${pr.name} · ${S.brand==='debenhams'?'two tiers':'one tier'}</small></span></h3>
     <div class="chips"><button class="chip${C.tier!=='plus'?' on':''}" data-tier="std">${pr.name}</button><button class="chip${C.tier==='plus'?' on':''}" data-tier="plus"${pr.plus?'':' disabled'}>${pr.plus||'Plus tier'}</button></div>
     <p class="intro" style="margin:8px 0 0">${pr.plus?'Unlimited+ is the new Debenhams tier: wordmark in the DS (08 Oct), price, colours and benefits still to confirm — this page keeps the Unlimited copy.':'Only Debenhams has a second tier today.'}</p></div>
@@ -190,12 +190,12 @@ function renderPanel(host,S,update){
     <label class="f"><span>Headline</span><input data-k="headline" value="${q(C.headline)}" placeholder="Free delivery on every order for a year."></label>
     <label class="f"><span>Stores it works at</span><input data-k="stores" value="${q(C.stores===null?(pr.stores||''):C.stores)}" placeholder="comma separated"><small>${(C.stores===null?(pr.stores||''):C.stores).split(',').filter(s=>s.trim()).length>1?'Shows the "Works at …" line, the Across our brands perk and the stores FAQ.':'One store: those three pieces are hidden.'}</small></label></div>
   <div class="card"><h3>Sections</h3>
-    ${sw('band','Programme band','The live membership lockup on its art, above the headline')}
+    ${sw('band','Programme lockup','The live wordmark on the closing band')}
     ${sw('included',"What's included")}
     ${sw('join','How to join')}
     ${sw('faq','Questions')}
     ${sw('closing','Closing band','Programme box colour + CTA colours')}
-    ${sw('chrome','Site header + footer','The DS header and footer for this fascia, in situ')}</div>
+    ${sw('chrome','Site chrome','DS header with the fascia\'s live USP banners, breadcrumb and footer — the page as a content page on the site')}</div>
   <div class="card"><h3>Rules</h3><div class="rules"><b>Programme styling comes from the DS</b> — lockup, art, box and CTA colours are the live membership box set (Brand Centre › Memberships), never restyled per page. <b>Buttons, accordion, header and footer are DS components</b> on the fascia mode; the receipt is the page's one bespoke module (mono, paper = the fascia's raised surface, accent = its link colour). <b>Unlimited+ is Debenhams only.</b> <b>Dark mode dropped</b> — fascia modes are light; the source page's dark theme has no DS counterpart.</div></div>
   <div class="card"><h3>Reset</h3><button class="chip" id="reset">Back to the defaults for this fascia</button></div>`;
   host.querySelectorAll('[data-tier]').forEach(b=>b.onclick=()=>{C.tier=b.dataset.tier;redo();update()});
