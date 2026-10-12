@@ -60,10 +60,11 @@ const fld=(type,label,val,extra='')=>type==='password'
   :`<label class="fld"><input type="email" placeholder=" " autocomplete="email" inputmode="email" value="${val?esc(S.email):''}" ${extra}><span class="lbl">${label}</span></label>`;
 
 function social(){const s=S.social||{},tiles=[];
-  if(s.apple)tiles.push(['Apple','<img src="assets/ds/icons/lib/social-apple.svg" alt="">']);
-  if(s.google)tiles.push(['Google','<img src="assets/ds/icons/payments/gpay-g.svg" alt="">']);
-  if(s.facebook)tiles.push(['Facebook','<img src="assets/ds/icons/lib/social-facebook.svg" alt="">']);
-  const wide=s.klarna&&S.klarna==='wide';if(s.klarna&&!wide)tiles.push(['Klarna','<img src="assets/ds/icons/lib/pay-klarna.svg" alt="" style="width:34px">']);
+  const ic=(f,c='')=>`<span class="ic${c}"><img src="assets/ds/icons/lib/${f}.svg" alt=""></span>`;
+  if(s.apple)tiles.push(['Apple',ic('social-apple')]);
+  if(s.google)tiles.push(['Google',ic('social-google')]);
+  if(s.facebook)tiles.push(['Facebook',ic('social-facebook-circle')]);
+  const wide=s.klarna&&S.klarna==='wide';if(s.klarna&&!wide)tiles.push(['Klarna',ic('social-klarna',' ic--21')]);
   if(!tiles.length&&!wide)return '';
   return `<div class="or-div">or</div><div class="soc-col">${tiles.length?`<div class="soc-row">${tiles.map(([n,i])=>`<button class="soc" data-act="soc" data-n="${n}" aria-label="Sign in with ${n}">${i}</button>`).join('')}</div>`:''}${wide?`<button class="soc soc--wide soc--klarna" data-act="soc" data-n="Klarna">Sign in with <img src="assets/ds/icons/payments/klarna-badge.svg" alt="Klarna"></button>`:''}</div>`}
 
@@ -86,8 +87,8 @@ function screen(){const r=R(),mode=LOCAL.mode||r.primary,scr=LOCAL.screen||S.scr
   const err=scr==='error'&&mode==='pw'?`<div class="msg msg--error"><i></i><div class="body"><span>The email or password you entered is incorrect. Try again${r.link?', or email yourself a sign in link':', or reset your password'}.</span></div></div>`:'';
   if(mode==='link')return `${title('Sign in')}${notice(r)||'<p class="auth-sub">We’ll email you a one-time link, so there’s no password to type or remember. A safer way to sign in.</p>'}
       <div class="auth-fields">${fld('email','Email address',fill)}</div>
-      ${r.pw?'<div class="lnk-row"><button class="lnk" data-act="pw">Sign in with password instead</button></div>':''}
-      <button class="bd pri" data-act="send">Email me a sign in link</button>${foot()}`;
+      <button class="bd pri" data-act="send">Email me a sign in link</button>
+      ${r.pw?'<div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="pw">Sign in with password instead</button></div>':''}${foot()}`;
   return `${title('Sign in')}${err}
       <div class="auth-fields">${fld('email','Email address',fill)}${fld('password','Password',fill)}</div>
       <div class="lnk-row"><button class="lnk" data-act="forgot">Forgot password?</button>${r.link?'<span class="sep"></span><button class="lnk" data-act="link">Email me a sign in link</button>':''}</div>

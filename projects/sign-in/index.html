@@ -175,15 +175,14 @@ function renderPanel(host,S,update){
   const c=S.cfg,r=rules(c),set=(k,v)=>{c[k]=v;update();renderPanel(host,S,update)};
   const opt=(k,v,t,d,dis)=>`<button class="opt${c[k]===v?' on':''}" data-k="${k}" data-v="${v}"${dis?' disabled style="opacity:.4;cursor:not-allowed"':''}><span class="r"></span><span class="t"><b>${t}</b><span>${d}</span></span></button>`;
   const sw=(id,on,t,dis)=>`<label class="sw"${dis?' style="opacity:.4;cursor:not-allowed"':''}><input type="checkbox" data-sw="${id}"${on?' checked':''}${dis?' disabled':''}><i></i>${t}</label>`;
-  const live=LIVE[S.brand],same=live.link===c.flags.link&&live.pw===c.flags.pw;
   const scr=[['signin','Sign in','The form'],['error','Incorrect details','Password mode only, one generic message',r.primary!=='pw'&&!r.pw],['sent','Link sent','“If an account exists…”, the same answer either way',!r.link],['forgot','Forgot password','Reset form',!r.pw],['reset','Reset sent','Same non-revealing confirmation',!r.pw]];
   if(scr.find(x=>x[0]===c.screen&&x[3])){c.screen='signin';setTimeout(update)}
   host.innerHTML=`<h1>Sign in</h1><p class="intro">One form, two weightings. Fascia flags decide which methods exist; the weighting decides which one leads. Links inside the page switch method and screen too.</p>
-  <div class="card"><h3>Fascia configuration <small>${same?'as on play':'<span style="color:var(--warn)">changed from play</span>'}</small></h3>
+  <div class="card"><h3>Fascia configuration</h3>
     <div style="display:flex;flex-direction:column;gap:10px">${sw('link',c.flags.link,'Sign in link (email me a link)')}${sw('pw',c.flags.pw,'Password sign in')}</div>
-    <div class="f"><small>Play: link ${live.link?'on':'off'} · password ${live.pw?'on':'off'}</small>${r.legacy?'<small class="warn">Both off: play falls back to the legacy email + password form, so this shows password only.</small>':''}</div></div>
+    ${r.legacy?'<div class="f"><small class="warn">Both off: falls back to the legacy email + password form, so this shows password only.</small></div>':''}</div>
   <div class="card"><h3>Weighting</h3>
-    ${opt('primary','link','A · Email me a sign in link first','Password sits under the email field as a link',!r.link)}
+    ${opt('primary','link','A · Email me a sign in link first','“Sign in with password instead” as a link below the button',!r.link)}
     ${opt('primary','pw','B · Email + password first','“Forgot password? | Email me a sign in link” under the fields',!r.pw)}
     ${r.primary!==c.primary?`<p style="margin:8px 0 0;color:var(--warn)">Showing ${r.primary==='link'?'A':'B'}: ${r.primary==='link'?'password sign in is off':'the sign in link is off'} on this fascia.</p>`:''}
     ${!r.link||!r.pw?`<p style="margin:8px 0 0">Only one method available, so no secondary link is shown.</p>`:''}</div>

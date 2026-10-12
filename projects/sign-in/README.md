@@ -13,7 +13,7 @@ New sign-in page across the fascias, built on DS components. Each fascia has its
 | boohooMAN | boohooman.web.play.dbztech.net | off | off → play falls back to the legacy email + password form |
 
 Two weightings:
-- **A · Link first.** Email field, then "Sign in with password instead" as a link under it, then **Email me a sign in link**.
+- **A · Link first.** Email field, then **Email me a sign in link**, then "Sign in with password instead" as a link below the button.
 - **B · Password first.** Email and password, then the "Forgot password? | Email me a sign in link" link row (Checkout 2026 pattern), then **Sign in**.
 
 Clicking the secondary link swaps the form in place. Create account is a link under the CTA (Gymshark pattern). The separate "New to X?" block is gone.
