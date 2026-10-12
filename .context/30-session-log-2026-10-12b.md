@@ -24,3 +24,4 @@
 - Security switch card and Klarna full-width option removed (Jake): the method switches cover security; Klarna is always a tile.
 - Copy (Jake): link-first intro "We’ll email you a one-time link, to sign in."; link sent = title + one paragraph, no links or code entry; "family of brands" line removed. 6-digit code option and `.otp` / `.auth-wait` / `.auth-fine` / `.auth-family` CSS removed.
 - Panel (Jake): one Weighting card, A / B plus the password switch inside it (live on A, locked on B). No Methods card or link switch; B always carries "Email me a sign in link".
+- Footer: swapped the old catalogue `.ft` sample for the DS footer drop-in (`assets/ds/footer.js`, `<footer data-ftr>`, C-08, each fascia's live footer). html2canvas can't paint CSS masks, so the page draws `.ftr-chev` as a plain image while exporting. Other prototypes on footer.js will export black squares for the chevrons until the DS handles it.

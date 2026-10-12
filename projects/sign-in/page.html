@@ -12,10 +12,11 @@
 *{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
 body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
 #app{position:relative;min-height:100vh}
-.pgfoot .ft{margin:0}
 .ghost{padding:var(--gap-6) var(--gap-4);display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap-4) var(--gap-2)}
 @media(min-width:1024px){.ghost{grid-template-columns:repeat(4,1fr);padding:var(--gap-8) 40px;max-width:1440px;margin:0 auto}}
 .ghost i{display:block;aspect-ratio:3/4;background:var(--surface-media)}
+/* export: html2canvas can't paint CSS masks, so the DS footer chevron is drawn as a plain image while exporting */
+html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(assets/ds/icons/lib/icons-down.svg) center/contain no-repeat}
 #ct{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;transition:.2s;background:#000;color:#FFF;font-size:13px;padding:10px 16px;border-radius:var(--radius-default);z-index:999;pointer-events:none;white-space:nowrap}
 #ct.on{opacity:1;transform:translateX(-50%)}
 </style>
@@ -26,6 +27,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/usp-live.js"></script>
 <script src="assets/ds/usp.js"></script>
+<script src="assets/ds/footer.js"></script>
 <script>
 /* ---- page contract with the shell (review-prototype) ----
    in:  ?s=<json state>  ·  {protoSet:state, exporting?}  ·  {protoPing:1}      out: {protoReady:1} · {protoPong:1,h}
@@ -68,7 +70,6 @@ function social(){const s=S.social||{},tiles=[];
   if(!tiles.length)return '';
   return `<div class="or-div">or</div><div class="soc-row">${tiles.map(([n,i])=>`<button class="soc" data-act="soc" data-n="${n}" aria-label="Sign in with ${n}">${i}</button>`).join('')}</div>`}
 
-const foot0=()=>V('footer',0).replace(/width:1000px;?/,'').replace(/assets\/brands\/debenhams\.svg/g,`assets/brands/${S.brand}.svg`);
 const foot=()=>`<p class="auth-alt">New to ${NAME[S.brand]}? <a class="lnk" href="#" data-act="create">Create an account</a></p>${social()}`;
 const title=(t)=>`<div class="auth-hd"><h1 class="auth-h">${t}</h1>${S.context==='modal'?'<button class="auth-x" data-act="close" aria-label="Close"></button>':''}</div>`;
 
@@ -92,12 +93,13 @@ function screen(){const r=R(),mode=LOCAL.mode||r.primary,scr=LOCAL.screen||S.scr
 }
 
 function render(){
-  document.documentElement.setAttribute('data-brand',S.brand);
+  document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
   const form=`<div class="auth" id="auth">${screen()}</div>`;
   document.getElementById('app').innerHTML=S.context==='modal'
-    ?`${header()}<div class="ghost">${'<i></i>'.repeat(8)}</div><div class="pgfoot">${foot0()}</div><div class="auth-modal">${form}</div>`
-    :`${header()}<main class="auth-pg">${form}</main><div class="pgfoot">${foot0()}</div>`;
+    ?`${header()}<div class="ghost">${'<i></i>'.repeat(8)}</div><footer data-ftr="${S.brand}"></footer><div class="auth-modal">${form}</div>`
+    :`${header()}<main class="auth-pg">${form}</main><footer data-ftr="${S.brand}"></footer>`;
   if(S.usp&&window.DG_uspMount)DG_uspMount();
+  document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,S.brand));   /* DS footer C-08 (footer.js): each fascia's live footer */
 }
 render();
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});

@@ -28,6 +28,8 @@ Clicking the secondary link swaps the form in place. Create account is a link un
 Weighting A/B with the password switch inside it (A only) · screen (sign in, incorrect details, link sent, forgot password, reset sent) · context (page or modal) · social tiles (Apple, Google, Facebook, Klarna) · filled fields · USP banners.
 
 ## DS
+Footer = the DS footer drop-in (`assets/ds/footer.js`, `<footer data-ftr>`).
+
 New component **C-19 Sign in** in `assets/ds/components.css` (`.auth`, `.fld--pw`, `.lnk-row`, `.or-div`, `.soc`,, `.auth-modal`) and catalogue entry `sign-in`. Also adds the Apple glyph `assets/ds/icons/lib/social-apple.svg`.
 Spacing: gap 4 (16px) between blocks · gap 3 (12px) between fields and in the link row · gap 4 (16px) between social tiles. Social tiles are 54px tall. At 1024 and up the form is a 480px card on `--surface-sunken`, padded gap 8 / gap 6 (32/24px).
 
