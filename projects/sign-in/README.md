@@ -14,7 +14,7 @@ New sign-in page across the fascias, built on DS components. The play configurat
 | Karen Millen | karenmillen.web.play.dbztech.net | on | off |
 
 Two weightings:
-- **A · Link first.** Email field, then **Send link**, then "Sign in with password" as a link below the button.
+- **A · Link first.** Email field, then **Send link**, the social buttons, then "Sign in with password" as a link above "New to X? Create an account".
 - **B · Password first.** Email and password, then the "Forgot password? | Email me a sign in link" link row (Checkout 2026 pattern), then **Sign in**.
 
 Clicking the secondary link swaps the form in place. Create account is a link under the social buttons (Gymshark pattern). The separate "New to X?" block is gone.
