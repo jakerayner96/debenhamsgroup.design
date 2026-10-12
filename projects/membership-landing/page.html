@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!-- Inside debenhamsgroup.design/projects/membership-landing/: every asset resolves from the repo root -->
+<base href="../../">
+<title>Membership landing · page</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&family=Jost:wght@400;500;600;700&family=Archivo:wght@300..800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* Membership landing page — the Debenhams Unlimited "free delivery for a year" page (debenhams-unlimited_3.html) rebuilt on the DS.
+   Layout and behaviour are the source page's; colour, type, weights, radius and case come from the fascia mode (tokens.css),
+   buttons + accordion + header + footer are DS components, the programme band / closing band take each fascia's live
+   membership art and colours (assets/brands/memberships — the same set the PDP module, Account 2026 and the Brand Centre use).
+   Spacing in gaps: 1 gap = 4px. */
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);font-size:17px;line-height:1.55;font-weight:var(--w-regular);-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+b,strong{font-weight:var(--w-strong)}
+
+/* programme band — the live membership box band (account-2026 .mbox .band): art or box colour, lockup at its live height */
+.mband{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;min-height:50px;background:var(--mb-bg) center/cover no-repeat;color:var(--mb-ink);border-radius:var(--radius-default);margin-bottom:28px}
+.mband img{height:var(--mb-h,40px);width:auto;max-width:60%;object-fit:contain;object-position:left center;display:block}
+.mband span{font-size:14px;font-weight:var(--w-strong);text-transform:uppercase;white-space:nowrap;letter-spacing:.02em}
+
+/* hero */
+.hero{padding:64px 0 88px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
+.hero h1{font-size:clamp(44px,6.4vw,88px);line-height:.94;font-weight:var(--w-strong);letter-spacing:-.035em;margin:0 0 28px;text-transform:var(--cta-case)}
+.lede{font-size:20px;max-width:34ch;margin:0 0 32px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.ctas .bd,.closing .bd{min-height:52px;text-decoration:none}
+.fine{font-size:14px;color:var(--text-secondary);margin-top:20px;max-width:46ch}
+.brands-line{margin-top:48px;padding-top:20px;border-top:1px solid var(--border-default);font-size:15px;color:var(--text-secondary)}
+.brands-line b{color:var(--text-primary);font-weight:var(--w-strong)}
+
+/* receipt calculator — the page's one bespoke module; paper = the fascia's raised surface (PLT cream), accent = the fascia link colour */
+.calc-q{font-weight:var(--w-strong);font-size:17px;margin:0 0 10px;display:block}
+.slider-row{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+input[type=range]{flex:1;accent-color:var(--text-primary);height:28px;margin:0}
+.count{font-weight:var(--w-strong);font-size:28px;line-height:1;min-width:2.2ch;text-align:right}
+.receipt{background:var(--surface-raised);color:#000;font-size:14px;line-height:1.7;padding:26px 26px 40px;border:1px solid var(--border-default);
+  --z:10px;
+  -webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/calc(2*var(--z)) 100%;
+          mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/calc(2*var(--z)) 100%}
+.r-head{text-align:center;border-bottom:1px dashed #9A9A96;padding-bottom:12px;margin-bottom:12px}
+.r-head b{display:block;font-weight:600;font-size:15px}
+.r-head span{color:#6B6B68;font-size:12.5px}
+.r-lines{list-style:none;margin:0;padding:0;min-height:34px}
+.r-lines li{display:flex;justify-content:space-between;gap:12px}
+.r-lines li.more{color:#6B6B68}
+.r-lines li.new{animation:print .25s ease-out}
+@keyframes print{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.r-row{display:flex;justify-content:space-between;gap:12px}
+.r-sub{border-top:1px dashed #9A9A96;margin-top:12px;padding-top:12px}
+.r-sub .struck{text-decoration:line-through;text-decoration-thickness:1.5px}
+.r-total{border-top:2px solid #000;margin-top:12px;padding-top:12px;font-weight:600;font-size:16px}
+.r-keep{margin-top:18px;padding:14px 0 0;border-top:1px dashed #9A9A96;font-family:var(--font-family-base);font-size:16px;line-height:1.35}
+.r-keep strong{display:block;font-size:30px;font-weight:var(--w-strong);letter-spacing:-.02em;color:var(--text-link)}
+.r-keep.neutral strong{color:#000}
+.calc-note{font-size:14px;color:var(--text-secondary);margin:14px 0 0}
+
+/* sections */
+section.band{padding:88px 0;border-top:1px solid var(--border-default)}
+section.band.mist{background:var(--surface-sunken);border-top:0}
+h2{font-size:clamp(32px,4vw,52px);line-height:1;font-weight:var(--w-strong);letter-spacing:-.03em;margin:0 0 16px;text-transform:var(--cta-case)}
+.intro{max-width:52ch;color:var(--text-secondary);margin:0 0 48px;font-size:18px}
+.intro a{color:var(--text-link);font-weight:var(--link-w,var(--w-strong))}
+
+/* perks */
+.perks{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:2px solid var(--text-primary)}
+.perk-main{padding:32px 32px 36px 0}
+.perk-main + .perk-main{padding-left:32px;padding-right:0;border-left:1px solid var(--border-default)}
+.perk-main h3{font-size:28px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.02em;margin:0 0 10px}
+.perk-main p{margin:0;max-width:40ch}
+.perk-list{grid-column:1/-1;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border-default)}
+.perk-list li{padding:24px 24px 8px 0}
+.perk-list li + li{padding-left:24px;border-left:1px solid var(--border-default)}
+.perk-list h3{font-size:18px;font-weight:var(--w-strong);margin:0 0 6px}
+.perk-list p{margin:0;color:var(--text-secondary);font-size:16px}
+
+/* steps */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;counter-reset:s}
+.steps li{counter-increment:s;padding-top:20px;border-top:2px solid var(--text-primary)}
+.steps li::before{content:counter(s);display:block;font-size:44px;line-height:1;font-weight:var(--w-strong);margin-bottom:18px}
+.steps h3{font-size:20px;font-weight:var(--w-strong);margin:0 0 6px}
+.steps p{margin:0;color:var(--text-secondary)}
+
+/* FAQ — DS accordion (.acc) laid out in the source's two-column grid */
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
+.faq .acc{gap:0;border-top:1px solid var(--border-default)}
+.faq .acc:last-child{border-bottom:1px solid var(--border-default)}
+.faq .acc-h{padding:20px 0;font-size:18px;font-weight:var(--w-strong)}
+.faq .acc-b{font-size:17px;line-height:1.55;color:var(--text-secondary);max-width:60ch;padding-bottom:22px}
+
+/* closing — the programme's box colour + ink, CTA in its live CTA colours */
+.closing{background:var(--mb-box);color:var(--mb-boxink);padding:80px 0}
+.closing .wrap{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap}
+.closing h2{margin:0;max-width:16ch}
+.closing .bd{background:var(--mb-cta);color:var(--mb-ctaink);border-color:var(--mb-cta);min-height:52px}
+.closing p{margin:10px 0 0;opacity:.75}
+
+.legal{padding:32px 0 48px;font-size:13px;color:var(--text-secondary)}
+.legal p{max-width:80ch;margin:0 0 6px}
+.pgfoot .ft{margin-top:0}
+
+/* responsive — the source breaks at 900 / 480 */
+@media (max-width:900px){
+  .hero{padding:40px 0 64px}
+  .hero .wrap,.faq-grid{grid-template-columns:1fr;gap:40px}
+  .perks{grid-template-columns:1fr}
+  .perk-main,.perk-main + .perk-main{padding:28px 0;border-left:0}
+  .perk-main + .perk-main{border-top:1px solid var(--border-default)}
+  .perk-list{grid-template-columns:1fr}
+  .perk-list li,.perk-list li + li{padding:20px 0;border-left:0}
+  .perk-list li + li{border-top:1px solid var(--border-default)}
+  .steps{grid-template-columns:1fr}
+  section.band{padding:64px 0}
+}
+@media (max-width:480px){
+  body{font-size:16px}
+  .lede{font-size:18px}
+  .ctas .bd{width:100%}
+  .receipt{padding:22px 18px 36px;font-size:13px}
+  .mband img{max-width:55%}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/ds/catalogue.js"></script>
+<script>
+/* ---- page contract with the shell (index.html) ----
+   in:  ?s=<json state>  ·  postMessage {protoSet:state, exporting?:bool}  ·  postMessage {protoPing:1}
+   out: postMessage {protoReady:1} once loaded  ·  {protoPong:1,h:<full page height>} in reply to a ping */
+const C=window.DG_CATALOGUE||[],V=(slug,i=0)=>{const c=C.find(x=>x.slug===slug);return c?c.variants[i].html:''};
+const strip=h=>h.replace(/ style="[^"]*"/,'');
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const gbp=n=>'£'+(+n).toFixed(2);
+const ORD=['','first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth'];
+const WORDS=['','one','two','three','four','five','six','seven','eight','nine','ten'];
+
+/* each fascia's programme — name, live price (account/unlimited pages 08 Oct 2026), lockup + art + colours from the live PDP membership box
+   (DG_MEMBERSHIPS in index.html · account-2026 MB · core-pdp-2026 brands-live.js). Debenhams also has the Unlimited+ tier (wordmark 08 Oct, benefits to confirm). */
+const M='assets/brands/memberships/';
+const PROG={
+  debenhams:{name:'Unlimited',full:'Debenhams Unlimited',price:14.99,logo:M+'unlimited-logo.svg',logoH:40,bg:M+'prem-bg-deb.jpg',box:'#DCDCDC',ink:'#000',cta:'#000',ctaInk:'#FFF',stores:['Debenhams','Coast','Burton','Wallis'],plus:{name:'Unlimited+',full:'Debenhams Unlimited+',logo:M+'unlimited-plus-logo.svg'}},
+  boohoo:{name:'Premier Club',full:'boohoo Premier Club',price:9.99,logo:M+'prem-logo-bh.png',logoH:15,bg:M+'prem-bg-bh.jpg',box:'#E1D8CF',ink:'#000',cta:'#8D113A',ctaInk:'#FFF'},
+  boohooman:{name:'Premier',full:'boohooMAN Premier',price:9.99,logo:M+'prem-logo-bm.png',logoH:24,bg:M+'prem-bg-bm.jpg',box:'#CECECE',ink:'#000',cta:'#000',ctaInk:'#FFF'},
+  plt:{name:'Royalty',full:'PLT Royalty',price:9.99,logo:M+'prem-logo-plt.png',logoH:26,bg:M+'prem-bg-plt.jpg',box:'#20090C',ink:'#FFF',cta:'#FFF',ctaInk:'#000'},
+  karenmillen:{name:'Premier',full:'Karen Millen Premier',price:14.99,logo:M+'prem-logo-km.png',logoH:22,bg:null,box:'#000',ink:'#FFF',cta:'#FFF',ctaInk:'#000'}
+};
+window.DG_PROG=PROG;
+
+let S={brand:'debenhams',tier:'std',price:null,fee:5.99,orders:6,max:30,headline:'',stores:null,band:true,calc:true,included:true,join:true,faq:true,closing:true,chrome:false},EXPORTING=false;
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}  // URLSearchParams already decodes — never decode twice
+let cur=null; // slider position the customer has moved to (reset when the panel changes the default)
+
+const desk=()=>innerWidth>=1024;
+const prog=()=>{const p=PROG[S.brand]||PROG.debenhams;const plus=S.tier==='plus'&&p.plus;return Object.assign({},p,plus||{},{price:S.price??p.price,plusTier:!!plus})};
+const stores=p=>S.stores===null||S.stores===undefined?(p.stores||[]):String(S.stores).split(',').map(s=>s.trim()).filter(Boolean);
+const need=(price,fee)=>Math.floor(price/fee)+1; // orders at which the membership has paid for itself
+const list=a=>a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];
+
+function header(){
+  let h=desk()?V('header',1):V('header',0);
+  h=strip(h).replace(/ style="[^"]*border[^"]*"/,'').replace(/assets\/brands\/debenhams\.svg/,`assets/brands/${S.brand}.svg`);
+  h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');   // drop the catalogue's sample USP bar
+  if(S.brand==='plt')h=h.replace('icons/search.svg','icons/plt-search.svg').replace('icons/account.svg','icons/plt-account.svg').replace('icons/heart-24.svg','icons/plt-heart.svg').replace('icons/bag.svg','icons/plt-bag.svg');
+  else if(['boohooman','karenmillen','brandroom'].includes(S.brand))h=h.replace('icons/heart-24.svg','icons/bookmark.svg');
+  return h;
+}
+
+function page(){
+  const p=prog(),st=stores(p),fee=+S.fee||5.99,n0=need(p.price,fee),multi=st.length>1;
+  const vars={
+    '--mb-bg':p.bg?`url(${p.bg})`:p.box,'--mb-ink':p.ink,'--mb-h':p.logoH+'px','--mb-box':p.box,'--mb-boxink':p.ink,'--mb-cta':p.cta,'--mb-ctaink':p.ctaInk
+  };
+  const style=Object.entries(vars).map(([k,v])=>`${k}:${v}`).join(';');
+  const headline=S.headline||'Free delivery on every order for a year.';
+  const band=S.band?`<div class="mband"><img src="${p.logo}" alt="${esc(p.full)}"><span>${gbp(p.price)} a year</span></div>`:'';
+  const calc=S.calc?`
+      <div class="calc" aria-labelledby="calc-label">
+        <label class="calc-q" id="calc-label" for="orders">How many orders do you place a year?</label>
+        <div class="slider-row">
+          <input id="orders" type="range" min="1" max="${S.max||30}" step="1" value="${cur??S.orders}" aria-describedby="keep-msg">
+          <output class="count" id="count" for="orders">${cur??S.orders}</output>
+        </div>
+        <div class="receipt mono" role="group" aria-label="Your delivery costs for a year">
+          <div class="r-head"><b>Your delivery for a year</b><span>Next day delivery at ${gbp(fee)} an order</span></div>
+          <ul class="r-lines" id="lines"></ul>
+          <div class="r-row r-sub"><span>Without ${esc(p.name)}</span><span id="without">£0.00</span></div>
+          <div class="r-row r-total"><span>With ${esc(p.name)}</span><span>${gbp(p.price)}</span></div>
+          <div class="r-keep" id="keep" aria-live="polite"><strong id="keep-amt"></strong> <span id="keep-msg"></span></div>
+        </div>
+        <p class="calc-note">Based on UK next day delivery at ${gbp(fee)} per order.</p>
+      </div>`:'';
+  const hero=`<section class="hero" aria-labelledby="hero-title"><div class="wrap">
+      <div>
+        ${band}
+        <h1 id="hero-title">${esc(headline)}</h1>
+        <p class="lede">${esc(p.full)} is <strong>${gbp(p.price)} a year</strong>. Next day and standard delivery are included on everything you order, starting with the order you join on.</p>
+        <div class="ctas"><a class="bd pri" href="#join">Join ${esc(p.name)} for ${gbp(p.price)}</a><a class="bd sec" href="#included">See what's included</a></div>
+        <p class="fine">Pays for itself by your ${ORD[n0]||n0+'th'} next day order.${multi?` One membership covers ${WORDS[st.length]||st.length} stores.`:''}</p>
+        ${multi?`<p class="brands-line">Works at ${st.map(s=>`<b>${esc(s)}</b>`).join(', ').replace(/, ([^,]*)$/,' and $1')}.</p>`:''}
+      </div>
+      ${calc}
+    </div></section>`;
+  const others=st.filter(s=>s.toLowerCase()!==(PROG[S.brand]||{}).full?.split(' ')[0].toLowerCase()&&s.toLowerCase()!=='debenhams');
+  const included=S.included?`<section class="band" id="included" aria-labelledby="inc-title"><div class="wrap">
+      <h2 id="inc-title">What's included</h2>
+      <p class="intro">Everything below applies from the moment you join until your membership ends 12 months later.</p>
+      <div class="perks">
+        <div class="perk-main"><h3>Free next day delivery</h3><p>Order today and it's at your door tomorrow, on every order, at no extra cost. Order before the cut-off shown at checkout.</p></div>
+        <div class="perk-main"><h3>Free standard delivery</h3><p>Send it to your door, an InPost locker or a local shop, whichever suits you.</p></div>
+        <ul class="perk-list">
+          <li><h3>VIP member days</h3><p>Early access and member-only promotions throughout the year.</p></li>
+          <li><h3>Exclusive offers</h3><p>Member prices from some of our biggest brands.</p></li>
+          ${multi?`<li><h3>Across our brands</h3><p>Your membership works at ${esc(list(others))} too.</p></li>`:`<li><h3>App and web</h3><p>Your membership follows your account, so it works in the app and on the website.</p></li>`}
+        </ul>
+      </div></div></section>`:'';
+  const join=S.join?`<section class="band mist" id="join" aria-labelledby="join-title"><div class="wrap">
+      <h2 id="join-title">How to join</h2>
+      <p class="intro">It takes less than a minute, and your first order ships free.</p>
+      <ol class="steps">
+        <li><h3>Sign in or create an account</h3><p>${esc(p.name)} is linked to your account, so it follows you on the app and the website.</p></li>
+        <li><h3>Add ${esc(p.name)} to your bag</h3><p>Add it from this page, or choose ${esc(p.name)} as your delivery option at checkout.</p></li>
+        <li><h3>Start saving on that order</h3><p>Delivery on the order you join with is free, and so is every order for the next 12 months.</p></li>
+      </ol>
+      <div class="ctas" style="margin-top:48px"><a class="bd pri" href="#">Add ${esc(p.name)} to bag</a></div>
+    </div></section>`:'';
+  const acc=(q,a,open)=>`<div class="acc${open?' open':''}"><button class="acc-h">${q}<img src="assets/ds/icons/lib/icons-down-arrow.svg" alt=""></button><div class="acc-b">${a}</div></div>`;
+  const faq=S.faq?`<section class="band faq" aria-labelledby="faq-title"><div class="wrap faq-grid">
+      <div><h2 id="faq-title">Questions</h2><p class="intro" style="margin-bottom:0">Can't find your answer? <a href="#">Contact customer care</a>.</p></div>
+      <div>
+        ${acc('When does my membership start?','Straight away. Delivery on the order you join with is free, and your membership runs for 12 months from that day.')}
+        ${multi?acc('Which stores does it cover?',`${esc(list(st))}. Sign in with the same account and your delivery benefits apply automatically.`):''}
+        ${acc('Which delivery options are free?','UK next day delivery and UK standard delivery, including delivery to InPost lockers and shops.')}
+        ${acc("I'm already a member. Can I buy it again?","Not until your current membership ends. You'll be able to join again once your 12 months are up.")}
+      </div></div></section>`:'';
+  const closing=S.closing?`<section class="closing" aria-labelledby="close-title"><div class="wrap">
+      <div><h2 id="close-title">A year of free delivery for ${gbp(p.price)}.</h2><p>That's less than ${WORDS[n0]||n0} next day deliveries.</p></div>
+      <a class="bd pri" href="#">Join ${esc(p.name)}</a>
+    </div></section>`:'';
+  const legal=`<div class="legal"><div class="wrap">
+      <p>Savings based on UK next day delivery at ${gbp(fee)} per order and ${esc(p.full)} at ${gbp(p.price)} for 12 months. Next day delivery is subject to order cut-off times.</p>
+      <p>Existing members can't buy ${esc(p.name)} again until their current membership has ended.</p>
+    </div></div>`;
+  return `<div style="${style}">${S.chrome?`<div class="pghead">${header()}</div>`:''}<main>${hero}${included}${join}${faq}${closing}</main>${legal}${S.chrome?`<div class="pgfoot">${strip(V('footer',0))}</div>`:''}</div>`;
+}
+
+let prev=0;
+function calc(){
+  const slider=document.getElementById('orders');if(!slider)return;
+  const p=prog(),FEE=+S.fee||5.99,PRICE=p.price,SHOW=6,n=+slider.value;cur=n;
+  document.getElementById('count').textContent=n;
+  const visible=Math.min(n,SHOW);let html='';
+  for(let i=1;i<=visible;i++)html+=`<li${!EXPORTING&&i>prev?' class="new"':''}><span>Order ${i}</span><span>${gbp(FEE)}</span></li>`;
+  if(n>SHOW)html+=`<li class="more"><span>+ ${n-SHOW} more order${n-SHOW>1?'s':''}</span><span>${gbp((n-SHOW)*FEE)}</span></li>`;
+  document.getElementById('lines').innerHTML=html;prev=visible;
+  const total=n*FEE,diff=total-PRICE,keep=document.getElementById('keep'),amt=document.getElementById('keep-amt'),msg=document.getElementById('keep-msg');
+  document.getElementById('without').innerHTML=`<span class="struck">${gbp(total)}</span>`;
+  if(diff>0){keep.classList.remove('neutral');amt.textContent=gbp(diff);msg.textContent='stays in your pocket this year'}
+  else{const left=need(PRICE,FEE)-n;keep.classList.add('neutral');amt.textContent=`${left} more order${left>1?'s':''}`;msg.textContent=`and ${p.name} has paid for itself`}
+}
+
+function render(){
+  document.documentElement.setAttribute('data-brand',S.brand);
+  document.getElementById('app').innerHTML=page();
+  document.querySelectorAll('.brandlogo').forEach(i=>i.src=`assets/brands/${S.brand}.svg`);
+  const slider=document.getElementById('orders');if(slider){prev=0;slider.addEventListener('input',calc);calc()}
+  document.querySelectorAll('.acc-h').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
+  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1),t=id&&document.getElementById(id);if(!t){e.preventDefault();return}e.preventDefault();t.scrollIntoView({behavior:EXPORTING?'auto':'smooth'})}));
+}
+render();
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){if(d.protoSet.orders!==S.orders||d.protoSet.brand!==S.brand||d.protoSet.max!==S.max)cur=null;S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+</script>
+</body>
+</html>
