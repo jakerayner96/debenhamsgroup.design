@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign in · configurator — All Brands</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+/* ============================================================
+   Review shell — Jake's standard prototype format (model: Core PDP 2026, jakerayner96.github.io/core-pdp-2026).
+   TOP BAR = window controls: fascia chips · Desktop/Mobile · width preset · live width · Full page/Fold · Export.
+   LEFT PANEL = page configuration (project-specific — fill renderPanel()).
+   STAGE = the page in an iframe, drag handle on its right edge to resize; Fold = iPhone Safari frame.
+   EXPORT = one zip: <name>-mobile-390.png + <name>-desktop-1440.png (full page) + config.json + the page code.
+   ============================================================ */
+:root{--bg:#161616;--bar:#000;--panel:#000;--line:rgba(255,255,255,.14);--ink:#F7F7F7;--muted:#9A9A9A;--dim:#707070;--accent:#0D99FF;--ok:#1FA971;--warn:#E8A23B}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);font-family:'Google Sans','Montserrat',system-ui,sans-serif;color:var(--muted);display:grid;grid-template-rows:48px 1fr;grid-template-columns:360px 1fr;height:100%;overflow:hidden;font-size:12px}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+a{color:var(--accent)}
+/* ---- top bar ---- */
+.top{grid-column:1/3;display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--bar);border-bottom:1px solid var(--line)}
+.top .ttl{font-weight:600;font-size:12px;color:var(--ink);white-space:nowrap}
+.top .mid{margin:0 auto;display:flex;align-items:center;gap:10px;min-width:0}
+.top .div{width:1px;height:20px;background:rgba(255,255,255,.15);margin:0 4px;flex:none}
+.top .w{font-size:10.5px;color:var(--dim);font-variant-numeric:tabular-nums;min-width:48px;text-align:right}
+.top .status{font-size:11px;color:var(--muted);white-space:nowrap}
+.top select{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 8px;font:inherit;font-size:11.5px}
+.export{display:flex;align-items:center;gap:8px;background:var(--ink);color:#000;padding:6px 12px;border-radius:99px;font-weight:600;font-size:12px;flex:none}
+.export:disabled{opacity:.5;cursor:progress}.export svg{width:13px;height:13px}
+.seg{display:inline-flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;flex:none}
+.seg button{padding:5px 12px;color:#B0B0B0;font-size:11.5px;white-space:nowrap}
+.seg button.on{background:var(--ink);color:#000;font-weight:700}
+.seg button:disabled{opacity:.35;cursor:not-allowed}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.top .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.chip{padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px;color:#B0B0B0;white-space:nowrap}
+.chip.on{background:var(--ink);color:#000;border-color:var(--ink);font-weight:600}
+.chip[disabled]{opacity:.35;cursor:not-allowed}
+/* ---- left panel ---- */
+.panel{background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:16px 14px 40px}
+.panel h1{font-size:17px;font-weight:700;letter-spacing:-.01em;margin:4px 0 4px;color:var(--ink)}
+.panel .intro{font-size:11px;color:var(--dim);line-height:1.45;margin-bottom:14px}
+.panel select,.panel input{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:5px 8px;font:inherit;font-size:11.5px}
+.panel option:disabled{color:#555}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;background:#0E0E0E}
+.card h3{font-size:12.5px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.card h3 small{font-weight:400;color:var(--dim);font-size:10.5px;margin-left:6px}
+.card p{font-size:11px;color:var(--dim);line-height:1.45;margin-bottom:8px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:7px 0;cursor:pointer;border-top:1px solid rgba(255,255,255,.07);width:100%;text-align:left}
+.opt:first-child{border-top:none}
+.opt .r{flex:none;width:16px;height:16px;border-radius:99px;border:1.5px solid #6A6A6A;margin-top:1px;position:relative}
+.opt.on .r{border-color:var(--accent);background:var(--accent)}
+.opt.on .r::after{content:"";position:absolute;inset:4px;border-radius:99px;background:#0A0A0A}
+.opt .t{flex:1;min-width:0}.opt .t b{display:block;font-size:12px;font-weight:500;color:#D8D8D8}.opt.on .t b{font-weight:600;color:var(--ink)}
+.opt .t span{display:block;font-size:10.5px;color:var(--dim);line-height:1.4}
+.f{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.f>span{font-size:11px;color:#C8C8C8;font-weight:500}
+.f input,.f select{width:100%}
+.f small{font-size:10.5px;color:var(--dim)}.f small.warn{color:var(--warn)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink);cursor:pointer;font-weight:400}
+.sw input{display:none}.sw i{width:30px;height:18px;border-radius:99px;background:#3A3A3A;position:relative;transition:.15s;flex:none}.sw i::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:99px;background:#fff;transition:.15s}
+.sw input:checked+i{background:var(--accent)}.sw input:checked+i::after{left:14px}
+.rules{font-size:10.5px;color:var(--dim);line-height:1.55}.rules b{color:#C8C8C8;font-weight:600}
+/* ---- stage: frame + drag handle ---- */
+.stage{position:relative;overflow:hidden;display:flex;align-items:stretch;justify-content:center;padding:0}
+.win{display:flex;height:100%;max-width:100%}
+.holder{display:flex;flex:1;min-height:0}
+iframe{border:none;display:block;height:100%;background:#FFF;box-shadow:0 0 60px rgba(0,0,0,.5)}
+.handle{width:16px;display:flex;align-items:center;justify-content:center;cursor:col-resize;flex:none}
+.handle i{width:5px;height:56px;border-radius:99px;background:#3A3A3A}
+.handle:hover i,.dragging .handle i{background:#6A6A6A}
+body.dragging{user-select:none;cursor:col-resize}body.dragging iframe{pointer-events:none}
+/* ---- fold view: iOS 26 Safari frame (SEEL Enhancements 2026 · 3366-199353) ---- */
+.device{position:relative;display:flex;flex-direction:column;height:100%;background:#FFF}
+.device iframe{flex:1;min-height:0}
+.device .sb,.device .tb,.device .home,.device .chin{display:none}
+body.fold .stage{align-items:center}body.fold .win{height:auto}
+body.fold .device{height:calc(var(--k) * 874px);border-radius:calc(var(--k) * 44px);overflow:hidden;box-shadow:0 0 60px rgba(0,0,0,.5)}
+body.fold .device .sb,body.fold .device .tb,body.fold .device .home{display:flex}
+body.fold .device .chin{display:block;flex:none;height:calc(var(--k) * 82px);background:#FFF}
+body.fold .device iframe{box-shadow:none}
+.device .sb{height:calc(var(--k) * 62px);flex:none;background:#FFF;position:relative;align-items:center;justify-content:space-between;padding:0 calc(var(--k) * 30px) 0 calc(var(--k) * 48px);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif}
+.device .sb .time{font-size:calc(var(--k) * 17px);font-weight:600;color:#000;letter-spacing:-.02em;width:calc(var(--k) * 54px)}
+.device .sb .island{position:absolute;left:50%;top:calc(var(--k) * 11px);transform:translateX(-50%);width:calc(var(--k) * 124px);height:calc(var(--k) * 36px);background:#000;border-radius:99px}
+.device .sb .sys{display:flex;align-items:center;gap:calc(var(--k) * 6px)}
+.device .sb .sig{width:calc(var(--k) * 18px);height:calc(var(--k) * 12px)}.device .sb .wifi{width:calc(var(--k) * 16px);height:calc(var(--k) * 12px)}.device .sb .bat{width:calc(var(--k) * 28px);height:calc(var(--k) * 13px)}
+.device .tb{position:absolute;left:0;right:0;bottom:calc(var(--k) * 34px);height:calc(var(--k) * 48px);padding:0 calc(var(--k) * 28px);align-items:center;justify-content:space-between;gap:calc(var(--k) * 8px);pointer-events:none}
+.device .tb .circ{width:calc(var(--k) * 48px);height:calc(var(--k) * 48px);border-radius:99px;background:rgba(255,255,255,.92);box-shadow:0 1px 6px rgba(0,0,0,.18);display:grid;place-items:center;flex:none;backdrop-filter:blur(12px)}
+.device .tb .circ svg{width:calc(var(--k) * 12px);height:calc(var(--k) * 20px)}.device .tb .circ:last-child svg{width:calc(var(--k) * 22px);height:calc(var(--k) * 6px)}
+.device .tb .url{flex:1;height:calc(var(--k) * 48px);border-radius:99px;background:rgba(255,255,255,.92);box-shadow:0 1px 6px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--k) * 14px);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;font-size:calc(var(--k) * 17px);color:#000;backdrop-filter:blur(12px)}
+.device .tb .url .pg{width:calc(var(--k) * 20px);height:calc(var(--k) * 18px)}.device .tb .url .rl{width:calc(var(--k) * 20px);height:calc(var(--k) * 20px)}
+.device .home{position:absolute;left:50%;bottom:calc(var(--k) * 8px);transform:translateX(-50%);width:calc(var(--k) * 134px);height:calc(var(--k) * 5px);border-radius:99px;background:#000}
+/* ---- export overlay ---- */
+#exp{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:50}
+#exp[hidden]{display:none}
+#exp .box{background:#0A0A0A;border:1px solid var(--line);color:#FFF;padding:16px 22px;border-radius:12px;font-size:13px;display:flex;gap:12px;align-items:center;max-width:420px}
+#exp .sp{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#FFF;border-radius:99px;animation:sp .8s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+#hidden{position:fixed;left:-20000px;top:0;width:1px;height:1px;overflow:hidden}
+/* ---- phones: page fills the window; the panel slides over it from a settings tab ---- */
+#mtab,.mhead{display:none}
+@media(max-width:760px){
+  body{grid-template-columns:1fr;grid-template-rows:1fr}.top{display:none}.stage{padding:0}
+  .win,.holder,.device{width:100%!important}.device{flex:1}iframe{width:100%!important;box-shadow:none}.stage .handle{display:none!important}
+  #mtab{display:grid;place-items:center;position:fixed;left:0;top:64px;z-index:70;width:44px;height:44px;background:#000;color:#FFF;border-radius:0 12px 12px 0;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  #mtab svg{width:22px;height:22px}
+  .panel{position:fixed;inset:0;z-index:80;border-right:none;transform:translateX(-100%);transition:transform .25s ease;padding-top:12px}.panel.open{transform:none}
+  .mhead{display:flex;align-items:center;gap:8px;margin-bottom:12px}.mhead .chips{flex:1;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .mhead .mclose{flex:none;width:32px;height:32px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:var(--ink)}
+}
+.opt[disabled] .t b{color:#777}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="ttl" id="ttl">Sign in</span>
+  <div class="mid">
+    <span class="chips" id="brands"></span>
+    <span class="div"></span>
+    <span class="seg" id="dev"><button data-w="0">Desktop</button><button data-w="390" class="on">Mobile</button></span>
+    <select id="preset" aria-label="Width preset" title="Exact width — or drag the handle on the preview">
+      <option value="390" selected>390</option><option value="402">402</option><option value="440">440</option><option value="768">768</option><option value="1024">1024</option><option value="1280">1280</option><option value="1440">1440</option><option value="0">Fit</option>
+    </select>
+    <span class="w" id="sizebox"></span>
+    <span class="seg" id="fold"><button data-f="0" class="on">Full page</button><button data-f="1">Fold</button></span>
+  </div>
+  <span class="status" id="status"></span>
+  <button class="export" id="exportbtn" title="Export a zip: full-page mobile (390) and desktop (1440) PNGs, the config and the page code"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 12.5h11"/></svg>Export</button>
+</header>
+<button id="mtab" aria-label="Open the configurator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+<aside class="panel" id="panel">
+  <div class="mhead"><span class="chips" id="brands-m"></span><button class="export" id="exportbtn2">Export</button><button class="mclose" id="mclose" aria-label="Close">✕</button></div>
+  <!-- {{PANEL_HTML}} — page configuration lives here; renderPanel() fills #cfgpanel -->
+  <div id="cfgpanel"></div>
+</aside>
+<main class="stage" id="stage">
+  <div class="win" id="win"><div class="holder">
+    <div class="device" id="device">
+      <div class="sb"><span class="time">9:41</span><span class="island"></span><span class="sys">
+        <svg class="sig" viewBox="0 0 18 12" fill="#000"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></svg>
+        <svg class="wifi" viewBox="0 0 16 12" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M4 7a5.8 5.8 0 0 1 8 0"/><circle cx="8" cy="10.2" r="1" fill="#000" stroke="none"/></svg>
+        <svg class="bat" viewBox="0 0 28 13"><rect x=".5" y=".5" width="24" height="12" rx="3.5" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="2" y="2" width="21" height="9" rx="2" fill="#000"/><path d="M26 4.5v4a2 2 0 0 0 0-4z" fill="#000" fill-opacity=".4"/></svg>
+      </span></div>
+      <iframe id="frame" title="Page preview"></iframe>
+      <div class="tb"><span class="circ"><svg viewBox="0 0 12 20" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 2 10l8 8"/></svg></span><span class="url"><svg class="pg" viewBox="0 0 20 18" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="2" width="14" height="10" rx="1.5"/><path d="M6 6h8M6 9h5M7 16h6"/></svg><span id="urltxt"></span><svg class="rl" viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a6 6 0 1 1-1.8-4.3"/><path d="M15 2v4h-4"/></svg></span><span class="circ"><svg viewBox="0 0 22 6" fill="#000"><circle cx="3" cy="3" r="2.2"/><circle cx="11" cy="3" r="2.2"/><circle cx="19" cy="3" r="2.2"/></svg></span></div>
+      <div class="chin"></div><div class="home"></div>
+    </div>
+    <div class="handle" id="hr" title="Drag to resize width"><i></i></div>
+  </div></div>
+</main>
+<div id="exp" hidden><div class="box"><span class="sp"></span><span id="exptxt">Exporting…</span></div></div>
+<div id="hidden"></div>
+<script>
+/* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
+/* Fascia flags as configured on play (12 Oct 2026). Both off = live falls back to the legacy email + password form. */
+const LIVE={debenhams:{link:true,pw:true},plt:{link:true,pw:false},boohoo:{link:false,pw:true},boohooman:{link:false,pw:false}};
+const P={
+  name:'sign-in',
+  title:'Sign in',
+  page:'page.html',
+  brands:[['debenhams','Debenhams'],['plt','PLT'],['boohoo','boohoo'],['boohooman','boohooMAN']],
+  domains:{debenhams:'debenhams.web.play.dbztech.net',plt:'prettylittlething.web.play.dbztech.net',boohoo:'boohooww.web.play.dbztech.net',boohooman:'boohooman.web.play.dbztech.net'},
+  files:['page.html','README.md'],
+  store:'proto-sign-in',
+  initial:b=>{const f=Object.assign({},LIVE[b]);return {flags:f,primary:f.link?'link':'pw',kill:false,notice:true,screen:'signin',context:'page',
+    social:{apple:true,google:true,facebook:true,klarna:true},klarna:'tile',otp:false,filled:false,usp:true,email:'jake.rayner@debenhams.com'}},
+};
+/* same rules as page.html R() */
+function rules(c){const link=!!c.flags.link,kill=!!c.kill&&link,pw=(c.flags.pw||!link)&&!kill;return {link,pw,kill,legacy:!c.flags.link&&!c.flags.pw,primary:!link?'pw':!pw?'link':c.primary}}
+function renderPanel(host,S,update){
+  const c=S.cfg,r=rules(c),set=(k,v)=>{c[k]=v;update();renderPanel(host,S,update)};
+  const opt=(k,v,t,d,dis)=>`<button class="opt${c[k]===v?' on':''}" data-k="${k}" data-v="${v}"${dis?' disabled style="opacity:.4;cursor:not-allowed"':''}><span class="r"></span><span class="t"><b>${t}</b><span>${d}</span></span></button>`;
+  const sw=(id,on,t,dis)=>`<label class="sw"${dis?' style="opacity:.4;cursor:not-allowed"':''}><input type="checkbox" data-sw="${id}"${on?' checked':''}${dis?' disabled':''}><i></i>${t}</label>`;
+  const live=LIVE[S.brand],same=live.link===c.flags.link&&live.pw===c.flags.pw;
+  const scr=[['signin','Sign in','The form'],['error','Incorrect details','Password mode only — one generic message',r.primary!=='pw'&&!r.pw],['sent','Link sent','“If an account exists…” — same answer either way',!r.link],['forgot','Forgot password','Reset form',!r.pw],['reset','Reset sent','Same non-revealing confirmation',!r.pw]];
+  if(scr.find(x=>x[0]===c.screen&&x[3])){c.screen='signin';setTimeout(update)}
+  host.innerHTML=`<h1>Sign in</h1><p class="intro">One form, two weightings. Fascia flags decide which methods exist; the weighting decides which one leads. Click through inside the page too — links switch method and screens.</p>
+  <div class="card"><h3>Fascia configuration <small>${same?'as on play':'<span style="color:var(--warn)">changed from play</span>'}</small></h3>
+    <div style="display:flex;flex-direction:column;gap:10px">${sw('link',c.flags.link,'Sign in link (email me a link)')}${sw('pw',c.flags.pw,'Password sign in')}</div>
+    <div class="f"><small>Play: link ${live.link?'on':'off'} · password ${live.pw?'on':'off'}</small>${r.legacy?'<small class="warn">Both off: play falls back to the legacy email + password form, so this shows password only.</small>':''}</div></div>
+  <div class="card"><h3>Weighting</h3>
+    ${opt('primary','link','A · Email me a sign in link first','Password sits under the email field as a link',!r.link)}
+    ${opt('primary','pw','B · Email + password first','“Forgot password? | Email me a sign in link” under the fields',!r.pw)}
+    ${r.primary!==c.primary?`<p style="margin:8px 0 0;color:var(--warn)">Showing ${r.primary==='link'?'A':'B'}: ${r.primary==='link'?'password sign in is off':'the sign in link is off'} on this fascia.</p>`:''}
+    ${!r.link||!r.pw?`<p style="margin:8px 0 0">Only one method available — no secondary link is shown.</p>`:''}</div>
+  <div class="card"><h3>Security switch <small>link-first only</small></h3>
+    <p>Lets the business pull password sign in instantly if there’s a security risk. The sign in link becomes the only route; “Sign in with password” and “Forgot password?” disappear.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">${sw('kill',r.kill,'Turn off password sign in',!c.flags.link)}${sw('notice',c.notice,'Tell customers (notice above the form)',!r.kill)}</div>
+    ${!c.flags.link?'<div class="f"><small class="warn">Needs the sign in link on — otherwise nobody could sign in.</small></div>':''}</div>
+  <div class="card"><h3>Screen</h3>${scr.map(([v,t,d,dis])=>opt('screen',v,t,d,dis)).join('')}</div>
+  <div class="card"><h3>Context</h3>${opt('context','page','Page','/login — header, form, footer')}${opt('context','modal','Modal','Header account icon / checkout — same form in a dialog')}</div>
+  <div class="card"><h3>Social sign in</h3><div class="chips">${['apple','google','facebook','klarna'].map(k=>`<button class="chip${c.social[k]?' on':''}" data-soc="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div>
+    <div class="f"><span>Klarna</span><span class="seg" style="align-self:flex-start"><button data-kl="tile" class="${c.klarna==='tile'?'on':''}">Tile in the row</button><button data-kl="wide" class="${c.klarna==='wide'?'on':''}">Full width</button></span></div></div>
+  <div class="card"><h3>Options</h3><div style="display:flex;flex-direction:column;gap:10px">${sw('otp',c.otp,'Link email also carries a 6-digit code',!r.link)}${sw('filled',c.filled,'Show fields filled')}${sw('usp',c.usp,'USP banners (live content)')}</div>
+    <div class="f"><span>Email used on confirmations</span><input data-in="email" value="${c.email.replace(/"/g,'&quot;')}"></div></div>
+  <div class="card"><h3>Rules this design holds</h3><div class="rules">
+    <b>No email-first branching.</b> We never look the email up before the customer chooses a method, so the page can’t reveal which emails have an account or a password.<br>
+    <b>Same answer either way.</b> Link sent / reset sent always read “If an account exists for…”. Wrong password reads “email or password incorrect”.<br>
+    <b>Create account is a link</b> under the CTA, not a second block.<br>
+    <b>Spacing:</b> gap 4 (16px) between blocks · gap 3 (12px) between fields and in the link row · 480 card on grey at ≥1024.</div></div>`;
+  host.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{if(b.disabled)return;set(b.dataset.k,b.dataset.v)});
+  host.querySelectorAll('[data-sw]').forEach(i=>i.onchange=()=>{const k=i.dataset.sw;if(k==='link'||k==='pw'){c.flags[k]=i.checked;if(k==='pw'&&i.checked===false&&c.primary==='pw')c.primary='link';if(k==='link'&&!i.checked)c.kill=false}else c[k]=i.checked;
+    if(k==='kill'&&i.checked)c.primary='link';update();renderPanel(host,S,update)});
+  host.querySelectorAll('[data-soc]').forEach(b=>b.onclick=()=>{c.social[b.dataset.soc]=!c.social[b.dataset.soc];update();renderPanel(host,S,update)});
+  host.querySelectorAll('[data-kl]').forEach(b=>b.onclick=()=>set('klarna',b.dataset.kl));
+  host.querySelectorAll('[data-in]').forEach(i=>i.oninput=()=>{c[i.dataset.in]=i.value;update()});
+}
+/* ==================================================================================================== */
+
+let S={brand:new URLSearchParams(location.search).get('brand')||'',w:390,fold:false,by:{}};
+try{const s=JSON.parse(localStorage.getItem(P.store)||'null');if(s)S=Object.assign(S,s,{brand:S.brand||s.brand})}catch(e){}
+if(!P.brands.some(b=>b[0]===S.brand))S.brand=P.brands[0][0];
+Object.defineProperty(S,'cfg',{get(){return S.by[S.brand]||(S.by[S.brand]=P.initial(S.brand))},set(v){S.by[S.brand]=v},enumerable:false});
+const $=s=>document.querySelector(s),frame=$('#frame'),stage=$('#stage'),win=$('#win'),preset=$('#preset');
+const save=()=>{try{localStorage.setItem(P.store,JSON.stringify({brand:S.brand,w:S.w,fold:S.fold,by:S.by}))}catch(e){}};
+const state=()=>Object.assign({brand:S.brand},S.cfg);
+const src=()=>P.page+'?s='+encodeURIComponent(JSON.stringify(state()))+'&_='+Date.now();
+function update(){save();try{frame.contentWindow.postMessage({protoSet:state()},'*')}catch(e){frame.src=src()}}
+function panel(){renderPanel($('#cfgpanel'),S,()=>{update()})}
+function apply(){
+  if(matchMedia('(max-width:760px)').matches){frame.style.width='100%';win.style.width='100%';return}
+  const avail=stage.clientWidth-16,w=Math.min(S.w||avail,avail);
+  frame.style.width=w+'px';win.style.width=(w+16)+'px';
+  const mobile=w<600;document.body.classList.toggle('fold',S.fold&&mobile);document.documentElement.style.setProperty('--k',(w/390).toFixed(4));
+  document.querySelectorAll('#fold button').forEach(b=>{b.classList.toggle('on',(+b.dataset.f===1)===(S.fold&&mobile));b.disabled=!mobile});
+  $('#urltxt').textContent=P.domains[S.brand]||'';$('#sizebox').textContent=Math.round(w)+'px';
+  document.querySelectorAll('#dev button').forEach(b=>b.classList.toggle('on',(b.dataset.w==='390'&&w<600)||(b.dataset.w==='0'&&w>=600)));
+}
+function brands(){['#brands','#brands-m'].forEach(id=>{$(id).innerHTML=P.brands.map(([v,n])=>`<button class="chip${S.brand===v?' on':''}" data-b="${v}">${n}</button>`).join('');
+  $(id).querySelectorAll('button').forEach(b=>b.onclick=()=>setBrand(b.dataset.b))})}
+function setBrand(b){S.brand=b;history.replaceState(null,'','?brand='+b);$('#ttl').textContent=P.title+' · '+(P.brands.find(x=>x[0]===b)||[0,b])[1];brands();panel();save();frame.src=src();apply()}
+document.querySelectorAll('#dev button').forEach(b=>b.onclick=()=>{S.w=+b.dataset.w;preset.value=String(S.w);save();apply()});
+preset.onchange=()=>{S.w=+preset.value;save();apply()};
+document.querySelectorAll('#fold button').forEach(b=>b.onclick=()=>{S.fold=b.dataset.f==='1';save();apply()});
+$('#hr').addEventListener('pointerdown',e=>{e.preventDefault();document.body.classList.add('dragging');const sx=e.clientX,sw=frame.offsetWidth;
+  const move=ev=>{S.w=Math.max(320,sw+(ev.clientX-sx));preset.value='0';apply()};
+  const up=()=>{document.body.classList.remove('dragging');removeEventListener('pointermove',move);removeEventListener('pointerup',up);save()};
+  addEventListener('pointermove',move);addEventListener('pointerup',up)});
+addEventListener('resize',apply);
+$('#mtab').onclick=()=>$('#panel').classList.add('open');$('#mclose').onclick=()=>$('#panel').classList.remove('open');
+preset.value=[390,402,440,768,1024,1280,1440].includes(S.w)?String(S.w):'0';
+setBrand(S.brand);
+
+/* ---------- Export: one zip — full-page 390 + 1440 PNGs, config.json, the page code ---------- */
+const status=$('#status'),exp=$('#exp'),exptxt=$('#exptxt');
+function loadFrame(w){return new Promise((res,rej)=>{const f=document.createElement('iframe');f.style.cssText=`width:${w}px;height:900px;border:0`;f.src=src();$('#hidden').appendChild(f);
+  const t=setTimeout(()=>rej(new Error('page did not answer protoReady')),20000);
+  const onMsg=e=>{if(e.source!==f.contentWindow||!e.data)return;
+    if(e.data.protoReady){f.contentWindow.postMessage({protoSet:state(),exporting:true},'*');setTimeout(()=>f.contentWindow.postMessage({protoPing:1},'*'),400)}
+    if(e.data.protoPong){clearTimeout(t);removeEventListener('message',onMsg);f.style.height=(e.data.h+20)+'px';setTimeout(()=>res(f),700)}};
+  addEventListener('message',onMsg)})}
+async function shot(w){const f=await loadFrame(w),doc=f.contentDocument,h=doc.documentElement.scrollHeight;
+  const c=await html2canvas(doc.documentElement,{width:w,height:h,windowWidth:w,windowHeight:h,scale:2,useCORS:true,backgroundColor:'#FFFFFF',logging:false});f.remove();
+  return new Promise(r=>c.toBlob(r,'image/png'))}
+const stamp=()=>new Date().toISOString().slice(0,16).replace('T','-').replace(':','');
+async function doExport(){const btns=[$('#exportbtn'),$('#exportbtn2')];btns.forEach(b=>b.disabled=true);exp.hidden=false;
+  try{const name=`${P.name}-${S.brand}-${stamp()}`;
+    exptxt.textContent='Rendering mobile (390) full page…';const m=await shot(390);
+    exptxt.textContent='Rendering desktop (1440) full page…';const d=await shot(1440);
+    exptxt.textContent='Packaging…';const zip=new JSZip(),root=zip.folder(name);
+    root.file(`${name}-mobile-390.png`,m);root.file(`${name}-desktop-1440.png`,d);
+    root.file('config.json',JSON.stringify(Object.assign(state(),{exportedAt:new Date().toISOString()}),null,2));
+    for(const f of P.files){try{const r=await fetch(f);if(r.ok)root.file(f,await r.blob())}catch(e){}}
+    root.file('README.txt',`${P.title} — ${S.brand}\nExported ${new Date().toISOString()}\n\n${name}-mobile-390.png / -desktop-1440.png = full-page designs at this configuration.\nconfig.json = the decision record. Open ${P.page} over HTTP with ?s=<config.json> to reproduce it.\n`);
+    const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.zip';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
+    status.textContent='Exported ✓ zip (390 + 1440 PNGs)';
+  }catch(err){console.error(err);status.textContent='Export failed: '+err.message}
+  finally{btns.forEach(b=>b.disabled=false);exp.hidden=true;setTimeout(()=>status.textContent='',8000)}}
+$('#exportbtn').onclick=doExport;$('#exportbtn2').onclick=doExport;
+</script>
+</body>
+</html>

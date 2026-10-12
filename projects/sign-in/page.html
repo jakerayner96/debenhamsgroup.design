@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../../">
+<title>Sign in · page</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* Page scaffolding only — every visible piece is a DS component (components.css C-19 Sign in, text field, button, link, message, header, USP, footer). */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+#app{position:relative;min-height:100vh}
+.pgfoot .ft{margin:0}
+.ghost{padding:var(--gap-6) var(--gap-4);display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap-4) var(--gap-2)}
+@media(min-width:1024px){.ghost{grid-template-columns:repeat(4,1fr);padding:var(--gap-8) 40px;max-width:1440px;margin:0 auto}}
+.ghost i{display:block;aspect-ratio:3/4;background:var(--surface-media)}
+#ct{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;transition:.2s;background:#000;color:#FFF;font-size:13px;padding:10px 16px;border-radius:var(--radius-default);z-index:999;pointer-events:none;white-space:nowrap}
+#ct.on{opacity:1;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="ct"></div>
+<script src="assets/ds/catalogue.js"></script>
+<script src="assets/ds/usp-live.js"></script>
+<script src="assets/ds/usp.js"></script>
+<script>
+/* ---- page contract with the shell (review-prototype) ----
+   in:  ?s=<json state>  ·  {protoSet:state, exporting?}  ·  {protoPing:1}      out: {protoReady:1} · {protoPong:1,h}
+   Clicks inside the page move between screens locally (LOCAL); any change from the panel resets to the panel's screen. */
+const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C&&C.find(x=>x.slug===slug);return c?c.variants[i].html:''};
+const strip=h=>h.replace(/ style="width:[^"]*"/,'');
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const desk=()=>innerWidth>=1024;
+const NAME={debenhams:'Debenhams',plt:'PrettyLittleThing',boohoo:'boohoo',boohooman:'boohooMAN'};
+let S={brand:'debenhams',flags:{link:true,pw:true},kill:false,notice:true,primary:'link',screen:'signin',context:'page',
+  social:{apple:true,google:true,facebook:true,klarna:true},klarna:'tile',otp:false,filled:false,usp:true,email:'jake.rayner@debenhams.com'};
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes — never decode twice
+let EXPORTING=false,LOCAL={};
+
+/* ---- the rules (the panel enforces the same ones) ----
+   link  = fascia has "sign in link" on.
+   pw    = password sign in available: the fascia flag, or the legacy fallback when the link is off (live: both off = the old password form) — and never while the security switch is on. */
+function R(){const link=!!S.flags.link,kill=!!S.kill&&link,pw=(S.flags.pw||!link)&&!kill;
+  const primary=!link?'pw':!pw?'link':S.primary;return {link,pw,kill,primary}}
+
+function header(){
+  let h=strip(desk()?V('header',1):V('header',0)).replace(/ style="[^"]*border[^"]*"/,'').replace(/assets\/brands\/debenhams\.svg/,`assets/brands/${S.brand}.svg`);
+  h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
+  if(S.brand==='plt')h=h.replace('icons/search.svg','icons/plt-search.svg').replace('icons/account.svg','icons/plt-account.svg').replace('icons/heart-24.svg','icons/plt-heart.svg').replace('icons/bag.svg','icons/plt-bag.svg');
+  else if(S.brand==='boohooman')h=h.replace('icons/heart-24.svg','icons/bookmark.svg');
+  if(S.usp)h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
+  return h;
+}
+
+const fld=(type,label,val,extra='')=>type==='password'
+  ?`<label class="fld fld--pw"><input type="password" placeholder=" " autocomplete="current-password" value="${val?'••••••••••':''}"><span class="lbl">${label}</span><button class="eye" data-act="eye" aria-label="Show password"><img src="assets/ds/icons/lib/icons-show.svg" alt=""></button></label>`
+  :`<label class="fld"><input type="email" placeholder=" " autocomplete="email" inputmode="email" value="${val?esc(S.email):''}" ${extra}><span class="lbl">${label}</span></label>`;
+
+function social(){const s=S.social||{},tiles=[];
+  if(s.apple)tiles.push(['Apple','<img src="assets/ds/icons/lib/social-apple.svg" alt="">']);
+  if(s.google)tiles.push(['Google','<img src="assets/ds/icons/payments/gpay-g.svg" alt="">']);
+  if(s.facebook)tiles.push(['Facebook','<img src="assets/ds/icons/lib/social-facebook.svg" alt="">']);
+  const wide=s.klarna&&S.klarna==='wide';if(s.klarna&&!wide)tiles.push(['Klarna','<img src="assets/ds/icons/lib/pay-klarna.svg" alt="" style="width:34px">']);
+  if(!tiles.length&&!wide)return '';
+  return `<div class="or-div">or</div><div class="soc-col">${tiles.length?`<div class="soc-row">${tiles.map(([n,i])=>`<button class="soc" data-act="soc" data-n="${n}" aria-label="Sign in with ${n}">${i}</button>`).join('')}</div>`:''}${wide?`<button class="soc soc--wide soc--klarna" data-act="soc" data-n="Klarna">Sign in with <img src="assets/ds/icons/payments/klarna-badge.svg" alt="Klarna"></button>`:''}</div>`}
+
+const foot0=()=>V('footer',0).replace(/width:1000px;?/,'').replace(/assets\/brands\/debenhams\.svg/g,`assets/brands/${S.brand}.svg`);
+const foot=()=>`<p class="auth-alt">New to ${NAME[S.brand]}? <a class="lnk" href="#" data-act="create">Create an account</a></p>${social()}<p class="auth-family">You can now sign in and shop with one account across our entire <a href="#" data-act="family">family of brands</a>.</p>`;
+const title=(t)=>`<div class="auth-hd"><h1 class="auth-h">${t}</h1>${S.context==='modal'?'<button class="auth-x" data-act="close" aria-label="Close"></button>':''}</div>`;
+const notice=r=>r.kill&&S.notice?`<div class="msg msg--neutral"><i></i><div class="body"><span>Password sign in is temporarily unavailable. Enter your email and we’ll send you a secure sign in link instead.</span></div></div>`:'';
+
+function screen(){const r=R(),mode=LOCAL.mode||r.primary,scr=LOCAL.screen||S.screen,fill=S.filled||scr!=='signin';
+  /* link sent / reset sent — identical whether or not the account exists */
+  if(scr==='sent'||scr==='reset'){const reset=scr==='reset';
+    return `${title('Check your inbox')}
+      <p class="auth-sub">If an account exists for <b>${esc(S.email)}</b>, we’ve sent ${reset?'a link to reset your password':'a sign in link'}. It expires in 15 minutes.</p>
+      ${!reset&&S.otp?`<p class="auth-sub" style="margin:0">Or enter the 6-digit code from the email to sign in on this device.</p><div class="otp">${'<input inputmode="numeric" maxlength="1" aria-label="Digit">'.repeat(6)}</div>`:''}
+      <div class="lnk-row"><button class="lnk" data-act="resend">${reset?'Resend email':'Resend link'}</button><span class="sep"></span><button class="lnk" data-act="back">Use a different email</button></div>${!reset&&r.pw?'<div class="lnk-row"><button class="lnk" data-act="pw">Sign in with password instead</button></div>':''}
+      <p class="auth-fine">Can’t see it? Check your junk folder.</p>`}
+  if(scr==='forgot'&&r.pw)return `${title('Reset your password')}<p class="auth-sub">Enter your email and we’ll send you a link to reset your password.</p>
+      <div class="auth-fields">${fld('email','Email address',fill)}</div><button class="bd pri" data-act="reset">Send reset link</button>
+      <div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="back">Back to sign in</button>${r.link?'<span class="sep"></span><button class="lnk" data-act="link">Email me a sign in link</button>':''}</div>`;
+  const err=scr==='error'&&mode==='pw'?`<div class="msg msg--error"><i></i><div class="body"><span>The email or password you entered is incorrect. Try again${r.link?', or email yourself a sign in link':', or reset your password'}.</span></div></div>`:'';
+  if(mode==='link')return `${title('Sign in')}${notice(r)||'<p class="auth-sub">We’ll email you a one-time link — no password to type or remember. A safer way to sign in.</p>'}
+      <div class="auth-fields">${fld('email','Email address',fill)}</div>
+      ${r.pw?'<div class="lnk-row"><button class="lnk" data-act="pw">Sign in with password instead</button></div>':''}
+      <button class="bd pri" data-act="send">Email me a sign in link</button>${foot()}`;
+  return `${title('Sign in')}${err}
+      <div class="auth-fields">${fld('email','Email address',fill)}${fld('password','Password',fill)}</div>
+      <div class="lnk-row"><button class="lnk" data-act="forgot">Forgot password?</button>${r.link?'<span class="sep"></span><button class="lnk" data-act="link">Email me a sign in link</button>':''}</div>
+      <button class="bd pri" data-act="signin">Sign in</button>${foot()}`;
+}
+
+function render(){
+  document.documentElement.setAttribute('data-brand',S.brand);
+  const form=`<div class="auth" id="auth">${screen()}</div>`;
+  document.getElementById('app').innerHTML=S.context==='modal'
+    ?`${header()}<div class="ghost">${'<i></i>'.repeat(8)}</div><div class="pgfoot">${foot0()}</div><div class="auth-modal">${form}</div>`
+    :`${header()}<main class="auth-pg">${form}</main><div class="pgfoot">${foot0()}</div>`;
+  if(S.usp&&window.DG_uspMount)DG_uspMount();
+}
+render();
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;LOCAL={};render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+
+const toast=t=>{const c=document.getElementById('ct');c.textContent=t;c.classList.add('on');clearTimeout(c._h);c._h=setTimeout(()=>c.classList.remove('on'),1800)};
+const go=o=>{LOCAL=Object.assign(LOCAL,o);render();if(!desk()&&S.context!=='modal')scrollTo(0,0)};
+document.addEventListener('input',e=>{if(e.target.type==='email'&&e.target.value)S.email=e.target.value;
+  if(e.target.closest('.otp')&&e.target.value){const n=e.target.nextElementSibling;if(n)n.focus();else{toast('Code accepted → signed in')}}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');
+  if(!b){if(e.target.closest('a[href="#"],button'))e.preventDefault();return}
+  e.preventDefault();const a=b.dataset.act;
+  ({eye:()=>{const i=b.parentElement.querySelector('input'),on=i.type==='password';i.type=on?'text':'password';if(on&&/•/.test(i.value))i.value='Summer2026!';b.querySelector('img').src=`assets/ds/icons/lib/icons-${on?'hide':'show'}.svg`;b.setAttribute('aria-label',on?'Hide password':'Show password')},
+    pw:()=>go({mode:'pw',screen:'signin'}),link:()=>go({mode:'link',screen:'signin'}),
+    send:()=>go({screen:'sent'}),forgot:()=>go({screen:'forgot'}),reset:()=>go({screen:'reset'}),back:()=>go({screen:'signin'}),
+    signin:()=>toast('→ Signed in'),resend:()=>toast('Sent again — the previous link no longer works'),
+    create:()=>toast('→ Create an account page'),family:()=>toast('→ Our family of brands'),soc:()=>toast('→ Sign in with '+b.dataset.n),close:()=>toast('Close the dialog')}[a]||(()=>{}))()});
+</script>
+</body>
+</html>
