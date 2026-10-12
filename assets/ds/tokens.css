@@ -17,7 +17,7 @@
   --surface-sunken:#FAFAFA;--surface-raised:#FFF;--surface-inverse:#0F0F0F;--surface-overlay:rgba(0,0,0,.6);
   --surface-action-disabled:#E7E7E7;--surface-error:#FFF2F2;--surface-success:#EAF6EA;--surface-warning:#FFFBE6;
   /* border */
-  --border-subtle:#E7E7E7;--border-default:#D6D6D6;--border-strong:#767676;--border-error:#D33F3F;
+  --border-subtle:#E7E7E7;--border-default:#D6D6D6;--border-strong:#767676;--border-control:#B5B5B5; /* Figma Grey 3 — checkbox box + radio ring (669-892 / 669-2125) */--border-error:#D33F3F;
   /* icon — may use Grey 4 (not text-contrast bound) */
   --icon-primary:#0F0F0F;--icon-secondary:#767676;--icon-disabled:#B5B5B5;--icon-inverse:#FFF;--icon-on-action:#FFF;
   /* media + callout surfaces (product imagery placeholder Grey 1 · Taggstar bar Grey 6) */

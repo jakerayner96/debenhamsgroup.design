@@ -116,15 +116,15 @@ const DG_CATALOGUE = [
   summary:'24px box, 3px radius, filled with the brand action colour when on.',
   use:['Multiple choice, consent, add-ons (protection, gift wrap).'],
   avoid:['A checkbox for an either/or choice — that is a radio.'],
-  anatomy:['24px · 1px --border-strong · on = --icon-action fill + white tick','Row variant aligns the label at 14/20; .chk-row--lg top-aligns long copy'],
+  anatomy:['24px · radius 3 · off = 1px --border-control (Grey 3 #B5B5B5) on white','On = --icon-action fill (Debenhams #00787D) + the white 1pt Icons / Tick — exact Figma path, Figma 669-892 / 5915-6388','Box → label gap 2 (8px); .chk-row--lg top-aligns long copy'],
   variants:[{name:'On / off', html:'<div style="display:flex;flex-direction:column;gap:12px"><div class="chk-row"><button class="chk on" aria-checked="true"></button>Add Worry-Free Purchase® for £3.18</div><div class="chk-row"><button class="chk" aria-checked="false"></button>Use my delivery address for billing</div></div>'}],
   dev:{title:'—', status:'ours', note:'No checkbox atom in the dev Storybook (checkout forms use native inputs). Adopt ours.'} },
 
 { slug:'radio', name:'Radio', group:'Forms', tier:'atom', css:'.rad',
-  summary:'26px ring with a 14px dot. One of a set.',
+  summary:'24px ring with a 13.7px dot in the CTA colour. One of a set.',
   use:['Delivery options, payment method, sort order in a sheet.'],
   avoid:['A single radio on its own.'],
-  anatomy:['26px ring · 14px dot in --icon-action'],
+  anatomy:['24px · 1px --border-control ring (Grey 3 #B5B5B5) on white — stays Grey 3 when selected','Selected dot r 6.86 (13.7px) in --icon-action — the CTA colour (Debenhams #00787D), never black · Figma 669-2125','Ring → label gap 4 (16px) · row 44px'],
   variants:[{name:'Set', html:'<div style="display:flex;flex-direction:column;gap:12px"><div class="rad-row"><button class="rad on" aria-checked="true"></button>Recommended</div><div class="rad-row" style="padding-top:0"><button class="rad" aria-checked="false"></button>Lowest price</div></div>'}],
   dev:{title:'—', status:'ours', note:'Not in the dev Storybook. Adopt ours.'} },
 

@@ -446,16 +446,20 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .fsel{position:relative;display:flex;align-items:center;height:50px;padding:0 44px 0 16px;background:var(--surface-raised);border:1px solid var(--border-strong);border-radius:var(--radius-default);font-size:16px;color:var(--text-primary);cursor:pointer;box-sizing:border-box}
 .fsel::after{content:"";position:absolute;right:16px;top:50%;width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg)}
 .fsel select{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer;font-size:16px} /* native select drives it (mobile-first pattern) */
-.chk{width:24px;height:24px;flex:none;border-radius:calc(var(--radius-default)*.75);border:1px solid var(--border-strong);background:var(--surface-raised);display:grid;place-items:center;padding:0;cursor:pointer}
-.chk::after{content:"";width:12px;height:6px;border-left:2px solid #FFF;border-bottom:2px solid #FFF;transform:translateY(-2px) rotate(-45deg);opacity:0}
+/* Checkbox — Figma DS 669-892 (box 5915-6387, tick 5915-6388 = Icons / Tick, 1pt): 24px, radius 3 (brand-scaled), 1px Grey 3 when off;
+   on = action-colour fill with the white 1pt tick, the exact Figma path on the 24 grid (same tick as icons-tick-circle-fill). */
+.chk{width:24px;height:24px;flex:none;position:relative;border-radius:calc(var(--radius-default)*.75);border:1px solid var(--border-control,#B5B5B5);background:var(--surface-raised);padding:0;cursor:pointer}
+.chk::after{content:"";position:absolute;inset:-1px;background:var(--icon-on-action,#FFF);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.33334 12.6667L9.66668 16L17.6667 8' fill='none' stroke='%23000' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/24px 24px no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.33334 12.6667L9.66668 16L17.6667 8' fill='none' stroke='%23000' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/24px 24px no-repeat;opacity:0}
 .chk.on,.chk[aria-checked="true"]{background:var(--icon-action);border-color:var(--icon-action)}
 .chk.on::after,.chk[aria-checked="true"]::after{opacity:1}
-.chk-row{display:flex;align-items:center;gap:8px;font-size:14px}
+.chk-row{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:14px} /* gap 2 (8px) box → label */
 .chk-row--lg{align-items:flex-start;gap:16px}
-.rad{width:26px;height:26px;flex:none;border-radius:99px;border:2px solid var(--border-default);background:var(--surface-raised);display:grid;place-items:center;padding:0;cursor:pointer}
-.rad::after{content:"";width:14px;height:14px;border-radius:99px;background:var(--icon-primary);opacity:0}
-.rad.on,.rad[aria-checked="true"]{border-color:var(--icon-primary)}.rad.on::after,.rad[aria-checked="true"]::after{opacity:1}
-.rad-row{display:flex;align-items:center;gap:16px;padding:12px 0;font-size:16px}
+/* Radio — Figma DS 669-2125 (5915-3370 on / 5915-3372 off): 24px, 1px Grey 3 ring on white (it stays Grey 3 when selected);
+   selected = a 13.71px dot (r 6.857) in the CTA / action colour — not black. */
+.rad{width:24px;height:24px;flex:none;border-radius:99px;border:1px solid var(--border-control,#B5B5B5);background:var(--surface-raised);display:grid;place-items:center;padding:0;cursor:pointer}
+.rad::after{content:"";width:13.714px;height:13.714px;border-radius:99px;background:var(--icon-action);opacity:0}
+.rad.on::after,.rad[aria-checked="true"]::after{opacity:1}
+.rad-row{display:flex;align-items:center;gap:var(--gap-4,16px);padding:var(--gap-3,12px) 0;font-size:16px} /* gap 4 (16px) ring → label, row 44px */
 .tog{width:44px;height:24px;flex:none;border-radius:99px;background:var(--border-default);border:none;position:relative;cursor:pointer;transition:background var(--dur-base)}
 .tog::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:99px;background:#FFF;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left var(--dur-base)}
 .tog.on,.tog[aria-checked="true"]{background:var(--icon-action)}.tog.on::after,.tog[aria-checked="true"]::after{left:22px}
