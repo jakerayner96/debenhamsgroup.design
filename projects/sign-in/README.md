@@ -13,7 +13,7 @@ New sign-in page across the fascias, built on DS components. Each fascia starts 
 | boohooMAN | boohooman.web.play.dbztech.net | off | off → play falls back to the legacy email + password form |
 
 Two weightings:
-- **A · Link first.** Email field, then **Email me a sign in link**, then "Sign in with password instead" as a link below the button.
+- **A · Link first.** Email field, then **Send link**, then "Sign in with password instead" as a link below the button.
 - **B · Password first.** Email and password, then the "Forgot password? | Email me a sign in link" link row (Checkout 2026 pattern), then **Sign in**.
 
 Clicking the secondary link swaps the form in place. Create account is a link under the CTA (Gymshark pattern). The separate "New to X?" block is gone.
@@ -25,7 +25,7 @@ A signed-out customer heading to checkout (live Debenhams /checkout, 12 Oct 2026
 
 ## Rules
 - **No email-first branching.** We never ask for the email first and then branch to a password field or create account, because that tells an attacker which emails have an account or a password. The customer picks the method before we look anything up.
-- **The same answer either way.** Link sent and reset sent are one message: the title plus "If the email address entered matches our records, we’ll send you a unique link…". No links; back is the browser’s back button. A wrong password reads "The email or password you entered is incorrect".
+- **The same answer either way.** Link sent and reset sent ("We’ve Emailed You a Sign-In Link" / "…a Password Reset Link", "Use the link we sent to [email]… It expires in [X] minutes.", then Resend link | Use a different email) are the same screen for every email entered, so they never reveal whether an account exists. A wrong password reads "The email or password you entered is incorrect".
 - **Switching password off.** On A, the Password sign in switch drops "Sign in with password instead", "Forgot password?" and the reset screens, so the link is the only way in. Use it if there is a security risk. On B the switch is locked on.
 - If only one method exists, no secondary link is shown.
 

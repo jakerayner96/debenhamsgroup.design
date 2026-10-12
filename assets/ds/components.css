@@ -868,7 +868,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .auth-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--gap-4,16px)}
 .auth-h{font-size:24px;line-height:30px;font-weight:var(--w-strong);margin:0}
 .auth-sub{font-size:14px;line-height:20px;margin:calc(var(--gap-2,8px) * -1) 0 0;color:var(--text-primary)}
-.auth-sub b{font-weight:var(--w-strong);word-break:break-all}
+.auth-sub b{font-weight:var(--w-strong);overflow-wrap:anywhere}
 .auth-x{width:24px;height:24px;flex:none;border:0;background:none;padding:0;cursor:pointer;position:relative;color:var(--text-primary)}
 .auth-x::before,.auth-x::after{content:"";position:absolute;left:3px;top:11px;width:18px;height:1.5px;background:currentColor;transform:rotate(45deg)}.auth-x::after{transform:rotate(-45deg)}
 .auth-fields{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
