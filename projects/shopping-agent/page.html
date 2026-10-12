@@ -131,11 +131,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 @media(min-width:1024px){.cp-hero .ov{left:48px;top:48px}}
 .cp-hero .ov .aichip{background:rgba(255,255,255,.95);border-color:transparent}
 
-/* ---------- review outline (the deck's dashed AI boxes) ---------- */
-body.outline [data-feat]{outline:1.5px dashed #0D99FF;outline-offset:3px;position:relative}
-body.outline [data-feat]::before{content:attr(data-tag);position:absolute;left:-3px;top:-22px;z-index:5;font:600 10px/1 'Google Sans',system-ui,sans-serif;letter-spacing:.02em;color:#FFF;background:#0D99FF;padding:4px 6px;border-radius:3px;white-space:nowrap;pointer-events:none}
-body.outline .ag-fab[data-feat]::before{top:-24px;left:auto;right:0}
-.ag-fab{position:fixed!important}.cp-hero .ov{position:absolute!important}   /* the outline's position:relative must not unpin these */
+/* ---------- jump-to highlight (panel navigation) ---------- */
 .flash{animation:flash 1.6s ease 1}
 @keyframes flash{0%,100%{box-shadow:0 0 0 0 rgba(13,153,255,0)}25%,60%{box-shadow:0 0 0 6px rgba(13,153,255,.45)}}
 
@@ -217,7 +213,7 @@ let S={brand:'debenhams',page:'pdp',on:{},launcher:'search',pdpPos:'glance',pdpD
   pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
   ssPos:'image',vtoPos:'image',vtoLabel:'Try it on',nbaPos:'top',nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
-  cpPos:'module',search:false,chat:false,outline:true,agent:{},focus:null};
+  cpPos:'module',search:false,chat:false,agent:{},focus:null};
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes
 const ON=f=>S.on[f]!==false;
 let EXPORTING=false,BASE=null,CFG=null,CHAT={open:false,msgs:[]};
@@ -229,7 +225,7 @@ function spk(sz=18,two=true){const id='g'+(++gid),p=E().primary,a=E().accent;
   return `<svg class="spk" width="${sz}" height="${sz}" viewBox="${two?'0 0 24 24':'2.5 2.5 15 15'}" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="${p}"/><stop offset="55%" stop-color="${p}"/><stop offset="100%" stop-color="${a}"/></linearGradient></defs><path fill="${fill}" d="M10 2.5l1.9 5.6 5.6 1.9-5.6 1.9L10 17.5l-1.9-5.6L2.5 10l5.6-1.9L10 2.5z"/>${two?`<path fill="${fill}" d="M18.5 14l.95 2.55L22 17.5l-2.55.95L18.5 21l-.95-2.55L15 17.5l2.55-.95L18.5 14z"/>`:''}</svg>`}
 const E=()=>Object.assign({},AG.DEF,S.agent||{});
 const ask=()=>'Ask '+E().name;
-/* data-feat = the feature (panel navigation + outline); data-q = the query sent to the agent (window.googleAgent.sendQuery) */
+/* data-feat = the feature (panel navigation + jump-to highlight); data-q = the query sent to the agent (window.googleAgent.sendQuery) */
 const F=(f,opt)=>`data-feat="${f}" data-tag="${esc(TAG[f]+(opt?' · '+opt:''))}"`;
 const TAG={launcher:'Entry point',pdpPrompts:'PDP prompts',shopSimilar:'Shop similar',vto:'Virtual try-on',nba:'Next best action',autocomplete:'Autocomplete',custom:'Custom prompts'};
 const L=(k,v)=>({launcher:{search:'A',pill:'B',float:'C'},pdpPrompts:{glance:'A',aboveCta:'B',belowCta:'C'},shopSimilar:{image:'A',cta:'B',card:'C'},vto:{image:'A',cta:'B'},nba:{top:'A',filter:'B',grid:'C'},autocomplete:{replace:'A',above:'B',below:'C'},custom:{module:'A',strip:'B',hero:'C'}}[k]||{})[v]||'';
@@ -316,7 +312,7 @@ function pdp(){
     ${S.pdpAsk?`<div class="prompt-item"><button class="prompt-link ask" data-q=""><span class="prompt-link__icon">${spk(16)}</span><span class="prompt-link__text">Ask anything</span></button></div>`:''}</div></div>`:'';
   const ssBtn=ON('shopSimilar')?`<button class="imgchip" ${F('shopSimilar','A · on image')} data-q="Shop similar">${spk(16)}Shop similar</button>`:'';
   const vtoBtn=ON('vto')?`<button class="imgchip" ${F('vto','A · on image')} data-q="Try it on" data-vto="1">${spk(16)}${esc(S.vtoLabel)}</button>`:'';
-  const gal=`<div class="gal"><div class="th"><img class="on" src="${IMG(1)}" alt=""><img src="${IMG(1)}" alt="" style="object-position:50% 15%;transform:scale(1.4)"><img src="${IMG(1)}" alt="" style="object-position:50% 85%"></div>
+  const gal=`<div class="gal"><div class="th"><img class="on" src="${IMG(1)}" alt=""><img src="${IMG(1)}" alt="" style="object-position:50% 15%"><img src="${IMG(1)}" alt="" style="object-position:50% 85%"></div>
     <div class="main"><img src="${IMG(1)}" alt="">${S.ssPos==='image'&&ssBtn?`<span class="onimg br">${ssBtn}</span>`:''}${S.vtoPos==='image'&&vtoBtn?`<span class="onimg tl">${vtoBtn}</span>`:''}<div class="dots"><i></i><i></i><i></i><i></i></div></div></div>`;
   const ctaRow=[S.vtoPos==='cta'&&ON('vto')?`<button class="lnkbtn" ${F('vto','B · under CTA')} data-q="Try it on" data-vto="1">${spk(16)}${esc(S.vtoLabel)}</button>`:'',S.ssPos==='cta'&&ON('shopSimilar')?`<button class="lnkbtn" ${F('shopSimilar','B · under CTA')} data-q="Shop similar">${spk(16)}Shop similar</button>`:''].filter(Boolean);
   const info=`<div class="buy"><div class="prow"><div><div class="pbrand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div></div><img src="assets/ds/icons/heart-24.svg" alt="" width="24"></div>
@@ -378,7 +374,6 @@ const PAGES={home,plp,pdp};
 function render(){
   document.documentElement.setAttribute('data-brand','debenhams');
   if(window.HOME_CSS&&!document.getElementById('homecss')){const st=document.createElement('style');st.id='homecss';st.textContent=HOME_CSS;document.head.appendChild(st)}
-  document.body.classList.toggle('outline',!!S.outline&&!EXPORTING);   /* review aid only — never in an export */
   if(CFG){const r=document.documentElement.style,e=E();r.setProperty('--ai-primary',e.primary);r.setProperty('--ai-chip-bg',e.chipBg);r.setProperty('--ai-chip-border',e.chipBorder);r.setProperty('--ai-chip-radius',e.chipRadius+'px')}
   gid=0;
   const fab=ON('launcher')&&S.launcher==='float'?`<button class="ag-fab" ${F('launcher','C · floating')} data-q="">${spk(20)}${ask()}</button>`:'';

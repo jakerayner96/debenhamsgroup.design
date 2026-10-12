@@ -194,7 +194,7 @@ const P={
     pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
     ssPos:'image',vtoPos:'image',vtoLabel:'Try it on',nbaPos:'top',nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
     acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
-    cpPos:'module',search:false,chat:false,outline:true,agent:{},focus:null}),
+    cpPos:'module',search:false,chat:false,agent:{},focus:null}),
 };
 let BASE=null;fetch('base-config.json').then(r=>r.json()).then(b=>{BASE=b;panel()});
 const cfgFile=()=>AG.build(BASE,S.cfg.agent);
@@ -232,8 +232,7 @@ function renderPanel(host,S,update){
   <div class="card"><h3>Page</h3><div class="chips" id="pg">${[['home','Home'],['plp','PLP · Dresses'],['pdp','PDP']].map(([v,n])=>`<button class="chip${c.page===v?' on':''}" data-v="${v}">${n}</button>`).join('')}</div>
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
       <label class="sw"><input type="checkbox" id="t-search"${c.search?' checked':''}><i></i>Search open (autocomplete)</label>
-      <label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Chat window open</label>
-      <label class="sw"><input type="checkbox" id="t-out"${c.outline?' checked':''}><i></i>Outline agent features (not exported)</label></div></div>
+      <label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Chat window open</label></div></div>
   <div class="card"><h3>Features <small>${FEATS.filter(x=>c.on[x.k]!==false).length} on</small></h3>
     ${FEATS.map(x=>`<div class="feat${x.k===c.feat?' on':''}" data-k="${x.k}"><button class="fn"><b>${x.n}</b><span>${x.pg==='all'?'All pages':x.pg==='search'?'Search':x.pg.toUpperCase()}${x.opts?' · '+(x.opts.find(o=>o[0]===c[POSKEY[x.k]])||[,''])[1].split(' · ')[0]:''}</span></button>${x.k==='chat'?'':`<label class="sw"><input type="checkbox" data-on="${x.k}"${c.on[x.k]!==false?' checked':''}><i></i></label>`}</div>`).join('')}
     <p style="margin:10px 0 0">Not in this phase: ${OUT.join(' · ')}.</p></div>
@@ -270,7 +269,6 @@ function renderPanel(host,S,update){
   host.querySelectorAll('#pg .chip').forEach(b=>b.onclick=()=>{c.page=b.dataset.v;go()});
   host.querySelector('#t-search').onchange=ev=>{c.search=ev.target.checked;go()};
   host.querySelector('#t-chat').onchange=ev=>{c.chat=ev.target.checked;go()};
-  host.querySelector('#t-out').onchange=ev=>{c.outline=ev.target.checked;go()};
   host.querySelectorAll('.feat .fn').forEach(b=>b.onclick=()=>{const k=b.parentNode.dataset.k;c.feat=k;
     if(k==='autocomplete'){c.search=true}else if(c.feat!=='autocomplete'&&k!=='launcher')c.search=false;
     if(k==='chat')c.chat=true;else c.chat=false;
