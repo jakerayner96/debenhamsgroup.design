@@ -1,4 +1,4 @@
-# 30 · Session log 12 Oct 2026 (b) — Sign in prototype
+# 30 · Session log 12 Oct 2026 (b): Sign in prototype
 
 `projects/sign-in/` (shell `index.html` + `page.html`, README has the brief, the flag table, Figma nodes and live findings).
 

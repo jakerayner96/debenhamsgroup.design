@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sign in · configurator — All Brands</title>
+<title>Sign in · configurator, All Brands</title>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 /* ============================================================
-   Review shell — Jake's standard prototype format (model: Core PDP 2026, jakerayner96.github.io/core-pdp-2026).
+   Review shell, Jake's standard prototype format (model: Core PDP 2026, jakerayner96.github.io/core-pdp-2026).
    TOP BAR = window controls: fascia chips · Desktop/Mobile · width preset · live width · Full page/Fold · Export.
-   LEFT PANEL = page configuration (project-specific — fill renderPanel()).
+   LEFT PANEL = page configuration (project-specific, fill renderPanel()).
    STAGE = the page in an iframe, drag handle on its right edge to resize; Fold = iPhone Safari frame.
    EXPORT = one zip: <name>-mobile-390.png + <name>-desktop-1440.png (full page) + config.json + the page code.
    ============================================================ */
@@ -122,7 +122,7 @@ body.fold .device iframe{box-shadow:none}
     <span class="chips" id="brands"></span>
     <span class="div"></span>
     <span class="seg" id="dev"><button data-w="0">Desktop</button><button data-w="390" class="on">Mobile</button></span>
-    <select id="preset" aria-label="Width preset" title="Exact width — or drag the handle on the preview">
+    <select id="preset" aria-label="Width preset" title="Exact width, or drag the handle on the preview">
       <option value="390" selected>390</option><option value="402">402</option><option value="440">440</option><option value="768">768</option><option value="1024">1024</option><option value="1280">1280</option><option value="1440">1440</option><option value="0">Fit</option>
     </select>
     <span class="w" id="sizebox"></span>
@@ -134,7 +134,7 @@ body.fold .device iframe{box-shadow:none}
 <button id="mtab" aria-label="Open the configurator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 <aside class="panel" id="panel">
   <div class="mhead"><span class="chips" id="brands-m"></span><button class="export" id="exportbtn2">Export</button><button class="mclose" id="mclose" aria-label="Close">✕</button></div>
-  <!-- {{PANEL_HTML}} — page configuration lives here; renderPanel() fills #cfgpanel -->
+  <!-- {{PANEL_HTML}}, page configuration lives here; renderPanel() fills #cfgpanel -->
   <div id="cfgpanel"></div>
 </aside>
 <main class="stage" id="stage">
@@ -155,7 +155,7 @@ body.fold .device iframe{box-shadow:none}
 <div id="exp" hidden><div class="box"><span class="sp"></span><span id="exptxt">Exporting…</span></div></div>
 <div id="hidden"></div>
 <script>
-/* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
+/* ======================= PROJECT CONFIG, the only part a new prototype edits ======================= */
 /* Fascia flags as configured on play (12 Oct 2026). Both off = live falls back to the legacy email + password form. */
 const LIVE={debenhams:{link:true,pw:true},plt:{link:true,pw:false},boohoo:{link:false,pw:true},boohooman:{link:false,pw:false}};
 const P={
@@ -176,9 +176,9 @@ function renderPanel(host,S,update){
   const opt=(k,v,t,d,dis)=>`<button class="opt${c[k]===v?' on':''}" data-k="${k}" data-v="${v}"${dis?' disabled style="opacity:.4;cursor:not-allowed"':''}><span class="r"></span><span class="t"><b>${t}</b><span>${d}</span></span></button>`;
   const sw=(id,on,t,dis)=>`<label class="sw"${dis?' style="opacity:.4;cursor:not-allowed"':''}><input type="checkbox" data-sw="${id}"${on?' checked':''}${dis?' disabled':''}><i></i>${t}</label>`;
   const live=LIVE[S.brand],same=live.link===c.flags.link&&live.pw===c.flags.pw;
-  const scr=[['signin','Sign in','The form'],['error','Incorrect details','Password mode only — one generic message',r.primary!=='pw'&&!r.pw],['sent','Link sent','“If an account exists…” — same answer either way',!r.link],['forgot','Forgot password','Reset form',!r.pw],['reset','Reset sent','Same non-revealing confirmation',!r.pw]];
+  const scr=[['signin','Sign in','The form'],['error','Incorrect details','Password mode only, one generic message',r.primary!=='pw'&&!r.pw],['sent','Link sent','“If an account exists…”, the same answer either way',!r.link],['forgot','Forgot password','Reset form',!r.pw],['reset','Reset sent','Same non-revealing confirmation',!r.pw]];
   if(scr.find(x=>x[0]===c.screen&&x[3])){c.screen='signin';setTimeout(update)}
-  host.innerHTML=`<h1>Sign in</h1><p class="intro">One form, two weightings. Fascia flags decide which methods exist; the weighting decides which one leads. Click through inside the page too — links switch method and screens.</p>
+  host.innerHTML=`<h1>Sign in</h1><p class="intro">One form, two weightings. Fascia flags decide which methods exist; the weighting decides which one leads. Links inside the page switch method and screen too.</p>
   <div class="card"><h3>Fascia configuration <small>${same?'as on play':'<span style="color:var(--warn)">changed from play</span>'}</small></h3>
     <div style="display:flex;flex-direction:column;gap:10px">${sw('link',c.flags.link,'Sign in link (email me a link)')}${sw('pw',c.flags.pw,'Password sign in')}</div>
     <div class="f"><small>Play: link ${live.link?'on':'off'} · password ${live.pw?'on':'off'}</small>${r.legacy?'<small class="warn">Both off: play falls back to the legacy email + password form, so this shows password only.</small>':''}</div></div>
@@ -186,13 +186,13 @@ function renderPanel(host,S,update){
     ${opt('primary','link','A · Email me a sign in link first','Password sits under the email field as a link',!r.link)}
     ${opt('primary','pw','B · Email + password first','“Forgot password? | Email me a sign in link” under the fields',!r.pw)}
     ${r.primary!==c.primary?`<p style="margin:8px 0 0;color:var(--warn)">Showing ${r.primary==='link'?'A':'B'}: ${r.primary==='link'?'password sign in is off':'the sign in link is off'} on this fascia.</p>`:''}
-    ${!r.link||!r.pw?`<p style="margin:8px 0 0">Only one method available — no secondary link is shown.</p>`:''}</div>
+    ${!r.link||!r.pw?`<p style="margin:8px 0 0">Only one method available, so no secondary link is shown.</p>`:''}</div>
   <div class="card"><h3>Security switch <small>link-first only</small></h3>
     <p>Lets the business pull password sign in instantly if there’s a security risk. The sign in link becomes the only route; “Sign in with password” and “Forgot password?” disappear.</p>
     <div style="display:flex;flex-direction:column;gap:10px">${sw('kill',r.kill,'Turn off password sign in',!c.flags.link)}${sw('notice',c.notice,'Tell customers (notice above the form)',!r.kill)}</div>
-    ${!c.flags.link?'<div class="f"><small class="warn">Needs the sign in link on — otherwise nobody could sign in.</small></div>':''}</div>
+    ${!c.flags.link?'<div class="f"><small class="warn">Needs the sign in link on, otherwise nobody could sign in.</small></div>':''}</div>
   <div class="card"><h3>Screen</h3>${scr.map(([v,t,d,dis])=>opt('screen',v,t,d,dis)).join('')}</div>
-  <div class="card"><h3>Context</h3>${opt('context','page','Page','/login — header, form, footer')}${opt('context','modal','Modal','Header account icon / checkout — same form in a dialog')}</div>
+  <div class="card"><h3>Context</h3>${opt('context','page','Page','/login: header, form, footer')}${opt('context','modal','Modal','Header account icon / checkout: the same form in a dialog')}</div>
   <div class="card"><h3>Social sign in</h3><div class="chips">${['apple','google','facebook','klarna'].map(k=>`<button class="chip${c.social[k]?' on':''}" data-soc="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div>
     <div class="f"><span>Klarna</span><span class="seg" style="align-self:flex-start"><button data-kl="tile" class="${c.klarna==='tile'?'on':''}">Tile in the row</button><button data-kl="wide" class="${c.klarna==='wide'?'on':''}">Full width</button></span></div></div>
   <div class="card"><h3>Options</h3><div style="display:flex;flex-direction:column;gap:10px">${sw('otp',c.otp,'Link email also carries a 6-digit code',!r.link)}${sw('filled',c.filled,'Show fields filled')}${sw('usp',c.usp,'USP banners (live content)')}</div>
@@ -245,7 +245,7 @@ $('#mtab').onclick=()=>$('#panel').classList.add('open');$('#mclose').onclick=()
 preset.value=[390,402,440,768,1024,1280,1440].includes(S.w)?String(S.w):'0';
 setBrand(S.brand);
 
-/* ---------- Export: one zip — full-page 390 + 1440 PNGs, config.json, the page code ---------- */
+/* ---------- Export: one zip, full-page 390 + 1440 PNGs, config.json, the page code ---------- */
 const status=$('#status'),exp=$('#exp'),exptxt=$('#exptxt');
 function loadFrame(w){return new Promise((res,rej)=>{const f=document.createElement('iframe');f.style.cssText=`width:${w}px;height:900px;border:0`;f.src=src();$('#hidden').appendChild(f);
   const t=setTimeout(()=>rej(new Error('page did not answer protoReady')),20000);
@@ -265,7 +265,7 @@ async function doExport(){const btns=[$('#exportbtn'),$('#exportbtn2')];btns.for
     root.file(`${name}-mobile-390.png`,m);root.file(`${name}-desktop-1440.png`,d);
     root.file('config.json',JSON.stringify(Object.assign(state(),{exportedAt:new Date().toISOString()}),null,2));
     for(const f of P.files){try{const r=await fetch(f);if(r.ok)root.file(f,await r.blob())}catch(e){}}
-    root.file('README.txt',`${P.title} — ${S.brand}\nExported ${new Date().toISOString()}\n\n${name}-mobile-390.png / -desktop-1440.png = full-page designs at this configuration.\nconfig.json = the decision record. Open ${P.page} over HTTP with ?s=<config.json> to reproduce it.\n`);
+    root.file('README.txt',`${P.title}: ${S.brand}\nExported ${new Date().toISOString()}\n\n${name}-mobile-390.png / -desktop-1440.png = full-page designs at this configuration.\nconfig.json = the decision record. Open ${P.page} over HTTP with ?s=<config.json> to reproduce it.\n`);
     const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.zip';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
     status.textContent='Exported ✓ zip (390 + 1440 PNGs)';

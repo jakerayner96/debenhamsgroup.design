@@ -1,4 +1,4 @@
-# Sign in — prototype
+# Sign in prototype
 
 **Live:** jakerayner96.github.io/debenhamsgroup.design/projects/sign-in/ · built 12 Oct 2026
 
