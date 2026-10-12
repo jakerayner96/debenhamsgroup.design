@@ -30,7 +30,7 @@ A signed-out customer heading to checkout (live Debenhams /checkout, 12 Oct 2026
 - If only one method exists, no secondary link is shown.
 
 ## Panel
-Weighting A/B with the password switch inside it (A only) · screen (sign in, incorrect details, link sent, forgot password, reset sent) · context (page or modal) · social tiles (Apple, Google, Facebook, Klarna) · filled fields · USP banners.
+Weighting A/B with the password switch inside it (A only) · screen (sign in, incorrect details, link sent, forgot password, reset sent) · context (page or modal) · social: all four tiles (Apple, Google, Facebook, Klarna) or just the full-width Continue with Klarna button · filled fields · USP banners.
 
 ## DS
 Footer = the DS footer drop-in (`assets/ds/footer.js`, `<footer data-ftr>`).
@@ -40,6 +40,7 @@ Spacing: gap 4 (16px) between blocks · gap 3 (12px) between fields and in the l
 
 ## Figma sources
 - Social-Login `P2RiX62irafEZQjyLRhRx7`: 112-6838 (sign in, social tiles), 112-6710 / 112-6873 (create account, mobile / desktop), 2032-1885 (sign in with the link row), 2032-2027 (social tiles, built exactly)
+- Sign-In-Link `MzGyAVWG5pQVp56ePnGcp9`: 4421-999 (Continue with Klarna, built exactly)
 - Checkout 2026 `WChEtDPH0LcErdYFS9SESn`: 1669-43380 (sign in, link row), 1669-43700 ("Confirm it's you", 6-digit code, "Resend code | Sign in with password")
 
 ## Live findings (play, 12 Oct 2026)

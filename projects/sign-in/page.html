@@ -62,6 +62,8 @@ const fld=(type,label,val,extra='')=>type==='password'
   :`<label class="fld"><input type="email" placeholder=" " autocomplete="email" inputmode="email" value="${val?esc(S.email):''}" ${extra}><span class="lbl">${label}</span></label>`;
 
 function social(){const s=S.social||{},tiles=[];
+  /* Klarna only: the full-width "Continue with Klarna" button (Sign-In-Link 4421-999) */
+  if(S.socialMode==='klarna')return `<div class="or-div">or</div><button class="soc-klarna" data-act="soc" data-n="Klarna"><span>Continue with</span><img src="assets/ds/icons/payments/klarna-badge.svg" alt="Klarna"></button>`;
   const ic=(f,c='')=>`<span class="ic${c}"><img src="assets/ds/icons/lib/${f}.svg" alt=""></span>`;
   if(s.apple)tiles.push(['Apple',ic('social-apple')]);
   if(s.google)tiles.push(['Google',ic('social-google')]);

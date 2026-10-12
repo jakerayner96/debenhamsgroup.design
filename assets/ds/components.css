@@ -896,6 +896,10 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .soc .ic{width:24px;height:24px;flex:none;display:flex;align-items:flex-start;justify-content:flex-start}
 .soc .ic--21{width:21px;height:21px}
 .soc .ic img{display:block}
+/* Continue with Klarna: Sign-In-Link MzGyAVWG5pQVp56ePnGcp9 · 4421-999 exact on every fascia (scheme button, never brand tokens):
+   358×50 (full width), #0B051D, 4px radius, "Continue with" Helvetica Neue Medium 15px white, gap 10px, the Klarna badge 70×29.44 */
+.soc-klarna{width:100%;height:50px;display:flex;align-items:center;justify-content:center;gap:10px;background:#0B051D;border:0;border-radius:4px;padding:0 16px;cursor:pointer;box-sizing:border-box;font:500 15px/normal 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#FFF;white-space:nowrap}
+.soc-klarna img{display:block;flex:none}
 /* modal context (checkout / header account icon): the same form in a dialog over the dimmed page */
 .auth-modal{position:absolute;inset:0;z-index:var(--z-modal);background:var(--surface-overlay);display:flex;align-items:flex-start;justify-content:center;padding:var(--gap-4,16px)}
 .auth-modal .auth{border-radius:var(--radius-default);box-shadow:var(--shadow-float,0 8px 30px rgba(0,0,0,.2));padding:var(--gap-6,24px)}

@@ -170,7 +170,7 @@ const P={
   files:['page.html','README.md'],
   store:'proto-sign-in',
   initial:b=>{const f=Object.assign({},LIVE[b]);return {flags:f,primary:f.link?'link':'pw',screen:'signin',context:'page',
-    social:{apple:true,google:true,facebook:true,klarna:true},filled:false,usp:true,email:'jake.rayner@debenhams.com'}},
+    social:{apple:true,google:true,facebook:true,klarna:true},socialMode:'all',filled:false,usp:true,email:'jake.rayner@debenhams.com'}},
 };
 /* same rules as page.html R(): both weightings have the link; password can be switched off on A only (B is the password form) */
 function rules(c){const primary=c.primary==='pw'?'pw':'link';return {primary,link:true,pw:primary==='pw'||!!c.flags.pw}}
@@ -194,7 +194,9 @@ function renderPanel(host,S,update){
     <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:10px;margin-top:2px">${sw('pw',r.pw,'Password sign in',!A)}</div></div>
   <div class="card"><h3>Screen</h3>${scr.map(([v,t,d,dis])=>opt('screen',v,t,d,dis)).join('')}</div>
   ${CO?'':`<div class="card"><h3>Context</h3>${opt('context','page','Page','/login: header, form, footer')}${opt('context','modal','Modal','Header account icon: the same form in a dialog')}</div>`}
-  <div class="card"><h3>Social sign in</h3><div class="chips">${['apple','google','facebook','klarna'].map(k=>`<button class="chip${c.social[k]?' on':''}" data-soc="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
+  <div class="card"><h3>Social sign in</h3>
+    <span class="seg" style="margin-bottom:10px"><button data-sm="all" class="${c.socialMode!=='klarna'?'on':''}">All four</button><button data-sm="klarna" class="${c.socialMode==='klarna'?'on':''}">Continue with Klarna</button></span>
+    ${c.socialMode==='klarna'?'<p style="margin:0">One full-width Klarna button (Sign-In-Link MzGyAVWG5pQVp56ePnGcp9 · 4421-999).</p>':`<div class="chips">${['apple','google','facebook','klarna'].map(k=>`<button class="chip${c.social[k]?' on':''}" data-soc="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div>`}</div>
   <div class="card"><h3>Options</h3><div style="display:flex;flex-direction:column;gap:10px">${sw('filled',c.filled,'Show fields filled')}${sw('usp',c.usp,'USP banners (live content)')}</div>
     <div class="f"><span>Email shown in filled fields</span><input data-in="email" value="${c.email.replace(/"/g,'&quot;')}"></div></div>
   <div class="card"><h3>Rules this design holds</h3><div class="rules">
@@ -204,6 +206,7 @@ function renderPanel(host,S,update){
     <b>Spacing:</b> gap 4 (16px) between blocks · gap 3 (12px) between fields and in the link row · 480 card on grey at ≥1024.</div></div>`;
   host.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{if(b.disabled)return;set(b.dataset.k,b.dataset.v)});
   host.querySelectorAll('[data-sw]').forEach(i=>i.onchange=()=>{const k=i.dataset.sw;if(k==='link'||k==='pw')c.flags[k]=i.checked;else c[k]=i.checked;update();renderPanel(host,S,update)});
+  host.querySelectorAll('[data-sm]').forEach(b=>b.onclick=()=>set('socialMode',b.dataset.sm));
   host.querySelectorAll('[data-soc]').forEach(b=>b.onclick=()=>{c.social[b.dataset.soc]=!c.social[b.dataset.soc];update();renderPanel(host,S,update)});
   host.querySelectorAll('[data-in]').forEach(i=>i.oninput=()=>{c[i.dataset.in]=i.value;update()});
 }
