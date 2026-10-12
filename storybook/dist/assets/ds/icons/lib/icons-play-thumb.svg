@@ -1,0 +1,5 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Figma DS 2283:196 Icons / Play Thumb · single colour: the glyph is a hole in the disc, not a white shape on top -->
+<defs><mask id="play-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="white"/><path d="M17.5 12L8.5 7V17L17.5 12Z" fill="black"/></mask></defs>
+<circle cx="12" cy="12" r="12" fill="black" mask="url(#play-cut)"/>
+</svg>
