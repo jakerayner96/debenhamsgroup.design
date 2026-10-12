@@ -113,6 +113,7 @@ body.fold .device iframe{box-shadow:none}
   .mhead .mclose{flex:none;width:32px;height:32px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:var(--ink)}
 }
 .opt[disabled] .t b{color:#777}
+.mflow{display:none}@media(max-width:760px){.mflow{display:block;margin-bottom:12px}}
 </style>
 </head>
 <body>
@@ -121,6 +122,7 @@ body.fold .device iframe{box-shadow:none}
   <div class="mid">
     <span class="chips" id="brands"></span>
     <span class="div"></span>
+    <span class="seg flow" id="flow" title="Sign in page, or the screen a signed-out customer sees on the way to checkout"><button data-c="page" class="on">Sign in</button><button data-c="checkout">Checkout</button></span>
     <span class="seg" id="dev"><button data-w="0">Desktop</button><button data-w="390" class="on">Mobile</button></span>
     <select id="preset" aria-label="Width preset" title="Exact width, or drag the handle on the preview">
       <option value="390" selected>390</option><option value="402">402</option><option value="440">440</option><option value="768">768</option><option value="1024">1024</option><option value="1280">1280</option><option value="1440">1440</option><option value="0">Fit</option>
@@ -134,6 +136,7 @@ body.fold .device iframe{box-shadow:none}
 <button id="mtab" aria-label="Open the configurator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 <aside class="panel" id="panel">
   <div class="mhead"><span class="chips" id="brands-m"></span><button class="export" id="exportbtn2">Export</button><button class="mclose" id="mclose" aria-label="Close">✕</button></div>
+  <div class="mflow"><span class="seg flow"><button data-c="page" class="on">Sign in</button><button data-c="checkout">Checkout</button></span></div>
   <!-- {{PANEL_HTML}}, page configuration lives here; renderPanel() fills #cfgpanel -->
   <div id="cfgpanel"></div>
 </aside>
@@ -176,6 +179,12 @@ function renderPanel(host,S,update){
   const opt=(k,v,t,d,dis)=>`<button class="opt${c[k]===v?' on':''}" data-k="${k}" data-v="${v}"${dis?' disabled style="opacity:.4;cursor:not-allowed"':''}><span class="r"></span><span class="t"><b>${t}</b><span>${d}</span></span></button>`;
   const sw=(id,on,t,dis)=>`<label class="sw"${dis?' style="opacity:.4;cursor:not-allowed"':''}><input type="checkbox" data-sw="${id}"${on?' checked':''}${dis?' disabled':''}><i></i>${t}</label>`;
   const A=r.primary==='link';
+  /* the switch is global (like Desktop / Mobile): a fascia change keeps Sign in or Checkout */
+  if(S.flowCo!==undefined&&(c.context==='checkout')!==S.flowCo){if(S.flowCo){c.ctxSign=c.context;c.context='checkout'}else c.context=c.ctxSign&&c.ctxSign!=='checkout'?c.ctxSign:'page';setTimeout(update)}
+  const CO=c.context==='checkout';
+  /* top-bar Sign in / Checkout switch: Checkout = the signed-out checkout entry; Sign in returns to the last sign-in context (page or modal) */
+  document.querySelectorAll('.flow button').forEach(b=>{b.classList.toggle('on',(b.dataset.c==='checkout')===CO);
+    b.onclick=()=>{S.flowCo=b.dataset.c==='checkout';if(b.dataset.c==='checkout'){if(!CO)c.ctxSign=c.context;c.context='checkout'}else c.context=c.ctxSign&&c.ctxSign!=='checkout'?c.ctxSign:'page';update();renderPanel(host,S,update)}});
   const scr=[['signin','Sign in','The form'],['error','Incorrect details','Password mode only, one generic message',!r.pw],['sent','Link sent','One message, the same whether or not the account exists',!r.link],['forgot','Forgot password','Reset form',!r.pw],['reset','Reset sent','Same non-revealing confirmation',!r.pw]];
   if(scr.find(x=>x[0]===c.screen&&x[3])){c.screen='signin';setTimeout(update)}
   host.innerHTML=`<h1>Sign in</h1><p class="intro">One form, two weightings. Pick the weighting; on A you can switch password off. Links inside the page switch method and screen too.</p>
@@ -184,7 +193,7 @@ function renderPanel(host,S,update){
     ${opt('primary','pw','B · Email + password first','“Forgot password? | Email me a sign in link” under the fields')}
     <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:10px;margin-top:2px">${sw('pw',r.pw,'Password sign in',!A)}</div></div>
   <div class="card"><h3>Screen</h3>${scr.map(([v,t,d,dis])=>opt('screen',v,t,d,dis)).join('')}</div>
-  <div class="card"><h3>Context</h3>${opt('context','page','Page','/login: header, form, footer')}${opt('context','modal','Modal','Header account icon: the same form in a dialog')}${opt('context','checkout','Checkout','Signed out → checkout: guest first, then the same sign in form')}</div>
+  ${CO?'':`<div class="card"><h3>Context</h3>${opt('context','page','Page','/login: header, form, footer')}${opt('context','modal','Modal','Header account icon: the same form in a dialog')}</div>`}
   <div class="card"><h3>Social sign in</h3><div class="chips">${['apple','google','facebook','klarna'].map(k=>`<button class="chip${c.social[k]?' on':''}" data-soc="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
   <div class="card"><h3>Options</h3><div style="display:flex;flex-direction:column;gap:10px">${sw('filled',c.filled,'Show fields filled')}${sw('usp',c.usp,'USP banners (live content)')}</div>
     <div class="f"><span>Email shown in filled fields</span><input data-in="email" value="${c.email.replace(/"/g,'&quot;')}"></div></div>
