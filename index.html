@@ -1324,29 +1324,6 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">assets/ds/icons/lib/</code> · Figma: <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=470-887" target="_blank" rel="noopener">Iconography · 470-887</a></p>
   </section>
 
-  <!-- FOOTER -->
-  <section class="page" id="footer" data-crumb="System / Components / Footer">
-    <div class="kick">system / components / C-08 <b>· rendering <span class="bn">Debenhams</span></b></div>
-    <h1>Footer</h1>
-    <p class="lede">One footer template, live-checked across the fascias: newsletter band on the brand's band tone with an action Subscribe, four link columns plus a social/app rail, payment strip, centre logo and copyright. Debenhams alone adds the sister-brands row.</p>
-    <div class="demo">
-      <div class="hd"><i></i><i></i><i></i><span>canvas — footer</span><span class="bn">Debenhams</span></div>
-      <div class="canvas" style="display:block;padding:0">
-        <footer data-ftr style="margin:0"></footer>
-      </div>
-    </div>
-    <h2>Per-fascia behaviour</h2>
-    <div class="props">
-      <div class="pr h"><span>Slot</span><span>Mechanism</span><span>Notes</span></div>
-      <div class="pr"><code>band tone</code><span>--ft-band</span><span>Debenhams grey 05 · PLT cream — newsletter band background</span></div>
-      <div class="pr"><code>subscribe</code><span>C-01 Button</span><span>surface/action + cta-case — dark red on PLT, black on BHM/WH/BR</span></div>
-      <div class="pr"><code>sister brands</code><span>Debenhams only</span><span>Greyscale logo strip from assets/brands</span></div>
-      <div class="pr"><code>payments</code><span>text chips</span><span>Official badge SVGs partially in lib (visa, klarna, revolut) — full set is an asset pass TODO</span></div>
-    </div>
-    <h2>Source</h2>
-    <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">assets/ds/components.css → .ft</code> · Figma: <a style="color:var(--aq)" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=664-1064" target="_blank" rel="noopener">Footer · 664-1064</a> · live-checked: capture/*/footer-1440.png</p>
-  </section>
-
   <!-- EXTENDED LIBRARY (C-09 → C-18) -->
   <section class="page" id="library" data-crumb="System / Components / Extended library">
     <div class="kick">system / components / C-09 → C-18 <b>· rendering <span class="bn">Debenhams</span></b></div>
@@ -1664,7 +1641,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 const C=window.DG_CATALOGUE,O=window.DG_DEV_OVERLAY,T=window.DG_TOKEN_MAP;
 const DEV='https://web-storybook.jamesb.play.dbztech.net/?path=/docs/';
 const devId=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-const SPEC={button:'button','product-card':'product-card',header:'header','sort-filter':'sort-filter',badges:'badges',footer:'footer','usp-banner':'header','ai-strip':'badges'};
+const SPEC={button:'button','product-card':'product-card',header:'header','sort-filter':'sort-filter',badges:'badges','usp-banner':'header','ai-strip':'badges'};
 const esc=x=>x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const groups=[...new Set(C.map(c=>c.group))];
 const st=x=>`<span class="dv ${x}">${x==='ours'?'ours only':x.replace('-',' ')}</span>`;
@@ -1964,7 +1941,6 @@ const REG=[
  {h:'sort-filter',t:'Sort & filter',k:'dropdowns drawer sheet next day delivery c-06',ic:'▢',s:'Component'},
  {h:'badges',t:'Badges',k:'ai generated watermark tags petite sale sponsored c-07',ic:'▢',s:'Component'},
  {h:'icons',t:'Icons',k:'icon library chevron wishlist bag search 1pt stroke flags country flag',ic:'✳',s:'Design system'},
- {h:'footer',t:'Footer',k:'newsletter subscribe social payments sister brands c-08',ic:'▬',s:'Component'},
  {h:'library',t:'Extended library',k:'buttons payment forms field checkbox radio toggle select price size accordion sheet modal bag summary chips account deliver+ bnpl usp box toast banner c-09 c-10 c-11 c-12 c-13 c-14 c-15 c-16 c-17 c-18',ic:'▦',s:'Component'},
  {h:'projects',t:'All projects',k:'archive briefs',ic:'☰',s:'Projects'},
  {h:'brands',t:'All brands',k:'brand centre fascias estate guidelines modes',ic:'✦',s:'Brand Centre'},
@@ -1986,7 +1962,7 @@ if(window.DG_IA_REG)REG.push(...window.DG_IA_REG);
     toc.insertAdjacentHTML('beforeend',`<a href="#f-${id}" onclick="event.preventDefault();document.getElementById('f-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${t}</a>`);
   });
 })();
-window.DG_LEGACY={colour:'foundations',type:'foundations',spacing:'foundations',radius:'foundations',borders:'foundations',motion:'foundations',a11y:'foundations',install:'foundations',components:'gallery',library:'gallery',prototypes:'projects',requests:'tools'};
+window.DG_LEGACY={colour:'foundations',type:'foundations',spacing:'foundations',radius:'foundations',borders:'foundations',motion:'foundations',a11y:'foundations',install:'foundations',components:'gallery',library:'gallery',prototypes:'projects',requests:'tools',footer:'c-footer'}; /* the old hand-written Footer page folded into the catalogue page (12 Oct) */
 window.setBrand=function(slug){const b=document.querySelector('#fabMenu button[data-b="'+slug+'"]');if(b)b.click();};
 const pages=[...document.querySelectorAll('.page')];
 function route(){
@@ -2017,7 +1993,6 @@ function paint(){
   const n=cs.getPropertyValue('--brand-name').replace(/'/g,'').trim();
   document.querySelectorAll('.bn').forEach(b=>b.textContent=n);
   const fn=document.getElementById('fabName');if(fn)fn.textContent=n;
-  if(window.DG_footer)document.querySelectorAll('#footer [data-ftr]').forEach(el=>window.DG_footer(el,document.documentElement.getAttribute('data-brand')));
   /* black-themed fascias would paint a black backdrop behind a black sidebar: tint those with Principles' dark grey */
   {const hx=cs.getPropertyValue('--brand-primary').trim(),m=hx.match(/^#?([0-9a-f]{6})$/i);let dark=false;
    if(m){const v=parseInt(m[1],16),r=v>>16&255,g=v>>8&255,b=v&255;dark=(.2126*r+.7152*g+.0722*b)/255<.12&&Math.max(r,g,b)-Math.min(r,g,b)<24} /* near-black and neutral: PLT's dark red keeps its colour */
