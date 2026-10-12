@@ -12,7 +12,8 @@ Out (this phase): AI Overview (separate SKU, CPM) · Compare · Shop the look.
 ## Placements
 | Feature | A | B | C |
 |---|---|---|---|
-| Entry point "Ask Deb" | Pill inside the search field (Google style; mobile gets a search row) | Header pill beside the icons (the dev build; sparkle icon on mobile) | Floating button |
+| Entry point "Ask Deb" | 1 · Inside the search box (white DS AI pill, no outline) | 2 · Outside the search box (AI gradient-outline pill) | — |
+| Mobile search | Exposed: field under the header, no search icon in the header or field | In the header icons: AI icon beside the search icon | Desktop always exposed |
 | PDP prompts | Replaces At a Glance | Above Add to Bag | Below Add to Bag |
 | Shop similar | On the PDP image | Under Add to Bag | On PLP cards |
 | Virtual try-on | On the PDP image | Under Add to Bag | — |
@@ -43,3 +44,9 @@ Intro, as briefed: "Hi there – I'm Deb, your Debenhams Personal Assistant! Wha
 - `img/ask-deb-spark.png` is the sparkle from the dev launcher (teal gradient), offered as a `chat-icon` alternative to the teal tile.
 - Products and images come from `projects/plp-alignment` (Debenhams set). In `data.js`, product i uses `p{i}.jpg` up to 6 and `p{i+1}.jpg` after that (p7 is an unlisted coat).
 - html2canvas: `color-mix()` (Deliver+ footer border) is flattened in the page CSS, and agent chips use `display:flex` (it drops the text in an `inline-flex` button inside a flex container). Sparkles are drawn solid when exporting (it drops gradient fills).
+
+## AI look (13 Oct): in the DS
+- `--ai-gradient` (107°, #70BEB3 → #9DEDE2, Figma PLP Reviews jNQsrePXxw0j0AksixkseD · 265:3677) and the AI icon `assets/ds/icons/ai.svg` (27:37643) are group-wide tokens / assets.
+- `.ai-pill` (white), `.ai-pill--outline` (gradient outline, entry point outside search only), `.ai-pill--soft` (puck shadow, every prompt chip / on-image button), `.ai-iconbtn` (header icon). Catalogue entry `ai-pill`.
+- Prompt chips have no solid outline: shadow only. The NBA box is `--surface-sunken`, no border. The PDP prompts heading is just "Ask Deb".
+- Size selector (DS): selected is the same 1px border in black + bold (Figma 9000:3082), default border `--border-control` #B5B5B5, hover black, Geologica.

@@ -237,11 +237,11 @@ const DG_CATALOGUE = [
   variants:[{name:'PDP block', html:'<div><div class="price"><span class="now sale">£70.00</span><span class="was">£139.00</span><span class="save">Save 50%</span></div><div class="price-promo">£63.00 with code FASHION</div></div>'}, {name:'Card price', html:'<div class="pc-price sale" style="font-family:var(--font-family-base)"><span class="now">£70.00</span><span class="was">£139.00</span><span class="pct">-50%</span></div>'}, {name:'Full price', html:'<div class="price"><span class="now">£45.00</span></div>'}],
   dev:{title:'Molecules/Product Price', status:'match', note:'Dev: wasPrice · percentageSaving · priceSavingInline · showFromPriceRange · priceMatch label. Same anatomy.'} },
 
-{ slug:'size-selector', name:'Size selector', group:'Product', tier:'molecule', css:'.sizes', figma:'aIHmkCaTy9c5EWOxAGw0So · 8942-6191 · bell 11190:23531 · OOS states: Coming Soon - Back in Stock 2ddMaYHCL1pPI00dqPdmNt · 344-357437',
+{ slug:'size-selector', name:'Size selector', group:'Product', tier:'molecule', css:'.sizes', figma:'aIHmkCaTy9c5EWOxAGw0So · 8942-6191 · Size Button 9000-3082 · bell 11190:23531 · OOS states: Coming Soon - Back in Stock 2ddMaYHCL1pPI00dqPdmNt · 344-357437',
   summary:'60×50 size buttons. Out of stock has two states: just out of stock (greyed), or out of stock with the notification bell, so the customer can ask to be told when it is back in stock.',
   use:['PDP, quick add, set builder.','Out of stock + bell (.sz.oos.oos--notify) when back-in-stock alerts are live for that size; plain out of stock (.sz.oos) when they are not.'],
   avoid:['Hiding out-of-stock sizes — show them so the customer can ask to be notified.','The info "i" icon on an out-of-stock size — the notify state is always the bell (icons-notification.svg).'],
-  anatomy:['Header: Size: M · Size guide link','Buttons 60×50 · selected = black fill','Out of stock: .oos (greyed, optional .oos--strike) · .oos.oos--notify adds the 14px bell top-right (3px inset) → notify me'],
+  anatomy:['Header: Size: M · Size guide link','Buttons 60×50 · 1px #B5B5B5 border, 4px radius, light 16px · hover = black border · selected = the same 1px border in black + bold label (Figma 9000:3082, never 2px)','Out of stock: .oos (greyed, optional .oos--strike) · .oos.oos--notify adds the 14px bell top-right (3px inset) → notify me'],
   variants:[{name:'Default', html:'<div class="sizes" style="width:360px"><div class="sizes-head"><span>Size: <b>M</b></span><span class="guide">Size guide</span></div><div class="set"><button class="sz">XS</button><button class="sz">S</button><button class="sz on">M</button><button class="sz oos oos--strike">L</button><button class="sz oos oos--notify" aria-label="XL, out of stock, notify me">XL'+ICON('notification','class="bell" alt="Notify me" onerror="this.remove()"')+'</button><button class="sz">One size</button></div></div>'},
     {name:'Out of stock', html:'<div class="sizes" style="width:360px"><div class="sizes-head"><span>Select a size:</span></div><div class="set"><button class="sz">8</button><button class="sz oos" aria-disabled="true">10</button><button class="sz oos" aria-disabled="true">12</button><button class="sz">14</button><button class="sz">16</button></div></div>'},
     {name:'Out of stock · notify me', html:'<div class="sizes" style="width:360px"><div class="sizes-head"><span>Select a size:</span></div><div class="set">'+['8','10','12','14','16'].map(z=>'<button class="sz oos oos--notify" aria-label="'+z+', out of stock, notify me">'+z+ICON('notification','class="bell" alt="Notify me" onerror="this.remove()"')+'</button>').join('')+'</div></div>'}],
@@ -487,6 +487,19 @@ const DG_CATALOGUE = [
   anatomy:['24px black pill 11px caps · count bubble · save chip on --badge-save-bg'],
   variants:[{name:'Set', html:'<div style="display:flex;gap:10px;align-items:center"><span class="tagpill">Active</span><span class="tagpill tagpill--n">3</span><span class="chip-save">Save 5%</span></div>'}],
   dev:{title:'—', status:'ours', note:'Not in the dev Storybook.'} },
+
+{ slug:'ai-pill', name:'AI pill', group:'Chips & pills', tier:'atom', css:'.ai-pill · .ai-pill--outline · .ai-icon · .ai-iconbtn · --ai-gradient', figma:'jNQsrePXxw0j0AksixkseD · AI Gradient 265:3677 · Icons / AI 27:37643',
+  summary:'The one look for anything AI: the AI icon and the AI gradient. White pill inside a field or on an image; gradient-outline pill when it stands on its own. Same on every fascia.',
+  use:['Agent entry point: inside the search box (.ai-pill, no outline) or beside it (.ai-pill--outline).','Prompt chips that open the agent (PDP prompts, next best action, autocomplete suggestions, custom prompts): .ai-pill--soft .ai-pill--wrap — white on the puck shadow.','On imagery (Shop similar, Try it on): .ai-pill--soft.','Mobile header icon row: .ai-iconbtn next to the search icon.'],
+  avoid:['The AI icon or gradient on anything that does not open the agent.','A gradient outline inside the search box: inside is white, no outline.','Solid dark outlines on prompt chips — shadow (--shadow-puck), or --border-subtle at most.','Recolouring per fascia — AI is one look group-wide.'],
+  anatomy:['36px pill (32 small) · radius pill · 14px medium · AI icon 18px, gap 1.5 (6px) · padding gap 3 (12px) left / gap 4 (16px) right','Outline: 1.5px --ai-gradient (#70BEB3 → #9DEDE2, 107°), white fill','Icon: assets/ds/icons/ai.svg, gradient #529C92 → #70BEB3'],
+  variants:[
+    {name:'Inside search', html:'<div class="hd-search" style="width:420px;padding-right:8px"><span>Search Fashion, Home &amp; Beauty</span><button class="ai-pill"><i class="ai-icon"></i>Ask Deb</button></div>'},
+    {name:'Outline', html:'<button class="ai-pill ai-pill--outline"><i class="ai-icon"></i>Ask Deb</button>'},
+    {name:'Prompt chips', html:'<div style="display:flex;flex-wrap:wrap;gap:8px;width:360px"><button class="ai-pill ai-pill--soft ai-pill--wrap"><i class="ai-icon"></i>Does this fit true to size?</button><button class="ai-pill ai-pill--soft ai-pill--wrap"><i class="ai-icon"></i>Ask anything</button></div>'},
+    {name:'Icon', html:'<div style="display:flex;gap:8px;align-items:center"><button class="ai-iconbtn" aria-label="Ask Deb"><i class="ai-icon"></i></button><span style="width:120px;height:36px;border-radius:99px;background:var(--ai-gradient)"></span></div>'},
+  ],
+  dev:{title:'—', status:'ours', note:'Dev launcher (shopping-agent-pill) draws its sparkle with the fascia primary — swap to icons/ai.svg + --ai-gradient.'} },
 
 { slug:'entry-chip', name:'Entry chip', group:'Chips & pills', tier:'atom', css:'.entry-chip',
   summary:'Floating white chip with an icon and count badge — the PDP entry to Virtual Try On or a set.',

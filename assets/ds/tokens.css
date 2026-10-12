@@ -53,6 +53,8 @@
   /* footer newsletter band */
   --ft-band:var(--surface-sunken);
   --radius-default:4px;--radius-lg:8px;--radius-pill:9999px;
+  /* AI — one look for every agent / AI surface, every fascia (Figma PLP Reviews jNQsrePXxw0j0AksixkseD · AI Gradient 265:3677 · Icons / AI 27:37643) */
+  --ai-gradient:linear-gradient(107deg,#70BEB3 0%,#9DEDE2 99.4%);--ai-a:#70BEB3;--ai-b:#9DEDE2;--ai-icon-a:#529C92;--ai-icon-b:#70BEB3;--ai-outline:1.5px;
   --surface-page:#FFF;
   /* buttons (colour-alignment brand-colours): Debenhams primary = Primary Aqua + black ink;
      CTA Aqua teal carries links, checks, focus — not the button fill */

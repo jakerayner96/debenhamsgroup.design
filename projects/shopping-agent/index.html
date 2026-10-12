@@ -171,7 +171,7 @@ body.fold .device iframe{box-shadow:none}
 <script>
 /* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
 const FEATS=[
-  {k:'launcher',n:'Entry point · Ask Deb',pg:'all',d:'How the shopper opens the agent from the header.',opts:[['search','A · Inside the search field','Google-style pill at the end of the search bar (mobile adds a search row under the header).'],['pill','B · Header pill','The dev build: “Ask Deb” pill beside the account icons on desktop, a 24px sparkle icon on mobile.'],['float','C · Floating button','Bottom-right bubble on every page (the Google default entry point).']]},
+  {k:'launcher',n:'Entry point · Ask Deb',pg:'all',d:'How the shopper opens the agent from the header. DS AI pill + AI icon (one look group-wide).',opts:[['in','1 · Inside the search box','White pill, no outline, at the end of the field.'],['out','2 · Outside the search box','AI gradient-outline pill beside the field.']]},
   {k:'chat',n:'Chat window',pg:'all',d:'The agent itself — every value comes from the config file (Agent config below). Any entry point opens it.',opts:null},
   {k:'pdpPrompts',n:'PDP prompts',pg:'pdp',d:'<google-ai-prompts product-id direction>. Pre-baked at launch, dynamic as the agent learns. Tapping a prompt opens the chat with it.',opts:[['glance','A · Replaces At a Glance','Takes the At a Glance slot (under the gallery on desktop, after delivery on mobile).'],['aboveCta','B · Above Add to Bag','Between size and the CTA — the hesitation point.'],['belowCta','C · Below Add to Bag','Straight under the CTA, before Deliver+.']]},
   {k:'shopSimilar',n:'Shop similar',pg:'pdp',d:'sendQuery("Shop similar") — style alternatives and out-of-stock recovery.',opts:[['image','A · On the PDP image','Pill bottom-right of the main image (the deck’s placement).'],['cta','B · Under Add to Bag','Outline button under the CTA, beside Try it on.'],['card','C · On PLP cards','A small “Similar” pill on every product card (opens the PLP).']]},
@@ -190,7 +190,7 @@ const P={
   domains:{debenhams:'debenhams.com'},
   files:['page.html','agent.js','base-config.json'],
   store:'proto-shopping-agent',
-  initial:()=>({page:'pdp',feat:'pdpPrompts',on:{},launcher:'search',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
+  initial:()=>({page:'pdp',feat:'pdpPrompts',on:{},launcher:'in',msearch:'exposed',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
     pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
     ssPos:'image',vtoPos:'image',vtoLabel:'Try it on',nbaPos:'top',nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
     acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
@@ -207,6 +207,7 @@ function handoff(c){const f=k=>c.on[k]!==false,lines=[];
   if(BASE)AG.diff(BASE,cfgFile()).forEach(d=>lines.push(`- \`${d.path}\`: ${JSON.stringify(d.from)} → ${JSON.stringify(d.to)}`));
   lines.push('','Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
   lines.push('## 2 · Entry points (front end)','');
+  lines.push(`- **Mobile search**: ${c.msearch==='icon'?'in the header icons, AI icon beside search':'exposed under the header, no search icon in header or field'} (desktop always exposed)`);
   FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${f(x.k)?o[1]+' — '+o[2]:'OFF'}`)});
   lines.push('','Calls:','```js',
     '// every chip / button below opens the chat with its query',
@@ -224,6 +225,7 @@ P.extra=(root)=>{if(!BASE)return;root.file('salesAgentConfig.json',JSON.stringif
 
 function renderPanel(host,S,update){
   const c=S.cfg,e=Object.assign({},AG.DEF,c.agent),fe=FEATS.find(x=>x.k===c.feat)||FEATS[0];
+  if(!['in','out'].includes(c.launcher))c.launcher='in';if(!c.msearch)c.msearch='exposed';
   const pageOf=k=>({pdpPrompts:'pdp',shopSimilar:c.ssPos==='card'?'plp':'pdp',vto:'pdp',nba:'plp',custom:'home'}[k]);
   const opt=(on,b,s,attr)=>`<button class="opt${on?' on':''}" ${attr}><span class="r"></span><span class="t"><b>${b}</b>${s?`<span>${s}</span>`:''}</span></button>`;
   const changed=BASE?AG.diff(BASE,cfgFile()):[];
@@ -238,6 +240,7 @@ function renderPanel(host,S,update){
     <p style="margin:10px 0 0">Not in this phase: ${OUT.join(' · ')}.</p></div>
   <div class="card"><h3>${fe.n}</h3><p>${H(fe.d)}</p>
     ${fe.opts?fe.opts.map(o=>opt(c[POSKEY[fe.k]]===o[0],o[1],o[2],`data-pos="${o[0]}"`)).join(''):''}
+    ${fe.k==='launcher'?`<div class="f"><span>Mobile search</span><span class="seg" id="msearch"><button data-v="exposed" class="${c.msearch==='exposed'?'on':''}">Exposed</button><button data-v="icon" class="${c.msearch==='icon'?'on':''}">In the header icons</button></span><small>${c.msearch==='exposed'?'Search field under the header bar: no search icon in the header or the field. Desktop is always exposed.':'Search stays a header icon; the AI icon sits beside it. Desktop is always exposed.'}</small></div>`:''}
     ${fe.k==='pdpPrompts'?`<div class="f"><span>Direction</span><span class="seg" id="dir"><button data-v="column" class="${c.pdpDir==='column'?'on':''}">Column (dev build)</button><button data-v="row" class="${c.pdpDir==='row'?'on':''}">Row · wrap</button></span></div>
       <div class="f"><span>Launch prompts (pre-baked)</span>${c.pdpPrompts.map((t,i)=>`<input data-arr="pdpPrompts" data-i="${i}" value="${H(t)}">`).join('')}<small>Dynamic prompts replace these per product once the agent has learnt them.</small></div>
       <div class="f"><label class="sw"><input type="checkbox" id="t-head"${c.pdpHead?' checked':''}><i></i>“${H('Ask '+e.name)}” heading</label><label class="sw"><input type="checkbox" id="t-ask"${c.pdpAsk?' checked':''}><i></i>“Ask anything” chip</label></div>`:''}
@@ -276,6 +279,7 @@ function renderPanel(host,S,update){
   host.querySelectorAll('[data-on]').forEach(i=>i.onchange=()=>{c.on[i.dataset.on]=i.checked;go()});
   host.querySelectorAll('[data-pos]').forEach(b=>b.onclick=()=>{c[POSKEY[fe.k]]=b.dataset.pos;const pg=pageOf(fe.k);if(pg)c.page=pg;c.focus={f:fe.k,n:Date.now()};go()});
   host.querySelectorAll('#dir button').forEach(b=>b.onclick=()=>{c.pdpDir=b.dataset.v;go()});
+  host.querySelectorAll('#msearch button').forEach(b=>b.onclick=()=>{c.msearch=b.dataset.v;c.focus={f:'launcher',n:Date.now()};go()});
   const ti=host.querySelector('#t-head');if(ti)ti.onchange=ev=>{c.pdpHead=ev.target.checked;go()};
   const ta=host.querySelector('#t-ask');if(ta)ta.onchange=ev=>{c.pdpAsk=ev.target.checked;go()};
   const vl=host.querySelector('#vlab');if(vl)vl.onchange=()=>{c.vtoLabel=vl.value;go()};

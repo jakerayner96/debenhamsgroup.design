@@ -507,8 +507,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .sizes-head b{font-weight:var(--w-mid)}
 .sizes-head .guide{display:flex;align-items:center;gap:4px;font-size:14px;white-space:nowrap}
 .sizes .set{display:flex;gap:8px;flex-wrap:wrap}
-.sz{min-width:60px;height:50px;padding:0 16px;background:var(--surface-raised);border:1px solid var(--border-strong);border-radius:var(--radius-default);font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);display:inline-flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer}
-.sz.on{border:2px solid var(--text-primary);font-weight:var(--w-strong)}
+.sz{font-family:var(--font-family-base);min-width:60px;height:50px;padding:0 16px;background:var(--surface-raised);border:1px solid var(--border-control,#B5B5B5);border-radius:var(--radius-default);font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);display:inline-flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer}
+.sz:hover{border-color:var(--text-primary)}
+.sz.on{border-color:var(--text-primary);font-weight:var(--w-strong)}   /* Figma 9000:3082: selected = same 1px border in black + bold, never thicker */
 .sz.oos{color:var(--text-disabled)}
 .sz.oos--strike::after{content:"";position:absolute;left:-20%;right:-20%;top:50%;height:1px;background:var(--text-disabled);transform:rotate(-33deg)}
 /* OOS has two states (Coming Soon - Back in Stock 2ddMaYHCL1pPI00dqPdmNt 344:357437): .oos = just out of stock · .oos.oos--notify = out of stock + the DS notification bell (icons-notification.svg, 14px top-right) — tapping it opens notify-me / back in stock. Never the info "i". */
@@ -801,3 +802,19 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .auth-modal{position:absolute;inset:0;z-index:var(--z-modal);background:var(--surface-overlay);display:flex;align-items:flex-start;justify-content:center;padding:var(--gap-4,16px)}
 .auth-modal .auth{border-radius:var(--radius-default);box-shadow:var(--shadow-float,0 8px 30px rgba(0,0,0,.2));padding:var(--gap-6,24px)}
 @media(min-width:1024px){.auth-modal{padding-top:var(--gap-20,80px)}}
+
+/* ───────────── AI ─────────────
+   Every agent / AI entry point: the AI icon (assets/ds/icons/ai.svg) + the AI gradient (--ai-gradient). Figma PLP Reviews 265:3677 · 27:37643.
+   .ai-pill            white pill, no outline — sits inside a field or on an image (inside the search box, on the PDP gallery)
+   .ai-pill--outline   white pill with the AI gradient outline — stands on its own (outside the search box, prompt chips)
+   .ai-pill--soft      white pill on the DS puck shadow — prompt chips, on-image buttons (no solid outline)
+   .ai-pill--sm        32px · .ai-icon  the icon on its own (header icon row) */
+.ai-icon{display:inline-block;width:20px;height:20px;flex:none;background:url("icons/ai.svg") center/contain no-repeat}
+.ai-pill{display:flex;align-items:center;gap:6px;height:36px;padding:0 16px 0 12px;border-radius:var(--radius-pill);background:#FFF;border:0;color:var(--text-primary);font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-mid,500);line-height:1.2;white-space:nowrap;cursor:pointer;text-align:left}
+.ai-pill .ai-icon{width:18px;height:18px}
+.ai-pill--outline{border:var(--ai-outline) solid transparent;background:linear-gradient(#FFF,#FFF) padding-box,var(--ai-gradient) border-box}
+.ai-pill--outline:hover{background:linear-gradient(#F5FBFA,#F5FBFA) padding-box,var(--ai-gradient) border-box}
+.ai-pill--soft{box-shadow:var(--shadow-puck)}.ai-pill--soft:hover{box-shadow:var(--shadow-pill)}   /* prompt chips: shadow, never a solid outline */
+.ai-pill--sm{height:32px;font-size:13px;padding:0 12px 0 10px}.ai-pill--sm .ai-icon{width:16px;height:16px}
+.ai-pill--wrap{height:auto;min-height:40px;padding:8px 16px 8px 12px;white-space:normal;font-weight:var(--w-regular,400)}
+.ai-iconbtn{display:grid;place-items:center;width:32px;height:32px;padding:0;border:0;background:none;cursor:pointer}.ai-iconbtn .ai-icon{width:24px;height:24px}
