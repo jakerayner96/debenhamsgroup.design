@@ -24,6 +24,7 @@ All five fascias at 390 (iPhone 13 emulation) and 1440 with the DS header + foot
 ## Second pass (Jake, same day)
 - "Needs the header from the design system too and look like a content page on the site, not just on its own" → site chrome on by default: DS header + the fascia's live USP rows via the drop-in (`usp-live.js` + `usp.js`, re-mounted after each render with `DG_uspHTML` / `DG_usp` since usp.js only self-mounts on DOMContentLoaded; auto 0 while exporting), breadcrumb `.bc` (Delivery / programme), the site `.wrap` container, DS footer. Type moved onto the DS scale (display-lg / display-md / body-lg), section padding gap 12 / gap 16. Store key → `proto-membership-landing-v2`.
 - "Remove the banner above the title and just have the logo somewhere on the page" → the programme band is gone; the wordmark sits on the closing band (programme box colour, so the white PLT Royalty / KM Premier marks read). Panel toggle renamed Programme lockup.
+- Hero headline enlarged to a true H1: 40px mobile, 56–72px desktop (clamp 5vw), line-height ~1 (Jake, 12 Oct).
 - Re-verified with Playwright (five fascias × 390 / 1440: USP rows 4 / 3 / 4 / 3 / 2, lockup loads, calculator moves; shell: Unlimited+ swap, Fold, Export zip with both PNGs; no errors) and on the live Pages URL.
 
 ## Open

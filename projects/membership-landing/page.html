@@ -31,8 +31,8 @@ b,strong{font-weight:var(--w-strong)}
 /* hero */
 .hero{padding:24px 0 64px}
 .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
-.hero h1{font-size:32px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.02em;margin:0 0 20px;text-transform:var(--cta-case)} /* display-lg: 32 mobile / 48 desktop */
-@media(min-width:1024px){.hero h1{font-size:48px;line-height:1.05;margin-bottom:24px}}
+.hero h1{font-size:40px;line-height:1;font-weight:var(--w-strong);letter-spacing:-.03em;margin:0 0 24px;text-transform:var(--cta-case)} /* hero H1: 40 mobile → 72 desktop (Jake, 12 Oct: bigger than display-lg) */
+@media(min-width:1024px){.hero h1{font-size:clamp(56px,5vw,72px);line-height:.98;margin-bottom:28px}}
 .lede{font-size:16px;max-width:40ch;margin:0 0 24px} /* body-lg */
 @media(min-width:1024px){.lede{font-size:18px}}
 .ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
