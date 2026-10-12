@@ -145,6 +145,24 @@ body.exporting .ai-pill--soft{box-shadow:none;border:1px solid var(--border-subt
 
 /* ============ CHAT WINDOW — every value from salesAgentConfig.payload.style (set on .cm as custom properties) ============ */
 .cm-scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90}
+/* open / close motion: desktop slides in from the right over a fading scrim, mobile rises from the bottom; the header blocks
+   (T&Cs, hero, intro, prompts) follow in a short stagger. Only on the open itself, never on re-renders; off when exporting / reduced motion */
+.cm-scrim.in{animation:cmFade .32s ease both}.cm-scrim.out{animation:cmFade .26s ease reverse both}
+.cm.in{animation:cmSlide .42s cubic-bezier(.22,.9,.24,1) both}.cm.out{animation:cmSlideOut .26s cubic-bezier(.4,0,1,1) both}
+.cm.mob.in{animation-name:cmRise}.cm.mob.out{animation-name:cmSink}
+.cm.in .cm-tb,.cm.in .cm-body>*,.cm.in .cm-in{animation:cmItem .4s cubic-bezier(.22,.9,.24,1) both}
+.cm.in .cm-tb{animation-delay:.12s}.cm.in .cm-body>:nth-child(1){animation-delay:.16s}.cm.in .cm-body>:nth-child(2){animation-delay:.21s}
+.cm.in .cm-body>:nth-child(3){animation-delay:.26s}.cm.in .cm-body>:nth-child(n+4){animation-delay:.31s}.cm.in .cm-in{animation-delay:.3s}
+.cm.in .cm-zero .pr button{animation:cmItem .36s cubic-bezier(.22,.9,.24,1) both}
+.cm.in .cm-zero .pr button:nth-child(1){animation-delay:.34s}.cm.in .cm-zero .pr button:nth-child(2){animation-delay:.38s}.cm.in .cm-zero .pr button:nth-child(3){animation-delay:.42s}.cm.in .cm-zero .pr button:nth-child(n+4){animation-delay:.46s}
+@keyframes cmFade{from{opacity:0}to{opacity:1}}
+@keyframes cmSlide{from{transform:translateX(100%)}to{transform:none}}
+@keyframes cmSlideOut{from{transform:none}to{transform:translateX(100%)}}
+@keyframes cmRise{from{transform:translateY(100%)}to{transform:none}}
+@keyframes cmSink{from{transform:none}to{transform:translateY(100%)}}
+@keyframes cmItem{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.cm.in,.cm.out,.cm-scrim.in,.cm-scrim.out,.cm.in *{animation:none!important}}
+
 .cm{position:fixed;top:0;right:var(--chat-messenger-internal-chat-window-offset,0);z-index:91;width:min(var(--chat-messenger-internal-chat-window-width,606px),100vw);height:var(--chat-messenger-internal-chat-window-height,100dvh);
   background:var(--chat-messenger-internal-titlebar-background,#fff);border-radius:var(--chat-messenger-internal-chat-border-radius,24px) 0 0 var(--chat-messenger-internal-chat-border-radius,24px);
   display:flex;flex-direction:column;font-family:var(--chat-messenger-font-family);color:var(--chat-messenger-color--on-surface,#222);box-shadow:-8px 0 40px rgba(0,0,0,.2);overflow:hidden}
@@ -384,8 +402,17 @@ function reply(q,vto){
 function openChat(q,vto){CHAT.open=true;
   if(q){CHAT.msgs.push({u:q},{typing:true});setTimeout(()=>{CHAT.msgs=CHAT.msgs.filter(m=>!m.typing);CHAT.msgs.push({b:reply(q,vto)});drawChat()},EXPORTING?0:900)}
   drawChat();parent.postMessage({protoChat:true},'*')}
-function closeChat(){CHAT.open=false;drawChat();parent.postMessage({protoChat:false},'*')}
-function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat()}
+/* DRAWN = the window is on screen: the open animation runs only on the closed → open step, not when a reply or a page re-render redraws it */
+let DRAWN=false;
+function closeChat(){const cm=document.getElementById('cm');
+  const done=()=>{CHAT.open=false;CHAT.closing=false;drawChat();parent.postMessage({protoChat:false},'*')};
+  if(!cm||EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches)return done();
+  if(CHAT.closing)return;CHAT.closing=true;
+  document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>{el.classList.remove('in');el.classList.add('out')});setTimeout(done,260)}
+function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();
+  const open=!!document.getElementById('cm');
+  if(open&&!DRAWN&&!EXPORTING)document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>el.classList.add('in'));
+  DRAWN=open}
 
 /* ================= render ================= */
 const PAGES={home,plp,pdp};
