@@ -135,6 +135,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 body.outline [data-feat]{outline:1.5px dashed #0D99FF;outline-offset:3px;position:relative}
 body.outline [data-feat]::before{content:attr(data-tag);position:absolute;left:-3px;top:-22px;z-index:5;font:600 10px/1 'Google Sans',system-ui,sans-serif;letter-spacing:.02em;color:#FFF;background:#0D99FF;padding:4px 6px;border-radius:3px;white-space:nowrap;pointer-events:none}
 body.outline .ag-fab[data-feat]::before{top:-24px;left:auto;right:0}
+.ag-fab{position:fixed!important}.cp-hero .ov{position:absolute!important}   /* the outline's position:relative must not unpin these */
 .flash{animation:flash 1.6s ease 1}
 @keyframes flash{0%,100%{box-shadow:0 0 0 0 rgba(13,153,255,0)}25%,60%{box-shadow:0 0 0 6px rgba(13,153,255,.45)}}
 
@@ -376,6 +377,7 @@ function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat()
 const PAGES={home,plp,pdp};
 function render(){
   document.documentElement.setAttribute('data-brand','debenhams');
+  if(window.HOME_CSS&&!document.getElementById('homecss')){const st=document.createElement('style');st.id='homecss';st.textContent=HOME_CSS;document.head.appendChild(st)}
   document.body.classList.toggle('outline',!!S.outline&&!EXPORTING);   /* review aid only — never in an export */
   if(CFG){const r=document.documentElement.style,e=E();r.setProperty('--ai-primary',e.primary);r.setProperty('--ai-chip-bg',e.chipBg);r.setProperty('--ai-chip-border',e.chipBorder);r.setProperty('--ai-chip-radius',e.chipRadius+'px')}
   gid=0;
