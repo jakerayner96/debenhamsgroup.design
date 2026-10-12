@@ -34,6 +34,11 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 .hd-search.ag-has{padding-right:8px}.hd-search.ag-has>span:first-child{flex:1}
 .ag-mrow{padding:0 16px 12px}.ag-mrow .hd-search{height:44px;padding:0 6px 0 16px;font-size:14px}
 .ag-mrow .ai-pill{height:32px;font-size:13px;padding:0 12px 0 10px}
+/* option 2 (pill outside the box): the search field takes the pill's height so the pair lines up — 36px (DS .ai-pill) */
+.ag-sw{--ag-h:36px}
+.ag-sw:has(>.ai-pill--outline)>.hd-search{height:var(--ag-h)}
+.ag-sw>.ai-pill--outline{height:var(--ag-h);flex:none}
+.ag-mrow .ag-sw>.ai-pill--outline{font-size:14px;padding:0 14px 0 10px}
 .ai-open{font-weight:var(--w-strong,600)}
 .ai-cta{height:44px;justify-content:center;flex:1}
 .prompts-container[data-dir="column"] .prompt-link{width:100%}
