@@ -31,7 +31,10 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 /* ---------- AI: DS .ai-pill (assets/ds/components.css) + AI icon; layout only here ---------- */
 .ag-sw{flex:1;display:flex;align-items:center;gap:12px;max-width:940px;margin:0 auto;min-width:0}
 .ag-sw .hd-search{margin:0;max-width:none}
-.hd-search.ag-has{padding-right:8px}.hd-search.ag-has>span:first-child{flex:1}
+.hd-search.ag-has>span:first-child{flex:1}
+/* option 1 (pill inside the box): 44px field, 40px pill inset 2px top / bottom / right (Jake, 12 Oct) */
+.hd-search.ag-has,.ag-mrow .hd-search.ag-has{height:44px;padding-right:2px}
+.hd-search.ag-has>.ai-pill,.ag-mrow .hd-search.ag-has>.ai-pill{height:40px;margin-left:4px;padding:0 16px 0 12px;font-size:14px}
 .ag-mrow{padding:0 16px 12px}.ag-mrow .hd-search{height:44px;padding:0 6px 0 16px;font-size:14px}
 .ag-mrow .ai-pill{height:32px;font-size:13px;padding:0 12px 0 10px}
 /* option 2 (pill outside the box): search field and Ask Deb pill share one height — 44px (Jake, 12 Oct) */
