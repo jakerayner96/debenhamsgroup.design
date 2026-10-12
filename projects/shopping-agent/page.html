@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../../">
+<title>Shopping agent · Debenhams</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* Page scaffolding + the shopping-agent surfaces. Site pieces are DS components (catalogue.js / components.css).
+   Agent pieces: the chat window reads the salesAgentConfig style keys by their own names (--chat-messenger-*),
+   so what you see here is what the config file sets. PDP prompts mirror <google-ai-prompts> (prompts-container / prompt-link). */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+.wrap{padding:0 16px}@media(min-width:1024px){.wrap{padding:0 40px;max-width:1440px;margin:0 auto}}
+.h1{font-size:20px;font-weight:var(--w-strong);margin:12px 0 4px}
+@media(min-width:1024px){.h1{font-size:28px}}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 8px}
+@media(min-width:1024px){.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 16px}}
+.pc{width:auto!important}
+.pgfoot{margin-top:40px}.pgfoot>*,.pgfoot>*>*{width:100%!important;max-width:none!important}
+#hdrwrap{position:relative;z-index:20}
+.hd-search span.q{color:var(--text-primary)}
+
+/* ---------- the sparkle (dev build: shopping-agent-sparkle, gradient primary-dark → primary → 45% white) ---------- */
+.spk{display:inline-block;flex:none;vertical-align:middle}
+
+/* ---------- entry point: Ask Deb ---------- */
+.ag-pill{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 16px 0 12px;border-radius:99px;background:#FFF;color:#000;font:500 14px var(--font-family-base);white-space:nowrap;border:0;cursor:pointer;box-shadow:0 0 0 1px rgba(0,0,0,.06)}
+.ag-pill:hover{box-shadow:0 0 0 1px rgba(0,0,0,.2)}
+.hd-search.ag-has{padding-right:8px}
+.hd-search .ag-pill{margin-left:4px}
+.ag-hpill{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 16px 0 12px;border-radius:99px;border:1px solid #D0D0D0;background:#FFF;font:500 14px var(--font-family-base);white-space:nowrap;cursor:pointer}
+.ag-hicon{width:24px;height:24px;display:grid;place-items:center;border-radius:99px;border:1px solid #D0D0D0;background:#FFF;padding:0;cursor:pointer}
+.ag-mrow{padding:0 16px 8px}.ag-mrow .hd-search{height:44px;max-width:none;padding:0 6px 0 16px;font-size:14px}
+.ag-mrow .hd-search .ag-pill{height:32px;font-size:13px;padding:0 12px 0 10px}
+.ag-fab{position:fixed;right:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:8px;height:52px;padding:0 20px 0 16px;border-radius:99px;background:#000;color:#FFF;font:600 15px var(--font-family-base);border:0;box-shadow:0 6px 24px rgba(0,0,0,.25);cursor:pointer}
+@media(min-width:1024px){.ag-fab{right:32px;bottom:32px}}
+
+/* ---------- search open: live suggestions + Top Sellers, with the agent's suggestions per option ---------- */
+.ac{position:absolute;left:0;right:0;top:100%;background:#FFF;z-index:30;border-top:1px solid var(--border-subtle);padding:12px 16px 24px;min-height:calc(100vh - 100%);font-size:14px}
+@media(min-width:1024px){.ac{left:50%;transform:translateX(-50%);top:76px;width:min(800px,calc(100% - 400px));min-height:0;border:1px solid var(--border-subtle);padding:16px 24px 32px}}
+.ac-terms{list-style:none;margin:0;padding:0}.ac-terms li{padding:9px 0;font-weight:300}.ac-terms li b{font-weight:600}
+.ac-hr{height:1px;background:var(--border-subtle);margin:12px 0 16px}
+.ac h4{font-size:16px;font-weight:600;margin:0 0 12px}
+.ac-rail{display:grid;grid-auto-flow:column;grid-auto-columns:42%;gap:12px;overflow:hidden}
+@media(min-width:1024px){.ac-rail{grid-auto-columns:calc((100% - 48px)/4.6)}}
+.ac-rail .pc-name{font-size:13px}
+.ac-ai{display:flex;flex-direction:column;gap:10px}
+.ac-ai .lbl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:#444}
+.ac-ai .set{display:flex;flex-wrap:wrap;gap:8px}
+
+/* ---------- shared AI chip (the prompt-link look, from the config chip styles) ---------- */
+.aichip{display:flex;align-items:center;gap:8px;min-height:36px;padding:8px 14px;border-radius:var(--ai-chip-radius,24px);border:1px solid var(--ai-chip-border,#959499);background:var(--ai-chip-bg,#f8f8f8);color:#000;font-family:var(--font-family-base);font-size:13px;font-weight:400;line-height:1.3;text-align:left;cursor:pointer}
+.aichip:hover{border-color:#000}
+.aichip.out{background:#FFF;border-color:var(--ai-primary,#00787d);color:var(--ai-primary,#00787d);font-weight:500}
+
+/* ---------- PDP prompts: mirrors <google-ai-prompts product-id direction> (shadow parts prompts-container / prompt-item / prompt-link) ---------- */
+.gap-wrap{display:flex;flex-direction:column;gap:12px}
+.gap-head{display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600}
+.gap-head small{font-weight:300;font-size:12px;color:#555;margin-left:2px}
+.prompts-container{display:flex;flex-wrap:wrap;gap:8px}
+.prompts-container[data-dir="column"]{flex-direction:column;align-items:stretch}
+.prompts-container[data-dir="column"] .prompt-link{width:100%}
+.prompt-link{display:flex;align-items:center;gap:8px;min-height:40px;padding:8px 14px;border-radius:var(--ai-chip-radius,24px);border:1px solid var(--ai-chip-border,#959499);background:var(--ai-chip-bg,#f8f8f8);color:#000;font-family:var(--font-family-base);font-size:14px;font-weight:400;line-height:1.3;text-align:left;cursor:pointer}
+.prompt-link:hover{border-color:#000}
+.prompt-link.ask{background:#FFF;border-color:var(--ai-primary,#00787d);color:var(--ai-primary,#00787d);font-weight:500}
+.prompt-link__icon{display:inline-flex}
+
+/* ---------- PDP ---------- */
+.pdp{display:grid;gap:16px;padding-top:8px}
+@media(min-width:1024px){.pdp{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px;align-items:start;padding-top:16px}}
+.gal{display:grid;grid-template-columns:1fr;gap:8px;margin:0 -16px}
+@media(min-width:1024px){.gal{grid-template-columns:64px 1fr;gap:16px;margin:0}}
+.gal .th{display:none;flex-direction:column;gap:8px}@media(min-width:1024px){.gal .th{display:flex}}
+.gal .th img{width:64px;height:96px;object-fit:cover;border:1px solid transparent}.gal .th img.on{border-color:#000}
+.gal .main{position:relative;background:var(--surface-media)}
+.gal .main img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover}
+.gal .dots{position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:6px}
+.gal .dots i{width:6px;height:6px;border-radius:99px;background:rgba(0,0,0,.25)}.gal .dots i:first-child{background:#000}
+@media(min-width:1024px){.gal .dots{display:none}}
+.onimg{position:absolute;z-index:2}
+.onimg.br{right:12px;bottom:36px}.onimg.tl{left:12px;top:12px}
+@media(min-width:1024px){.onimg.br{bottom:16px;right:16px}.onimg.tl{left:16px;top:16px}}
+.imgchip{display:flex;align-items:center;gap:6px;height:36px;padding:0 14px 0 10px;border-radius:99px;background:rgba(255,255,255,.95);border:1px solid rgba(0,0,0,.12);font:500 13px var(--font-family-base);color:#000;box-shadow:0 1px 6px rgba(0,0,0,.12);cursor:pointer;white-space:nowrap}
+.buy{display:flex;flex-direction:column;gap:16px}
+.buy .bd{width:100%}
+.pbrand{font-size:16px;font-weight:600}.pname{font-size:16px;font-weight:300;margin-top:2px}
+.prow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.ctas{display:flex;flex-direction:column;gap:8px}
+.ctas2{display:flex;gap:8px}.ctas2>*{flex:1}
+.lnkbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;border:1px solid #000;border-radius:var(--radius-default);background:#FFF;font:500 14px var(--font-family-base);cursor:pointer;color:#000}
+.glance-blk h3,.sec-h{font-size:16px;font-weight:600;margin:0 0 12px}
+.glance{margin:0}
+.under{display:flex;flex-direction:column;gap:24px;margin-top:24px}
+.dbox{border:1px solid var(--border-subtle);border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:12px;font-size:14px}
+.dbox div{display:flex;gap:12px;align-items:flex-start}.dbox img{width:20px;height:20px;flex:none}
+/* html2canvas cannot parse color-mix(): flatten the one the Deliver+ banner uses */
+.dplus .foot{border-top-color:rgba(0,0,0,.25)}
+.acc-set .acc{border-bottom:1px solid var(--border-subtle)}
+.acc-set .acc-h{display:flex;width:100%;justify-content:space-between;align-items:center;padding:16px 0;font:600 15px var(--font-family-base);background:none;border:0;color:inherit}
+.acc-set .acc-h img{width:16px;height:16px}.acc-set .acc.open .acc-h img{transform:rotate(180deg)}
+.acc-set .acc-b{padding:0 0 16px;font-size:14px;font-weight:300;line-height:1.6}
+.gal .th img{overflow:hidden}
+.hd-search>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+
+/* ---------- PLP ---------- */
+.plp-top{display:flex;flex-direction:column;gap:12px}
+.pcats{display:flex;gap:8px;overflow:hidden}
+.nba{display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid var(--border-subtle);border-radius:8px;background:#FFF}
+.nba h3{margin:0;font-size:18px;font-weight:600}.nba p{margin:0;font-size:12px;color:#555}
+.nba .set{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.nba .sep{width:1px;height:28px;background:var(--border-subtle);margin:0 4px}
+.grid .nba{grid-column:1/-1}
+.pc-img .onimg.br{bottom:8px;right:8px}
+.pc-img .imgchip{height:30px;font-size:12px;padding:0 10px 0 8px}
+
+/* ---------- Home: custom prompts ---------- */
+.cp-strip{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:10px 16px;background:var(--ai-primary,#00787d);color:#FFF;font-size:14px;text-align:center}
+.cp-strip button{display:inline-flex;align-items:center;gap:6px;color:#FFF;font:600 14px var(--font-family-base);text-decoration:underline;background:none;border:0;cursor:pointer}
+.cp-mod{display:grid;grid-template-columns:1fr;margin:16px 0}
+@media(min-width:1024px){.cp-mod{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);margin:24px 40px}}
+.cp-mod .pan{background:#F4F4F2;padding:24px 16px;display:flex;flex-direction:column;gap:8px;justify-content:center}
+@media(min-width:1024px){.cp-mod .pan{padding:40px}}
+.cp-mod h3{margin:0;font-size:26px;font-weight:300}.cp-mod .sub{font-size:16px;color:#333;margin-bottom:8px}
+.cp-mod .set{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.cp-mod img{display:block;width:100%;height:100%;object-fit:cover;min-height:220px}
+.cp-hero{position:relative}
+.cp-hero .ov{position:absolute;left:16px;top:16px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;z-index:3}
+@media(min-width:1024px){.cp-hero .ov{left:48px;top:48px}}
+.cp-hero .ov .aichip{background:rgba(255,255,255,.95);border-color:transparent}
+
+/* ---------- review outline (the deck's dashed AI boxes) ---------- */
+body.outline [data-feat]{outline:1.5px dashed #0D99FF;outline-offset:3px;position:relative}
+body.outline [data-feat]::before{content:attr(data-tag);position:absolute;left:-3px;top:-22px;z-index:5;font:600 10px/1 'Google Sans',system-ui,sans-serif;letter-spacing:.02em;color:#FFF;background:#0D99FF;padding:4px 6px;border-radius:3px;white-space:nowrap;pointer-events:none}
+body.outline .ag-fab[data-feat]::before{top:-24px;left:auto;right:0}
+.flash{animation:flash 1.6s ease 1}
+@keyframes flash{0%,100%{box-shadow:0 0 0 0 rgba(13,153,255,0)}25%,60%{box-shadow:0 0 0 6px rgba(13,153,255,.45)}}
+
+/* ============ CHAT WINDOW — every value from salesAgentConfig.payload.style (set on .cm as custom properties) ============ */
+.cm-scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90}
+.cm{position:fixed;top:0;right:var(--chat-messenger-internal-chat-window-offset,0);z-index:91;width:min(var(--chat-messenger-internal-chat-window-width,606px),100vw);height:var(--chat-messenger-internal-chat-window-height,100dvh);
+  background:var(--chat-messenger-internal-titlebar-background,#fff);border-radius:var(--chat-messenger-internal-chat-border-radius,24px) 0 0 var(--chat-messenger-internal-chat-border-radius,24px);
+  display:flex;flex-direction:column;font-family:var(--chat-messenger-font-family);color:var(--chat-messenger-color--on-surface,#222);box-shadow:-8px 0 40px rgba(0,0,0,.2);overflow:hidden}
+.cm.mob{border-radius:0}
+.cm-tb{display:flex;align-items:center;padding:var(--chat-messenger-internal-titlebar-padding);flex:none}
+.cm-tb .ic{width:var(--chat-messenger-internal-titlebar-icon-width,32px);height:var(--chat-messenger-internal-titlebar-icon-height,32px);margin:var(--chat-messenger-internal-titlebar-icon-padding);object-fit:cover;flex:none;display:grid;place-items:center}
+.cm-tb .t{flex:1;font-family:var(--chat-messenger-internal-titlebar-title-font-family);font-size:var(--chat-messenger-internal-titlebar-title-font-size,20px);font-weight:var(--chat-messenger-internal-titlebar-title-font-weight,600)}
+.cm-tb .acts{display:flex;gap:var(--chat-messenger-internal-titlebar-actions-gap,0)}
+.cm-tb .acts button{width:40px;height:40px;display:grid;place-items:center;background:none;border:0;color:var(--chat-messenger-internal-titlebar-button-color,#444746);cursor:pointer}
+.cm-body{flex:1;min-height:0;overflow-y:auto;padding:var(--chat-messenger-internal-chat-padding)}
+.cm-body>*{max-width:var(--chat-messenger-internal-message-list-max-width,1230px)}
+.cm-text{font-family:var(--chat-messenger-text-block-font-family);font-size:var(--chat-messenger-text-block-font-size);font-weight:var(--chat-messenger-text-block-font-weight);color:var(--chat-messenger-text-block-color);text-align:var(--chat-messenger-text-block-text-align);padding:var(--chat-messenger-text-block-padding);margin:var(--chat-messenger-text-block-margin);line-height:1.45}
+.cm-text a{color:var(--chat-messenger-text-block-link-color);text-decoration:underline}
+.cm-hero img{display:block;width:100%;height:auto;border:var(--chat-messenger-hero-image-border,none)}
+.cm-zero{padding:var(--chat-messenger-zero-state-padding);font-size:var(--chat-messenger-typescale--body-large-font-size,16px);font-weight:var(--chat-messenger-typescale--body-large-font-weight,300);line-height:1.6}
+.cm-zero .pr{display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;gap:var(--chat-messenger-zero-state-gap,8px);margin-top:16px}
+.cm-zero .pr button{display:inline-flex;align-items:center;justify-content:var(--df-messenger-prompt-justify-content,flex-start);gap:8px;padding:var(--df-messenger-prompt-padding);font-size:var(--df-messenger-prompt-font-size);color:var(--df-messenger-prompt-color);background:var(--df-messenger-prompt-background-color);
+  border:var(--df-messenger-prompt-border-width) solid var(--df-messenger-prompt-border-color);border-radius:var(--df-messenger-prompt-border-radius);font-family:inherit;cursor:pointer;white-space:nowrap}
+.cm-zero .pr button:hover{border-color:var(--df-messenger-prompt-border-hover-color)}
+.cm-msgs{display:flex;flex-direction:column;gap:16px;margin-top:var(--chat-messenger-internal-first-message-margin-top,16px);padding-bottom:16px}
+.cm-u{align-self:flex-end;max-width:var(--chat-messenger-internal-message-user-max-width,530px);background:var(--chat-messenger-internal-message-user-background,#eee);color:var(--chat-messenger-internal-message-user-font-color,#222);padding:var(--chat-messenger-internal-message-user-padding);
+  border-radius:var(--chat-messenger-internal-message-user-border-top-left-radius) var(--chat-messenger-internal-message-user-border-top-right-radius) var(--chat-messenger-internal-message-user-border-bottom-right-radius) var(--chat-messenger-internal-message-user-border-bottom-left-radius);font-size:var(--chat-messenger-internal-message-font-size,14px);font-weight:400}
+.cm-b{padding:var(--chat-messenger-internal-message-bot-padding);font-size:var(--chat-messenger-typescale--body-medium-font-size,14px);font-weight:var(--chat-messenger-internal-message-bot-font-weight,400);line-height:var(--chat-messenger-typescale--body-medium-line-height,140%)}
+.cm-b .mock{display:inline-block;font-size:10px;color:#888;border:1px solid #DDD;border-radius:4px;padding:1px 5px;margin-top:6px}
+.cm-dots{display:flex;gap:5px;padding:8px 0}.cm-dots i{width:8px;height:8px;border-radius:99px;background:var(--chat-messenger-internal-dynamic-bot-writing-svg-fill-color,#00787d);animation:dot 1s infinite ease-in-out}
+.cm-dots i:nth-child(2){animation-delay:.15s}.cm-dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.cm-car{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin-top:12px}
+.cm-tile{flex:none;width:var(--chat-messenger-product-carousel-tile-width,138px);display:flex;flex-direction:column;gap:6px;font-size:14px}
+.cm-tile img{width:100%;aspect-ratio:2/3;object-fit:cover;background:#F2F2F2}
+.cm-tile .n{font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3}
+.cm-tile .p{display:flex;gap:6px;flex-wrap:wrap;align-items:baseline}.cm-tile .p b{font-weight:700}.cm-tile .p b.sale{color:#9E2A2B}.cm-tile .p s{color:#777;font-size:12px}.cm-tile .p em{font-style:normal;color:#9E2A2B;font-size:12px}
+.cm-cart{min-width:min(var(--chat-messenger-cart-button-min-width,120px),100%);height:36px;border:0;background:var(--cart-button-background-color,#00787d);color:var(--cart-button-font-color,#fff);font:600 12px var(--chat-messenger-font-family);letter-spacing:.03em;cursor:pointer;
+  border-radius:var(--chat-messenger-cart-button--start-start-corner-radius) var(--chat-messenger-cart-button--start-end-corner-radius) var(--chat-messenger-cart-button--end-end-corner-radius) var(--chat-messenger-cart-button--end-start-corner-radius)}
+.cm-up{margin-top:12px;border:1.5px dashed #BDBDBD;border-radius:16px;padding:20px;display:flex;align-items:center;gap:12px;font-size:13px}
+.cm-up b{display:block;font-size:14px}
+.cm-in{flex:none;padding:var(--chat-messenger-internal-input-box-padding);padding-left:calc(var(--chat-messenger-internal-chat-padding-x,48px) - 8px);padding-right:calc(var(--chat-messenger-internal-chat-padding-x,48px) - 8px)}
+.cm.mob .cm-in{padding-left:12px;padding-right:12px}
+.cm-box{display:flex;align-items:center;gap:12px;height:60px;padding:var(--chat-messenger-internal-input-content-wrapper-padding-top) 8px var(--chat-messenger-internal-input-content-wrapper-padding-bottom) 20px;border:var(--chat-messenger-internal-input-box-border);border-radius:var(--chat-messenger-internal-input-box-border-radius);
+  background-image:var(--chat-messenger-internal-input-box-background-image);background-origin:var(--chat-messenger-internal-input-box-background-origin);background-clip:var(--chat-messenger-internal-input-box-background-clip)}
+.cm-box .plus{font-size:22px;font-weight:300;color:#444;width:20px;text-align:center}
+.cm-box .ph{flex:1;font-size:16px;font-weight:300;color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-box .send{width:40px;height:40px;border-radius:99px;display:grid;place-items:center;background:var(--chat-messenger-internal-send-icon-background,#E0E0E0);color:var(--chat-messenger-internal-send-icon-color,#fff);flex:none}
+.cm-box .send.on{background:var(--chat-messenger-internal-send-icon-active-background,#00787d)}
+.cm-disc{flex:none;font-size:var(--chat-messenger-internal-disclosure-text-font-size,11px);font-weight:var(--chat-messenger-internal-disclosure-text-font-weight,400);color:var(--chat-messenger-internal-disclosure-text-color,#555);text-align:var(--chat-messenger-internal-disclosure-text-align,left);padding:var(--chat-messenger-internal-disclosure-text-padding)}
+.cm-rst{font-size:12px;text-decoration:var(--chat-messenger-internal-reset-button-text-text-decoration,underline)}
+
+/* toast — where a link would go */
+.ct{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;transition:.25s;background:#111;color:#fff;font:500 13px var(--font-family-base);padding:10px 16px;border-radius:8px;z-index:999;pointer-events:none;max-width:90vw;text-align:center}
+.ct.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="ct" id="ct"></div>
+<script src="assets/ds/catalogue.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script src="assets/ds/usp-live.js"></script>
+<script src="assets/ds/usp.js"></script>
+<script src="projects/usp-banner/home.js"></script>
+<script src="projects/shopping-agent/agent.js"></script>
+<script>
+const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C&&C.find(x=>x.slug===slug);return c?c.variants[i].html:''};
+const strip=h=>h.replace(/ style="width:[^"]*"/,'');
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const desk=()=>innerWidth>=1024;
+const PR=()=>(window.PRODUCTS_ALL||{}).debenhams||[];
+/* data.js product i shows p{i}.jpg up to 6, then p{i+1}.jpg (p7 is an unlisted coat) */
+const IMG=i=>`projects/plp-alignment/img/debenhams/p${i<7?i:i+1}.jpg`;
+const A='projects/shopping-agent/';
+
+/* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
+let S={brand:'debenhams',page:'pdp',on:{},launcher:'search',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
+  pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
+  ssPos:'image',vtoPos:'image',vtoLabel:'Try it on',nbaPos:'top',nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
+  acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
+  cpPos:'module',search:false,chat:false,outline:true,agent:{},focus:null};
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes
+const ON=f=>S.on[f]!==false;
+let EXPORTING=false,BASE=null,CFG=null,CHAT={open:false,msgs:[]};
+
+/* ---- the sparkle: the dev build's shopping-agent-sparkle path, gradient in the agent primary ---- */
+let gid=0;
+function spk(sz=18,two=true){const id='g'+(++gid),p=E().primary,a=E().accent;
+  const fill=EXPORTING?p:`url(#${id})`;
+  return `<svg class="spk" width="${sz}" height="${sz}" viewBox="${two?'0 0 24 24':'2.5 2.5 15 15'}" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="${p}"/><stop offset="55%" stop-color="${p}"/><stop offset="100%" stop-color="${a}"/></linearGradient></defs><path fill="${fill}" d="M10 2.5l1.9 5.6 5.6 1.9-5.6 1.9L10 17.5l-1.9-5.6L2.5 10l5.6-1.9L10 2.5z"/>${two?`<path fill="${fill}" d="M18.5 14l.95 2.55L22 17.5l-2.55.95L18.5 21l-.95-2.55L15 17.5l2.55-.95L18.5 14z"/>`:''}</svg>`}
+const E=()=>Object.assign({},AG.DEF,S.agent||{});
+const ask=()=>'Ask '+E().name;
+/* data-feat = the feature (panel navigation + outline); data-q = the query sent to the agent (window.googleAgent.sendQuery) */
+const F=(f,opt)=>`data-feat="${f}" data-tag="${esc(TAG[f]+(opt?' · '+opt:''))}"`;
+const TAG={launcher:'Entry point',pdpPrompts:'PDP prompts',shopSimilar:'Shop similar',vto:'Virtual try-on',nba:'Next best action',autocomplete:'Autocomplete',custom:'Custom prompts'};
+const L=(k,v)=>({launcher:{search:'A',pill:'B',float:'C'},pdpPrompts:{glance:'A',aboveCta:'B',belowCta:'C'},shopSimilar:{image:'A',cta:'B',card:'C'},vto:{image:'A',cta:'B'},nba:{top:'A',filter:'B',grid:'C'},autocomplete:{replace:'A',above:'B',below:'C'},custom:{module:'A',strip:'B',hero:'C'}}[k]||{})[v]||'';
+
+/* ================= HEADER (DS header + USP drop-in) with the entry point per option ================= */
+function header(){
+  const d=desk(),lo=S.launcher;let h=strip(d?V('header',1):V('header',0)).replace(/ style="[^"]*border[^"]*"/,'');
+  h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
+  const q=S.search?'<span class="q">dress</span>':'<span>Search Fashion, Home &amp; Beauty</span>';
+  const pill=`<button class="ag-pill" ${F('launcher','A · in search')} data-q="">${spk(16)}${ask()}</button>`;
+  if(d){
+    h=h.replace('<span>Search over 10,000+ brands...</span>',q);
+    if(ON('launcher')&&lo==='search')h=h.replace('<div class="hd-search">','<div class="hd-search ag-has">').replace(/(<span class="ics">[\s\S]*?<\/span>)/,'$1'+pill);
+    if(ON('launcher')&&lo==='pill')h=h.replace('<div class="hd-icons">',`<div class="hd-icons"><button class="ag-hpill" ${F('launcher','B · header')} data-q="">${spk(20)}${ask()}</button>`);
+  }else{
+    if(ON('launcher')&&lo==='pill')h=h.replace('<div class="hd-icons">',`<div class="hd-icons"><button class="ag-hicon" ${F('launcher','B · header')} data-q="" aria-label="${ask()}">${spk(14,false)}</button>`);
+    if(ON('launcher')&&lo==='search'||S.search){
+      const row=`<div class="ag-mrow"><div class="hd-search${ON('launcher')&&lo==='search'?' ag-has':''}">${q}<span class="ics"><img src="assets/ds/icons/search.svg" alt=""></span>${ON('launcher')&&lo==='search'?pill:''}</div></div>`;
+      h=h.replace(/(<div class="hd-bar">[\s\S]*?<\/div><\/div>)/,'$1'+row);
+    }
+  }
+  h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
+  return `<div id="hdrwrap">${h}${S.search?autocomplete():''}</div>`;
+}
+
+/* ================= AUTOCOMPLETE — live = terms + Top Sellers (captured 12 Oct); agent suggestions per option ================= */
+function autocomplete(){
+  const terms=['dress','<b>wedding</b> dress','<b>wedding guest</b> dresses','dress<b>ing table</b>','<b>coast</b> dresses'];
+  const T=`<ul class="ac-terms">${terms.map(t=>`<li>${t}</li>`).join('')}</ul>`;
+  const AI=ON('autocomplete')?`<div class="ac-ai" ${F('autocomplete',L('autocomplete',S.acMode)+' · '+{replace:'replaces terms',above:'above terms',below:'below terms'}[S.acMode])}><span class="lbl">${spk(16)}Suggestions</span><div class="set">${S.acChips.filter(Boolean).map(c=>`<button class="aichip" data-q="${esc(c)}">${spk(14,false)}${esc(c)}</button>`).join('')}<button class="aichip out" data-q="Help me discover dresses">${spk(14)}Help me discover</button></div></div>`:'';
+  const top=[1,21,5,24,31].map(i=>card(PR()[i],i,true)).join('');
+  let blk;
+  if(!ON('autocomplete'))blk=T;
+  else if(S.acMode==='replace')blk=AI;
+  else if(S.acMode==='above')blk=AI+'<div class="ac-hr"></div>'+T;
+  else blk=T+'<div class="ac-hr"></div>'+AI;
+  return `<div class="ac">${blk}<div class="ac-hr"></div><h4>Top Sellers</h4><div class="ac-rail">${top}</div></div>`;
+}
+
+/* ================= product card (DS .pc) ================= */
+function card(p,i,mini){
+  if(!p)return '';const sale=p.was?' sale':'';
+  const ss=!mini&&ON('shopSimilar')&&S.ssPos==='card'?`<span class="onimg br"><button class="imgchip" ${F('shopSimilar','C · PLP card')} data-q="Shop similar" data-ctx="${esc(p.name)}">${spk(14,false)}Similar</button></span>`:'';
+  return `<article class="pc pc--compact"><div class="pc-img"><img class="ph" src="${IMG(i)}" alt="" loading="lazy">
+    ${mini?'':`<div class="pc-actions"><button class="pc-iconbtn pc-iconbtn--sq" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button></div>`}${ss}</div>
+    <div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${p.brand?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div>
+    <div class="pc-price${sale}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${p.pct?`<span class="pct">${esc(p.pct)}</span>`:''}</div></div></article>`;
+}
+
+/* ================= HOME — Debenhams live homepage (usp-banner/home.js, captured 06 Oct) + custom prompts ================= */
+function home(){
+  const d=desk(),doc=new DOMParser().parseFromString(renderHome('debenhams',d),'text/html'),hm=doc.querySelector('.hm'),mods=[...hm.children];
+  if(ON('custom')){
+    const chips=['Gifts for her under £50','Stocking fillers she’ll love','What do I get my dad?'];
+    const set=chips.map(c=>`<button class="aichip" data-q="${esc(c)}">${spk(14,false)}${esc(c)}</button>`).join('')+`<button class="aichip out" data-q="Help me find the perfect gift">${spk(14)}Help me choose</button>`;
+    if(S.cpPos==='module'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-mod" ${F('custom','A · module')}><div class="pan"><h3>Gifting, sorted</h3><div class="sub">Ask ${esc(E().name)} for ideas</div><div class="set">${set}</div></div><img src="projects/usp-banner/img/home/debenhams/wk38-debs-gifting-hp-homepage-aw-gifting-${d?'dt':'mb'}.webp" alt=""></div>`;mods[1]&&mods[1].after(m.firstChild)}
+    if(S.cpPos==='strip'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-strip" ${F('custom','B · strip')}><span>Gift shopping for someone special?</span><button data-q="Help me find the perfect gift">${spk(15)}Ask ${esc(E().name)} for ideas</button></div>`;hm.prepend(m.firstChild)}
+    if(S.cpPos==='hero'&&mods[1]){mods[1].classList.add('cp-hero');const o=doc.createElement('div');o.className='ov';o.setAttribute('data-feat','custom');o.setAttribute('data-tag','Custom prompts · C · on hero');o.innerHTML=set;mods[1].prepend(o)}
+  }
+  return hm.outerHTML;
+}
+
+/* ================= PLP — search results / category, DS sort & filter + cards, next best action ================= */
+function plp(){
+  const d=desk(),ids=[1,5,21,23,24,27,29,31,0,6,2,3,8,9,11,4];
+  const nba=ON('nba')?`<div class="nba" ${F('nba',L('nba',S.nbaPos)+' · '+{top:'above results',grid:'in grid',filter:'under filters'}[S.nbaPos])}><h3>${esc(S.nbaQ)}</h3><p>Select an option to start a chat with ${esc(E().name)}</p><div class="set">${S.nbaOpts.filter(Boolean).map(o=>`<button class="aichip" data-q="${esc('Dresses for: '+o)}">${spk(14,false)}${esc(o)}</button>`).join('')}<span class="sep"></span><button class="aichip out" data-q="Help me decide what to wear">${spk(14)}Help me decide</button></div></div>`:'';
+  const cards=ids.map(i=>card(PR()[i],i));
+  if(nba&&S.nbaPos==='grid')cards.splice(d?4:2,0,nba);
+  const bar=d?strip(V('sort-filter',0)):V('sort-filter',2).replace(/<div style="width:360px">([\s\S]*)<\/div>$/,'$1');
+  return `<div class="wrap"><div class="plp-top">${strip(V('breadcrumb',0)).replace('New In</a>','Womens</a>').replace('Womens New In','Womens Clothing').replace('New In Dresses','Dresses')}
+    <div class="h1">Womens Dresses <span style="font-weight:300;font-size:14px;color:#666">2,481 items</span></div>
+    <div class="pcats">${V('category-nav',1).replace(/Dresses|Tops|Jeans|Knitwear/g,m=>({Dresses:'Midi Dresses',Tops:'Maxi Dresses',Jeans:'Party Dresses',Knitwear:'Wedding Guest'}[m]))}</div>
+    ${nba&&S.nbaPos==='top'?nba:''}${bar}${nba&&S.nbaPos==='filter'?nba:''}</div>
+    <div class="grid" style="margin-top:16px">${cards.join('')}</div></div>`;
+}
+
+/* ================= PDP — Debenhams live order (12 Oct): gallery · brand / name · price · colour · size · ADD TO BAG · Deliver+ · delivery · BNPL · At a glance · accordions ================= */
+function pdp(){
+  const d=desk(),p=PR()[1];
+  const glance=`<div class="glance-blk"><h3>At a Glance</h3>${V('at-a-glance',0).replace(/<li><i>✓<\/i>Regular fit<\/li><li><i>✓<\/i>Machine washable<\/li><li><i>✓<\/i>Recycled polyester<\/li>/,['Delicate lace bodice','Pleated midi skirt','Shirt collar and button front','Long sleeves','Regular fit'].map(t=>`<li><i>✓</i>${t}</li>`).join(''))}</div>`;
+  const prompts=ON('pdpPrompts')?`<div class="gap-wrap" ${F('pdpPrompts',L('pdpPrompts',S.pdpPos)+' · '+{glance:'replaces At a Glance',aboveCta:'above CTA',belowCta:'below CTA'}[S.pdpPos]+' · '+S.pdpDir)}>
+    ${S.pdpHead?`<div class="gap-head">${spk(18)}${ask()}<small>about this item</small></div>`:''}
+    <div class="prompts-container" data-dir="${S.pdpDir}" data-product-id="GZZ66300">${S.pdpPrompts.filter(Boolean).map(t=>`<div class="prompt-item"><button class="prompt-link" data-q="${esc(t)}" aria-label="${esc(t)}"><span class="prompt-link__icon">${spk(16,false)}</span><span class="prompt-link__text">${esc(t)}</span></button></div>`).join('')}
+    ${S.pdpAsk?`<div class="prompt-item"><button class="prompt-link ask" data-q=""><span class="prompt-link__icon">${spk(16)}</span><span class="prompt-link__text">Ask anything</span></button></div>`:''}</div></div>`:'';
+  const ssBtn=ON('shopSimilar')?`<button class="imgchip" ${F('shopSimilar','A · on image')} data-q="Shop similar">${spk(16)}Shop similar</button>`:'';
+  const vtoBtn=ON('vto')?`<button class="imgchip" ${F('vto','A · on image')} data-q="Try it on" data-vto="1">${spk(16)}${esc(S.vtoLabel)}</button>`:'';
+  const gal=`<div class="gal"><div class="th"><img class="on" src="${IMG(1)}" alt=""><img src="${IMG(1)}" alt="" style="object-position:50% 15%;transform:scale(1.4)"><img src="${IMG(1)}" alt="" style="object-position:50% 85%"></div>
+    <div class="main"><img src="${IMG(1)}" alt="">${S.ssPos==='image'&&ssBtn?`<span class="onimg br">${ssBtn}</span>`:''}${S.vtoPos==='image'&&vtoBtn?`<span class="onimg tl">${vtoBtn}</span>`:''}<div class="dots"><i></i><i></i><i></i><i></i></div></div></div>`;
+  const ctaRow=[S.vtoPos==='cta'&&ON('vto')?`<button class="lnkbtn" ${F('vto','B · under CTA')} data-q="Try it on" data-vto="1">${spk(16)}${esc(S.vtoLabel)}</button>`:'',S.ssPos==='cta'&&ON('shopSimilar')?`<button class="lnkbtn" ${F('shopSimilar','B · under CTA')} data-q="Shop similar">${spk(16)}Shop similar</button>`:''].filter(Boolean);
+  const info=`<div class="buy"><div class="prow"><div><div class="pbrand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div></div><img src="assets/ds/icons/heart-24.svg" alt="" width="24"></div>
+    ${V('ratings',0)}
+    ${V('price',0)}
+    <div style="font-size:14px">Colour: <b>Hot Pink</b></div><div class="cswatches"><button class="cswatch on"><img src="${IMG(1)}" alt="" style="width:60px;height:89px;object-fit:cover;display:block"></button></div>
+    ${V('size-selector',0).replace(' style="width:360px"','').replace(/<button class="sz">One size<\/button>/,'')}
+    ${S.pdpPos==='aboveCta'?prompts:''}
+    <div class="ctas"><button class="bd pri">Add to Bag</button>${ctaRow.length?`<div class="ctas2">${ctaRow.join('')}</div>`:''}</div>
+    ${S.pdpPos==='belowCta'?prompts:''}
+    ${strip(V('deliver-plus',d?1:0))}
+    <div class="dbox"><div><img src="assets/ds/icons/lib/icons-delivery-fast.svg" alt="" onerror="this.remove()"><span>Sold &amp; Delivered by <u>Debenhams</u></span></div><div><img src="assets/ds/icons/lib/icons-delivery-fast.svg" alt="" onerror="this.remove()"><span>Delivery From £2.99 Or 99p On Orders Over £30</span></div><div><img src="assets/ds/icons/lib/icons-quick-add.svg" alt="" onerror="this.remove()"><span>Eligible for return within 21 days. Plus 14-day extension when you purchase Debenhams Deliver+</span></div></div>
+    ${strip(V('bnpl',0))}</div>`;
+  const glanceSlot=S.pdpPos==='glance'?prompts:glance;
+  const acc=`<div class="acc-set">${['Description','Product Details &amp; Care','Delivery','Returns','Manufacturer'].map((t,k)=>`<div class="acc${k?'':' open'}"><button class="acc-h">${t}<img src="assets/ds/icons/lib/icons-down.svg" alt="" onerror="this.remove()"></button>${k?'':'<div class="acc-b">Long sleeve lace and pleated midi shirt dress in hot pink. Delicate lace bodice, shirt collar, button front and a softly pleated midi skirt. Regular fit.</div>'}</div>`).join('')}</div>`;
+  const under=`<div class="under">${glanceSlot}${acc}</div>`;
+  return d?`<div class="wrap">${strip(V('breadcrumb',0)).replace('New In</a>','Womens</a>').replace('Womens New In','Dresses').replace('New In Dresses','Midi Dresses')}<div class="pdp"><div>${gal}${under}</div>${info}</div></div>`
+          :`<div class="wrap"><div class="pdp">${gal}${info}${under}</div></div>`;
+}
+
+/* ================= CHAT WINDOW — rendered from the built config ================= */
+function applyVars(el,obj){for(const k in obj){if(k==='mobile'||typeof obj[k]!=='string')continue;el.style.setProperty(k,obj[k])}}
+function md(s){return esc(s).replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="#" data-href="$2">$1</a>')}
+function chat(){
+  if(!CHAT.open||!CFG)return '';
+  const p=CFG.payload,st=p.settings,mob=innerWidth<768,c=p.components,zs=c.zeroState.payload,icon=E().icon==='spark'?spk(28):`<img class="ic" src="${A}img/chat-icon.jpg" alt="">`;
+  const head=[c.text&&{o:c.text.order,h:`<div class="cm-text" data-c="text">${md(c.text.payload.text)}</div>`},
+    c.hero&&{o:c.hero.order,h:`<div class="cm-hero"><img src="${A}img/${mob?'hero-mobile':'hero'}.jpg" alt=""></div>`},
+    {o:c.zeroState.order,h:`<div class="cm-zero" data-c="zero">${zs.text.replace(/<(?!br\s*\/?>)/g,'&lt;')}<div class="pr">${zs.prompts.map(t=>`<button data-q="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>`}].filter(Boolean).sort((a,b)=>a.o-b.o).map(x=>x.h).join('');
+  const msgs=CHAT.msgs.map(m=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b">${m.b}</div>`).join('');
+  return `${mob?'':'<div class="cm-scrim" data-close="1"></div>'}<div class="cm${mob?' mob':''}" id="cm" role="dialog" aria-label="${esc(st['chat-title'])}">
+    <div class="cm-tb">${E().icon==='spark'?`<span class="ic">${icon}</span>`:icon}<span class="t">${esc(st['chat-title'])}</span><span class="acts"><button data-reset="1" aria-label="Reset"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 4a8 8 0 1 0 8 8"/><path d="M12 1v6l3-3z" fill="currentColor"/></svg></button><button data-close="1" aria-label="Close"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></span></div>
+    <div class="cm-body">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
+    <div class="cm-in"><div class="cm-box"><span class="plus">+</span><span class="ph">${esc(st['placeholder-text'])}</span><span class="send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
+    <div class="cm-disc">${esc(st['disclosure-text'])}</div></div>`;
+}
+function styleChat(){const el=document.getElementById('cm');if(!el)return;const sy=CFG.payload.style,mob=innerWidth<768;applyVars(el,sy);if(mob)applyVars(el,sy.mobile||{});
+  const pad=(mob?sy.mobile['--chat-messenger-internal-chat-padding']:sy['--chat-messenger-internal-chat-padding'])||'0 48px';el.style.setProperty('--chat-messenger-internal-chat-padding-x',pad.split(' ')[1]||'48px');
+  const z=el.querySelector('[data-c="zero"]');if(z)applyVars(z,CFG.payload.components.zeroState.payload.styles);
+  const t=el.querySelector('[data-c="text"]');if(t&&CFG.payload.components.text)applyVars(t,CFG.payload.components.text.payload.styles)}
+
+/* mock replies — the live agent writes these; the tiles follow rich-content-config.tileConfig */
+function tile(i){const p=PR()[i];return `<div class="cm-tile"><img src="${IMG(i)}" alt=""><div class="n">${esc(p.name)}</div><div class="p"><b class="${p.was?'sale':''}">${esc(p.price)}</b>${p.was?`<s>${esc(p.was)}</s><em>${esc(p.pct)}</em>`:''}</div><button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div>`}
+function reply(q,vto){
+  const mk='<br><span class="mock">Mock reply — the agent writes this</span>';
+  if(vto)return `Let’s see how the <b>Coast Lace and Pleated Midi Shirt Dress</b> looks on you. Upload a full-length photo and I’ll show it on you in a few seconds.<div class="cm-up">${spk(28)}<div><b>Upload a photo</b>Your photo is only used for this try-on.</div></div>${mk}`;
+  if(/similar/i.test(q))return `Here are styles similar to the <b>Coast Lace and Pleated Midi Shirt Dress</b> — lace, pleats and midi lengths in a similar price range.<div class="cm-car">${[21,31,27,5].map(tile).join('')}</div>${mk}`;
+  if(/fit|size/i.test(q))return `This dress is a <b>regular fit</b> and most customers say it’s true to size. If you’re between sizes, size up for room through the shoulders. What size do you usually wear?${mk}`;
+  return `Here are a few I think you’ll love. Tell me your size, budget or occasion and I’ll narrow it down.<div class="cm-car">${[1,21,24,29].map(tile).join('')}</div>${mk}`;
+}
+function openChat(q,vto){CHAT.open=true;
+  if(q){CHAT.msgs.push({u:q},{typing:true});setTimeout(()=>{CHAT.msgs=CHAT.msgs.filter(m=>!m.typing);CHAT.msgs.push({b:reply(q,vto)});drawChat()},EXPORTING?0:900)}
+  drawChat();parent.postMessage({protoChat:true},'*')}
+function closeChat(){CHAT.open=false;drawChat();parent.postMessage({protoChat:false},'*')}
+function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat()}
+
+/* ================= render ================= */
+const PAGES={home,plp,pdp};
+function render(){
+  document.documentElement.setAttribute('data-brand','debenhams');
+  document.body.classList.toggle('outline',!!S.outline&&!EXPORTING);   /* review aid only — never in an export */
+  if(CFG){const r=document.documentElement.style,e=E();r.setProperty('--ai-primary',e.primary);r.setProperty('--ai-chip-bg',e.chipBg);r.setProperty('--ai-chip-border',e.chipBorder);r.setProperty('--ai-chip-radius',e.chipRadius+'px')}
+  gid=0;
+  const fab=ON('launcher')&&S.launcher==='float'?`<button class="ag-fab" ${F('launcher','C · floating')} data-q="">${spk(20)}${ask()}</button>`:'';
+  document.getElementById('app').innerHTML=`${header()}<div id="body">${(PAGES[S.page]||pdp)()}</div><div class="pgfoot">${strip(V('footer',0))}</div>${fab}<div id="chat"></div>`;
+  if(window.DG_uspMount)DG_uspMount();
+  if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
+  drawChat();
+  if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el){el.scrollIntoView({block:'center',behavior:EXPORTING?'auto':'smooth'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}}
+}
+fetch('projects/shopping-agent/base-config.json').then(r=>r.json()).then(b=>{BASE=b;CFG=AG.build(BASE,S.agent);render();parent.postMessage({protoReady:1},'*')});
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;if(BASE)CFG=AG.build(BASE,S.agent);if(BASE)render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+/* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
+document.addEventListener('click',e=>{
+  const qb=e.target.closest('[data-q]');
+  if(qb){e.preventDefault();CHAT.user=true;const q=qb.dataset.q;openChat(q?(qb.dataset.ctx&&/similar/i.test(q)?q:q):'',!!qb.dataset.vto);return}
+  if(e.target.closest('[data-close]')){CHAT.user=false;CHAT.msgs=[];closeChat();return}
+  if(e.target.closest('[data-reset]')){CHAT.msgs=[];drawChat();return}
+  const a=e.target.closest('a[data-href],a[href]');
+  if(a){e.preventDefault();const t=document.getElementById('ct');t.textContent='Link → '+(a.dataset.href||a.getAttribute('href'));t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800)}
+  else if(e.target.closest('button'))e.preventDefault()});
+</script>
+</body>
+</html>

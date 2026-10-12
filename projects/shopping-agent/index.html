@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shopping agent · configurator — All Brands</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+/* ============================================================
+   Review shell — Jake's standard prototype format (model: Core PDP 2026, jakerayner96.github.io/core-pdp-2026).
+   TOP BAR = window controls: fascia chips · Desktop/Mobile · width preset · live width · Full page/Fold · Export.
+   LEFT PANEL = page configuration (project-specific — fill renderPanel()).
+   STAGE = the page in an iframe, drag handle on its right edge to resize; Fold = iPhone Safari frame.
+   EXPORT = one zip: <name>-mobile-390.png + <name>-desktop-1440.png (full page) + config.json + the page code.
+   ============================================================ */
+:root{--bg:#161616;--bar:#000;--panel:#000;--line:rgba(255,255,255,.14);--ink:#F7F7F7;--muted:#9A9A9A;--dim:#707070;--accent:#0D99FF;--ok:#1FA971;--warn:#E8A23B}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);font-family:'Google Sans','Montserrat',system-ui,sans-serif;color:var(--muted);display:grid;grid-template-rows:48px 1fr;grid-template-columns:360px 1fr;height:100%;overflow:hidden;font-size:12px}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+a{color:var(--accent)}
+/* ---- top bar ---- */
+.top{grid-column:1/3;display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--bar);border-bottom:1px solid var(--line)}
+.top .ttl{font-weight:600;font-size:12px;color:var(--ink);white-space:nowrap}
+.top .mid{margin:0 auto;display:flex;align-items:center;gap:10px;min-width:0}
+.top .div{width:1px;height:20px;background:rgba(255,255,255,.15);margin:0 4px;flex:none}
+.top .w{font-size:10.5px;color:var(--dim);font-variant-numeric:tabular-nums;min-width:48px;text-align:right}
+.top .status{font-size:11px;color:var(--muted);white-space:nowrap}
+.top select{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 8px;font:inherit;font-size:11.5px}
+.export{display:flex;align-items:center;gap:8px;background:var(--ink);color:#000;padding:6px 12px;border-radius:99px;font-weight:600;font-size:12px;flex:none}
+.export:disabled{opacity:.5;cursor:progress}.export svg{width:13px;height:13px}
+.seg{display:inline-flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;flex:none}
+.seg button{padding:5px 12px;color:#B0B0B0;font-size:11.5px;white-space:nowrap}
+.seg button.on{background:var(--ink);color:#000;font-weight:700}
+.seg button:disabled{opacity:.35;cursor:not-allowed}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.top .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.chip{padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px;color:#B0B0B0;white-space:nowrap}
+.chip.on{background:var(--ink);color:#000;border-color:var(--ink);font-weight:600}
+.chip[disabled]{opacity:.35;cursor:not-allowed}
+/* ---- left panel ---- */
+.panel{background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:16px 14px 40px}
+.panel h1{font-size:17px;font-weight:700;letter-spacing:-.01em;margin:4px 0 4px;color:var(--ink)}
+.panel .intro{font-size:11px;color:var(--dim);line-height:1.45;margin-bottom:14px}
+.panel select,.panel input{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:5px 8px;font:inherit;font-size:11.5px}
+.panel option:disabled{color:#555}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;background:#0E0E0E}
+.card h3{font-size:12.5px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.card h3 small{font-weight:400;color:var(--dim);font-size:10.5px;margin-left:6px}
+.card p{font-size:11px;color:var(--dim);line-height:1.45;margin-bottom:8px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:7px 0;cursor:pointer;border-top:1px solid rgba(255,255,255,.07);width:100%;text-align:left}
+.opt:first-child{border-top:none}
+.opt .r{flex:none;width:16px;height:16px;border-radius:99px;border:1.5px solid #6A6A6A;margin-top:1px;position:relative}
+.opt.on .r{border-color:var(--accent);background:var(--accent)}
+.opt.on .r::after{content:"";position:absolute;inset:4px;border-radius:99px;background:#0A0A0A}
+.opt .t{flex:1;min-width:0}.opt .t b{display:block;font-size:12px;font-weight:500;color:#D8D8D8}.opt.on .t b{font-weight:600;color:var(--ink)}
+.opt .t span{display:block;font-size:10.5px;color:var(--dim);line-height:1.4}
+.f{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.f>span{font-size:11px;color:#C8C8C8;font-weight:500}
+.f input,.f select{width:100%}
+.f small{font-size:10.5px;color:var(--dim)}.f small.warn{color:var(--warn)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink);cursor:pointer;font-weight:400}
+.sw input{display:none}.sw i{width:30px;height:18px;border-radius:99px;background:#3A3A3A;position:relative;transition:.15s;flex:none}.sw i::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:99px;background:#fff;transition:.15s}
+.sw input:checked+i{background:var(--accent)}.sw input:checked+i::after{left:14px}
+.rules{font-size:10.5px;color:var(--dim);line-height:1.55}.rules b{color:#C8C8C8;font-weight:600}
+/* ---- stage: frame + drag handle ---- */
+.stage{position:relative;overflow:hidden;display:flex;align-items:stretch;justify-content:center;padding:0}
+.win{display:flex;height:100%;max-width:100%}
+.holder{display:flex;flex:1;min-height:0}
+iframe{border:none;display:block;height:100%;background:#FFF;box-shadow:0 0 60px rgba(0,0,0,.5)}
+.handle{width:16px;display:flex;align-items:center;justify-content:center;cursor:col-resize;flex:none}
+.handle i{width:5px;height:56px;border-radius:99px;background:#3A3A3A}
+.handle:hover i,.dragging .handle i{background:#6A6A6A}
+body.dragging{user-select:none;cursor:col-resize}body.dragging iframe{pointer-events:none}
+/* ---- fold view: iOS 26 Safari frame (SEEL Enhancements 2026 · 3366-199353) ---- */
+.device{position:relative;display:flex;flex-direction:column;height:100%;background:#FFF}
+.device iframe{flex:1;min-height:0}
+.device .sb,.device .tb,.device .home,.device .chin{display:none}
+body.fold .stage{align-items:center}body.fold .win{height:auto}
+body.fold .device{height:calc(var(--k) * 874px);border-radius:calc(var(--k) * 44px);overflow:hidden;box-shadow:0 0 60px rgba(0,0,0,.5)}
+body.fold .device .sb,body.fold .device .tb,body.fold .device .home{display:flex}
+body.fold .device .chin{display:block;flex:none;height:calc(var(--k) * 82px);background:#FFF}
+body.fold .device iframe{box-shadow:none}
+.device .sb{height:calc(var(--k) * 62px);flex:none;background:#FFF;position:relative;align-items:center;justify-content:space-between;padding:0 calc(var(--k) * 30px) 0 calc(var(--k) * 48px);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif}
+.device .sb .time{font-size:calc(var(--k) * 17px);font-weight:600;color:#000;letter-spacing:-.02em;width:calc(var(--k) * 54px)}
+.device .sb .island{position:absolute;left:50%;top:calc(var(--k) * 11px);transform:translateX(-50%);width:calc(var(--k) * 124px);height:calc(var(--k) * 36px);background:#000;border-radius:99px}
+.device .sb .sys{display:flex;align-items:center;gap:calc(var(--k) * 6px)}
+.device .sb .sig{width:calc(var(--k) * 18px);height:calc(var(--k) * 12px)}.device .sb .wifi{width:calc(var(--k) * 16px);height:calc(var(--k) * 12px)}.device .sb .bat{width:calc(var(--k) * 28px);height:calc(var(--k) * 13px)}
+.device .tb{position:absolute;left:0;right:0;bottom:calc(var(--k) * 34px);height:calc(var(--k) * 48px);padding:0 calc(var(--k) * 28px);align-items:center;justify-content:space-between;gap:calc(var(--k) * 8px);pointer-events:none}
+.device .tb .circ{width:calc(var(--k) * 48px);height:calc(var(--k) * 48px);border-radius:99px;background:rgba(255,255,255,.92);box-shadow:0 1px 6px rgba(0,0,0,.18);display:grid;place-items:center;flex:none;backdrop-filter:blur(12px)}
+.device .tb .circ svg{width:calc(var(--k) * 12px);height:calc(var(--k) * 20px)}.device .tb .circ:last-child svg{width:calc(var(--k) * 22px);height:calc(var(--k) * 6px)}
+.device .tb .url{flex:1;height:calc(var(--k) * 48px);border-radius:99px;background:rgba(255,255,255,.92);box-shadow:0 1px 6px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--k) * 14px);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;font-size:calc(var(--k) * 17px);color:#000;backdrop-filter:blur(12px)}
+.device .tb .url .pg{width:calc(var(--k) * 20px);height:calc(var(--k) * 18px)}.device .tb .url .rl{width:calc(var(--k) * 20px);height:calc(var(--k) * 20px)}
+.device .home{position:absolute;left:50%;bottom:calc(var(--k) * 8px);transform:translateX(-50%);width:calc(var(--k) * 134px);height:calc(var(--k) * 5px);border-radius:99px;background:#000}
+/* ---- export overlay ---- */
+#exp{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:50}
+#exp[hidden]{display:none}
+#exp .box{background:#0A0A0A;border:1px solid var(--line);color:#FFF;padding:16px 22px;border-radius:12px;font-size:13px;display:flex;gap:12px;align-items:center;max-width:420px}
+#exp .sp{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#FFF;border-radius:99px;animation:sp .8s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+#hidden{position:fixed;left:-20000px;top:0;width:1px;height:1px;overflow:hidden}
+/* ---- phones: page fills the window; the panel slides over it from a settings tab ---- */
+#mtab,.mhead{display:none}
+@media(max-width:760px){
+  body{grid-template-columns:1fr;grid-template-rows:1fr}.top{display:none}.stage{padding:0}
+  .win,.holder,.device{width:100%!important}.device{flex:1}iframe{width:100%!important;box-shadow:none}.stage .handle{display:none!important}
+  #mtab{display:grid;place-items:center;position:fixed;left:0;top:64px;z-index:70;width:44px;height:44px;background:#000;color:#FFF;border-radius:0 12px 12px 0;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  #mtab svg{width:22px;height:22px}
+  .panel{position:fixed;inset:0;z-index:80;border-right:none;transform:translateX(-100%);transition:transform .25s ease;padding-top:12px}.panel.open{transform:none}
+  .mhead{display:flex;align-items:center;gap:8px;margin-bottom:12px}.mhead .chips{flex:1;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .mhead .mclose{flex:none;width:32px;height:32px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:var(--ink)}
+}
+/* ---- project: feature list, config editor ---- */
+.feat{display:flex;align-items:center;gap:10px;border-top:1px solid rgba(255,255,255,.07);padding:2px 0}
+.feat:first-of-type{border-top:none}
+.feat .fn{flex:1;text-align:left;padding:7px 8px;border-radius:7px;margin-left:-8px}
+.feat .fn b{display:block;font-size:12px;font-weight:500;color:#D8D8D8}.feat .fn span{display:block;font-size:10.5px;color:var(--dim)}
+.feat.on .fn{background:rgba(13,153,255,.14)}.feat.on .fn b{color:var(--ink);font-weight:600}
+.feat .fn:hover{background:rgba(255,255,255,.06)}
+.panel textarea{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:6px 8px;font:inherit;font-size:11.5px;width:100%;resize:vertical;line-height:1.45}
+.panel input[type=color]{height:30px;padding:2px 4px}
+.f input+input{margin-top:4px}
+.diff{max-height:150px;overflow:auto;border:1px solid var(--line);border-radius:7px;padding:6px 8px;background:#080808}
+.diff code,.rules code{font:10.5px ui-monospace,Menlo,monospace;color:#9FD3FF}
+.f .seg button{padding:5px 10px}
+
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="ttl" id="ttl">Shopping agent</span>
+  <div class="mid">
+    <span class="chips" id="brands"></span>
+    <span class="div"></span>
+    <span class="seg" id="dev"><button data-w="0">Desktop</button><button data-w="390" class="on">Mobile</button></span>
+    <select id="preset" aria-label="Width preset" title="Exact width — or drag the handle on the preview">
+      <option value="390" selected>390</option><option value="402">402</option><option value="440">440</option><option value="768">768</option><option value="1024">1024</option><option value="1280">1280</option><option value="1440">1440</option><option value="0">Fit</option>
+    </select>
+    <span class="w" id="sizebox"></span>
+    <span class="seg" id="fold"><button data-f="0" class="on">Full page</button><button data-f="1">Fold</button></span>
+  </div>
+  <span class="status" id="status"></span>
+  <button class="export" id="exportbtn" title="Export a zip: full-page mobile (390) and desktop (1440) PNGs, the config and the page code"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 12.5h11"/></svg>Export</button>
+</header>
+<button id="mtab" aria-label="Open the configurator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+<aside class="panel" id="panel">
+  <div class="mhead"><span class="chips" id="brands-m"></span><button class="export" id="exportbtn2">Export</button><button class="mclose" id="mclose" aria-label="Close">✕</button></div>
+  <!-- {{PANEL_HTML}} — page configuration lives here; renderPanel() fills #cfgpanel -->
+  <div id="cfgpanel"></div>
+</aside>
+<main class="stage" id="stage">
+  <div class="win" id="win"><div class="holder">
+    <div class="device" id="device">
+      <div class="sb"><span class="time">9:41</span><span class="island"></span><span class="sys">
+        <svg class="sig" viewBox="0 0 18 12" fill="#000"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></svg>
+        <svg class="wifi" viewBox="0 0 16 12" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M4 7a5.8 5.8 0 0 1 8 0"/><circle cx="8" cy="10.2" r="1" fill="#000" stroke="none"/></svg>
+        <svg class="bat" viewBox="0 0 28 13"><rect x=".5" y=".5" width="24" height="12" rx="3.5" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="2" y="2" width="21" height="9" rx="2" fill="#000"/><path d="M26 4.5v4a2 2 0 0 0 0-4z" fill="#000" fill-opacity=".4"/></svg>
+      </span></div>
+      <iframe id="frame" title="Page preview"></iframe>
+      <div class="tb"><span class="circ"><svg viewBox="0 0 12 20" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 2 10l8 8"/></svg></span><span class="url"><svg class="pg" viewBox="0 0 20 18" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="2" width="14" height="10" rx="1.5"/><path d="M6 6h8M6 9h5M7 16h6"/></svg><span id="urltxt"></span><svg class="rl" viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a6 6 0 1 1-1.8-4.3"/><path d="M15 2v4h-4"/></svg></span><span class="circ"><svg viewBox="0 0 22 6" fill="#000"><circle cx="3" cy="3" r="2.2"/><circle cx="11" cy="3" r="2.2"/><circle cx="19" cy="3" r="2.2"/></svg></span></div>
+      <div class="chin"></div><div class="home"></div>
+    </div>
+    <div class="handle" id="hr" title="Drag to resize width"><i></i></div>
+  </div></div>
+</main>
+<div id="exp" hidden><div class="box"><span class="sp"></span><span id="exptxt">Exporting…</span></div></div>
+<div id="hidden"></div>
+<script src="agent.js"></script>
+<script>
+/* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
+const FEATS=[
+  {k:'launcher',n:'Entry point · Ask Deb',pg:'all',d:'How the shopper opens the agent from the header.',opts:[['search','A · Inside the search field','Google-style pill at the end of the search bar (mobile adds a search row under the header).'],['pill','B · Header pill','The dev build: “Ask Deb” pill beside the account icons on desktop, a 24px sparkle icon on mobile.'],['float','C · Floating button','Bottom-right bubble on every page (the Google default entry point).']]},
+  {k:'chat',n:'Chat window',pg:'all',d:'The agent itself — every value comes from the config file (Agent config below). Any entry point opens it.',opts:null},
+  {k:'pdpPrompts',n:'PDP prompts',pg:'pdp',d:'<google-ai-prompts product-id direction>. Pre-baked at launch, dynamic as the agent learns. Tapping a prompt opens the chat with it.',opts:[['glance','A · Replaces At a Glance','Takes the At a Glance slot (under the gallery on desktop, after delivery on mobile).'],['aboveCta','B · Above Add to Bag','Between size and the CTA — the hesitation point.'],['belowCta','C · Below Add to Bag','Straight under the CTA, before Deliver+.']]},
+  {k:'shopSimilar',n:'Shop similar',pg:'pdp',d:'sendQuery("Shop similar") — style alternatives and out-of-stock recovery.',opts:[['image','A · On the PDP image','Pill bottom-right of the main image (the deck’s placement).'],['cta','B · Under Add to Bag','Outline button under the CTA, beside Try it on.'],['card','C · On PLP cards','A small “Similar” pill on every product card (opens the PLP).']]},
+  {k:'vto',n:'Virtual try-on',pg:'pdp',d:'Opens the chat asking for a photo. Debenhams marketplace: apparel and home.',opts:[['image','A · On the PDP image','Chip top-left of the main image.'],['cta','B · Under Add to Bag','Outline button under the CTA.']]},
+  {k:'nba',n:'Next best action',pg:'plp',d:'Co-shop module on search / browse: a question, answer chips and Help me decide. Chips are contextual in production — FDE build.',opts:[['top','A · Above the results','Under the title and category pills, before sort & filter.'],['filter','B · Under sort & filter','Directly above the grid.'],['grid','C · In the grid','A full-width row after the first row of products.']]},
+  {k:'autocomplete',n:'Autocomplete',pg:'search',d:'Long-form agent suggestions in the search dropdown. Live today = 5 term suggestions + Top Sellers.',opts:[['replace','A · Replace live suggestions','Agent chips instead of the term list.'],['above','B · Above live suggestions','Agent chips first, then the terms.'],['below','C · Below live suggestions','Terms first, agent chips before Top Sellers.']]},
+  {k:'custom',n:'Custom prompts',pg:'home',d:'Fixed chips we choose and place (CMS-fed), each sendQuery("…"). Homepage shown; the same works on category pages.',opts:[['module','A · Homepage module','Image + prompt panel under the hero (the deck’s Backyard Gardening card).'],['strip','B · Promo strip','A slim agent bar at the top of the page.'],['hero','C · Chips on the hero','Prompt chips over the first hero image.']]},
+];
+const OUT=['AI Overview','Compare','Shop the look'];
+const POSKEY={launcher:'launcher',pdpPrompts:'pdpPos',shopSimilar:'ssPos',vto:'vtoPos',nba:'nbaPos',autocomplete:'acMode',custom:'cpPos'};
+const P={
+  name:'shopping-agent',
+  title:'Shopping agent',
+  page:'page.html',
+  brands:[['debenhams','Debenhams']],
+  domains:{debenhams:'debenhams.com'},
+  files:['page.html','agent.js','base-config.json'],
+  store:'proto-shopping-agent',
+  initial:()=>({page:'pdp',feat:'pdpPrompts',on:{},launcher:'search',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
+    pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
+    ssPos:'image',vtoPos:'image',vtoLabel:'Try it on',nbaPos:'top',nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
+    acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
+    cpPos:'module',search:false,chat:false,outline:true,agent:{},focus:null}),
+};
+let BASE=null;fetch('base-config.json').then(r=>r.json()).then(b=>{BASE=b;panel()});
+const cfgFile=()=>AG.build(BASE,S.cfg.agent);
+const H=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+function dl(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
+/* the dev hand-off: placements chosen + the calls each entry point makes */
+function handoff(c){const f=k=>c.on[k]!==false,lines=[];
+  lines.push('# Shopping agent — Debenhams · dev hand-off','',`Exported ${new Date().toISOString()}`,'');
+  lines.push('## 1 · Agent config (backend)','`salesAgentConfig.json` = the dev retrieveConfig with our edits applied. Changed keys:','');
+  if(BASE)AG.diff(BASE,cfgFile()).forEach(d=>lines.push(`- \`${d.path}\`: ${JSON.stringify(d.from)} → ${JSON.stringify(d.to)}`));
+  lines.push('','Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
+  lines.push('## 2 · Entry points (front end)','');
+  FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${f(x.k)?o[1]+' — '+o[2]:'OFF'}`)});
+  lines.push('','Calls:','```js',
+    '// every chip / button below opens the chat with its query',
+    'window.googleAgent.sendQuery("Shop similar");',
+    `window.googleAgent.sendQuery("${c.vtoLabel}");            // VTO — agent asks for a photo`,
+    ...c.acChips.filter(Boolean).map(q=>`window.googleAgent.sendQuery(${JSON.stringify(q)});   // autocomplete`),
+    'window.googleAgent.sendQuery("Help me find the perfect gift");   // custom prompts (CMS-fed)',
+    '```','','PDP prompts:','```html',
+    `<google-ai-prompts product-id="{sku}" direction="${c.pdpDir}"></google-ai-prompts>`,'```',
+    `Launch prompts (pre-baked): ${c.pdpPrompts.filter(Boolean).map(q=>JSON.stringify(q)).join(', ')}${c.pdpAsk?' + “Ask anything”':''}.`,
+    '','Host styling we need on the prompts component (names to confirm against the allow-listed docs): chip background `'+(c.agent.chipBg||AG.DEF.chipBg)+'`, border `'+(c.agent.chipBorder||AG.DEF.chipBorder)+'`, radius '+(c.agent.chipRadius||AG.DEF.chipRadius)+'px, 14px Geologica, gap 2 (8px), sparkle icon 16px.',
+    '','Next best action, autocomplete chips, shop the look: FDE-built — placements above.','',`Out of scope this phase: ${OUT.join(', ')}.`);
+  return lines.join('\n')}
+P.extra=(root)=>{if(!BASE)return;root.file('salesAgentConfig.json',JSON.stringify(cfgFile(),null,2));root.file('HANDOFF.md',handoff(S.cfg))};
+
+function renderPanel(host,S,update){
+  const c=S.cfg,e=Object.assign({},AG.DEF,c.agent),fe=FEATS.find(x=>x.k===c.feat)||FEATS[0];
+  const pageOf=k=>({pdpPrompts:'pdp',shopSimilar:c.ssPos==='card'?'plp':'pdp',vto:'pdp',nba:'plp',custom:'home'}[k]);
+  const opt=(on,b,s,attr)=>`<button class="opt${on?' on':''}" ${attr}><span class="r"></span><span class="t"><b>${b}</b>${s?`<span>${s}</span>`:''}</span></button>`;
+  const changed=BASE?AG.diff(BASE,cfgFile()):[];
+  host.innerHTML=`<h1>Shopping agent · Debenhams</h1>
+  <p class="intro">Google Cloud Shopping Agent, Holiday 2026 package — Debenhams only. Pick a feature to jump to it, choose its placement (A / B / C), and edit the config file the devs deploy. Every entry point opens the chat.</p>
+  <div class="card"><h3>Page</h3><div class="chips" id="pg">${[['home','Home'],['plp','PLP · Dresses'],['pdp','PDP']].map(([v,n])=>`<button class="chip${c.page===v?' on':''}" data-v="${v}">${n}</button>`).join('')}</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+      <label class="sw"><input type="checkbox" id="t-search"${c.search?' checked':''}><i></i>Search open (autocomplete)</label>
+      <label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Chat window open</label>
+      <label class="sw"><input type="checkbox" id="t-out"${c.outline?' checked':''}><i></i>Outline agent features (not exported)</label></div></div>
+  <div class="card"><h3>Features <small>${FEATS.filter(x=>c.on[x.k]!==false).length} on</small></h3>
+    ${FEATS.map(x=>`<div class="feat${x.k===c.feat?' on':''}" data-k="${x.k}"><button class="fn"><b>${x.n}</b><span>${x.pg==='all'?'All pages':x.pg==='search'?'Search':x.pg.toUpperCase()}${x.opts?' · '+(x.opts.find(o=>o[0]===c[POSKEY[x.k]])||[,''])[1].split(' · ')[0]:''}</span></button>${x.k==='chat'?'':`<label class="sw"><input type="checkbox" data-on="${x.k}"${c.on[x.k]!==false?' checked':''}><i></i></label>`}</div>`).join('')}
+    <p style="margin:10px 0 0">Not in this phase: ${OUT.join(' · ')}.</p></div>
+  <div class="card"><h3>${fe.n}</h3><p>${H(fe.d)}</p>
+    ${fe.opts?fe.opts.map(o=>opt(c[POSKEY[fe.k]]===o[0],o[1],o[2],`data-pos="${o[0]}"`)).join(''):''}
+    ${fe.k==='pdpPrompts'?`<div class="f"><span>Direction</span><span class="seg" id="dir"><button data-v="column" class="${c.pdpDir==='column'?'on':''}">Column (dev build)</button><button data-v="row" class="${c.pdpDir==='row'?'on':''}">Row · wrap</button></span></div>
+      <div class="f"><span>Launch prompts (pre-baked)</span>${c.pdpPrompts.map((t,i)=>`<input data-arr="pdpPrompts" data-i="${i}" value="${H(t)}">`).join('')}<small>Dynamic prompts replace these per product once the agent has learnt them.</small></div>
+      <div class="f"><label class="sw"><input type="checkbox" id="t-head"${c.pdpHead?' checked':''}><i></i>“${H('Ask '+e.name)}” heading</label><label class="sw"><input type="checkbox" id="t-ask"${c.pdpAsk?' checked':''}><i></i>“Ask anything” chip</label></div>`:''}
+    ${fe.k==='vto'?`<div class="f"><span>Label</span><select id="vlab">${['Try it on','See how it looks on you','Virtual try-on'].map(v=>`<option${c.vtoLabel===v?' selected':''}>${v}</option>`).join('')}</select></div>`:''}
+    ${fe.k==='nba'?`<div class="f"><span>Question</span><input data-key="nbaQ" value="${H(c.nbaQ)}"></div><div class="f"><span>Answers</span>${c.nbaOpts.map((t,i)=>`<input data-arr="nbaOpts" data-i="${i}" value="${H(t)}">`).join('')}</div>`:''}
+    ${fe.k==='autocomplete'?`<div class="f"><span>Agent suggestions for “dress”</span>${c.acChips.map((t,i)=>`<input data-arr="acChips" data-i="${i}" value="${H(t)}">`).join('')}<small>${c.search?'Search is open in the preview.':'Turn on “Search open” to see it (selecting this feature does).'}</small></div>`:''}
+    ${fe.k==='chat'?`<button class="chip" id="openchat" style="margin-top:4px">Open the chat window</button>`:''}</div>
+  <div class="card"><h3>Agent config <small>salesAgentConfig.json</small></h3>
+    <p>The file the devs deploy (backend config, no flicker). Edits rebuild it from the dev’s base file; the chat window renders from it.</p>
+    <div class="f"><span>Agent name</span><input data-ag="name" value="${H(e.name)}"><small>Drives “Ask ${H(e.name)}” on every entry point. Naming is with the creative director — dev build says “Ask Debs”.</small></div>
+    <div class="f"><span>chat-title</span><input data-ag="title" value="${H(e.title)}"></div>
+    <div class="f"><span>Intro (zeroState.payload.text)</span><textarea data-ag="intro" rows="6">${H(e.intro)}</textarea></div>
+    <div class="f"><span>Zero-state prompts (one per line)</span><textarea data-ag="prompts" rows="4">${H(e.prompts.join('\n'))}</textarea></div>
+    <div class="row2"><div class="f"><span>placeholder-text</span><input data-ag="placeholder" value="${H(e.placeholder)}"></div><div class="f"><span>cart-button-text</span><input data-ag="cart" value="${H(e.cart)}"></div></div>
+    <div class="f"><span>disclosure-text</span><input data-ag="disclosure" value="${H(e.disclosure)}"></div>
+    <div class="row2"><div class="f"><span>Primary</span><input type="color" data-ag="primary" value="${e.primary}"></div><div class="f"><span>Gradient end</span><input type="color" data-ag="accent" value="${e.accent}"></div></div>
+    <div class="row2"><div class="f"><span>Chip fill</span><input type="color" data-ag="chipBg" value="${e.chipBg}"></div><div class="f"><span>Chip border</span><input type="color" data-ag="chipBorder" value="${e.chipBorder}"></div></div>
+    <div class="row2"><div class="f"><span>Chip radius (px)</span><input type="number" min="0" max="40" data-ag="chipRadius" value="${e.chipRadius}"></div><div class="f"><span>Window width (px)</span><input type="number" min="360" max="900" step="2" data-ag="width" value="${e.width}"></div></div>
+    <div class="row2"><div class="f"><span>Window radius (px)</span><input type="number" min="0" max="40" data-ag="radius" value="${e.radius}"></div><div class="f"><span>Title icon</span><select data-ag="icon"><option value="config"${e.icon==='config'?' selected':''}>Dev file (teal tile)</option><option value="spark"${e.icon==='spark'?' selected':''}>Ask Deb sparkle</option></select></div></div>
+    <div class="f"><label class="sw"><input type="checkbox" data-ag="hero"${e.hero?' checked':''}><i></i>Hero image (Autumn Wrapped Up)</label></div>
+    <div class="f"><span>Changed vs the dev file · ${changed.length}</span><div class="diff">${changed.map(d=>`<div><code>${H(d.path.replace('payload.',''))}</code></div>`).join('')||'<small>None yet</small>'}</div></div>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="chip on" id="dlcfg">Download config</button><button class="chip" id="cpcfg">Copy JSON</button><button class="chip" id="rscfg">Reset to dev file</button></div></div>
+  <div class="card"><h3>Rules</h3><div class="rules">
+    <b>Backend over client.</b> Prompts, hero and styles go in the config file; client-side JS overrides flicker on load.<br>
+    <b>One agent, many doors.</b> Every chip / button calls <code>window.googleAgent.sendQuery("…")</code> and opens the same chat.<br>
+    <b>Sparkle = agent.</b> Anything that opens the chat carries the sparkle; nothing else does.<br>
+    <b>Chips:</b> 14px Geologica, radius ${e.chipRadius}px, gap 2 (8px); the outlined chip is always the open-ended one (Ask anything · Help me decide).</div></div>`;
+  const go=()=>{update();panel()};
+  host.querySelectorAll('#pg .chip').forEach(b=>b.onclick=()=>{c.page=b.dataset.v;go()});
+  host.querySelector('#t-search').onchange=ev=>{c.search=ev.target.checked;go()};
+  host.querySelector('#t-chat').onchange=ev=>{c.chat=ev.target.checked;go()};
+  host.querySelector('#t-out').onchange=ev=>{c.outline=ev.target.checked;go()};
+  host.querySelectorAll('.feat .fn').forEach(b=>b.onclick=()=>{const k=b.parentNode.dataset.k;c.feat=k;
+    if(k==='autocomplete'){c.search=true}else if(c.feat!=='autocomplete'&&k!=='launcher')c.search=false;
+    if(k==='chat')c.chat=true;else c.chat=false;
+    const pg=pageOf(k);if(pg)c.page=pg;c.focus={f:k==='chat'?'':k,n:Date.now()};go()});
+  host.querySelectorAll('[data-on]').forEach(i=>i.onchange=()=>{c.on[i.dataset.on]=i.checked;go()});
+  host.querySelectorAll('[data-pos]').forEach(b=>b.onclick=()=>{c[POSKEY[fe.k]]=b.dataset.pos;const pg=pageOf(fe.k);if(pg)c.page=pg;c.focus={f:fe.k,n:Date.now()};go()});
+  host.querySelectorAll('#dir button').forEach(b=>b.onclick=()=>{c.pdpDir=b.dataset.v;go()});
+  const ti=host.querySelector('#t-head');if(ti)ti.onchange=ev=>{c.pdpHead=ev.target.checked;go()};
+  const ta=host.querySelector('#t-ask');if(ta)ta.onchange=ev=>{c.pdpAsk=ev.target.checked;go()};
+  const vl=host.querySelector('#vlab');if(vl)vl.onchange=()=>{c.vtoLabel=vl.value;go()};
+  host.querySelectorAll('[data-arr]').forEach(i=>i.onchange=()=>{c[i.dataset.arr][+i.dataset.i]=i.value;go()});
+  host.querySelectorAll('[data-key]').forEach(i=>i.onchange=()=>{c[i.dataset.key]=i.value;go()});
+  host.querySelectorAll('[data-ag]').forEach(i=>i.onchange=()=>{const k=i.dataset.ag;let v=i.type==='checkbox'?i.checked:i.value;
+    if(k==='prompts')v=v.split('\n').map(s=>s.trim()).filter(Boolean);if(['chipRadius','width','radius'].includes(k))v=+v;
+    c.agent[k]=v;if(!['name'].includes(k))c.chat=true;go()});
+  const oc=host.querySelector('#openchat');if(oc)oc.onclick=()=>{c.chat=true;go()};
+  host.querySelector('#dlcfg').onclick=()=>BASE&&dl('salesAgentConfig.json',JSON.stringify(cfgFile(),null,2));
+  host.querySelector('#cpcfg').onclick=()=>{if(BASE)navigator.clipboard.writeText(JSON.stringify(cfgFile(),null,2)).then(()=>{$('#status').textContent='Config copied ✓';setTimeout(()=>$('#status').textContent='',3000)})};
+  host.querySelector('#rscfg').onclick=()=>{c.agent={};go()};
+}
+/* ==================================================================================================== */
+
+let S={brand:new URLSearchParams(location.search).get('brand')||'',w:390,fold:false,by:{}};
+try{const s=JSON.parse(localStorage.getItem(P.store)||'null');if(s)S=Object.assign(S,s,{brand:S.brand||s.brand})}catch(e){}
+if(!P.brands.some(b=>b[0]===S.brand))S.brand=P.brands[0][0];
+Object.defineProperty(S,'cfg',{get(){return S.by[S.brand]||(S.by[S.brand]=P.initial(S.brand))},set(v){S.by[S.brand]=v},enumerable:false});
+const $=s=>document.querySelector(s),frame=$('#frame'),stage=$('#stage'),win=$('#win'),preset=$('#preset');
+const save=()=>{try{localStorage.setItem(P.store,JSON.stringify({brand:S.brand,w:S.w,fold:S.fold,by:S.by}))}catch(e){}};
+const state=()=>Object.assign({brand:S.brand},S.cfg);
+const src=()=>P.page+'?s='+encodeURIComponent(JSON.stringify(state()))+'&_='+Date.now();
+function update(){save();try{frame.contentWindow.postMessage({protoSet:state()},'*')}catch(e){frame.src=src()}}
+function panel(){renderPanel($('#cfgpanel'),S,()=>{update()})}
+function apply(){
+  if(matchMedia('(max-width:760px)').matches){frame.style.width='100%';win.style.width='100%';return}
+  const avail=stage.clientWidth-16,w=Math.min(S.w||avail,avail);
+  frame.style.width=w+'px';win.style.width=(w+16)+'px';
+  const mobile=w<600;document.body.classList.toggle('fold',S.fold&&mobile);document.documentElement.style.setProperty('--k',(w/390).toFixed(4));
+  document.querySelectorAll('#fold button').forEach(b=>{b.classList.toggle('on',(+b.dataset.f===1)===(S.fold&&mobile));b.disabled=!mobile});
+  $('#urltxt').textContent=P.domains[S.brand]||'';$('#sizebox').textContent=Math.round(w)+'px';
+  document.querySelectorAll('#dev button').forEach(b=>b.classList.toggle('on',(b.dataset.w==='390'&&w<600)||(b.dataset.w==='0'&&w>=600)));
+}
+function brands(){['#brands','#brands-m'].forEach(id=>{$(id).innerHTML=P.brands.map(([v,n])=>`<button class="chip${S.brand===v?' on':''}" data-b="${v}">${n}</button>`).join('');
+  $(id).querySelectorAll('button').forEach(b=>b.onclick=()=>setBrand(b.dataset.b))})}
+function setBrand(b){S.brand=b;history.replaceState(null,'','?brand='+b);$('#ttl').textContent=P.title+' · '+(P.brands.find(x=>x[0]===b)||[0,b])[1];brands();panel();save();frame.src=src();apply()}
+document.querySelectorAll('#dev button').forEach(b=>b.onclick=()=>{S.w=+b.dataset.w;preset.value=String(S.w);save();apply()});
+preset.onchange=()=>{S.w=+preset.value;save();apply()};
+document.querySelectorAll('#fold button').forEach(b=>b.onclick=()=>{S.fold=b.dataset.f==='1';save();apply()});
+$('#hr').addEventListener('pointerdown',e=>{e.preventDefault();document.body.classList.add('dragging');const sx=e.clientX,sw=frame.offsetWidth;
+  const move=ev=>{S.w=Math.max(320,sw+(ev.clientX-sx));preset.value='0';apply()};
+  const up=()=>{document.body.classList.remove('dragging');removeEventListener('pointermove',move);removeEventListener('pointerup',up);save()};
+  addEventListener('pointermove',move);addEventListener('pointerup',up)});
+addEventListener('resize',apply);
+$('#mtab').onclick=()=>$('#panel').classList.add('open');$('#mclose').onclick=()=>$('#panel').classList.remove('open');
+preset.value=[390,402,440,768,1024,1280,1440].includes(S.w)?String(S.w):'0';
+setBrand(S.brand);
+
+/* ---------- Export: one zip — full-page 390 + 1440 PNGs, config.json, the page code ---------- */
+const status=$('#status'),exp=$('#exp'),exptxt=$('#exptxt');
+function loadFrame(w){return new Promise((res,rej)=>{const f=document.createElement('iframe');f.style.cssText=`width:${w}px;height:900px;border:0`;f.src=src();$('#hidden').appendChild(f);
+  const t=setTimeout(()=>rej(new Error('page did not answer protoReady')),20000);
+  const onMsg=e=>{if(e.source!==f.contentWindow||!e.data)return;
+    if(e.data.protoReady){f.contentWindow.postMessage({protoSet:state(),exporting:true},'*');setTimeout(()=>f.contentWindow.postMessage({protoPing:1},'*'),400)}
+    if(e.data.protoPong){clearTimeout(t);removeEventListener('message',onMsg);f.style.height=(e.data.h+20)+'px';setTimeout(()=>res(f),700)}};
+  addEventListener('message',onMsg)})}
+async function shot(w){const f=await loadFrame(w),doc=f.contentDocument,h=doc.documentElement.scrollHeight;
+  const c=await html2canvas(doc.documentElement,{width:w,height:h,windowWidth:w,windowHeight:h,scale:2,useCORS:true,backgroundColor:'#FFFFFF',logging:false});f.remove();
+  return new Promise(r=>c.toBlob(r,'image/png'))}
+const stamp=()=>new Date().toISOString().slice(0,16).replace('T','-').replace(':','');
+async function doExport(){const btns=[$('#exportbtn'),$('#exportbtn2')];btns.forEach(b=>b.disabled=true);exp.hidden=false;
+  try{const name=`${P.name}-${S.brand}-${stamp()}`;
+    exptxt.textContent='Rendering mobile (390) full page…';const m=await shot(390);
+    exptxt.textContent='Rendering desktop (1440) full page…';const d=await shot(1440);
+    exptxt.textContent='Packaging…';const zip=new JSZip(),root=zip.folder(name);
+    root.file(`${name}-mobile-390.png`,m);root.file(`${name}-desktop-1440.png`,d);
+    root.file('config.json',JSON.stringify(Object.assign(state(),{exportedAt:new Date().toISOString()}),null,2));
+    for(const f of P.files){try{const r=await fetch(f);if(r.ok)root.file(f,await r.blob())}catch(e){}}
+    if(P.extra)P.extra(root);
+    root.file('README.txt',`${P.title} — ${S.brand}\nExported ${new Date().toISOString()}\n\n${name}-mobile-390.png / -desktop-1440.png = full-page designs at this configuration.\nconfig.json = the decision record. Open ${P.page} over HTTP with ?s=<config.json> to reproduce it.\n`);
+    const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.zip';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
+    status.textContent='Exported ✓ zip (390 + 1440 PNGs)';
+  }catch(err){console.error(err);status.textContent='Export failed: '+err.message}
+  finally{btns.forEach(b=>b.disabled=false);exp.hidden=true;setTimeout(()=>status.textContent='',8000)}}
+/* the page tells us when the shopper opens / closes the chat, so the panel toggle stays true */
+addEventListener('message',e=>{if(e.source===frame.contentWindow&&e.data&&'protoChat' in e.data&&S.cfg.chat!==e.data.protoChat){S.cfg.chat=e.data.protoChat;save();panel()}});
+$('#exportbtn').onclick=doExport;$('#exportbtn2').onclick=doExport;
+</script>
+</body>
+</html>
