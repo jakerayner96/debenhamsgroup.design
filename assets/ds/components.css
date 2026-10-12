@@ -900,13 +900,16 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
    358×50 (full width), #0B051D, 4px radius, "Continue with" Helvetica Neue Medium 15px white, gap 10px, the Klarna badge 70×29.44 */
 .soc-klarna{width:100%;height:50px;display:flex;align-items:center;justify-content:center;gap:10px;background:#0B051D;border:0;border-radius:4px;padding:0 16px;cursor:pointer;box-sizing:border-box;font:500 15px/normal 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#FFF;white-space:nowrap}
 .soc-klarna img{display:block;flex:none}
+/* PLT: square social buttons (0 radius, like every PLT control) and the tiles fill with the field colour (--surface-raised, PLT Background White #FFFDF7) so they sit in the cream card */
+[data-brand="plt"] .soc{border-radius:0;background:var(--surface-raised)}
+[data-brand="plt"] .soc-klarna{border-radius:0}
 /* modal context (checkout / header account icon): the same form in a dialog over the dimmed page */
 .auth-modal{position:absolute;inset:0;z-index:var(--z-modal);background:var(--surface-overlay);display:flex;align-items:flex-start;justify-content:center;padding:var(--gap-4,16px)}
 .auth-modal .auth{border-radius:var(--radius-default);box-shadow:var(--shadow-float,0 8px 30px rgba(0,0,0,.2));padding:var(--gap-6,24px)}
 @media(min-width:1024px){.auth-modal{padding-top:var(--gap-20,80px)}}
 /* checkout entry (signed out → checkout): checkout header + guest card first, then the sign in card. Both cards use primary CTAs.
    Mobile: full-width white cards stacked on --surface-sunken, gap 4 (16px) between. ≥1024: two equal cards side by side, max 1356, gap 6 (24px), top padding gap 12 (48px). */
-.co-hd{position:relative;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gap-4,16px);background:var(--surface-raised);border-bottom:1px solid var(--border-subtle)}
+.co-hd{position:relative;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gap-4,16px);background:var(--surface-raised)}
 .co-logo{height:20px;width:auto;max-width:141px;display:block}
 .co-sec{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:12px;line-height:16px;text-transform:uppercase;letter-spacing:.02em;color:var(--text-primary)}
 .co-sec img{width:20px;height:20px}
