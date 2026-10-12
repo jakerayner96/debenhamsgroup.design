@@ -44,3 +44,4 @@
 - Every white box takes the brand radius at every width (--radius-default: 4px Debenhams / boohoo / MAN / KM, 0 PLT).
 - Link first: "Sign in with password" moved below the social buttons, directly above "New to X? Create an account" (checkout: under the social buttons).
 - Spacing: the extra gap 2 (8px) moved from "New to X? Create an account" to "Sign in with password" (`.auth-pw`), so 24px above the password link, 16px above create account.
+- DS footer (C-08): newsletter band --ftr-band now = --surface-sunken (#FAFAFA, PLT #FAF5E7) to match the page background (was Grey 1 #F2F2F2). Footer body stays --surface-page.

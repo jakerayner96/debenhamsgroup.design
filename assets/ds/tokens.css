@@ -417,6 +417,5 @@
 [data-brand="boohooman"],[data-brand="karenmillen"],[data-brand="dorothyperkins"],[data-brand="plt"]{--dplus-tick:#000} /* white checkbox fill → black tick */
 [data-brand="plt"],[data-brand="burton"],[data-brand="coast"],[data-brand="dorothyperkins"],[data-brand="dsgnstudio"],[data-brand="misspap"],[data-brand="oasis"],[data-brand="principles"],[data-brand="wallis"],[data-brand="warehouse"]{--dplus-p:12px}
 [data-brand="dsgnstudio"]{--dplus-pw:500}
-/* footer band (C-08 .ftr): Figma Grey 1 on every fascia; PLT live runs its cream band */
-:root{--ftr-band:#F2F2F2}
-[data-brand="plt"]{--ftr-band:#FAF5E7}
+/* footer band (C-08 .ftr) = the page background (--surface-sunken: #FAFAFA, PLT cream #FAF5E7), so the band runs on from grey pages without a step (Jake, 12 Oct 2026; was Figma Grey 1 #F2F2F2) */
+:root,[data-brand]{--ftr-band:var(--surface-sunken,#FAFAFA)}
