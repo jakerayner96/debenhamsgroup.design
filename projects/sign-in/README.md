@@ -18,6 +18,11 @@ Two weightings:
 
 Clicking the secondary link swaps the form in place. Create account is a link under the CTA (Gymshark pattern). The separate "New to X?" block is gone.
 
+## Checkout entry (Context → Checkout)
+A signed-out customer heading to checkout (live Debenhams /checkout, 12 Oct 2026): checkout header (logo + lock + "Secure checkout"). **Guest checkout card first**: email and **Continue as guest**, the only primary CTA on the page. Then the **Have an account?** card, which is the same sign-in form with the same A/B weighting and password switch.
+- Guest leads for conversion. The sign-in CTAs drop to secondary there, and there's no create-account link ("You can create an account once you have placed your order").
+- Mobile stacks guest above sign in. At 1024 and up they sit side by side (max 1356, gap 6 (24px)).
+
 ## Rules
 - **No email-first branching.** We never ask for the email first and then branch to a password field or create account, because that tells an attacker which emails have an account or a password. The customer picks the method before we look anything up.
 - **The same answer either way.** Link sent and reset sent are one message: the title plus "If the email address entered matches our records, we’ll send you a unique link…". No links; back is the browser’s back button. A wrong password reads "The email or password you entered is incorrect".

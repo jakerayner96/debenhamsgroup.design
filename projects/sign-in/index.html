@@ -184,7 +184,7 @@ function renderPanel(host,S,update){
     ${opt('primary','pw','B · Email + password first','“Forgot password? | Email me a sign in link” under the fields')}
     <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:10px;margin-top:2px">${sw('pw',r.pw,'Password sign in',!A)}</div></div>
   <div class="card"><h3>Screen</h3>${scr.map(([v,t,d,dis])=>opt('screen',v,t,d,dis)).join('')}</div>
-  <div class="card"><h3>Context</h3>${opt('context','page','Page','/login: header, form, footer')}${opt('context','modal','Modal','Header account icon / checkout: the same form in a dialog')}</div>
+  <div class="card"><h3>Context</h3>${opt('context','page','Page','/login: header, form, footer')}${opt('context','modal','Modal','Header account icon: the same form in a dialog')}${opt('context','checkout','Checkout','Signed out → checkout: guest first, then the same sign in form')}</div>
   <div class="card"><h3>Social sign in</h3><div class="chips">${['apple','google','facebook','klarna'].map(k=>`<button class="chip${c.social[k]?' on':''}" data-soc="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
   <div class="card"><h3>Options</h3><div style="display:flex;flex-direction:column;gap:10px">${sw('filled',c.filled,'Show fields filled')}${sw('usp',c.usp,'USP banners (live content)')}</div>
     <div class="f"><span>Email shown in filled fields</span><input data-in="email" value="${c.email.replace(/"/g,'&quot;')}"></div></div>

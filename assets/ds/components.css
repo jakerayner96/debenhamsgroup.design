@@ -900,6 +900,17 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .auth-modal{position:absolute;inset:0;z-index:var(--z-modal);background:var(--surface-overlay);display:flex;align-items:flex-start;justify-content:center;padding:var(--gap-4,16px)}
 .auth-modal .auth{border-radius:var(--radius-default);box-shadow:var(--shadow-float,0 8px 30px rgba(0,0,0,.2));padding:var(--gap-6,24px)}
 @media(min-width:1024px){.auth-modal{padding-top:var(--gap-20,80px)}}
+/* checkout entry (signed out → checkout): checkout header + guest card first, then the sign in card. Guest is the primary CTA; sign in CTAs drop to secondary.
+   Mobile: full-width white cards stacked on --surface-sunken, gap 4 (16px) between. ≥1024: two equal cards side by side, max 1356, gap 6 (24px), top padding gap 12 (48px). */
+.co-hd{position:relative;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gap-4,16px);background:var(--surface-raised);border-bottom:1px solid var(--border-subtle)}
+.co-logo{height:20px;width:auto;max-width:141px;display:block}
+.co-sec{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:12px;line-height:16px;text-transform:uppercase;letter-spacing:.02em;color:var(--text-primary)}
+.co-sec img{width:20px;height:20px}
+.co-pg{background:var(--surface-sunken);min-height:calc(100vh - 54px);padding:var(--gap-4,16px) 0 var(--gap-16,64px)}
+.co-grid{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
+.co-grid .auth{max-width:none;margin:0}
+@media(min-width:1024px){.co-hd{padding:0 var(--gap-20,80px)}.co-logo{position:absolute;left:50%;transform:translateX(-50%)}.co-hd .co-sec{margin-left:auto}
+  .co-pg{padding:var(--gap-12,48px) var(--gap-10,40px) var(--gap-24,96px)}.co-grid{flex-direction:row;align-items:flex-start;gap:var(--gap-6,24px);max-width:1356px;margin:0 auto}.co-grid .auth{flex:1 1 0;min-width:0}}
 
 /* ───────────── AI ─────────────
    Every agent / AI entry point: the AI icon (assets/ds/icons/ai.svg) + the AI gradient (--ai-gradient). Figma PLP Reviews 265:3677 · 27:37643.

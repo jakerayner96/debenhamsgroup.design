@@ -70,7 +70,15 @@ function social(){const s=S.social||{},tiles=[];
   if(!tiles.length)return '';
   return `<div class="or-div">or</div><div class="soc-row">${tiles.map(([n,i])=>`<button class="soc" data-act="soc" data-n="${n}" aria-label="Sign in with ${n}">${i}</button>`).join('')}</div>`}
 
-const foot=()=>`<p class="auth-alt">New to ${NAME[S.brand]}? <a class="lnk" href="#" data-act="create">Create an account</a></p>${social()}`;
+const CO=()=>S.context==='checkout';
+/* checkout: the guest card leads, so the sign in CTAs drop to secondary and there's no create-account link (that comes after the order) */
+const cta=()=>CO()?'bd sec':'bd pri';
+const foot=()=>CO()?social():`<p class="auth-alt">New to ${NAME[S.brand]}? <a class="lnk" href="#" data-act="create">Create an account</a></p>${social()}`;
+const signT=()=>CO()?'Have an account?':'Sign in';
+/* checkout header: logo + Secure checkout (live Debenhams /checkout, 12 Oct) */
+const coHeader=()=>`<header class="co-hd"><img class="co-logo" src="assets/brands/${S.brand}.svg" alt="${NAME[S.brand]}"><span class="co-sec"><img src="assets/ds/icons/lib/icons-lock.svg" alt="">Secure checkout</span></header>`;
+const guest=()=>`<div class="auth-hd"><h2 class="auth-h">Guest checkout</h2></div><p class="auth-sub">You can create an account once you have placed your order.</p>
+  <div class="auth-fields">${fld('email','Email address',S.filled)}</div><button class="bd pri" data-act="guest">Continue as guest</button>`;
 const title=(t)=>`<div class="auth-hd"><h1 class="auth-h">${t}</h1>${S.context==='modal'?'<button class="auth-x" data-act="close" aria-label="Close"></button>':''}</div>`;
 
 function screen(){const r=R(),mode=LOCAL.mode||r.primary,scr=LOCAL.screen||S.screen,fill=S.filled||scr!=='signin';
@@ -79,23 +87,25 @@ function screen(){const r=R(),mode=LOCAL.mode||r.primary,scr=LOCAL.screen||S.scr
       ?'If the email address entered matches our records, we’ll send you a link to reset your password.</p><p class="auth-note">If you don’t receive an email from us shortly, please check your spam folder or if you have entered the correct email address.'
       :'If the email address entered matches our records, we’ll send you a unique link to sign in to your account.</p><p class="auth-note">If you don’t receive an email from us shortly, please check your spam folder or if you have entered the correct email address.'}</p>`;
   if(scr==='forgot'&&r.pw)return `${title('Reset your password')}<p class="auth-sub">Enter your email and we’ll send you a link to reset your password.</p>
-      <div class="auth-fields">${fld('email','Email address',fill)}</div><button class="bd pri" data-act="reset">Send reset link</button>
+      <div class="auth-fields">${fld('email','Email address',fill)}</div><button class="${cta()}" data-act="reset">Send reset link</button>
       <div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="back">Back to sign in</button>${r.link?'<span class="sep"></span><button class="lnk" data-act="link">Email me a sign in link</button>':''}</div>`;
   const err=scr==='error'&&mode==='pw'?`<div class="msg msg--error"><i></i><div class="body"><span>The email or password you entered is incorrect. Try again${r.link?', or email yourself a sign in link':', or reset your password'}.</span></div></div>`:'';
-  if(mode==='link')return `${title('Sign in')}<p class="auth-sub">We’ll email you a one-time link, to sign in.</p>
+  if(mode==='link')return `${title(signT())}<p class="auth-sub">We’ll email you a one-time link, to sign in.</p>
       <div class="auth-fields">${fld('email','Email address',fill)}</div>
-      <button class="bd pri" data-act="send">Email me a sign in link</button>
+      <button class="${cta()}" data-act="send">Email me a sign in link</button>
       ${r.pw?'<div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="pw">Sign in with password instead</button></div>':''}${foot()}`;
-  return `${title('Sign in')}${err}
+  return `${title(signT())}${err}
       <div class="auth-fields">${fld('email','Email address',fill)}${fld('password','Password',fill)}</div>
       <div class="lnk-row"><button class="lnk" data-act="forgot">Forgot password?</button>${r.link?'<span class="sep"></span><button class="lnk" data-act="link">Email me a sign in link</button>':''}</div>
-      <button class="bd pri" data-act="signin">Sign in</button>${foot()}`;
+      <button class="${cta()}" data-act="signin">Sign in</button>${foot()}`;
 }
 
 function render(){
   document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
   const form=`<div class="auth" id="auth">${screen()}</div>`;
-  document.getElementById('app').innerHTML=S.context==='modal'
+  document.getElementById('app').innerHTML=CO()
+    ?`${coHeader()}<main class="co-pg"><div class="co-grid"><section class="auth co-card" id="guest">${guest()}</section><section class="auth co-card" id="auth">${screen()}</section></div></main>`
+    :S.context==='modal'
     ?`${header()}<div class="ghost">${'<i></i>'.repeat(8)}</div><footer data-ftr="${S.brand}"></footer><div class="auth-modal">${form}</div>`
     :`${header()}<main class="auth-pg">${form}</main><footer data-ftr="${S.brand}"></footer>`;
   if(S.usp&&window.DG_uspMount)DG_uspMount();
@@ -109,7 +119,7 @@ addEventListener('message',e=>{const d=e.data||{};
 addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
 
 const toast=t=>{const c=document.getElementById('ct');c.textContent=t;c.classList.add('on');clearTimeout(c._h);c._h=setTimeout(()=>c.classList.remove('on'),1800)};
-const go=o=>{LOCAL=Object.assign(LOCAL,o);render();if(!desk()&&S.context!=='modal')scrollTo(0,0)};
+const go=o=>{LOCAL=Object.assign(LOCAL,o);render();if(!desk()&&S.context==='page')scrollTo(0,0)};
 document.addEventListener('input',e=>{if(e.target.type==='email'&&e.target.value)S.email=e.target.value;});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');
   if(!b){if(e.target.closest('a[href="#"],button'))e.preventDefault();return}
@@ -117,7 +127,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');
   ({eye:()=>{const i=b.parentElement.querySelector('input'),on=i.type==='password';i.type=on?'text':'password';if(on&&/•/.test(i.value))i.value='Summer2026!';b.querySelector('img').src=`assets/ds/icons/lib/icons-${on?'hide':'show'}.svg`;b.setAttribute('aria-label',on?'Hide password':'Show password')},
     pw:()=>go({mode:'pw',screen:'signin'}),link:()=>go({mode:'link',screen:'signin'}),
     send:()=>go({screen:'sent'}),forgot:()=>go({screen:'forgot'}),reset:()=>go({screen:'reset'}),back:()=>go({screen:'signin'}),
-    signin:()=>toast('→ Signed in'),
+    signin:()=>toast('→ Signed in'),guest:()=>toast('→ Checkout as a guest (delivery)'),
     create:()=>toast('→ Create an account page'),soc:()=>toast('→ Sign in with '+b.dataset.n),close:()=>toast('Close the dialog')}[a]||(()=>{}))()});
 </script>
 </body>
