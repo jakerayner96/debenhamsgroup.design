@@ -14,7 +14,7 @@ New sign-in page across the fascias, built on DS components. The play configurat
 | Karen Millen | karenmillen.web.play.dbztech.net | on | off |
 
 Two weightings:
-- **A · Link first.** Email field, then **Send link**, then "Sign in with password instead" as a link below the button.
+- **A · Link first.** Email field, then **Send link**, then "Sign in with password" as a link below the button.
 - **B · Password first.** Email and password, then the "Forgot password? | Email me a sign in link" link row (Checkout 2026 pattern), then **Sign in**.
 
 Clicking the secondary link swaps the form in place. Create account is a link under the social buttons (Gymshark pattern). The separate "New to X?" block is gone.
@@ -26,8 +26,8 @@ A signed-out customer heading to checkout (live Debenhams /checkout, 12 Oct 2026
 
 ## Rules
 - **No email-first branching.** We never ask for the email first and then branch to a password field or create account, because that tells an attacker which emails have an account or a password. The customer picks the method before we look anything up.
-- **The same answer either way.** Link sent and reset sent ("We’ve Emailed You a Sign-In Link" / "…a Password Reset Link", "Use the link we sent to [email]… It expires in [X] minutes.", then Resend link | Use a different email) are the same screen for every email entered, so they never reveal whether an account exists. A wrong password reads "The email or password you entered is incorrect".
-- **Switching password off.** On A, the Password sign in switch drops "Sign in with password instead", "Forgot password?" and the reset screens, so the link is the only way in. Use it if there is a security risk. On B the switch is locked on.
+- **The same answer either way.** Link sent and reset sent ("Check Your Inbox" / "We’ve Emailed You a Password Reset Link", "Use the link we sent to [email]… It expires in [X] minutes.") are the same screen for every email entered, so they never reveal whether an account exists. A wrong password reads "The email or password you entered is incorrect".
+- **Switching password off.** On A, the Password sign in switch drops "Sign in with password", "Forgot password?" and the reset screens, so the link is the only way in. Use it if there is a security risk. On B the switch is locked on.
 - If only one method exists, no secondary link is shown.
 
 ## Panel
@@ -37,7 +37,7 @@ Weighting A/B with the password switch inside it (A only) · screen (sign in, in
 Footer = the DS footer drop-in (`assets/ds/footer.js`, `<footer data-ftr>`).
 
 New component **C-19 Sign in** in `assets/ds/components.css` (`.auth`, `.fld--pw`, `.lnk-row`, `.or-div`, `.soc`,, `.auth-modal`) and catalogue entry `sign-in`. Also adds the Apple glyph `assets/ds/icons/lib/social-apple.svg`.
-Spacing: gap 4 (16px) between blocks · gap 3 (12px) between fields and in the link row · gap 4 (16px) between social tiles. Social tiles are 54px tall. At 1024 and up the form is a 480px card on `--surface-sunken`, padded gap 6 (24px) all round. Gap 6 (24px) above "New to X? Create an account".
+Spacing: gap 4 (16px) between blocks · gap 3 (12px) between fields and in the link row · gap 4 (16px) between social tiles. Social tiles are 54px tall. At 1024 and up the form is a 480px card on `--surface-sunken`, padded gap 6 (24px) all round; every white box (page, modal, checkout cards) is gap 6 (24px) all round at every width. Gap 6 (24px) above "New to X? Create an account".
 
 ## Figma sources
 - Social-Login `P2RiX62irafEZQjyLRhRx7`: 112-6838 (sign in, social tiles), 112-6710 / 112-6873 (create account, mobile / desktop), 2032-1885 (sign in with the link row), 2032-2027 (social tiles, built exactly)

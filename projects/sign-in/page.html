@@ -44,7 +44,7 @@ try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S
 let EXPORTING=false,LOCAL={};
 
 /* ---- the rules (the panel enforces the same ones) ----
-   A (primary 'link'): flags.pw switches the "Sign in with password instead" route off (e.g. a security risk).
+   A (primary 'link'): flags.pw switches the "Sign in with password" route off (e.g. a security risk).
    B (primary 'pw'):   password form with "Email me a sign in link" in the link row. */
 function R(){const primary=S.primary==='pw'?'pw':'link';
   return {primary,link:true,pw:primary==='pw'||!!S.flags.pw}}
@@ -89,18 +89,17 @@ const title=(t)=>`<div class="auth-hd"><h1 class="auth-h">${t}</h1>${S.context==
 function screen(){const r=R(),mode=LOCAL.mode||r.primary,scr=LOCAL.screen||S.screen,fill=S.filled||scr!=='signin';
   /* link sent / reset sent: one message, identical whether or not the account exists; back = the browser back button */
   if(scr==='sent'||scr==='reset'){const reset=scr==='reset';
-    return `${title(reset?'We’ve Emailed You a Password Reset Link':'We’ve Emailed You a Sign-In Link')}
+    return `${title(reset?'We’ve Emailed You a Password Reset Link':'Check Your Inbox')}
       <p class="auth-sub">Use the link we sent to <b>${esc(S.email)}</b> to ${reset?'reset your password':'sign in'}. It expires in ${esc(S.expiry||15)} minutes.</p>
-      <p class="auth-note">Not received it? Check your spam folder or make sure your email address is correct.</p>
-      <div class="lnk-row"><button class="lnk" data-act="resend">Resend link</button><span class="sep"></span><button class="lnk" data-act="back">Use a different email</button></div>`}
+      <p class="auth-note">Not received it? Check your spam folder or make sure your email address is correct.</p>`}
   if(scr==='forgot'&&r.pw)return `${title('Reset Your Password')}<p class="auth-sub">Enter your email address and we’ll send you a link to reset your password.</p>
       <div class="auth-fields">${fld('email','Email address',fill)}</div><button class="${cta()}" data-act="reset">Send reset link</button>
-      <div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="back">Back to sign in</button>${r.link?'<span class="sep"></span><button class="lnk" data-act="link">Email me a sign in link</button>':''}</div>`;
+      ${r.link?'<div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="link">Email me a sign in link</button></div>':''}`;
   const err=scr==='error'&&mode==='pw'?`<div class="msg msg--error"><i></i><div class="body"><span>The email or password you entered is incorrect. Try again${r.link?', or email yourself a sign in link':', or reset your password'}.</span></div></div>`:'';
   if(mode==='link')return `${title(signT())}<p class="auth-sub">Enter your email address and we’ll send you a one-time link to sign in.</p>
       <div class="auth-fields">${fld('email','Email address',fill)}</div>
       <button class="${cta()}" data-act="send">Send link</button>
-      ${r.pw?'<div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="pw">Sign in with password instead</button></div>':''}${foot()}`;
+      ${r.pw?'<div class="lnk-row" style="justify-content:center"><button class="lnk" data-act="pw">Sign in with password</button></div>':''}${foot()}`;
   return `${title(signT())}${err}
       <div class="auth-fields">${fld('email','Email address',fill)}${fld('password','Password',fill)}</div>
       <div class="lnk-row"><button class="lnk" data-act="forgot">Forgot password?</button>${r.link?'<span class="sep"></span><button class="lnk" data-act="link">Email me a sign in link</button>':''}</div>

@@ -38,3 +38,7 @@
 - Create an account moved below the social buttons (page + catalogue variants).
 - Card padding gap 6 (24px) all round at ≥1024 (was 32/24); mobile 24 top/bottom, 16 sides. Gap above "New to X? Create an account" = gap 6 (24px), 1.5× the block gap.
 - Page loads assets/ds/header.js (DS header drop-in, C-05, landed in 07f3331) and uses DG_headerHTML for the main + checkout headers when present; falls back to the catalogue header / own .co-hd when it is not. V() made safe for empty variants.
+- Copy: "Sign in with password" (no "instead"). Reset Your Password: only "Email me a sign in link", centred under the CTA (Back to sign in removed).
+- "We’ve Emailed You" screens: Resend link | Use a different email removed: title, body and the small print only.
+- Link sent title back to "Check Your Inbox" (reset sent keeps "We’ve Emailed You a Password Reset Link"). Every white box (.auth: page, modal, checkout cards) padded gap 6 (24px) all round at every width.
+- Every white box takes the brand radius at every width (--radius-default: 4px Debenhams / boohoo / MAN / KM, 0 PLT).
