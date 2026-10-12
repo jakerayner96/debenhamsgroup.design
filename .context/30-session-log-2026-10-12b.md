@@ -23,3 +23,4 @@
 - Link first: "Sign in with password instead" moved below the CTA, centred.
 - Security switch card and Klarna full-width option removed (Jake): the method switches cover security; Klarna is always a tile.
 - Copy (Jake): link-first intro "We’ll email you a one-time link, to sign in."; link sent = title + one paragraph, no links or code entry; "family of brands" line removed. 6-digit code option and `.otp` / `.auth-wait` / `.auth-fine` / `.auth-family` CSS removed.
+- Panel (Jake): one Weighting card, A / B plus the password switch inside it (live on A, locked on B). No Methods card or link switch; B always carries "Email me a sign in link".
