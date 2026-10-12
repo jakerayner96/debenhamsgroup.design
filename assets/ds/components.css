@@ -12,7 +12,7 @@
 /* C-01 Button */
 /* C-01 golden truth (colour-alignment brand-colours, 26 Aug): 50px, 16/24, 4px radius on
    EVERY fascia (PLT/Brand Room square-radius modes do not zero buttons), primary uppercase (KM sentence). */
-.bd{font-family:var(--font-family-base);font-weight:var(--w-btn,var(--w-strong));font-size:16px;line-height:24px;padding:12px 24px;border-radius:var(--radius-default);text-transform:var(--case-btn1,uppercase);letter-spacing:.02em;border:1px solid transparent;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
+.bd{font-family:var(--font-family-base);font-weight:var(--w-btn,var(--w-strong));font-size:16px;line-height:24px;padding:12px 24px;border-radius:var(--radius-default);text-transform:var(--case-btn1,uppercase);letter-spacing:0;border:1px solid transparent;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
 .bd.pri{background:var(--surface-action);color:var(--text-on-action)}
 .bd.pri:hover{background:var(--surface-action-hover)}
 .bd.pri:active{background:var(--surface-action-pressed)}
@@ -61,7 +61,7 @@
 /* mini quick add sits on the titles row (top-right of the info block) — the price row is never squeezed, so it never wraps */
 .pc-toprow{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-width:0}
 .pc-toprow .pc-titles{flex:1;min-width:0}
-.pc-qa{display:inline-flex;align-items:center;gap:4px;flex:none;height:24px;padding:0 8px;margin-top:-2px;background:var(--surface-action);color:var(--text-on-action);border:none;border-radius:var(--radius-default);font-family:var(--font-family-base);font-size:11px;line-height:1;font-weight:var(--w-btn,var(--w-strong));letter-spacing:.02em;text-transform:var(--case-btn1,uppercase);white-space:nowrap;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
+.pc-qa{display:inline-flex;align-items:center;gap:4px;flex:none;height:24px;padding:0 8px;margin-top:-2px;background:var(--surface-action);color:var(--text-on-action);border:none;border-radius:var(--radius-default);font-family:var(--font-family-base);font-size:11px;line-height:1;font-weight:var(--w-btn,var(--w-strong));letter-spacing:0;text-transform:var(--case-btn1,uppercase);white-space:nowrap;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
 .pc-qa i{width:12px;height:12px;display:block;background:currentColor;-webkit-mask:url(icons/lib/icons-quick-add.svg) center/contain no-repeat;mask:url(icons/lib/icons-quick-add.svg) center/contain no-repeat}
 .pc-qa:hover{background:var(--surface-action-hover)}
 .pc-qa:active{background:var(--surface-action-pressed)}
@@ -274,7 +274,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .sf-drawer .rows{flex:1;overflow-y:auto}
 .sf-row{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 16px;border-bottom:var(--border-w) solid var(--border-subtle);font-size:16px;font-weight:var(--w-regular);width:100%;background:none;border-left:none;border-right:none;border-top:none;font-family:inherit;color:var(--text-primary);cursor:pointer}
 .sf-row i{width:16px;height:16px;background:url("icons/lib/icons-right.svg") center/contain no-repeat}
-.sf-cta{margin:16px;min-height:48px;background:var(--surface-action);color:var(--text-on-action);border:none;border-radius:var(--radius-default);font-family:inherit;font-size:14px;font-weight:var(--w-strong);letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.sf-cta{margin:16px;min-height:48px;background:var(--surface-action);color:var(--text-on-action);border:none;border-radius:var(--radius-default);font-family:inherit;font-size:14px;font-weight:var(--w-strong);letter-spacing:0;text-transform:uppercase;cursor:pointer}
 .sf-cta:active{background:var(--surface-action-pressed)}
 
 /* ============================================================
