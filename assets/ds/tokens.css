@@ -111,6 +111,7 @@
      Never hard-code #FFF / #F2F2F2 / #FAFAFA in a component; use the surface tokens so PLT picks up sand.
      Checkout (Checkout 2026 WChEtDPH0LcErdYFS9SESn 2290:437863): page gaps + bag bar + order summary = #FAF5E7, sections = #FFFDF7,
      payment tiles + promo Apply = #FAF5E7 fill with no outline, input = #FFFDF7 with #B5B5B5 keyline, links / Change / Discounts = garnet --text-link.
+     App: pages on warm white #FFFDF7 (never the darker sand); app checkout links garnet, not iOS blue; disabled Payment = --action-disabled-*.
      Square rule: --radius-pill is 0 here, so every pill / chip / status pill is square — never hard-code 100px / 99px / 9999px radii. */
   --surface-raised:#FFFDF7;--surface-sunken:#FAF5E7;--surface-media:#FAF5E7;
   --hd-icon:16px;--hd-favic:15px;--hd-count:12px;--hd-count-fs:9px; /* PLT header icon set — PLP-Grid-View 158-8458 */
