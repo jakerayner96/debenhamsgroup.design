@@ -198,6 +198,10 @@ Square-mode is an opt-in per facia. Currently used by:
 
 Any other facia can adopt it in future without architectural change — it's a token mapping swap, not a code change.
 
+**Square means every rounded thing (14 Oct 2026).** On a square fascia, pills, chips and status pills (e.g. the PLT Royalty `.mpill`) are square too — they take `--radius-pill`, which is 0. Components must never hard-code `100px` / `99px` / `9999px`; the only exceptions are true circles (dots, colour swatches, avatars).
+
+**PLT sand rule.** PLT has no pure white surface. White → warm white `#FFFDF7` (`--surface-page`, `--surface-raised`, `--panel-bg`); grey → sand `#FAF5E7` (`--surface-media`, `--surface-sunken`). Buttons, size tiles, info boxes, BNPL boxes, inputs, modals and checkout tiles are light sand or dark sand only. Links, Change buttons and Discounts are garnet (`--text-link` #550503). Spec in the PLT block of `assets/ds/tokens.css`.
+
 ---
 
 ## 4. Border-width scale ✅

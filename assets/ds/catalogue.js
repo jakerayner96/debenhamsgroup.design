@@ -495,6 +495,22 @@ const DG_CATALOGUE = [
   variants:[{name:'Set', html:'<div style="display:flex;gap:10px;align-items:center"><span class="tagpill">Active</span><span class="tagpill tagpill--n">3</span><span class="chip-save">Save 5%</span></div>'}],
   dev:{title:'—', status:'ours', note:'Not in the dev Storybook.'} },
 
+{ slug:'membership-pill', name:'Membership pill', group:'Chips & pills', tier:'atom', css:'.mpill · .mpill--plus · --mpill-bg / --mpill-fg / --mpill-dot', figma:'WChEtDPH0LcErdYFS9SESn · 3996:173990 · 3996:174293',
+  summary:'Active-membership status on checkout Delivery Method: dot + programme name + Active. Grey on most fascias, gradient for Debenhams Unlimited+, square sand with a garnet dot on PLT.',
+  use:['Checkout Delivery Method heading / app checkout delivery row, only when the shopper has an active membership.'],
+  avoid:['Hard-coding the radius or colours — PLT must stay square and sand.','Showing it when there is no membership.'],
+  anatomy:['20px · 10px caps · name strong + Active light · 8px dot · radius --radius-pill (0 on PLT)'],
+  variants:[{name:'Unlimited', html:'<span class="mpill"><i></i><b>Unlimited</b><span>Active</span></span>'},{name:'Unlimited+', html:'<span class="mpill mpill--plus"><i></i><b>Unlimited+</b><span>Active</span></span>'},{name:'PLT Royalty', html:'<div data-brand="plt" style="padding:12px;background:#FFFDF7"><span class="mpill"><i></i><b>Royalty</b><span>Active</span></span></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook. Prototype: account-2026 checkout + new checkout.'} },
+
+{ slug:'checkout-tile', name:'Checkout tile', group:'Checkout', tier:'atom', css:'.co-tile · .co-tile--lg · .co-tiles · --co-tile-bg / --co-tile-border', figma:'WChEtDPH0LcErdYFS9SESn · 2290:437863 (PLT)',
+  summary:'Payment method tiles and the promo Apply button on the new checkout. Keyline on raised for most fascias; PLT is a sand fill with no outline, square.',
+  use:['Payment method grid (two columns, 8px gaps).','Promo code Apply (.co-tile--lg, 50px).'],
+  avoid:['White fills on PLT.'],
+  anatomy:['44px (50 for Apply) · radius --radius-default · fill --co-tile-bg · 1px --co-tile-border'],
+  variants:[{name:'Default', html:'<div class="co-tiles" style="width:358px"><span class="co-tile">Card</span><span class="co-tile">Pay Later</span></div>'},{name:'PLT', html:'<div data-brand="plt" style="padding:16px;background:#FFFDF7"><div class="co-tiles" style="width:358px"><span class="co-tile">Card</span><span class="co-tile">Pay Later</span></div></div>'}],
+  dev:{title:'—', status:'ours', note:'Not in the dev Storybook.'} },
+
 { slug:'ai-pill', name:'AI pill', group:'Chips & pills', tier:'atom', css:'.ai-pill · .ai-pill--outline · .ai-icon · .ai-iconbtn · --ai-gradient', figma:'jNQsrePXxw0j0AksixkseD · AI Gradient 265:3677 · Icons / AI 27:37643',
   summary:'The one look for anything AI: the AI icon and the AI gradient. White pill inside a field or on an image; gradient-outline pill when it stands on its own. Same on every fascia.',
   use:['Agent entry point: inside the search box (.ai-pill, no outline) or beside it (.ai-pill--outline).','Prompt chips that open the agent (PDP prompts, next best action, autocomplete suggestions, custom prompts): .ai-pill--soft .ai-pill--wrap — white on the puck shadow.','On imagery (Shop similar, Try it on): .ai-pill--soft.','Mobile header icon row: .ai-iconbtn next to the search icon.'],
