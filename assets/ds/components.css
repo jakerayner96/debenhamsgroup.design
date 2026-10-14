@@ -822,7 +822,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mpill{display:inline-flex;align-items:center;gap:6px;height:20px;padding:0 8px 0 6px;border-radius:var(--radius-pill);background:var(--mpill-bg);color:var(--mpill-fg);font-family:var(--font-family-base);font-size:10px;line-height:1;white-space:nowrap;text-transform:uppercase}
 .mpill i{width:8px;height:8px;border-radius:9999px;background:var(--mpill-dot);flex:none}
 .mpill b{font-weight:var(--w-strong)}.mpill span{font-weight:300}
-.mpill--plus{background:linear-gradient(115deg,#000 0%,#00787D 100%);color:#FFF}.mpill--plus i{background:var(--mpill-dot-plus)} /* Debenhams Unlimited+ only */
+.mpill--plus{background:var(--mpill-grad-plus);color:#FFF}.mpill--plus i{background:var(--mpill-dot-plus)} /* Debenhams Unlimited+ only */
 /* Checkout tiles (.co-tile) — payment method grid + promo Apply. Default: raised + 1px #B5B5B5 keyline. PLT: sand fill, no outline, square (Checkout 2026 2290:437863). */
 .co-tile{display:flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 16px;background:var(--co-tile-bg);border:1px solid var(--co-tile-border);border-radius:var(--radius-default);font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-strong);color:var(--text-primary)}
 .co-tile--lg{height:50px;font-size:16px;font-weight:var(--w-mid)}
