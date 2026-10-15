@@ -446,11 +446,12 @@ const DG_CATALOGUE = [
   variants:[{name:'Shell (inline)', html:'<div style="position:relative;width:360px;height:420px;background:#ddd;overflow:hidden;border-radius:4px"><div class="sheet open" style="position:absolute"><div class="scrim"></div><div class="panel" style="height:340px"><div style="padding:0 16px 16px;font-size:18px;font-weight:var(--w-strong);display:flex;justify-content:space-between">Choose a size <span style="font-weight:300">×</span></div><div style="flex:1;padding:0 16px;font-size:14px;color:var(--text-secondary)">Body scrolls</div><div style="padding:16px;border-top:1px solid var(--border-subtle)"><button class="bd pri" style="width:100%">Add to bag</button></div></div></div></div>'}],
   dev:{title:'Molecules/Side Panel', status:'partial', note:'Dev Side Panel slides from the side (dimBackground · gradientEdge · align · top / height). Atoms/Modal is the centred card. Ours is bottom-anchored on mobile — agree one shell with an anchor prop.'} },
 
-{ slug:'modal', name:'Modal', group:'Overlays & bag', tier:'organism', css:'.modal', figma:'—',
+{ slug:'modal', name:'Modal', group:'Overlays & bag', tier:'organism', css:'.modal · .modal-hd · .modal-x', figma:'aIHmkCaTy9c5EWOxAGw0So · Mobile 8084-24491 · Overlay + animation 8084-23215 · Modal Headers 8113-19029 · 8085-17553',
   summary:'Centred card that scales in from 0.96. Title, body, actions.',
   use:['Confirmations, gift card detail, size guide on desktop.'],
-  avoid:['Long forms in a modal — use a page or sheet.'],
-  anatomy:['Scrim 50% · card 358px max · padding gap 5 (20px) · title 18px strong'],
+  avoid:['Long forms in a modal — use a page or sheet.','A 24px or 2pt close, or a close that sits at a different inset per modal.'],
+  anatomy:['Scrim 50% · card 358px max · padding gap 5 (20px) · title 18px strong','Header (.modal-hd): padding gap 6 (24px) top / sides · title Geologica SemiBold 20 / 25 · variants: title + X · X only · back + title + X · title + info + X (info only when the title is one line)','Close (.modal-x): Icons / Close at 16 × 16, 1pt stroke, black — never 24px — inset gap 6 (24px) from the top and right, centred on the title line; .modal-x--abs when there is no title','Mobile sizes: Small (358 inset gap 4 (16px)) · Large (full width, from the top of the page under the header) · Full screen; desktop scales in centred, mobile slides up'],
+  use_close:'Every modal, sheet and chat window uses the same 16px close.',
   variants:[{name:'Card (inline)', html:'<div class="modal on" style="position:static;background:transparent;padding:0"><div class="card" style="box-shadow:var(--shadow-float)"><div class="t">Remove this item?</div><div class="b">You can add it back from your wishlist later.</div><div style="display:flex;flex-direction:column;gap:8px;width:100%"><button class="bd pri">Remove</button><button class="bd sec">Keep it</button></div></div></div>'}],
   dev:{title:'Atoms/Modal', status:'match', note:'Dev Modal: title · onClose · showBackdrop · useSmallClose · addInfoIconToTitle · uspModal flags.'} },
 

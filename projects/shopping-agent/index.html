@@ -212,7 +212,7 @@ function handoff(c){const lines=[];const ep={outIcon:'Exposed search, AI icon in
   lines.push('# Shopping agent — Debenhams · dev hand-off','',`Exported ${new Date().toISOString()}`,'');
   lines.push('## 1 · Agent config (backend)','`salesAgentConfig.json` = the dev retrieveConfig with our edits applied. Changed keys:','');
   if(BASE)AG.diff(BASE,cfgFile()).forEach(d=>lines.push(`- \`${d.path}\`: ${JSON.stringify(d.from)} → ${JSON.stringify(d.to)}`));
-  lines.push('',`Start screen: ${c.start==='agent'?'Agent (orb · greeting · four capability cards · config prompts) — needs a custom_template component in the messages-header slot':'Config (T&Cs text block · hero · zero-state intro + prompts), as the dev file'}.`);
+  lines.push('','Start screen: sparkle + “Hi there, I’m Deb” · one line · four one-line starter prompts (a custom_template in the messages-header slot, replacing the hero + zero-state intro). Close = DS modal close, 16×16 1pt at 24px in; no title bar text or icon.');
   lines.push('Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
   lines.push('## 2 · Entry point + features (front end)','',`- **Entry point**: ${ep}`);
   FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${o?o[1]+' — '+o[2]:''}`)});
@@ -255,18 +255,19 @@ function renderPanel(host,S,update){
     ${fe.k==='autocomplete'?`<div class="f"><span>Need some help? · prompts</span>${c.acChips.map((t,i)=>`<input data-arr="acChips" data-i="${i}" value="${H(t)}">`).join('')}</div>`:''}</div>
   <div class="card"><h3>Chat window</h3>
     <div style="display:flex;flex-direction:column;gap:8px"><label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Open</label></div>
-    <div class="f"><span>Start screen</span><span class="seg" id="start"><button data-v="config" class="${c.start==='config'?'on':''}">Config (hero + intro)</button><button data-v="agent" class="${c.start==='agent'?'on':''}">Agent (new)</button></span>
-    <small>${c.start==='agent'?'The orb, a greeting, four things it can do, the config prompts as chips. Benchmarked on Gemini / ChatGPT / Shopify Sidekick start states.':'The dev file as delivered: T&Cs line, hero image, intro copy and prompts.'}</small></div></div>
+</div>
   <div class="card card--fold${c.cfgOpen?' open':''}" id="cfgcard"><h3 class="fold-h" id="cfgtoggle" role="button" aria-expanded="${!!c.cfgOpen}">Agent config <small>salesAgentConfig.json · ${changed.length} changed</small><i class="chev"></i></h3><div class="fold-b">
     <p>The file the devs deploy (backend config, no flicker). Edits rebuild it from the dev’s base file; the chat window renders from it.</p>
     <div class="f"><span>Agent name</span><input data-ag="name" value="${H(e.name)}"><small>Drives “Ask ${H(e.name)}” on every entry point. Naming is with the creative director.</small></div>
     <div class="f"><span>chat-title</span><input data-ag="title" value="${H(e.title)}"></div>
     <div class="f"><span>Intro (zeroState.payload.text)</span><textarea data-ag="intro" rows="6">${H(e.intro)}</textarea></div>
-    ${c.start==='agent'?`<div class="f"><span>Agent start · tagline</span><input data-ag="tagline" value="${H(e.tagline)}"></div><div class="f"><span>Agent start · starter prompts (one per line, four shown)</span><textarea data-ag="starters" rows="4">${H((e.starters||[]).join('\n'))}</textarea></div>`:''}
+    ${true?`<div class="f"><span>Start screen · tagline</span><input data-ag="tagline" value="${H(e.tagline)}"></div><div class="f"><span>Start screen · starter prompts (one per line, four shown)</span><textarea data-ag="starters" rows="4">${H((e.starters||[]).join('\n'))}</textarea></div>`:''}
     <div class="f"><span>Zero-state prompts (one per line)</span><textarea data-ag="prompts" rows="4">${H(e.prompts.join('\n'))}</textarea></div>
     <div class="row2"><div class="f"><span>placeholder-text</span><input data-ag="placeholder" value="${H(e.placeholder)}"></div><div class="f"><span>cart-button-text</span><input data-ag="cart" value="${H(e.cart)}"></div></div>
     <div class="f"><span>disclosure-text</span><input data-ag="disclosure" value="${H(e.disclosure)}"></div>
     <div class="row2"><div class="f"><span>Primary</span><input type="color" data-ag="primary" value="${e.primary}"></div><div class="f"><span>Gradient end</span><input type="color" data-ag="accent" value="${e.accent}"></div></div>
+    <div class="row2"><div class="f"><span>ADD TO BAG fill</span><input type="color" data-ag="cartBg" value="${e.cartBg}"></div><div class="f"><span>ADD TO BAG label</span><input type="color" data-ag="cartFg" value="${e.cartFg}"></div></div>
+    <div class="row2"><div class="f"><span>ADD TO BAG radius (px)</span><input type="number" min="0" max="24" data-ag="cartRadius" value="${e.cartRadius}"></div><div class="f"></div></div>
     <div class="row2"><div class="f"><span>Chip fill</span><input type="color" data-ag="chipBg" value="${e.chipBg}"></div><div class="f"><span>Chip border</span><input type="color" data-ag="chipBorder" value="${e.chipBorder}"></div></div>
     <div class="row2"><div class="f"><span>Chip radius (px)</span><input type="number" min="0" max="40" data-ag="chipRadius" value="${e.chipRadius}"></div><div class="f"><span>Window width (px)</span><input type="number" min="360" max="900" step="2" data-ag="width" value="${e.width}"></div></div>
     <div class="row2"><div class="f"><span>Window radius (px)</span><input type="number" min="0" max="40" data-ag="radius" value="${e.radius}"></div><div class="f"><span>Title icon</span><select data-ag="icon"><option value="config"${e.icon==='config'?' selected':''}>Dev file (teal tile)</option><option value="spark"${e.icon==='spark'?' selected':''}>AI icon</option></select></div></div>
@@ -282,7 +283,6 @@ function renderPanel(host,S,update){
   host.querySelectorAll('[data-feat]').forEach(b=>b.onclick=()=>{const x=FEATS.find(f=>f.k===b.dataset.feat);c.feat=x.k;if(x.set)Object.assign(c,x.set);
     c.page=x.pg;c.search=!!x.search;c.chat=false;c.focus={f:x.k.startsWith('ep-')?'launcher':x.k,n:Date.now()};go()});
   host.querySelector('#t-chat').onchange=ev=>{c.chat=ev.target.checked;go()};
-  host.querySelectorAll('#start button').forEach(b=>b.onclick=()=>{c.start=b.dataset.v;c.chat=true;go()});
   host.querySelectorAll('[data-pos]').forEach(b=>b.onclick=()=>{c[POSKEY[fe.k]]=b.dataset.pos;c.page=fe.pg;c.focus={f:fe.k,n:Date.now()};go()});
   host.querySelectorAll('[data-row]').forEach(b=>b.onclick=()=>{c.nbaRow=+b.dataset.row;c.page='plp';c.focus={f:'nba',n:Date.now()};go()});
   host.querySelectorAll('#dir button').forEach(b=>b.onclick=()=>{c.pdpDir=b.dataset.v;go()});
@@ -291,7 +291,7 @@ function renderPanel(host,S,update){
   host.querySelectorAll('[data-arr]').forEach(i=>i.onchange=()=>{c[i.dataset.arr][+i.dataset.i]=i.value;go()});
   host.querySelectorAll('[data-key]').forEach(i=>i.onchange=()=>{c[i.dataset.key]=i.value;go()});
   host.querySelectorAll('[data-ag]').forEach(i=>i.onchange=()=>{const k=i.dataset.ag;let v=i.type==='checkbox'?i.checked:i.value;
-    if(k==='prompts'||k==='starters')v=v.split('\n').map(s=>s.trim()).filter(Boolean);if(['chipRadius','width','radius'].includes(k))v=+v;
+    if(k==='prompts'||k==='starters')v=v.split('\n').map(s=>s.trim()).filter(Boolean);if(['chipRadius','width','radius','cartRadius'].includes(k))v=+v;
     c.agent[k]=v;if(!['name'].includes(k))c.chat=true;go()});
   host.querySelector('#cfgtoggle').onclick=()=>{c.cfgOpen=!c.cfgOpen;save();panel()};
   host.querySelector('#dlcfg').onclick=()=>BASE&&dl('salesAgentConfig.json',JSON.stringify(cfgFile(),null,2));

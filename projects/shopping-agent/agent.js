@@ -21,6 +21,10 @@ const DEF={
   hero:true,
   icon:'config',            // config = the teal tile in the dev config · spark = the Ask Deb sparkle
   cart:'ADD TO BAG',
+  /* small ADD TO BAG = the primary CTA, small: aqua --surface-action #7BE7D8, black label, 4px radius */
+  cartBg:'#7be7d8',
+  cartFg:'#000000',
+  cartRadius:4,
   /* the Agent start screen (prototype only): one line of copy + four one-line starter prompts */
   tagline:'Tell me what you’re shopping for and I’ll find it.',
   starters:['Find me an outfit for a wedding','Does this dress come in petite?','Gifts for my mum under £50','What goes with my black blazer?'],
@@ -39,6 +43,10 @@ function build(base,e){
   const swap=(o)=>{for(const k in o){if(typeof o[k]==='string')o[k]=o[k].replace(rx('#00787d'),e.primary).replace(rx('#7be7d8'),e.accent)}};
   swap(sy);
   sy['--chat-messenger-internal-chat-window-width']=e.width+'px';
+  sy['--cart-button-background-color']=e.cartBg;
+  sy['--cart-button-font-color']=e.cartFg;
+  for(const k of ['start-start','start-end','end-end','end-start'])sy[`--chat-messenger-cart-button--${k}-corner-radius`]=e.cartRadius+'px';
+  sy['--chat-messenger-cart-button-min-width']='0';
   /* PA Deck Figma 6:167: 104px tiles, 12/500 title, 13/700 price */
   sy['--chat-messenger-product-carousel-tile-width']='104px';
   const rc=p['rich-content-config'];for(const k of ['tileConfig','productDetailConfig']){const m=rc[k]&&rc[k].metadata;if(!m)continue;

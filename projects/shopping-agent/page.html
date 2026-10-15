@@ -282,7 +282,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .ac-prompts{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .ac-rv .pc-name{font-size:13px}
 /* ---------- chat window, as the PA Deck Figma (OUmnWDam0w0czh9VZnaqx0 · 6:167) ---------- */
-.cm-tb .acts button img{width:24px;height:24px;display:block}   /* the DS close (icons-close.svg): 1px stroke, 24px */
+.cm .cm-tb{padding:24px 24px 0;justify-content:flex-end;min-height:40px}   /* no title or icon: just the DS modal close, 16×16 at 24px in */
 .cm-tb .ic .ai-icon{width:28px!important;height:28px!important}
 .cm-ctx{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}
 .cm-ctx .lbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6B6B6B}
@@ -290,7 +290,22 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cm-car{gap:10px}
 .cm-tile .n{font-size:12px;font-weight:500}
 .cm-tile .p{gap:4px}.cm-tile .p b{font-size:13px}.cm-tile .p s{font-size:11px}
-.cm-cart{height:29px;font-size:11px;min-width:0;width:100%}
+.cm-cart{height:32px;font-size:12px;font-weight:600;letter-spacing:.02em;min-width:0;width:100%}   /* small primary CTA: aqua, black, 4px (config) */
+.cm-cart:hover{filter:brightness(1.05)}
+/* reply components (the agent's rich content; styled from the config: tileConfig / productDetailConfig) */
+.cm-pd{display:flex;gap:12px;margin-top:12px;padding:12px;border:1px solid var(--border-subtle,#E7E7E7);border-radius:16px;align-items:stretch}
+.cm-pd img{width:96px;aspect-ratio:2/3;object-fit:cover;flex:none;background:#F2F2F2}
+.cm-pd .pd{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;flex:1;text-align:left}
+.cm-pd .pbd{font-size:12px;font-weight:600}.cm-pd .n{font-size:14px;font-weight:500;line-height:1.3}
+.cm-pd .p{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}.cm-pd .p b{font-size:14px;font-weight:700}.cm-pd .p b.sale{color:#9E2A2B}.cm-pd .p s{font-size:12px;color:#777}.cm-pd .p em{font-style:normal;font-size:12px;color:#9E2A2B}
+.cm-pd .psz{display:flex;gap:6px;flex-wrap:wrap}.cm-pd .psz span{min-width:34px;height:30px;display:grid;place-items:center;border:1px solid var(--border-control,#B5B5B5);border-radius:4px;font-size:12px;font-weight:300}.cm-pd .psz span.on{border-color:#000;font-weight:600}
+.cm-pd .cm-cart{margin-top:auto;align-self:stretch}
+.cm-list{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}.cm-list li{display:flex;gap:8px;align-items:flex-start}.cm-list li::before{content:"";width:6px;height:6px;border-radius:50%;background:#70BEB3;margin-top:7px;flex:none}
+.cm-look{display:grid;grid-template-columns:1.2fr 1fr;gap:4px;margin-top:12px}.cm-look img{width:100%;height:100%;object-fit:cover;display:block;background:#F2F2F2}.cm-look .r{display:grid;grid-template-rows:1fr 1fr;gap:4px}
+.cm-look-cta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:13px}.cm-look-cta b{font-size:14px}
+.cm-fit{margin-top:12px;padding:12px 14px;border-radius:12px;background:#F2F8F7;display:flex;flex-direction:column;gap:8px}
+.cm-fit .bar{position:relative;height:4px;border-radius:99px;background:#D6E9E6}.cm-fit .bar i{position:absolute;top:-4px;width:12px;height:12px;border-radius:50%;background:#2E7F79;transform:translateX(-50%)}
+.cm-fit .lbl{display:flex;justify-content:space-between;font-size:11px;color:#555}
 .cm-qr{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .cm-qr .ai-pill{height:36px;font-size:13px}
 .cm-box .cm-input{flex:1;min-width:0;border:0;outline:0;background:none;font:300 16px var(--chat-messenger-font-family);color:var(--chat-messenger-color--on-surface,#222)}
@@ -298,14 +313,15 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cm-box .send{cursor:pointer;border:0;transition:background .15s}
 .cm-b .mock{display:none}
 /* ---------- agent start screen (the "Agent" option): the orb, a greeting, four capability cards, the config prompts as chips ---------- */
-.cm-start{display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px 0 8px;gap:12px}
+.cm-start{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:8px 0 8px;gap:8px}
+.cm-start h2{display:flex;align-items:center;gap:10px}
 .orb{position:relative;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#CFF5EE 0%,#9DEDE2 28%,#70BEB3 62%,#2E7F79 100%);box-shadow:0 18px 40px -16px rgba(0,120,125,.55),inset 0 -14px 28px rgba(255,255,255,.35);display:grid;place-items:center;animation:orbFloat 5s ease-in-out infinite}
 .orb::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,rgba(157,237,226,0),rgba(157,237,226,.9),rgba(0,120,125,0) 60%);animation:orbSpin 6s linear infinite;mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px))}
 .orb::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 70% 75%,rgba(255,255,255,.35),transparent 45%)}
 .orb .ai-icon{width:40px!important;height:40px!important;position:relative;filter:brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,.18))}
 @keyframes orbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes orbSpin{to{transform:rotate(360deg)}}
-.cm-start h2{margin:4px 0 0;font-size:24px;font-weight:300;line-height:1.2;color:#222}
+.cm-start h2{margin:0;font-size:24px;font-weight:300;line-height:1.2;color:#222}
 .cm-start h2 b{font-weight:600;background:linear-gradient(107deg,#2E7F79,#70BEB3 60%,#9DEDE2);-webkit-background-clip:text;background-clip:text;color:transparent}
 .cm-start p{margin:0;max-width:340px;font-size:14px;font-weight:300;line-height:1.5;color:#555}
 .cm-starters{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:8px;text-align:left}
@@ -313,7 +329,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cm-starter:hover{background:#FFF;border-color:#70BEB3}
 .cm-starter .ai-icon{flex:none}
 .cm-start .cm-text{margin:8px 0 0;padding:0}
-.cm.mob .cm-start{padding-top:8px}.cm.mob .orb{width:84px;height:84px}.cm.mob .cm-start h2{font-size:22px}
+.cm.mob .cm-start h2{font-size:22px}
 @media (prefers-reduced-motion:reduce){.orb,.orb::before,.hd-search .caret{animation:none}}
 .cm.in .cm-start>*{animation:cmItem .4s cubic-bezier(.22,.9,.24,1) both}
 .cm.in .cm-start>:nth-child(2){animation-delay:.2s}.cm.in .cm-start>:nth-child(3){animation-delay:.26s}.cm.in .cm-start>:nth-child(4){animation-delay:.32s}.cm.in .cm-start>:nth-child(5){animation-delay:.38s}
@@ -503,24 +519,17 @@ function md(s){return esc(s).replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="#" dat
 function chat(){
   if(!CHAT.open||!CFG)return '';
   const p=CFG.payload,st=p.settings,mob=innerWidth<768,c=p.components,zs=c.zeroState.payload,name=esc(E().name);
-  const icon=E().icon==='spark'||S.start==='agent'?`<span class="ic">${spk(28)}</span>`:`<img class="ic" src="${A}img/chat-icon.jpg" alt="">`;
-  const tc=c.text?`<div class="cm-text" data-c="text">${md(c.text.payload.text)}</div>`:'';
+    const tc=c.text?`<div class="cm-text" data-c="text">${md(c.text.payload.text)}</div>`:'';
   let head;
-  if(S.start==='agent'){
-    /* the Agent start screen (Gemini-style): orb · one-line greeting · one line of copy · four one-line starter prompts. Fits inside the fold. */
-    const st=(E().starters||[]).filter(Boolean).slice(0,4);
-    head=`<div class="cm-start"><div class="orb">${spk(40)}</div><h2>Hi there, I’m <b>${name}</b></h2><p>${esc(E().tagline)}</p>
-      <div class="cm-starters">${st.map(q=>`<button class="cm-starter" data-q="${esc(q)}">${spk(16)}<span>${esc(q)}</span></button>`).join('')}</div>${tc}</div>`;
-  }else{
-    head=[c.text&&{o:c.text.order,h:tc},
-      c.hero&&{o:c.hero.order,h:`<div class="cm-hero"><img src="${A}img/${mob?'hero-mobile':'hero'}.jpg" alt=""></div>`},
-      {o:c.zeroState.order,h:`<div class="cm-zero" data-c="zero">${zs.text.replace(/<(?!br\s*\/?>)/g,'&lt;')}<div class="pr">${zs.prompts.map(t=>`<button data-q="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>`}].filter(Boolean).sort((a,b)=>a.o-b.o).map(x=>x.h).join('');
-  }
-  if(CHAT.msgs.length)head=S.start==='agent'?'':tc;   /* once the conversation starts the start screen scrolls away, as in the Figma */
+  /* start screen (Gemini-style): sparkle + "Hi there, I'm Deb" · one line · four one-line starter prompts. Fits inside the fold. */
+  const sts=(E().starters||[]).filter(Boolean).slice(0,4);
+  head=`<div class="cm-start"><h2>${spk(28)}<span>Hi there, I’m <b>${name}</b></span></h2><p>${esc(E().tagline)}</p>
+    <div class="cm-starters">${sts.map(q=>`<button class="cm-starter" data-q="${esc(q)}">${spk(16)}<span>${esc(q)}</span></button>`).join('')}</div>${tc}</div>`;
+  if(CHAT.msgs.length)head='';   /* once the conversation starts the start screen scrolls away, as in the Figma */
   const msgs=CHAT.msgs.map(m=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b">${m.b}</div>`).join('');
   const txt=CHAT.draft||'';
   return `${mob?'':'<div class="cm-scrim" data-close="1"></div>'}<div class="cm${mob?' mob':''}" id="cm" role="dialog" aria-label="${esc(st['chat-title'])}">
-    <div class="cm-tb">${icon}<span class="t">${esc(st['chat-title'])}</span><span class="acts"><button data-close="1" aria-label="Close"><img src="assets/ds/icons/lib/icons-close.svg" alt=""></button></span></div>
+    <div class="cm-tb"><button class="modal-x" data-close="1" aria-label="Close"></button></div>
     <div class="cm-body" id="cmbody">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
     <form class="cm-in" id="cmform"><div class="cm-box"><span class="plus">+</span><input class="cm-input" id="cminput" type="text" autocomplete="off" placeholder="${esc(st['placeholder-text'])}" value="${esc(txt)}" aria-label="Message ${name}"><button type="submit" class="send${txt?' on':''}" id="cmsend" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></form>
     <div class="cm-disc">${esc(st['disclosure-text'])}</div></div>`;
@@ -535,27 +544,41 @@ function tile(i){const p=PR()[i];return `<div class="cm-tile"><img src="${IMG(i)
 const ctx=(...c)=>`<div class="cm-ctx"><span class="lbl">${spk(14)}Using</span>${c.map(x=>`<span class="c">${esc(x)}</span>`).join('')}</div>`;
 const qr=(...c)=>`<div class="cm-qr">${c.map(x=>`<button class="ai-pill ai-pill--outline" data-q="${esc(x)}">${spk(14)}${esc(x)}</button>`).join('')}</div>`;
 const car=ids=>`<div class="cm-car">${ids.map(tile).join('')}</div>`;
-function reply(q,vto){
+/* one product as the agent's product detail card (rich-content-config.productDetailConfig: title 14/500 · price 14/700 · sale #9E2A2B · % off) */
+function pd(i,sizes){const p=PR()[i];return `<div class="cm-pd"><img src="${IMG(i)}" alt=""><div class="pd">${p.brand?`<span class="pbd">${esc(p.brand)}</span>`:''}<span class="n">${esc(p.name)}</span><div class="p"><b class="${p.was?'sale':''}">${esc(p.price)}</b>${p.was?`<s>${esc(p.was)}</s><em>${esc(p.pct)}</em>`:''}</div>${sizes?`<div class="psz">${['8','10','12','14'].map(z=>`<span class="${z==='10'?'on':''}">${z}</span>`).join('')}</div>`:''}<button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div></div>`}
+/* every reply component, in turn — typed messages cycle through these so each one shows */
+const KINDS=[
+  q=>`Here are a few I think you’ll love for “${esc(q)}”, all in your size:${ctx('Size 10','Your style')}${car([1,21,24,29])}${qr('Under £50','Show me more like these')}`,
+  q=>`This one’s my top pick. It’s a regular fit, fully lined, and it’s back in stock in a 10:${pd(27,true)}${qr('Does it come in petite?','Shoes to match')}`,
+  q=>`Here’s a full look built around it:<div class="cm-look"><img src="${IMG(24)}" alt=""><div class="r"><img src="${IMG(6)}" alt=""><img src="${IMG(28)}" alt=""></div></div><div class="cm-look-cta"><span>3 pieces · <b>£144.10</b></span><button class="ai-pill ai-pill--outline" data-q="Add the whole look to my bag">${spk(14)}Add the look</button></div>`,
+  q=>`Good question. Most customers say it <b>fits true to size</b>:<div class="cm-fit"><div class="bar"><i style="left:52%"></i></div><div class="lbl"><span>Runs small</span><span>True to size</span><span>Runs large</span></div></div><ul class="cm-list"><li>Regular fit through the body, room in the shoulders</li><li>If you’re between sizes, size up</li><li>Model is 5’9” and wears a 10</li></ul>${qr('I’m a 10','I’m between 10 and 12')}`,
+  q=>`Let’s see it on you. Upload a full-length photo and I’ll show you the look in a few seconds.<div class="cm-up">${spk(28)}<div><b>Upload a photo</b>Your photo is only used for this try-on.</div></div>`,
+  q=>`Here’s what I’ve noted so far, so I can narrow it down:${ctx('Size 10','Under £100','Midi length','Family wedding')}<ul class="cm-list"><li>Sleeved or a cover-up for the ceremony</li><li>Block or mid heel for a garden venue</li><li>Avoid white and ivory</li></ul>${qr('Show me the dresses','Change my budget')}`,
+];
+let KI=Math.floor(Math.random()*KINDS.length);
+function reply(q,vto,typed){
   q=q||'';
-  if(vto)return `Let’s see how the <b>Coast Lace and Pleated Midi Shirt Dress</b> looks on you. Upload a full-length photo and I’ll show it on you in a few seconds.<div class="cm-up">${spk(28)}<div><b>Upload a photo</b>Your photo is only used for this try-on.</div></div>`;
+  if(vto)return KINDS[4](q);
+  if(typed){const r=KINDS[KI%KINDS.length](q);KI++;return r}
   if(/similar/i.test(q))return `Here are styles similar to the <b>Coast Lace and Pleated Midi Shirt Dress</b>: lace, pleats and midi lengths at a similar price.${car([21,31,27,5])}${qr('Only under £50','Show me in petite')}`;
   if(/wedding|occasion|outfit/i.test(q))return `Congratulations to her! For an October wedding in the Cotswolds, here are sleeved midis in the tailored shades you love, in a 10:${ctx('Size 10','Tailored','Family wedding')}${car([27,21,31])}${qr('Love the green, can I wear it to work?','Shoes to match')}`;
   if(/work|office/i.test(q))return `Yes, ponte jersey keeps its shape. Add the black blazer and loafers you bought last month and it works for the office. Want a knit to layer over it?${ctx('Past purchases','Workwear')}${qr('Show me knits','Add it to my bag')}`;
   if(/knit|jumper|cardigan|layer/i.test(q))return `These layer over the midi without adding bulk, all in your size:${car([0,3,8])}${qr('Which is warmest?','Show me in navy')}`;
   if(/shoe|boot|heel/i.test(q))return `A mid heel keeps it wedding-smart but walkable. These pick up the dress colour:${car([6,9,8])}${qr('Wide fit options','Under £60')}`;
-  if(/fit|size/i.test(q))return `This dress is a <b>regular fit</b> and most customers say it’s true to size. If you’re between sizes, size up for room through the shoulders. What size do you usually wear?${qr('I’m a 10','I’m between 10 and 12')}`;
+  if(/fit|size|petite/i.test(q))return KINDS[3](q);
   if(/gift|present/i.test(q))return `Happy to help. Who’s it for, and roughly what budget? In the meantime, these are the most-loved gifts this month:${car([14,18,33])}${qr('For my mum, under £50','Something for the home')}`;
-  if(/blazer|own|bought|wardrobe/i.test(q))return `Your black blazer works with all of these. The ponte midi is the easiest match:${ctx('Past purchases','Size 10')}${car([27,24,29])}${qr('Build me a full look','Only under £50')}`;
+  if(/blazer|own|bought|wardrobe/i.test(q))return KINDS[2](q);
+  if(/look|whole/i.test(q))return `Done: all three pieces are in your bag in a 10. Want me to check delivery for the 24th?${qr('Yes, check delivery','Keep shopping')}`;
   if(/bag\b|add it/i.test(q))return `Done: the Ponte Snaffle Trim Midi Dress in a 10 is in your bag. Anything else for the wedding?${qr('Shoes to match','A clutch bag')}`;
-  if(/discover|new|browse/i.test(q))return `Based on what you’ve been looking at, here’s what’s new in your style and size:${ctx('Recently viewed','Size 10')}${car([1,21,24,29])}${qr('More like the first one','Only new in')}`;
-  return `Here are a few I think you’ll love. Tell me your size, budget or occasion and I’ll narrow it down.${car([1,21,24,29])}${qr('Under £50','For a wedding','Something for work')}`;
+  if(/discover|new|browse/i.test(q))return KINDS[0](q);
+  return KINDS[1](q);
 }
 function openChat(q,vto){CHAT.open=true;
-  if(q){CHAT.msgs.push({u:q},{typing:true});setTimeout(()=>{CHAT.msgs=CHAT.msgs.filter(m=>!m.typing);CHAT.msgs.push({b:reply(q,vto)});if(CHAT.typed)CHAT.focus=true;drawChat()},EXPORTING?0:900)}
+  if(q){CHAT.msgs.push({u:q},{typing:true});setTimeout(()=>{CHAT.msgs=CHAT.msgs.filter(m=>!m.typing);CHAT.msgs.push({b:reply(q,vto,CHAT.typedNow)});CHAT.typedNow=false;if(CHAT.typed)CHAT.focus=true;drawChat()},EXPORTING?0:900)}
   else CHAT.focus=true;
   drawChat();parent.postMessage({protoChat:true},'*')}
 /* the shopper types: Enter or the arrow sends it to the agent (production: window.googleAgent.sendQuery(text)) */
-function send(){const inp=document.getElementById('cminput');const q=(inp?inp.value:'').trim();if(!q)return;CHAT.draft='';CHAT.user=true;CHAT.typed=true;CHAT.focus=true;openChat(q,false)}
+function send(){const inp=document.getElementById('cminput');const q=(inp?inp.value:'').trim();if(!q)return;CHAT.draft='';CHAT.user=true;CHAT.typed=true;CHAT.typedNow=true;CHAT.focus=true;openChat(q,false)}
 /* DRAWN = the window is on screen: the open animation runs only on the closed → open step, not when a reply or a page re-render redraws it */
 let DRAWN=false;
 function closeChat(){const cm=document.getElementById('cm');

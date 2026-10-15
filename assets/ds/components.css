@@ -799,6 +799,13 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .modal .card{width:100%;max-width:358px;background:var(--surface-raised);border-radius:var(--radius-default);padding:20px 16px 16px;display:flex;flex-direction:column;gap:24px;align-items:center;text-align:center;transform:scale(.96);transition:transform var(--dur-base)}
 .modal.on .card{transform:scale(1)}
 .modal .t{font-size:18px;font-weight:var(--w-strong)}.modal .b{font-size:16px}
+/* Modal header + close (DS Figma 8113:19029 Modal Headers · 8084:24491 Mobile): title Geologica SemiBold 20 · the close is Icons / Close at 16×16, 1pt stroke,
+   inset gap 6 (24px) from the top and right of the modal, vertically centred on the title line. Variants: title + X · X only · back + title + X · title + info + X. */
+.modal-hd{display:flex;align-items:flex-start;gap:16px;padding:24px 24px 0}
+.modal-hd .mt{flex:1;min-width:0;font-family:var(--font-family-base);font-size:20px;font-weight:var(--w-strong,600);line-height:25px;color:var(--text-primary)}
+.modal-x{display:grid;place-items:center;width:16px;height:25px;flex:none;margin-left:auto;padding:0;border:0;background:none;cursor:pointer}
+.modal-x::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-close.svg") center/16px 16px no-repeat}
+.modal-x--abs{position:absolute;top:24px;right:24px;height:16px}
 .bag-item{display:grid;grid-template-columns:99px 1fr;gap:16px;min-height:148px}
 .bag-item img{width:99px;height:148px;object-fit:cover;background:var(--surface-media)}
 .bag-item .info{display:flex;flex-direction:column;gap:4px;font-size:16px}
