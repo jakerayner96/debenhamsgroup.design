@@ -133,13 +133,16 @@ body.nosb .sbopen{display:grid}
 .smeta a:hover{color:var(--ink)}
 
 /* ---------- main ---------- */
-.main{overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;position:relative;min-width:0}
+.main{overflow-y:auto;overflow-x:auto;scroll-behavior:smooth;position:relative;min-width:0}
 .hdr{position:sticky;top:0;z-index:20;height:60px;display:grid;place-items:center;pointer-events:none}
 .hdr a{pointer-events:auto;display:block}
 .hdr img{height:22px;width:auto;display:block;object-fit:contain}
 [data-theme="light"] .hdr img{filter:invert(1)}
 .page{display:none;padding:56px var(--gut) 160px;max-width:calc(1120px + 2*var(--gut))}
 .page.on{display:block;animation:pgin .3s var(--ease-standard) both}
+.page[id^="c-"]{max-width:none;padding-left:40px;padding-right:40px} /* component pages use the full width — fascia boxes show components at real size, never scaled */
+.page[id^="c-"]>.wiki{max-width:1120px}
+.page[id^="c-"] .fx{max-width:none}
 .page.rail{display:none;grid-template-columns:1fr 190px;gap:48px}
 .page.rail.on{display:grid}
 @keyframes pgin{from{opacity:0}to{opacity:1}}
@@ -1617,11 +1620,11 @@ const FASCIAS=[["debenhams","Debenhams"],["boohoo","boohoo"],["boohooman","booho
 window.DG_FASCIAS=FASCIAS;
 /* a wrapping flex row can't shrink-wrap in CSS, so after layout each playground is sized to its rightmost item (+ canvas padding) */
 /* desktop footer shown at its real 1440 layout, scaled to the full width of its box */
-window.fitFooters=function(root){(root||document).querySelectorAll('.ftr-fit').forEach(w=>{const f=w.firstElementChild;if(!f)return;w.style.zoom=1;const k=Math.min(1,w.parentElement.clientWidth/1440);w.style.zoom=k})};
+window.fitFooters=function(root){(root||document).querySelectorAll('.ftr-fit').forEach(w=>{w.style.zoom=''})}; /* no scaling: 1440 renders at 1440 so inspect gives real values */
 /* .zfit: a component wider than the page (desktop modals at 960 / 1248) keeps its real layout and scales down to the playground's width — no scroll bars */
-window.fitZ=function(root){(root||document).querySelectorAll('.zfit').forEach(w=>{w.style.zoom=1;const host=w.closest('.fxstack,.canvas')||w.parentElement;const avail=host.clientWidth-(host.classList.contains('fxstack')?50:56);const k=Math.min(1,avail/w.offsetWidth);w.style.zoom=k>0?k:1})};
-window.hugBoxes=function(){window.fitZ(document.querySelector('.page.on'));document.querySelectorAll('.page.on .fx').forEach(fx=>{fx.style.width='';if(fx.querySelector('.ftr-fit')){window.fitFooters(fx);return} /* full-width desktop footer: the box takes the page width and the 1440 footer scales into it */const c=fx.querySelector('.canvas.fxc');if(!c||!c.children.length)return;
-  const L=fx.getBoundingClientRect().left;let R=0;[...c.children].forEach(el=>{R=Math.max(R,el.getBoundingClientRect().right)});
+window.fitZ=function(root){(root||document).querySelectorAll('.zfit').forEach(w=>{w.style.zoom=''})}; /* kept as a no-op: wide components are no longer scaled */
+window.hugBoxes=function(){const pg=document.querySelector('.page.on');window.fitZ(pg);window.fitFooters(pg);document.querySelectorAll('.page.on .fx').forEach(fx=>{fx.style.width='';const c=fx.querySelector('.canvas.fxc');if(!c||!c.children.length)return;
+  const L=fx.getBoundingClientRect().left;let R=0;c.querySelectorAll(':scope>.fv>.fvc>*,:scope>.fv>.fvn,:scope>.fvg>.fv>.fvc>*,:scope>.fvg>.fv>.fvn,:scope>:not(.fv):not(.fvg)').forEach(el=>{R=Math.max(R,el.getBoundingClientRect().right)});
   const pad=parseFloat(getComputedStyle(c).paddingRight)||24;const w=Math.max(320,Math.ceil(R-L+pad+2));if(w>0)fx.style.width=w+'px'})};
 let _hz;addEventListener('resize',()=>{clearTimeout(_hz);_hz=setTimeout(()=>window.hugBoxes(),120)});
 /* relative luminance of an element's background — handles rgb() and the color(srgb …) form that color-mix() computes to */
