@@ -184,8 +184,8 @@ const FEATS=[
   {k:'autocomplete',n:'Search Suggestions',pg:'plp',search:true,d:'Search active, as the Search Figma (1012:2295): an overlay under the header (USP banners hidden): Recent Searches and Popular Searches as one scrolling row each, then “Need some help?” with the agent’s prompts stacked, then Recently Viewed. The last prompt (Help me discover) is the open-ended one.'},
   {k:'nba',n:'PLP Next Best Action',pg:'plp',d:'Co-shop module on the PLP (live Women’s Partywear layout): a question, answer chips and the open-ended Help me decide. Place it below the filters or as a full-width row after row 1–5 of products (2 per row on mobile, 5 on desktop). Chips are contextual in production (FDE build).',rows:true},
   {k:'pdpPrompts',n:'PDP Prompts',pg:'pdp',d:'<google-ai-prompts product-id direction>. Pre-baked at launch, dynamic as the agent learns. The last chip (Ask anything) is outlined so it reads as the open-ended option.',opts:[['glance','A · Replaces At a Glance','Takes the At a Glance slot (under the gallery on desktop, after delivery on mobile).'],['aboveCta','B · Above Add to Bag','Between size and the CTA.'],['belowCta','C · Below the buy buttons','Under the ADD TO BAG · PayPal · Apple Pay stack, before the Unlimited and Deliver+ banners.']]},
-  {k:'vto',n:'Virtual Try On',pg:'pdp',d:'Our Virtual Stylist chip (VTO Figma 15203:68330): white pill, teal hanger, 13px SemiBold. Opens the agent, which asks for a photo.',opts:[['image','A · On the PDP image','Bottom-left of the first gallery image.'],['cta','B · Under Add to Bag','Outline button under the CTA.']]},
-  {k:'shopSimilar',n:'Shop Similar',pg:'pdp',d:'sendQuery("Shop similar"): style alternatives and out-of-stock recovery.',opts:[['image','A · On the PDP image','Beside Virtual Stylist at the foot of the first image.'],['cta','B · Under Add to Bag','Outline button under the CTA.'],['card','C · On PLP cards','A small Similar pill on every product card.']]},
+  {k:'vto',n:'Virtual Try On',pg:'pdp',d:'Our Virtual Stylist chip (VTO Figma 15203:68330): white pill, teal hanger, 13px SemiBold. Opens the agent, which asks for a photo.',opts:[['title','A · Above the product title','A chip in the row above the brand (VTO Figma 15656:21934), beside Shop Similar if it is there too.'],['image','B · On the PDP image','Bottom-left of the first gallery image.'],['cta','C · Under the buy buttons','Outline button under the CTA stack.']]},
+  {k:'shopSimilar',n:'Shop Similar',pg:'pdp',d:'sendQuery("Shop similar"): style alternatives and out-of-stock recovery.',opts:[['title','A · Above the product title','A chip in the row above the brand, beside Virtual Stylist if it is there too.'],['image','B · On the PDP image','Beside Virtual Stylist at the foot of the first image.'],['cta','C · Under the buy buttons','Outline button under the CTA stack.'],['card','D · On PLP cards','A small Similar pill on every product card.']]},
 ];
 const OUT=['AI Overview','Compare','Shop the look'];
 const POSKEY={pdpPrompts:'pdpPos',shopSimilar:'ssPos',vto:'vtoPos',custom:'cpPos'};
@@ -199,7 +199,7 @@ const P={
   store:'proto-shopping-agent',
   initial:()=>({page:'home',feat:'ep-oi',on:{},launcher:'outIcon',start:'config',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
     pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
-    ssPos:'image',vtoPos:'image',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
+    ssPos:'title',vtoPos:'title',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
     acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
     cpPos:'module',search:false,chat:false,agent:{},focus:null}),
 };
@@ -261,6 +261,7 @@ function renderPanel(host,S,update){
   <div class="card"><h3>${fe.n}</h3><p>${H(fe.d)}</p>
     ${fe.opts?fe.opts.map(o=>opt(c[POSKEY[fe.k]]===o[0],o[1],o[2],`data-pos="${o[0]}"`)).join(''):''}
     ${fe.rows?[0,1,2,3,4,5].map(n=>opt((+c.nbaRow||0)===n,n?`After row ${n}`:'Below the filters',n?`A full-width row after ${n*2} products on mobile, ${n*5} on desktop.`:'Directly above the first row of products.',`data-row="${n}"`)).join(''):''}
+    ${fe.k==='vto'?`<div class="f"><span>Virtual Stylist launches</span><span class="seg" id="vmode"><button data-v="agent" class="${c.vtoMode!=='own'?'on':''}">Google agent chat</button><button data-v="own" class="${c.vtoMode==='own'?'on':''}">Our own VTO</button></span><small>${c.vtoMode==='own'?'Opens the Debenhams Virtual Stylist (vto-prototype); the agent is not involved.':'Opens Ask Deb, which asks for a photo: Google’s try-on (this prototype).'}</small></div>`:''}
     ${fe.k==='pdpPrompts'?`<div class="f"><span>Direction</span><span class="seg" id="dir"><button data-v="column" class="${c.pdpDir==='column'?'on':''}">Column (dev build)</button><button data-v="row" class="${c.pdpDir==='row'?'on':''}">Row · wrap</button></span></div>
       <div class="f"><span>Launch prompts (pre-baked)</span>${c.pdpPrompts.map((t,i)=>`<input data-arr="pdpPrompts" data-i="${i}" value="${H(t)}">`).join('')}<small>Dynamic prompts replace these per product once the agent has learnt them.</small></div>
       <div class="f"><label class="sw"><input type="checkbox" id="t-head"${c.pdpHead?' checked':''}><i></i>“${H('Ask '+e.name)}” heading</label><label class="sw"><input type="checkbox" id="t-ask"${c.pdpAsk?' checked':''}><i></i>“Ask anything” chip (outlined)</label></div>`:''}
@@ -302,6 +303,7 @@ function renderPanel(host,S,update){
   host.querySelectorAll('[data-pos]').forEach(b=>b.onclick=()=>{c[POSKEY[fe.k]]=b.dataset.pos;c.page=fe.pg;c.focus={f:fe.k,n:Date.now()};go()});
   host.querySelectorAll('[data-row]').forEach(b=>b.onclick=()=>{c.nbaRow=+b.dataset.row;c.page='plp';c.focus={f:'nba',n:Date.now()};go()});
   host.querySelectorAll('#dir button').forEach(b=>b.onclick=()=>{c.pdpDir=b.dataset.v;go()});
+  host.querySelectorAll('#vmode button').forEach(b=>b.onclick=()=>{c.vtoMode=b.dataset.v;go()});
   const ti=host.querySelector('#t-head');if(ti)ti.onchange=ev=>{c.pdpHead=ev.target.checked;go()};
   const ta=host.querySelector('#t-ask');if(ta)ta.onchange=ev=>{c.pdpAsk=ev.target.checked;go()};
   host.querySelectorAll('[data-arr]').forEach(i=>i.onchange=()=>{c[i.dataset.arr][+i.dataset.i]=i.value;go()});

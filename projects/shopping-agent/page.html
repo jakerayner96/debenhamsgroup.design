@@ -135,6 +135,11 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .galwrap{min-width:0;max-width:calc(100% + 32px)}
 @media(min-width:1024px){.galwrap{max-width:100%}}
 .buy{display:flex;flex-direction:column;gap:16px}
+.tchips{display:flex;gap:10px;flex-wrap:wrap}
+.tchip{height:auto!important;padding:9px 14px!important;gap:6px!important;font-size:13px!important;font-weight:300!important}.tchip img{width:16px;height:12px}.tchip .ai-icon{width:16px!important;height:16px!important}
+.prow .pname{margin-top:4px}
+.wl-c{flex:none;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:#FFF;box-shadow:var(--shadow-puck);cursor:pointer}.wl-c img{width:20px;height:20px;object-fit:contain}
+.pc .pc-iconbtn{border-radius:50%!important;width:32px;height:32px;background:#FFF;box-shadow:var(--shadow-puck);border:0}.pc .pc-iconbtn img{width:16px;height:16px}
 .buy .bd{width:100%}
 .pbrand{font-size:16px;font-weight:600}.pname{font-size:16px;font-weight:300;margin-top:2px}
 .prow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
@@ -423,7 +428,7 @@ const A='projects/shopping-agent/';
 /* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
 let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'outIcon',start:'config',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
   pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
-  ssPos:'image',vtoPos:'image',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
+  ssPos:'title',vtoPos:'title',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
   cpPos:'module',search:false,chat:false,agent:{},focus:null};
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes
@@ -495,7 +500,7 @@ function card(p,i,mini){
   if(!p)return '';const sale=p.was?' sale':'';
   const ss=!mini&&ON('shopSimilar')&&S.ssPos==='card'?`<span class="onimg br"><button class="ai-pill ai-pill--soft" ${F('shopSimilar','C · PLP card')} data-q="Shop similar" data-ctx="${esc(p.name)}">${spk(14,false)}Similar</button></span>`:'';
   return `<article class="pc pc--compact"><div class="pc-img"><img class="ph" src="${IMG(i)}" alt="" loading="lazy">
-    ${mini?'':`<div class="pc-actions"><button class="pc-iconbtn pc-iconbtn--sq" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button></div>`}${ss}</div>
+    ${mini?'':`<div class="pc-actions"><button class="pc-iconbtn" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button></div>`}${ss}</div>
     <div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${p.brand?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div>
     <div class="pc-price${sale}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${p.pct?`<span class="pct">${esc(p.pct)}</span>`:''}</div></div></article>`;
 }
@@ -521,7 +526,7 @@ function pcard(p,i,k){
   const ss=ON('shopSimilar')&&S.ssPos==='card'?`<span class="onimg br"><button class="ai-pill ai-pill--soft" ${F('shopSimilar','C · PLP card')} data-q="Shop similar" data-ctx="${esc(p.name)}">${spk(14)}Similar</button></span>`:'';
   const sw=k%3===1?`<div class="sw"><i class="on" style="background:#1A1A1A"></i><i style="background:#C9BFA8"></i>${k%2?'<i style="background:#6B2A3A"></i>':''}</div>`:'';
   return `<article class="pc pc--compact"><div class="pc-img"><img class="ph" src="${IMG(i)}" alt="" loading="lazy">
-    <div class="pc-actions"><button class="pc-iconbtn pc-iconbtn--sq" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button></div>
+    <div class="pc-actions"><button class="pc-iconbtn" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button></div>
     ${badges.length?`<div class="pc-badges">${badges.map(b=>`<span class="badge">${esc(b)}</span>`).join('')}</div>`:''}${ss}</div>
     <div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${p.brand?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div>
     <div class="pc-price${sale}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${p.pct?`<span class="pct">${esc(p.pct)}</span>`:''}</div>${sw}
@@ -556,14 +561,17 @@ function pdp(){
   /* one product shot in the data set: four crops of it stand in for the live four-image gallery */
   const SH=['','object-position:50% 12%;transform:scale(1.7);transform-origin:50% 18%','object-position:50% 50%;transform:scale(1.35)','object-position:50% 95%;transform:scale(1.6);transform-origin:50% 92%'];
   const ai=[S.vtoPos==='image'&&vtoBtn,S.ssPos==='image'&&ssBtn].filter(Boolean).join('');
+  /* VTO Figma 15656:21934: none, one or both chips in a row above the brand (13px light, white, puck shadow) */
+  const top=[S.vtoPos==='title'&&ON('vto')?`<button class="ai-pill ai-pill--soft tchip" ${F('vto','above title')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'',
+    S.ssPos==='title'&&ON('shopSimilar')?`<button class="ai-pill ai-pill--soft tchip" ${F('shopSimilar','above title')} data-q="Shop similar">${spk(16)}Shop Similar</button>`:''].filter(Boolean);
   const gal=`<div class="galwrap"><div class="thumbs">${SH.map((st,i)=>`<button class="${i?'':'on'}" data-slide="${i}" aria-label="Image ${i+1}"><img src="${IMG(1)}" alt="" style="${st}"></button>`).join('')}</div>
     <div class="galmain"><div class="gal" id="gal">${SH.map((st,i)=>`<div class="slide"><img src="${IMG(1)}" alt="${esc(p.name)} — image ${i+1}" style="${st}">${!i&&ai?`<span class="onimg">${ai}</span>`:''}</div>`).join('')}</div>
       <button class="arrow l" data-step="-1" aria-label="Previous"><img src="assets/ds/icons/lib/icons-left.svg" alt=""></button><button class="arrow r" data-step="1" aria-label="Next"><img src="assets/ds/icons/lib/icons-right.svg" alt=""></button></div>
     <div class="pag"><div class="track"><div class="fill" id="pagfill"></div></div></div></div>`;
   const ctaRow=[S.vtoPos==='cta'&&ON('vto')?`<button class="ai-pill ai-pill--soft ai-cta vs-chip" ${F('vto','B · under CTA')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'',S.ssPos==='cta'&&ON('shopSimilar')?`<button class="ai-pill ai-pill--soft ai-cta" ${F('shopSimilar','B · under CTA')} data-q="Shop similar">${spk(16)}Shop similar</button>`:''].filter(Boolean);
-  const info=`<div class="buy"><div class="prow"><div><div class="pbrand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div></div><img src="assets/ds/icons/heart-24.svg" alt="" width="24"></div>
+  const info=`<div class="buy">${top.length?`<div class="tchips">${top.join('')}</div>`:''}<div class="prow"><div><div class="pbrand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div></div><button class="wl-c" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button></div>
     ${V('ratings',0)}
-    ${V('price',0)}
+    ${prc(p,'pdp')}
     <div style="font-size:14px">Colour: <b>Hot Pink</b></div><div class="cswatches"><button class="cswatch on"><img src="${IMG(1)}" alt="" style="width:60px;height:89px;object-fit:cover;display:block"></button></div>
     ${V('size-selector',0).replace(' style="width:360px"','').replace(/<button class="sz">One size<\/button>/,'')}
     ${S.pdpPos==='aboveCta'?prompts:''}
@@ -608,7 +616,8 @@ function styleChat(){const el=document.getElementById('cm');if(!el)return;const 
 
 /* scripted replies — the live agent writes these; the tiles follow rich-content-config.tileConfig */
 /* DS price block, small: one size for price, strikethrough and Save; the code line under it when there is one */
-function prc(p){const pct=p.pct?p.pct.replace('-',''):'';return `<div class="price price--sm"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${pct?`<span class="save">Save ${esc(pct)}</span>`:''}</div>${p.off?`<div class="price-promo">${esc(p.off)}</div>`:''}`}
+/* DS price block (.price-blk, rebuilt 15 Oct): price row + code line; --sm = 13px for the chat, --pdp for the PDP */
+function prc(p,kind='sm'){const pct=p.pct?p.pct.replace(/[-%]/g,''):'';return `<div class="price-blk price-blk--${kind}"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${pct?`<span class="save" data-pct="${esc(pct)}"></span>`:''}</div>${p.off?`<div class="price-code">${esc(p.off)}</div>`:''}</div>`}
 function tile(i){const p=PR()[i];return `<div class="cm-tile"><img src="${IMG(i)}" alt=""><div class="n">${esc(p.name)}</div>${prc(p)}<button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div>`}
 const ctx=(...c)=>`<div class="cm-ctx"><span class="lbl">${spk(14)}Using</span>${c.map(x=>`<span class="c">${esc(x)}</span>`).join('')}</div>`;
 const qr=(...c)=>`<div class="cm-qr">${c.map(x=>`<button class="ai-pill ai-pill--outline" data-q="${esc(x)}">${spk(14)}${esc(x)}</button>`).join('')}</div>`;
@@ -731,6 +740,7 @@ document.addEventListener('click',e=>{
     if(hw.classList.contains('closing'))return;hw.classList.remove('srch-in');hw.classList.add('closing');document.body.classList.add('closing-search');setTimeout(done,240);return}
   if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
+  if(qb&&qb.dataset.vto&&S.vtoMode==='own'){e.preventDefault();const t=document.getElementById('ct');t.textContent='Opens the Debenhams Virtual Stylist (our own VTO)';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200);return}
   if(qb){e.preventDefault();CHAT.user=true;const q=qb.dataset.q;openChat(q?(qb.dataset.ctx&&/similar/i.test(q)?q:q):'',!!qb.dataset.vto);return}
   if(e.target.closest('[data-close]')){CHAT.user=false;CHAT.msgs=[];closeChat();return}
   const a=e.target.closest('a[data-href],a[href]');
