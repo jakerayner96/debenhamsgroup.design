@@ -133,7 +133,7 @@ function render(){
   if(key!==BODY){BODY=key;const b=document.getElementById('body');b.innerHTML=(PAGES[S.page]||PAGES.home)();b.querySelectorAll('iframe[data-emb]').forEach(embed);
     app.querySelector('.pgfoot').innerHTML=strip(V('footer',0))}
   document.querySelectorAll('.brandlogo').forEach(i=>i.src=logo());
-  document.querySelectorAll('[data-btns]').forEach(h=>{[...h.querySelectorAll('.bd')].slice(2).forEach(x=>(x.closest('.fv')||x).remove())}); /* PDP keeps Buy it now + Add to bag */
+  document.querySelectorAll('[data-btns]').forEach(h=>{[...h.querySelectorAll('.bd')].slice(1).forEach(x=>(x.closest('.fv')||x).remove())}); /* PDP keeps Add to bag (Buy it now off for now) */
   if(window.DG_usp)window.DG_usp(document);
 }
 render();
