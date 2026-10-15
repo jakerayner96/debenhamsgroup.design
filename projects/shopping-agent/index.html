@@ -216,7 +216,7 @@ function handoff(c){const lines=[];const ep={outIcon:'Exposed search, AI icon in
   lines.push('Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
   lines.push('## 2 · Entry point + features (front end)','',`- **Entry point**: ${ep}`);
   FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${o?o[1]+' — '+o[2]:''}`)});
-  lines.push(`- **Virtual Try On / Shop Similar**: chips ${c.chipPos==='image'?'stacked top right of the first PDP image':'in a row above the product title (VTO Figma 15656:21934)'} — Virtual Stylist ${c.on.vto!==false?'on':'off'}, Shop Similar ${c.on.shopSimilar!==false?'on':'off'}.`);
+  lines.push(`- **Virtual Try On / Shop Similar**: chips ${c.chipPos==='image'?'stacked top right of the PDP gallery':c.chipPos==='bl'?'stacked bottom left of the PDP gallery':'in a row above the product title (VTO Figma 15656:21934)'} — Virtual Stylist ${c.on.vto!==false?'on':'off'}, Shop Similar ${c.on.shopSimilar!==false?'on':'off'}.`);
   lines.push(`- **PLP Next Best Action**: ${c.nbaRow?`a full-width row of the grid after row ${c.nbaRow} (${c.nbaRow*2} products on mobile, ${c.nbaRow*5} on desktop)`:'below the filters, above the first row of products'}.`);
   lines.push('- **Search Suggestions**: Popular Searches → the agent’s suggestions; Recent Searches and Recently Viewed unchanged (Search Figma 1012:2295).');
   lines.push('','Calls:','```js',
@@ -263,7 +263,7 @@ function renderPanel(host,S,update){
   <div class="card"><h3>${fe.n}</h3><p>${H(fe.d)}</p>
     ${fe.opts?fe.opts.map(o=>opt(c[POSKEY[fe.k]]===o[0],o[1],o[2],`data-pos="${o[0]}"`)).join(''):''}
     ${fe.onoff?`<div class="f"><label class="sw"><input type="checkbox" id="t-onoff"${c.on[fe.k]!==false?' checked':''}><i></i>Show on the PDP</label></div>`:''}
-    ${fe.onoff?`<div class="f"><span>Chip position (Virtual Stylist + Shop Similar)</span><span class="seg" id="chippos"><button data-v="title" class="${c.chipPos!=='image'?'on':''}">Above the title</button><button data-v="image" class="${c.chipPos==='image'?'on':''}">Top right of the image</button></span></div>`:''}
+    ${fe.onoff?`<div class="f"><span>Chip position (Virtual Stylist + Shop Similar)</span><span class="seg" id="chippos"><button data-v="image" class="${c.chipPos==='image'?'on':''}">Top right</button><button data-v="bl" class="${c.chipPos==='bl'?'on':''}">Bottom left</button><button data-v="title" class="${!['image','bl'].includes(c.chipPos)?'on':''}">Above the title</button></span><small>Over the image (top right or bottom left of the gallery, 16px in), or in the row above the title. The switch above shows or hides this chip.</small></div>`:''}
     ${fe.rows?[0,1,2,3,4,5].map(n=>opt((+c.nbaRow||0)===n,n?`After row ${n}`:'Below the filters',n?`A full-width row after ${n*2} products on mobile, ${n*5} on desktop.`:'Directly above the first row of products.',`data-row="${n}"`)).join(''):''}
     ${fe.k==='pdpPrompts'?`<div class="f"><span>Direction</span><span class="seg" id="dir"><button data-v="column" class="${c.pdpDir==='column'?'on':''}">Column (dev build)</button><button data-v="row" class="${c.pdpDir==='row'?'on':''}">Row · wrap</button></span></div>
       <div class="f"><span>Launch prompts (pre-baked)</span>${c.pdpPrompts.map((t,i)=>`<input data-arr="pdpPrompts" data-i="${i}" value="${H(t)}">`).join('')}<small>Dynamic prompts replace these per product once the agent has learnt them.</small></div>
