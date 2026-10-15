@@ -153,7 +153,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .ctas2{display:flex;gap:8px}
 /* live buy stack (debenhams.com 15 Oct): ADD TO BAG · PayPal Checkout · Apple Pay, 8px apart, all 50px; then the Unlimited banner, then Deliver+ */
 .ctas .pay{width:100%;height:50px}.ctas .pay--paypal{gap:8px}.ctas .pp-co{font:500 20px/1 var(--font-family-base);color:#2C2E2F}
-.unl{display:flex;align-items:center;gap:16px;padding:20px;border-radius:4px;background:linear-gradient(100deg,#F2F2F2 0%,#C9C9C9 100%)}
+.unl{display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:4px;background:linear-gradient(100deg,#F2F2F2 0%,#C9C9C9 100%)}
 .unl>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}.unl img{height:30px;width:auto;align-self:flex-start}
 .unl p{margin:0;font-size:12px;line-height:normal;font-weight:var(--w-regular);color:#000}   /* same as the Deliver+ list items */
 .unl button{flex:none;height:32px;padding:0 16px;border:0;border-radius:4px;background:#000;color:#FFF;font:600 14px var(--font-family-base);letter-spacing:.02em;cursor:pointer}.ctas2>*{flex:1}
@@ -730,7 +730,8 @@ function render(){
   if(CFG){const r=document.documentElement.style,e=E();r.setProperty('--ai-primary',e.primary);r.setProperty('--ai-chip-bg',e.chipBg);r.setProperty('--ai-chip-border',e.chipBorder);r.setProperty('--ai-chip-radius',e.chipRadius+'px')}
   gid=0;
   document.getElementById('app').innerHTML=`${header()}<div id="body">${(PAGES[S.page]||pdp)()}</div><div class="pgfoot">${strip(V('footer',0))}</div><div id="chat"></div>`;
-  if(S.search&&scrollY>0)scrollTo(0,0);   /* search opens from the top, wherever the page was */
+  if(S.search&&scrollY>0)scrollTo(0,0);
+  if(S.search&&!header.was){const ac=document.getElementById('ac');if(ac)ac.scrollTop=0}   /* search opens from the top, wherever the page was */
   document.body.classList.toggle('searching',!!S.search);
   if(S.search){const hw=document.getElementById('hdrwrap'),hb=hw.querySelector('.hd-bar'),row=hw.querySelector('.ag-mrow'),last=row||hb;
     let top=last?last.getBoundingClientRect().bottom:120;if(hw.classList.contains('lifting'))top=top-hb.offsetHeight+8;
@@ -740,7 +741,7 @@ function render(){
   galSync();
   if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
   drawChat();
-  if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el)el.scrollIntoView({block:'center',behavior:'auto'})}   /* instant, no highlight */
+  if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el&&el.closest('#ac')){scrollTo(0,0);document.getElementById('ac').scrollTop=0}else if(el)el.scrollIntoView({block:'center',behavior:'auto'})}   /* instant, no highlight; search panel features open from the top */
 }
 fetch('projects/shopping-agent/base-config.json').then(r=>r.json()).then(b=>{BASE=b;CFG=AG.build(BASE,S.agent);render();parent.postMessage({protoReady:1},'*')});
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});
