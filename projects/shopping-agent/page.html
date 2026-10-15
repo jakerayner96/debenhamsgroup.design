@@ -39,6 +39,23 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 .ag-mrow .ai-pill{height:32px;font-size:13px;padding:0 12px 0 10px}
 /* option 2 (pill outside the box): search field and Ask Deb pill share one height — 44px (Jake, 12 Oct) */
 .ag-sw{--ag-h:44px}
+.ag-sw>.hd-search{height:var(--ag-h);cursor:text;flex:1 1 0;min-width:0}
+.ag-sw .hd-search .ics img{object-fit:contain}
+.ag-mrow .ag-sw{gap:10px}
+.ag-sw .hd-search .ics{margin-left:auto}.ag-mrow .ag-sw .hd-search .ics{gap:14px}.ag-mrow .ag-sw .hd-search .ics img{width:20px;height:20px}
+.ai-circle{display:grid;place-items:center;width:var(--ag-h);height:var(--ag-h);flex:none;padding:0;border-radius:50%;cursor:pointer;border:1.5px solid transparent;background:linear-gradient(#FFF,#FFF) padding-box,var(--ai-gradient) border-box}
+.ai-circle .ai-icon{width:22px;height:22px}
+.ag-ask{padding:0 18px 0 14px!important}
+/* lift: the search row takes the logo row's place while search is active (mobile) */
+#hdrwrap.lifted .hd-bar{display:none}
+#hdrwrap.lifting .hd-bar{display:flex;animation:barUp .3s cubic-bezier(.4,0,.2,1) forwards;overflow:hidden}
+#hdrwrap.lifted .ag-mrow{padding-top:8px}
+#hdrwrap.lifting .ag-mrow{animation:rowUp .3s cubic-bezier(.4,0,.2,1) both}
+@keyframes barUp{from{max-height:56px;opacity:1}to{max-height:0;opacity:0;padding-top:0;padding-bottom:0}}
+@keyframes rowUp{from{padding-top:0}to{padding-top:8px}}
+#hdrwrap.lifting~* .ac,#hdrwrap.lifting .ac{animation:acIn .3s ease both}
+@keyframes acIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+body.exporting #hdrwrap.lifting .hd-bar{display:none;animation:none}
 .ag-sw:has(>.ai-pill--outline)>.hd-search{height:var(--ag-h)}
 .ag-sw>.ai-pill--outline{height:var(--ag-h);flex:none;padding:0 18px 0 14px;font-size:15px}
 .ag-mrow .ag-sw>.ai-pill--outline{font-size:14px;padding:0 16px 0 12px}
@@ -52,8 +69,12 @@ body.exporting .ai-pill--soft{box-shadow:none;border:1px solid var(--border-subt
 body.exporting .cm-start h2 b{background:none;-webkit-background-clip:initial;background-clip:initial;color:#2E7F79}   /* html2canvas cannot clip a gradient to text */
 
 /* ---------- search open: live suggestions + Top Sellers, with the agent's suggestions per option ---------- */
-.ac{position:absolute;left:0;right:0;top:100%;background:#FFF;z-index:30;border-top:1px solid var(--border-subtle);padding:12px 16px 24px;min-height:calc(100vh - 100%);font-size:14px}
-@media(min-width:1024px){.ac{left:50%;transform:translateX(-50%);top:76px;width:min(800px,calc(100% - 400px));min-height:0;border:1px solid var(--border-subtle);padding:16px 24px 32px}}
+.ac{position:fixed;left:0;right:0;top:var(--ac-top,120px);bottom:0;background:#FFF;z-index:30;border-top:1px solid var(--border-subtle);padding:0 16px 24px;overflow-y:auto;overscroll-behavior:contain;font-size:14px;--ac-pad:16px}
+@media(min-width:1024px){.ac{left:50%;right:auto;bottom:auto;transform:translateX(-50%);width:min(860px,calc(100% - 360px));max-height:calc(100vh - var(--ac-top,88px) - 24px);border:1px solid var(--border-subtle);border-top:0;border-radius:0 0 12px 12px;box-shadow:0 18px 40px -20px rgba(0,0,0,.25);--ac-pad:24px}}
+html:has(body.searching),body.searching{overflow:hidden}
+body.searching #hdrwrap{z-index:40;position:relative;background:#FFF}
+body.searching #body,body.searching .pgfoot{pointer-events:none}
+@media(min-width:1024px){body.searching #body::before{content:'';position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:25}}
 .ac-terms{list-style:none;margin:0;padding:0}.ac-terms li{padding:9px 0;font-weight:300}.ac-terms li b{font-weight:600}
 .ac-hr{height:1px;background:var(--border-subtle);margin:12px 0 16px}
 .ac h4{font-size:16px;font-weight:600;margin:0 0 12px}
@@ -105,6 +126,9 @@ body.exporting .cm-start h2 b{background:none;-webkit-background-clip:initial;ba
   .onimg{left:16px;right:16px;bottom:16px;gap:8px;flex-direction:row;align-items:center}
   .galmain .onimg .ai-pill{height:36px;font-size:14px;padding:0 16px 0 12px;gap:6px}.galmain .onimg .ai-icon{width:18px!important;height:18px!important}
 }
+.pdp>*{min-width:0}
+.galwrap{min-width:0;max-width:calc(100% + 32px)}
+@media(min-width:1024px){.galwrap{max-width:100%}}
 .buy{display:flex;flex-direction:column;gap:16px}
 .buy .bd{width:100%}
 .pbrand{font-size:16px;font-weight:600}.pname{font-size:16px;font-weight:300;margin-top:2px}
@@ -248,11 +272,14 @@ body.exporting .cm-start h2 b{background:none;-webkit-background-clip:initial;ba
 .ac-sec{display:flex;flex-direction:column;gap:12px;padding:16px 0}.ac-sec+.ac-sec{border-top:1px solid var(--border-subtle)}
 .ac h4{font-size:16px;font-weight:600;margin:0}
 .ac-chips{display:flex;flex-wrap:wrap;gap:10px}
-.ac-chip{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:99px;background:var(--surface-media,#F2F2F2);font-size:15px;font-weight:300;color:var(--text-primary);border:0;cursor:pointer;white-space:nowrap}
+.ac-chip{font-family:var(--font-family-base);display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:99px;background:var(--surface-media,#F2F2F2);font-size:15px;font-weight:300;color:var(--text-primary);border:0;cursor:pointer;white-space:nowrap}
 .ac-chip img{width:14px;height:14px;opacity:.7}
 .ac-hd{display:flex;align-items:center;gap:8px}.ac-hd h4{flex:1}
 .ac-rv{display:grid;grid-auto-flow:column;grid-auto-columns:42%;gap:10px;overflow:hidden}
 @media(min-width:1024px){.ac-rv{grid-auto-columns:calc((100% - 60px)/6)}.ac{padding:0 24px 24px}}
+.ac-hs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 calc(-1 * var(--ac-pad));padding:0 var(--ac-pad)}.ac-hs::-webkit-scrollbar{display:none}
+.ac-hs .ac-chip{flex:none}.ac-chip svg{flex:none}
+.ac-prompts{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .ac-rv .pc-name{font-size:13px}
 /* ---------- chat window, as the PA Deck Figma (OUmnWDam0w0czh9VZnaqx0 · 6:167) ---------- */
 .cm-tb .acts button img{width:24px;height:24px;display:block}   /* the DS close (icons-close.svg): 1px stroke, 24px */
@@ -316,7 +343,7 @@ const IMG=i=>`projects/plp-alignment/img/debenhams/p${i<7?i:i+1}.jpg`;
 const A='projects/shopping-agent/';
 
 /* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
-let S={brand:'debenhams',page:'home',on:{},launcher:'in',start:'config',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
+let S={brand:'debenhams',page:'home',on:{},launcher:'outIcon',start:'config',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
   pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
   ssPos:'image',vtoPos:'image',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
@@ -334,48 +361,53 @@ const ask=()=>'Ask '+E().name;
 /* data-feat = the feature (panel navigation + jump-to highlight); data-q = the query sent to the agent (window.googleAgent.sendQuery) */
 const F=(f,opt)=>`data-feat="${f}" data-tag="${esc(TAG[f]+(opt?' · '+opt:''))}"`;
 const TAG={launcher:'Entry point',pdpPrompts:'PDP prompts',shopSimilar:'Shop similar',vto:'Virtual try-on',nba:'Next best action',autocomplete:'Autocomplete',custom:'Custom prompts'};
-const L=(k,v)=>({launcher:{icon:'icon',in:'inside',out:'outside'},pdpPrompts:{glance:'A',aboveCta:'B',belowCta:'C'},shopSimilar:{image:'A',cta:'B',card:'C'},vto:{image:'A',cta:'B'},autocomplete:{replace:'A',above:'B',below:'C'},custom:{module:'A',strip:'B',hero:'C'}}[k]||{})[v]||'';
+const L=(k,v)=>({launcher:{outIcon:'icon beside',outAsk:'Ask beside',icon:'header icon'},pdpPrompts:{glance:'A',aboveCta:'B',belowCta:'C'},shopSimilar:{image:'A',cta:'B',card:'C'},vto:{image:'A',cta:'B'},autocomplete:{replace:'A',above:'B',below:'C'},custom:{module:'A',strip:'B',hero:'C'}}[k]||{})[v]||'';
 
 /* ================= HEADER (DS header + USP drop-in) with the entry point per option =================
-   icon  = the AI icon in the header icon row, beside search (search stays an icon on mobile)
-   in    = exposed search with the white pill inside the field
-   out   = exposed search with the gradient-outline pill beside the field
-   Search active (Search Figma 1012:2295): caret in the field, X beside it, the suggestions panel beneath. */
+   outIcon = exposed search, the AI icon in a gradient-outline circle beside the field
+   outAsk  = exposed search, a gradient-outline "Ask" pill beside the field
+   icon    = mobile search is the header icon only; tapping it opens search, where the AI circle sits left of the X
+   lift    = exposed search + AI circle; tapping the field slides it up over the logo row (mobile), giving the overlay the extra height
+   Desktop search is always exposed; the button sits beside the field (icon → the circle).
+   Search active (Search Figma 1012:2295) = an overlay: USP banners hidden, caret + camera + search in the field, X beside it. */
 function header(){
-  const d=desk(),lo=S.launcher,exp=lo!=='icon'||S.search;
+  header.was=header.now;header.now=!!S.search;
+  const d=desk(),lo=S.launcher,exp=lo!=='icon'||S.search||d;
   let h=strip(d?V('header',1):V('header',0)).replace(/ style="[^"]*border[^"]*"/,'');
   h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
   const ph=d?'Search Fashion, Home &amp; Beauty':'Search over 10,000+ brands...';
   const q=S.search?`<span class="caret"></span><span>${ph}</span>`:`<span>${ph}</span>`;
-  const pill=cls=>`<button class="ai-pill ${cls}" ${F('launcher',lo==='out'?'outside search':'inside search')} data-q="">${spk(18)}${ask()}</button>`;
-  const aiIcon=`<button class="ai-iconbtn" ${F('launcher','icon in header')} data-q="" aria-label="${ask()}"><i class="ai-icon"></i></button>`;
+  const ics='<span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="assets/ds/icons/search.svg" alt=""></span>';
+  const circle=`<button class="ai-circle" ${F('launcher',lo==='icon'?'icon beside X':'icon beside search')} data-q="" aria-label="${ask()}"><i class="ai-icon"></i></button>`;
+  const askPill=`<button class="ai-pill ai-pill--outline ag-ask" ${F('launcher','Ask beside search')} data-q="">${spk(18)}Ask</button>`;
+  const btn=lo==='outAsk'?askPill:circle;
+  const X=`<button class="ag-x" data-closesearch="1" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.replaceWith('✕')"></button>`;
   const sIcon='<button aria-label="Search"><img src="assets/ds/icons/search.svg" alt=""></button>';
-  const X=S.search?`<button class="ag-x" data-closesearch="1" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.replaceWith('✕')"></button>`:'';
+  /* active: the AI button only on the icon option (left of the X); the exposed options keep their button beside the field */
+  const after=S.search?(lo==='icon'?circle:btn)+X:btn;
+  const lift=lo==='lift'&&S.search&&!d;
+  const field=`<div class="ag-sw"><div class="hd-search" data-opensearch="1">${q}${ics}</div>${after}</div>`;
   if(d){
-    h=h.replace('<span>Search over 10,000+ brands...</span>',q);
-    if(lo==='icon')h=h.replace('<div class="hd-icons">','<div class="hd-icons">'+aiIcon);
-    if(S.search)h=h.replace(/(<div class="hd-search">[\s\S]*?<\/span><\/div>)/,'<div class="ag-sw">$1'+X+'</div>');
-    else if(lo==='in')h=h.replace('<div class="hd-search">','<div class="hd-search ag-has">').replace(/(<span class="ics">[\s\S]*?<\/span>)/,'$1'+pill(''));
-    else if(lo==='out')h=h.replace(/(<div class="hd-search">[\s\S]*?<\/span><\/div>)/,'<div class="ag-sw">$1'+pill('ai-pill--outline')+'</div>');
+    h=h.replace(/<div class="hd-search">[\s\S]*?<\/span><\/div>/,field);
   }else{
-    if(lo==='icon')h=h.replace(sIcon,aiIcon+(S.search?'':sIcon));else h=h.replace(sIcon,'');
-    if(exp){
-      const inside=lo==='in'&&!S.search,beside=lo==='out'&&!S.search;
-      const row=`<div class="ag-mrow"><div class="ag-sw"><div class="hd-search${inside?' ag-has':''}">${q}${lo==='icon'?'<span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="assets/ds/icons/search.svg" alt=""></span>':''}${inside?pill(''):''}</div>${beside?pill('ai-pill--outline'):''}${X}</div></div>`;
-      h=h.replace(/(<div class="hd-bar">[\s\S]*?<\/div><\/div>)/,'$1'+row);
-    }
+    h=h.replace(sIcon,lo==='icon'&&!S.search?'<button aria-label="Search" data-opensearch="1"><img src="assets/ds/icons/search.svg" alt=""></button>':'');
+    if(exp)h=h.replace(/(<div class="hd-bar">[\s\S]*?<\/div><\/div>)/,'$1'+`<div class="ag-mrow">${field}</div>`);
   }
-  h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
-  return `<div id="hdrwrap">${h}${S.search?autocomplete():''}</div>`;
+  if(!S.search)h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
+  return `<div id="hdrwrap" class="${lift?'lifted'+(header.was?'':' lifting'):''}">${h}${S.search?autocomplete():''}</div>`;
 }
 
-/* ================= SEARCH ACTIVE — Search Figma 1012:2295: Recent Searches · Popular Searches → the agent's Suggestions · Recently Viewed ================= */
+/* ================= SEARCH ACTIVE — Search Figma 1012:2295, re-ordered (Jake 15 Oct):
+   Recent Searches (one scrolling row) · Popular Searches (one scrolling row) · "Need some help?" agent prompts (stacked) · Recently Viewed.
+   An overlay under the header: the page behind does not scroll, and the panel ends at Recently Viewed. ================= */
 function autocomplete(){
   const recent=['mens watches','living and home','clarins','hermes','hermes kelly'];
-  const R=`<div class="ac-sec"><h4>Recent Searches</h4><div class="ac-chips">${recent.map(r=>`<button class="ac-chip">${esc(r)}<img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.remove()"></button>`).join('')}</div></div>`;
-  const AI=`<div class="ac-sec" ${F('autocomplete','replaces Popular Searches')}><div class="ac-hd">${spk(18)}<h4>Suggestions from ${esc(E().name)}</h4></div><div class="ac-chips">${S.acChips.filter(Boolean).map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14)}${esc(c)}</button>`).join('')}<button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me discover something new">${spk(14)}Help me discover</button></div></div>`;
+  const popular=['Sunglasses','Garden Furniture','Men’s Watches','Dresses','Wedding','Party Dresses'];
+  const R=`<div class="ac-sec"><h4>Recent Searches</h4><div class="ac-chips ac-hs">${recent.map(r=>`<button class="ac-chip">${esc(r)}<img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.remove()"></button>`).join('')}</div></div>`;
+  const Pp=`<div class="ac-sec"><h4>Popular Searches</h4><div class="ac-chips ac-hs">${popular.map(r=>`<button class="ac-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17l6.5-6.5 4 4L22 5"/><path d="M15 5h7v7"/></svg>${esc(r)}</button>`).join('')}</div></div>`;
+  const AI=`<div class="ac-sec" ${F('autocomplete','Need some help?')}><h4>Need some help?</h4><div class="ac-prompts">${S.acChips.filter(Boolean).map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14)}${esc(c)}</button>`).join('')}<button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me discover something new">${spk(14)}Help me discover</button></div></div>`;
   const rv=`<div class="ac-sec"><h4>Recently Viewed</h4><div class="ac-rv">${[1,21,5,24,31,27].map(i=>card(PR()[i],i,true)).join('')}</div></div>`;
-  return `<div class="ac">${R}${AI}${rv}</div>`;
+  return `<div class="ac" id="ac">${R}${Pp}${AI}${rv}</div>`;
 }
 
 /* ================= product card (DS .pc) ================= */
@@ -547,6 +579,10 @@ function render(){
   if(CFG){const r=document.documentElement.style,e=E();r.setProperty('--ai-primary',e.primary);r.setProperty('--ai-chip-bg',e.chipBg);r.setProperty('--ai-chip-border',e.chipBorder);r.setProperty('--ai-chip-radius',e.chipRadius+'px')}
   gid=0;
   document.getElementById('app').innerHTML=`${header()}<div id="body">${(PAGES[S.page]||pdp)()}</div><div class="pgfoot">${strip(V('footer',0))}</div><div id="chat"></div>`;
+  document.body.classList.toggle('searching',!!S.search);
+  if(S.search){const hw=document.getElementById('hdrwrap'),hb=hw.querySelector('.hd-bar'),row=hw.querySelector('.ag-mrow'),last=row||hb;
+    let top=last?last.getBoundingClientRect().bottom:120;if(hw.classList.contains('lifting'))top=top-hb.offsetHeight+8;
+    document.documentElement.style.setProperty('--ac-top',Math.round(top)+'px')}
   if(window.DG_uspMount)DG_uspMount();
   galSync();
   if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
@@ -568,6 +604,7 @@ document.addEventListener('submit',e=>{if(e.target.id==='cmform'){e.preventDefau
 document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.target.value;const b=document.getElementById('cmsend');if(b)b.classList.toggle('on',!!e.target.value.trim())}});
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
+  if(!S.search&&e.target.closest('[data-opensearch]')){S.search=true;parent.postMessage({protoSearch:true},'*');render();return}
   if(e.target.closest('[data-closesearch]')){S.search=false;parent.postMessage({protoSearch:false},'*');render();return}
   if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
