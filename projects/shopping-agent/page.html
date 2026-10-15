@@ -582,7 +582,7 @@ function pdp(){
   const ai='';
   /* VTO Figma 15656:21934: none, one or both chips in a row above the brand (13px light, white, puck shadow) */
   /* one chip, switched between Shop Similar (AI icon) and Virtual Try On (hanger) — S.chipKind */
-  const chipsArr=[S.chipKind==='vto'?`<button class="ai-pill ai-pill--soft tchip" ${F('vto','chip')} data-q="Virtual Try On" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Try On</button>`
+  const chipsArr=[S.chipKind==='vto'?`<button class="ai-pill ai-pill--soft tchip" ${F('vto','chip')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`
     :`<button class="ai-pill ai-pill--soft tchip" ${F('shopSimilar','chip')} data-q="Shop similar">${spk(16)}Shop Similar</button>`];
   const top=onImg?[]:chipsArr;
   /* tags: always on, bottom right of the first image — smaller, white at 90%, no outline */
