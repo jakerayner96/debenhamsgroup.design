@@ -626,6 +626,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .price .was{font-size:20px;font-weight:var(--w-regular);color:var(--text-secondary);text-decoration:line-through;line-height:1}
 .price .save{background:var(--badge-save-bg);color:var(--badge-save-fg);font-size:14px;font-weight:var(--w-mid);padding:4px 8px;border-radius:var(--radius-default)}
 .price-promo{font-size:13px;font-weight:var(--w-mid);color:var(--price-sale)}
+/* small price (chat tiles, rails): every part one size, 13px — price, strikethrough, Save chip and the code line under it */
+.price--sm{gap:6px}.price--sm .now,.price--sm .was,.price--sm .save{font-size:13px;line-height:18px}.price--sm .save{padding:0 6px;border-radius:var(--radius-default)}
+.price--sm+.price-promo{font-size:13px;line-height:18px;margin-top:2px}
 .price .oos{color:var(--text-error);font-size:16px;font-weight:var(--w-mid);letter-spacing:.02em}
 .sizes{display:flex;flex-direction:column;gap:12px}
 .sizes-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:16px}

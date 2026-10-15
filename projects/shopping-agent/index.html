@@ -228,7 +228,20 @@ function handoff(c){const lines=[];const ep={outIcon:'Exposed search, AI icon in
     '```','','PDP prompts:','```html',
     `<google-ai-prompts product-id="{sku}" direction="${c.pdpDir}"></google-ai-prompts>`,'```',
     `Launch prompts (pre-baked): ${c.pdpPrompts.filter(Boolean).map(q=>JSON.stringify(q)).join(', ')}${c.pdpAsk?' + “Ask anything” (outlined — the open-ended option)':''}.`,
-    '','Chip styling (DS .ai-pill): white pill, puck shadow, 14px Geologica, gap 2 (8px), AI icon 16px; the last chip of a group is the gradient-outline pill, not the shadow one.',
+    '','## 3 · Reply components → config','',
+    '| Reply part | In Google’s widget? | Styled by |','|---|---|---|',
+    '| Text reply | Native | --chat-messenger-internal-message-bot-* · typescale body-medium · settings.dynamic-bot-writing |',
+    '| User bubble | Native | --chat-messenger-internal-message-user-* |',
+    '| Product carousel | Native | rich-content-config.tileConfig · --chat-messenger-product-carousel-* |',
+    '| Product detail card | Native | rich-content-config.productDetailConfig (size picker: confirm) |',
+    `| ADD TO BAG | Native | settings.custom-cart + cart-button-text · --cart-button-background-color ${(c.agent.cartBg||AG.DEF.cartBg)} · --cart-button-font-color ${(c.agent.cartFg||AG.DEF.cartFg)} · corner radii ${(c.agent.cartRadius??AG.DEF.cartRadius)}px |`,
+    '| Quick-reply chips | Native | --chat-messenger-internal-chips-* |',
+    '| Bullet list | Native (markdown text) | bot message styles |',
+    '| “Using” context chips | Not in the widget | custom_template or FDE |',
+    '| Complete the look | Not in the widget | custom_template or FDE |',
+    '| Fit scale | Not in the widget | custom_template or FDE |',
+    '| Photo upload (VTO) | Agent-side | confirm with Google |',
+  '','Chip styling (DS .ai-pill): white pill, puck shadow, 14px Geologica, gap 2 (8px), AI icon 16px; the last chip of a group is the gradient-outline pill, not the shadow one.',
     '',`Out of scope this phase: ${OUT.join(', ')}.`);
   return lines.join('\n')}
 P.extra=(root)=>{if(!BASE)return;root.file('salesAgentConfig.json',JSON.stringify(cfgFile(),null,2));root.file('HANDOFF.md',handoff(S.cfg))};
@@ -254,7 +267,9 @@ function renderPanel(host,S,update){
     ${fe.k==='nba'?`<div class="f"><span>Question</span><input data-key="nbaQ" value="${H(c.nbaQ)}"></div><div class="f"><span>Answers</span>${c.nbaOpts.map((t,i)=>`<input data-arr="nbaOpts" data-i="${i}" value="${H(t)}">`).join('')}</div>`:''}
     ${fe.k==='autocomplete'?`<div class="f"><span>Need some help? · prompts</span>${c.acChips.map((t,i)=>`<input data-arr="acChips" data-i="${i}" value="${H(t)}">`).join('')}</div>`:''}</div>
   <div class="card"><h3>Chat window</h3>
-    <div style="display:flex;flex-direction:column;gap:8px"><label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Open</label></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Open</label>
+      <label class="sw"><input type="checkbox" id="t-labels"${c.labels?' checked':''}><i></i>Label replies with their config key</label></div>
+    <p style="margin:8px 0 0">Type to the agent: replies alternate between text (written in word by word, <code>dynamic-bot-writing</code>) and a shopping component. With labels on, each reply shows what styles it in <code>salesAgentConfig.json</code>; amber = not in Google’s widget (custom_template or FDE build).</p>
 </div>
   <div class="card card--fold${c.cfgOpen?' open':''}" id="cfgcard"><h3 class="fold-h" id="cfgtoggle" role="button" aria-expanded="${!!c.cfgOpen}">Agent config <small>salesAgentConfig.json · ${changed.length} changed</small><i class="chev"></i></h3><div class="fold-b">
     <p>The file the devs deploy (backend config, no flicker). Edits rebuild it from the dev’s base file; the chat window renders from it.</p>
@@ -283,6 +298,7 @@ function renderPanel(host,S,update){
   host.querySelectorAll('[data-feat]').forEach(b=>b.onclick=()=>{const x=FEATS.find(f=>f.k===b.dataset.feat);c.feat=x.k;if(x.set)Object.assign(c,x.set);
     c.page=x.pg;c.search=!!x.search;c.chat=false;c.focus={f:x.k.startsWith('ep-')?'launcher':x.k,n:Date.now()};go()});
   host.querySelector('#t-chat').onchange=ev=>{c.chat=ev.target.checked;go()};
+  host.querySelector('#t-labels').onchange=ev=>{c.labels=ev.target.checked;c.chat=true;go()};
   host.querySelectorAll('[data-pos]').forEach(b=>b.onclick=()=>{c[POSKEY[fe.k]]=b.dataset.pos;c.page=fe.pg;c.focus={f:fe.k,n:Date.now()};go()});
   host.querySelectorAll('[data-row]').forEach(b=>b.onclick=()=>{c.nbaRow=+b.dataset.row;c.page='plp';c.focus={f:'nba',n:Date.now()};go()});
   host.querySelectorAll('#dir button').forEach(b=>b.onclick=()=>{c.pdpDir=b.dataset.v;go()});

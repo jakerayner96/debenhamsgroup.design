@@ -311,6 +311,8 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cm-ctx .lbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6B6B6B}
 .cm-ctx .c{display:inline-flex;align-items:center;height:27px;padding:0 10px;border-radius:99px;background:#F2F8F7;color:#2F6B63;font-size:12px;white-space:nowrap}
 .cm-car{gap:10px}
+.cm-tile .price,.cm-pd .price{margin-top:2px}.cm-tile .price-promo{margin-bottom:2px}
+.cm-tile{width:120px!important}
 .cm-tile .n{font-size:12px;font-weight:500}
 .cm-tile .p{gap:4px}.cm-tile .p b{font-size:13px}.cm-tile .p s{font-size:11px}
 .cm-cart{height:32px;font-size:12px;font-weight:600;letter-spacing:.02em;min-width:0;width:100%}   /* small primary CTA: aqua, black, 4px (config) */
@@ -335,6 +337,9 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cm-box .cm-input::placeholder{color:#777}
 .cm-box .send{cursor:pointer;border:0;transition:background .15s}
 .cm-b .mock{display:none}
+.cm-tags{display:flex;flex-direction:column;gap:4px;margin-top:-8px}
+.cm-tags span{font:400 10.5px/1.35 ui-monospace,Menlo,monospace;color:#2F6B63;background:#F2F8F7;border-radius:6px;padding:4px 8px}
+.cm-tags span.custom{color:#8A5A00;background:#FFF6E5}.cm-tags b{font-weight:700}
 /* ---------- agent start screen (the "Agent" option): the orb, a greeting, four capability cards, the config prompts as chips ---------- */
 .cm-start{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:8px 0 8px;gap:8px}
 .cm-start h2{display:flex;align-items:flex-start;gap:10px}.cm-start h2 .ai-icon{margin-top:3px}
@@ -383,7 +388,7 @@ const IMG=i=>`projects/plp-alignment/img/debenhams/p${i<7?i:i+1}.jpg`;
 const A='projects/shopping-agent/';
 
 /* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
-let S={brand:'debenhams',page:'home',on:{},launcher:'outIcon',start:'config',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
+let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'outIcon',start:'config',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
   pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
   ssPos:'image',vtoPos:'image',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
@@ -553,7 +558,7 @@ function chat(){
   head=`<div class="cm-start"><h2>${spk(24)}<span>Hi there – I’m <b>${name}</b>, your Debenhams Personal Assistant!</span></h2><p>${esc(E().tagline)}</p>
     <div class="cm-starters">${sts.map(q=>`<button class="cm-starter" data-q="${esc(q)}">${spk(16)}<span>${esc(q)}</span></button>`).join('')}</div>${tc}</div>`;
   if(CHAT.msgs.length)head='';   /* once the conversation starts the start screen scrolls away, as in the Figma */
-  const msgs=CHAT.msgs.map(m=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b">${m.b}</div>`).join('');
+  const msgs=CHAT.msgs.map((m,i)=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b" data-mi="${i}">${m.cut!=null?words(m.b,m.cut):m.b}</div>${S.labels&&m.cut==null?cfgTags(m.b):''}`).join('');
   const txt=CHAT.draft||'';
   return `${mob?'':'<div class="cm-scrim" data-close="1"></div>'}<div class="cm${mob?' mob':''}" id="cm" role="dialog" aria-label="${esc(st['chat-title'])}">
     <div class="cm-tb"><button class="modal-x" data-close="1" aria-label="Close"></button></div>
@@ -567,13 +572,37 @@ function styleChat(){const el=document.getElementById('cm');if(!el)return;const 
   const t=el.querySelector('[data-c="text"]');if(t&&CFG.payload.components.text)applyVars(t,CFG.payload.components.text.payload.styles)}
 
 /* scripted replies — the live agent writes these; the tiles follow rich-content-config.tileConfig */
-function tile(i){const p=PR()[i];return `<div class="cm-tile"><img src="${IMG(i)}" alt=""><div class="n">${esc(p.name)}</div><div class="p"><b class="${p.was?'sale':''}">${esc(p.price)}</b>${p.was?`<s>${esc(p.was)}</s>`:''}</div><button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div>`}
+/* DS price block, small: one size for price, strikethrough and Save; the code line under it when there is one */
+function prc(p){const pct=p.pct?p.pct.replace('-',''):'';return `<div class="price price--sm"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${pct?`<span class="save">Save ${esc(pct)}</span>`:''}</div>${p.off?`<div class="price-promo">${esc(p.off)}</div>`:''}`}
+function tile(i){const p=PR()[i];return `<div class="cm-tile"><img src="${IMG(i)}" alt=""><div class="n">${esc(p.name)}</div>${prc(p)}<button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div>`}
 const ctx=(...c)=>`<div class="cm-ctx"><span class="lbl">${spk(14)}Using</span>${c.map(x=>`<span class="c">${esc(x)}</span>`).join('')}</div>`;
 const qr=(...c)=>`<div class="cm-qr">${c.map(x=>`<button class="ai-pill ai-pill--outline" data-q="${esc(x)}">${spk(14)}${esc(x)}</button>`).join('')}</div>`;
 const car=ids=>`<div class="cm-car">${ids.map(tile).join('')}</div>`;
 /* one product as the agent's product detail card (rich-content-config.productDetailConfig: title 14/500 · price 14/700 · sale #9E2A2B · % off) */
-function pd(i,sizes){const p=PR()[i];return `<div class="cm-pd"><img src="${IMG(i)}" alt=""><div class="pd">${p.brand?`<span class="pbd">${esc(p.brand)}</span>`:''}<span class="n">${esc(p.name)}</span><div class="p"><b class="${p.was?'sale':''}">${esc(p.price)}</b>${p.was?`<s>${esc(p.was)}</s><em>${esc(p.pct)}</em>`:''}</div>${sizes?`<div class="psz">${['8','10','12','14'].map(z=>`<span class="${z==='10'?'on':''}">${z}</span>`).join('')}</div>`:''}<button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div></div>`}
+function pd(i,sizes){const p=PR()[i];return `<div class="cm-pd"><img src="${IMG(i)}" alt=""><div class="pd">${p.brand?`<span class="pbd">${esc(p.brand)}</span>`:''}<span class="n">${esc(p.name)}</span>${prc(p)}${sizes?`<div class="psz">${['8','10','12','14'].map(z=>`<span class="${z==='10'?'on':''}">${z}</span>`).join('')}</div>`:''}<button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div></div>`}
 /* every reply component, in turn — typed messages cycle through these so each one shows */
+/* the config behind each reply part — shown under each reply when "Label replies" is on (panel). Native = the Google widget draws it and the config styles it. */
+const CFGMAP=[
+  [h=>!/<div/.test(h),'Text','native','bot message: --chat-messenger-internal-message-bot-* · typescale body-medium · settings.dynamic-bot-writing'],
+  [h=>/class="cm-car"/.test(h),'Product carousel','native','rich-content-config.tileConfig · --chat-messenger-product-carousel-*'],
+  [h=>/cm-pd/.test(h),'Product detail','native','rich-content-config.productDetailConfig (size picker: confirm with Google)'],
+  [h=>/cm-cart/.test(h),'ADD TO BAG','native','settings.custom-cart + cart-button-text · --cart-button-* · cart-button corner radii'],
+  [h=>/cm-qr/.test(h),'Quick replies','native','chips: --chat-messenger-internal-chips-*'],
+  [h=>/cm-list/.test(h),'Bullet list','native','text (markdown list in a bot message)'],
+  [h=>/cm-ctx/.test(h),'“Using” context chips','custom','not in the widget: custom_template or FDE build'],
+  [h=>/cm-look/.test(h),'Complete the look','custom','not in the widget: custom_template or FDE build'],
+  [h=>/cm-fit/.test(h),'Fit scale','custom','not in the widget: custom_template or FDE build'],
+  [h=>/cm-up/.test(h),'Photo upload','custom','VTO flow: agent-side, confirm with Google'],
+];
+function cfgTags(h){const hit=CFGMAP.filter(x=>x[0](h));return `<div class="cm-tags">${hit.map(x=>`<span class="${x[2]}"><b>${x[1]}</b> · ${x[3]}</span>`).join('')}</div>`}
+/* dynamic-bot-writing: a text reply writes itself in word by word */
+function words(h,n){return h.split(/(\s+)/).slice(0,n*2).join('')}
+const TEXTS=[
+  q=>`Happy to help with that. Tell me a little more: is it for a particular occasion, and do you have a budget in mind? I’ll pull together a shortlist in your size.`,
+  q=>`Good news, that’s in stock in your size and it can be with you tomorrow if you order before 10pm. Delivery is £2 with code SPEEDY, or free on orders over £50.`,
+  q=>`Our returns are free within 21 days, in store or by post. If you add Debenhams Deliver+ at checkout you get an extra 14 days, so 35 in total.`,
+  q=>`I’d go for the midi in a 10. It’s fitted through the waist but has a little stretch, so it’s comfortable for a long day. If you’d like it looser, the 12 is the better choice.`,
+];
 const KINDS=[
   q=>`Here are a few I think you’ll love for “${esc(q)}”, all in your size:${ctx('Size 10','Your style')}${car([1,21,24,29])}${qr('Under £50','Show me more like these')}`,
   q=>`This one’s my top pick. It’s a regular fit, fully lined, and it’s back in stock in a 10:${pd(27,true)}${qr('Does it come in petite?','Shoes to match')}`,
@@ -582,11 +611,12 @@ const KINDS=[
   q=>`Let’s see it on you. Upload a full-length photo and I’ll show you the look in a few seconds.<div class="cm-up">${spk(28)}<div><b>Upload a photo</b>Your photo is only used for this try-on.</div></div>`,
   q=>`Here’s what I’ve noted so far, so I can narrow it down:${ctx('Size 10','Under £100','Midi length','Family wedding')}<ul class="cm-list"><li>Sleeved or a cover-up for the ceremony</li><li>Block or mid heel for a garden venue</li><li>Avoid white and ivory</li></ul>${qr('Show me the dresses','Change my budget')}`,
 ];
-let KI=Math.floor(Math.random()*KINDS.length);
+/* typed messages alternate: a text reply, then a component, so both show */
+let KI=Math.floor(Math.random()*KINDS.length),TI=Math.floor(Math.random()*TEXTS.length),TURN=0;
 function reply(q,vto,typed){
   q=q||'';
   if(vto)return KINDS[4](q);
-  if(typed){const r=KINDS[KI%KINDS.length](q);KI++;return r}
+  if(typed){TURN++;if(TURN%2===1){const r=TEXTS[TI%TEXTS.length](q);TI++;return r}const r=KINDS[KI%KINDS.length](q);KI++;return r}
   if(/similar/i.test(q))return `Here are styles similar to the <b>Coast Lace and Pleated Midi Shirt Dress</b>: lace, pleats and midi lengths at a similar price.${car([21,31,27,5])}${qr('Only under £50','Show me in petite')}`;
   if(/wedding|occasion|outfit/i.test(q))return `Congratulations to her! For an October wedding in the Cotswolds, here are sleeved midis in the tailored shades you love, in a 10:${ctx('Size 10','Tailored','Family wedding')}${car([27,21,31])}${qr('Love the green, can I wear it to work?','Shoes to match')}`;
   if(/work|office/i.test(q))return `Yes, ponte jersey keeps its shape. Add the black blazer and loafers you bought last month and it works for the office. Want a knit to layer over it?${ctx('Past purchases','Workwear')}${qr('Show me knits','Add it to my bag')}`;
@@ -601,9 +631,12 @@ function reply(q,vto,typed){
   return KINDS[1](q);
 }
 function openChat(q,vto){CHAT.open=true;
-  if(q){CHAT.msgs.push({u:q},{typing:true});setTimeout(()=>{CHAT.msgs=CHAT.msgs.filter(m=>!m.typing);CHAT.msgs.push({b:reply(q,vto,CHAT.typedNow)});CHAT.typedNow=false;if(CHAT.typed)CHAT.focus=true;drawChat()},EXPORTING?0:900)}
+  if(q){CHAT.msgs.push({u:q},{typing:true});setTimeout(()=>{CHAT.msgs=CHAT.msgs.filter(m=>!m.typing);const h=reply(q,vto,CHAT.typedNow);CHAT.typedNow=false;const m={b:h};CHAT.msgs.push(m);if(!/<div/.test(h)&&!EXPORTING&&CFG.payload.settings['dynamic-bot-writing']!==false)stream(m);if(CHAT.typed)CHAT.focus=true;drawChat()},EXPORTING?0:900)}
   else CHAT.focus=true;
   drawChat();parent.postMessage({protoChat:true},'*')}
+function stream(m){const n=m.b.split(/\s+/).length;m.cut=0;const i=CHAT.msgs.indexOf(m);
+  const tick=()=>{m.cut+=2;const el=document.querySelector(`[data-mi="${i}"]`);if(m.cut>=n){m.cut=null;drawChat();return}
+    if(el){el.innerHTML=words(m.b,m.cut);const body=document.getElementById('cmbody');if(body)body.scrollTop=body.scrollHeight}setTimeout(tick,45)};setTimeout(tick,45)}
 /* the shopper types: Enter or the arrow sends it to the agent (production: window.googleAgent.sendQuery(text)) */
 function send(){const inp=document.getElementById('cminput');const q=(inp?inp.value:'').trim();if(!q)return;CHAT.draft='';CHAT.user=true;CHAT.typed=true;CHAT.typedNow=true;CHAT.focus=true;openChat(q,false)}
 /* DRAWN = the window is on screen: the open animation runs only on the closed → open step, not when a reply or a page re-render redraws it */
