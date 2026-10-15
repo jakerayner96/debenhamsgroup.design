@@ -212,6 +212,11 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .grid .nba{grid-column:1/-1}
 .pc-img .onimg.br{bottom:8px;right:8px;left:auto}
 
+/* ---------- Home: the roundel row (first module) — smaller, padded ---------- */
+.hm>.hm-m:first-child>.hm-row{padding:16px;gap:12px!important}
+.hm>.hm-m:first-child>.hm-row{overflow-x:auto;scrollbar-width:none}.hm>.hm-m:first-child>.hm-row::-webkit-scrollbar{display:none}
+.hm>.hm-m:first-child .hm-t{flex:0 0 80px!important;width:80px!important;margin-left:0!important}
+@media(min-width:1024px){.hm>.hm-m:first-child>.hm-row{padding:24px 40px;gap:20px!important;justify-content:safe center}.hm>.hm-m:first-child .hm-t{flex:0 0 100px!important;width:100px!important}}
 /* ---------- Home: custom prompts ---------- */
 .cp-strip{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:10px 16px;background:var(--ai-gradient);color:var(--text-primary);font-size:14px;text-align:center}
 .cp-strip button{display:inline-flex;align-items:center;gap:6px;color:var(--text-primary);font:600 14px var(--font-family-base);text-decoration:underline;background:none;border:0;cursor:pointer}
@@ -220,7 +225,8 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cp-mod .pan{background:#F4F4F2;padding:24px 16px;display:flex;flex-direction:column;gap:16px;justify-content:center}
 .cp-mod .grp{display:flex;flex-direction:column;gap:4px}
 @media(min-width:1024px){.cp-mod .pan{padding:40px}}
-.cp-mod h3{margin:0;font-size:26px;font-weight:300}.cp-mod .sub{font-size:16px;font-weight:300;line-height:1.4;color:var(--text-primary,#000)}
+.cp-mod h3{margin:0;font-size:26px;font-weight:300}.cp-mod .sub{font-size:16px;font-weight:300;line-height:1.4;color:inherit}
+.cp-mod h3{line-height:1.1!important;color:inherit}   /* tighter leading so the top padding reads the same as the bottom */
 .cp-mod .set{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .cp-mod img{display:block;width:100%;height:100%;object-fit:cover;min-height:220px}
 .cp-hero{position:relative}
@@ -513,9 +519,9 @@ function card(p,i,mini){
 function home(){
   const d=desk(),doc=new DOMParser().parseFromString(renderHome('debenhams',d),'text/html'),hm=doc.querySelector('.hm'),mods=[...hm.children];
   if(ON('custom')){
-    const chips=['Gifts for her under £50','Stocking fillers she’ll love','What do I get my dad?'];
+    const chips=(S.cpChips||['Gifts for her under £50','Stocking fillers she’ll love','What do I get my dad?']).filter(Boolean);
     const set=chips.map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14,false)}${esc(c)}</button>`).join('')+`<button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me find the perfect gift">${spk(14)}Help me choose</button>`;
-    if(S.cpPos==='module'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-mod" ${F('custom','A · module')}><div class="pan"><div class="grp"><h3>Gifting, sorted</h3><div class="sub">Ask ${esc(E().name)} for ideas</div></div><div class="set">${set}</div></div><img src="projects/usp-banner/img/home/debenhams/wk38-debs-gifting-hp-homepage-aw-gifting-${d?'dt':'mb'}.webp" alt=""></div>`;mods[1]&&mods[1].after(m.firstChild)}
+    if(S.cpPos==='module'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-mod" ${F('custom','A · module')}><div class="pan" style="background:${esc(S.cpBg||'#F4F4F2')};color:${esc(S.cpFg||'#000000')}"><div class="grp"><h3>${esc(S.cpTitle||'Gifting, sorted')}</h3><div class="sub">${esc(S.cpSub||('Ask '+E().name+' for ideas'))}</div></div><div class="set">${set}</div></div><img src="${S.cpImg||`projects/usp-banner/img/home/debenhams/wk38-debs-gifting-hp-homepage-aw-gifting-${d?'dt':'mb'}.webp`}" alt=""></div>`;mods[1]&&mods[1].after(m.firstChild)}
     if(S.cpPos==='strip'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-strip" ${F('custom','B · strip')}><span>Gift shopping for someone special?</span><button data-q="Help me find the perfect gift">${spk(15)}Ask ${esc(E().name)} for ideas</button></div>`;hm.prepend(m.firstChild)}
     if(S.cpPos==='hero'&&mods[1]){mods[1].classList.add('cp-hero');const o=doc.createElement('div');o.className='ov';o.setAttribute('data-feat','custom');o.setAttribute('data-tag','Custom prompts · C · on hero');o.innerHTML=set;mods[1].prepend(o)}
   }
@@ -725,7 +731,7 @@ function render(){
   galSync();
   if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
   drawChat();
-  if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el){el.scrollIntoView({block:'center',behavior:EXPORTING?'auto':'smooth'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}}
+  if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el)el.scrollIntoView({block:'center',behavior:'auto'})}   /* instant, no highlight */
 }
 fetch('projects/shopping-agent/base-config.json').then(r=>r.json()).then(b=>{BASE=b;CFG=AG.build(BASE,S.agent);render();parent.postMessage({protoReady:1},'*')});
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});

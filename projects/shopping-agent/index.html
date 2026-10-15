@@ -269,6 +269,11 @@ function renderPanel(host,S,update){
       <div class="f"><span>Launch prompts (pre-baked)</span>${c.pdpPrompts.map((t,i)=>`<input data-arr="pdpPrompts" data-i="${i}" value="${H(t)}">`).join('')}<small>Dynamic prompts replace these per product once the agent has learnt them.</small></div>
       <div class="f"><label class="sw"><input type="checkbox" id="t-glance"${c.glance!==false?' checked':''}><i></i>At a Glance</label></div>
       <div class="f"><label class="sw"><input type="checkbox" id="t-head"${c.pdpHead?' checked':''}><i></i>“${H('Ask '+e.name)}” heading</label><label class="sw"><input type="checkbox" id="t-ask"${c.pdpAsk?' checked':''}><i></i>“Ask anything” chip (outlined)</label></div>`:''}
+    ${fe.k==='custom'&&c.cpPos==='module'?`<div class="f"><span>Title</span><input data-key="cpTitle" value="${H(c.cpTitle||'Gifting, sorted')}"></div>
+      <div class="f"><span>Body</span><input data-key="cpSub" value="${H(c.cpSub||'Ask '+e.name+' for ideas')}"></div>
+      <div class="f"><span>Prompts</span>${(c.cpChips||['Gifts for her under £50','Stocking fillers she’ll love','What do I get my dad?']).map((t,k)=>`<input data-cp="${k}" value="${H(t)}">`).join('')}<small>The outlined “Help me choose” is always last.</small></div>
+      <div class="row2"><div class="f"><span>Background</span><input type="color" data-key="cpBg" value="${H(c.cpBg||'#f4f4f2')}"></div><div class="f"><span>Text</span><input type="color" data-key="cpFg" value="${H(c.cpFg||'#000000')}"></div></div>
+      <div class="f"><span>Picture</span><input type="file" id="cpimg" accept="image/*"><small>${c.cpImg?'Your picture is in · <a href="#" id="cpimgx">use the default</a>':'Default: the Autumn gifting image'}</small></div>`:''}
     ${fe.k==='nba'?`<div class="f"><span>Question</span><input data-key="nbaQ" value="${H(c.nbaQ)}"></div><div class="f"><span>Answers</span>${c.nbaOpts.map((t,i)=>`<input data-arr="nbaOpts" data-i="${i}" value="${H(t)}">`).join('')}</div>`:''}
     ${fe.k==='autocomplete'?`<div class="f"><span>Need some help? · prompts</span>${c.acChips.map((t,i)=>`<input data-arr="acChips" data-i="${i}" value="${H(t)}">`).join('')}</div>`:''}</div>
   <div class="card"><h3>Chat window</h3>
@@ -314,6 +319,10 @@ function renderPanel(host,S,update){
   const ta=host.querySelector('#t-ask');if(ta)ta.onchange=ev=>{c.pdpAsk=ev.target.checked;go()};
   host.querySelectorAll('[data-arr]').forEach(i=>i.onchange=()=>{c[i.dataset.arr][+i.dataset.i]=i.value;go()});
   host.querySelectorAll('[data-key]').forEach(i=>i.onchange=()=>{c[i.dataset.key]=i.value;go()});
+  host.querySelectorAll('[data-cp]').forEach(i=>i.onchange=()=>{c.cpChips=c.cpChips||['Gifts for her under £50','Stocking fillers she’ll love','What do I get my dad?'];c.cpChips[+i.dataset.cp]=i.value;go()});
+  /* picture: scaled to 1000px wide JPEG so it travels in the page state and the export */
+  const ci=host.querySelector('#cpimg');if(ci)ci.onchange=()=>{const f=ci.files[0];if(!f)return;const im=new Image();im.onload=()=>{const k=Math.min(1,1000/im.width),cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);c.cpImg=cv.toDataURL('image/jpeg',.8);URL.revokeObjectURL(im.src);go()};im.src=URL.createObjectURL(f)};
+  const cx=host.querySelector('#cpimgx');if(cx)cx.onclick=ev=>{ev.preventDefault();delete c.cpImg;go()};
   host.querySelectorAll('[data-ag]').forEach(i=>i.onchange=()=>{const k=i.dataset.ag;let v=i.type==='checkbox'?i.checked:i.value;
     if(k==='prompts'||k==='starters')v=v.split('\n').map(s=>s.trim()).filter(Boolean);if(['chipRadius','width','radius','cartRadius'].includes(k))v=+v;
     c.agent[k]=v;if(!['name'].includes(k))c.chat=true;go()});
