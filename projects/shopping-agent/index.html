@@ -125,6 +125,10 @@ body.fold .device iframe{box-shadow:none}
 .diff{max-height:150px;overflow:auto;border:1px solid var(--line);border-radius:7px;padding:6px 8px;background:#080808}
 .diff code,.rules code{font:10.5px ui-monospace,Menlo,monospace;color:#9FD3FF}
 .f .seg button{padding:5px 10px}
+/* collapsible card: the Agent config is folded by default */
+.card--fold .fold-h{cursor:pointer;margin:0;user-select:none}.card--fold .fold-h .chev{width:8px;height:8px;border:solid #9A9A9A;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin:-3px 4px 0 auto;transition:transform .15s;flex:none}
+.card--fold.open .fold-h{margin-bottom:8px}.card--fold.open .fold-h .chev{transform:rotate(-135deg);margin-top:3px}
+.card--fold .fold-b{display:none}.card--fold.open .fold-b{display:block}
 
 </style>
 </head>
@@ -250,11 +254,12 @@ function renderPanel(host,S,update){
     <div style="display:flex;flex-direction:column;gap:8px"><label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Open</label></div>
     <div class="f"><span>Start screen</span><span class="seg" id="start"><button data-v="config" class="${c.start==='config'?'on':''}">Config (hero + intro)</button><button data-v="agent" class="${c.start==='agent'?'on':''}">Agent (new)</button></span>
     <small>${c.start==='agent'?'The orb, a greeting, four things it can do, the config prompts as chips. Benchmarked on Gemini / ChatGPT / Shopify Sidekick start states.':'The dev file as delivered: T&Cs line, hero image, intro copy and prompts.'}</small></div></div>
-  <div class="card"><h3>Agent config <small>salesAgentConfig.json</small></h3>
+  <div class="card card--fold${c.cfgOpen?' open':''}" id="cfgcard"><h3 class="fold-h" id="cfgtoggle" role="button" aria-expanded="${!!c.cfgOpen}">Agent config <small>salesAgentConfig.json · ${changed.length} changed</small><i class="chev"></i></h3><div class="fold-b">
     <p>The file the devs deploy (backend config, no flicker). Edits rebuild it from the dev’s base file; the chat window renders from it.</p>
     <div class="f"><span>Agent name</span><input data-ag="name" value="${H(e.name)}"><small>Drives “Ask ${H(e.name)}” on every entry point. Naming is with the creative director.</small></div>
     <div class="f"><span>chat-title</span><input data-ag="title" value="${H(e.title)}"></div>
     <div class="f"><span>Intro (zeroState.payload.text)</span><textarea data-ag="intro" rows="6">${H(e.intro)}</textarea></div>
+    ${c.start==='agent'?`<div class="f"><span>Agent start · tagline</span><input data-ag="tagline" value="${H(e.tagline)}"></div><div class="f"><span>Agent start · starter prompts (one per line, four shown)</span><textarea data-ag="starters" rows="4">${H((e.starters||[]).join('\n'))}</textarea></div>`:''}
     <div class="f"><span>Zero-state prompts (one per line)</span><textarea data-ag="prompts" rows="4">${H(e.prompts.join('\n'))}</textarea></div>
     <div class="row2"><div class="f"><span>placeholder-text</span><input data-ag="placeholder" value="${H(e.placeholder)}"></div><div class="f"><span>cart-button-text</span><input data-ag="cart" value="${H(e.cart)}"></div></div>
     <div class="f"><span>disclosure-text</span><input data-ag="disclosure" value="${H(e.disclosure)}"></div>
@@ -264,7 +269,7 @@ function renderPanel(host,S,update){
     <div class="row2"><div class="f"><span>Window radius (px)</span><input type="number" min="0" max="40" data-ag="radius" value="${e.radius}"></div><div class="f"><span>Title icon</span><select data-ag="icon"><option value="config"${e.icon==='config'?' selected':''}>Dev file (teal tile)</option><option value="spark"${e.icon==='spark'?' selected':''}>AI icon</option></select></div></div>
     <div class="f"><label class="sw"><input type="checkbox" data-ag="hero"${e.hero?' checked':''}><i></i>Hero image (Autumn Wrapped Up)</label></div>
     <div class="f"><span>Changed vs the dev file · ${changed.length}</span><div class="diff">${changed.map(d=>`<div><code>${H(d.path.replace('payload.',''))}</code></div>`).join('')||'<small>None yet</small>'}</div></div>
-    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="chip on" id="dlcfg">Download config</button><button class="chip" id="cpcfg">Copy JSON</button><button class="chip" id="rscfg">Reset to dev file</button></div></div>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="chip on" id="dlcfg">Download config</button><button class="chip" id="cpcfg">Copy JSON</button><button class="chip" id="rscfg">Reset to dev file</button></div></div></div>
   <div class="card"><h3>Rules</h3><div class="rules">
     <b>Backend over client.</b> Prompts, hero and styles go in the config file; client-side JS overrides flicker on load.<br>
     <b>One agent, many doors.</b> Every chip / button calls <code>window.googleAgent.sendQuery("…")</code> and opens the same chat; the input sends what the shopper types.<br>
@@ -282,8 +287,9 @@ function renderPanel(host,S,update){
   host.querySelectorAll('[data-arr]').forEach(i=>i.onchange=()=>{c[i.dataset.arr][+i.dataset.i]=i.value;go()});
   host.querySelectorAll('[data-key]').forEach(i=>i.onchange=()=>{c[i.dataset.key]=i.value;go()});
   host.querySelectorAll('[data-ag]').forEach(i=>i.onchange=()=>{const k=i.dataset.ag;let v=i.type==='checkbox'?i.checked:i.value;
-    if(k==='prompts')v=v.split('\n').map(s=>s.trim()).filter(Boolean);if(['chipRadius','width','radius'].includes(k))v=+v;
+    if(k==='prompts'||k==='starters')v=v.split('\n').map(s=>s.trim()).filter(Boolean);if(['chipRadius','width','radius'].includes(k))v=+v;
     c.agent[k]=v;if(!['name'].includes(k))c.chat=true;go()});
+  host.querySelector('#cfgtoggle').onclick=()=>{c.cfgOpen=!c.cfgOpen;save();panel()};
   host.querySelector('#dlcfg').onclick=()=>BASE&&dl('salesAgentConfig.json',JSON.stringify(cfgFile(),null,2));
   host.querySelector('#cpcfg').onclick=()=>{if(BASE)navigator.clipboard.writeText(JSON.stringify(cfgFile(),null,2)).then(()=>{$('#status').textContent='Config copied ✓';setTimeout(()=>$('#status').textContent='',3000)})};
   host.querySelector('#rscfg').onclick=()=>{c.agent={};go()};

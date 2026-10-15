@@ -235,7 +235,7 @@ body.exporting .cm-start h2 b{background:none;-webkit-background-clip:initial;ba
 @media(min-width:1024px){.ac-rv{grid-auto-columns:calc((100% - 60px)/6)}.ac{padding:0 24px 24px}}
 .ac-rv .pc-name{font-size:13px}
 /* ---------- chat window, as the PA Deck Figma (OUmnWDam0w0czh9VZnaqx0 · 6:167) ---------- */
-.cm-tb{border-bottom:1px solid #EEEEEE}
+.cm-tb .acts button img{width:24px;height:24px;display:block}   /* the DS close (icons-close.svg): 1px stroke, 24px */
 .cm-tb .ic .ai-icon{width:28px!important;height:28px!important}
 .cm-ctx{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}
 .cm-ctx .lbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6B6B6B}
@@ -251,24 +251,22 @@ body.exporting .cm-start h2 b{background:none;-webkit-background-clip:initial;ba
 .cm-box .send{cursor:pointer;border:0;transition:background .15s}
 .cm-b .mock{display:none}
 /* ---------- agent start screen (the "Agent" option): the orb, a greeting, four capability cards, the config prompts as chips ---------- */
-.cm-start{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 0 8px;gap:16px}
-.orb{position:relative;width:112px;height:112px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#CFF5EE 0%,#9DEDE2 28%,#70BEB3 62%,#2E7F79 100%);box-shadow:0 18px 40px -16px rgba(0,120,125,.55),inset 0 -14px 28px rgba(255,255,255,.35);display:grid;place-items:center;animation:orbFloat 5s ease-in-out infinite}
+.cm-start{display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px 0 8px;gap:12px}
+.orb{position:relative;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#CFF5EE 0%,#9DEDE2 28%,#70BEB3 62%,#2E7F79 100%);box-shadow:0 18px 40px -16px rgba(0,120,125,.55),inset 0 -14px 28px rgba(255,255,255,.35);display:grid;place-items:center;animation:orbFloat 5s ease-in-out infinite}
 .orb::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,rgba(157,237,226,0),rgba(157,237,226,.9),rgba(0,120,125,0) 60%);animation:orbSpin 6s linear infinite;mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px))}
 .orb::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 70% 75%,rgba(255,255,255,.35),transparent 45%)}
-.orb .ai-icon{width:44px!important;height:44px!important;position:relative;filter:brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,.18))}
+.orb .ai-icon{width:40px!important;height:40px!important;position:relative;filter:brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,.18))}
 @keyframes orbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes orbSpin{to{transform:rotate(360deg)}}
-.cm-start h2{margin:4px 0 0;font-size:26px;font-weight:300;line-height:1.2;color:#222}
+.cm-start h2{margin:4px 0 0;font-size:24px;font-weight:300;line-height:1.2;color:#222}
 .cm-start h2 b{font-weight:600;background:linear-gradient(107deg,#2E7F79,#70BEB3 60%,#9DEDE2);-webkit-background-clip:text;background-clip:text;color:transparent}
 .cm-start p{margin:0;max-width:340px;font-size:14px;font-weight:300;line-height:1.5;color:#555}
-.cm-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-top:8px;text-align:left}
-.cm-card{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:16px;background:#FFF;border:1px solid var(--border-subtle,#E7E7E7);box-shadow:var(--shadow-card);cursor:pointer;font-family:inherit;text-align:left;transition:border-color .15s,transform .15s}
-.cm-card:hover{border-color:#70BEB3;transform:translateY(-1px)}
-.cm-card .ico{width:36px;height:36px;border-radius:12px;background:#F2F8F7;display:grid;place-items:center}.cm-card .ico img{width:20px;height:20px}
-.cm-card b{font-size:14px;font-weight:600;color:#222}.cm-card span{font-size:12px;color:#6B6B6B;line-height:1.4}
-.cm-start .pr{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:4px}
-.cm-start .pr button{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:99px;background:#F8F8F8;border:1px solid #E7E7E7;font:400 13px var(--chat-messenger-font-family);color:#222;cursor:pointer}
-.cm.mob .cm-start{padding-top:8px}.cm.mob .orb{width:96px;height:96px}.cm.mob .cm-start h2{font-size:24px}
+.cm-starters{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:8px;text-align:left}
+.cm-starter{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:12px 14px;border-radius:14px;background:#F8F8F8;border:1px solid transparent;font:400 14px/1.3 var(--chat-messenger-font-family);color:#222;cursor:pointer;text-align:left;transition:border-color .15s,background .15s}
+.cm-starter:hover{background:#FFF;border-color:#70BEB3}
+.cm-starter .ai-icon{flex:none}
+.cm-start .cm-text{margin:8px 0 0;padding:0}
+.cm.mob .cm-start{padding-top:8px}.cm.mob .orb{width:84px;height:84px}.cm.mob .cm-start h2{font-size:22px}
 @media (prefers-reduced-motion:reduce){.orb,.orb::before,.hd-search .caret{animation:none}}
 .cm.in .cm-start>*{animation:cmItem .4s cubic-bezier(.22,.9,.24,1) both}
 .cm.in .cm-start>:nth-child(2){animation-delay:.2s}.cm.in .cm-start>:nth-child(3){animation-delay:.26s}.cm.in .cm-start>:nth-child(4){animation-delay:.32s}.cm.in .cm-start>:nth-child(5){animation-delay:.38s}
@@ -443,11 +441,10 @@ function chat(){
   const tc=c.text?`<div class="cm-text" data-c="text">${md(c.text.payload.text)}</div>`:'';
   let head;
   if(S.start==='agent'){
-    /* the Agent start screen: orb · greeting · four things it can do · the config prompts */
-    const cards=[['Find an outfit','for an occasion, a budget or a vibe','icons-dress','Help me find an outfit'],['Check the fit','sizes, fabric and how it wears','icons-measure','Does this fit true to size?'],['Style what I own','pair new pieces with past buys','icons-hanger','What goes with the black blazer I bought?'],['Gift ideas','for anyone, at any budget','icons-gift','Help me find a gift']];
-    head=`<div class="cm-start"><div class="orb">${spk(44)}</div><h2>Hi there, I’m <b>${name}</b></h2><p>${esc(E().intro.replace(/^Hi there[^!]*!\s*/,''))}</p>
-      <div class="cm-cards">${cards.map(([h,s,i,q])=>`<button class="cm-card" data-q="${esc(q)}"><span class="ico"><img src="assets/ds/icons/lib/${i}.svg" alt="" onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'ai-icon'}))"></span><b>${h}</b><span>${s}</span></button>`).join('')}</div>
-      <div class="pr">${zs.prompts.map(t=>`<button data-q="${esc(t)}">${esc(t)}</button>`).join('')}</div>${tc}</div>`;
+    /* the Agent start screen (Gemini-style): orb · one-line greeting · one line of copy · four one-line starter prompts. Fits inside the fold. */
+    const st=(E().starters||[]).filter(Boolean).slice(0,4);
+    head=`<div class="cm-start"><div class="orb">${spk(40)}</div><h2>Hi there, I’m <b>${name}</b></h2><p>${esc(E().tagline)}</p>
+      <div class="cm-starters">${st.map(q=>`<button class="cm-starter" data-q="${esc(q)}">${spk(16)}<span>${esc(q)}</span></button>`).join('')}</div>${tc}</div>`;
   }else{
     head=[c.text&&{o:c.text.order,h:tc},
       c.hero&&{o:c.hero.order,h:`<div class="cm-hero"><img src="${A}img/${mob?'hero-mobile':'hero'}.jpg" alt=""></div>`},
@@ -457,7 +454,7 @@ function chat(){
   const msgs=CHAT.msgs.map(m=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b">${m.b}</div>`).join('');
   const txt=CHAT.draft||'';
   return `${mob?'':'<div class="cm-scrim" data-close="1"></div>'}<div class="cm${mob?' mob':''}" id="cm" role="dialog" aria-label="${esc(st['chat-title'])}">
-    <div class="cm-tb">${icon}<span class="t">${esc(st['chat-title'])}</span><span class="acts"><button data-reset="1" aria-label="Reset"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 4a8 8 0 1 0 8 8"/><path d="M12 1v6l3-3z" fill="currentColor"/></svg></button><button data-close="1" aria-label="Close"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></span></div>
+    <div class="cm-tb">${icon}<span class="t">${esc(st['chat-title'])}</span><span class="acts"><button data-close="1" aria-label="Close"><img src="assets/ds/icons/lib/icons-close.svg" alt=""></button></span></div>
     <div class="cm-body" id="cmbody">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
     <form class="cm-in" id="cmform"><div class="cm-box"><span class="plus">+</span><input class="cm-input" id="cminput" type="text" autocomplete="off" placeholder="${esc(st['placeholder-text'])}" value="${esc(txt)}" aria-label="Message ${name}"><button type="submit" class="send${txt?' on':''}" id="cmsend" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></form>
     <div class="cm-disc">${esc(st['disclosure-text'])}</div></div>`;
@@ -542,7 +539,6 @@ document.addEventListener('click',e=>{
   const qb=e.target.closest('[data-q]');
   if(qb){e.preventDefault();CHAT.user=true;const q=qb.dataset.q;openChat(q?(qb.dataset.ctx&&/similar/i.test(q)?q:q):'',!!qb.dataset.vto);return}
   if(e.target.closest('[data-close]')){CHAT.user=false;CHAT.msgs=[];closeChat();return}
-  if(e.target.closest('[data-reset]')){CHAT.msgs=[];drawChat();return}
   const a=e.target.closest('a[data-href],a[href]');
   if(a){e.preventDefault();const t=document.getElementById('ct');t.textContent='Link → '+(a.dataset.href||a.getAttribute('href'));t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800)}
   else if(e.target.closest('button'))e.preventDefault()});

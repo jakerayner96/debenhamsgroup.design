@@ -21,6 +21,9 @@ const DEF={
   hero:true,
   icon:'config',            // config = the teal tile in the dev config · spark = the Ask Deb sparkle
   cart:'ADD TO BAG',
+  /* the Agent start screen (prototype only): one line of copy + four one-line starter prompts */
+  tagline:'Tell me what you’re shopping for and I’ll find it.',
+  starters:['Find me an outfit for a wedding','Does this dress come in petite?','Gifts for my mum under £50','What goes with my black blazer?'],
 };
 const clone=o=>JSON.parse(JSON.stringify(o));
 const rx=(s)=>new RegExp(s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
