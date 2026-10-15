@@ -164,7 +164,9 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .dbox div{display:flex;gap:12px;align-items:flex-start}.dbox img{width:20px;height:20px;flex:none}
 /* html2canvas cannot parse color-mix(): flatten the one the Deliver+ banner uses */
 .dplus .foot{border-top-color:rgba(0,0,0,.25)}
-.acc-set .acc{border-bottom:1px solid var(--border-subtle)}
+.acc-set .acc{border-bottom:1px solid var(--border-subtle)}.acc-set .acc:first-child{border-top:1px solid var(--border-subtle)}
+.acc-set .acc:not(.open) .acc-b{display:none}.acc-set .acc-h{cursor:pointer}.acc-set .acc-h img{transition:transform .2s}
+.acc-set .acc-b .glance{margin:0;padding:0}
 .acc-set .acc-h{display:flex;width:100%;justify-content:space-between;align-items:center;padding:16px 0;font:600 15px var(--font-family-base);background:none;border:0;color:inherit}
 .acc-set .acc-h img{width:16px;height:16px}.acc-set .acc.open .acc-h img{transform:rotate(180deg)}
 .acc-set .acc-b{padding:0 0 16px;font-size:14px;font-weight:300;line-height:1.6}
@@ -598,8 +600,11 @@ function pdp(){
     <div class="dbox"><div><img src="assets/ds/icons/lib/icons-delivery-fast.svg" alt="" onerror="this.remove()"><span>Sold &amp; Delivered by <u>Debenhams</u></span></div><div><img src="assets/ds/icons/lib/icons-delivery-fast.svg" alt="" onerror="this.remove()"><span>Delivery From £2.99 Or 99p On Orders Over £30</span></div><div><img src="assets/ds/icons/lib/icons-quick-add.svg" alt="" onerror="this.remove()"><span>Eligible for return within 21 days. Plus 14-day extension when you purchase Debenhams Deliver+</span></div></div>
     ${strip(V('bnpl',0))}</div>`;
   /* prompts: below the buy buttons, or above At a Glance; At a Glance itself can be switched off */
-  const glanceSlot=(S.pdpPos!=='belowCta'?prompts:'')+(S.glance!==false?glance:'');
-  const acc=`<div class="acc-set">${['Description','Product Details &amp; Care','Delivery','Returns','Manufacturer'].map((t,k)=>`<div class="acc${k?'':' open'}"><button class="acc-h">${t}<img src="assets/ds/icons/lib/icons-down.svg" alt="" onerror="this.remove()"></button>${k?'':'<div class="acc-b">Long sleeve lace and pleated midi shirt dress in hot pink. Delicate lace bodice, shirt collar, button front and a softly pleated midi skirt. Regular fit.</div>'}</div>`).join('')}</div>`;
+  const glanceSlot=S.pdpPos!=='belowCta'?prompts:'';   /* above At a Glance = above the accordions */
+  /* accordions: At a Glance is the first row (open), then Description (collapsed) and the rest — same titles, a divider between every row, chevrons open / close */
+  const glanceBody=glance.replace(/^<div class="glance-blk"><h3>At a Glance<\/h3>/,'').replace(/<\/div>$/,'');
+  const rows=[...(S.glance!==false?[['At a Glance',glanceBody,true]]:[]),['Description','Long sleeve lace and pleated midi shirt dress in hot pink. Delicate lace bodice, shirt collar, button front and a softly pleated midi skirt. Regular fit.',false],['Product Details &amp; Care','100% polyester. Machine wash at 30°C. Do not tumble dry.',false],['Delivery','Delivery from £2.99, or 99p on orders over £30. Next day delivery if you order by 10pm.',false],['Returns','Free returns within 21 days, plus 14 more with Debenhams Deliver+.',false],['Manufacturer','Coast, Debenhams Group, Manchester M1 2DU.',false]];
+  const acc=`<div class="acc-set">${rows.map(([h,b,o])=>`<div class="acc${o?' open':''}"><button class="acc-h">${h}<img src="assets/ds/icons/lib/icons-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${b}</div></div>`).join('')}</div>`;
   const under=`<div class="under">${glanceSlot}${acc}</div>`;
   return d?`<div class="wrap">${strip(V('breadcrumb',0)).replace('New In</a>','Womens</a>').replace('Womens New In','Dresses').replace('New In Dresses','Midi Dresses')}<div class="pdp"><div>${gal}${under}</div>${info}</div></div>`
           :`<div class="wrap"><div class="pdp">${gal}${info}${under}</div></div>`;
@@ -755,6 +760,7 @@ document.addEventListener('click',e=>{
     const done=()=>{document.body.classList.remove('closing-search');S.search=false;parent.postMessage({protoSearch:false},'*');render()};
     if(EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches||!hw)return done();
     if(hw.classList.contains('closing'))return;hw.classList.remove('srch-in');hw.classList.add('closing');document.body.classList.add('closing-search');setTimeout(done,240);return}
+  {const ah=e.target.closest('.acc-set .acc-h');if(ah){e.preventDefault();ah.parentNode.classList.toggle('open');return}}
   if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
   if(qb&&qb.dataset.vto&&S.vtoMode==='own'){e.preventDefault();const t=document.getElementById('ct');t.textContent='Opens the Debenhams Virtual Stylist (our own VTO)';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200);return}
