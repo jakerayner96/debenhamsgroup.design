@@ -445,7 +445,7 @@ const A='projects/shopping-agent/';
 /* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
 let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'outIcon',start:'config',pdpPos:'aboveGlance',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
   pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
-  ssPos:'title',vtoPos:'title',chipPos:'title',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
+  ssPos:'title',vtoPos:'title',chipPos:'title',chipKind:'similar',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
   cpPos:'module',search:false,chat:false,agent:{},focus:null};
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes
@@ -581,8 +581,9 @@ function pdp(){
   const onImg=S.chipPos==='image'||S.chipPos==='bl';S.vtoPos=S.ssPos=onImg?'img-tr':'title';S.vtoMode='agent';
   const ai='';
   /* VTO Figma 15656:21934: none, one or both chips in a row above the brand (13px light, white, puck shadow) */
-  const chipsArr=[ON('vto')?`<button class="ai-pill ai-pill--soft tchip" ${F('vto','above title')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'',
-    ON('shopSimilar')?`<button class="ai-pill ai-pill--soft tchip" ${F('shopSimilar','above title')} data-q="Shop similar">${spk(16)}Shop Similar</button>`:''].filter(Boolean);
+  /* one chip, switched between Shop Similar (AI icon) and Virtual Try On (hanger) — S.chipKind */
+  const chipsArr=[S.chipKind==='vto'?`<button class="ai-pill ai-pill--soft tchip" ${F('vto','chip')} data-q="Virtual Try On" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Try On</button>`
+    :`<button class="ai-pill ai-pill--soft tchip" ${F('shopSimilar','chip')} data-q="Shop similar">${spk(16)}Shop Similar</button>`];
   const top=onImg?[]:chipsArr;
   /* tags: always on, bottom right of the first image — smaller, white at 90%, no outline */
   const tags=`<span class="ptags"><span>Petite</span><span>As Seen In Our Ad</span></span>`;
