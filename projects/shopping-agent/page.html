@@ -164,8 +164,20 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .fbar .more{font-size:16px;text-decoration:underline;white-space:nowrap;margin-left:4px}
 .fbar .sort{margin-left:auto;width:220px}
 .sf-split{margin:0 -16px}
+/* mobile sort + filters = live debenhams.com (15 Oct markup): full-bleed Filters | Relevance bar, then NDD toggle (46×24, grey-4 track, minus knob) left and Size / Colour pills right */
+.mfs{display:grid;grid-template-columns:1fr 1fr;margin:8px -16px 0;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle)}
+.mfs button{display:flex;align-items:center;justify-content:space-between;height:44px;padding:0 16px;background:none;border:0;font:300 16px var(--font-family-base);color:var(--text-primary)}
+.mfs button+button{border-left:1px solid var(--border-subtle);padding-left:8px}
+.mfs .fic{width:18px;height:18px;background:url("assets/ds/icons/lib/icons-filter.svg") center/contain no-repeat}
+.mfs .ch{width:16px;height:16px;background:url("assets/ds/icons/lib/icons-down.svg") center/contain no-repeat}
+.mff{display:flex;justify-content:space-between;align-items:center;margin:8px 0;padding:8px 0}
+.mndd{display:flex;align-items:center;background:none;border:0;padding:0;cursor:pointer}.mndd svg{flex:none}
+.mndd span{margin-left:8px;font:300 14px var(--font-family-base);color:var(--text-primary)}
+.mfp{display:flex;flex-wrap:wrap;gap:8px}
+.mfp span{display:flex;align-items:center;padding:4px 16px;border:1px solid var(--border-subtle);border-radius:9999px;font:300 14px/20px var(--font-family-base);cursor:pointer}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px;margin-top:16px}
 @media(min-width:1024px){.grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:32px 16px;margin-top:24px}}
+.mff+.grid{margin-top:0}
 .pc .pc-ndd{font-size:13px;margin-top:2px}.pc .pc-ndd img{width:18px;height:18px}
 .pc .pc-badges{position:absolute;left:12px;bottom:12px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
 .pc .badge{background:#FFF;border-color:#FFF;height:auto;padding:5px 10px;font-size:12px;border-radius:4px}
@@ -473,7 +485,9 @@ function plp(){
   const rnd=`<div class="rnd">${CATS.map(([n,i])=>`<a class="roundel" href="#"><i><img src="${IMG(i)}" alt=""></i><span>${n}</span></a>`).join('')}</div>`;
   const filters=d
     ?`<div class="fbar"><span class="sf-ndd"><span class="track"></span>Next Day Delivery</span>${['Category','Size','Colour','Style'].map(f=>`<button class="sf-dd">${f}<i></i></button>`).join('')}<a class="more" href="#">Show more filters</a><button class="sf-dd sort">Relevance<i></i></button></div>`
-    :`<div class="sf-split"><button>Filters <span class="fic"></span></button><button>Relevance <i class="ch"></i></button></div><div class="fbar"><span class="sf-ndd"><span class="track"></span>Next Day Delivery</span><button class="fp">Size</button><button class="fp">Colour</button><button class="fp">Style</button></div>`;
+    :`<div class="mfs"><button><span>Filters</span><span class="fic"></span></button><button><span>Relevance</span><i class="ch"></i></button></div>
+      <div class="mff"><button class="mndd" aria-pressed="false"><svg viewBox="0 0 46 24" width="46" height="24"><rect width="46" height="24" rx="12" fill="#888888"/><circle cx="12" cy="12" r="10" fill="#fff"/><path d="M7 12H17" stroke="#000" stroke-linecap="round"/></svg><span>Next Day Delivery</span></button>
+      <div class="mfp"><span>Size</span><span>Colour</span></div></div>`;
   return `<div class="wrap"><div class="plp-top">${bc}<h1 class="plp-h">Women's Partywear</h1><p class="plp-n">1,000+ products</p>${rnd}</div>${filters}${nba&&row===0?`<div style="margin-top:12px">${nba}</div>`:''}<div class="grid">${cards.join('')}</div></div>`;
 }
 
