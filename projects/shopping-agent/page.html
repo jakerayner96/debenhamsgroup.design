@@ -139,7 +139,13 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .pbrand{font-size:16px;font-weight:600}.pname{font-size:16px;font-weight:300;margin-top:2px}
 .prow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .ctas{display:flex;flex-direction:column;gap:8px}
-.ctas2{display:flex;gap:8px}.ctas2>*{flex:1}
+.ctas2{display:flex;gap:8px}
+/* live buy stack (debenhams.com 15 Oct): ADD TO BAG · PayPal Checkout · Apple Pay, 8px apart, all 50px; then the Unlimited banner, then Deliver+ */
+.ctas .pay{width:100%;height:50px}.ctas .pay--paypal{gap:8px}.ctas .pp-co{font:500 20px/1 var(--font-family-base);color:#2C2E2F}
+.unl{display:flex;align-items:center;gap:16px;padding:20px;border-radius:4px;background:linear-gradient(100deg,#F2F2F2 0%,#C9C9C9 100%)}
+.unl>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}.unl img{height:30px;width:auto;align-self:flex-start}
+.unl p{margin:0;font-size:14px;line-height:1.45;color:#000}
+.unl button{flex:none;height:32px;padding:0 16px;border:0;border-radius:4px;background:#000;color:#FFF;font:600 14px var(--font-family-base);letter-spacing:.02em;cursor:pointer}.ctas2>*{flex:1}
 .glance-blk h3,.sec-h{font-size:16px;font-weight:600;margin:0 0 12px}
 .glance{margin:0}
 .under{display:flex;flex-direction:column;gap:24px;margin-top:24px}
@@ -189,7 +195,9 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .pc .sw{display:flex;gap:6px;margin-top:4px}.pc .sw i{width:22px;height:22px;border-radius:4px;border:1px solid var(--border-subtle)}.pc .sw i.on{outline:1.5px solid #000;outline-offset:1px}
 /* the agent's next best action: a row of the grid, placed below the filters or after row N (panel) */
 .nba{display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:8px;background:var(--surface-sunken)}
-.nba h3{margin:0;font-size:18px;font-weight:600}.nba p{margin:0;font-size:12px;color:#555}
+/* title + body sit together (gap 1, 4px), the prompts a clear gap 4 (16px) below */
+.nba{gap:16px!important}.nba .grp{display:flex;flex-direction:column;gap:4px}
+.nba h3{margin:0;font-size:18px;font-weight:600}.nba p{margin:0;font-size:14px;font-weight:300;line-height:1.4;color:var(--text-primary,#000)}
 .nba .set{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .nba .sep{display:none;width:1px;height:28px;background:var(--border-subtle);margin:0 4px}@media(min-width:1024px){.nba .sep{display:block}}
 .grid .nba{grid-column:1/-1}
@@ -200,9 +208,10 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cp-strip button{display:inline-flex;align-items:center;gap:6px;color:var(--text-primary);font:600 14px var(--font-family-base);text-decoration:underline;background:none;border:0;cursor:pointer}
 .cp-mod{display:grid;grid-template-columns:1fr;margin:16px 0}
 @media(min-width:1024px){.cp-mod{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);margin:24px 40px}}
-.cp-mod .pan{background:#F4F4F2;padding:24px 16px;display:flex;flex-direction:column;gap:8px;justify-content:center}
+.cp-mod .pan{background:#F4F4F2;padding:24px 16px;display:flex;flex-direction:column;gap:16px;justify-content:center}
+.cp-mod .grp{display:flex;flex-direction:column;gap:4px}
 @media(min-width:1024px){.cp-mod .pan{padding:40px}}
-.cp-mod h3{margin:0;font-size:26px;font-weight:300}.cp-mod .sub{font-size:16px;color:#333;margin-bottom:8px}
+.cp-mod h3{margin:0;font-size:26px;font-weight:300}.cp-mod .sub{font-size:16px;font-weight:300;line-height:1.4;color:var(--text-primary,#000)}
 .cp-mod .set{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .cp-mod img{display:block;width:100%;height:100%;object-fit:cover;min-height:220px}
 .cp-hero{position:relative}
@@ -497,7 +506,7 @@ function home(){
   if(ON('custom')){
     const chips=['Gifts for her under £50','Stocking fillers she’ll love','What do I get my dad?'];
     const set=chips.map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14,false)}${esc(c)}</button>`).join('')+`<button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me find the perfect gift">${spk(14)}Help me choose</button>`;
-    if(S.cpPos==='module'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-mod" ${F('custom','A · module')}><div class="pan"><h3>Gifting, sorted</h3><div class="sub">Ask ${esc(E().name)} for ideas</div><div class="set">${set}</div></div><img src="projects/usp-banner/img/home/debenhams/wk38-debs-gifting-hp-homepage-aw-gifting-${d?'dt':'mb'}.webp" alt=""></div>`;mods[1]&&mods[1].after(m.firstChild)}
+    if(S.cpPos==='module'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-mod" ${F('custom','A · module')}><div class="pan"><div class="grp"><h3>Gifting, sorted</h3><div class="sub">Ask ${esc(E().name)} for ideas</div></div><div class="set">${set}</div></div><img src="projects/usp-banner/img/home/debenhams/wk38-debs-gifting-hp-homepage-aw-gifting-${d?'dt':'mb'}.webp" alt=""></div>`;mods[1]&&mods[1].after(m.firstChild)}
     if(S.cpPos==='strip'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-strip" ${F('custom','B · strip')}><span>Gift shopping for someone special?</span><button data-q="Help me find the perfect gift">${spk(15)}Ask ${esc(E().name)} for ideas</button></div>`;hm.prepend(m.firstChild)}
     if(S.cpPos==='hero'&&mods[1]){mods[1].classList.add('cp-hero');const o=doc.createElement('div');o.className='ov';o.setAttribute('data-feat','custom');o.setAttribute('data-tag','Custom prompts · C · on hero');o.innerHTML=set;mods[1].prepend(o)}
   }
@@ -520,7 +529,7 @@ function pcard(p,i,k){
 }
 function plp(){
   const d=desk(),cols=d?5:2,ids=[1,21,24,29,31,27,5,23,6,9,28,8,0,3,2,10,12,4,11,13];
-  const nba=ON('nba')?`<div class="nba" ${F('nba',S.nbaRow?'after row '+S.nbaRow:'below filters')}><h3>${esc(S.nbaQ)}</h3><p>Select an option to start a chat with ${esc(E().name)}</p><div class="set">${S.nbaOpts.filter(Boolean).map(o=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(S.nbaQ+' → '+o)}">${spk(14)}${esc(o)}</button>`).join('')}<span class="sep"></span><button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me decide what to wear">${spk(14)}Help me decide</button></div></div>`:'';
+  const nba=ON('nba')?`<div class="nba" ${F('nba',S.nbaRow?'after row '+S.nbaRow:'below filters')}><div class="grp"><h3>${esc(S.nbaQ)}</h3><p>Select an option to start a chat with ${esc(E().name)}</p></div><div class="set">${S.nbaOpts.filter(Boolean).map(o=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(S.nbaQ+' → '+o)}">${spk(14)}${esc(o)}</button>`).join('')}<span class="sep"></span><button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me decide what to wear">${spk(14)}Help me decide</button></div></div>`:'';
   const cards=ids.map((i,k)=>pcard(PR()[i],i,k));
   const row=+S.nbaRow||0;
   if(nba&&row>0)cards.splice(Math.min(row*cols,cards.length),0,nba);
@@ -558,8 +567,9 @@ function pdp(){
     <div style="font-size:14px">Colour: <b>Hot Pink</b></div><div class="cswatches"><button class="cswatch on"><img src="${IMG(1)}" alt="" style="width:60px;height:89px;object-fit:cover;display:block"></button></div>
     ${V('size-selector',0).replace(' style="width:360px"','').replace(/<button class="sz">One size<\/button>/,'')}
     ${S.pdpPos==='aboveCta'?prompts:''}
-    <div class="ctas"><button class="bd pri">Add to Bag</button>${ctaRow.length?`<div class="ctas2">${ctaRow.join('')}</div>`:''}</div>
+    <div class="ctas"><button class="bd pri">Add to Bag</button><button class="pay pay--paypal"><img src="assets/ds/icons/payments/paypal-wordmark.svg" alt="PayPal"><span class="pp-co">Checkout</span></button><button class="pay pay--apple"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button>${ctaRow.length?`<div class="ctas2">${ctaRow.join('')}</div>`:''}</div>
     ${S.pdpPos==='belowCta'?prompts:''}
+    <div class="unl"><div><img src="assets/brands/memberships/unlimited-logo.svg" alt="Debenhams Unlimited"><p>Enjoy unlimited delivery for an entire year for just £10.00</p></div><button>ADD</button></div>
     ${strip(V('deliver-plus',d?1:0))}
     <div class="dbox"><div><img src="assets/ds/icons/lib/icons-delivery-fast.svg" alt="" onerror="this.remove()"><span>Sold &amp; Delivered by <u>Debenhams</u></span></div><div><img src="assets/ds/icons/lib/icons-delivery-fast.svg" alt="" onerror="this.remove()"><span>Delivery From £2.99 Or 99p On Orders Over £30</span></div><div><img src="assets/ds/icons/lib/icons-quick-add.svg" alt="" onerror="this.remove()"><span>Eligible for return within 21 days. Plus 14-day extension when you purchase Debenhams Deliver+</span></div></div>
     ${strip(V('bnpl',0))}</div>`;
@@ -687,6 +697,7 @@ function render(){
   if(CFG){const r=document.documentElement.style,e=E();r.setProperty('--ai-primary',e.primary);r.setProperty('--ai-chip-bg',e.chipBg);r.setProperty('--ai-chip-border',e.chipBorder);r.setProperty('--ai-chip-radius',e.chipRadius+'px')}
   gid=0;
   document.getElementById('app').innerHTML=`${header()}<div id="body">${(PAGES[S.page]||pdp)()}</div><div class="pgfoot">${strip(V('footer',0))}</div><div id="chat"></div>`;
+  if(S.search&&scrollY>0)scrollTo(0,0);   /* search opens from the top, wherever the page was */
   document.body.classList.toggle('searching',!!S.search);
   if(S.search){const hw=document.getElementById('hdrwrap'),hb=hw.querySelector('.hd-bar'),row=hw.querySelector('.ag-mrow'),last=row||hb;
     let top=last?last.getBoundingClientRect().bottom:120;if(hw.classList.contains('lifting'))top=top-hb.offsetHeight+8;
@@ -713,7 +724,7 @@ document.addEventListener('submit',e=>{if(e.target.id==='cmform'){e.preventDefau
 document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.target.value;const b=document.getElementById('cmsend');if(b)b.classList.toggle('on',!!e.target.value.trim())}});
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
-  if(!S.search&&e.target.closest('[data-opensearch]')){S.search=true;parent.postMessage({protoSearch:true},'*');render();return}
+  if(!S.search&&e.target.closest('[data-opensearch]')){scrollTo(0,0);S.search=true;parent.postMessage({protoSearch:true},'*');render();return}
   if(e.target.closest('[data-closesearch]')){const hw=document.getElementById('hdrwrap');
     const done=()=>{document.body.classList.remove('closing-search');S.search=false;parent.postMessage({protoSearch:false},'*');render()};
     if(EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches||!hw)return done();
