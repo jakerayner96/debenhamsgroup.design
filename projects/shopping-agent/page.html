@@ -51,9 +51,12 @@ body.exporting .ai-circle,body.exporting .ag-ask{box-shadow:none;border:1px soli
 .ag-ask{padding:0 18px 0 14px!important}
 /* lift: the search row takes the logo row's place while search is active (mobile) */
 #hdrwrap.lifted .hd-bar{display:none}
-#hdrwrap.lifting .hd-bar{display:flex;animation:barUp .3s cubic-bezier(.4,0,.2,1) forwards;overflow:hidden}
+#hdrwrap.lifting .hd-bar{display:flex;animation:barUp .26s cubic-bezier(.4,0,.2,1) forwards;overflow:hidden}
+#hdrwrap.lifted.closing .hd-bar{display:flex;animation:barDown .24s cubic-bezier(.4,0,.2,1) forwards;overflow:hidden}
+#hdrwrap.lifted.closing .ag-mrow{animation:rowDown .24s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes rowDown{from{padding-top:8px}to{padding-top:0}}
 #hdrwrap.lifted .ag-mrow{padding-top:8px}
-#hdrwrap.lifting .ag-mrow{animation:rowUp .3s cubic-bezier(.4,0,.2,1) both}
+#hdrwrap.lifting .ag-mrow{animation:rowUp .26s cubic-bezier(.4,0,.2,1) both}
 @keyframes barUp{from{max-height:56px;opacity:1}to{max-height:0;opacity:0;padding-top:0;padding-bottom:0}}
 @keyframes rowUp{from{padding-top:0}to{padding-top:8px}}
 @keyframes acIn{from{opacity:0}to{opacity:1}}
@@ -273,7 +276,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cm-box .plus{font-size:22px;font-weight:300;color:#444;width:20px;text-align:center}
 .cm-box .ph{flex:1;font-size:16px;font-weight:300;color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cm-box .send{width:40px;height:40px;border-radius:99px;display:grid;place-items:center;background:var(--chat-messenger-internal-send-icon-background,#E0E0E0);color:var(--chat-messenger-internal-send-icon-color,#fff);flex:none}
-.cm-box .send.on{background:var(--chat-messenger-internal-send-icon-active-background,#00787d)}
+.cm-box .send.on{background:var(--chat-messenger-internal-send-icon-active-background,#00787d);color:var(--chat-messenger-internal-send-icon-active-color,#fff)}
 .cm-disc{flex:none;font-size:var(--chat-messenger-internal-disclosure-text-font-size,11px);font-weight:var(--chat-messenger-internal-disclosure-text-font-weight,400);color:var(--chat-messenger-internal-disclosure-text-color,#555);text-align:var(--chat-messenger-internal-disclosure-text-align,left);padding:var(--chat-messenger-internal-disclosure-text-padding)}
 .cm-rst{font-size:12px;text-decoration:var(--chat-messenger-internal-reset-button-text-text-decoration,underline)}
 
@@ -286,19 +289,27 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .hd-search .ph.act::before{content:"";position:absolute;left:0;top:50%;width:2px;height:22px;margin-top:-11px;border-radius:99px;background:#5877FF;animation:caret 1s steps(1) infinite}
 /* open / close motion. srch-in = the render that opened search (kept until the next render, so nothing is cut short);
    closing = the 240ms before search closes; srch-out = the render that closed it */
-#hdrwrap.srch-in .ag-x{animation:agIn .28s cubic-bezier(.2,.8,.2,1) both}
+#hdrwrap.srch-in .ag-x{animation:agIn .26s cubic-bezier(.4,0,.2,1) both}
 @media(max-width:1023px){#hdrwrap.srch-in.icon-lo .ag-sw>.ai-circle{animation:agIn .28s cubic-bezier(.2,.8,.2,1) both}}
 #hdrwrap.srch-in .ac{animation:acIn .3s cubic-bezier(.2,.8,.2,1) both}
-#hdrwrap.closing .ag-x{animation:agOut .22s ease forwards}
+#hdrwrap.closing .ag-x{animation:agOut .24s cubic-bezier(.4,0,.2,1) forwards}
 @media(max-width:1023px){#hdrwrap.closing.icon-lo .ag-sw>.ai-circle{animation:agOut .22s ease forwards}}
 #hdrwrap.closing .ac{animation:acOut .22s ease forwards}
 #hdrwrap.closing .hd-search .ph::before{display:none}
 @keyframes agOut{from{opacity:1;max-width:60px;transform:none}to{opacity:0;max-width:0;margin-left:-10px;transform:scale(.6)}}
 @keyframes acOut{to{opacity:0}}
-#hdrwrap.srch-out.lift-lo .hd-bar{animation:barDown .3s cubic-bezier(.4,0,.2,1) both;overflow:hidden}
 @keyframes barDown{from{max-height:0;opacity:0;padding-top:0;padding-bottom:0}to{max-height:56px;opacity:1}}
 @media(min-width:1024px){body.searching #body::before{animation:dimIn .25s ease both}body.searching.closing-search #body::before{animation:dimOut .22s ease forwards}}
 @keyframes dimIn{from{opacity:0}}@keyframes dimOut{to{opacity:0}}
+/* icon option: search opens at its final size with the X already there — the row just fades in / out, no stretch */
+#hdrwrap.srch-in.icon-lo .ag-x,#hdrwrap.srch-in.icon-lo .ag-sw>.ai-circle,#hdrwrap.closing.icon-lo .ag-x,#hdrwrap.closing.icon-lo .ag-sw>.ai-circle{animation:none}
+#hdrwrap.srch-in.icon-lo .ag-mrow{animation:acIn .24s ease both}
+/* the header search icon fades out as the row fades in, and back in as it fades out — same 240ms */
+.hd-sicon.off{opacity:0;pointer-events:none}
+#hdrwrap.srch-in.icon-lo .hd-sicon{animation:sIconOut .24s ease forwards}
+@keyframes sIconOut{from{opacity:1}to{opacity:0}}
+#hdrwrap.closing.icon-lo .hd-sicon{animation:acIn .24s ease both}
+#hdrwrap.closing.icon-lo .ag-mrow{animation:acOut .24s ease forwards}
 @media (prefers-reduced-motion:reduce){#hdrwrap *,#hdrwrap{animation:none!important;transition:none!important}}
 @keyframes agIn{from{opacity:0;max-width:0;margin-left:-10px;transform:scale(.6)}to{opacity:1;max-width:60px;transform:none}}
 .ac{border-top:0!important}
@@ -316,7 +327,9 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .ac-prompts{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .ac-rv .pc-name{font-size:13px}
 /* ---------- chat window, as the PA Deck Figma (OUmnWDam0w0czh9VZnaqx0 · 6:167) ---------- */
-.cm .cm-tb{padding:24px 24px 0;justify-content:flex-end;min-height:40px}   /* no title or icon: just the DS modal close, 16×16 at 24px in */
+.cm .cm-tb{padding:24px 24px 0;justify-content:flex-end;min-height:40px;gap:10px;align-items:center}
+.cm .cm-tb .t{flex:1;font-size:16px;font-weight:600}.cm .cm-tb .ic{display:grid;place-items:center;width:auto;height:auto;margin:0}
+.cm .cm-tb{gap:8px}   /* intro: just the close · once chatting: AI icon + Ask Deb */   /* no title or icon: just the DS modal close, 16×16 at 24px in */
 .cm-tb .ic .ai-icon{width:28px!important;height:28px!important}
 .cm-ctx{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}
 .cm-ctx .lbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6B6B6B}
@@ -447,7 +460,7 @@ function header(){
   if(d){
     h=h.replace(/<div class="hd-search">[\s\S]*?<\/span><\/div>/,field);
   }else{
-    h=h.replace(sIcon,lo==='icon'&&!S.search?'<button aria-label="Search" data-opensearch="1"><img src="assets/ds/icons/search.svg" alt=""></button>':'');
+    h=h.replace(sIcon,lo==='icon'?`<button aria-label="Search" data-opensearch="1" class="hd-sicon${S.search?' off':''}"><img src="assets/ds/icons/search.svg" alt=""></button>`:'');
     if(exp)h=h.replace(/(<div class="hd-bar">[\s\S]*?<\/div><\/div>)/,'$1'+`<div class="ag-mrow">${field}</div>`);
   }
   /* USP banners stay put: the search panel fades in over them, so nothing on the page disappears instantly */
@@ -573,7 +586,7 @@ function chat(){
   const msgs=CHAT.msgs.map((m,i)=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b" data-mi="${i}">${m.cut!=null?words(m.b,m.cut):m.b}</div>${S.labels&&m.cut==null?cfgTags(m.b):''}`).join('');
   const txt=CHAT.draft||'';
   return `${mob?'':'<div class="cm-scrim" data-close="1"></div>'}<div class="cm${mob?' mob':''}" id="cm" role="dialog" aria-label="${esc(st['chat-title'])}">
-    <div class="cm-tb"><button class="modal-x" data-close="1" aria-label="Close"></button></div>
+    <div class="cm-tb">${CHAT.msgs.length?`<span class="ic">${spk(24)}</span><span class="t">${esc(st['chat-title'])}</span>`:''}<button class="modal-x" data-close="1" aria-label="Close"></button></div>
     <div class="cm-body" id="cmbody">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
     <form class="cm-in" id="cmform"><div class="cm-box"><span class="plus">+</span><input class="cm-input" id="cminput" type="text" autocomplete="off" placeholder="${esc(st['placeholder-text'])}" value="${esc(txt)}" aria-label="Message ${name}"><button type="submit" class="send${txt?' on':''}" id="cmsend" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></form>
     <div class="cm-disc">${esc(st['disclosure-text'])}</div></div>`;

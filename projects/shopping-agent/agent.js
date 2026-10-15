@@ -25,6 +25,7 @@ const DEF={
   cartBg:'#7be7d8',
   cartFg:'#000000',
   cartRadius:4,
+  sendBg:'#7be7d8',sendFg:'#000000',sendOffBg:'#e8f4f2',sendOffFg:'#b5b5b5',
   /* the Agent start screen (prototype only): one line of copy + four one-line starter prompts */
   tagline:'Whatever you’re looking for, I’ll help you find it. I can guide you based on budget, occasion, colour, style, size & more. Let me know what you’re shopping for today and we can get started…',
   starters:['Find me an outfit for a wedding','Does this dress come in petite?','Gifts for my mum under £50','What goes with my black blazer?'],
@@ -43,6 +44,9 @@ function build(base,e){
   const swap=(o)=>{for(const k in o){if(typeof o[k]==='string')o[k]=o[k].replace(rx('#00787d'),e.primary).replace(rx('#7be7d8'),e.accent)}};
   swap(sy);
   sy['--chat-messenger-internal-chat-window-width']=e.width+'px';
+  /* send button = the DS primary: aqua + black when there is text, the disabled primary (light aqua + grey) when empty */
+  sy['--chat-messenger-internal-send-icon-active-background']=e.sendBg;sy['--chat-messenger-internal-send-icon-active-color']=e.sendFg;
+  sy['--chat-messenger-internal-send-icon-background']=e.sendOffBg;sy['--chat-messenger-internal-send-icon-color']=e.sendOffFg;
   sy['--cart-button-background-color']=e.cartBg;
   sy['--cart-button-font-color']=e.cartFg;
   for(const k of ['start-start','start-end','end-end','end-start'])sy[`--chat-messenger-cart-button--${k}-corner-radius`]=e.cartRadius+'px';
