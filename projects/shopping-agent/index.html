@@ -199,7 +199,7 @@ const P={
   store:'proto-shopping-agent',
   initial:()=>({page:'home',feat:'ep-oi',on:{},launcher:'outIcon',start:'config',pdpPos:'aboveGlance',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
     pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
-    ssPos:'title',vtoPos:'title',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
+    ssPos:'title',vtoPos:'title',chipPos:'title',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
     acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
     cpPos:'module',search:false,chat:false,agent:{},focus:null}),
 };
@@ -216,7 +216,7 @@ function handoff(c){const lines=[];const ep={outIcon:'Exposed search, AI icon in
   lines.push('Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
   lines.push('## 2 · Entry point + features (front end)','',`- **Entry point**: ${ep}`);
   FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${o?o[1]+' — '+o[2]:''}`)});
-  lines.push(`- **Virtual Try On / Shop Similar**: chips in a row above the product title (VTO Figma 15656:21934) — Virtual Stylist ${c.on.vto!==false?'on':'off'}, Shop Similar ${c.on.shopSimilar!==false?'on':'off'}.`);
+  lines.push(`- **Virtual Try On / Shop Similar**: chips ${c.chipPos==='image'?'stacked top right of the first PDP image':'in a row above the product title (VTO Figma 15656:21934)'} — Virtual Stylist ${c.on.vto!==false?'on':'off'}, Shop Similar ${c.on.shopSimilar!==false?'on':'off'}.`);
   lines.push(`- **PLP Next Best Action**: ${c.nbaRow?`a full-width row of the grid after row ${c.nbaRow} (${c.nbaRow*2} products on mobile, ${c.nbaRow*5} on desktop)`:'below the filters, above the first row of products'}.`);
   lines.push('- **Search Suggestions**: Popular Searches → the agent’s suggestions; Recent Searches and Recently Viewed unchanged (Search Figma 1012:2295).');
   lines.push('','Calls:','```js',
@@ -263,6 +263,7 @@ function renderPanel(host,S,update){
   <div class="card"><h3>${fe.n}</h3><p>${H(fe.d)}</p>
     ${fe.opts?fe.opts.map(o=>opt(c[POSKEY[fe.k]]===o[0],o[1],o[2],`data-pos="${o[0]}"`)).join(''):''}
     ${fe.onoff?`<div class="f"><label class="sw"><input type="checkbox" id="t-onoff"${c.on[fe.k]!==false?' checked':''}><i></i>Show on the PDP</label></div>`:''}
+    ${fe.onoff?`<div class="f"><span>Chip position (Virtual Stylist + Shop Similar)</span><span class="seg" id="chippos"><button data-v="title" class="${c.chipPos!=='image'?'on':''}">Above the title</button><button data-v="image" class="${c.chipPos==='image'?'on':''}">Top right of the image</button></span></div>`:''}
     ${fe.rows?[0,1,2,3,4,5].map(n=>opt((+c.nbaRow||0)===n,n?`After row ${n}`:'Below the filters',n?`A full-width row after ${n*2} products on mobile, ${n*5} on desktop.`:'Directly above the first row of products.',`data-row="${n}"`)).join(''):''}
     ${fe.k==='pdpPrompts'?`<div class="f"><span>Direction</span><span class="seg" id="dir"><button data-v="column" class="${c.pdpDir==='column'?'on':''}">Column (dev build)</button><button data-v="row" class="${c.pdpDir==='row'?'on':''}">Row · wrap</button></span></div>
       <div class="f"><span>Launch prompts (pre-baked)</span>${c.pdpPrompts.map((t,i)=>`<input data-arr="pdpPrompts" data-i="${i}" value="${H(t)}">`).join('')}<small>Dynamic prompts replace these per product once the agent has learnt them.</small></div>
@@ -304,6 +305,7 @@ function renderPanel(host,S,update){
   host.querySelector('#t-chat').onchange=ev=>{c.chat=ev.target.checked;go()};
   host.querySelector('#t-labels').onchange=ev=>{c.labels=ev.target.checked;c.chat=true;go()};
   host.querySelectorAll('[data-pos]').forEach(b=>b.onclick=()=>{c[POSKEY[fe.k]]=b.dataset.pos;c.page=fe.pg;c.focus={f:fe.k,n:Date.now()};go()});
+  host.querySelectorAll('#chippos button').forEach(b=>b.onclick=()=>{c.chipPos=b.dataset.v;c.focus={f:fe.k,n:Date.now()};go()});
   const oo=host.querySelector('#t-onoff');if(oo)oo.onchange=ev=>{c.on[fe.k]=ev.target.checked;c.focus={f:'vto',n:Date.now()};go()};
   host.querySelectorAll('[data-row]').forEach(b=>b.onclick=()=>{c.nbaRow=+b.dataset.row;c.page='plp';c.focus={f:'nba',n:Date.now()};go()});
   host.querySelectorAll('#dir button').forEach(b=>b.onclick=()=>{c.pdpDir=b.dataset.v;go()});
