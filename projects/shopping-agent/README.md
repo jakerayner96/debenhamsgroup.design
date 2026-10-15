@@ -5,6 +5,9 @@
 
 Standard review shell. Debenhams only (workshop decision: Debenhams first, other brands later on their own commerce-search instances). The left panel lists every feature in scope. Clicking one jumps to its page and scrolls to it, then you pick its placement (A / B / C). The panel also edits the config file the devs deploy.
 
+## App view (15 Oct)
+**App** beside Desktop / Mobile shows the native app (React Native / Expo, glass UI: repo `jakerayner96/plt-app-prototype`) in an iPhone frame, Debenhams. It is that app's web build in `app/` (rebuild: `npm run export:site -- <this repo>` in the app repo). The panel drives it by postMessage (`{appState:{brand,path,chat,placements}}`), so options switch without a reload: entry point (AI icon / Ask / icon in header; "lifts when active" shows as the AI icon), Content Prompts Banner (module / strip / hero chips), Search Suggestions, PLP NBA row, PDP prompts (A below buy buttons, B after BNPL), Virtual Stylist + Shop Similar (above the title, or on the image). Picking a feature opens its page in the app (Home, Search, Women's Dresses PLP, a PDP). Not in App view: the agent config edits (the app's chat is its own native build) and Export (the zip is the HTML pages). `_expo` is renamed `expo` because Pages runs Jekyll. The same app runs in Expo Go with real Liquid Glass (link in the app repo README).
+
 ## Scope
 In: PDP prompts · Shop similar · Next best action · Autocomplete · Virtual try-on · Custom prompts. The entry point and the chat window are always in.
 Out (this phase): AI Overview (separate SKU, CPM) · Compare · Shop the look.

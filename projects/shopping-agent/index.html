@@ -94,6 +94,16 @@ body.fold .device iframe{box-shadow:none}
 .device .tb .url{flex:1;height:calc(var(--k) * 48px);border-radius:99px;background:rgba(255,255,255,.92);box-shadow:0 1px 6px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--k) * 14px);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;font-size:calc(var(--k) * 17px);color:#000;backdrop-filter:blur(12px)}
 .device .tb .url .pg{width:calc(var(--k) * 20px);height:calc(var(--k) * 18px)}.device .tb .url .rl{width:calc(var(--k) * 20px);height:calc(var(--k) * 20px)}
 .device .home{position:absolute;left:50%;bottom:calc(var(--k) * 8px);transform:translateX(-50%);width:calc(var(--k) * 134px);height:calc(var(--k) * 5px);border-radius:99px;background:#000}
+/* ---- App view: the React Native app (plt-app-prototype, exported for web into app/) in an iPhone frame.
+   The app draws behind the status bar like iOS; ?inset=62,34 gives it the safe areas a browser reports as 0. ---- */
+#appframe{display:none}
+body.app .stage{align-items:center}body.app .win{height:auto}body.app .handle{visibility:hidden}
+body.app .device{width:calc(var(--k) * 390px);height:calc(var(--k) * 844px);border-radius:calc(var(--k) * 54px);overflow:hidden;box-shadow:0 0 60px rgba(0,0,0,.5)}
+body.app #frame{display:none}
+body.app #appframe{display:block;position:absolute;left:0;top:0;width:390px;height:844px;transform:scale(var(--k));transform-origin:0 0;box-shadow:none;background:#FFF}
+body.app .device .sb{display:flex;position:absolute;left:0;right:0;top:0;z-index:2;background:transparent;pointer-events:none}
+body.app .device .home{display:flex;z-index:2;pointer-events:none}
+body.app .device .tb,body.app .device .chin{display:none}
 /* ---- export overlay ---- */
 #exp{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:50}
 #exp[hidden]{display:none}
@@ -138,7 +148,7 @@ body.fold .device iframe{box-shadow:none}
   <div class="mid">
     <span class="chips" id="brands"></span>
     <span class="div"></span>
-    <span class="seg" id="dev"><button data-w="0">Desktop</button><button data-w="390" class="on">Mobile</button></span>
+    <span class="seg" id="dev"><button data-w="0">Desktop</button><button data-w="390" class="on">Mobile</button><button data-app="1" title="The native app (React Native, glass UI) with the same options">App</button></span>
     <select id="preset" aria-label="Width preset" title="Exact width — or drag the handle on the preview">
       <option value="390" selected>390</option><option value="402">402</option><option value="440">440</option><option value="768">768</option><option value="1024">1024</option><option value="1280">1280</option><option value="1440">1440</option><option value="0">Fit</option>
     </select>
@@ -163,6 +173,7 @@ body.fold .device iframe{box-shadow:none}
         <svg class="bat" viewBox="0 0 28 13"><rect x=".5" y=".5" width="24" height="12" rx="3.5" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="2" y="2" width="21" height="9" rx="2" fill="#000"/><path d="M26 4.5v4a2 2 0 0 0 0-4z" fill="#000" fill-opacity=".4"/></svg>
       </span></div>
       <iframe id="frame" title="Page preview"></iframe>
+      <iframe id="appframe" title="App preview"></iframe>
       <div class="tb"><span class="circ"><svg viewBox="0 0 12 20" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 2 10l8 8"/></svg></span><span class="url"><svg class="pg" viewBox="0 0 20 18" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="2" width="14" height="10" rx="1.5"/><path d="M6 6h8M6 9h5M7 16h6"/></svg><span id="urltxt"></span><svg class="rl" viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a6 6 0 1 1-1.8-4.3"/><path d="M15 2v4h-4"/></svg></span><span class="circ"><svg viewBox="0 0 22 6" fill="#000"><circle cx="3" cy="3" r="2.2"/><circle cx="11" cy="3" r="2.2"/><circle cx="19" cy="3" r="2.2"/></svg></span></div>
       <div class="chin"></div><div class="home"></div>
     </div>
@@ -338,24 +349,49 @@ try{const s=JSON.parse(localStorage.getItem(P.store)||'null');if(s)S=Object.assi
 if(!P.brands.some(b=>b[0]===S.brand))S.brand=P.brands[0][0];
 Object.defineProperty(S,'cfg',{get(){return S.by[S.brand]||(S.by[S.brand]=P.initial(S.brand))},set(v){S.by[S.brand]=v},enumerable:false});
 const $=s=>document.querySelector(s),frame=$('#frame'),stage=$('#stage'),win=$('#win'),preset=$('#preset');
-const save=()=>{try{localStorage.setItem(P.store,JSON.stringify({brand:S.brand,w:S.w,fold:S.fold,by:S.by}))}catch(e){}};
+const save=()=>{try{localStorage.setItem(P.store,JSON.stringify({brand:S.brand,w:S.w,fold:S.fold,app:!!S.app,by:S.by}))}catch(e){}};
 const state=()=>Object.assign({brand:S.brand},S.cfg);
 const src=()=>P.page+'?s='+encodeURIComponent(JSON.stringify(state()))+'&_='+Date.now();
-function update(){save();try{frame.contentWindow.postMessage({protoSet:state()},'*')}catch(e){frame.src=src()}}
+function update(){save();try{frame.contentWindow.postMessage({protoSet:state()},'*')}catch(e){frame.src=src()}sendApp()}
+/* ---- App view: the same options, mapped onto the native app's placements (plt-app-prototype AgentUrlState) ---- */
+const appframe=$('#appframe');
+const APP_SRC='app/?brand=debenhams&inset=62,34';
+const APP_PDP='/product/P-a29ae3cd-c063-47be-ac02-7f8d214fe84b';   // a Debenhams dress with a full PDP record
+const APP_PLP='/plp?slug=womens-dresses';
+function appState(){const c=S.cfg,on=f=>(c.on||{})[f]!==false;
+  const chip=c.chipPos==='image'||c.chipPos==='bl'?'image':'title';
+  return {brand:'debenhams',chat:!!c.chat,
+    path:c.search?'/search-view':c.page==='pdp'?APP_PDP:c.page==='plp'?APP_PLP:'/',
+    placements:{
+      entry:{outIcon:'icon',outAsk:'ask',lift:'icon',icon:'header'}[c.launcher]||'icon',
+      promptsBanner:on('custom')?({module:'module',strip:'strip',hero:'hero'}[c.cpPos]||'module'):'off',
+      searchHelp:on('autocomplete'),
+      nbaRow:on('nba')?(+c.nbaRow||0):-1,
+      pdpPrompts:on('pdpPrompts')?(c.pdpPos==='belowCta'?'belowBuy':'afterBnpl'):'off',
+      vto:on('vto')?chip:'off',
+      similar:on('shopSimilar')?chip:'off'}}}
+function sendApp(){if(S.app&&appframe.src)try{appframe.contentWindow.postMessage({appState:appState()},'*')}catch(e){}}
+addEventListener('message',e=>{if(e.data&&e.data.appReady&&e.source===appframe.contentWindow)sendApp()});
 function panel(){renderPanel($('#cfgpanel'),S,()=>{update()})}
 function apply(){
+  document.body.classList.toggle('app',!!S.app);
+  if(S.app&&!appframe.src)appframe.src=APP_SRC;   // loaded once, then driven by postMessage
+  document.querySelectorAll('#dev button').forEach(b=>b.classList.toggle('on',b.dataset.app?!!S.app:!S.app&&((b.dataset.w==='390'&&(S.w||9999)<600)||(b.dataset.w==='0'&&(S.w||9999)>=600))));
+  preset.disabled=!!S.app;document.querySelectorAll('#fold button').forEach(b=>b.disabled=!!S.app);
+  if(S.app){const k=matchMedia('(max-width:760px)').matches?innerWidth/390:Math.min(1,(stage.clientHeight-40)/844,(stage.clientWidth-40)/390);
+    document.documentElement.style.setProperty('--k',k.toFixed(4));document.body.classList.remove('fold');
+    frame.style.width='';win.style.width=Math.round(390*k)+'px';$('#sizebox').textContent='App · 390';sendApp();return}
   if(matchMedia('(max-width:760px)').matches){frame.style.width='100%';win.style.width='100%';return}
   const avail=stage.clientWidth-16,w=Math.min(S.w||avail,avail);
   frame.style.width=w+'px';win.style.width=(w+16)+'px';
   const mobile=w<600;document.body.classList.toggle('fold',S.fold&&mobile);document.documentElement.style.setProperty('--k',(w/390).toFixed(4));
   document.querySelectorAll('#fold button').forEach(b=>{b.classList.toggle('on',(+b.dataset.f===1)===(S.fold&&mobile));b.disabled=!mobile});
   $('#urltxt').textContent=P.domains[S.brand]||'';$('#sizebox').textContent=Math.round(w)+'px';
-  document.querySelectorAll('#dev button').forEach(b=>b.classList.toggle('on',(b.dataset.w==='390'&&w<600)||(b.dataset.w==='0'&&w>=600)));
 }
 function brands(){['#brands','#brands-m'].forEach(id=>{$(id).innerHTML=P.brands.map(([v,n])=>`<button class="chip${S.brand===v?' on':''}" data-b="${v}">${n}</button>`).join('');
   $(id).querySelectorAll('button').forEach(b=>b.onclick=()=>setBrand(b.dataset.b))})}
 function setBrand(b){S.brand=b;history.replaceState(null,'','?brand='+b);$('#ttl').textContent=P.title+' · '+(P.brands.find(x=>x[0]===b)||[0,b])[1];brands();panel();save();frame.src=src();apply()}
-document.querySelectorAll('#dev button').forEach(b=>b.onclick=()=>{S.w=+b.dataset.w;preset.value=String(S.w);save();apply()});
+document.querySelectorAll('#dev button').forEach(b=>b.onclick=()=>{if(b.dataset.app){S.app=true}else{S.app=false;S.w=+b.dataset.w;preset.value=String(S.w)}save();apply()});
 preset.onchange=()=>{S.w=+preset.value;save();apply()};
 document.querySelectorAll('#fold button').forEach(b=>b.onclick=()=>{S.fold=b.dataset.f==='1';save();apply()});
 $('#hr').addEventListener('pointerdown',e=>{e.preventDefault();document.body.classList.add('dragging');const sx=e.clientX,sw=frame.offsetWidth;
