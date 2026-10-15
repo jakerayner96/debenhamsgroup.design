@@ -332,6 +332,8 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 /* icon option: search opens at its final size with the X already there — the row just fades in / out, no stretch */
 #hdrwrap.srch-in.icon-lo .ag-x,#hdrwrap.srch-in.icon-lo .ag-sw>.ai-circle,#hdrwrap.closing.icon-lo .ag-x,#hdrwrap.closing.icon-lo .ag-sw>.ai-circle{animation:none}
 #hdrwrap.srch-in.icon-lo .ag-mrow{animation:acIn .24s ease both}
+/* option 4: the search row lies over the page (under the logo bar) instead of joining the header, so the USP banners never move */
+@media(max-width:1023px){#hdrwrap.icon-lo .hd{position:relative}#hdrwrap.icon-lo .ag-mrow{position:absolute;left:0;right:0;top:56px;z-index:31;background:#FFF;padding-top:0}}
 /* the header search icon fades out as the row fades in, and back in as it fades out — same 240ms */
 .hd-sicon.off{opacity:0;pointer-events:none}
 #hdrwrap.srch-in.icon-lo .hd-sicon{animation:sIconOut .24s ease forwards}
