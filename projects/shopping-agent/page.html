@@ -31,7 +31,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 /* ---------- AI: DS .ai-pill (assets/ds/components.css) + AI icon; layout only here ---------- */
 .ag-sw{flex:1;display:flex;align-items:center;gap:12px;max-width:940px;margin:0 auto;min-width:0}
 .ag-sw .hd-search{margin:0;max-width:none}
-.hd-search.ag-has>span:first-child{flex:1}
+.hd-search>span:not(.ics):not(.caret){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 /* option 1 (pill inside the box): 44px field, 40px pill inset 2px top / bottom / right (Jake, 12 Oct) */
 .hd-search.ag-has,.ag-mrow .hd-search.ag-has{height:44px;padding-right:2px}
 .hd-search.ag-has>.ai-pill,.ag-mrow .hd-search.ag-has>.ai-pill{height:40px;margin-left:4px;padding:0 16px 0 12px;font-size:14px}
@@ -79,16 +79,16 @@ body.exporting .ai-pill--soft{box-shadow:none;border:1px solid var(--border-subt
 /* gallery = live debenhams.com (12 Oct) / Core PDP 2026: mobile peek rail (66% slides, 8px gap, from the edge) + 4px progress bar, no dots;
    desktop 100px thumb column + main image + white round arrows */
 .galwrap{margin:0 -16px}
-.gal{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.gal{display:flex;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
 .gal::-webkit-scrollbar{display:none}
-.gal .slide{flex:0 0 66%;aspect-ratio:2/3;scroll-snap-align:start;position:relative;overflow:hidden;background:var(--surface-media)}
-.gal .slide img{display:block;width:100%;height:100%;object-fit:cover}
+.gal .slide{flex:0 0 233px;height:350px;scroll-snap-align:start;position:relative;overflow:hidden;background:var(--surface-media)}
+.gal .slide>img{display:block;width:100%;height:100%;object-fit:cover}
 .pag{padding:16px 16px 0}
 .pag .track{height:4px;background:var(--border-subtle);border-radius:var(--radius-pill);position:relative;overflow:hidden}
 .pag .fill{position:absolute;inset:0 auto 0 0;width:25%;background:var(--text-primary);border-radius:var(--radius-pill);transition:width .2s}
 .thumbs,.arrow{display:none}
 .galmain{position:relative}
-.onimg{position:absolute;z-index:2;left:8px;right:8px;bottom:8px;display:flex;flex-wrap:nowrap;gap:6px}
+.onimg{position:absolute;z-index:2;left:8px;right:auto;bottom:8px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
 .galmain .onimg .ai-pill{height:32px;font-size:13px;padding:0 10px 0 8px;gap:4px}.galmain .onimg .ai-icon{width:16px!important;height:16px!important}
 @media(min-width:1024px){
   .galwrap{margin:0;display:grid;grid-template-columns:100px minmax(0,1fr);gap:24px;align-items:start}
@@ -97,11 +97,11 @@ body.exporting .ai-pill--soft{box-shadow:none;border:1px solid var(--border-subt
   .thumbs button.on,.thumbs button:hover{opacity:1}   /* no outline: the selected thumb is full strength, the rest 30% */
   .thumbs img{display:block;width:100%;height:100%;object-fit:cover}
   .gal{overflow:hidden;scroll-snap-type:none;gap:0}
-  .gal .slide{flex:0 0 100%}
+  .gal .slide{flex:0 0 100%;height:auto;aspect-ratio:2/3}
   .pag{display:none}
   .arrow{display:grid;place-items:center;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:var(--radius-pill);background:#FFF;box-shadow:var(--shadow-tile);border:0;padding:0;cursor:pointer;z-index:3}
   .arrow img{width:16px;height:16px}.arrow.l{left:12px}.arrow.r{right:12px}
-  .onimg{left:16px;right:16px;bottom:16px;gap:8px}
+  .onimg{left:16px;right:16px;bottom:16px;gap:8px;flex-direction:row;align-items:center}
   .galmain .onimg .ai-pill{height:36px;font-size:14px;padding:0 16px 0 12px;gap:6px}.galmain .onimg .ai-icon{width:18px!important;height:18px!important}
 }
 .buy{display:flex;flex-direction:column;gap:16px}
@@ -218,6 +218,60 @@ body.exporting .ai-pill--soft{box-shadow:none;border:1px solid var(--border-subt
 .cm-disc{flex:none;font-size:var(--chat-messenger-internal-disclosure-text-font-size,11px);font-weight:var(--chat-messenger-internal-disclosure-text-font-weight,400);color:var(--chat-messenger-internal-disclosure-text-color,#555);text-align:var(--chat-messenger-internal-disclosure-text-align,left);padding:var(--chat-messenger-internal-disclosure-text-padding)}
 .cm-rst{font-size:12px;text-decoration:var(--chat-messenger-internal-reset-button-text-text-decoration,underline)}
 
+/* ---------- Virtual Stylist chip (VTO Figma LxHqA4rFpRYNWJu8vzn18X · 15203:68330): white pill, puck shadow, teal hanger, 13px SemiBold ---------- */
+.vs-chip{font-weight:var(--w-strong,600)!important;font-size:13px!important;gap:6px!important}.vs-chip img{width:16px;height:12px;display:block}
+/* ---------- search active (Search Figma gKuKG9M8kSM2BCL6dy0G30 · 1012:2295): caret in the field, X beside it, Recent · Suggestions (replaces Popular) · Recently viewed ---------- */
+.ag-x{display:grid;place-items:center;width:24px;height:24px;flex:none;background:none;border:0;padding:0;cursor:pointer}.ag-x img{width:16px;height:16px}
+.hd-search .caret{display:inline-block;width:2px;height:24px;border-radius:99px;background:#5877FF;margin-right:-2px;flex:none;animation:caret 1s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
+.ac-sec{display:flex;flex-direction:column;gap:12px;padding:16px 0}.ac-sec+.ac-sec{border-top:1px solid var(--border-subtle)}
+.ac h4{font-size:16px;font-weight:600;margin:0}
+.ac-chips{display:flex;flex-wrap:wrap;gap:10px}
+.ac-chip{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:99px;background:var(--surface-media,#F2F2F2);font-size:15px;font-weight:300;color:var(--text-primary);border:0;cursor:pointer;white-space:nowrap}
+.ac-chip img{width:14px;height:14px;opacity:.7}
+.ac-hd{display:flex;align-items:center;gap:8px}.ac-hd h4{flex:1}
+.ac-rv{display:grid;grid-auto-flow:column;grid-auto-columns:42%;gap:10px;overflow:hidden}
+@media(min-width:1024px){.ac-rv{grid-auto-columns:calc((100% - 60px)/6)}.ac{padding:0 24px 24px}}
+.ac-rv .pc-name{font-size:13px}
+/* ---------- chat window, as the PA Deck Figma (OUmnWDam0w0czh9VZnaqx0 · 6:167) ---------- */
+.cm-tb{border-bottom:1px solid #EEEEEE}
+.cm-tb .ic .ai-icon{width:28px!important;height:28px!important}
+.cm-ctx{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}
+.cm-ctx .lbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6B6B6B}
+.cm-ctx .c{display:inline-flex;align-items:center;height:27px;padding:0 10px;border-radius:99px;background:#F2F8F7;color:#2F6B63;font-size:12px;white-space:nowrap}
+.cm-car{gap:10px}
+.cm-tile .n{font-size:12px;font-weight:500}
+.cm-tile .p{gap:4px}.cm-tile .p b{font-size:13px}.cm-tile .p s{font-size:11px}
+.cm-cart{height:29px;font-size:11px;min-width:0;width:100%}
+.cm-qr{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.cm-qr .ai-pill{height:36px;font-size:13px}
+.cm-box .cm-input{flex:1;min-width:0;border:0;outline:0;background:none;font:300 16px var(--chat-messenger-font-family);color:var(--chat-messenger-color--on-surface,#222)}
+.cm-box .cm-input::placeholder{color:#777}
+.cm-box .send{cursor:pointer;border:0;transition:background .15s}
+.cm-b .mock{display:none}
+/* ---------- agent start screen (the "Agent" option): the orb, a greeting, four capability cards, the config prompts as chips ---------- */
+.cm-start{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 0 8px;gap:16px}
+.orb{position:relative;width:112px;height:112px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#CFF5EE 0%,#9DEDE2 28%,#70BEB3 62%,#2E7F79 100%);box-shadow:0 18px 40px -16px rgba(0,120,125,.55),inset 0 -14px 28px rgba(255,255,255,.35);display:grid;place-items:center;animation:orbFloat 5s ease-in-out infinite}
+.orb::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,rgba(157,237,226,0),rgba(157,237,226,.9),rgba(0,120,125,0) 60%);animation:orbSpin 6s linear infinite;mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px))}
+.orb::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 70% 75%,rgba(255,255,255,.35),transparent 45%)}
+.orb .ai-icon{width:44px!important;height:44px!important;position:relative;filter:brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,.18))}
+@keyframes orbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes orbSpin{to{transform:rotate(360deg)}}
+.cm-start h2{margin:4px 0 0;font-size:26px;font-weight:300;line-height:1.2;color:#222}
+.cm-start h2 b{font-weight:600;background:linear-gradient(107deg,#2E7F79,#70BEB3 60%,#9DEDE2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cm-start p{margin:0;max-width:340px;font-size:14px;font-weight:300;line-height:1.5;color:#555}
+.cm-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-top:8px;text-align:left}
+.cm-card{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:16px;background:#FFF;border:1px solid var(--border-subtle,#E7E7E7);box-shadow:var(--shadow-card);cursor:pointer;font-family:inherit;text-align:left;transition:border-color .15s,transform .15s}
+.cm-card:hover{border-color:#70BEB3;transform:translateY(-1px)}
+.cm-card .ico{width:36px;height:36px;border-radius:12px;background:#F2F8F7;display:grid;place-items:center}.cm-card .ico img{width:20px;height:20px}
+.cm-card b{font-size:14px;font-weight:600;color:#222}.cm-card span{font-size:12px;color:#6B6B6B;line-height:1.4}
+.cm-start .pr{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:4px}
+.cm-start .pr button{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:99px;background:#F8F8F8;border:1px solid #E7E7E7;font:400 13px var(--chat-messenger-font-family);color:#222;cursor:pointer}
+.cm.mob .cm-start{padding-top:8px}.cm.mob .orb{width:96px;height:96px}.cm.mob .cm-start h2{font-size:24px}
+@media (prefers-reduced-motion:reduce){.orb,.orb::before,.hd-search .caret{animation:none}}
+.cm.in .cm-start>*{animation:cmItem .4s cubic-bezier(.22,.9,.24,1) both}
+.cm.in .cm-start>:nth-child(2){animation-delay:.2s}.cm.in .cm-start>:nth-child(3){animation-delay:.26s}.cm.in .cm-start>:nth-child(4){animation-delay:.32s}.cm.in .cm-start>:nth-child(5){animation-delay:.38s}
+
 /* toast — where a link would go */
 .ct{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;transition:.25s;background:#111;color:#fff;font:500 13px var(--font-family-base);padding:10px 16px;border-radius:8px;z-index:999;pointer-events:none;max-width:90vw;text-align:center}
 .ct.on{opacity:1;transform:translate(-50%,0)}
@@ -243,9 +297,9 @@ const IMG=i=>`projects/plp-alignment/img/debenhams/p${i<7?i:i+1}.jpg`;
 const A='projects/shopping-agent/';
 
 /* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
-let S={brand:'debenhams',page:'pdp',on:{},launcher:'in',msearch:'exposed',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
+let S={brand:'debenhams',page:'home',on:{},launcher:'in',start:'config',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
   pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
-  ssPos:'image',vtoPos:'image',vtoLabel:'Try it on',nbaPos:'top',nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
+  ssPos:'image',vtoPos:'image',vtoLabel:'Virtual Stylist',nbaPos:'top',nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
   cpPos:'module',search:false,chat:false,agent:{},focus:null};
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes
@@ -261,28 +315,34 @@ const ask=()=>'Ask '+E().name;
 /* data-feat = the feature (panel navigation + jump-to highlight); data-q = the query sent to the agent (window.googleAgent.sendQuery) */
 const F=(f,opt)=>`data-feat="${f}" data-tag="${esc(TAG[f]+(opt?' · '+opt:''))}"`;
 const TAG={launcher:'Entry point',pdpPrompts:'PDP prompts',shopSimilar:'Shop similar',vto:'Virtual try-on',nba:'Next best action',autocomplete:'Autocomplete',custom:'Custom prompts'};
-const L=(k,v)=>({launcher:{in:'1',out:'2'},pdpPrompts:{glance:'A',aboveCta:'B',belowCta:'C'},shopSimilar:{image:'A',cta:'B',card:'C'},vto:{image:'A',cta:'B'},nba:{top:'A',filter:'B',grid:'C'},autocomplete:{replace:'A',above:'B',below:'C'},custom:{module:'A',strip:'B',hero:'C'}}[k]||{})[v]||'';
+const L=(k,v)=>({launcher:{icon:'icon',in:'inside',out:'outside'},pdpPrompts:{glance:'A',aboveCta:'B',belowCta:'C'},shopSimilar:{image:'A',cta:'B',card:'C'},vto:{image:'A',cta:'B'},nba:{top:'A',filter:'B',grid:'C'},autocomplete:{replace:'A',above:'B',below:'C'},custom:{module:'A',strip:'B',hero:'C'}}[k]||{})[v]||'';
 
-/* ================= HEADER (DS header + USP drop-in) with the entry point per option ================= */
+/* ================= HEADER (DS header + USP drop-in) with the entry point per option =================
+   icon  = the AI icon in the header icon row, beside search (search stays an icon on mobile)
+   in    = exposed search with the white pill inside the field
+   out   = exposed search with the gradient-outline pill beside the field
+   Search active (Search Figma 1012:2295): caret in the field, X beside it, the suggestions panel beneath. */
 function header(){
-  /* entry point: 1 = inside the search box (white pill, no outline) · 2 = outside it (gradient-outline pill).
-     mobile search: exposed (field under the bar; no search icon in the header or the field) · in the header icons (AI icon beside search). Desktop is always exposed. */
-  const d=desk(),out=S.launcher==='out',exp=S.msearch!=='icon',on=ON('launcher');
+  const d=desk(),lo=S.launcher,exp=lo!=='icon'||S.search;
   let h=strip(d?V('header',1):V('header',0)).replace(/ style="[^"]*border[^"]*"/,'');
   h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
-  const q=S.search?'<span class="q">dress</span>':'<span>Search Fashion, Home &amp; Beauty</span>';
-  const pill=cls=>`<button class="ai-pill ${cls}" ${F('launcher',out?'2 · outside search':'1 · inside search')} data-q="">${spk(18)}${ask()}</button>`;
+  const ph=d?'Search Fashion, Home &amp; Beauty':'Search over 10,000+ brands...';
+  const q=S.search?`<span class="caret"></span><span>${ph}</span>`:`<span>${ph}</span>`;
+  const pill=cls=>`<button class="ai-pill ${cls}" ${F('launcher',lo==='out'?'outside search':'inside search')} data-q="">${spk(18)}${ask()}</button>`;
+  const aiIcon=`<button class="ai-iconbtn" ${F('launcher','icon in header')} data-q="" aria-label="${ask()}"><i class="ai-icon"></i></button>`;
   const sIcon='<button aria-label="Search"><img src="assets/ds/icons/search.svg" alt=""></button>';
+  const X=S.search?`<button class="ag-x" data-closesearch="1" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.replaceWith('✕')"></button>`:'';
   if(d){
     h=h.replace('<span>Search over 10,000+ brands...</span>',q);
-    if(on&&!out)h=h.replace('<div class="hd-search">','<div class="hd-search ag-has">').replace(/(<span class="ics">[\s\S]*?<\/span>)/,'$1'+pill(''));
-    if(on&&out)h=h.replace(/(<div class="hd-search">[\s\S]*?<\/span><\/div>)/,'<div class="ag-sw">$1'+pill('ai-pill--outline')+'</div>');
+    if(lo==='icon')h=h.replace('<div class="hd-icons">','<div class="hd-icons">'+aiIcon);
+    if(S.search)h=h.replace(/(<div class="hd-search">[\s\S]*?<\/span><\/div>)/,'<div class="ag-sw">$1'+X+'</div>');
+    else if(lo==='in')h=h.replace('<div class="hd-search">','<div class="hd-search ag-has">').replace(/(<span class="ics">[\s\S]*?<\/span>)/,'$1'+pill(''));
+    else if(lo==='out')h=h.replace(/(<div class="hd-search">[\s\S]*?<\/span><\/div>)/,'<div class="ag-sw">$1'+pill('ai-pill--outline')+'</div>');
   }else{
-    if(exp)h=h.replace(sIcon,'');
-    else if(on)h=h.replace(sIcon,`<button class="ai-iconbtn" ${F('launcher','header icon')} data-q="" aria-label="${ask()}"><i class="ai-icon"></i></button>`+sIcon);
-    if(exp||S.search){
-      const inside=on&&!out&&exp,beside=on&&out&&exp;
-      const row=`<div class="ag-mrow"><div class="ag-sw"><div class="hd-search${inside?' ag-has':''}">${q}${exp?'':'<span class="ics"><img src="assets/ds/icons/search.svg" alt=""></span>'}${inside?pill(''):''}</div>${beside?pill('ai-pill--outline'):''}</div></div>`;
+    if(lo==='icon')h=h.replace(sIcon,aiIcon+(S.search?'':sIcon));else h=h.replace(sIcon,'');
+    if(exp){
+      const inside=lo==='in'&&!S.search,beside=lo==='out'&&!S.search;
+      const row=`<div class="ag-mrow"><div class="ag-sw"><div class="hd-search${inside?' ag-has':''}">${q}${lo==='icon'?'<span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="assets/ds/icons/search.svg" alt=""></span>':''}${inside?pill(''):''}</div>${beside?pill('ai-pill--outline'):''}${X}</div></div>`;
       h=h.replace(/(<div class="hd-bar">[\s\S]*?<\/div><\/div>)/,'$1'+row);
     }
   }
@@ -290,18 +350,13 @@ function header(){
   return `<div id="hdrwrap">${h}${S.search?autocomplete():''}</div>`;
 }
 
-/* ================= AUTOCOMPLETE — live = terms + Top Sellers (captured 12 Oct); agent suggestions per option ================= */
+/* ================= SEARCH ACTIVE — Search Figma 1012:2295: Recent Searches · Popular Searches → the agent's Suggestions · Recently Viewed ================= */
 function autocomplete(){
-  const terms=['dress','<b>wedding</b> dress','<b>wedding guest</b> dresses','dress<b>ing table</b>','<b>coast</b> dresses'];
-  const T=`<ul class="ac-terms">${terms.map(t=>`<li>${t}</li>`).join('')}</ul>`;
-  const AI=ON('autocomplete')?`<div class="ac-ai" ${F('autocomplete',L('autocomplete',S.acMode)+' · '+{replace:'replaces terms',above:'above terms',below:'below terms'}[S.acMode])}><span class="lbl">${spk(16)}Suggestions</span><div class="set">${S.acChips.filter(Boolean).map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14,false)}${esc(c)}</button>`).join('')}<button class="ai-pill ai-pill--soft ai-pill--wrap ai-open" data-q="Help me discover dresses">${spk(14)}Help me discover</button></div></div>`:'';
-  const top=[1,21,5,24,31].map(i=>card(PR()[i],i,true)).join('');
-  let blk;
-  if(!ON('autocomplete'))blk=T;
-  else if(S.acMode==='replace')blk=AI;
-  else if(S.acMode==='above')blk=AI+'<div class="ac-hr"></div>'+T;
-  else blk=T+'<div class="ac-hr"></div>'+AI;
-  return `<div class="ac">${blk}<div class="ac-hr"></div><h4>Top Sellers</h4><div class="ac-rail">${top}</div></div>`;
+  const recent=['mens watches','living and home','clarins','hermes','hermes kelly'];
+  const R=`<div class="ac-sec"><h4>Recent Searches</h4><div class="ac-chips">${recent.map(r=>`<button class="ac-chip">${esc(r)}<img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.remove()"></button>`).join('')}</div></div>`;
+  const AI=`<div class="ac-sec" ${F('autocomplete','replaces Popular Searches')}><div class="ac-hd">${spk(18)}<h4>Suggestions from ${esc(E().name)}</h4></div><div class="ac-chips">${S.acChips.filter(Boolean).map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14)}${esc(c)}</button>`).join('')}<button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me discover something new">${spk(14)}Help me discover</button></div></div>`;
+  const rv=`<div class="ac-sec"><h4>Recently Viewed</h4><div class="ac-rv">${[1,21,5,24,31,27].map(i=>card(PR()[i],i,true)).join('')}</div></div>`;
+  return `<div class="ac">${R}${AI}${rv}</div>`;
 }
 
 /* ================= product card (DS .pc) ================= */
@@ -319,7 +374,7 @@ function home(){
   const d=desk(),doc=new DOMParser().parseFromString(renderHome('debenhams',d),'text/html'),hm=doc.querySelector('.hm'),mods=[...hm.children];
   if(ON('custom')){
     const chips=['Gifts for her under £50','Stocking fillers she’ll love','What do I get my dad?'];
-    const set=chips.map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14,false)}${esc(c)}</button>`).join('')+`<button class="ai-pill ai-pill--soft ai-pill--wrap ai-open" data-q="Help me find the perfect gift">${spk(14)}Help me choose</button>`;
+    const set=chips.map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14,false)}${esc(c)}</button>`).join('')+`<button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me find the perfect gift">${spk(14)}Help me choose</button>`;
     if(S.cpPos==='module'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-mod" ${F('custom','A · module')}><div class="pan"><h3>Gifting, sorted</h3><div class="sub">Ask ${esc(E().name)} for ideas</div><div class="set">${set}</div></div><img src="projects/usp-banner/img/home/debenhams/wk38-debs-gifting-hp-homepage-aw-gifting-${d?'dt':'mb'}.webp" alt=""></div>`;mods[1]&&mods[1].after(m.firstChild)}
     if(S.cpPos==='strip'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-strip" ${F('custom','B · strip')}><span>Gift shopping for someone special?</span><button data-q="Help me find the perfect gift">${spk(15)}Ask ${esc(E().name)} for ideas</button></div>`;hm.prepend(m.firstChild)}
     if(S.cpPos==='hero'&&mods[1]){mods[1].classList.add('cp-hero');const o=doc.createElement('div');o.className='ov';o.setAttribute('data-feat','custom');o.setAttribute('data-tag','Custom prompts · C · on hero');o.innerHTML=set;mods[1].prepend(o)}
@@ -330,7 +385,7 @@ function home(){
 /* ================= PLP — search results / category, DS sort & filter + cards, next best action ================= */
 function plp(){
   const d=desk(),ids=[1,5,21,23,24,27,29,31,0,6,2,3,8,9,11,4];
-  const nba=ON('nba')?`<div class="nba" ${F('nba',L('nba',S.nbaPos)+' · '+{top:'above results',grid:'in grid',filter:'under filters'}[S.nbaPos])}><h3>${esc(S.nbaQ)}</h3><p>Select an option to start a chat with ${esc(E().name)}</p><div class="set">${S.nbaOpts.filter(Boolean).map(o=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc('Dresses for: '+o)}">${spk(14,false)}${esc(o)}</button>`).join('')}<span class="sep"></span><button class="ai-pill ai-pill--soft ai-pill--wrap ai-open" data-q="Help me decide what to wear">${spk(14)}Help me decide</button></div></div>`:'';
+  const nba=ON('nba')?`<div class="nba" ${F('nba',L('nba',S.nbaPos)+' · '+{top:'above results',grid:'in grid',filter:'under filters'}[S.nbaPos])}><h3>${esc(S.nbaQ)}</h3><p>Select an option to start a chat with ${esc(E().name)}</p><div class="set">${S.nbaOpts.filter(Boolean).map(o=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc('Dresses for: '+o)}">${spk(14,false)}${esc(o)}</button>`).join('')}<span class="sep"></span><button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me decide what to wear">${spk(14)}Help me decide</button></div></div>`:'';
   const cards=ids.map(i=>card(PR()[i],i));
   if(nba&&S.nbaPos==='grid')cards.splice(d?4:2,0,nba);
   const bar=d?strip(V('sort-filter',0)):V('sort-filter',2).replace(/<div style="width:360px">([\s\S]*)<\/div>$/,'$1');
@@ -348,9 +403,9 @@ function pdp(){
   const prompts=ON('pdpPrompts')?`<div class="gap-wrap" ${F('pdpPrompts',L('pdpPrompts',S.pdpPos)+' · '+{glance:'replaces At a Glance',aboveCta:'above CTA',belowCta:'below CTA'}[S.pdpPos]+' · '+S.pdpDir)}>
     ${S.pdpHead?`<div class="gap-head">${spk(18)}${ask()}</div>`:''}
     <div class="prompts-container" data-dir="${S.pdpDir}" data-product-id="GZZ66300">${S.pdpPrompts.filter(Boolean).map(t=>`<div class="prompt-item"><button class="prompt-link ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(t)}" aria-label="${esc(t)}"><span class="prompt-link__icon">${spk(16,false)}</span><span class="prompt-link__text">${esc(t)}</span></button></div>`).join('')}
-    ${S.pdpAsk?`<div class="prompt-item"><button class="prompt-link ai-pill ai-pill--soft ai-pill--wrap ai-open" data-q=""><span class="prompt-link__icon">${spk(16)}</span><span class="prompt-link__text">Ask anything</span></button></div>`:''}</div></div>`:'';
+    ${S.pdpAsk?`<div class="prompt-item"><button class="prompt-link ai-pill ai-pill--outline ai-pill--wrap" data-q=""><span class="prompt-link__icon">${spk(16)}</span><span class="prompt-link__text">Ask anything</span></button></div>`:''}</div></div>`:'';
   const ssBtn=ON('shopSimilar')?`<button class="ai-pill ai-pill--soft" ${F('shopSimilar','A · on image')} data-q="Shop similar">${spk(16)}Shop similar</button>`:'';
-  const vtoBtn=ON('vto')?`<button class="ai-pill ai-pill--soft" ${F('vto','A · on image')} data-q="Try it on" data-vto="1">${spk(16)}${esc(S.vtoLabel)}</button>`:'';
+  const vtoBtn=ON('vto')?`<button class="ai-pill ai-pill--soft vs-chip" ${F('vto','A · on image')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'';
   /* one product shot in the data set: four crops of it stand in for the live four-image gallery */
   const SH=['','object-position:50% 12%;transform:scale(1.7);transform-origin:50% 18%','object-position:50% 50%;transform:scale(1.35)','object-position:50% 95%;transform:scale(1.6);transform-origin:50% 92%'];
   const ai=[S.vtoPos==='image'&&vtoBtn,S.ssPos==='image'&&ssBtn].filter(Boolean).join('');
@@ -358,7 +413,7 @@ function pdp(){
     <div class="galmain"><div class="gal" id="gal">${SH.map((st,i)=>`<div class="slide"><img src="${IMG(1)}" alt="${esc(p.name)} — image ${i+1}" style="${st}">${!i&&ai?`<span class="onimg">${ai}</span>`:''}</div>`).join('')}</div>
       <button class="arrow l" data-step="-1" aria-label="Previous"><img src="assets/ds/icons/lib/icons-left.svg" alt=""></button><button class="arrow r" data-step="1" aria-label="Next"><img src="assets/ds/icons/lib/icons-right.svg" alt=""></button></div>
     <div class="pag"><div class="track"><div class="fill" id="pagfill"></div></div></div></div>`;
-  const ctaRow=[S.vtoPos==='cta'&&ON('vto')?`<button class="ai-pill ai-pill--soft ai-cta" ${F('vto','B · under CTA')} data-q="Try it on" data-vto="1">${spk(16)}${esc(S.vtoLabel)}</button>`:'',S.ssPos==='cta'&&ON('shopSimilar')?`<button class="ai-pill ai-pill--soft ai-cta" ${F('shopSimilar','B · under CTA')} data-q="Shop similar">${spk(16)}Shop similar</button>`:''].filter(Boolean);
+  const ctaRow=[S.vtoPos==='cta'&&ON('vto')?`<button class="ai-pill ai-pill--soft ai-cta vs-chip" ${F('vto','B · under CTA')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'',S.ssPos==='cta'&&ON('shopSimilar')?`<button class="ai-pill ai-pill--soft ai-cta" ${F('shopSimilar','B · under CTA')} data-q="Shop similar">${spk(16)}Shop similar</button>`:''].filter(Boolean);
   const info=`<div class="buy"><div class="prow"><div><div class="pbrand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div></div><img src="assets/ds/icons/heart-24.svg" alt="" width="24"></div>
     ${V('ratings',0)}
     ${V('price',0)}
@@ -382,15 +437,28 @@ function applyVars(el,obj){for(const k in obj){if(k==='mobile'||typeof obj[k]!==
 function md(s){return esc(s).replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="#" data-href="$2">$1</a>')}
 function chat(){
   if(!CHAT.open||!CFG)return '';
-  const p=CFG.payload,st=p.settings,mob=innerWidth<768,c=p.components,zs=c.zeroState.payload,icon=E().icon==='spark'?spk(28):`<img class="ic" src="${A}img/chat-icon.jpg" alt="">`;
-  const head=[c.text&&{o:c.text.order,h:`<div class="cm-text" data-c="text">${md(c.text.payload.text)}</div>`},
-    c.hero&&{o:c.hero.order,h:`<div class="cm-hero"><img src="${A}img/${mob?'hero-mobile':'hero'}.jpg" alt=""></div>`},
-    {o:c.zeroState.order,h:`<div class="cm-zero" data-c="zero">${zs.text.replace(/<(?!br\s*\/?>)/g,'&lt;')}<div class="pr">${zs.prompts.map(t=>`<button data-q="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>`}].filter(Boolean).sort((a,b)=>a.o-b.o).map(x=>x.h).join('');
+  const p=CFG.payload,st=p.settings,mob=innerWidth<768,c=p.components,zs=c.zeroState.payload,name=esc(E().name);
+  const icon=E().icon==='spark'||S.start==='agent'?`<span class="ic">${spk(28)}</span>`:`<img class="ic" src="${A}img/chat-icon.jpg" alt="">`;
+  const tc=c.text?`<div class="cm-text" data-c="text">${md(c.text.payload.text)}</div>`:'';
+  let head;
+  if(S.start==='agent'){
+    /* the Agent start screen: orb · greeting · four things it can do · the config prompts */
+    const cards=[['Find an outfit','for an occasion, a budget or a vibe','icons-dress','Help me find an outfit'],['Check the fit','sizes, fabric and how it wears','icons-measure','Does this fit true to size?'],['Style what I own','pair new pieces with past buys','icons-hanger','What goes with the black blazer I bought?'],['Gift ideas','for anyone, at any budget','icons-gift','Help me find a gift']];
+    head=`<div class="cm-start"><div class="orb">${spk(44)}</div><h2>Hi there, I’m <b>${name}</b></h2><p>${esc(E().intro.replace(/^Hi there[^!]*!\s*/,''))}</p>
+      <div class="cm-cards">${cards.map(([h,s,i,q])=>`<button class="cm-card" data-q="${esc(q)}"><span class="ico"><img src="assets/ds/icons/lib/${i}.svg" alt="" onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'ai-icon'}))"></span><b>${h}</b><span>${s}</span></button>`).join('')}</div>
+      <div class="pr">${zs.prompts.map(t=>`<button data-q="${esc(t)}">${esc(t)}</button>`).join('')}</div>${tc}</div>`;
+  }else{
+    head=[c.text&&{o:c.text.order,h:tc},
+      c.hero&&{o:c.hero.order,h:`<div class="cm-hero"><img src="${A}img/${mob?'hero-mobile':'hero'}.jpg" alt=""></div>`},
+      {o:c.zeroState.order,h:`<div class="cm-zero" data-c="zero">${zs.text.replace(/<(?!br\s*\/?>)/g,'&lt;')}<div class="pr">${zs.prompts.map(t=>`<button data-q="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>`}].filter(Boolean).sort((a,b)=>a.o-b.o).map(x=>x.h).join('');
+  }
+  if(CHAT.msgs.length)head=S.start==='agent'?'':tc;   /* once the conversation starts the start screen scrolls away, as in the Figma */
   const msgs=CHAT.msgs.map(m=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b">${m.b}</div>`).join('');
+  const txt=CHAT.draft||'';
   return `${mob?'':'<div class="cm-scrim" data-close="1"></div>'}<div class="cm${mob?' mob':''}" id="cm" role="dialog" aria-label="${esc(st['chat-title'])}">
-    <div class="cm-tb">${E().icon==='spark'?`<span class="ic">${icon}</span>`:icon}<span class="t">${esc(st['chat-title'])}</span><span class="acts"><button data-reset="1" aria-label="Reset"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 4a8 8 0 1 0 8 8"/><path d="M12 1v6l3-3z" fill="currentColor"/></svg></button><button data-close="1" aria-label="Close"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></span></div>
-    <div class="cm-body">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
-    <div class="cm-in"><div class="cm-box"><span class="plus">+</span><span class="ph">${esc(st['placeholder-text'])}</span><span class="send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
+    <div class="cm-tb">${icon}<span class="t">${esc(st['chat-title'])}</span><span class="acts"><button data-reset="1" aria-label="Reset"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 4a8 8 0 1 0 8 8"/><path d="M12 1v6l3-3z" fill="currentColor"/></svg></button><button data-close="1" aria-label="Close"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></span></div>
+    <div class="cm-body" id="cmbody">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
+    <form class="cm-in" id="cmform"><div class="cm-box"><span class="plus">+</span><input class="cm-input" id="cminput" type="text" autocomplete="off" placeholder="${esc(st['placeholder-text'])}" value="${esc(txt)}" aria-label="Message ${name}"><button type="submit" class="send${txt?' on':''}" id="cmsend" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></form>
     <div class="cm-disc">${esc(st['disclosure-text'])}</div></div>`;
 }
 function styleChat(){const el=document.getElementById('cm');if(!el)return;const sy=CFG.payload.style,mob=innerWidth<768;applyVars(el,sy);if(mob)applyVars(el,sy.mobile||{});
@@ -398,18 +466,32 @@ function styleChat(){const el=document.getElementById('cm');if(!el)return;const 
   const z=el.querySelector('[data-c="zero"]');if(z)applyVars(z,CFG.payload.components.zeroState.payload.styles);
   const t=el.querySelector('[data-c="text"]');if(t&&CFG.payload.components.text)applyVars(t,CFG.payload.components.text.payload.styles)}
 
-/* mock replies — the live agent writes these; the tiles follow rich-content-config.tileConfig */
-function tile(i){const p=PR()[i];return `<div class="cm-tile"><img src="${IMG(i)}" alt=""><div class="n">${esc(p.name)}</div><div class="p"><b class="${p.was?'sale':''}">${esc(p.price)}</b>${p.was?`<s>${esc(p.was)}</s><em>${esc(p.pct)}</em>`:''}</div><button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div>`}
+/* scripted replies — the live agent writes these; the tiles follow rich-content-config.tileConfig */
+function tile(i){const p=PR()[i];return `<div class="cm-tile"><img src="${IMG(i)}" alt=""><div class="n">${esc(p.name)}</div><div class="p"><b class="${p.was?'sale':''}">${esc(p.price)}</b>${p.was?`<s>${esc(p.was)}</s>`:''}</div><button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div>`}
+const ctx=(...c)=>`<div class="cm-ctx"><span class="lbl">${spk(14)}Using</span>${c.map(x=>`<span class="c">${esc(x)}</span>`).join('')}</div>`;
+const qr=(...c)=>`<div class="cm-qr">${c.map(x=>`<button class="ai-pill ai-pill--outline" data-q="${esc(x)}">${spk(14)}${esc(x)}</button>`).join('')}</div>`;
+const car=ids=>`<div class="cm-car">${ids.map(tile).join('')}</div>`;
 function reply(q,vto){
-  const mk='<br><span class="mock">Mock reply — the agent writes this</span>';
-  if(vto)return `Let’s see how the <b>Coast Lace and Pleated Midi Shirt Dress</b> looks on you. Upload a full-length photo and I’ll show it on you in a few seconds.<div class="cm-up">${spk(28)}<div><b>Upload a photo</b>Your photo is only used for this try-on.</div></div>${mk}`;
-  if(/similar/i.test(q))return `Here are styles similar to the <b>Coast Lace and Pleated Midi Shirt Dress</b> — lace, pleats and midi lengths in a similar price range.<div class="cm-car">${[21,31,27,5].map(tile).join('')}</div>${mk}`;
-  if(/fit|size/i.test(q))return `This dress is a <b>regular fit</b> and most customers say it’s true to size. If you’re between sizes, size up for room through the shoulders. What size do you usually wear?${mk}`;
-  return `Here are a few I think you’ll love. Tell me your size, budget or occasion and I’ll narrow it down.<div class="cm-car">${[1,21,24,29].map(tile).join('')}</div>${mk}`;
+  q=q||'';
+  if(vto)return `Let’s see how the <b>Coast Lace and Pleated Midi Shirt Dress</b> looks on you. Upload a full-length photo and I’ll show it on you in a few seconds.<div class="cm-up">${spk(28)}<div><b>Upload a photo</b>Your photo is only used for this try-on.</div></div>`;
+  if(/similar/i.test(q))return `Here are styles similar to the <b>Coast Lace and Pleated Midi Shirt Dress</b>: lace, pleats and midi lengths at a similar price.${car([21,31,27,5])}${qr('Only under £50','Show me in petite')}`;
+  if(/wedding|occasion|outfit/i.test(q))return `Congratulations to her! For an October wedding in the Cotswolds, here are sleeved midis in the tailored shades you love, in a 10:${ctx('Size 10','Tailored','Family wedding')}${car([27,21,31])}${qr('Love the green, can I wear it to work?','Shoes to match')}`;
+  if(/work|office/i.test(q))return `Yes, ponte jersey keeps its shape. Add the black blazer and loafers you bought last month and it works for the office. Want a knit to layer over it?${ctx('Past purchases','Workwear')}${qr('Show me knits','Add it to my bag')}`;
+  if(/knit|jumper|cardigan|layer/i.test(q))return `These layer over the midi without adding bulk, all in your size:${car([0,3,8])}${qr('Which is warmest?','Show me in navy')}`;
+  if(/shoe|boot|heel/i.test(q))return `A mid heel keeps it wedding-smart but walkable. These pick up the dress colour:${car([6,9,8])}${qr('Wide fit options','Under £60')}`;
+  if(/fit|size/i.test(q))return `This dress is a <b>regular fit</b> and most customers say it’s true to size. If you’re between sizes, size up for room through the shoulders. What size do you usually wear?${qr('I’m a 10','I’m between 10 and 12')}`;
+  if(/gift|present/i.test(q))return `Happy to help. Who’s it for, and roughly what budget? In the meantime, these are the most-loved gifts this month:${car([14,18,33])}${qr('For my mum, under £50','Something for the home')}`;
+  if(/blazer|own|bought|wardrobe/i.test(q))return `Your black blazer works with all of these. The ponte midi is the easiest match:${ctx('Past purchases','Size 10')}${car([27,24,29])}${qr('Build me a full look','Only under £50')}`;
+  if(/bag\b|add it/i.test(q))return `Done: the Ponte Snaffle Trim Midi Dress in a 10 is in your bag. Anything else for the wedding?${qr('Shoes to match','A clutch bag')}`;
+  if(/discover|new|browse/i.test(q))return `Based on what you’ve been looking at, here’s what’s new in your style and size:${ctx('Recently viewed','Size 10')}${car([1,21,24,29])}${qr('More like the first one','Only new in')}`;
+  return `Here are a few I think you’ll love. Tell me your size, budget or occasion and I’ll narrow it down.${car([1,21,24,29])}${qr('Under £50','For a wedding','Something for work')}`;
 }
 function openChat(q,vto){CHAT.open=true;
-  if(q){CHAT.msgs.push({u:q},{typing:true});setTimeout(()=>{CHAT.msgs=CHAT.msgs.filter(m=>!m.typing);CHAT.msgs.push({b:reply(q,vto)});drawChat()},EXPORTING?0:900)}
+  if(q){CHAT.msgs.push({u:q},{typing:true});setTimeout(()=>{CHAT.msgs=CHAT.msgs.filter(m=>!m.typing);CHAT.msgs.push({b:reply(q,vto)});if(CHAT.typed)CHAT.focus=true;drawChat()},EXPORTING?0:900)}
+  else CHAT.focus=true;
   drawChat();parent.postMessage({protoChat:true},'*')}
+/* the shopper types: Enter or the arrow sends it to the agent (production: window.googleAgent.sendQuery(text)) */
+function send(){const inp=document.getElementById('cminput');const q=(inp?inp.value:'').trim();if(!q)return;CHAT.draft='';CHAT.user=true;CHAT.typed=true;CHAT.focus=true;openChat(q,false)}
 /* DRAWN = the window is on screen: the open animation runs only on the closed → open step, not when a reply or a page re-render redraws it */
 let DRAWN=false;
 function closeChat(){const cm=document.getElementById('cm');
@@ -420,7 +502,9 @@ function closeChat(){const cm=document.getElementById('cm');
 function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();
   const open=!!document.getElementById('cm');
   if(open&&!DRAWN&&!EXPORTING)document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>el.classList.add('in'));
-  DRAWN=open}
+  DRAWN=open;
+  const body=document.getElementById('cmbody');if(body&&CHAT.msgs.length)body.scrollTop=body.scrollHeight;
+  const inp=document.getElementById('cminput');if(inp&&CHAT.focus&&!EXPORTING){inp.focus();inp.setSelectionRange(inp.value.length,inp.value.length);CHAT.focus=false}}
 
 /* ================= render ================= */
 const PAGES={home,plp,pdp};
@@ -448,8 +532,12 @@ function galSync(){const g=document.getElementById('gal'),f=document.getElementB
 function galGo(i){const g=document.getElementById('gal');if(!g)return;const n=g.children.length,k=Math.max(0,Math.min(i,n-1));g.scrollTo({left:g.children[k].offsetLeft-g.children[0].offsetLeft,behavior:EXPORTING?'auto':'smooth'})}
 document.addEventListener('scroll',e=>{if(e.target&&e.target.id==='gal')requestAnimationFrame(galSync)},true);
 document.addEventListener('click',e=>{const t=e.target.closest('[data-slide]');if(t){e.stopPropagation();galGo(+t.dataset.slide);return}const a=e.target.closest('[data-step]');if(a){e.stopPropagation();galGo(galIdx()+(+a.dataset.step))}},true);
+document.addEventListener('submit',e=>{if(e.target.id==='cmform'){e.preventDefault();send()}});
+document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.target.value;const b=document.getElementById('cmsend');if(b)b.classList.toggle('on',!!e.target.value.trim())}});
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
+  if(e.target.closest('[data-closesearch]')){S.search=false;parent.postMessage({protoSearch:false},'*');render();return}
+  if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
   if(qb){e.preventDefault();CHAT.user=true;const q=qb.dataset.q;openChat(q?(qb.dataset.ctx&&/similar/i.test(q)?q:q):'',!!qb.dataset.vto);return}
   if(e.target.closest('[data-close]')){CHAT.user=false;CHAT.msgs=[];closeChat();return}

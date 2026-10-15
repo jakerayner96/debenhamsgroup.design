@@ -170,18 +170,20 @@ body.fold .device iframe{box-shadow:none}
 <script src="agent.js"></script>
 <script>
 /* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
+/* the feature list, in Jake's order (15 Oct) — one radio per feature; picking one shows its page and scrolls to it */
 const FEATS=[
-  {k:'launcher',n:'Entry point · Ask Deb',pg:'all',d:'How the shopper opens the agent from the header. DS AI pill + AI icon (one look group-wide).',opts:[['in','1 · Inside the search box','White pill, no outline, at the end of the field.'],['out','2 · Outside the search box','AI gradient-outline pill beside the field.']]},
-  {k:'chat',n:'Chat window',pg:'all',d:'The agent itself — every value comes from the config file (Agent config below). Any entry point opens it.',opts:null},
-  {k:'pdpPrompts',n:'PDP prompts',pg:'pdp',d:'<google-ai-prompts product-id direction>. Pre-baked at launch, dynamic as the agent learns. Tapping a prompt opens the chat with it.',opts:[['glance','A · Replaces At a Glance','Takes the At a Glance slot (under the gallery on desktop, after delivery on mobile).'],['aboveCta','B · Above Add to Bag','Between size and the CTA — the hesitation point.'],['belowCta','C · Below Add to Bag','Straight under the CTA, before Deliver+.']]},
-  {k:'shopSimilar',n:'Shop similar',pg:'pdp',d:'sendQuery("Shop similar") — style alternatives and out-of-stock recovery.',opts:[['image','A · On the PDP image','Pill bottom-right of the main image (the deck’s placement).'],['cta','B · Under Add to Bag','Outline button under the CTA, beside Try it on.'],['card','C · On PLP cards','A small “Similar” pill on every product card (opens the PLP).']]},
-  {k:'vto',n:'Virtual try-on',pg:'pdp',d:'Opens the chat asking for a photo. Debenhams marketplace: apparel and home.',opts:[['image','A · On the PDP image','Chip top-left of the main image.'],['cta','B · Under Add to Bag','Outline button under the CTA.']]},
-  {k:'nba',n:'Next best action',pg:'plp',d:'Co-shop module on search / browse: a question, answer chips and Help me decide. Chips are contextual in production — FDE build.',opts:[['top','A · Above the results','Under the title and category pills, before sort & filter.'],['filter','B · Under sort & filter','Directly above the grid.'],['grid','C · In the grid','A full-width row after the first row of products.']]},
-  {k:'autocomplete',n:'Autocomplete',pg:'search',d:'Long-form agent suggestions in the search dropdown. Live today = 5 term suggestions + Top Sellers.',opts:[['replace','A · Replace live suggestions','Agent chips instead of the term list.'],['above','B · Above live suggestions','Agent chips first, then the terms.'],['below','C · Below live suggestions','Terms first, agent chips before Top Sellers.']]},
-  {k:'custom',n:'Custom prompts',pg:'home',d:'Fixed chips we choose and place (CMS-fed), each sendQuery("…"). Homepage shown; the same works on category pages.',opts:[['module','A · Homepage module','Image + prompt panel under the hero (the deck’s Backyard Gardening card).'],['strip','B · Promo strip','A slim agent bar at the top of the page.'],['hero','C · Chips on the hero','Prompt chips over the first hero image.']]},
+  {k:'ep-icon',n:'Entry point · Icon in header',pg:'home',d:'The AI icon sits in the header icon row, beside search. Mobile search stays an icon; tapping it opens the Search Figma state (recent · suggestions · recently viewed).',set:{launcher:'icon'}},
+  {k:'ep-in',n:'Entry point · Exposed search (inside)',pg:'home',d:'The search field is exposed under the header bar with the white Ask Deb pill inside it (44px field, 40px pill, 2px inset). No search icon in the header or the field.',set:{launcher:'in'}},
+  {k:'ep-out',n:'Entry point · Exposed search (outside)',pg:'home',d:'The search field is exposed with the gradient-outline Ask Deb pill beside it, both 44px.',set:{launcher:'out'}},
+  {k:'custom',n:'Content Prompts Banner',pg:'home',d:'Fixed prompts we choose and place (CMS-fed); each one opens the agent with that question. Homepage shown; the same works on category pages.',opts:[['module','A · Homepage module','Image + prompt panel under the hero.'],['strip','B · Promo strip','A slim AI-gradient bar at the top of the page.'],['hero','C · Chips on the hero','Prompt chips over the first hero image.']]},
+  {k:'autocomplete',n:'Search Suggestions',pg:'plp',search:true,d:'Search active, as the Search Figma (1012:2295): Recent Searches stay, Popular Searches become the agent’s suggestions, Recently Viewed stays. The last chip (Help me discover) is the open-ended one.'},
+  {k:'nba',n:'PLP Next Best Action',pg:'plp',d:'Co-shop module on search / browse: a question, answer chips and the open-ended Help me decide. Chips are contextual in production (FDE build).',opts:[['top','A · Above the results','Under the title and category pills, before sort & filter.'],['filter','B · Under sort & filter','Directly above the grid.'],['grid','C · In the grid','A full-width row after the first row of products.']]},
+  {k:'pdpPrompts',n:'PDP Prompts',pg:'pdp',d:'<google-ai-prompts product-id direction>. Pre-baked at launch, dynamic as the agent learns. The last chip (Ask anything) is outlined so it reads as the open-ended option.',opts:[['glance','A · Replaces At a Glance','Takes the At a Glance slot (under the gallery on desktop, after delivery on mobile).'],['aboveCta','B · Above Add to Bag','Between size and the CTA.'],['belowCta','C · Below Add to Bag','Straight under the CTA, before Deliver+.']]},
+  {k:'vto',n:'Virtual Try On',pg:'pdp',d:'Our Virtual Stylist chip (VTO Figma 15203:68330): white pill, teal hanger, 13px SemiBold. Opens the agent, which asks for a photo.',opts:[['image','A · On the PDP image','Bottom-left of the first gallery image.'],['cta','B · Under Add to Bag','Outline button under the CTA.']]},
+  {k:'shopSimilar',n:'Shop Similar',pg:'pdp',d:'sendQuery("Shop similar"): style alternatives and out-of-stock recovery.',opts:[['image','A · On the PDP image','Beside Virtual Stylist at the foot of the first image.'],['cta','B · Under Add to Bag','Outline button under the CTA.'],['card','C · On PLP cards','A small Similar pill on every product card.']]},
 ];
 const OUT=['AI Overview','Compare','Shop the look'];
-const POSKEY={launcher:'launcher',pdpPrompts:'pdpPos',shopSimilar:'ssPos',vto:'vtoPos',nba:'nbaPos',autocomplete:'acMode',custom:'cpPos'};
+const POSKEY={pdpPrompts:'pdpPos',shopSimilar:'ssPos',vto:'vtoPos',nba:'nbaPos',custom:'cpPos'};
 const P={
   name:'shopping-agent',
   title:'Shopping agent',
@@ -190,10 +192,10 @@ const P={
   domains:{debenhams:'debenhams.com'},
   files:['page.html','agent.js','base-config.json'],
   store:'proto-shopping-agent',
-  initial:()=>({page:'pdp',feat:'pdpPrompts',on:{},launcher:'in',msearch:'exposed',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
+  initial:()=>({page:'home',feat:'ep-in',on:{},launcher:'in',start:'config',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
     pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
-    ssPos:'image',vtoPos:'image',vtoLabel:'Try it on',nbaPos:'top',nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
-    acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
+    ssPos:'image',vtoPos:'image',vtoLabel:'Virtual Stylist',nbaPos:'top',nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
+    acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
     cpPos:'module',search:false,chat:false,agent:{},focus:null}),
 };
 let BASE=null;fetch('base-config.json').then(r=>r.json()).then(b=>{BASE=b;panel()});
@@ -201,56 +203,56 @@ const cfgFile=()=>AG.build(BASE,S.cfg.agent);
 const H=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 function dl(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
 /* the dev hand-off: placements chosen + the calls each entry point makes */
-function handoff(c){const f=k=>c.on[k]!==false,lines=[];
+function handoff(c){const lines=[];const ep={icon:'Icon in header (AI icon beside search)',in:'Exposed search, Ask Deb pill inside the field (44px field · 40px pill, 2px inset)',out:'Exposed search, gradient-outline Ask Deb pill beside the field (both 44px)'}[c.launcher];
   lines.push('# Shopping agent — Debenhams · dev hand-off','',`Exported ${new Date().toISOString()}`,'');
   lines.push('## 1 · Agent config (backend)','`salesAgentConfig.json` = the dev retrieveConfig with our edits applied. Changed keys:','');
   if(BASE)AG.diff(BASE,cfgFile()).forEach(d=>lines.push(`- \`${d.path}\`: ${JSON.stringify(d.from)} → ${JSON.stringify(d.to)}`));
-  lines.push('','Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
-  lines.push('## 2 · Entry points (front end)','');
-  lines.push(`- **Mobile search**: ${c.msearch==='icon'?'in the header icons, AI icon beside search':'exposed under the header, no search icon in header or field'} (desktop always exposed)`);
-  FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${f(x.k)?o[1]+' — '+o[2]:'OFF'}`)});
+  lines.push('',`Start screen: ${c.start==='agent'?'Agent (orb · greeting · four capability cards · config prompts) — needs a custom_template component in the messages-header slot':'Config (T&Cs text block · hero · zero-state intro + prompts), as the dev file'}.`);
+  lines.push('Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
+  lines.push('## 2 · Entry point + features (front end)','',`- **Entry point**: ${ep}`);
+  FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${o?o[1]+' — '+o[2]:''}`)});
+  lines.push('- **Search Suggestions**: Popular Searches → the agent’s suggestions; Recent Searches and Recently Viewed unchanged (Search Figma 1012:2295).');
   lines.push('','Calls:','```js',
-    '// every chip / button below opens the chat with its query',
+    '// every chip / button below opens the chat with its query; the input sends what the shopper types',
     'window.googleAgent.sendQuery("Shop similar");',
-    `window.googleAgent.sendQuery("${c.vtoLabel}");            // VTO — agent asks for a photo`,
-    ...c.acChips.filter(Boolean).map(q=>`window.googleAgent.sendQuery(${JSON.stringify(q)});   // autocomplete`),
-    'window.googleAgent.sendQuery("Help me find the perfect gift");   // custom prompts (CMS-fed)',
+    'window.googleAgent.sendQuery("Virtual Stylist");         // VTO — agent asks for a photo',
+    ...c.acChips.filter(Boolean).map(q=>`window.googleAgent.sendQuery(${JSON.stringify(q)});   // search suggestion`),
+    `window.googleAgent.sendQuery(${JSON.stringify(c.nbaQ)}+" → "+answer);   // PLP next best action`,
+    'window.googleAgent.sendQuery("Help me find the perfect gift");   // content prompts banner (CMS-fed)',
     '```','','PDP prompts:','```html',
     `<google-ai-prompts product-id="{sku}" direction="${c.pdpDir}"></google-ai-prompts>`,'```',
-    `Launch prompts (pre-baked): ${c.pdpPrompts.filter(Boolean).map(q=>JSON.stringify(q)).join(', ')}${c.pdpAsk?' + “Ask anything”':''}.`,
-    '','Host styling we need on the prompts component (names to confirm against the allow-listed docs): chip background `'+(c.agent.chipBg||AG.DEF.chipBg)+'`, border `'+(c.agent.chipBorder||AG.DEF.chipBorder)+'`, radius '+(c.agent.chipRadius||AG.DEF.chipRadius)+'px, 14px Geologica, gap 2 (8px), sparkle icon 16px.',
-    '','Next best action, autocomplete chips, shop the look: FDE-built — placements above.','',`Out of scope this phase: ${OUT.join(', ')}.`);
+    `Launch prompts (pre-baked): ${c.pdpPrompts.filter(Boolean).map(q=>JSON.stringify(q)).join(', ')}${c.pdpAsk?' + “Ask anything” (outlined — the open-ended option)':''}.`,
+    '','Chip styling (DS .ai-pill): white pill, puck shadow, 14px Geologica, gap 2 (8px), AI icon 16px; the last chip of a group is the gradient-outline pill, not the shadow one.',
+    '',`Out of scope this phase: ${OUT.join(', ')}.`);
   return lines.join('\n')}
 P.extra=(root)=>{if(!BASE)return;root.file('salesAgentConfig.json',JSON.stringify(cfgFile(),null,2));root.file('HANDOFF.md',handoff(S.cfg))};
 
 function renderPanel(host,S,update){
-  const c=S.cfg,e=Object.assign({},AG.DEF,c.agent),fe=FEATS.find(x=>x.k===c.feat)||FEATS[0];
-  if(!['in','out'].includes(c.launcher))c.launcher='in';if(!c.msearch)c.msearch='exposed';
-  const pageOf=k=>({pdpPrompts:'pdp',shopSimilar:c.ssPos==='card'?'plp':'pdp',vto:'pdp',nba:'plp',custom:'home'}[k]);
+  const c=S.cfg,e=Object.assign({},AG.DEF,c.agent);
+  if(!FEATS.some(x=>x.k===c.feat))c.feat={in:'ep-in',out:'ep-out',icon:'ep-icon'}[c.launcher]||'ep-in';
+  if(!['icon','in','out'].includes(c.launcher))c.launcher='in';if(!c.start)c.start='config';
+  const fe=FEATS.find(x=>x.k===c.feat);
   const opt=(on,b,s,attr)=>`<button class="opt${on?' on':''}" ${attr}><span class="r"></span><span class="t"><b>${b}</b>${s?`<span>${s}</span>`:''}</span></button>`;
   const changed=BASE?AG.diff(BASE,cfgFile()):[];
   host.innerHTML=`<h1>Shopping agent · Debenhams</h1>
-  <p class="intro">Google Cloud Shopping Agent, Holiday 2026 package — Debenhams only. Pick a feature to jump to it, choose its placement (A / B / C), and edit the config file the devs deploy. Every entry point opens the chat.</p>
-  <div class="card"><h3>Page</h3><div class="chips" id="pg">${[['home','Home'],['plp','PLP · Dresses'],['pdp','PDP']].map(([v,n])=>`<button class="chip${c.page===v?' on':''}" data-v="${v}">${n}</button>`).join('')}</div>
-    <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
-      <label class="sw"><input type="checkbox" id="t-search"${c.search?' checked':''}><i></i>Search open (autocomplete)</label>
-      <label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Chat window open</label></div></div>
-  <div class="card"><h3>Features <small>${FEATS.filter(x=>c.on[x.k]!==false).length} on</small></h3>
-    ${FEATS.map(x=>`<div class="feat${x.k===c.feat?' on':''}" data-k="${x.k}"><button class="fn"><b>${x.n}</b><span>${x.pg==='all'?'All pages':x.pg==='search'?'Search':x.pg.toUpperCase()}${x.opts?' · '+(x.opts.find(o=>o[0]===c[POSKEY[x.k]])||[,''])[1].split(' · ')[0]:''}</span></button>${x.k==='chat'?'':`<label class="sw"><input type="checkbox" data-on="${x.k}"${c.on[x.k]!==false?' checked':''}><i></i></label>`}</div>`).join('')}
+  <p class="intro">Google Cloud Shopping Agent, Holiday 2026 package — Debenhams only. Pick a feature to see it in place, choose its placement, and edit the config file the devs deploy. Every entry point opens the chat, and you can type to it.</p>
+  <div class="card"><h3>Features</h3>
+    ${FEATS.map(x=>opt(x.k===c.feat,x.n,'',`data-feat="${x.k}"`)).join('')}
     <p style="margin:10px 0 0">Not in this phase: ${OUT.join(' · ')}.</p></div>
   <div class="card"><h3>${fe.n}</h3><p>${H(fe.d)}</p>
     ${fe.opts?fe.opts.map(o=>opt(c[POSKEY[fe.k]]===o[0],o[1],o[2],`data-pos="${o[0]}"`)).join(''):''}
-    ${fe.k==='launcher'?`<div class="f"><span>Mobile search</span><span class="seg" id="msearch"><button data-v="exposed" class="${c.msearch==='exposed'?'on':''}">Exposed</button><button data-v="icon" class="${c.msearch==='icon'?'on':''}">In the header icons</button></span><small>${c.msearch==='exposed'?'Search field under the header bar: no search icon in the header or the field. Desktop is always exposed.':'Search stays a header icon; the AI icon sits beside it. Desktop is always exposed.'}</small></div>`:''}
     ${fe.k==='pdpPrompts'?`<div class="f"><span>Direction</span><span class="seg" id="dir"><button data-v="column" class="${c.pdpDir==='column'?'on':''}">Column (dev build)</button><button data-v="row" class="${c.pdpDir==='row'?'on':''}">Row · wrap</button></span></div>
       <div class="f"><span>Launch prompts (pre-baked)</span>${c.pdpPrompts.map((t,i)=>`<input data-arr="pdpPrompts" data-i="${i}" value="${H(t)}">`).join('')}<small>Dynamic prompts replace these per product once the agent has learnt them.</small></div>
-      <div class="f"><label class="sw"><input type="checkbox" id="t-head"${c.pdpHead?' checked':''}><i></i>“${H('Ask '+e.name)}” heading</label><label class="sw"><input type="checkbox" id="t-ask"${c.pdpAsk?' checked':''}><i></i>“Ask anything” chip</label></div>`:''}
-    ${fe.k==='vto'?`<div class="f"><span>Label</span><select id="vlab">${['Try it on','See how it looks on you','Virtual try-on'].map(v=>`<option${c.vtoLabel===v?' selected':''}>${v}</option>`).join('')}</select></div>`:''}
+      <div class="f"><label class="sw"><input type="checkbox" id="t-head"${c.pdpHead?' checked':''}><i></i>“${H('Ask '+e.name)}” heading</label><label class="sw"><input type="checkbox" id="t-ask"${c.pdpAsk?' checked':''}><i></i>“Ask anything” chip (outlined)</label></div>`:''}
     ${fe.k==='nba'?`<div class="f"><span>Question</span><input data-key="nbaQ" value="${H(c.nbaQ)}"></div><div class="f"><span>Answers</span>${c.nbaOpts.map((t,i)=>`<input data-arr="nbaOpts" data-i="${i}" value="${H(t)}">`).join('')}</div>`:''}
-    ${fe.k==='autocomplete'?`<div class="f"><span>Agent suggestions for “dress”</span>${c.acChips.map((t,i)=>`<input data-arr="acChips" data-i="${i}" value="${H(t)}">`).join('')}<small>${c.search?'Search is open in the preview.':'Turn on “Search open” to see it (selecting this feature does).'}</small></div>`:''}
-    ${fe.k==='chat'?`<button class="chip" id="openchat" style="margin-top:4px">Open the chat window</button>`:''}</div>
+    ${fe.k==='autocomplete'?`<div class="f"><span>Suggestions from ${H(e.name)}</span>${c.acChips.map((t,i)=>`<input data-arr="acChips" data-i="${i}" value="${H(t)}">`).join('')}</div>`:''}</div>
+  <div class="card"><h3>Chat window</h3>
+    <div style="display:flex;flex-direction:column;gap:8px"><label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Open</label></div>
+    <div class="f"><span>Start screen</span><span class="seg" id="start"><button data-v="config" class="${c.start==='config'?'on':''}">Config (hero + intro)</button><button data-v="agent" class="${c.start==='agent'?'on':''}">Agent (new)</button></span>
+    <small>${c.start==='agent'?'The orb, a greeting, four things it can do, the config prompts as chips. Benchmarked on Gemini / ChatGPT / Shopify Sidekick start states.':'The dev file as delivered: T&Cs line, hero image, intro copy and prompts.'}</small></div></div>
   <div class="card"><h3>Agent config <small>salesAgentConfig.json</small></h3>
     <p>The file the devs deploy (backend config, no flicker). Edits rebuild it from the dev’s base file; the chat window renders from it.</p>
-    <div class="f"><span>Agent name</span><input data-ag="name" value="${H(e.name)}"><small>Drives “Ask ${H(e.name)}” on every entry point. Naming is with the creative director — dev build says “Ask Debs”.</small></div>
+    <div class="f"><span>Agent name</span><input data-ag="name" value="${H(e.name)}"><small>Drives “Ask ${H(e.name)}” on every entry point. Naming is with the creative director.</small></div>
     <div class="f"><span>chat-title</span><input data-ag="title" value="${H(e.title)}"></div>
     <div class="f"><span>Intro (zeroState.payload.text)</span><textarea data-ag="intro" rows="6">${H(e.intro)}</textarea></div>
     <div class="f"><span>Zero-state prompts (one per line)</span><textarea data-ag="prompts" rows="4">${H(e.prompts.join('\n'))}</textarea></div>
@@ -259,36 +261,29 @@ function renderPanel(host,S,update){
     <div class="row2"><div class="f"><span>Primary</span><input type="color" data-ag="primary" value="${e.primary}"></div><div class="f"><span>Gradient end</span><input type="color" data-ag="accent" value="${e.accent}"></div></div>
     <div class="row2"><div class="f"><span>Chip fill</span><input type="color" data-ag="chipBg" value="${e.chipBg}"></div><div class="f"><span>Chip border</span><input type="color" data-ag="chipBorder" value="${e.chipBorder}"></div></div>
     <div class="row2"><div class="f"><span>Chip radius (px)</span><input type="number" min="0" max="40" data-ag="chipRadius" value="${e.chipRadius}"></div><div class="f"><span>Window width (px)</span><input type="number" min="360" max="900" step="2" data-ag="width" value="${e.width}"></div></div>
-    <div class="row2"><div class="f"><span>Window radius (px)</span><input type="number" min="0" max="40" data-ag="radius" value="${e.radius}"></div><div class="f"><span>Title icon</span><select data-ag="icon"><option value="config"${e.icon==='config'?' selected':''}>Dev file (teal tile)</option><option value="spark"${e.icon==='spark'?' selected':''}>Ask Deb sparkle</option></select></div></div>
+    <div class="row2"><div class="f"><span>Window radius (px)</span><input type="number" min="0" max="40" data-ag="radius" value="${e.radius}"></div><div class="f"><span>Title icon</span><select data-ag="icon"><option value="config"${e.icon==='config'?' selected':''}>Dev file (teal tile)</option><option value="spark"${e.icon==='spark'?' selected':''}>AI icon</option></select></div></div>
     <div class="f"><label class="sw"><input type="checkbox" data-ag="hero"${e.hero?' checked':''}><i></i>Hero image (Autumn Wrapped Up)</label></div>
     <div class="f"><span>Changed vs the dev file · ${changed.length}</span><div class="diff">${changed.map(d=>`<div><code>${H(d.path.replace('payload.',''))}</code></div>`).join('')||'<small>None yet</small>'}</div></div>
     <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="chip on" id="dlcfg">Download config</button><button class="chip" id="cpcfg">Copy JSON</button><button class="chip" id="rscfg">Reset to dev file</button></div></div>
   <div class="card"><h3>Rules</h3><div class="rules">
     <b>Backend over client.</b> Prompts, hero and styles go in the config file; client-side JS overrides flicker on load.<br>
-    <b>One agent, many doors.</b> Every chip / button calls <code>window.googleAgent.sendQuery("…")</code> and opens the same chat.<br>
-    <b>Sparkle = agent.</b> Anything that opens the chat carries the sparkle; nothing else does.<br>
-    <b>Chips:</b> 14px Geologica, radius ${e.chipRadius}px, gap 2 (8px); the outlined chip is always the open-ended one (Ask anything · Help me decide).</div></div>`;
+    <b>One agent, many doors.</b> Every chip / button calls <code>window.googleAgent.sendQuery("…")</code> and opens the same chat; the input sends what the shopper types.<br>
+    <b>AI icon = agent.</b> Anything that opens the chat carries the AI icon; nothing else does.<br>
+    <b>Chips:</b> white pill on the puck shadow, 14px Geologica, gap 2 (8px); the last chip of a group is the gradient-outline pill (Ask anything · Help me decide · Help me discover · Help me choose).</div></div>`;
   const go=()=>{update();panel()};
-  host.querySelectorAll('#pg .chip').forEach(b=>b.onclick=()=>{c.page=b.dataset.v;go()});
-  host.querySelector('#t-search').onchange=ev=>{c.search=ev.target.checked;go()};
+  host.querySelectorAll('[data-feat]').forEach(b=>b.onclick=()=>{const x=FEATS.find(f=>f.k===b.dataset.feat);c.feat=x.k;if(x.set)Object.assign(c,x.set);
+    c.page=x.pg;c.search=!!x.search;c.chat=false;c.focus={f:x.k.startsWith('ep-')?'launcher':x.k,n:Date.now()};go()});
   host.querySelector('#t-chat').onchange=ev=>{c.chat=ev.target.checked;go()};
-  host.querySelectorAll('.feat .fn').forEach(b=>b.onclick=()=>{const k=b.parentNode.dataset.k;c.feat=k;
-    if(k==='autocomplete'){c.search=true}else if(c.feat!=='autocomplete'&&k!=='launcher')c.search=false;
-    if(k==='chat')c.chat=true;else c.chat=false;
-    const pg=pageOf(k);if(pg)c.page=pg;c.focus={f:k==='chat'?'':k,n:Date.now()};go()});
-  host.querySelectorAll('[data-on]').forEach(i=>i.onchange=()=>{c.on[i.dataset.on]=i.checked;go()});
-  host.querySelectorAll('[data-pos]').forEach(b=>b.onclick=()=>{c[POSKEY[fe.k]]=b.dataset.pos;const pg=pageOf(fe.k);if(pg)c.page=pg;c.focus={f:fe.k,n:Date.now()};go()});
+  host.querySelectorAll('#start button').forEach(b=>b.onclick=()=>{c.start=b.dataset.v;c.chat=true;go()});
+  host.querySelectorAll('[data-pos]').forEach(b=>b.onclick=()=>{c[POSKEY[fe.k]]=b.dataset.pos;c.page=fe.pg;c.focus={f:fe.k,n:Date.now()};go()});
   host.querySelectorAll('#dir button').forEach(b=>b.onclick=()=>{c.pdpDir=b.dataset.v;go()});
-  host.querySelectorAll('#msearch button').forEach(b=>b.onclick=()=>{c.msearch=b.dataset.v;c.focus={f:'launcher',n:Date.now()};go()});
   const ti=host.querySelector('#t-head');if(ti)ti.onchange=ev=>{c.pdpHead=ev.target.checked;go()};
   const ta=host.querySelector('#t-ask');if(ta)ta.onchange=ev=>{c.pdpAsk=ev.target.checked;go()};
-  const vl=host.querySelector('#vlab');if(vl)vl.onchange=()=>{c.vtoLabel=vl.value;go()};
   host.querySelectorAll('[data-arr]').forEach(i=>i.onchange=()=>{c[i.dataset.arr][+i.dataset.i]=i.value;go()});
   host.querySelectorAll('[data-key]').forEach(i=>i.onchange=()=>{c[i.dataset.key]=i.value;go()});
   host.querySelectorAll('[data-ag]').forEach(i=>i.onchange=()=>{const k=i.dataset.ag;let v=i.type==='checkbox'?i.checked:i.value;
     if(k==='prompts')v=v.split('\n').map(s=>s.trim()).filter(Boolean);if(['chipRadius','width','radius'].includes(k))v=+v;
     c.agent[k]=v;if(!['name'].includes(k))c.chat=true;go()});
-  const oc=host.querySelector('#openchat');if(oc)oc.onclick=()=>{c.chat=true;go()};
   host.querySelector('#dlcfg').onclick=()=>BASE&&dl('salesAgentConfig.json',JSON.stringify(cfgFile(),null,2));
   host.querySelector('#cpcfg').onclick=()=>{if(BASE)navigator.clipboard.writeText(JSON.stringify(cfgFile(),null,2)).then(()=>{$('#status').textContent='Config copied ✓';setTimeout(()=>$('#status').textContent='',3000)})};
   host.querySelector('#rscfg').onclick=()=>{c.agent={};go()};
@@ -357,7 +352,7 @@ async function doExport(){const btns=[$('#exportbtn'),$('#exportbtn2')];btns.for
   }catch(err){console.error(err);status.textContent='Export failed: '+err.message}
   finally{btns.forEach(b=>b.disabled=false);exp.hidden=true;setTimeout(()=>status.textContent='',8000)}}
 /* the page tells us when the shopper opens / closes the chat, so the panel toggle stays true */
-addEventListener('message',e=>{if(e.source===frame.contentWindow&&e.data&&'protoChat' in e.data&&S.cfg.chat!==e.data.protoChat){S.cfg.chat=e.data.protoChat;save();panel()}});
+addEventListener('message',e=>{if(e.source!==frame.contentWindow||!e.data)return;if('protoChat' in e.data&&S.cfg.chat!==e.data.protoChat){S.cfg.chat=e.data.protoChat;save();panel()}if('protoSearch' in e.data){S.cfg.search=e.data.protoSearch;save();panel()}});
 $('#exportbtn').onclick=doExport;$('#exportbtn2').onclick=doExport;
 </script>
 </body>
