@@ -23,7 +23,7 @@ const CARD = (opts={}) => `<article class="pc${opts.compact?' pc--compact':''}" 
     ${opts.badges?`<div class="pc-badges${opts.ai?' has-ai':''}">${opts.badges}</div>`:''}${opts.ai?'<div class="badge-ai"><b>AI</b> Generated</div>':''}
   </div>
   ${opts.qa==='button'?'<button class="pc-add"><img src="assets/ds/icons/quick-add-24.svg" alt="">Add</button>':''}
-  ${opts.taggstar?'<div class="pc-taggstar"><img src="assets/ds/icons/trophy.svg" alt=""><b>No. 6 Bestseller</b><span>in Dresses</span></div>':''}
+  ${opts.taggstar?'<div class="pc-taggstar"><b>Selling Fast!</b><span>79 Sold</span></div>':''}
   <div class="pc-info">${opts.sponsored?'<div class="pc-sponsored">Sponsored</div>':''}
     <div class="pc-toprow"><div class="pc-titles">${opts.brand===false?'':'<div class="pc-brand">Coast</div>'}<div class="pc-name">Lace and pleated midi shirt dress</div></div>${opts.qa==='mini'?'<button class="pc-qa" aria-label="Quick add"><i></i>Add</button>':''}</div>
     ${opts.price||`<div class="pc-price${opts.sale===false?'':' sale'}"><span class="now">£70.00</span>${opts.sale===false?'':'<span class="was">£139.00</span><span class="pct">-50%</span>'}</div>`}
@@ -285,12 +285,17 @@ const DG_CATALOGUE = [
   variants:[{name:'Card chips', html:'<div class="pc-swatches" style="font-family:var(--font-family-base)"><span class="set"><span class="pc-swatch on"><i style="background:#B97A57"></i></span><span class="pc-swatch"><i style="background:#2B2B2B"></i></span><span class="pc-swatch"><i style="background:#8FA3B8"></i></span><span class="pc-swatch"><i style="background:#D9C7B8"></i></span></span><span class="pc-more">+5</span></div>'}, {name:'PDP image swatches', html:'<div class="cswatches"><button class="cswatch on">'+PH(60,89,160)+'</button><button class="cswatch">'+PH(60,89,200)+'</button><button class="cswatch">'+PH(60,89,240)+'</button></div>'}],
   dev:{title:'—', status:'partial', note:'Dev renders colour variants inside CT Product Card (colourVariants, hideColourSwatches). No standalone atom.'} },
 
-{ slug:'social-proof', name:'Social proof', group:'Product', tier:'atom', css:'.pc-taggstar', figma:'aIHmkCaTy9c5EWOxAGw0So · 5992-10841',
-  summary:'Taggstar bar: trophy, bold claim, context. Grey 6 by default; brand-tinted on boohoo.',
-  use:['Bestseller rank, trending, viewed-recently — under the card image or on the PDP.'],
-  avoid:['More than one claim per product.'],
-  anatomy:['--surface-callout ground · 16px icon · 12px strong + regular'],
-  variants:[{name:'Default', html:'<div class="pc-taggstar" style="width:200px;font-family:var(--font-family-base)"><img src="assets/ds/icons/trophy.svg" alt=""><b>No. 6 Bestseller</b><span>in Dresses</span></div>'}, {name:'Brand tint', html:'<div class="pc-taggstar pc-taggstar--brand" style="width:200px;font-family:var(--font-family-base)"><img src="assets/ds/icons/trophy.svg" alt=""><b>Trending</b><span>120 bought today</span></div>'}],
+{ slug:'social-proof', name:'Social proof', group:'Product', tier:'atom', css:'.pc-taggstar · .sp-pdp · .sp-bag', figma:'Taggstar 00YKWCHwTarfwWZ1HayFUI · 3483-23105 (PLP card 9196-26858 · PDP 3553-78608 / 3574-156761 · Bag 3510-4230)',
+  summary:'Taggstar: one social-proof message per product, styled for where it sits — a one-line chip on the PLP card, a dismissible two-line card on the PDP, a line in the bag. Grey 1 ground, black text, no icon.',
+  use:['PLP card: under the image and Add button, above the brand — "Selling Fast! 79 Sold".','PDP: on the main image (mobile, 12px from left and bottom) or pinned to the bottom of the browser window (desktop) — "Selling Fast!" / "Last sold 32 minutes ago", with a close.','Bag: in the line item under its details — "Sold X times since your last visit X days ago", only for a returning visit.'],
+  avoid:['An icon in the message — the designs have none.','More than one message per product per placement.','Showing the PDP message again once it has been closed in the session.','Brand-colouring the chip — Grey 1 on every fascia (sand on PLT).'],
+  anatomy:['Ground --surface-media (Grey 1 #F2F2F2, PLT sand) · text --text-primary · radius --radius-default · 3.5px backdrop blur','PLP: 12px, claim strong + count regular on one line · padding gap 1 / gap 2 (4px 8px) · hugs its text','PDP: claim strong over context regular, gap 2px · padding 8px 12px · gap 8 (32px) to the 12px close · shadow 0 0 8.7 22% black · 12px on mobile, 14px on desktop','Bag: full width of the line info · padding gap 2 (8px) · 12px regular, the count strong','Logic: PLP shows the sold count · PDP shows the most recent purchase (minutes / hours ago) and closes on X · bag compares against the last visit'],
+  variants:[
+    {name:'PLP card', html:CARD({w:170,qa:'button',taggstar:true})},
+    {name:'PLP · chip', html:'<div class="pc-taggstar" style="font-family:var(--font-family-base)"><b>Selling Fast!</b><span>79 Sold</span></div>'},
+    {name:'PDP · mobile, on the main image', html:'<div style="position:relative;width:358px;height:440px;background:linear-gradient(165deg,var(--brand-light-3),var(--brand-light-1))"><div class="sp-pdp sp-on-img"><div class="tx"><b>Selling Fast!</b><span>Last sold 32 minutes ago</span></div><button class="sp-x" aria-label="Dismiss"></button></div></div>'},
+    {name:'PDP · desktop, pinned to the bottom of the browser window', html:'<div class="sp-pdp sp-pdp--lg"><div class="tx"><b>Selling Fast!</b><span>Last sold 32 minutes ago</span></div><button class="sp-x" aria-label="Dismiss"></button></div>'},
+    {name:'Bag line', html:'<div class="bag-item" style="width:358px">'+PH(99,148)+'<div class="info"><div class="b">boohooMAN</div><div class="n">Oversized Revere Pleated Shirt &amp; Short Set</div><div class="v">Size 10 · Blush</div><div class="p"><span class="sale">£27.50</span><s>£55.00</s></div><div class="sp-bag">Sold <b>X times</b> since your last visit X days ago</div></div></div>'}],
   dev:{title:'Atoms/Social Proof', status:'match', note:'Dev: location PLP / PDP / CART, dismissible, per-fascia --social-proof-* tokens (Debenhams black 60% + blur on PDP; boohoo pink; PLT peach). Plus Molecules/Product Social Proof and Basket Social Proof.'} },
 
 { slug:'ratings', name:'Ratings', group:'Product', tier:'atom', css:'.pc-stars',
@@ -732,7 +737,7 @@ const DG_TOKEN_MAP = [
  {dev:'--text-cta', ours:'button label size (16px)', note:'PLT 14px in dev.'},
  {dev:'--text-xs … --text-4xl', ours:'type scale (Typography page)', note:'PLT flattens 12/12/16/16/16/16 in dev — check against the locked scale.'},
  {dev:'--wishlist-opacity', ours:'.pc-iconbtn ground', note:'0.7 on KM / TBR.'},
- {dev:'--social-proof-* (plp / pdp / basket)', ours:'--surface-callout · .pc-taggstar--brand', note:'Per-location colour, alpha, blur, border.'},
+ {dev:'--social-proof-* (plp / pdp / basket)', ours:'--surface-media · .pc-taggstar / .sp-pdp / .sp-bag', note:'Per-location colour, alpha, blur, border.'},
  {dev:'--store-credit-gradient-* / -button / -text', ours:'--card-bg · --card-btn-bg', note:'Teal 1ABC9C gradient on all but PLT (pink) in dev; ours per brand.'},
  {dev:'--unlimited-*-bag-button-bg / -text', ours:'--action-buy / --text-on-action', note:'Debenhams Unlimited ATB (black).'},
  {dev:'--text-markdown-colour', ours:'--price-sale', note:'PLT C90000 ✓.'},

@@ -1102,7 +1102,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
             <div class="badge-ai"><b>AI</b> Generated</div>
           </div>
           <button class="pc-add"><img src="assets/ds/icons/quick-add-24.svg" alt="">Add</button>
-          <div class="pc-taggstar"><img src="assets/ds/icons/trophy.svg" alt=""><b>No. 6 Bestseller</b><span>in Face</span></div>
+          <div class="pc-taggstar"><b>Selling Fast!</b><span>79 Sold</span></div>
           <div class="pc-info">
             <div class="pc-sponsored">Sponsored</div>
             <div class="pc-titles"><div class="pc-brand">Brand Name</div><div class="pc-name">Product name product name product name</div></div>
@@ -1135,7 +1135,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
       <div class="pr"><code>wishlistButton</code><span>32px circle · heart</span><span>Icon swaps per fascia: heart or bookmark (KM, boohooMAN, Brand Room, Warehouse) — nested atomic icon</span></div>
       <div class="pr"><code>quickAdd</code><span>icon · button · none</span><span>Circle icon (Debenhams) or full-width Add button (boohooMAN)</span></div>
       <div class="pr"><code>productTag</code><span>badge, bottom-left</span><span>Plus / Petite / Tall — see C-07 Badges for stacking</span></div>
-      <div class="pr"><code>taggstar</code><span>social-proof bar</span><span>Grey 6 bar · trophy · "No. N Bestseller in X"</span></div>
+      <div class="pr"><code>taggstar</code><span>social-proof bar</span><span>Grey 1 chip, no icon · PLP "Selling Fast! 79 Sold" · PDP two-line card with close · bag line</span></div>
       <div class="pr"><code>sponsored</code><span>text row</span><span>Figma uses Grey 4 — lifted to Grey 5 here for the AA text floor</span></div>
       <div class="pr"><code>colourSwatches</code><span>20px swatch row</span><span>Swatch shape is a nested atomic component — restyle per brand without touching the card</span></div>
       <div class="pr"><code>showReviewStars</code><span>stars + count</span><span>12px stars, 2px gap</span></div>
@@ -1643,6 +1643,7 @@ window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||se
   if(window.DG_header)host.querySelectorAll('.fx[data-brand] [data-hd-device]').forEach(el=>window.DG_header(el,el.closest('.fx').dataset.brand));
 };
 /* controls in the catalogue demos are live: checkbox / toggle flip, radios are exclusive within their list */
+document.addEventListener('click',e=>{const x=e.target.closest('.sp-x');if(x){x.closest('.sp-pdp').classList.add('off');return}}); /* Taggstar PDP: X closes it */
 document.addEventListener('click',e=>{const el=e.target.closest('.chk,.tog,.rad');if(!el)return;
   if(el.matches('.rad')){const scope=el.closest('.rad-row')?.parentElement||el.parentElement;scope.querySelectorAll('.rad').forEach(r=>{r.classList.remove('on');r.setAttribute('aria-checked','false')});el.classList.add('on');el.setAttribute('aria-checked','true');return}
   const on=!(el.classList.contains('on')||el.getAttribute('aria-checked')==='true');el.classList.toggle('on',on);el.setAttribute('aria-checked',on?'true':'false')});
