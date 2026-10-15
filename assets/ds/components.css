@@ -237,6 +237,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .hd-nav{display:flex;gap:var(--gap-4,16px);align-items:center;justify-content:center;height:40px;background:var(--nav-bg);color:var(--nav-fg);font-size:16px;font-weight:var(--w-regular);overflow-x:auto;padding:0 var(--gap-4,16px)} /* live case is in the data (header.js) — no forced transform */
 .hd-nav--bold{font-weight:700}
 [data-hd-brand="plt"] .hd-nav,[data-brand="plt"] .hd-nav{font-size:12px;font-weight:300}
+[data-hd-brand="boohoo"] .hd-nav,[data-brand="boohoo"] .hd-nav{font-size:14px} /* Jake 15 Oct 2026: boohoo nav 14, not 16 */
 .hd-nav a.hl{background:#CCF500;color:#000;padding:0 var(--gap-2,8px);align-self:stretch;display:flex;align-items:center} /* Warehouse Outlet */
 .hd-nav a{color:inherit;text-decoration:none;white-space:nowrap}
 .hd-nav a.sale{color:#FF0000;font-weight:var(--w-strong)}
