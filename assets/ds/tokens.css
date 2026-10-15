@@ -430,3 +430,32 @@
 [data-brand="dsgnstudio"]{--dplus-pw:500}
 /* footer band (C-08 .ftr) = the page background (--surface-sunken: #FAFAFA, PLT cream #FAF5E7), so the band runs on from grey pages without a step (Jake, 12 Oct 2026; was Figma Grey 1 #F2F2F2) */
 :root,[data-brand]{--ftr-band:var(--surface-sunken,#FAFAFA)}
+
+/* ---------- Price (C-price) — live capture 15 Oct 2026, debenhams / boohoo / PLT / Karen Millen PDP · PLP · rail · added-to-bag · basket.
+   All fascias run one price component (data-test-id product-price-current / -max-price-was / -price-saving / price-badge);
+   the theme changes only these. Fascias not yet captured inherit the Debenhams defaults. */
+:root{
+  --price-now-w:600;--price-was-w:400;--price-was-fg:var(--text-primary);
+  --price-pdp:24px;--price-pdp-lh:30px;--price-pdp-was:24px;--price-pdp-was-w:var(--price-was-w);--price-pdp-was-fg:var(--price-was-fg);--price-pdp-gap:16px;
+  --price-save-pre:"Save ";--price-save-pdp:24px;--price-save-w:400;--price-save-fg:var(--price-sale);--price-save-bg:transparent;--price-save-bd:0 solid transparent;--price-save-pad:0;--price-save-r:0;--price-save-h:auto;
+  --price-code:14px;--price-code-lh:21px;--price-code-w:400;
+  --price-card:14px;--price-card-lh:21px;--price-card-m:14px;--price-card-m-lh:21px;--price-card-save:inline;--price-card-code:block;
+  --price-line:16px;--price-line-lh:24px;--price-drawer:12px;--price-drawer-lh:18px;
+}
+[data-brand="boohoo"]{
+  --price-pdp-lh:24px;--price-pdp-was:20px;--price-pdp-was-w:300;--price-pdp-was-fg:#767676;--price-pdp-gap:12px;
+  --price-save-pre:"-";--price-save-pdp:14px;--price-save-bg:#FDE8E8;--price-save-pad:0 8px;--price-save-r:4px;--price-save-h:30px;
+  --price-card-m:12px;--price-card-m-lh:18px;
+}
+[data-brand="plt"]{
+  --price-now-w:400;--price-was-w:300;
+  --price-pdp:16px;--price-pdp-was:16px;--price-pdp-was-fg:#767676;--price-pdp-gap:12px;
+  --price-save-pre:"-";--price-save-pdp:14px;--price-save-w:300;
+  --price-code:12px;--price-code-lh:18px;--price-code-w:300;
+  --price-card:12px;--price-card-lh:18px;--price-card-m:12px;--price-card-m-lh:18px;
+  --price-line:12px;--price-line-lh:18px;
+}
+[data-brand="karenmillen"]{
+  --price-save-pdp:12px;--price-save-fg:var(--text-primary);--price-save-bd:1px solid var(--text-primary);--price-save-pad:0 8px;--price-save-h:30px;
+  --price-card-save:none;--price-card-code:none;
+}

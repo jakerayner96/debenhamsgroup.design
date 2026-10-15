@@ -275,7 +275,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .sf-chip button{background:none;border:none;cursor:pointer;font-size:14px;line-height:1;padding:0;color:var(--icon-secondary)}
 /* mobile floating filter pills — New format (Brand Room Figma 739-92223)
    radius 42 by design on every fascia (explicitly round, even square-radius brands) */
-.sf-float{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:8px var(--plp-margin,16px);margin:0 calc(var(--plp-margin,16px) * -1);width:auto} /* full-bleed: pills iceberg off the right, 16pt internal padding */
+.sf-float{display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none;padding:8px var(--plp-margin,16px);margin:0 calc(var(--plp-margin,16px) * -1);width:auto} /* full-bleed: pills iceberg off the right, 16pt internal padding */
 .sf-pill{display:inline-flex;gap:8px;align-items:center;height:34px;padding:8px 12px;background:var(--surface-raised);border:var(--border-w) solid var(--surface-media);border-radius:var(--radius-pill);font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);white-space:nowrap;flex:none;cursor:pointer}
 .sf-pill i.dn{width:12px;height:12px;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
 .sf-pill img{width:14px;height:14px;object-fit:contain}
@@ -299,7 +299,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 /* ============================================================
    Category nav — roundels (image circles) or pills or text links
    ============================================================ */
-.cat-row{display:flex;gap:12px;align-items:flex-start;overflow-x:auto;padding:12px 0;font-family:var(--font-family-base)}
+.cat-row{display:flex;gap:12px;align-items:flex-start;overflow-x:auto;scrollbar-width:none;padding:12px 0;font-family:var(--font-family-base)}
 /* Roundel — mobile per App-PLP 1124-2505 (90px, 10px label gap) · desktop per 13003-149196 (173px, 8px label gap) */
 .roundel{display:flex;flex-direction:column;align-items:center;gap:10px;width:90px;flex:none;text-decoration:none;color:var(--text-primary);position:relative}
 .roundel i{width:90px;height:90px;border-radius:var(--radius-pill);display:block;background:var(--surface-media);position:relative;overflow:hidden}
@@ -630,6 +630,44 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .price--sm{gap:6px}.price--sm .now,.price--sm .was,.price--sm .save{font-size:13px;line-height:18px}.price--sm .save{padding:0 6px;border-radius:var(--radius-default)}
 .price--sm+.price-promo{font-size:13px;line-height:18px;margin-top:2px}
 .price .oos{color:var(--text-error);font-size:16px;font-weight:var(--w-mid);letter-spacing:.02em}
+
+/* ---------- Price · live instances (tokens: --price-* in tokens.css). One component, placed by context:
+   .price-blk wraps the price row (.price) and the code / promo line(s) (.price-code).
+   Sale = .now.sale (--price-sale) · was = struck number, no label · saving = <span class="save" data-pct="25">, copy from the
+   theme (--price-save-pre: "Save " → Save 25% · "-" → -25%) · order: now · was · saving, code line on its own row. */
+.price-blk{display:flex;flex-direction:column;gap:12px;font-family:var(--font-family-base);text-align:left}
+.price-blk .price{gap:0;align-items:baseline}
+.price-blk .price>span{font-size:inherit;line-height:inherit}
+.price-blk .now{font-weight:var(--price-now-w);color:var(--text-primary)}
+.price-blk .now.sale{color:var(--price-sale)}
+.price-blk .was{font-weight:var(--price-was-w);color:var(--price-was-fg);text-decoration:line-through}
+.price-blk .save{color:var(--price-sale);font-weight:var(--price-save-w);background:none;padding:0;border-radius:0}
+.price-blk .save[data-pct]::before{content:"-" attr(data-pct) "%"}
+.price-code{color:var(--price-sale);font-size:var(--price-code);line-height:var(--price-code-lh);font-weight:var(--price-code-w)}
+/* PDP: 12px row → code line · gap --price-pdp-gap between prices · saving styled by theme (plain / pill / outlined box) */
+.price-blk--pdp .price{font-size:var(--price-pdp);line-height:var(--price-pdp-lh);column-gap:var(--price-pdp-gap);align-items:center}
+.price-blk--pdp .price .was{font-size:var(--price-pdp-was);font-weight:var(--price-pdp-was-w);color:var(--price-pdp-was-fg)}
+.price-blk--pdp .price .save{display:inline-flex;align-items:center;font-size:var(--price-save-pdp);color:var(--price-save-fg);background:var(--price-save-bg);border:var(--price-save-bd);padding:var(--price-save-pad);border-radius:var(--price-save-r);height:var(--price-save-h);box-sizing:border-box}
+.price-blk--pdp .price .save[data-pct]::before{content:var(--price-save-pre) attr(data-pct) "%"}
+.price-blk--pdp .price-code+.price-code{margin-top:-8px}
+/* PLP card: 4px row → code line · 8px between prices · -X% · same size desktop + mobile except where the theme drops it */
+.price-blk--card{gap:4px}
+.price-blk--card .price{font-size:var(--price-card);line-height:var(--price-card-lh);column-gap:8px}
+.price-blk--card .price-code{font-size:var(--price-card);line-height:var(--price-card-lh);display:var(--price-card-code)}
+.price-blk--card .save{display:var(--price-card-save)}
+.price-blk--card.m .price,.price-blk--card.m .price-code{font-size:var(--price-card-m);line-height:var(--price-card-m-lh)}
+@media(max-width:767px){.price-blk--card .price,.price-blk--card .price-code{font-size:var(--price-card-m);line-height:var(--price-card-m-lh)}}
+/* rail card (recommendations, complete the look): now + was only, one line */
+.price-blk--rail .price{font-size:var(--price-card);line-height:var(--price-card-lh);column-gap:8px;white-space:nowrap;flex-wrap:nowrap}
+/* added-to-bag: 12/18, both prices ink, now + was only */
+.price-blk--drawer .price{font-size:var(--price-drawer);line-height:var(--price-drawer-lh);column-gap:8px}
+.price-blk--drawer .now,.price-blk--drawer .now.sale{color:var(--text-primary)}
+/* basket line / quick add: 16/24, now + was (quick add adds saving + code) */
+.price-blk--line{gap:4px}
+.price-blk--line .price{font-size:var(--price-line);line-height:var(--price-line-lh);column-gap:8px}
+.price-blk--line .price-code{font-size:var(--price-card);line-height:var(--price-card-lh)}
+/* small (chat, rails in the agent) — 13 / 18 */
+.price-blk--sm{gap:2px}.price-blk--sm .price,.price-blk--sm .price-code{font-size:13px;line-height:18px;column-gap:6px}
 .sizes{display:flex;flex-direction:column;gap:12px}
 .sizes-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:16px}
 .sizes-head b{font-weight:var(--w-mid)}
@@ -809,6 +847,61 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .modal-x{display:grid;place-items:center;width:16px;height:25px;flex:none;margin-left:auto;padding:0;border:0;background:none;cursor:pointer}
 .modal-x::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-close.svg") center/16px 16px no-repeat}
 .modal-x--abs{position:absolute;top:24px;right:24px;height:16px}
+/* ---------- Modal types (Figma DS aIHmkCaTy9c5EWOxAGw0So · Desktop 8085-17553 · Mobile 8084-24491 · Overlay + animation 8084-23215 · Headers 8113-19029) ----------
+   One component, typed by size. Every type: white window, radius 4, padding gap 6 (24px), gap 6 (24px) between header / body / foot,
+   header = .modal-hd (title Geologica SemiBold 20, 16px close). Overlay 50% black behind the window, on top of the page.
+   Desktop  .mdl--sm 512 · .mdl--md 720 · .mdl--lg 960 (two columns → one under 1024w) · .mdl--full 1248 × 960 max
+   Mobile   .mdl--alert  centred, 16px side margins, 16px top margin + internal scroll when taller than the screen
+            .mdl--up     slide up: full width, hugs content up to the bottom of the site header, body scrolls, CTA sticky
+            .mdl--fs     full screen
+   Motion   desktop + mobile alert: modal and overlay fade in / out together · mobile slide up: overlay fades, window slides from the
+            bottom of the viewport · 300ms ease-in-out · close on X or a tap outside the window. */
+.mdl{position:relative;display:flex;flex-direction:column;gap:24px;padding:24px;background:var(--surface-raised);color:var(--text-primary);border-radius:var(--radius-default);font-family:var(--font-family-base);box-sizing:border-box;max-width:100%;text-align:left}
+.mdl .modal-hd{padding:0;gap:12px;align-items:flex-start}
+.mdl .modal-hd .mt{display:flex;align-items:center;gap:12px}
+.mdl-back,.mdl-info{width:16px;height:25px;flex:none;padding:0;border:0;background:none;display:grid;place-items:center;cursor:pointer}
+.mdl-back::before,.mdl-info::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-left.svg") center/16px 16px no-repeat}
+.mdl-info{width:12px}.mdl-info::before{width:12px;height:12px;background:url("icons/lib/icons-info.svg") center/12px 12px no-repeat}
+.mdl-bd{display:flex;flex-direction:column;gap:24px;font-size:16px;font-weight:var(--w-regular);line-height:normal;min-height:0}
+.mdl-ft{display:flex;flex-direction:column;gap:16px}.mdl-ft .bd{width:100%}
+.mdl--sm{width:512px}
+.mdl--md{width:720px;padding-bottom:32px}
+.mdl--lg{width:960px}
+.mdl-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+@media(max-width:1023px){.mdl-cols{grid-template-columns:1fr}}
+.mdl--full{width:1248px;height:780px;max-height:960px}
+.mdl--full .mdl-bd{flex:1;align-items:center;justify-content:center;position:relative}
+.mdl-3d-ctl{display:flex;justify-content:space-between;align-items:flex-end}.mdl-3d-ctl span{display:flex;gap:8px}
+.mdl-3d-ctl button{width:32px;height:32px;border:1px solid var(--border-subtle);border-radius:var(--radius-default);background:var(--surface-raised);display:grid;place-items:center;padding:0}
+.mdl-3d-ctl img{width:16px;height:16px}
+/* mobile types */
+.mdl--alert{width:calc(100% - 32px);max-width:358px;max-height:calc(100% - 32px)}
+.mdl--alert .mdl-bd,.mdl--up .mdl-bd{overflow-y:auto}
+.mdl--up{width:100%;border-radius:var(--radius-default) var(--radius-default) 0 0;max-height:100%}
+.mdl--fs{width:100%;height:100%;border-radius:0}
+.mdl--fs .mdl-bd{flex:1;align-items:center;justify-content:center}
+/* overlay + stage (a page frame the modal sits over: header, then the 50% scrim; .mdl-stage--up anchors to the bottom) */
+.mdl-scrim{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:2}
+.mdl-stage{position:relative;overflow:hidden;background:var(--surface-page,#fff);display:flex;flex-direction:column;border-radius:var(--radius-default)}
+.mdl-stage>.mdl-page{flex:1;background:repeating-linear-gradient(180deg,var(--surface-sunken,#F2F2F2) 0 120px,transparent 120px 136px)}
+.mdl-stage>.mdl-layer{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center}
+.mdl-stage>.mdl-layer>.mdl{z-index:1}
+.mdl-stage--up>.mdl-layer{align-items:flex-end;top:var(--mdl-top,0)}
+.mdl-stage--fs>.mdl-layer{align-items:stretch}
+.mdl.mdl-anim-fade{animation:mdlfade .3s ease-in-out both}.mdl.mdl-anim-up{animation:mdlup .3s ease-in-out both}
+@keyframes mdlfade{from{opacity:0}to{opacity:1}}@keyframes mdlup{from{transform:translateY(100%)}to{transform:none}}
+/* modal content slots (Figma 8127-26292 Returns, 8127-26481 Seller info) */
+.mdl-kv{display:flex;flex-direction:column;gap:8px}.mdl-kv b{font-weight:var(--w-strong,600)}
+.mdl-opts{display:flex;flex-direction:column;gap:16px}
+.mdl-opt{display:flex;gap:16px;align-items:center}
+.mdl-opt .tile{position:relative;width:92px;height:92px;flex:none;border:1px solid var(--text-primary);border-radius:8px;display:grid;place-items:center;overflow:hidden}
+.mdl-opt .tile img{width:56px;height:56px}
+.mdl-opt .tile .tag{position:absolute;left:-1px;top:7px;height:20px;display:flex;align-items:center;padding:0 8px;font-size:12px;white-space:nowrap;color:#000;font-weight:var(--w-regular);background:linear-gradient(90deg,#F3F3F3,#B5B5B5);border-radius:0 4px 4px 0}
+.mdl-opt .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.mdl-opt .rad-row{padding:0;font-weight:var(--w-mid)}.mdl-opt .tx p{margin:0;font-size:14px}
+.mdl .mdl-bd p{color:var(--text-primary)}
+.mdl-faq{display:flex;flex-direction:column;gap:30px}.mdl-faq .acc-h{font-weight:var(--w-mid,500)}
+
 .bag-item{display:grid;grid-template-columns:99px 1fr;gap:16px;min-height:148px}
 .bag-item img{width:99px;height:148px;object-fit:cover;background:var(--surface-media)}
 .bag-item .info{display:flex;flex-direction:column;gap:4px;font-size:16px}
@@ -862,6 +955,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 
 /* ---- C-18 Square tile rail (Brand Room brand/category rail) ---- */
 .tile-rail{display:flex;gap:1px;overflow-x:auto;scrollbar-width:none;padding:0}
+.prail::-webkit-scrollbar,.tile-rail::-webkit-scrollbar,.sf-float::-webkit-scrollbar,.cat-row::-webkit-scrollbar{display:none} /* swipe rails: scroll, never show a bar (as live) */
 .tile-rail::-webkit-scrollbar{display:none}
 .tile{flex:none;width:clamp(180px,55vw,230px);display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--text-primary)}
 .tile img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--surface-media);display:block}

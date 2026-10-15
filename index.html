@@ -436,7 +436,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .wlist.an li i{color:var(--ink-3);font-family:var(--mono);font-size:10px}
 .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:16px;margin:16px 0}
 .vcard{border:1px solid var(--low);border-radius:var(--r);overflow:hidden;background:var(--bg);min-width:0}
-.vcard .canvas{padding:28px;min-height:150px;overflow-x:auto}
+.vcard .canvas{padding:28px;min-height:150px;overflow:hidden}
 .vcard .vn{padding:10px 16px;font-size:13px;color:var(--ink-2);border-top:1px solid var(--low);display:flex;justify-content:space-between;align-items:center}
 .vcard .vn button{font-size:13px;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 .vcard.wide{grid-column:1/-1}
@@ -461,7 +461,8 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .fxoff{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px dashed var(--med);border-radius:var(--r);font-size:14px;font-weight:500;color:var(--ink-2)}
 .fxoff em{font-style:normal;font-weight:400;color:var(--ink-3)}
 .fvg.wide{flex-basis:100%}
-.fv .fvc{overflow-x:auto;max-width:100%}
+.zfit{width:max-content}
+.fv .fvc{max-width:100%;overflow:visible} /* components sit in the box at their real size — never a scroll area (wide ones scale via .zfit) */
 .fv .fvn{font:500 11px/1 var(--mono);letter-spacing:.04em;color:inherit;opacity:.6}
 .mk{margin:8px 0 24px}.mk summary{cursor:pointer;font-size:16px;font-weight:600;color:var(--ink);padding:8px 0}.mk summary code{font-family:var(--sans);font-size:14px;color:var(--ink-3);margin-left:8px;font-weight:400}
 /* playground (PDS: 1px contrast-low border, radius 12, header strip, example canvas) */
@@ -1028,7 +1029,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
       <div class="tr" onclick="location.hash='library'"><span class="id">C-11</span><span class="nm">Form controls</span><span class="d">Floating-label field · select · checkbox · radio · toggle · quantity · promo + apply · PSP static field · inline error</span><span class="dots"><i style="background:#00787D"></i><i style="background:#000"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#D24508"></i></span><span class="pill ok">live</span></div>
       <div class="tr" onclick="location.hash='library'"><span class="id">C-12</span><span class="nm">Messaging</span><span class="d">Banner (success / neutral / error) · toast (snackbar + top actionable) · stock alert · empty state</span><span class="dots"><i style="background:#00787D"></i><i style="background:#000"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#D24508"></i></span><span class="pill ok">live</span></div>
       <div class="tr" onclick="location.hash='library'"><span class="id">C-13</span><span class="nm">PDP kit</span><span class="d">Price block · size selector · colour swatches · accordion · section rail · USP box · BNPL · free-delivery bar · Deliver+ · at-a-glance</span><span class="dots"><i style="background:#00787D"></i><i style="background:#000"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#D24508"></i></span><span class="pill ok">live</span></div>
-      <div class="tr" onclick="location.hash='library'"><span class="id">C-14</span><span class="nm">Overlays &amp; bag</span><span class="d">Bottom sheet / centred modal shell · bag line item · order summary</span><span class="dots"><i style="background:#00787D"></i><i style="background:#000"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#D24508"></i></span><span class="pill ok">live</span></div>
+      <div class="tr" onclick="location.hash='library'"><span class="id">C-14</span><span class="nm">Overlays &amp; bag</span><span class="d">Modal (desktop Small · Medium · Large · Full screen, mobile alert · slide up · full screen) · bag line item · order summary</span><span class="dots"><i style="background:#00787D"></i><i style="background:#000"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#D24508"></i></span><span class="pill ok">live</span></div>
       <div class="tr" onclick="location.hash='library'"><span class="id">C-15</span><span class="nm">Chips &amp; pills</span><span class="d">Chip · filter pill w/ toggle · tag pill · save chip · PDP entry chip</span><span class="dots"><i style="background:#00787D"></i><i style="background:#000"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#D24508"></i></span><span class="pill ok">live</span></div>
       <div class="tr" onclick="location.hash='library'"><span class="id">C-16</span><span class="nm">Account</span><span class="d">Balance card · account rows · icon puck — per-fascia fills</span><span class="dots"><i style="background:#00787D"></i><i style="background:#000"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#D24508"></i></span><span class="pill ok">live</span></div>
       <div class="tr" onclick="location.hash='library'"><span class="id">C-17</span><span class="nm">AI Generated strip rules</span><span class="d">Full-width live-text strip owns the image foot; badges shift up by its height; hidden post-ATB (EU AI Act 50(4))</span><span class="dots"><i style="background:#00787D"></i><i style="background:#000"></i><i style="background:#000"></i><i style="background:#550503"></i><i style="background:#D24508"></i></span><span class="pill ok">live</span></div>
@@ -1181,7 +1182,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     </div>
     <p><b style="color:var(--ink)">Desktop</b> is a strip under the category links: optional NDD toggle, dropdown boxes, "Show more filters", sort right. <b style="color:var(--ink)">Mobile (live platform)</b> is the split Filters | Relevance bar; <b style="color:var(--ink)">mobile (new format)</b> is the floating pill row — white radius-42 chips with soft shadow, NDD toggle inline, chips open the combined sheet (Brand Room Figma 739-92223).</p>
     <div class="demo">
-      <div class="hd"><i></i><i></i><i></i><span>canvas — mobile filter sheet</span><span class="bn">Debenhams</span></div>
+      <div class="hd"><i></i><i></i><i></i><span>canvas — mobile filter modal (slide up)</span><span class="bn">Debenhams</span></div>
       <div class="canvas" style="padding:24px">
         <div class="sf-drawer open" style="position:static;width:320px;height:420px;border:1px solid var(--border-subtle);z-index:auto">
           <div class="head">Filters <button aria-label="Close"><img src="assets/ds/icons/lib/icons-close.svg" alt=""></button></div>
@@ -1616,7 +1617,9 @@ window.DG_FASCIAS=FASCIAS;
 /* a wrapping flex row can't shrink-wrap in CSS, so after layout each playground is sized to its rightmost item (+ canvas padding) */
 /* desktop footer shown at its real 1440 layout, scaled to the full width of its box */
 window.fitFooters=function(root){(root||document).querySelectorAll('.ftr-fit').forEach(w=>{const f=w.firstElementChild;if(!f)return;w.style.zoom=1;const k=Math.min(1,w.parentElement.clientWidth/1440);w.style.zoom=k})};
-window.hugBoxes=function(){document.querySelectorAll('.page.on .fx').forEach(fx=>{fx.style.width='';if(fx.querySelector('.ftr-fit')){window.fitFooters(fx);return} /* full-width desktop footer: the box takes the page width and the 1440 footer scales into it */const c=fx.querySelector('.canvas.fxc');if(!c||!c.children.length)return;
+/* .zfit: a component wider than the page (desktop modals at 960 / 1248) keeps its real layout and scales down to the playground's width — no scroll bars */
+window.fitZ=function(root){(root||document).querySelectorAll('.zfit').forEach(w=>{w.style.zoom=1;const host=w.closest('.fxstack,.canvas')||w.parentElement;const avail=host.clientWidth-(host.classList.contains('fxstack')?50:56);const k=Math.min(1,avail/w.offsetWidth);w.style.zoom=k>0?k:1})};
+window.hugBoxes=function(){window.fitZ(document.querySelector('.page.on'));document.querySelectorAll('.page.on .fx').forEach(fx=>{fx.style.width='';if(fx.querySelector('.ftr-fit')){window.fitFooters(fx);return} /* full-width desktop footer: the box takes the page width and the 1440 footer scales into it */const c=fx.querySelector('.canvas.fxc');if(!c||!c.children.length)return;
   const L=fx.getBoundingClientRect().left;let R=0;[...c.children].forEach(el=>{R=Math.max(R,el.getBoundingClientRect().right)});
   const pad=parseFloat(getComputedStyle(c).paddingRight)||24;const w=Math.max(320,Math.ceil(R-L+pad+2));if(w>0)fx.style.width=w+'px'})};
 let _hz;addEventListener('resize',()=>{clearTimeout(_hz);_hz=setTimeout(()=>window.hugBoxes(),120)});
