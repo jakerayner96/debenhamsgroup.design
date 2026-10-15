@@ -136,10 +136,10 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 @media(min-width:1024px){.galwrap{max-width:100%}}
 .buy{display:flex;flex-direction:column;gap:16px}
 .tchips{display:flex;gap:10px;flex-wrap:wrap}
-.tr-chips{position:absolute;z-index:2;top:12px;right:12px;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.ptags{position:absolute;z-index:2;right:12px;bottom:12px;display:flex;flex-direction:column;align-items:flex-end;gap:4px;pointer-events:none}
-.ptags span{background:rgba(255,255,255,.9);color:#000;font:400 11px/1 var(--font-family-base);padding:5px 8px;border-radius:4px}
-@media(min-width:1024px){.tr-chips{top:16px;right:16px}.ptags{right:16px;bottom:16px}.ptags span{font-size:12px;padding:6px 10px}}
+.tr-chips{position:absolute;z-index:3;top:12px;right:16px;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.ptags{position:absolute;z-index:3;right:16px;bottom:12px;display:flex;flex-direction:column;align-items:flex-end;gap:4px;pointer-events:none}
+.ptags span{background:rgba(255,255,255,.9);color:#000;font:300 13px/1 var(--font-family-base);padding:7px 10px;border-radius:4px}   /* pinned to the gallery container, 16px from the screen edge — they stay put as the images scroll */
+@media(min-width:1024px){.tr-chips{top:16px;right:16px}.ptags{right:16px;bottom:16px}.ptags span{font-size:14px;padding:8px 12px}}
 .tchip{height:auto!important;padding:9px 14px!important;gap:6px!important;font-size:13px!important;font-weight:300!important}.tchip img{width:16px;height:12px}.tchip .ai-icon{width:16px!important;height:16px!important}
 .prow .pname{margin-top:4px}
 .wl-c{flex:none;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:#FFF;box-shadow:var(--shadow-puck);cursor:pointer}.wl-c img{width:20px;height:20px;object-fit:contain}
@@ -574,7 +574,7 @@ function pdp(){
   /* tags: always on, bottom right of the first image — smaller, white at 90%, no outline */
   const tags=`<span class="ptags"><span>Petite</span><span>As Seen In Our Ad</span></span>`;
   const gal=`<div class="galwrap"><div class="thumbs">${SH.map((st,i)=>`<button class="${i?'':'on'}" data-slide="${i}" aria-label="Image ${i+1}"><img src="${IMG(1)}" alt="" style="${st}"></button>`).join('')}</div>
-    <div class="galmain"><div class="gal" id="gal">${SH.map((st,i)=>`<div class="slide"><img src="${IMG(1)}" alt="${esc(p.name)} — image ${i+1}" style="${st}">${!i?`${onImg&&chipsArr.length?`<span class="tr-chips">${chipsArr.join('')}</span>`:''}${tags}`:''}</div>`).join('')}</div>
+    <div class="galmain">${onImg&&chipsArr.length?`<span class="tr-chips">${chipsArr.join('')}</span>`:''}${tags}<div class="gal" id="gal">${SH.map((st,i)=>`<div class="slide"><img src="${IMG(1)}" alt="${esc(p.name)} — image ${i+1}" style="${st}"></div>`).join('')}</div>
       <button class="arrow l" data-step="-1" aria-label="Previous"><img src="assets/ds/icons/lib/icons-left.svg" alt=""></button><button class="arrow r" data-step="1" aria-label="Next"><img src="assets/ds/icons/lib/icons-right.svg" alt=""></button></div>
     <div class="pag"><div class="track"><div class="fill" id="pagfill"></div></div></div></div>`;
   const ctaRow=[S.vtoPos==='cta'&&ON('vto')?`<button class="ai-pill ai-pill--soft ai-cta vs-chip" ${F('vto','B · under CTA')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'',S.ssPos==='cta'&&ON('shopSimilar')?`<button class="ai-pill ai-pill--soft ai-cta" ${F('shopSimilar','B · under CTA')} data-q="Shop similar">${spk(16)}Shop similar</button>`:''].filter(Boolean);
