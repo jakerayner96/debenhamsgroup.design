@@ -279,12 +279,20 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .vs-chip{font-weight:var(--w-strong,600)!important;font-size:13px!important;gap:6px!important}.vs-chip img{width:16px;height:12px;display:block}
 /* ---------- search active (Search Figma gKuKG9M8kSM2BCL6dy0G30 · 1012:2295): caret in the field, X beside it, Recent · Suggestions (replaces Popular) · Recently viewed ---------- */
 .ag-x{display:grid;place-items:center;width:24px;height:24px;flex:none;background:none;border:0;padding:0;cursor:pointer}.ag-x img{width:16px;height:16px}
-.hd-search .caret{display:inline-block;width:2px;height:24px;border-radius:99px;background:#5877FF;margin-right:-2px;flex:none;animation:caret 1s steps(1) infinite}
+.hd-search .ph{position:relative;display:grid;padding-left:3px}
+.hd-search .ph>span{grid-area:1/1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .25s ease,transform .25s ease}
+.hd-search .ph .t1{opacity:0;transform:translateY(6px)}
+.hd-search .ph.act .t0{opacity:0;transform:translateY(-6px)}.hd-search .ph.act .t1{opacity:1;transform:none}
+.hd-search .ph.act::before{content:"";position:absolute;left:0;top:50%;width:2px;height:22px;margin-top:-11px;border-radius:99px;background:#5877FF;animation:caret 1s steps(1) infinite}
+#hdrwrap.opening .hd-search .ph .t0{opacity:1;transform:none}#hdrwrap.opening .hd-search .ph .t1{opacity:0;transform:translateY(6px)}
+#hdrwrap.opening .ag-x,#hdrwrap.opening .ag-sw>.ai-circle:not(:first-child){animation:agIn .28s cubic-bezier(.2,.8,.2,1) both}
+@keyframes agIn{from{opacity:0;max-width:0;margin-left:-10px;transform:scale(.6)}to{opacity:1;max-width:60px;transform:none}}
+.ac{border-top:0!important}
 @keyframes caret{50%{opacity:0}}
 .ac-sec{display:flex;flex-direction:column;gap:12px;padding:16px 0}.ac-sec+.ac-sec{border-top:1px solid var(--border-subtle)}
 .ac h4{font-size:16px;font-weight:600;margin:0}
 .ac-chips{display:flex;flex-wrap:wrap;gap:10px}
-.ac-chip{font-family:var(--font-family-base);display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:99px;background:var(--surface-media,#F2F2F2);font-size:15px;font-weight:300;color:var(--text-primary);border:0;cursor:pointer;white-space:nowrap}
+.ac-chip{font-family:var(--font-family-base);display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:99px;background:var(--surface-media,#F2F2F2);font-size:14px;font-weight:var(--w-regular,400);line-height:1.2;color:var(--text-primary);border:0;cursor:pointer;white-space:nowrap}
 .ac-chip img{width:14px;height:14px;opacity:.7}
 .ac-hd{display:flex;align-items:center;gap:8px}.ac-hd h4{flex:1}
 .ac-rv{display:grid;grid-auto-flow:column;grid-auto-columns:42%;gap:10px;overflow:hidden}
@@ -404,7 +412,8 @@ function header(){
   let h=strip(d?V('header',1):V('header',0)).replace(/ style="[^"]*border[^"]*"/,'');
   h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
   const ph=d?'Search Fashion, Home &amp; Beauty':'Search over 10,000+ brands...';
-  const q=S.search?`<span class="caret"></span><span>${ph}</span>`:`<span>${ph}</span>`;
+  /* active: the placeholder becomes just "Search" with the caret drawn over its start, so nothing shifts */
+  const q=`<span class="ph${S.search?' act':''}"><span class="t0">${ph}</span><span class="t1">Search</span></span>`;
   const ics='<span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="assets/ds/icons/search.svg" alt=""></span>';
   const circle=`<button class="ai-circle" ${F('launcher',lo==='icon'?'icon beside X':'icon beside search')} data-q="" aria-label="${ask()}"><i class="ai-icon"></i></button>`;
   const askPill=`<button class="ai-pill ai-pill--outline ag-ask" ${F('launcher','Ask beside search')} data-q="">${spk(18)}Ask</button>`;
@@ -422,7 +431,7 @@ function header(){
     if(exp)h=h.replace(/(<div class="hd-bar">[\s\S]*?<\/div><\/div>)/,'$1'+`<div class="ag-mrow">${field}</div>`);
   }
   if(!S.search)h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
-  return `<div id="hdrwrap" class="${lift?'lifted'+(header.was?'':' lifting'):''}">${h}${S.search?autocomplete():''}</div>`;
+  return `<div id="hdrwrap" class="${lift?'lifted'+(header.was?'':' lifting'):''}${S.search&&!header.was&&!EXPORTING?' opening':''}">${h}${S.search?autocomplete():''}</div>`;
 }
 
 /* ================= SEARCH ACTIVE — Search Figma 1012:2295, re-ordered (Jake 15 Oct):
@@ -620,6 +629,7 @@ function render(){
   if(S.search){const hw=document.getElementById('hdrwrap'),hb=hw.querySelector('.hd-bar'),row=hw.querySelector('.ag-mrow'),last=row||hb;
     let top=last?last.getBoundingClientRect().bottom:120;if(hw.classList.contains('lifting'))top=top-hb.offsetHeight+8;
     document.documentElement.style.setProperty('--ac-top',Math.round(top)+'px')}
+  {const hw=document.getElementById('hdrwrap');if(hw&&hw.classList.contains('opening'))requestAnimationFrame(()=>requestAnimationFrame(()=>hw.classList.remove('opening')))}
   if(window.DG_uspMount)DG_uspMount();
   galSync();
   if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
