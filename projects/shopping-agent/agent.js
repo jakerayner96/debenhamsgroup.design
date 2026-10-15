@@ -26,7 +26,7 @@ const DEF={
   cartFg:'#000000',
   cartRadius:4,
   /* the Agent start screen (prototype only): one line of copy + four one-line starter prompts */
-  tagline:'Tell me what you’re shopping for and I’ll find it.',
+  tagline:'Whatever you’re looking for, I’ll help you find it. I can guide you based on budget, occasion, colour, style, size & more. Let me know what you’re shopping for today and we can get started…',
   starters:['Find me an outfit for a wedding','Does this dress come in petite?','Gifts for my mum under £50','What goes with my black blazer?'],
 };
 const clone=o=>JSON.parse(JSON.stringify(o));
