@@ -44,7 +44,8 @@ body{background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--sans);letter-
 a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
 ::selection{background:color-mix(in srgb,var(--info) 35%,transparent)}
-::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:var(--low);border-radius:9px;border:2px solid var(--bg)}
+::-webkit-scrollbar{width:0;height:0}::-webkit-scrollbar-thumb{background:transparent}
+html,body,.side,.main,*{scrollbar-width:none} /* no visible scroll bars anywhere on the site — trackpad / wheel scroll still works */
 kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--low);border-radius:4px;padding:1px 6px;color:var(--ink-3)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
 
@@ -472,9 +473,9 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .fx .fl{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font:600 14px/1 var(--font-family-base,system-ui);color:#000;background:rgba(0,0,0,.05);border-bottom:1px solid rgba(0,0,0,.08)}
 .fx .fl em{font-style:normal;font-weight:400;opacity:.55;font-size:13px;white-space:nowrap;margin-left:16px}
 .fx .canvas{padding:20px;min-height:80px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;background:color-mix(in srgb,var(--surface-page,#fff) 94%,#000)}
-.fx .canvas.fxc{justify-content:flex-start;align-items:flex-start;gap:28px 32px;padding:24px;color:#000}
+.fx .canvas.fxc{justify-content:flex-start;align-items:flex-start;gap:28px 32px;padding:24px;color:#000;--ink:#000;--ink-2:rgba(0,0,0,.66);--ink-3:rgba(0,0,0,.5)} /* site text vars follow the box, not the site theme — no white copy on light fascia boxes */
 .fx.dark .fl{color:#fff;background:rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.1)}
-.fx.dark .canvas.fxc{color:#fff}
+.fx.dark .canvas.fxc{color:#fff;--ink:#fff;--ink-2:rgba(255,255,255,.7);--ink-3:rgba(255,255,255,.55)}
 .fsec{padding-top:8px;margin-top:40px;border-top:1px solid var(--low)}
 .fsec>h2:first-child{margin-top:24px}
 /* table of contents (PDS) */
@@ -1909,7 +1910,6 @@ function route(){
   if(pg&&!pg.classList.contains('page')){const host=pg.closest('.page');if(host&&!host.classList.contains('on')){pages.forEach(p=>p.classList.toggle('on',p===host));document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+host.id));document.body.classList.remove('sbm')}requestAnimationFrame(()=>pg.scrollIntoView({block:'start'}));return} // in-page anchor — show its page, then scroll
   pages.forEach(p=>p.classList.toggle('on',p.id===h));
   document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));
-  if(h.startsWith('c-')){const g=document.querySelector('.side .items a[href="#gallery"]');if(g)g.classList.add('on')}
   const _c=document.getElementById('crumbs'); if(_c)_c.innerHTML=(pg?.dataset.crumb||'Home').split(' / ').map((c,i,a)=>i===a.length-1?`<b>${c}</b>`:c).join(' <span style="opacity:.4">/</span> ');
   document.getElementById('main').scrollTop=0;document.body.classList.remove('sbm');document.body.classList.toggle('on-home',h==='home');document.querySelectorAll('.homebtn').forEach(b=>b.classList.toggle('on',h==='home'));
   if(window.fitTiles)requestAnimationFrame(fitTiles);
