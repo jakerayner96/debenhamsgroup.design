@@ -560,6 +560,7 @@ function pdp(){
   const vtoBtn=ON('vto')?`<button class="ai-pill ai-pill--soft vs-chip" ${F('vto','A · on image')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'';
   /* one product shot in the data set: four crops of it stand in for the live four-image gallery */
   const SH=['','object-position:50% 12%;transform:scale(1.7);transform-origin:50% 18%','object-position:50% 50%;transform:scale(1.35)','object-position:50% 95%;transform:scale(1.6);transform-origin:50% 92%'];
+  S.vtoPos='title';S.ssPos='title';S.vtoMode='agent';   /* fixed above the title (Jake, 15 Oct): only on / off */
   const ai=[S.vtoPos==='image'&&vtoBtn,S.ssPos==='image'&&ssBtn].filter(Boolean).join('');
   /* VTO Figma 15656:21934: none, one or both chips in a row above the brand (13px light, white, puck shadow) */
   const top=[S.vtoPos==='title'&&ON('vto')?`<button class="ai-pill ai-pill--soft tchip" ${F('vto','above title')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'',
