@@ -56,8 +56,7 @@ body.exporting .ai-circle,body.exporting .ag-ask{box-shadow:none;border:1px soli
 #hdrwrap.lifting .ag-mrow{animation:rowUp .3s cubic-bezier(.4,0,.2,1) both}
 @keyframes barUp{from{max-height:56px;opacity:1}to{max-height:0;opacity:0;padding-top:0;padding-bottom:0}}
 @keyframes rowUp{from{padding-top:0}to{padding-top:8px}}
-#hdrwrap.lifting~* .ac,#hdrwrap.lifting .ac{animation:acIn .3s ease both}
-@keyframes acIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes acIn{from{opacity:0}to{opacity:1}}
 body.exporting #hdrwrap.lifting .hd-bar{display:none;animation:none}
 .ag-sw:has(>.ai-pill--outline)>.hd-search{height:var(--ag-h)}
 .ag-sw>.ai-pill--outline{height:var(--ag-h);flex:none;padding:0 18px 0 14px;font-size:15px}
@@ -288,7 +287,23 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .hd-search .ph.act .t0{opacity:0;transform:translateY(-6px)}.hd-search .ph.act .t1{opacity:1;transform:none}
 .hd-search .ph.act::before{content:"";position:absolute;left:0;top:50%;width:2px;height:22px;margin-top:-11px;border-radius:99px;background:#5877FF;animation:caret 1s steps(1) infinite}
 #hdrwrap.opening .hd-search .ph .t0{opacity:1;transform:none}#hdrwrap.opening .hd-search .ph .t1{opacity:0;transform:translateY(6px)}
-#hdrwrap.opening .ag-x,#hdrwrap.opening .ag-sw>.ai-circle:not(:first-child){animation:agIn .28s cubic-bezier(.2,.8,.2,1) both}
+/* open / close motion. srch-in = the render that opened search (kept until the next render, so nothing is cut short);
+   closing = the 240ms before search closes; srch-out = the render that closed it */
+#hdrwrap.srch-in .ag-x{animation:agIn .28s cubic-bezier(.2,.8,.2,1) both}
+@media(max-width:1023px){#hdrwrap.srch-in.icon-lo .ag-sw>.ai-circle{animation:agIn .28s cubic-bezier(.2,.8,.2,1) both}}
+#hdrwrap.srch-in .ac{animation:acIn .3s cubic-bezier(.2,.8,.2,1) both}
+#hdrwrap.closing .ag-x{animation:agOut .22s ease forwards}
+@media(max-width:1023px){#hdrwrap.closing.icon-lo .ag-sw>.ai-circle{animation:agOut .22s ease forwards}}
+#hdrwrap.closing .ac{animation:acOut .22s ease forwards}
+#hdrwrap.closing .hd-search .ph .t0{opacity:1;transform:none}#hdrwrap.closing .hd-search .ph .t1{opacity:0;transform:translateY(6px)}
+#hdrwrap.closing .hd-search .ph::before{display:none}
+@keyframes agOut{from{opacity:1;max-width:60px;transform:none}to{opacity:0;max-width:0;margin-left:-10px;transform:scale(.6)}}
+@keyframes acOut{to{opacity:0}}
+#hdrwrap.srch-out.lift-lo .hd-bar{animation:barDown .3s cubic-bezier(.4,0,.2,1) both;overflow:hidden}
+@keyframes barDown{from{max-height:0;opacity:0;padding-top:0;padding-bottom:0}to{max-height:56px;opacity:1}}
+@media(min-width:1024px){body.searching #body::before{animation:dimIn .25s ease both}body.searching.closing-search #body::before{animation:dimOut .22s ease forwards}}
+@keyframes dimIn{from{opacity:0}}@keyframes dimOut{to{opacity:0}}
+@media (prefers-reduced-motion:reduce){#hdrwrap *,#hdrwrap{animation:none!important;transition:none!important}}
 @keyframes agIn{from{opacity:0;max-width:0;margin-left:-10px;transform:scale(.6)}to{opacity:1;max-width:60px;transform:none}}
 .ac{border-top:0!important}
 @keyframes caret{50%{opacity:0}}
@@ -439,8 +454,9 @@ function header(){
     h=h.replace(sIcon,lo==='icon'&&!S.search?'<button aria-label="Search" data-opensearch="1"><img src="assets/ds/icons/search.svg" alt=""></button>':'');
     if(exp)h=h.replace(/(<div class="hd-bar">[\s\S]*?<\/div><\/div>)/,'$1'+`<div class="ag-mrow">${field}</div>`);
   }
-  if(!S.search)h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
-  return `<div id="hdrwrap" class="${lift?'lifted'+(header.was?'':' lifting'):''}${S.search&&!header.was&&!EXPORTING?' opening':''}">${h}${S.search?autocomplete():''}</div>`;
+  /* USP banners stay put: the search panel fades in over them, so nothing on the page disappears instantly */
+  h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
+  return `<div id="hdrwrap" class="${lift?'lifted'+(header.was?'':' lifting'):''}${S.search&&!header.was&&!EXPORTING?' opening srch-in':''}${!S.search&&header.was&&!EXPORTING?' srch-out':''} ${lo}-lo">${h}${S.search?autocomplete():''}</div>`;
 }
 
 /* ================= SEARCH ACTIVE — Search Figma 1012:2295, re-ordered (Jake 15 Oct):
@@ -689,7 +705,10 @@ document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.t
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
   if(!S.search&&e.target.closest('[data-opensearch]')){S.search=true;parent.postMessage({protoSearch:true},'*');render();return}
-  if(e.target.closest('[data-closesearch]')){S.search=false;parent.postMessage({protoSearch:false},'*');render();return}
+  if(e.target.closest('[data-closesearch]')){const hw=document.getElementById('hdrwrap');
+    const done=()=>{document.body.classList.remove('closing-search');S.search=false;parent.postMessage({protoSearch:false},'*');render()};
+    if(EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches||!hw)return done();
+    if(hw.classList.contains('closing'))return;hw.classList.remove('srch-in');hw.classList.add('closing');document.body.classList.add('closing-search');setTimeout(done,240);return}
   if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
   if(qb){e.preventDefault();CHAT.user=true;const q=qb.dataset.q;openChat(q?(qb.dataset.ctx&&/similar/i.test(q)?q:q):'',!!qb.dataset.vto);return}
