@@ -181,13 +181,13 @@ const FEATS=[
   {k:'ep-out',n:'Entry point · Exposed search (outside)',pg:'home',d:'The search field is exposed with the gradient-outline Ask Deb pill beside it, both 44px.',set:{launcher:'out'}},
   {k:'custom',n:'Content Prompts Banner',pg:'home',d:'Fixed prompts we choose and place (CMS-fed); each one opens the agent with that question. Homepage shown; the same works on category pages.',opts:[['module','A · Homepage module','Image + prompt panel under the hero.'],['strip','B · Promo strip','A slim AI-gradient bar at the top of the page.'],['hero','C · Chips on the hero','Prompt chips over the first hero image.']]},
   {k:'autocomplete',n:'Search Suggestions',pg:'plp',search:true,d:'Search active, as the Search Figma (1012:2295): Recent Searches stay, Popular Searches become the agent’s suggestions, Recently Viewed stays. The last chip (Help me discover) is the open-ended one.'},
-  {k:'nba',n:'PLP Next Best Action',pg:'plp',d:'Co-shop module on search / browse: a question, answer chips and the open-ended Help me decide. Chips are contextual in production (FDE build).',opts:[['top','A · Above the results','Under the title and category pills, before sort & filter.'],['filter','B · Under sort & filter','Directly above the grid.'],['grid','C · In the grid','A full-width row after the first row of products.']]},
+  {k:'nba',n:'PLP Next Best Action',pg:'plp',d:'Co-shop module on the PLP (live Women’s Partywear layout): a question, answer chips and the open-ended Help me decide. Place it below the filters or as a full-width row after row 1–5 of products (2 per row on mobile, 5 on desktop). Chips are contextual in production (FDE build).',rows:true},
   {k:'pdpPrompts',n:'PDP Prompts',pg:'pdp',d:'<google-ai-prompts product-id direction>. Pre-baked at launch, dynamic as the agent learns. The last chip (Ask anything) is outlined so it reads as the open-ended option.',opts:[['glance','A · Replaces At a Glance','Takes the At a Glance slot (under the gallery on desktop, after delivery on mobile).'],['aboveCta','B · Above Add to Bag','Between size and the CTA.'],['belowCta','C · Below Add to Bag','Straight under the CTA, before Deliver+.']]},
   {k:'vto',n:'Virtual Try On',pg:'pdp',d:'Our Virtual Stylist chip (VTO Figma 15203:68330): white pill, teal hanger, 13px SemiBold. Opens the agent, which asks for a photo.',opts:[['image','A · On the PDP image','Bottom-left of the first gallery image.'],['cta','B · Under Add to Bag','Outline button under the CTA.']]},
   {k:'shopSimilar',n:'Shop Similar',pg:'pdp',d:'sendQuery("Shop similar"): style alternatives and out-of-stock recovery.',opts:[['image','A · On the PDP image','Beside Virtual Stylist at the foot of the first image.'],['cta','B · Under Add to Bag','Outline button under the CTA.'],['card','C · On PLP cards','A small Similar pill on every product card.']]},
 ];
 const OUT=['AI Overview','Compare','Shop the look'];
-const POSKEY={pdpPrompts:'pdpPos',shopSimilar:'ssPos',vto:'vtoPos',nba:'nbaPos',custom:'cpPos'};
+const POSKEY={pdpPrompts:'pdpPos',shopSimilar:'ssPos',vto:'vtoPos',custom:'cpPos'};
 const P={
   name:'shopping-agent',
   title:'Shopping agent',
@@ -198,7 +198,7 @@ const P={
   store:'proto-shopping-agent',
   initial:()=>({page:'home',feat:'ep-in',on:{},launcher:'in',start:'config',pdpPos:'glance',pdpDir:'column',pdpHead:true,pdpAsk:true,
     pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
-    ssPos:'image',vtoPos:'image',vtoLabel:'Virtual Stylist',nbaPos:'top',nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
+    ssPos:'image',vtoPos:'image',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
     acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
     cpPos:'module',search:false,chat:false,agent:{},focus:null}),
 };
@@ -215,6 +215,7 @@ function handoff(c){const lines=[];const ep={icon:'Icon in header (AI icon besid
   lines.push('Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
   lines.push('## 2 · Entry point + features (front end)','',`- **Entry point**: ${ep}`);
   FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${o?o[1]+' — '+o[2]:''}`)});
+  lines.push(`- **PLP Next Best Action**: ${c.nbaRow?`a full-width row of the grid after row ${c.nbaRow} (${c.nbaRow*2} products on mobile, ${c.nbaRow*5} on desktop)`:'below the filters, above the first row of products'}.`);
   lines.push('- **Search Suggestions**: Popular Searches → the agent’s suggestions; Recent Searches and Recently Viewed unchanged (Search Figma 1012:2295).');
   lines.push('','Calls:','```js',
     '// every chip / button below opens the chat with its query; the input sends what the shopper types',
@@ -245,6 +246,7 @@ function renderPanel(host,S,update){
     <p style="margin:10px 0 0">Not in this phase: ${OUT.join(' · ')}.</p></div>
   <div class="card"><h3>${fe.n}</h3><p>${H(fe.d)}</p>
     ${fe.opts?fe.opts.map(o=>opt(c[POSKEY[fe.k]]===o[0],o[1],o[2],`data-pos="${o[0]}"`)).join(''):''}
+    ${fe.rows?[0,1,2,3,4,5].map(n=>opt((+c.nbaRow||0)===n,n?`After row ${n}`:'Below the filters',n?`A full-width row after ${n*2} products on mobile, ${n*5} on desktop.`:'Directly above the first row of products.',`data-row="${n}"`)).join(''):''}
     ${fe.k==='pdpPrompts'?`<div class="f"><span>Direction</span><span class="seg" id="dir"><button data-v="column" class="${c.pdpDir==='column'?'on':''}">Column (dev build)</button><button data-v="row" class="${c.pdpDir==='row'?'on':''}">Row · wrap</button></span></div>
       <div class="f"><span>Launch prompts (pre-baked)</span>${c.pdpPrompts.map((t,i)=>`<input data-arr="pdpPrompts" data-i="${i}" value="${H(t)}">`).join('')}<small>Dynamic prompts replace these per product once the agent has learnt them.</small></div>
       <div class="f"><label class="sw"><input type="checkbox" id="t-head"${c.pdpHead?' checked':''}><i></i>“${H('Ask '+e.name)}” heading</label><label class="sw"><input type="checkbox" id="t-ask"${c.pdpAsk?' checked':''}><i></i>“Ask anything” chip (outlined)</label></div>`:''}
@@ -281,6 +283,7 @@ function renderPanel(host,S,update){
   host.querySelector('#t-chat').onchange=ev=>{c.chat=ev.target.checked;go()};
   host.querySelectorAll('#start button').forEach(b=>b.onclick=()=>{c.start=b.dataset.v;c.chat=true;go()});
   host.querySelectorAll('[data-pos]').forEach(b=>b.onclick=()=>{c[POSKEY[fe.k]]=b.dataset.pos;c.page=fe.pg;c.focus={f:fe.k,n:Date.now()};go()});
+  host.querySelectorAll('[data-row]').forEach(b=>b.onclick=()=>{c.nbaRow=+b.dataset.row;c.page='plp';c.focus={f:'nba',n:Date.now()};go()});
   host.querySelectorAll('#dir button').forEach(b=>b.onclick=()=>{c.pdpDir=b.dataset.v;go()});
   const ti=host.querySelector('#t-head');if(ti)ti.onchange=ev=>{c.pdpHead=ev.target.checked;go()};
   const ta=host.querySelector('#t-ask');if(ta)ta.onchange=ev=>{c.pdpAsk=ev.target.checked;go()};
