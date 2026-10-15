@@ -164,7 +164,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .dbox div{display:flex;gap:12px;align-items:flex-start}.dbox img{width:20px;height:20px;flex:none}
 /* html2canvas cannot parse color-mix(): flatten the one the Deliver+ banner uses */
 .dplus .foot{border-top-color:rgba(0,0,0,.25)}
-.acc-set .acc{border-bottom:1px solid var(--border-subtle)}.acc-set .acc:first-child{border-top:1px solid var(--border-subtle)}
+.acc-set .acc{border-bottom:0;border-top:0}.acc-set .acc+.acc{border-top:1px solid var(--border-subtle)}   /* dividers only between rows */
 .acc-set .acc:not(.open) .acc-b{display:none}.acc-set .acc-h{cursor:pointer}.acc-set .acc-h img{transition:transform .2s}
 .acc-set .acc-b .glance{margin:0;padding:0}
 .acc-set .acc-h{display:flex;width:100%;justify-content:space-between;align-items:center;padding:16px 0;font:600 15px var(--font-family-base);background:none;border:0;color:inherit}
