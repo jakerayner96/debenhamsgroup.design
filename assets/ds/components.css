@@ -1355,6 +1355,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 /* AI tag chip (.ai-pill--tag): the Shop Similar / Virtual Stylist chip in the row above the PDP title — 13px light, 9 / 14 padding, 16px icon */
 .ai-pill--tag{height:auto;padding:9px 14px;gap:6px;font-size:13px;font-weight:300}.ai-pill--tag .ai-icon{width:16px;height:16px}.ai-pill--tag img{width:16px;height:12px}
 .pdp-chips{display:flex;gap:10px;flex-wrap:wrap}
+.pdp-gal .main>.pdp-chips{position:absolute;z-index:3;top:var(--gap-4,16px);right:var(--gap-4,16px)}  /* desktop: Shop Similar top right of the main image */
 /* Accordion set (.acc-set): the PDP info rows — At a Glance (open) · Description · Product Details & Care · Delivery · Returns · Manufacturer.
    Keyline only between rows, gap 4 (16px) row padding, 15px semibold head, 16px chevron (icons-down) that flips open. */
 .acc-set .acc{display:block;border:0}.acc-set .acc+.acc{border-top:var(--border-w,1px) solid var(--border-subtle)}

@@ -9,10 +9,10 @@
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
 /* DS page template — PDP. THE MASTER PDP: the Shopping agent PDP (projects/shopping-agent, banked 16 Oct 2026) rebuilt on DS components only.
-   Order — mobile: header · USP banners · gallery (product tags bottom right) · AI tag chip (Shop Similar) · PDP title · ratings · price ·
-   option label + colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always) · Ask Deb / Google PDP prompts
-   (ai-prompts.js, always straight under Apple Pay) · Subscribe & Save (subscribe.js; ADD → modal) · membership box · Deliver+ ·
-   delivery grid (delivery.js; See more → Delivery Options modal) · BNPL · then the accordion set
+   Order — mobile: header · USP banners · gallery (product tags bottom right) · AI tag chip (Shop Similar; desktop: top right of the main image) ·
+   PDP title · ratings · price · option label + colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always) ·
+   Ask Deb / Google PDP prompts (ai-prompts.js) · membership box (Unlimited) · Deliver+ · delivery grid (delivery.js; See more → Delivery
+   Options modal) · BNPL · Subscribe & Save (subscribe.js; ADD → modal) — that order, Jake 16 Oct · then the accordion set
    (At a Glance open · Description · Product Details & Care · Delivery · Returns · Manufacturer) · footer.
    Desktop: breadcrumb, then gallery + accordions on the left, the buy column on the right.
    New PDP features land HERE so every next PDP gets them. Any fascia: ?brand=<slug>. Drop components in via the data-slot hooks. */
@@ -64,10 +64,10 @@ const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse']; 
 
 function header(){const dev=desk()?'desktop':'mobile';
   return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header><div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`}
-function gallery(p){
+function gallery(p,top=''){
   return `<div class="pdp-gal" data-slot="gallery">
     <div class="thumbs">${p.imgs.map((s,i)=>`<button class="${i?'':'on'}" data-i="${i}" aria-label="Image ${i+1}"><img src="${s}" alt=""></button>`).join('')}</div>
-    <div class="main">${(p.tags||(p.tag?[p.tag]:[])).length?`<span class="ptags">${(p.tags||[p.tag]).map(x=>`<span>${esc(x)}</span>`).join('')}</span>`:''}
+    <div class="main">${top}${(p.tags||(p.tag?[p.tag]:[])).length?`<span class="ptags">${(p.tags||[p.tag]).map(x=>`<span>${esc(x)}</span>`).join('')}</span>`:''}
       <div class="slides">${p.imgs.map((s,i)=>`<img src="${s}" alt="${esc(p.name)}, view ${i+1}">`).join('')}</div>
       <button class="nav prev" aria-label="Previous image"><img src="${LIB}icons-left.svg" alt=""></button><button class="nav next" aria-label="Next image"><img src="${LIB}icons-right.svg" alt=""></button></div>
     <div class="pag"><i style="width:${Math.round(100/p.imgs.length)}%"></i></div></div>`}
@@ -86,9 +86,11 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
   const crumbs=P.crumbs.map((c,i)=>i<P.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('');
   const bnpl=strip(V('bnpl',0)).replace(/£23\.33/,'£'+(num(P.price)/3).toFixed(2));
   const dplus=DPLUS.includes(S.brand)?strip(V('deliver-plus',d?1:0)):'';
+  /* Shop Similar: above the title on mobile, top right of the main image on desktop */
+  const chips=`<div class="pdp-chips" data-slot="ai-chips"><button class="ai-pill ai-pill--soft ai-pill--tag"><i class="ai-icon"></i>Shop Similar</button></div>`;
   const under=`<div class="under" data-slot="below">${accSet(P)}</div>`;
   const buy=`<div class="buy" data-slot="buy">
-      <div class="pdp-chips" data-slot="ai-chips"><button class="ai-pill ai-pill--soft ai-pill--tag"><i class="ai-icon"></i>Shop Similar</button></div>
+      ${d?'':chips}
       <div class="pdp-head"><div class="titles"><span class="brand">${esc(P.brand)}</span><h1 class="name">${esc(P.name)}</h1></div><button class="wish" aria-label="Add to wishlist"><img src="${wishIcon(S.brand)}" alt=""></button></div>
       ${V('ratings',0).replace(/ style="[^"]*"/,'')}
       ${price(P)}
@@ -97,15 +99,15 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
       <div class="sizes"><div class="sizes-head"><span>Size: <b>Select a size</b></span><span class="guide">Size guide</span></div><div class="set">${P.sizes.map(z=>`<button class="sz">${esc(z)}</button>`).join('')}</div></div>
       <div class="pdp-ctas" data-slot="ctas"><button class="bd pri">Add to bag</button><button class="pay pay--paypal"><img src="assets/ds/icons/payments/paypal-wordmark.svg" alt="PayPal"><span class="pp-co">Checkout</span></button><button class="pay pay--apple"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button></div>
       ${window.DG_aiPromptsHTML?DG_aiPromptsHTML(S.brand,{sku:P.sku||''}):''}
-      ${window.DG_subscribe?DG_subscribe.box(SNS(P)):''}
       ${window.DG_memberBoxHTML?DG_memberBoxHTML(S.brand):''}
       ${dplus}
       ${window.DG_delivery?DG_delivery.grid(DG_OPTS()):''}
       ${bnpl}
+      ${window.DG_subscribe?DG_subscribe.box(SNS(P)):''}
     </div>`;
   return `${header()}<main class="pg">
   ${d?`<nav class="bc" aria-label="Breadcrumb">${crumbs}</nav>`:''}
-  <div class="pdp">${d?`<div><div class="gal">${gallery(P)}</div>${under}</div>${buy}`:`<div class="gal">${gallery(P)}</div>${buy}${under}`}</div>
+  <div class="pdp">${d?`<div><div class="gal">${gallery(P,chips)}</div>${under}</div>${buy}`:`<div class="gal">${gallery(P)}</div>${buy}${under}`}</div>
   </main><footer data-ftr="${S.brand}"></footer>`}
 function wire(){
   const g=document.querySelector('.pdp-gal');if(!g)return;const sl=g.querySelector('.slides'),th=[...g.querySelectorAll('.thumbs button')],bar=g.querySelector('.pag i');

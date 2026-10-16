@@ -25,7 +25,7 @@
 | Rules | cut-off "midnight" / "12AM" · See more with two methods · returns line + days |
 | Product | standard · C&C comes back first (the live bug) · marketplace (two methods) · bulky (caveat under the price, in the box and in the modal) |
 | Customer | Standard / the fascia's programme (Unlimited, Premier Club, Premier, Royalty — next day free) |
-| Placement | under Ask Deb (below the buy buttons) / under membership + Deliver+ — both boxes always shown |
+| Placement | fixed: Jake's order — Apple Pay → Ask Deb → Unlimited → Deliver+ → delivery grid → BNPL → Subscribe & Save |
 
 ## Agreed in the meeting
 Phase 1 static logic for everyone; modal sorted price low → high like checkout; web and app the same; bulky surcharge upfront and repeated in the modal.
