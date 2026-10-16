@@ -425,6 +425,8 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 <body>
 <div id="app"></div>
 <div class="ct" id="ct"></div>
+<script src="assets/ds/delivery.js"></script>
+<script src="assets/ds/subscribe.js"></script>
 <script src="assets/ds/dplus-logos.js"></script>   <!-- Deliver+ lockups: the catalogue reads them when it loads -->
 <script src="assets/ds/catalogue.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
@@ -443,7 +445,7 @@ const IMG=i=>`projects/plp-alignment/img/debenhams/p${i<7?i:i+1}.jpg`;
 const A='projects/shopping-agent/';
 
 /* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
-let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'outIcon',start:'config',pdpPos:'aboveGlance',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
+let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'outIcon',start:'config',pdpPos:'belowCta',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
   pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
   ssPos:'title',vtoPos:'title',chipPos:'title',chipKind:'similar',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
@@ -602,8 +604,9 @@ function pdp(){
     ${S.pdpPos==='belowCta'?prompts:''}
     <div class="unl"><div><img src="assets/brands/memberships/unlimited-logo.svg" alt="Debenhams Unlimited"><p>Enjoy unlimited delivery for an entire year for just £10.00</p></div><button>ADD</button></div>
     ${strip(V('deliver-plus',d?1:0))}
-    <div class="dbox"><div><img src="assets/ds/icons/lib/icons-delivery-fast.svg" alt="" onerror="this.remove()"><span>Sold &amp; Delivered by <u>Debenhams</u></span></div><div><img src="assets/ds/icons/lib/icons-delivery-fast.svg" alt="" onerror="this.remove()"><span>Delivery From £2.99 Or 99p On Orders Over £30</span></div><div><img src="assets/ds/icons/lib/icons-quick-add.svg" alt="" onerror="this.remove()"><span>Eligible for return within 21 days. Plus 14-day extension when you purchase Debenhams Deliver+</span></div></div>
-    ${strip(V('bnpl',0))}</div>`;
+    ${window.DG_delivery?DG_delivery.grid(DG_OPTS()):''}
+    ${strip(V('bnpl',0))}
+    ${window.DG_subscribe?DG_subscribe.box(SNS()):''}</div>`;
   /* prompts: below the buy buttons, or above At a Glance; At a Glance itself can be switched off */
   const glanceSlot=S.pdpPos!=='belowCta'?prompts:'';   /* above At a Glance = above the accordions */
   /* accordions: At a Glance is the first row (open), then Description (collapsed) and the rest — same titles, a divider between every row, chevrons open / close */
@@ -614,6 +617,13 @@ function pdp(){
   return d?`<div class="wrap">${strip(V('breadcrumb',0)).replace('New In</a>','Womens</a>').replace('Womens New In','Dresses').replace('New In Dresses','Midi Dresses')}<div class="pdp"><div>${gal}${under}</div>${info}</div></div>`
           :`<div class="wrap"><div class="pdp">${gal}${info}${under}</div></div>`;
 }
+
+/* PDP buy column order (Jake 16 Oct): buy buttons · Google prompts · Unlimited · Deliver+ · delivery grid (DS delivery.js) · BNPL · Subscribe & Save (DS subscribe.js) */
+const DG_OPTS=()=>({layout:'list',scen:'std',pr:true,prBadge:'fastest',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up'});
+const SNS=()=>{const p=PR()[1];return {brand:p.brand,name:p.name,price:p.price,img:IMG(1),size:(document.querySelector('.sz.on')||{}).textContent||'M',colour:'Hot Pink',pct:5}};
+function wirePdp(){if(S.page!=='pdp')return;
+  if(window.DG_delivery)DG_delivery.mount(document,DG_OPTS());
+  if(window.DG_subscribe)document.querySelectorAll('[data-sns-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-sns-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_subscribe.modal(SNS(),{desk:innerWidth>=600}));DG_subscribe.wire(document.querySelector('[data-sns-modal]'))})}
 
 /* ================= CHAT WINDOW — rendered from the built config ================= */
 function applyVars(el,obj){for(const k in obj){if(k==='mobile'||typeof obj[k]!=='string')continue;el.style.setProperty(k,obj[k])}}
@@ -741,7 +751,7 @@ function render(){
     document.documentElement.style.setProperty('--ac-top',Math.round(top)+'px')}
   {const hw=document.getElementById('hdrwrap');if(hw&&hw.classList.contains('opening'))requestAnimationFrame(()=>requestAnimationFrame(()=>hw.classList.remove('opening')))}
   if(window.DG_uspMount)DG_uspMount();
-  galSync();
+  galSync();wirePdp();
   if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
   drawChat();
   if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el&&el.closest('#ac')){scrollTo(0,0);document.getElementById('ac').scrollTop=0}else if(el)el.scrollIntoView({block:'center',behavior:'auto'})}   /* instant, no highlight; search panel features open from the top */
