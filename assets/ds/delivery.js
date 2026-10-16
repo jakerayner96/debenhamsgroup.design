@@ -63,16 +63,17 @@
     if(o.pr&&rows.length===2&&rows.every(r=>r.m.c)){const h=fastest(pdpPool(M.home));if(h)rows.push({m:h,b:o.prBadge==='home'?'Fastest home delivery':'Fastest',third:1})}
     return rows}
 
-  const badge=(o,b)=>o.badges===false||!b?'':`<span class="dgrid-badge${/Premier|Unlimited|Royalty|Club/.test(b)?' dgrid-badge--member':''}">${esc(b)}</span>`;
+  const badge=(o,b)=>o.badges===false||!b?'':`<span class="dgrid-badge${/^Fastest/.test(b)?' dgrid-badge--fast':/^Cheapest/.test(b)?' dgrid-badge--cheap':' dgrid-badge--member'}">${esc(b)}</span>`;
   const when=(o,m,lead)=>m.nom?'On a day of your choice':m.d===1?'Tomorrow':(lead?'By ':'')+day(o,m.d);
   const total=o=>{const M=methods(o);return M.home.length+M.collect.length};
   const moreLink=(o,tab,label)=>(total(o)<=2&&o.more2!=='show')?'':`<button class="dgrid-more" data-dg-more="${tab}">${label}</button>`;
   const ret=o=>o.ret===false?'':`<div class="dgrid-ret"><img src="${IC}icons-calendar.svg" alt=""><div><div class="t">Eligible for return within ${esc(o.retDays||21)} days</div><div class="s">Exclusions apply. Please see our <a href="#">returns policy</a></div></div></div>`;
   const bulkyNote=o=>o.scen==='bulky'?`<p class="dgrid-note">${BULKY_COPY}</p>`:'';
 
-  /* A · live list + James's PR: "Get it Tomorrow with … (£5.99)" sentences */
+  /* A · live + James's PR (Home Delivery Top Up): "Arrives Tomorrow [Fastest]" / method name | price, fastest first, cheapest last */
   function list(o){const rows=rowsList(o);
-    return `<div class="dgrid-list">${rows.map(({m,b})=>`<div class="dgrid-line">${badge(o,b)}<p>${m.d===1?`Get it <b>Tomorrow</b>`:`Arrives by <b>${day(o,m.d)}</b>`} with ${esc(m.n)}${cutoff(o,m)?' '+cutoff(o,m):''} (${m.prem?`<b>Free</b> <s>${money(m.was)}</s>`:money(m.p)})</p></div>`).join('')}</div>${bulkyNote(o)}${moreLink(o,'home','See more')}`}
+    return `<ul class="dgrid-rows dgrid-rows--pr">${rows.map(({m,b})=>`<li class="dgrid-row"><div class="l"><div class="w"><b>${m.d===1?'Arrives Tomorrow':'Arrives by '+day(o,m.d)}</b>${badge(o,b)}</div><span class="n">${esc(m.n)}</span></div>
+      <div class="r"><b>${m.prem?'Free':money(m.p)}</b>${m.prem?`<s>${money(m.was)}</s>`:''}</div></li>`).join('')}</ul>${bulkyNote(o)}${moreLink(o,'home','See more')}`}
 
   /* B · Demi: Delivery / Click & Collect tabs, checkout-style rows with the price on the right */
   function row(o,{m,b}){return `<li class="dgrid-row"><div class="l"><div class="w"><b>${when(o,m,1)}</b>${badge(o,b)}</div><span class="n">${esc(m.s)}</span>${cutoff(o,m)?`<span class="c">${cutoff(o,m)}</span>`:''}</div>
@@ -81,8 +82,8 @@
     const panel=(k,l,more)=>`<div class="dgrid-panel" data-dg-panel="${k}"${k===first?'':' hidden'}><ul class="dgrid-rows">${picks(o,M[k]).map(r=>row(o,r)).join('')}</ul>${k==='home'?bulkyNote(o):''}${moreLink(o,k,more)}</div>`;
     const order=first==='collect'?['collect','home']:['home','collect'];
     const T={home:'Delivery',collect:'Click &amp; Collect'};
-    return `${hasC?`<div class="dgrid-tabs" role="tablist">${order.map(k=>`<button role="tab" data-dg-tab="${k}" class="${k===first?'on':''}" aria-selected="${k===first}">${T[k]}</button>`).join('')}</div>`:''}
-      <div class="dgrid-panes">${panel('home','Delivery','See more delivery options')}${hasC?panel('collect','Click & Collect','See more collection options'):''}</div>`}
+    return {hd:hasC?`<div class="dgrid-tabs" role="tablist">${order.map(k=>`<button role="tab" data-dg-tab="${k}" class="${k===first?'on':''}" aria-selected="${k===first}">${T[k]}</button>`).join('')}</div>`:'',body:`
+      <div class="dgrid-panes">${panel('home','Delivery','See more delivery options')}${hasC?panel('collect','Click & Collect','See more collection options'):''}</div>`}}
 
   /* C · one-liner (Amazon style) — everything else lives in the modal */
   function line(o){const M=methods(o),f=fastest(pdpPool(M.home)),cc=cheapest(M.collect);if(!f)return '';
@@ -91,8 +92,8 @@
       <span class="s">${[cutoff(o,f),f.prem?`Free with ${esc(o.prog||'Premier')}`:money(f.p)].filter(Boolean).join(' · ')}${cc?` · or collect from ${cc.prem?'free':money(cc.p)}`:''}</span></div></div>${bulkyNote(o)}
       <button class="dgrid-more" data-dg-more="home">${M.collect.length?'Delivery &amp; collection options':'Delivery options'}</button>`}
 
-  function grid(o){const body=o.layout==='tabs'?tabs(o):o.layout==='line'?line(o):list(o);
-    return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>Delivery Methods</h2></div>`}${body}${ret(o)}</section>`}
+  function grid(o){const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
+    return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>Delivery Methods</h2>${x.hd}</div>`}${x.body}${ret(o)}</section>`}
 
   /* ---- modal ---- */
   function sortL(o,l){const s=l.slice();s.sort(o.sort==='speed'?(a,b)=>(a.nom?99:a.d)-(b.nom?99:b.d)||a.p-b.p:(a,b)=>a.p-b.p||(a.nom?99:a.d)-(b.nom?99:b.d));return s}

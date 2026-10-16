@@ -25,6 +25,7 @@ window.DG_CHANGELOG=[
    "Changelog (this page, assets/ds/changelog.js)"
   ],
   "changed": [
+   "Delivery grid: Fastest / Cheapest tags restyled to James's PR (Fastest red on --error-bg, Cheapest grey, 4px radius, semibold) and set beside the arrival line; option A is the PR's row layout (arrival + tag / method | price); Delivery / Click & Collect tabs moved top right on the title line · by PDP delivery grid",
    "PDP template (templates/pdp.html) now carries the buy-button stack, the Google prompts under it and the delivery grid (live layout, See more → Delivery Options modal) in place of the static USP box · by PDP delivery grid",
    "Order summary → the live bag payment summary (v2, .bs-* + bag-summary.js), promoted from the USP banner bag; .summary kept as legacy",
    "Promoted from the PLP prototype into the DS: content slot (.cslot), PLP title (.plp-title), SEO copy + Show more, grid view toggle — removed from plp-alignment/plp.html",

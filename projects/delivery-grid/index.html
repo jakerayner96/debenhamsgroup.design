@@ -189,7 +189,7 @@ function renderPanel(host,S,update){
   if(c.modal==='tab'&&c.layout!=='tabs')c.modal='toggle';
   host.innerHTML=`<h1>PDP delivery grid</h1><p class="intro">The PDP <b>Delivery Methods</b> box in three options, with Paul's <b>Delivery Options</b> modal behind See more — on the DS PDP template, web (mobile + desktop) and app. Brief: Delivery Grid UX catch up, 16 Oct 2026.</p>
   <div class="card"><h3>PDP option</h3>
-    ${radio('layout','list','A · Live + James’s PR','What’s live: fastest on top, cheapest at the bottom, as sentences. The PR adds Fastest / Cheapest badges and a third home-delivery row when both come back as click &amp; collect.')}
+    ${radio('layout','list','A · Live + James’s PR','James’s PR (Home Delivery Top Up): fastest on top, cheapest at the bottom — “Arrives Tomorrow” + a Fastest / Cheapest tag beside it, the method under, price on the right; a third home-delivery row when both come back as click &amp; collect.')}
     ${radio('layout','tabs','B · Delivery / Click &amp; Collect tabs','Demi’s mockup: two tabs, checkout-style rows with the price on the right, Fastest / Cheapest badges, Premier view. See more opens the modal on the tab you’re in.')}
     ${radio('layout','line','C · One-liner + modal','“Get it Tomorrow to M4 7BB” (Amazon style) and a small link — every method lives in the modal.')}</div>
   <div class="card"><h3>Modal <small>See more</small></h3>
