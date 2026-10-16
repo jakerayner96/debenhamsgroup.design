@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Taggstar · configurator — All Brands</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="../../assets/ds/taggstar.js"></script>
+<style>
+/* ============================================================
+   Review shell — Jake's standard prototype format (model: Core PDP 2026, jakerayner96.github.io/core-pdp-2026).
+   TOP BAR = window controls: fascia chips · Desktop/Mobile · width preset · live width · Full page/Fold · Export.
+   LEFT PANEL = page configuration (project-specific — fill renderPanel()).
+   STAGE = the page in an iframe, drag handle on its right edge to resize; Fold = iPhone Safari frame.
+   EXPORT = one zip: <name>-mobile-390.png + <name>-desktop-1440.png (full page) + config.json + the page code.
+   ============================================================ */
+:root{--bg:#161616;--bar:#000;--panel:#000;--line:rgba(255,255,255,.14);--ink:#F7F7F7;--muted:#9A9A9A;--dim:#707070;--accent:#0D99FF;--ok:#1FA971;--warn:#E8A23B}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);font-family:'Google Sans','Montserrat',system-ui,sans-serif;color:var(--muted);display:grid;grid-template-rows:48px 1fr;grid-template-columns:360px 1fr;height:100%;overflow:hidden;font-size:12px}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+a{color:var(--accent)}
+/* ---- top bar ---- */
+.top{grid-column:1/3;display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--bar);border-bottom:1px solid var(--line)}
+.top .ttl{font-weight:600;font-size:12px;color:var(--ink);white-space:nowrap}
+.top .mid{margin:0 auto;display:flex;align-items:center;gap:10px;min-width:0}
+.top .div{width:1px;height:20px;background:rgba(255,255,255,.15);margin:0 4px;flex:none}
+.top .w{font-size:10.5px;color:var(--dim);font-variant-numeric:tabular-nums;min-width:48px;text-align:right}
+.top .status{font-size:11px;color:var(--muted);white-space:nowrap}
+.top select{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 8px;font:inherit;font-size:11.5px}
+.export{display:flex;align-items:center;gap:8px;background:var(--ink);color:#000;padding:6px 12px;border-radius:99px;font-weight:600;font-size:12px;flex:none}
+.export:disabled{opacity:.5;cursor:progress}.export svg{width:13px;height:13px}
+.seg{display:inline-flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;flex:none}
+.seg button{padding:5px 12px;color:#B0B0B0;font-size:11.5px;white-space:nowrap}
+.seg button.on{background:var(--ink);color:#000;font-weight:700}
+.seg button:disabled{opacity:.35;cursor:not-allowed}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.top .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.chip{padding:5px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.2);font-size:11.5px;color:#B0B0B0;white-space:nowrap}
+.chip.on{background:var(--ink);color:#000;border-color:var(--ink);font-weight:600}
+.chip[disabled]{opacity:.35;cursor:not-allowed}
+/* ---- left panel ---- */
+.panel{background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:16px 14px 40px}
+.panel h1{font-size:17px;font-weight:700;letter-spacing:-.01em;margin:4px 0 4px;color:var(--ink)}
+.panel .intro{font-size:11px;color:var(--dim);line-height:1.45;margin-bottom:14px}
+.panel select,.panel input{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:5px 8px;font:inherit;font-size:11.5px}
+.panel option:disabled{color:#555}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;background:#0E0E0E}
+.card h3{font-size:12.5px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.card h3 small{font-weight:400;color:var(--dim);font-size:10.5px;margin-left:6px}
+.card p{font-size:11px;color:var(--dim);line-height:1.45;margin-bottom:8px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:7px 0;cursor:pointer;border-top:1px solid rgba(255,255,255,.07);width:100%;text-align:left}
+.opt:first-child{border-top:none}
+.opt .r{flex:none;width:16px;height:16px;border-radius:99px;border:1.5px solid #6A6A6A;margin-top:1px;position:relative}
+.opt.on .r{border-color:var(--accent);background:var(--accent)}
+.opt.on .r::after{content:"";position:absolute;inset:4px;border-radius:99px;background:#0A0A0A}
+.opt .t{flex:1;min-width:0}.opt .t b{display:block;font-size:12px;font-weight:500;color:#D8D8D8}.opt.on .t b{font-weight:600;color:var(--ink)}
+.opt .t span{display:block;font-size:10.5px;color:var(--dim);line-height:1.4}
+.f{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.f>span{font-size:11px;color:#C8C8C8;font-weight:500}
+.f input,.f select{width:100%}
+.f small{font-size:10.5px;color:var(--dim)}.f small.warn{color:var(--warn)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink);cursor:pointer;font-weight:400}
+.sw input{display:none}.sw i{width:30px;height:18px;border-radius:99px;background:#3A3A3A;position:relative;transition:.15s;flex:none}.sw i::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:99px;background:#fff;transition:.15s}
+.sw input:checked+i{background:var(--accent)}.sw input:checked+i::after{left:14px}
+.rules{font-size:10.5px;color:var(--dim);line-height:1.55}.rules b{color:#C8C8C8;font-weight:600}
+/* ---- stage: frame + drag handle ---- */
+.stage{position:relative;overflow:hidden;display:flex;align-items:stretch;justify-content:center;padding:0}
+.win{display:flex;height:100%;max-width:100%}
+.holder{display:flex;flex:1;min-height:0}
+iframe{border:none;display:block;height:100%;background:#FFF;box-shadow:0 0 60px rgba(0,0,0,.5)}
+.handle{width:16px;display:flex;align-items:center;justify-content:center;cursor:col-resize;flex:none}
+.handle i{width:5px;height:56px;border-radius:99px;background:#3A3A3A}
+.handle:hover i,.dragging .handle i{background:#6A6A6A}
+body.dragging{user-select:none;cursor:col-resize}body.dragging iframe{pointer-events:none}
+/* ---- fold view: iOS 26 Safari frame (SEEL Enhancements 2026 · 3366-199353) ---- */
+.device{position:relative;display:flex;flex-direction:column;height:100%;background:#FFF}
+.device iframe{flex:1;min-height:0}
+.device .sb,.device .tb,.device .home,.device .chin{display:none}
+body.fold .stage{align-items:center}body.fold .win{height:auto}
+body.fold .device{height:calc(var(--k) * 874px);border-radius:calc(var(--k) * 44px);overflow:hidden;box-shadow:0 0 60px rgba(0,0,0,.5)}
+body.fold .device .sb,body.fold .device .tb,body.fold .device .home{display:flex}
+body.fold .device .chin{display:block;flex:none;height:calc(var(--k) * 82px);background:#FFF}
+body.fold .device iframe{box-shadow:none}
+.device .sb{height:calc(var(--k) * 62px);flex:none;background:#FFF;position:relative;align-items:center;justify-content:space-between;padding:0 calc(var(--k) * 30px) 0 calc(var(--k) * 48px);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif}
+.device .sb .time{font-size:calc(var(--k) * 17px);font-weight:600;color:#000;letter-spacing:-.02em;width:calc(var(--k) * 54px)}
+.device .sb .island{position:absolute;left:50%;top:calc(var(--k) * 11px);transform:translateX(-50%);width:calc(var(--k) * 124px);height:calc(var(--k) * 36px);background:#000;border-radius:99px}
+.device .sb .sys{display:flex;align-items:center;gap:calc(var(--k) * 6px)}
+.device .sb .sig{width:calc(var(--k) * 18px);height:calc(var(--k) * 12px)}.device .sb .wifi{width:calc(var(--k) * 16px);height:calc(var(--k) * 12px)}.device .sb .bat{width:calc(var(--k) * 28px);height:calc(var(--k) * 13px)}
+.device .tb{position:absolute;left:0;right:0;bottom:calc(var(--k) * 34px);height:calc(var(--k) * 48px);padding:0 calc(var(--k) * 28px);align-items:center;justify-content:space-between;gap:calc(var(--k) * 8px);pointer-events:none}
+.device .tb .circ{width:calc(var(--k) * 48px);height:calc(var(--k) * 48px);border-radius:99px;background:rgba(255,255,255,.92);box-shadow:0 1px 6px rgba(0,0,0,.18);display:grid;place-items:center;flex:none;backdrop-filter:blur(12px)}
+.device .tb .circ svg{width:calc(var(--k) * 12px);height:calc(var(--k) * 20px)}.device .tb .circ:last-child svg{width:calc(var(--k) * 22px);height:calc(var(--k) * 6px)}
+.device .tb .url{flex:1;height:calc(var(--k) * 48px);border-radius:99px;background:rgba(255,255,255,.92);box-shadow:0 1px 6px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--k) * 14px);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;font-size:calc(var(--k) * 17px);color:#000;backdrop-filter:blur(12px)}
+.device .tb .url .pg{width:calc(var(--k) * 20px);height:calc(var(--k) * 18px)}.device .tb .url .rl{width:calc(var(--k) * 20px);height:calc(var(--k) * 20px)}
+.device .home{position:absolute;left:50%;bottom:calc(var(--k) * 8px);transform:translateX(-50%);width:calc(var(--k) * 134px);height:calc(var(--k) * 5px);border-radius:99px;background:#000}
+/* ---- export overlay ---- */
+#exp{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:50}
+#exp[hidden]{display:none}
+#exp .box{background:#0A0A0A;border:1px solid var(--line);color:#FFF;padding:16px 22px;border-radius:12px;font-size:13px;display:flex;gap:12px;align-items:center;max-width:420px}
+#exp .sp{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#FFF;border-radius:99px;animation:sp .8s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+#hidden{position:fixed;left:-20000px;top:0;width:1px;height:1px;overflow:hidden}
+/* ---- phones: page fills the window; the panel slides over it from a settings tab ---- */
+#mtab,.mhead{display:none}
+@media(max-width:760px){
+  body{grid-template-columns:1fr;grid-template-rows:1fr}.top{display:none}.stage{padding:0}
+  .win,.holder,.device{width:100%!important}.device{flex:1}iframe{width:100%!important;box-shadow:none}.stage .handle{display:none!important}
+  #mtab{display:grid;place-items:center;position:fixed;left:0;top:64px;z-index:70;width:44px;height:44px;background:#000;color:#FFF;border-radius:0 12px 12px 0;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  #mtab svg{width:22px;height:22px}
+  .panel{position:fixed;inset:0;z-index:80;border-right:none;transform:translateX(-100%);transition:transform .25s ease;padding-top:12px}.panel.open{transform:none}
+  .mhead{display:flex;align-items:center;gap:8px;margin-bottom:12px}.mhead .chips{flex:1;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .mhead .mclose{flex:none;width:32px;height:32px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:var(--ink)}
+}
+.warn{font-size:11px;color:var(--warn);line-height:1.45;margin-top:8px}.warnt{color:var(--warn)}.dim{color:var(--dim)}
+.sws{display:flex;gap:8px;flex-wrap:wrap}.swc{width:30px;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.3)}.swc.on{outline:2px solid var(--accent);outline-offset:2px}
+.panel input[type=color]{height:30px;padding:2px;width:100%}.panel input[type=range]{padding:0;width:100%;accent-color:var(--accent)}
+.ic{display:inline-flex;align-items:center;gap:4px;margin:4px 10px 0 0;color:#C8C8C8;white-space:nowrap}.ic img{width:16px;height:16px;filter:invert(1)}
+.lnk{color:var(--accent);font-size:11px;margin-top:10px}
+.tbl{width:100%;border-collapse:collapse;font-size:11px}.tbl th{font-weight:500;color:var(--dim);text-align:left;padding:4px}.tbl td{padding:6px 4px;border-top:1px solid rgba(255,255,255,.07);color:#D8D8D8}.tbl tr[data-b]{cursor:pointer}.tbl tr.cur td{color:var(--ink);font-weight:600}
+.dot{display:inline-block;width:16px;height:16px;border-radius:5px;border:1px solid rgba(255,255,255,.3);vertical-align:middle}
+.card h3 .sw{font-weight:400}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="ttl" id="ttl">Taggstar</span>
+  <div class="mid">
+    <span class="chips" id="brands"></span>
+    <span class="div"></span>
+    <span class="seg" id="dev"><button data-w="0">Desktop</button><button data-w="390" class="on">Mobile</button></span>
+    <select id="preset" aria-label="Width preset" title="Exact width — or drag the handle on the preview">
+      <option value="390" selected>390</option><option value="402">402</option><option value="440">440</option><option value="768">768</option><option value="1024">1024</option><option value="1280">1280</option><option value="1440">1440</option><option value="0">Fit</option>
+    </select>
+    <span class="w" id="sizebox"></span>
+    <span class="seg" id="fold"><button data-f="0" class="on">Full page</button><button data-f="1">Fold</button></span>
+  </div>
+  <span class="status" id="status"></span>
+  <button class="export" id="exportbtn" title="Export a zip: full-page mobile (390) and desktop (1440) PNGs, the config and the page code"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 12.5h11"/></svg>Export</button>
+</header>
+<button id="mtab" aria-label="Open the configurator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+<aside class="panel" id="panel">
+  <div class="mhead"><span class="chips" id="brands-m"></span><button class="export" id="exportbtn2">Export</button><button class="mclose" id="mclose" aria-label="Close">✕</button></div>
+  <!-- {{PANEL_HTML}} — page configuration lives here; renderPanel() fills #cfgpanel -->
+  <div id="cfgpanel"></div>
+</aside>
+<main class="stage" id="stage">
+  <div class="win" id="win"><div class="holder">
+    <div class="device" id="device">
+      <div class="sb"><span class="time">9:41</span><span class="island"></span><span class="sys">
+        <svg class="sig" viewBox="0 0 18 12" fill="#000"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></svg>
+        <svg class="wifi" viewBox="0 0 16 12" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M4 7a5.8 5.8 0 0 1 8 0"/><circle cx="8" cy="10.2" r="1" fill="#000" stroke="none"/></svg>
+        <svg class="bat" viewBox="0 0 28 13"><rect x=".5" y=".5" width="24" height="12" rx="3.5" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="2" y="2" width="21" height="9" rx="2" fill="#000"/><path d="M26 4.5v4a2 2 0 0 0 0-4z" fill="#000" fill-opacity=".4"/></svg>
+      </span></div>
+      <iframe id="frame" title="Page preview"></iframe>
+      <div class="tb"><span class="circ"><svg viewBox="0 0 12 20" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 2 10l8 8"/></svg></span><span class="url"><svg class="pg" viewBox="0 0 20 18" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="2" width="14" height="10" rx="1.5"/><path d="M6 6h8M6 9h5M7 16h6"/></svg><span id="urltxt"></span><svg class="rl" viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a6 6 0 1 1-1.8-4.3"/><path d="M15 2v4h-4"/></svg></span><span class="circ"><svg viewBox="0 0 22 6" fill="#000"><circle cx="3" cy="3" r="2.2"/><circle cx="11" cy="3" r="2.2"/><circle cx="19" cy="3" r="2.2"/></svg></span></div>
+      <div class="chin"></div><div class="home"></div>
+    </div>
+    <div class="handle" id="hr" title="Drag to resize width"><i></i></div>
+  </div></div>
+</main>
+<div id="exp" hidden><div class="box"><span class="sp"></span><span id="exptxt">Exporting…</span></div></div>
+<div id="hidden"></div>
+<script>
+/* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
+const T=window.DG_taggstar;
+/* fascia colours from assets/ds/tokens.css (brand primary · brand light 3) */
+const BR={debenhams:['#7BE7D8','#D6FFF9'],boohoo:['#F8B5CC','#FEE0EA'],boohooman:['#01FE8A','#E7E7E7'],plt:['#550503','#FFD5CD'],karenmillen:['#D24508','#F3C1A7'],warehouse:['#0A0A0A','#E7E7E7'],brandroom:['#0A0A0A','#E7E7E7']};
+const GREY=b=>b==='plt'?'#FAF5E7':'#F2F2F2';              /* Figma Grey 1 · PLT sand (no white / grey on PLT) */
+const PLACES=[['plp','PLP'],['pdp','PDP'],['bag','Bag']];
+const DEF_MSG={plp:'fast-sold',pdp:'fast-min',bag:'since-sold'};  /* the Figma MAN use case */
+const LIVE_PDP=['debenhams','boohoo','plt','karenmillen'];
+const SOURCE={plp:()=>'PLP prototype · plp-alignment/plp.html (new format)',
+  pdp:b=>LIVE_PDP.includes(b)?'Live PDP recreation · core-pdp-2026/live.html':b==='boohooman'?'Core PDP 2026 · core-pdp-2026/pdp.html (new format)':'Core PDP 2026 (boohooMAN build) — no '+(b==='warehouse'?'Warehouse':'Brand Room')+' PDP has been built yet',
+  bag:()=>'Bag · usp-banner/page.html (live /basket rebuild)'};
+const P={
+  name:'taggstar',
+  title:'Taggstar',
+  page:'page.html',
+  brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
+  domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
+  files:['page.html','README.md','../../assets/ds/taggstar.js'],
+  store:'proto-taggstar',
+  initial:b=>{const L=T.LIVE[b]||{},pl=k=>Object.assign({bg:GREY(b),alpha:1,msg:DEF_MSG[k],c:null,d:null},L[k]||{});
+    return {plp:Object.assign(pl('plp'),{cover:'all',mix:false}),pdp:Object.assign(pl('pdp'),{pos:'figma'}),bag:Object.assign(pl('bag'),{cover:'first'}),icon:!!L.icon,set:L.set||'line',upper:!!L.upper}},
+};
+const ICON_OF={cart:'icons-cart',bag:'icons-bag',show:'icons-show',flame:'icons-flame',time:'icons-time',trophy:'icons-trophy'};
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* Fill the left panel. Call update() after changing S.cfg to push the change into the frame. */
+function renderPanel(host,S,update){
+  const b=S.brand,c=S.cfg,k=S.page||'pdp',p=c[k],bn=(P.brands.find(x=>x[0]===b)||[0,b])[1],L=T.LIVE[b]||{},kn=PLACES.find(x=>x[0]===k)[1];
+  const m=T.LIB.find(x=>x.id===p.msg)||T.LIB[0];
+  const sw=[['Figma Grey 1',GREY(b)]];if(L[k])sw.push(['Live '+bn,L[k].bg]);
+  sw.push([b==='plt'?'Warm white':'White',b==='plt'?'#FFFDF7':'#FFFFFF'],['Brand',BR[b][0]],['Brand light',BR[b][1]],['Black','#000000']);
+  const bg=T.hex(p.bg)||GREY(b),fg=T.fg(bg),cr=T.contrast(bg,fg);
+  const typeOpts=Object.keys(T.TYPES).map(t=>`<optgroup label="${T.TYPE_NAMES[t]} · ${T.TYPES[t]} icon">${T.LIB.filter(x=>x.t===t).map(x=>`<option value="${x.id}"${x.id===p.msg?' selected':''}>${esc((x.c?x.c+' ':'')+x.d.replace(/\*\*/g,''))}${x.at.includes(k)?'':' — written for '+x.at.split(' ').map(a=>a.toUpperCase()).join(' / ')}</option>`).join('')}</optgroup>`).join('');
+  const seg=(id,cur,opts)=>`<span class="seg" data-seg="${id}">${opts.map(([v,l])=>`<button data-v="${v}" class="${String(cur)===String(v)?'on':''}">${l}</button>`).join('')}</span>`;
+  const place=k==='plp'?`<div class="f"><span>Which cards</span>${seg('cover',p.cover,[['all','Every card'],['2','Every 2nd'],['3','Every 3rd']])}</div>
+      <label class="sw" style="margin-top:10px"><input type="checkbox" id="mix"${p.mix?' checked':''}><i></i>Mix the PLP messages across cards</label>`
+    :k==='pdp'?['figma','img','live'].map(v=>`<button class="opt${p.pos===v?' on':''}" data-pos="${v}"><span class="r"></span><span class="t"><b>${{figma:'Figma',img:'On the image',live:'Live'}[v]}</b><span>${{figma:'Mobile: on the main image, 12px from its left and bottom · desktop: pinned 24px above the bottom of the window, centred on the image',img:'On the main image, 12px from its left and bottom, at every width',live:'Centred on the main image — where Debenhams, boohoo and PLT run it today'}[v]}</span></span></button>`).join('')
+    :`<div class="f"><span>Which items</span>${seg('cover',p.cover,[['first','First item'],['all','Every item']])}</div>`;
+  const rows=P.brands.map(([v,n])=>{const cc=S.by[v]||P.initial(v);return `<tr class="${v===b?'cur':''}" data-b="${v}"><td>${n}</td>${PLACES.map(([pk])=>`<td><i class="dot" style="background:${T.hex(cc[pk].bg)};opacity:${cc[pk].alpha==null?1:Math.max(.25,cc[pk].alpha)}"></i></td>`).join('')}<td>${cc.icon?'On':'<span class="dim">Off</span>'}</td></tr>`}).join('');
+  host.innerHTML=`<h1>Taggstar</h1><p class="intro">The Taggstar message dropped into the PLP, PDP and Bag we already have (DS drop-in <b>assets/ds/taggstar.js</b>). Background, icon and message are set per fascia; pick the page to set that placement.</p>
+  <div class="card"><h3>Page <small>${bn}</small></h3>${PLACES.map(([v,l])=>`<button class="opt${k===v?' on':''}" data-page="${v}"><span class="r"></span><span class="t"><b>${l}</b><span>${esc(SOURCE[v](b))}</span></span></button>`).join('')}
+    ${k==='pdp'&&['warehouse','brandroom'].includes(b)?'<p class="warn">No '+bn+' PDP exists yet, so this shows the Core PDP (boohooMAN build). The message, colour and icon are '+bn+'’s.</p>':''}</div>
+  <div class="card"><h3>Icon <small>${bn} · all placements</small><label class="sw"><input type="checkbox" id="icon"${c.icon?' checked':''}><i></i>${c.icon?'On':'Off'}</label></h3>
+    <p>One icon per message type, before the text: ${Object.entries(T.TYPES).map(([t,i])=>`<span class="ic"><img src="../../assets/ds/icons/lib/${ICON_OF[i]}.svg" alt="">${T.TYPE_NAMES[t]}</span>`).join('')}</p>
+    <div class="f"><span>Icon set</span>${seg('set',c.set,[['line','DS line icons'],['boohoo','boohoo animated']])}<small>${c.set==='boohoo'?'boohoo’s live set: animated eyes for views, a heart for everything else.':'The V2 Figma glyphs (DS icons/lib, cart added 16 Oct). They take the text colour.'}</small></div></div>
+  <div class="card"><h3>Background <small>${bn} · ${kn}</small></h3>
+    <div class="sws">${sw.map(([n,h])=>`<button class="swc${T.hex(h)===bg?' on':''}" data-bg="${h}" title="${n} ${h}" style="background:${h}"></button>`).join('')}</div>
+    <div class="row2" style="margin-top:10px"><label class="f" style="margin:0"><span>Colour</span><input type="color" id="bgc" value="${bg.toLowerCase()}"></label><label class="f" style="margin:0"><span>Hex</span><input type="text" id="bgh" value="${bg}" maxlength="7"></label></div>
+    <div class="f"><span>Opacity <b id="aval">${Math.round((p.alpha==null?1:p.alpha)*100)}%</b></span><input type="range" id="alpha" min="20" max="100" step="5" value="${Math.round((p.alpha==null?1:p.alpha)*100)}"></div>
+    <p style="margin-top:8px">Text, icon and close: <b style="color:var(--ink)">${fg==='#000'?'black':'white'}</b> · ${cr.toFixed(1)}:1${cr<4.5?' <span class="warnt">below AA 4.5:1</span>':''}${(p.alpha??1)<1?' · sits over the image, so contrast depends on the photo':''}</p>
+    ${b==='plt'&&bg==='#FFFFFF'?'<p class="warn">PLT never runs pure white (DS rule) — use warm white #FFFDF7.</p>':''}
+    <button class="lnk" id="allplaces">Use this colour on PLP, PDP and Bag</button></div>
+  <div class="card"><h3>Message <small>${kn}</small></h3>
+    <select id="msg" style="width:100%">${typeOpts}</select>
+    <div class="f"><span>Claim <small>bold, first line on the PDP</small></span><input type="text" id="mc" value="${esc(p.c??m.c)}" placeholder="(none)"></div>
+    <div class="f"><span>Detail <small>**word** for bold</small></span><input type="text" id="md" value="${esc(p.d??m.d)}"></div>
+    <label class="sw" style="margin-top:10px"><input type="checkbox" id="upper"${c.upper?' checked':''}><i></i>Uppercase (${bn}, all placements)</label></div>
+  <div class="card"><h3>Placement <small>${kn}</small></h3>${place}</div>
+  <div class="card"><h3>All fascias</h3><table class="tbl"><tr><th></th><th>PLP</th><th>PDP</th><th>Bag</th><th>Icon</th></tr>${rows}</table></div>
+  <div class="card"><h3>Live check <small>16 Oct 2026</small></h3><p>${esc(L.seen||'—')}</p><p class="rules">Live runs one message per PDP on the main image with a close; PLP and bag messages weren’t served to a fresh session on any fascia. boohoo / PLT bag + PLP colours are the dev Storybook --social-proof-* tokens.</p></div>`;
+  const re=()=>{update();renderPanel(host,S,update)};
+  host.querySelectorAll('[data-page]').forEach(x=>x.onclick=()=>{S.page=x.dataset.page;re()});
+  host.querySelector('#icon').onchange=e=>{c.icon=e.target.checked;re()};
+  host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(x=>x.onclick=()=>{const id=g.dataset.seg;if(id==='set')c.set=x.dataset.v;else p[id]=x.dataset.v;re()}));
+  host.querySelectorAll('[data-bg]').forEach(x=>x.onclick=()=>{p.bg=x.dataset.bg;re()});
+  host.querySelector('#bgc').oninput=e=>{p.bg=e.target.value.toUpperCase();host.querySelector('#bgh').value=p.bg;update()};
+  host.querySelector('#bgc').onchange=()=>re();
+  host.querySelector('#bgh').onchange=e=>{const h=T.hex(e.target.value);if(h){p.bg=h}re()};
+  host.querySelector('#alpha').oninput=e=>{p.alpha=+e.target.value/100;host.querySelector('#aval').textContent=e.target.value+'%';update()};
+  host.querySelector('#alpha').onchange=()=>re();
+  host.querySelector('#allplaces').onclick=()=>{PLACES.forEach(([pk])=>{c[pk].bg=p.bg;c[pk].alpha=p.alpha});re()};
+  host.querySelector('#msg').onchange=e=>{p.msg=e.target.value;p.c=null;p.d=null;re()};
+  host.querySelector('#mc').oninput=e=>{p.c=e.target.value;update()};
+  host.querySelector('#md').oninput=e=>{p.d=e.target.value;update()};
+  host.querySelector('#upper').onchange=e=>{c.upper=e.target.checked;re()};
+  const mix=host.querySelector('#mix');if(mix)mix.onchange=e=>{p.mix=e.target.checked;re()};
+  host.querySelectorAll('[data-pos]').forEach(x=>x.onclick=()=>{p.pos=x.dataset.pos;re()});
+  host.querySelectorAll('tr[data-b]').forEach(r=>r.onclick=()=>setBrand(r.dataset.b));
+}
+/* ==================================================================================================== */
+
+let S={brand:new URLSearchParams(location.search).get('brand')||'',page:'pdp',w:390,fold:false,by:{}};
+try{const s=JSON.parse(localStorage.getItem(P.store)||'null');if(s)S=Object.assign(S,s,{brand:S.brand||s.brand})}catch(e){}
+if(!P.brands.some(b=>b[0]===S.brand))S.brand=P.brands[0][0];
+Object.defineProperty(S,'cfg',{get(){return S.by[S.brand]||(S.by[S.brand]=P.initial(S.brand))},set(v){S.by[S.brand]=v},enumerable:false});
+const $=s=>document.querySelector(s),frame=$('#frame'),stage=$('#stage'),win=$('#win'),preset=$('#preset');
+const save=()=>{try{localStorage.setItem(P.store,JSON.stringify({brand:S.brand,page:S.page,w:S.w,fold:S.fold,by:S.by}))}catch(e){}};
+/* the page gets each placement with its message resolved from the library (+ any copy edits) */
+const state=()=>{const c=S.cfg,o={brand:S.brand,page:S.page,icon:c.icon,set:c.set,upper:c.upper};PLACES.forEach(([k])=>{const p=c[k],m=T.LIB.find(x=>x.id===p.msg)||T.LIB[0];o[k]=Object.assign({},p,{msg:{t:m.t,c:p.c??m.c,d:p.d??m.d}})});return o};
+const src=()=>P.page+'?s='+encodeURIComponent(JSON.stringify(state()))+'&_='+Date.now();
+function update(){save();try{frame.contentWindow.postMessage({protoSet:state()},'*')}catch(e){frame.src=src()}}
+function panel(){renderPanel($('#cfgpanel'),S,()=>{update()})}
+function apply(){
+  if(matchMedia('(max-width:760px)').matches){frame.style.width='100%';win.style.width='100%';return}
+  const avail=stage.clientWidth-16,w=Math.min(S.w||avail,avail);
+  frame.style.width=w+'px';win.style.width=(w+16)+'px';
+  const mobile=w<600;document.body.classList.toggle('fold',S.fold&&mobile);document.documentElement.style.setProperty('--k',(w/390).toFixed(4));
+  document.querySelectorAll('#fold button').forEach(b=>{b.classList.toggle('on',(+b.dataset.f===1)===(S.fold&&mobile));b.disabled=!mobile});
+  $('#urltxt').textContent=P.domains[S.brand]||'';$('#sizebox').textContent=Math.round(w)+'px';
+  document.querySelectorAll('#dev button').forEach(b=>b.classList.toggle('on',(b.dataset.w==='390'&&w<600)||(b.dataset.w==='0'&&w>=600)));
+}
+function brands(){['#brands','#brands-m'].forEach(id=>{$(id).innerHTML=P.brands.map(([v,n])=>`<button class="chip${S.brand===v?' on':''}" data-b="${v}">${n}</button>`).join('');
+  $(id).querySelectorAll('button').forEach(b=>b.onclick=()=>setBrand(b.dataset.b))})}
+function setBrand(b){S.brand=b;history.replaceState(null,'','?brand='+b);$('#ttl').textContent=P.title+' · '+(P.brands.find(x=>x[0]===b)||[0,b])[1];brands();panel();save();frame.src=src();apply()}
+document.querySelectorAll('#dev button').forEach(b=>b.onclick=()=>{S.w=+b.dataset.w;preset.value=String(S.w);save();apply()});
+preset.onchange=()=>{S.w=+preset.value;save();apply()};
+document.querySelectorAll('#fold button').forEach(b=>b.onclick=()=>{S.fold=b.dataset.f==='1';save();apply()});
+$('#hr').addEventListener('pointerdown',e=>{e.preventDefault();document.body.classList.add('dragging');const sx=e.clientX,sw=frame.offsetWidth;
+  const move=ev=>{S.w=Math.max(320,sw+(ev.clientX-sx));preset.value='0';apply()};
+  const up=()=>{document.body.classList.remove('dragging');removeEventListener('pointermove',move);removeEventListener('pointerup',up);save()};
+  addEventListener('pointermove',move);addEventListener('pointerup',up)});
+addEventListener('resize',apply);
+$('#mtab').onclick=()=>$('#panel').classList.add('open');$('#mclose').onclick=()=>$('#panel').classList.remove('open');
+preset.value=[390,402,440,768,1024,1280,1440].includes(S.w)?String(S.w):'0';
+setBrand(S.brand);
+
+/* ---------- Export: one zip — full-page 390 + 1440 PNGs, config.json, the page code ---------- */
+const status=$('#status'),exp=$('#exp'),exptxt=$('#exptxt');
+function loadFrame(w){return new Promise((res,rej)=>{const f=document.createElement('iframe');f.style.cssText=`width:${w}px;height:900px;border:0`;f.src=src();$('#hidden').appendChild(f);
+  const t=setTimeout(()=>rej(new Error('page did not answer protoReady')),20000);
+  const onMsg=e=>{if(e.source!==f.contentWindow||!e.data)return;
+    if(e.data.protoReady){f.contentWindow.postMessage({protoSet:state(),exporting:true},'*');setTimeout(()=>f.contentWindow.postMessage({protoPing:1},'*'),400)}
+    if(e.data.protoPong){clearTimeout(t);removeEventListener('message',onMsg);f.style.height=(e.data.h+20)+'px';setTimeout(()=>res(f),700)}};
+  addEventListener('message',onMsg)})}
+/* page.html embeds the real page — capture that document (html2canvas leaves iframes blank) */
+async function shot(w){const f=await loadFrame(w),win=f.contentWindow,doc=(win.EXPORT_DOC&&win.EXPORT_DOC())||f.contentDocument,h=Math.max(doc.documentElement.scrollHeight,doc.body?doc.body.scrollHeight:0);
+  /* capture inside the embedded page's own realm: html2canvas's clone takes its base URL from the calling script's document, so a call started
+     here would resolve the page's relative images / stylesheets against this shell. iw.Function + iw.setTimeout make the page the caller.
+     The canvas belongs to that page, so its bytes come out before the frame is removed. */
+  const iw=doc.defaultView;if(!iw.html2canvas)await new Promise((res,rej)=>{const sc=doc.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';sc.onload=res;sc.onerror=()=>rej(new Error('html2canvas did not load in the page'));doc.head.appendChild(sc)});
+  const run=iw.Function('w','h','return new Promise((res,rej)=>setTimeout(()=>html2canvas(document.documentElement,{width:w,height:h,windowWidth:w,windowHeight:h,scale:2,useCORS:true,backgroundColor:"#FFFFFF",logging:false}).then(c=>c.toBlob(b=>b.arrayBuffer().then(res,rej),"image/png")).catch(rej),0))');
+  const buf=await run(w,h),bytes=Uint8Array.from(new Uint8Array(buf));f.remove();
+  return new Blob([bytes],{type:'image/png'})}
+const stamp=()=>new Date().toISOString().slice(0,16).replace('T','-').replace(':','');
+async function doExport(){const btns=[$('#exportbtn'),$('#exportbtn2')];btns.forEach(b=>b.disabled=true);exp.hidden=false;
+  try{const name=`${P.name}-${S.page}-${S.brand}-${stamp()}`;
+    exptxt.textContent='Rendering mobile (390) full page…';const m=await shot(390);
+    exptxt.textContent='Rendering desktop (1440) full page…';const d=await shot(1440);
+    exptxt.textContent='Packaging…';const zip=new JSZip(),root=zip.folder(name);
+    root.file(`${name}-mobile-390.png`,m);root.file(`${name}-desktop-1440.png`,d);
+    root.file('config.json',JSON.stringify(Object.assign(state(),{exportedAt:new Date().toISOString()}),null,2));
+    for(const f of P.files){try{const r=await fetch(f);if(r.ok)root.file(f.split("/").pop(),await r.blob())}catch(e){}}
+    root.file('README.txt',`${P.title} — ${S.brand}\nExported ${new Date().toISOString()}\n\n${name}-mobile-390.png / -desktop-1440.png = full-page designs at this configuration.\nconfig.json = the decision record. Open ${P.page} over HTTP with ?s=<config.json> to reproduce it.\n`);
+    const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.zip';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
+    status.textContent='Exported ✓ zip (390 + 1440 PNGs)';
+  }catch(err){console.error(err);status.textContent='Export failed: '+err.message}
+  finally{btns.forEach(b=>b.disabled=false);exp.hidden=true;setTimeout(()=>status.textContent='',8000)}}
+$('#exportbtn').onclick=doExport;$('#exportbtn2').onclick=doExport;
+</script>
+</body>
+</html>

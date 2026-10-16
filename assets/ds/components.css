@@ -68,25 +68,33 @@
 .pc-qa:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 .pc--compact .pc-qa{height:22px;font-size:10px;padding:0 7px}
 .pc--compact .pc-qa i{width:11px;height:11px}
-/* taggstar social proof — Figma Taggstar 00YKWCHwTarfwWZ1HayFUI · 3483-23105 (15 Oct 2026). No icon. Grey 1 chip (--surface-media: sand on PLT),
-   black text, radius --radius-default, 3.5px backdrop blur. One message per product per placement:
+/* taggstar social proof — Figma Taggstar 00YKWCHwTarfwWZ1HayFUI · 3483-23105 (MAN use case) + 3001-3762 (V2 message library). Live check 16 Oct 2026.
+   Grey 1 chip by default (--surface-media: sand on PLT), black text, radius --radius-default, 3.5px backdrop blur. One message per product per placement:
    PLP card  .pc-taggstar  one line under the image / Add button: "Selling Fast! 79 Sold" — claim strong, count regular, 12px, 4px 8px
    PDP       .sp-pdp       two lines (claim strong / context regular) + 12px close, 8px 12px, gap 8 (32px) to the X, soft shadow;
                            mobile: on the main image, 12px from its left and bottom · desktop: pinned to the bottom of the browser window
-   Bag       .sp-bag       full width of the line info, 8px, 12px: "Sold <b>X times</b> since your last visit X days ago" */
-.pc-taggstar{display:flex;align-items:center;gap:4px;width:fit-content;max-width:100%;background:var(--surface-media);color:var(--text-primary);border-radius:var(--radius-default);padding:4px 8px;font-size:12px;line-height:normal;white-space:nowrap;-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px)}
+   Bag       .sp-bag       full width of the line info, 8px, 12px: "Sold <b>X times</b> since your last visit X days ago"
+   Per fascia (16 Oct): background via --sp-bg (text / icon / close via --sp-fg — black or white, whichever contrasts), --sp-case for PLT uppercase.
+   Optional icon .sp-ico before the text, one per message type (cart purchases · bag added to bag · show views · flame trending · time recent sale ·
+   trophy best seller): PLP 14px gap 1 (4px) · PDP 24px gap 2 (8px) · Bag 20px gap 1 (4px). Drop-in for pages without the DS: assets/ds/taggstar.js (same rules). */
+.pc-taggstar{display:flex;align-items:center;gap:4px;width:fit-content;max-width:100%;background:var(--sp-bg,var(--surface-media));color:var(--sp-fg,var(--text-primary));border-radius:var(--sp-r,var(--radius-default));padding:4px 8px;font-size:12px;line-height:normal;white-space:nowrap;text-transform:var(--sp-case,none);-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px)}
 .pc-taggstar img{display:none}
+.pc-taggstar img.sp-ico{display:block;width:14px;height:14px;flex:none}
 .pc-taggstar b{font-weight:var(--w-strong)}
 .pc-taggstar span{font-weight:var(--w-regular)}
-.sp-pdp{display:inline-flex;align-items:center;gap:32px;padding:8px 12px;background:var(--surface-media);color:var(--text-primary);border-radius:var(--radius-default);box-shadow:0 0 8.7px rgba(0,0,0,.22);font-family:var(--font-family-base);font-size:12px;line-height:normal;-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px)}
+.sp-pdp{display:inline-flex;align-items:center;gap:32px;padding:8px 12px;background:var(--sp-bg,var(--surface-media));color:var(--sp-fg,var(--text-primary));border-radius:var(--sp-r,var(--radius-default));box-shadow:0 0 8.7px rgba(0,0,0,.22);font-family:var(--font-family-base);font-size:12px;line-height:normal;text-transform:var(--sp-case,none);-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px)}
+.sp-pdp .in{display:flex;align-items:center;gap:8px}
+.sp-pdp .sp-ico{display:block;width:24px;height:24px;flex:none}
 .sp-pdp .tx{display:flex;flex-direction:column;gap:2px;white-space:nowrap}
 .sp-pdp b{font-weight:var(--w-strong)}.sp-pdp span{font-weight:var(--w-regular)}
 .sp-pdp .sp-x{width:12px;height:12px;flex:none;padding:0;border:0;cursor:pointer;background:url("icons/lib/icons-close.svg") center/12px 12px no-repeat}
+.sp-pdp .sp-x:has(img){background:none}.sp-pdp .sp-x img{display:block;width:12px;height:12px}
 .sp-pdp--lg{font-size:14px}
 .sp-pdp.off{display:none}
 .sp-on-img{position:absolute;left:12px;bottom:12px;z-index:2}
 .sp-pin{position:fixed;left:24px;bottom:24px;z-index:var(--z-toast,60)}
-.sp-bag{display:block;width:100%;box-sizing:border-box;padding:8px;background:var(--surface-media);color:var(--text-primary);border-radius:var(--radius-default);font-family:var(--font-family-base);font-size:12px;line-height:normal;font-weight:var(--w-regular);-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px)}
+.sp-bag{display:block;width:100%;box-sizing:border-box;padding:8px;background:var(--sp-bg,var(--surface-media));color:var(--sp-fg,var(--text-primary));border-radius:var(--sp-r,var(--radius-default));font-family:var(--font-family-base);font-size:12px;line-height:normal;font-weight:var(--w-regular);text-transform:var(--sp-case,none);-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px)}
+.sp-bag:has(.sp-ico){display:flex;align-items:center;gap:4px}.sp-bag .sp-ico{display:block;width:20px;height:20px;flex:none}
 .sp-bag b{font-weight:var(--w-strong)}
 /* info block */
 .pc-info{display:flex;flex-direction:column;gap:8px;font-size:14px;min-width:0}

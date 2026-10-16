@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Inside debenhamsgroup.design/projects/taggstar/: resolve every asset from the repo root -->
+<base href="../../">
+<title>Taggstar · in situ</title>
+<style>
+/* No page of its own: the PLP, PDP and Bag we already have are embedded as they are, and the DS Taggstar drop-in
+   (assets/ds/taggstar.js) is injected into them. Same origin on Pages (jakerayner96.github.io/{debenhamsgroup.design,core-pdp-2026}). */
+html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
+.emb{display:block;width:100%;height:100vh;border:0}
+.miss{font:14px/1.5 system-ui,sans-serif;color:#555;padding:24px}
+</style>
+</head>
+<body>
+<iframe class="emb" id="emb" title="Page"></iframe>
+<script src="assets/ds/taggstar.js"></script>
+<script>
+/* ---- page contract with the shell (review-prototype) ----
+   in:  ?s=<json state>  ·  {protoSet:state, exporting?}  ·  {protoPing:1}
+   out: {protoReady:1} once loaded  ·  {protoPong:1,h} in reply to a ping (h = the embedded page's full height)
+   state: {brand, page:'plp'|'pdp'|'bag', plp/pdp/bag:{bg,alpha,msg:{t,c,d},cover|pos}, icon, set, upper} */
+const T=window.DG_taggstar;
+let S={brand:'boohooman',page:'pdp'},EXPORTING=false;
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}  // URLSearchParams already decodes
+
+/* the pages we already have — never rebuilt here */
+const LIVE_PDP=['debenhams','boohoo','plt','karenmillen'];
+const SRC={
+  plp:b=>`projects/plp-alignment/plp.html?brand=${b}&mode=new`,
+  pdp:b=>LIVE_PDP.includes(b)?`../core-pdp-2026/live.html?brand=${b}`:`../core-pdp-2026/pdp.html?brand=boohooman&mode=new`,
+  bag:b=>`projects/usp-banner/page.html?s=${encodeURIComponent(JSON.stringify({brand:b,page:'bag',banners:b,auto:0}))}`
+};
+const HIDE={plp:'',pdp:'#edbar,.edbar,#toast{display:none!important}',bag:'.ct{display:none!important}'};
+
+const emb=document.getElementById('emb');
+let KEY='',ready=Promise.resolve(),obs=null,pinFn=null;
+const D=()=>{try{return emb.contentDocument}catch(e){return null}};
+const W=()=>emb.contentWindow;
+const desk=()=>{const w=W();return !!w&&w.innerWidth>=1024};
+const opt=k=>Object.assign({icon:!!S.icon,set:S.set||'line',upper:!!S.upper},S.brand==='plt'?{radius:'0px'}:{},S[k]||{});   /* PLT: square, never round (the live PDPs don't load the DS radius token) */
+
+function clear(d){d.querySelectorAll('[data-ts]').forEach(n=>n.remove())}
+function injectPLP(d){
+  const o=opt('plp'),cover=o.cover||'all',n=cover==='2'?2:cover==='3'?3:1;
+  const plpMsgs=T.LIB.filter(m=>m.at.includes('plp'));
+  d.querySelectorAll('.pc-taggstar:not([data-ts])').forEach(x=>x.remove());       // the PLP's own (retired) trophy chip
+  d.querySelectorAll('article.pc').forEach((card,i)=>{
+    if(i%n)return;
+    const m=o.mix?plpMsgs[(i/n)%plpMsgs.length|0]:o.msg;
+    const html=T.plp(Object.assign({},o,{msg:m}));
+    const at=card.querySelector(':scope > .pc-add')||card.querySelector(':scope > .pc-img');
+    if(at)at.insertAdjacentHTML('afterend',html);else card.insertAdjacentHTML('afterbegin',html);
+  });
+}
+function gallery(d){return d.querySelector('.galmain')||d.querySelector('.lp-galmain')||d.querySelector('.gal')}
+function injectPDP(d){
+  const o=opt('pdp'),g=gallery(d);if(!g)return;
+  if(getComputedStyle(g).position==='static')g.style.position='relative';
+  const dk=desk(),pos=o.pos||'figma';
+  const mode=pos==='live'?'centre':pos==='img'?'img':(dk?'pin':'img');      /* Figma: on the image on mobile, pinned to the window on desktop */
+  const html=T.pdp(Object.assign({},o,{lg:dk,pos:mode==='pin'&&EXPORTING?'img':mode}));
+  if(mode==='pin'&&!EXPORTING){d.body.insertAdjacentHTML('beforeend',html);pin(d,g)}
+  else{g.insertAdjacentHTML('beforeend',html);
+    /* export: where the pinned toast sits on landing — 24px above the bottom of a 900px window, or the image's bottom if that comes first */
+    if(mode==='pin'){const t=g.querySelector('[data-ts]'),gt=g.getBoundingClientRect().top+W().scrollY,h=t.offsetHeight;
+      t.style.cssText+=`;left:50%;bottom:auto;top:${Math.round(Math.min(900-24-h-gt,g.offsetHeight-24-h))}px;transform:translateX(-50%)`}}
+  const ff=getComputedStyle(g).fontFamily;d.querySelectorAll('.sp-pdp[data-ts]').forEach(t=>t.style.fontFamily=ff);   /* the pinned toast sits on <body>, which doesn't carry the fascia font on the live PDPs */
+  d.querySelectorAll('.sp-pdp[data-ts] .sp-x').forEach(x=>x.onclick=e=>{e.preventDefault();e.stopPropagation();x.closest('.sp-pdp').classList.add('off');S._closed=true});
+  if(S._closed)d.querySelectorAll('.sp-pdp[data-ts]').forEach(t=>t.classList.add('off'));
+}
+/* desktop: pinned 24px above the bottom of the browser window, centred on the main image; it rides up with the image once the image's bottom passes it */
+function pin(d,g){const w=W(),t=d.querySelector('.sp-pdp.sp-pin[data-ts]');if(!t)return;
+  const f=()=>{const r=g.getBoundingClientRect(),h=t.offsetHeight,tw=t.offsetWidth;
+    const top=Math.min(w.innerHeight-24-h,r.bottom-24-h);
+    t.style.left=Math.round(r.left+(r.width-tw)/2)+'px';t.style.top=Math.round(top)+'px';
+    t.style.visibility=(r.bottom<h+24||r.top>w.innerHeight-h)?'hidden':'visible'};
+  if(pinFn){w.removeEventListener('scroll',pinFn);w.removeEventListener('resize',pinFn)}
+  pinFn=f;w.addEventListener('scroll',f,{passive:true});w.addEventListener('resize',f);f();setTimeout(f,300)}
+function injectBag(d){
+  const o=opt('bag'),items=[...d.querySelectorAll('.bag-item .info')];
+  (o.cover==='all'?items:items.slice(0,1)).forEach(info=>info.insertAdjacentHTML('beforeend',T.bag(o)));
+}
+function inject(){const d=D();if(!d||!d.body)return;
+  if(obs)obs.disconnect();
+  T.css(d);
+  if(!d.getElementById('ts-hide')){const st=d.createElement('style');st.id='ts-hide';st.textContent=HIDE[S.page]+(EXPORTING?'html,body{overflow:visible!important}':'');d.head.appendChild(st)}
+  clear(d);
+  ({plp:injectPLP,pdp:injectPDP,bag:injectBag}[S.page]||injectPDP)(d);
+  watch(d);
+}
+/* the embedded pages re-render themselves (resize, their own state) — put the message back when they do */
+function watch(d){let t;obs=new MutationObserver(()=>{clearTimeout(t);t=setTimeout(()=>{
+    const want=S.page==='plp'?d.querySelector('article.pc'):S.page==='bag'?d.querySelector('.bag-item .info'):gallery(d);
+    if(want&&!d.querySelector('[data-ts]'))inject();
+    else if(S.page==='plp'&&d.querySelectorAll('article.pc').length&&[...d.querySelectorAll('article.pc')].some((c,i)=>!(i%({'2':2,'3':3}[(S.plp||{}).cover]||1))&&!c.querySelector('[data-ts]')))inject();
+  },120)});
+  obs.observe(d.body,{childList:true,subtree:true})}
+
+function load(){
+  const key=S.page+'|'+S.brand;
+  if(key===KEY){inject();return ready}
+  KEY=key;S._closed=false;
+  ready=new Promise(res=>{
+    emb.onload=()=>{inject();
+      const d=D(),t0=Date.now();
+      const done=()=>{const imgs=d?[...d.images].filter(i=>i.loading!=='lazy'||i.getBoundingClientRect().top<3000):[];return imgs.every(i=>i.complete)};
+      const iv=setInterval(()=>{if(done()||Date.now()-t0>9000){clearInterval(iv);inject();res()}},150)};
+    emb.src=(SRC[S.page]||SRC.pdp)(S.brand);
+  });
+  return ready;
+}
+/* export: let the embedded page run to its full height so the shell can capture it in one pass */
+async function full(){await ready;const d=D();if(!d)return 900;
+  d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
+  let h=0;for(let i=0;i<6;i++){const nh=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight);emb.style.height=nh+'px';await new Promise(r=>setTimeout(r,350));if(Math.abs(nh-h)<2)break;h=nh}
+  inject();await new Promise(r=>setTimeout(r,500));
+  /* the export frame sits off-screen, so lazy images never load — and the embedded pages re-render (new lazy images) when resized */
+  const t0=Date.now();
+  while(Date.now()-t0<10000){d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
+    if([...d.images].every(i=>i.complete&&(i.naturalWidth||!i.currentSrc)))break;await new Promise(r=>setTimeout(r,200))}
+  return Math.max(d.documentElement.scrollHeight,d.body.scrollHeight)}
+window.EXPORT_DOC=()=>D();
+
+T.load().then(load).then(()=>parent.postMessage({protoReady:1},'*'));
+addEventListener('message',e=>{const m=e.data||{};
+  if(m.protoSet){S=Object.assign({},m.protoSet);EXPORTING=!!m.exporting;   /* any config change brings a closed PDP message back */
+    const d=D();if(d){const h=d.getElementById('ts-hide');if(h)h.remove()}
+    load()}
+  if(m.protoPing)(EXPORTING?full():ready.then(()=>{const d=D();return d?d.documentElement.scrollHeight:900})).then(h=>parent.postMessage({protoPong:1,h},'*'));
+});
+</script>
+</body>
+</html>
