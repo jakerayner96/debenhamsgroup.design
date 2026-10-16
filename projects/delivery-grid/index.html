@@ -173,9 +173,9 @@ const P={
   page:'page.html',
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
-  files:['page.html','README.md','../../assets/ds/delivery.js'],
+  files:['page.html','README.md','../../assets/ds/delivery.js','../../assets/ds/subscribe.js'],
   store:'proto-delivery-grid',
-  initial:()=>({layout:'list',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'alert',place:'atc',context:false}),
+  initial:()=>({layout:'list',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'alert',place:'atc'}),
 };
 const PROG={debenhams:'Unlimited',boohoo:'Premier Club',boohooman:'Premier',plt:'Royalty',karenmillen:'Premier'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -187,7 +187,7 @@ function renderPanel(host,S,update){
   const noProg=!PROG[b];if(noProg&&c.premier)c.premier=false;
   const two=c.scen==='market'||c.scen==='bulky';
   if(c.modal==='tab'&&c.layout!=='tabs')c.modal='toggle';
-  if(c.place==='prompts')c.place='atc';   /* the Google prompts moved under the buy column (master PDP) */
+  if(c.place==='prompts')c.place='atc';   /* Ask Deb sits straight under Apple Pay (master PDP) */
   host.innerHTML=`<h1>PDP delivery grid</h1><p class="intro">The PDP <b>Delivery Methods</b> box in three options, with Paul's <b>Delivery Options</b> modal behind See more — on the DS PDP template, web (mobile + desktop) and app. Brief: Delivery Grid UX catch up, 16 Oct 2026.</p>
   <div class="card"><h3>PDP option</h3>
     ${radio('layout','list','A · Live + James’s PR','James’s PR (Home Delivery Top Up): fastest on top, cheapest at the bottom — “Arrives Tomorrow” + a Fastest / Cheapest tag beside it, the method under, price on the right; a third home-delivery row when both come back as click &amp; collect.')}
@@ -219,9 +219,9 @@ function renderPanel(host,S,update){
     <div class="f"><span>Next-day cut-off copy</span>${seg('cut',[['midnight','Order by midnight'],['12am','Order by 12AM (live)']])}<small>Cut-offs vary 11pm / midnight by item; “12AM” reads as lunchtime to some.</small></div>
     <div class="f"><span>Returns line</span><div class="row2">${sw('ret','Show')}<input id="rd" type="number" min="1" value="${esc(c.retDays)}" ${c.ret?'':'disabled'}></div><small>Demi: returns are called out three times (14, 21, 35 days).</small></div></div>
   <div class="card"><h3>Placement</h3>
-    ${radio('place','atc','Under the buy buttons','Above the membership + Deliver+ boxes. Demi: delivery dates drive the decision more than the loyalty boxes.')}
+    ${radio('place','atc','Under the buy buttons','Under Ask Deb (which always sits straight under Apple Pay), above Subscribe &amp; Save and the membership + Deliver+ boxes. Demi: delivery dates drive the decision more than the loyalty boxes.')}
     ${radio('place','live','Under membership + Deliver+','The master PDP (Shopping agent): where the old delivery box sits, above BNPL.')}
-    <div class="f">${sw('context','Show the membership + Deliver+ boxes')}<small>Off by default (out of scope for this review). The page is the master PDP (DS template = the Shopping agent PDP): Add to bag → PayPal → Apple Pay, Google prompts above the accordions.</small></div></div>
+    <div class="f"><small>The page is the master PDP (DS template = the Shopping agent PDP), shown in full: Add to bag → PayPal → Apple Pay, Ask Deb straight under Apple Pay, Subscribe &amp; Save, the Unlimited / Premier membership box and Deliver+ (Warehouse has no programme; The Brand Room no Deliver+).</small></div></div>
   <div class="card"><h3>Agreed 16 Oct</h3><p class="rules"><b>Phase 1</b> static logic for everyone: fastest, cheapest, fastest home if both are C&amp;C; modal priced low → high like checkout.<br><b>Web + app</b> stay the same.<br><b>Bulky</b> surcharge upfront by the price and repeated in the modal.<br><b>Open</b> NI split (JB) · tabs vs one-liner · combined vs single-tab modal · placement vs Deliver+ — test, don’t opine (Demi).</p></div>`;
   host.querySelectorAll('.opt[data-k]').forEach(x=>x.onclick=()=>{if(x.disabled)return;c[x.dataset.k]=x.dataset.v;re()});
   host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(x=>x.onclick=()=>{const k=g.dataset.seg,v=x.dataset.v;c[k]=v==='true'?true:v==='false'?false:v;re()}));

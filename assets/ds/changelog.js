@@ -8,6 +8,8 @@ window.DG_CHANGELOG=[
   "title": "DS page templates + Taggstar + PDP delivery grid",
   "by": "Taggstar prototype (projects/taggstar) · PDP delivery grid prototype (projects/delivery-grid)",
   "added": [
+   "Subscribe & Save (.sns + subscribe.js drop-in) — Figma ed2M0bCy3GMtlTRdtkwM4F 172:24095 / 34:8920: PDP box (title + Save tag, three ticks) with an ADD button like the membership box; ADD opens the Subscribe & Save modal on the DS .mdl (.sns-layer, desktop --sm, mobile --up): product row, Deliver every (.fsel), Quantity, Add to bag, terms; on every PDP under Ask Deb · by PDP delivery grid",
+   "Quantity stepper large (.qty--lg) — 48px controls for the Subscribe & Save modal · by PDP delivery grid",
    "Accordion set (.acc-set) — PDP info rows with keylines between, 15px semibold heads, icons-down chevron; promoted from the Shopping agent · by master PDP",
    "AI tag chip (.ai-pill--tag + .pdp-chips) — Shop Similar above the PDP title; promoted from the Shopping agent · by master PDP",
    "PDP buy buttons (.pdp-ctas) — Add to bag → PayPal Checkout → Apple Pay stacked, the fixed order on every PDP (Jake's rule); .pay .pp-co label promoted from the Shopping agent · by PDP delivery grid",
@@ -27,6 +29,8 @@ window.DG_CHANGELOG=[
    "Changelog (this page, assets/ds/changelog.js)"
   ],
   "changed": [
+   "PDP template: Ask Deb (Google prompts) moved up to sit straight under Apple Pay in the buy column; Subscribe & Save under it; accordions stay under the gallery on desktop / after the buy column on mobile · by Jake (PDP delivery grid)",
+   "Delivery options modal layer rules shared with the Subscribe & Save layer (.dopts-layer, .sns-layer) · by PDP delivery grid",
    "MASTER PDP: templates/pdp.html rebuilt to the Shopping agent PDP (banked as the master) — no breadcrumb on mobile; product tags bottom right; Shop Similar chip above the title; ratings; size guide as text; buy stack; membership; Deliver+ with logo + quote (catalogue variant); delivery grid where the old delivery box sat; BNPL with Pay+ and the instalment; Google prompts + the accordion set (At a Glance open · Description · Product Details & Care · Delivery · Returns · Manufacturer) under the buy column, left column on desktop; no rail · by Shopping agent → master PDP",
    "PDP gallery: product tags moved to .ptags, bottom right, stacked (was a badge top left) · by master PDP",
    "Delivery grid: Fastest / Cheapest tags restyled to James's PR (Fastest red on --error-bg, Cheapest grey, 4px radius, semibold) and set beside the arrival line; option A is the PR's row layout (arrival + tag / method | price); Delivery / Click & Collect tabs moved top right on the title line · by PDP delivery grid",
@@ -37,6 +41,8 @@ window.DG_CHANGELOG=[
    "USP banner prototype uses the DS bag summary; projects/usp-banner/bag.js removed"
   ],
   "fixed": [
+   "Icon: icons-calendar.svg redrawn — the library capture had lost everything but the outline (header bar, rings and day dots back), same 24×24 base and 1pt non-scaling stroke · by PDP delivery grid (returns line)",
+   "Delivery grid icon lines (returns, one-liner): icon centred on the two rows; one-liner truck from the DS library by speed — icons-delivery-fast for next day, icons-delivery otherwise; returns = icons-calendar · by Jake (PDP delivery grid)",
    "Delivery options modal + delivery grid tabs: both panes share one grid cell, so switching Home Delivery / Collect Nearby (or Delivery / Click & Collect) never changes the height · by PDP delivery grid",
    "AI pill: fill from --surface-raised (was #FFF), so PLT prompt chips are warm white per the sand rule · by PDP delivery grid",
    "Breadcrumb: padding gap 4 (16px) below as well as above (was 16 / 4), so the trail sits evenly between the header and the page · by PDP delivery grid",

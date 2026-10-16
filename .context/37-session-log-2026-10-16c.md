@@ -22,3 +22,9 @@ projects/shopping-agent still carries its own copies of the buy stack (.ctas) an
 - Dropped to match the master: mobile breadcrumb, the Next Day countdown (.ndd), the "You may also like" rail.
 - Google prompts moved from under the buy buttons to above the accordions (the master's default).
 - delivery-grid: placement "under the Google prompts" removed (they're no longer in the buy column).
+
+## Addendum — Ask Deb, Subscribe & Save, banners, icon lines (16 Oct)
+- templates/pdp.html: Ask Deb (.ai-prompts) moved up to sit straight under Apple Pay; Subscribe & Save under it; then membership, Deliver+, delivery grid, BNPL. Accordions stay in .under.
+- NEW DS component Subscribe & Save: `.sns*` CSS + `assets/ds/subscribe.js` (DG_subscribe.box/modal/wire/mount) + catalogue `subscribe-save` (3 variants). Figma ed2M0bCy3GMtlTRdtkwM4F 172:24095 / 34:8920. The ADD button (membership box style) replaces the Figma toggle and opens the modal (.mdl--sm desktop, .mdl--up mobile/app). `.qty--lg` added.
+- Delivery grid prototype: the membership + Deliver+ banners are always shown (context switch removed); 'atc' placement now sits after Ask Deb.
+- Delivery grid icon lines are centred on their two rows; the one-liner truck is icons-delivery-fast for next day, icons-delivery otherwise. icons-calendar.svg redrawn (the library capture had only its outline).

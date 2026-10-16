@@ -85,10 +85,10 @@
     return {hd:hasC?`<div class="dgrid-tabs" role="tablist">${order.map(k=>`<button role="tab" data-dg-tab="${k}" class="${k===first?'on':''}" aria-selected="${k===first}">${T[k]}</button>`).join('')}</div>`:'',body:`
       <div class="dgrid-panes">${panel('home','Delivery','See more delivery options')}${hasC?panel('collect','Click & Collect','See more collection options'):''}</div>`}}
 
-  /* C · one-liner (Amazon style) — everything else lives in the modal */
+  /* C · one-liner (Amazon style) — everything else lives in the modal. Icon: DS fast (slanted) truck when it arrives tomorrow, the upright truck otherwise */
   function line(o){const M=methods(o),f=fastest(pdpPool(M.home)),cc=cheapest(M.collect);if(!f)return '';
     const to=o.known&&o.pc?` to <b>${esc(o.pc)}</b>`:` with ${esc(f.s)}`;
-    return `<div class="dgrid-one"><img src="${IC}icons-delivery-fast.svg" alt=""><div><p>Get it <b>${when(o,f,0)}</b>${to}</p>
+    return `<div class="dgrid-one"><img src="${IC}${f.d===1?'icons-delivery-fast':'icons-delivery'}.svg" alt=""><div><p>Get it <b>${when(o,f,0)}</b>${to}</p>
       <span class="s">${[cutoff(o,f),f.prem?`Free with ${esc(o.prog||'Premier')}`:money(f.p)].filter(Boolean).join(' · ')}${cc?` · or collect from ${cc.prem?'free':money(cc.p)}`:''}</span></div></div>${bulkyNote(o)}
       <button class="dgrid-more" data-dg-more="home">${M.collect.length?'Delivery &amp; collection options':'Delivery options'}</button>`}
 

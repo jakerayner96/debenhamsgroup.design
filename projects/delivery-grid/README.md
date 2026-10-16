@@ -1,6 +1,6 @@
 # PDP delivery grid
 
-**Brief (Jake, 16 Oct 2026):** one prototype with the delivery options discussed in the Delivery Grid UX catch up (Demi Adesanya, Paul Dossis, Euan Macdonald, Jake), on the latest PDP, covering app, mobile web and desktop. See more opens Paul's modal. Unlimited / Deliver+ out of scope — only the Delivery Methods box.
+**Brief (Jake, 16 Oct 2026):** one prototype with the delivery options discussed in the Delivery Grid UX catch up (Demi Adesanya, Paul Dossis, Euan Macdonald, Jake), on the latest PDP, covering app, mobile web and desktop. See more opens Paul's modal. Unlimited / Deliver+ first out of scope, then added back as banners (Jake, 16 Oct): the page is the full master PDP — Ask Deb under Apple Pay, Subscribe & Save, membership box, Deliver+.
 
 **Live:** https://jakerayner96.github.io/debenhamsgroup.design/projects/delivery-grid/
 
@@ -25,7 +25,7 @@
 | Rules | NI own section / mixed · sort price ↑ / fastest · cut-off "midnight" / "12AM" · See more with two methods · returns line + days |
 | Product | standard · C&C comes back first (the live bug) · marketplace (two methods) · bulky (caveat under the price, in the box and in the modal) |
 | Customer | Standard / the fascia's programme (Unlimited, Premier Club, Premier, Royalty — next day free) |
-| Placement | under Add to bag / under membership + Deliver+ (boxes off by default) |
+| Placement | under Ask Deb (below the buy buttons) / under membership + Deliver+ — both boxes always shown |
 
 ## Agreed in the meeting
 Phase 1 static logic for everyone; modal sorted price low → high like checkout; web and app the same; bulky surcharge upfront and repeated in the modal.

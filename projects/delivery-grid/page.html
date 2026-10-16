@@ -50,8 +50,8 @@ function tabbar(){const b=S.brand;
 
 function clear(d){d.querySelectorAll('[data-dg],[data-dgx],[data-dg-modal],.dgrid-bulky').forEach(n=>n.remove())}
 function style(d){let st=d.getElementById('dg-style');if(!st){st=d.createElement('style');st.id='dg-style';d.head.appendChild(st)}
-  /* the static USP box is the old Strappy delivery copy — ecom removed it, the grid replaces it */
-  st.textContent=(S.context?'':'.buy>.member-box,.buy>.dplus{display:none!important}')+(app()?APP_HIDE:'')+(EXPORTING?'html,body{overflow:visible!important}':'')}
+  /* the whole master PDP shows — membership (Unlimited / Premier) + Deliver+ banners included (Jake, 16 Oct) */
+  st.textContent=(app()?APP_HIDE:'')+(EXPORTING?'html,body{overflow:visible!important}':'')}
 function openModal(tab){const d=D();if(!d)return;d.querySelectorAll('[data-dg-modal]').forEach(n=>n.remove());
   openTab=tab;d.body.insertAdjacentHTML('beforeend',DG.modal(opts(),tab));
   const m=d.querySelector('[data-dg-modal]');
@@ -61,8 +61,8 @@ function inject(){const d=D();if(!d||!d.body||!d.querySelector('.buy'))return;
   if(obs)obs.disconnect();
   style(d);clear(d);
   const buy=d.querySelector('.buy'),o=opts();
-  /* placement: 'atc' = straight under the buy buttons (Demi: delivery dates drive the decision) · 'live' = under the membership + Deliver+ boxes (master PDP). The template's own grid (live defaults) is replaced by this configured one. */
-  const atc=buy.querySelector(':scope>.pdp-ctas');
+  /* placement: 'atc' = under the buy buttons (Demi: delivery dates drive the decision) — after Ask Deb, which always sits straight under Apple Pay · 'live' = under the membership + Deliver+ boxes (master PDP). The template's own grid (live defaults) is replaced by this configured one. */
+  const atc=buy.querySelector(':scope>.ai-prompts')||buy.querySelector(':scope>.pdp-ctas');
   const after=S.place==='live'?([...buy.querySelectorAll(':scope>.member-box,:scope>.dplus')].pop()||atc):atc;
   if(after){after.insertAdjacentHTML('afterend',DG.grid(o));after.nextElementSibling.setAttribute('data-dgp','')}
   if(S.scen==='bulky'){const pr=buy.querySelector(':scope>.price-blk');if(pr)pr.insertAdjacentHTML('afterend',DG.bulky())}

@@ -10,10 +10,11 @@
 <style>
 /* DS page template — PDP. THE MASTER PDP: the Shopping agent PDP (projects/shopping-agent, banked 16 Oct 2026) rebuilt on DS components only.
    Order — mobile: header · USP banners · gallery (product tags bottom right) · AI tag chip (Shop Similar) · PDP title · ratings · price ·
-   option label + colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always) · membership box · Deliver+ ·
-   delivery grid (delivery.js; See more → Delivery Options modal) · BNPL · then Google PDP prompts (ai-prompts.js) and the accordion set
+   option label + colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always) · Ask Deb / Google PDP prompts
+   (ai-prompts.js, always straight under Apple Pay) · Subscribe & Save (subscribe.js; ADD → modal) · membership box · Deliver+ ·
+   delivery grid (delivery.js; See more → Delivery Options modal) · BNPL · then the accordion set
    (At a Glance open · Description · Product Details & Care · Delivery · Returns · Manufacturer) · footer.
-   Desktop: breadcrumb, then gallery + prompts + accordions on the left, the buy column on the right.
+   Desktop: breadcrumb, then gallery + accordions on the left, the buy column on the right.
    New PDP features land HERE so every next PDP gets them. Any fascia: ?brand=<slug>. Drop components in via the data-slot hooks. */
 *{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
 body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
@@ -41,6 +42,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/membership.js"></script>
 <script src="assets/ds/delivery.js"></script>
 <script src="assets/ds/ai-prompts.js"></script>
+<script src="assets/ds/subscribe.js"></script>
 <script src="assets/ds/dplus-logos.js"></script>
 <script src="assets/ds/catalogue.js"></script>
 <script src="templates/products.js"></script>
@@ -56,6 +58,8 @@ const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt
 const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
 /* delivery grid as live (DS delivery.js): fastest first, cheapest last, James's two-click-&-collect rule, badges, returns line */
 const DG_OPTS=()=>({layout:'list',scen:'std',pr:true,prBadge:'fastest',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'alert'});
+/* Subscribe & Save: the product at 5% off, size = the first size until one is picked */
+const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(document.querySelector('.sz.on')||{}).textContent||P.sizes[0],pct:5});
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
 
 function header(){const dev=desk()?'desktop':'mobile';
@@ -82,7 +86,7 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
   const crumbs=P.crumbs.map((c,i)=>i<P.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('');
   const bnpl=strip(V('bnpl',0)).replace(/£23\.33/,'£'+(num(P.price)/3).toFixed(2));
   const dplus=DPLUS.includes(S.brand)?strip(V('deliver-plus',d?1:0)):'';
-  const under=`<div class="under" data-slot="below">${window.DG_aiPromptsHTML?DG_aiPromptsHTML(S.brand,{sku:P.sku||''}):''}${accSet(P)}</div>`;
+  const under=`<div class="under" data-slot="below">${accSet(P)}</div>`;
   const buy=`<div class="buy" data-slot="buy">
       <div class="pdp-chips" data-slot="ai-chips"><button class="ai-pill ai-pill--soft ai-pill--tag"><i class="ai-icon"></i>Shop Similar</button></div>
       <div class="pdp-head"><div class="titles"><span class="brand">${esc(P.brand)}</span><h1 class="name">${esc(P.name)}</h1></div><button class="wish" aria-label="Add to wishlist"><img src="${wishIcon(S.brand)}" alt=""></button></div>
@@ -92,6 +96,8 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
       <div class="cswatches"><button class="cswatch on" aria-label="${esc(P.colour)}"><img src="${P.imgs[0]}" alt=""></button></div>
       <div class="sizes"><div class="sizes-head"><span>Size: <b>Select a size</b></span><span class="guide">Size guide</span></div><div class="set">${P.sizes.map(z=>`<button class="sz">${esc(z)}</button>`).join('')}</div></div>
       <div class="pdp-ctas" data-slot="ctas"><button class="bd pri">Add to bag</button><button class="pay pay--paypal"><img src="assets/ds/icons/payments/paypal-wordmark.svg" alt="PayPal"><span class="pp-co">Checkout</span></button><button class="pay pay--apple"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button></div>
+      ${window.DG_aiPromptsHTML?DG_aiPromptsHTML(S.brand,{sku:P.sku||''}):''}
+      ${window.DG_subscribe?DG_subscribe.box(SNS(P)):''}
       ${window.DG_memberBoxHTML?DG_memberBoxHTML(S.brand):''}
       ${dplus}
       ${window.DG_delivery?DG_delivery.grid(DG_OPTS()):''}
@@ -110,6 +116,7 @@ function wire(){
   sl.addEventListener('scroll',()=>{const i=cur(),n=sl.children.length,max=sl.scrollWidth-sl.clientWidth;th.forEach((b,j)=>b.classList.toggle('on',j===i));
     if(bar)bar.style.left=Math.round((max?sl.scrollLeft/max:0)*(100-100/n))+'%'},{passive:true});
   if(window.DG_delivery)DG_delivery.mount(document,DG_OPTS());
+  if(window.DG_subscribe){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams;document.querySelectorAll('[data-sns-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-sns-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_subscribe.modal(SNS(P),{desk:desk()}));DG_subscribe.wire(document.querySelector('[data-sns-modal]'))})}
   document.querySelectorAll('.acc-h').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
   document.querySelectorAll('.sz').forEach(z=>z.onclick=()=>{document.querySelectorAll('.sz').forEach(x=>x.classList.toggle('on',x===z));const l=document.querySelector('.sizes-head b');if(l)l.textContent=z.textContent});
   document.addEventListener('click',e=>{if(e.target.closest('a[href="#"]'))e.preventDefault()});
