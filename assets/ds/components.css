@@ -1248,7 +1248,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
    Tabs (.dgrid-tabs) sit top right on the title line (.dgrid-hd).
    Bulky: .dgrid-bulky under the price (upfront) + .dgrid-note in the box + a neutral .msg in the modal.
    Modal = the DS .mdl (desktop .mdl--sm · mobile web .mdl--alert as the Figma 358 · app .mdl--up) inside .dopts-layer; body = .dopts-seg toggle
-   (Home Delivery / Collect Nearby, 44px, active = --surface-action), .dopts-list rows (name strong · "Arrives by …" | was struck + price strong),
+   (Home Delivery / Collect Nearby — the page's 12px underline tabs), .dopts-list rows in the page row type (14/20: name semibold · "Arrives by …" regular | price semibold, was 12 light grey under it),
    .dopts-hr before Northern Ireland, .dopts-grp section heads (one-list variant), .dopts-note 12px footnote. Rows gap 4 (16px). */
 .dgrid{display:flex;flex-direction:column;gap:var(--gap-4,16px);padding:var(--gap-4,16px);border:var(--border-w,1px) solid var(--border-subtle);border-radius:var(--radius-default);font-family:var(--font-family-base);color:var(--text-primary);text-align:left;background:var(--surface-page)}
 .dgrid--line{gap:var(--gap-3,12px)}
@@ -1304,17 +1304,18 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dopts-panes>*,.dgrid-panes>*{grid-area:1/1;align-self:start}
 .dopts .mdl-bd .dopts-panes>[hidden]{display:flex;visibility:hidden}
 .dgrid-panes>[hidden]{display:flex;visibility:hidden}
-.dopts-seg{display:flex;padding:var(--gap-1,4px);border:var(--border-w,1px) solid var(--border-subtle);border-radius:calc(var(--radius-default)*2);flex:none}
-.dopts-seg button{flex:1;height:44px;border:0;border-radius:var(--radius-default);background:none;font:inherit;font-size:16px;color:var(--text-primary);cursor:pointer}
-.dopts-seg button.on{background:var(--surface-action);color:var(--text-on-action)}
+/* modal tabs + rows = the page grid's own type (.dgrid-tabs, .dgrid-rows--pr): 12px underline tabs, 14/20 rows, price 14 semibold, was 12 light grey */
+.dopts-seg{display:flex;gap:var(--gap-4,16px);flex:none}
+.dopts-seg button{padding:var(--gap-1,4px) 0;border:0;border-bottom:2px solid transparent;background:none;font:inherit;font-size:12px;font-weight:300;color:var(--text-primary);cursor:pointer}
+.dopts-seg button.on{border-bottom-color:var(--text-primary);font-weight:var(--w-mid,500)}
 .dopts-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-4,16px)}
-.dopts-row{display:flex;justify-content:space-between;gap:var(--gap-3,12px);font-size:16px;line-height:22px}
-.dopts-row .l{display:flex;flex-direction:column;gap:2px;min-width:0}.dopts-row .l b{font-weight:var(--w-strong)}
-.dopts-row .l span{font-weight:var(--w-regular)}
-.dopts-row .r{display:flex;gap:var(--gap-2,8px);align-items:baseline;flex:none;white-space:nowrap}.dopts-row .r b{font-weight:var(--w-strong)}
-.dopts-row .r s{font-weight:var(--w-regular);color:var(--text-primary)}
+.dopts-row{display:flex;justify-content:space-between;align-items:center;gap:var(--gap-4,16px);font-size:14px;line-height:20px}
+.dopts-row .l{display:flex;flex-direction:column;gap:2px;min-width:0}.dopts-row .l b{font-weight:var(--w-strong,600)}
+.dopts-row .l span{font-weight:var(--w-regular,400)}
+.dopts-row .r{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:none;white-space:nowrap}.dopts-row .r b{font-weight:var(--w-strong,600)}
+.dopts-row .r s{font-size:12px;font-weight:300;color:var(--text-secondary)}
 .dopts-hr{border:0;border-top:var(--border-w,1px) solid var(--border-subtle);margin:0;width:100%}
-.dopts-grp{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-strong);text-transform:uppercase;letter-spacing:.02em}
+.dopts-grp{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-mid,500)}  /* = the box title (.dgrid-hd h2) */
 .dopts-empty{margin:0;font-size:14px;color:var(--text-secondary)}
 .dopts-note{margin:var(--gap-2,8px) 0 0;font-size:12px;line-height:15px;color:var(--text-secondary)}
 
