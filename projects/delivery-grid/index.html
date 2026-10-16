@@ -175,7 +175,7 @@ const P={
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','README.md','../../assets/ds/delivery.js','../../assets/ds/subscribe.js'],
   store:'proto-delivery-grid',
-  initial:()=>({layout:'list',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up'}),
+  initial:()=>({layout:'list',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
 };
 const PROG={debenhams:'Unlimited',boohoo:'Premier Club',boohooman:'Premier',plt:'Royalty',karenmillen:'Premier'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -210,6 +210,9 @@ function renderPanel(host,S,update){
     <div class="f"><span>First tab <small>option B</small></span>${seg('tab',[['home','Delivery'],['collect','Click &amp; Collect']],c.layout!=='tabs')}</div>
     <div class="f"><span>Next-day cut-off copy</span>${seg('cut',[['midnight','Order by midnight'],['12am','Order by 12AM (live)']])}<small>Cut-offs vary 11pm / midnight by item; “12AM” reads as lunchtime to some.</small></div>
     <div class="f"><span>Returns line</span><div class="row2">${sw('ret','Show')}<input id="rd" type="number" min="1" value="${esc(c.retDays)}" ${c.ret?'':'disabled'}></div><small>Demi: returns are called out three times (14, 21, 35 days).</small></div></div>
+  <div class="card"><h3>Seller <small>Sold &amp; Delivered by</small></h3>
+    <div class="f"><span>Size</span>${seg('sized',[['false','Not picked yet'],['true','Picked']])}<small>${c.sized?'Seller shows once a size is picked. Tapping a size in the preview does the same.':'Placeholder: “Select a size to see seller info” in grey, the box icon faded.'}</small></div>
+    <div class="f"><span>Sold by</span>${seg('seller',[['site',bn+' (the site)'],['amass','Marketplace seller']],!c.sized)}<small>${c.seller==='amass'?'AMASS ECOMMERCE — the name is a link that opens the seller modal (owner, address, VAT, company number).':'The site itself is never a link.'}</small></div></div>
   <div class="card"><h3>Page</h3>
     <div class="f"><small>The page is the master PDP (DS template), shown in full, in Jake’s order (16 Oct): Add to bag → PayPal → Apple Pay → Ask Deb → Unlimited / Premier → Deliver+ → <b>delivery grid</b> → BNPL → Subscribe &amp; Save. Shop Similar sits top right of the image on desktop. Warehouse has no programme; The Brand Room no Deliver+.</small></div></div>
   <div class="card"><h3>Agreed 16 Oct</h3><p class="rules"><b>Phase 1</b> static logic for everyone: fastest, cheapest, fastest home if both are C&amp;C; modal priced low → high like checkout.<br><b>Web + app</b> stay the same.<br><b>Bulky</b> surcharge upfront by the price and repeated in the modal.<br><b>Open</b> NI split (JB) · tabs vs one-liner · combined vs single-tab modal · placement vs Deliver+ — test, don’t opine (Demi).</p></div>`;

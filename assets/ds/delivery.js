@@ -9,8 +9,11 @@
          DG_delivery.bulky()  → the surcharge caveat that sits under the price
          DG_delivery.wire(root, o, open) → tabs, See more (calls open(tab)), modal toggle (root = the document or element holding them)
          DG_delivery.mount(document, o) → wire + See more opens the modal over the page, X / scrim closes it (what templates/pdp.html uses)
+         DG_delivery.setSeller(document, o) → re-draw the "Sold & Delivered by" line (call when a size is picked) and wire its seller link
+   Seller line (under the returns line): o.seller null → placeholder "Select a size to see seller info" (grey) · 'site' → sold by the fascia
+   itself (o.brand, plain text) · a SELLERS key / object → a marketplace seller, the name is a link that opens the seller modal.
    o: {layout, scen:'std'|'cc'|'market'|'bulky', premier, prog, pr, prBadge:'fastest'|'home', badges, tab, modal, ni:'split'|'mixed',
-       sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date} */
+       sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date, brand, seller} */
 (function(root){
   const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
   const IC='assets/ds/icons/lib/';
@@ -31,6 +34,10 @@
   /* marketplace / bulky: two home methods only (live Coast examples, 16 Oct) */
   const MARKET=[{id:'mexp',n:'UK Express Delivery',s:'Express Delivery',p:4.99,d:2,cut:2},{id:'mstd',n:'UK Standard Delivery',s:'Standard Delivery',p:3.99,d:5}];
   const BULKY=[{id:'bexp',n:'UK Express Delivery',s:'Express Delivery',p:9.99,d:4,cut:2},{id:'bstd',n:'UK Standard Delivery',s:'Standard Delivery',p:4.99,d:7}];
+  /* the fascia itself — never a link (the site is the seller) */
+  const SITE={debenhams:'Debenhams',boohoo:'boohoo',boohooman:'boohooMAN',plt:'PrettyLittleThing',karenmillen:'Karen Millen',warehouse:'Warehouse',brandroom:'The Brand Room'};
+  /* marketplace sellers (live Debenhams seller modal, 16 Oct 2026) */
+  const SELLERS={amass:{name:'AMASS ECOMMERCE',owner:'AMASS ECOMMERCE LOGISTICS (UK) LTD',addr:['124-128 City Road','London','London','EC1V 2NX'],vat:'UK GB470288383',co:'15717182'}};
   const BULKY_COPY='This is a bulky item, therefore delivery costs include a bulky item surcharge.';
   const FOOT='This product cannot be delivered to the Channel Islands, British Forces Post Office or PO Box addresses.';
 
@@ -67,7 +74,21 @@
   const when=(o,m,lead)=>m.nom?'On a day of your choice':m.d===1?'Tomorrow':(lead?'By ':'')+day(o,m.d);
   const total=o=>{const M=methods(o);return M.home.length+M.collect.length};
   const moreLink=(o,tab,label)=>(total(o)<=2&&o.more2!=='show')?'':`<button class="dgrid-more" data-dg-more="${tab}">${label}</button>`;
-  const ret=o=>o.ret===false?'':`<div class="dgrid-ret"><img src="${IC}icons-calendar.svg" alt=""><div><div class="t">Eligible for return within ${esc(o.retDays||21)} days</div><div class="s">Exclusions apply. Please see our <a href="#">returns policy</a></div></div></div>`;
+  const ret=o=>o.ret===false?'':`<div class="dgrid-ret"><img src="${IC}icons-calendar.svg" alt=""><div>${retCopy(o)}</div></div>`;
+  const retCopy=o=>`<div class="t">Eligible for return within ${esc(o.retDays||21)} days</div><div class="s">Exclusions apply. Please see our <a href="#">returns policy</a></div>`;
+  const sellerOf=o=>!o.seller?null:o.seller==='site'?{name:SITE[o.brand]||SITE.debenhams,site:1}:typeof o.seller==='string'?(SELLERS[o.seller]||null):o.seller;
+  /* Sold & Delivered by — box icon (icons-order); grey placeholder until a size is picked */
+  function seller(o){if(o.seller===false)return '';const x=sellerOf(o);
+    if(!x)return `<div class="dgrid-seller is-empty" data-dg-seller><img src="${IC}icons-order.svg" alt=""><span>Select a size to see seller info</span></div>`;
+    return `<div class="dgrid-seller" data-dg-seller><img src="${IC}icons-order.svg" alt=""><span>Sold &amp; Delivered by ${x.site?esc(x.name):`<button type="button" class="lnk" data-dg-sellerinfo>${esc(x.name)}</button>`}</span></div>`}
+  function sellerModal(o){const x=sellerOf(o)||{},lay=o.desk?'mdl--sm':'mdl--up';
+    const sec=(h,b)=>b?`<div><dt>${h}</dt><dd>${b}</dd></div>`:'';
+    return `<div class="dopts-layer${lay==='mdl--up'?' dopts-layer--up':''}" data-dg-smodal><div class="mdl-scrim" data-dg-close></div>
+      <div class="mdl ${lay} dseller" role="dialog" aria-modal="true" aria-label="${esc(x.name)}"><div class="modal-hd"><span class="mt">${esc(x.name)}</span><button class="modal-x" data-dg-close aria-label="Close"></button></div>
+      <div class="mdl-bd"><dl>${sec('Owned by:',esc(x.owner))}${sec('Registered address:',(x.addr||[]).map(esc).join('<br>'))}${sec('VAT registration number:',esc(x.vat))}${sec('Registered company number:',esc(x.co))}</dl>
+      <div class="dseller-ret">${retCopy(o)}</div></div></div></div>`}
+  function openSeller(doc,o){doc.querySelectorAll('[data-dg-smodal]').forEach(n=>n.remove());doc.body.insertAdjacentHTML('beforeend',sellerModal(o));
+    const m=doc.querySelector('[data-dg-smodal]');m.querySelectorAll('[data-dg-close]').forEach(x=>x.onclick=()=>m.remove())}
   const bulkyNote=o=>o.scen==='bulky'?`<p class="dgrid-note">${BULKY_COPY}</p>`:'';
 
   /* A · live + James's PR (Home Delivery Top Up): "Arrives Tomorrow [Fastest]" / method name | price, fastest first, cheapest last */
@@ -93,7 +114,7 @@
       <button class="dgrid-more" data-dg-more="home">${M.collect.length?'Delivery &amp; collection options':'Delivery options'}</button>`}
 
   function grid(o){const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
-    return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>Delivery Methods</h2>${x.hd}</div>`}${x.body}${ret(o)}</section>`}
+    return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>Delivery Methods</h2>${x.hd}</div>`}${x.body}${ret(o)}${seller(o)}</section>`}
 
   /* ---- modal ---- */
   function sortL(o,l){const s=l.slice();s.sort(o.sort==='speed'?(a,b)=>(a.nom?99:a.d)-(b.nom?99:b.d)||a.p-b.p:(a,b)=>a.p-b.p||(a.nom?99:a.d)-(b.nom?99:b.d));return s}
@@ -120,11 +141,14 @@
     q('[data-dg-tab]').forEach(t=>t.onclick=()=>{const k=t.dataset.dgTab;q('[data-dg-tab]').forEach(x=>{x.classList.toggle('on',x===t);x.setAttribute('aria-selected',x===t)});q('[data-dg-panel]').forEach(p=>p.hidden=p.dataset.dgPanel!==k)});
     q('[data-dg-more]').forEach(b=>b.onclick=e=>{e.preventDefault();open&&open(b.dataset.dgMore)});
     q('[data-dg-seg]').forEach(b=>b.onclick=()=>{const k=b.dataset.dgSeg;q('[data-dg-seg]').forEach(x=>x.classList.toggle('on',x===b));q('[data-dg-mpanel]').forEach(p=>p.hidden=p.dataset.dgMpanel!==k)});
+    const doc=r.ownerDocument||r;q('[data-dg-sellerinfo]').forEach(b=>b.onclick=()=>openSeller(doc,o));
   }
   /* page drop-in: grid already in the page → See more opens the modal over doc.body; X or the scrim closes it */
   function mount(doc,o){const open=tab=>{doc.querySelectorAll('[data-dg-modal]').forEach(n=>n.remove());doc.body.insertAdjacentHTML('beforeend',modal(o,tab));
       const m=doc.querySelector('[data-dg-modal]');wire(m,o);m.querySelectorAll('[data-dg-close]').forEach(x=>x.onclick=()=>m.remove())};
     wire(doc,o,open);return open}
   const bulky=()=>`<p class="dgrid-bulky"><img src="${IC}icons-info.svg" alt="">${BULKY_COPY}</p>`;
-  root.DG_delivery={grid,modal,wire,mount,bulky,methods,rows:rowsList,HOME,COLLECT};
+  /* only the seller line is re-drawn and re-wired — See more / tabs keep their handlers */
+  function setSeller(doc,o){doc.querySelectorAll('[data-dg-seller]').forEach(n=>{n.outerHTML=seller(o)});doc.querySelectorAll('[data-dg-sellerinfo]').forEach(b=>b.onclick=()=>openSeller(doc,o))}
+  root.DG_delivery={grid,modal,wire,mount,bulky,methods,rows:rowsList,seller,sellerModal,setSeller,SITE,SELLERS,HOME,COLLECT};
 })(typeof window!=='undefined'?window:globalThis);

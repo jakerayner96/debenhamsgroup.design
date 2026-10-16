@@ -33,7 +33,9 @@ const app=()=>S.platform==='app';
 const IC='assets/ds/icons/',AP=IC+'app/';
 const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt:'plt-heart'};
 const prog=b=>{const m=(window.DG_MEMBERSHIP||{})[b];return m?m.name.replace(/^Debenhams /,''):''};
-const opts=()=>Object.assign({},S,{prog:prog(S.brand),desk:desk()&&!app(),sheet:'up'});
+/* seller: placeholder until a size is picked (panel or a tap on a size in the preview) */
+let PICK=false;
+const opts=()=>Object.assign({},S,{prog:prog(S.brand),desk:desk()&&!app(),sheet:'up',brand:S.brand,seller:(S.sized===true||S.sized==='true'||PICK)?(S.seller||'site'):null});
 
 /* app chrome: DS .app-top (status + nav) and .app-tabbar; the web header, USP bars, breadcrumb and footer go */
 const APP_HIDE='.hd,[data-usp-banners],.hd-usp,.bc,footer,[data-ftr]{display:none!important}';
@@ -66,6 +68,7 @@ function inject(){const d=D();if(!d||!d.body||!d.querySelector('.buy'))return;
   if(after){after.insertAdjacentHTML('afterend',DG.grid(o));after.nextElementSibling.setAttribute('data-dgp','')}
   if(S.scen==='bulky'){const pr=buy.querySelector(':scope>.price-blk');if(pr)pr.insertAdjacentHTML('afterend',DG.bulky())}
   DG.wire(d,o,openModal);
+  d.querySelectorAll('.sz').forEach(z=>z.addEventListener('click',()=>{if(!PICK){PICK=true;DG.setSeller(d,opts())}}));
   if(app()){d.body.insertAdjacentHTML('afterbegin',appTop());d.body.insertAdjacentHTML('beforeend',tabbar())}
   if(S.open||openTab)openModal(openTab||S.open);
   watch(d);
@@ -101,7 +104,7 @@ window.EXPORT_DOC=()=>D();
 
 load().then(()=>parent.postMessage({protoReady:1},'*'));
 addEventListener('message',e=>{const m=e.data||{};
-  if(m.protoSet){const was=S.open;S=Object.assign({},m.protoSet);EXPORTING=!!m.exporting;if(was!==S.open)openTab=null;load()}
+  if(m.protoSet){const was=S.open;if(m.protoSet.sized!==S.sized)PICK=false;S=Object.assign({},m.protoSet);EXPORTING=!!m.exporting;if(was!==S.open)openTab=null;load()}
   if(m.protoPing)(EXPORTING?full():ready.then(()=>{const d=D();return d?d.documentElement.scrollHeight:900})).then(h=>parent.postMessage({protoPong:1,h},'*'));
 });
 </script>

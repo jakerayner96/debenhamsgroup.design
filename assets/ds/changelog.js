@@ -8,6 +8,7 @@ window.DG_CHANGELOG=[
   "title": "DS page templates + Taggstar + PDP delivery grid",
   "by": "Taggstar prototype (projects/taggstar) · PDP delivery grid prototype (projects/delivery-grid)",
   "added": [
+   "Delivery grid: Sold & Delivered by line under the returns line (.dgrid-seller, box icon icons-order) — grey placeholder state “Select a size to see seller info” until a size is picked; the site brand is plain text, a marketplace seller is a link that opens the new seller modal (.dseller on the DS .mdl: Owned by, Registered address, VAT, company number, returns copy); DG_delivery.setSeller() · by PDP delivery grid",
    "Subscribe & Save (.sns + subscribe.js drop-in) — Figma ed2M0bCy3GMtlTRdtkwM4F 172:24095 / 34:8920: PDP box (title + Save tag, three ticks) with an ADD button like the membership box; ADD opens the Subscribe & Save modal on the DS .mdl (.sns-layer, desktop --sm, mobile --up): product row, Deliver every (.fsel), Quantity, Add to bag, terms; on every PDP under Ask Deb · by PDP delivery grid",
    "Quantity stepper large (.qty--lg) — 48px controls for the Subscribe & Save modal · by PDP delivery grid",
    "Accordion set (.acc-set) — PDP info rows with keylines between, 15px semibold heads, icons-down chevron; promoted from the Shopping agent · by master PDP",

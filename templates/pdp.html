@@ -12,7 +12,7 @@
    Order — mobile: header · USP banners · gallery (product tags bottom right) · AI tag chip (Shop Similar; desktop: top right of the main image) ·
    PDP title · ratings · price · option label + colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always) ·
    Ask Deb / Google PDP prompts (ai-prompts.js) · membership box (Unlimited) · Deliver+ · delivery grid (delivery.js; See more → Delivery
-   Options modal) · BNPL · Subscribe & Save (subscribe.js; ADD → modal) — that order, Jake 16 Oct · then the accordion set
+   Options modal; returns line, then Sold & Delivered by — placeholder until a size is picked) · BNPL · Subscribe & Save (subscribe.js; ADD → modal) — that order, Jake 16 Oct · then the accordion set
    (At a Glance open · Description · Product Details & Care · Delivery · Returns · Manufacturer) · footer.
    Desktop: breadcrumb, then gallery + accordions on the left, the buy column on the right.
    New PDP features land HERE so every next PDP gets them. Any fascia: ?brand=<slug>. Drop components in via the data-slot hooks. */
@@ -57,7 +57,9 @@ const IC='assets/ds/icons/',LIB=IC+'lib/';
 const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt:'plt-heart'};
 const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
 /* delivery grid as live (DS delivery.js): fastest first, cheapest last, James's two-click-&-collect rule, badges, returns line */
-const DG_OPTS=()=>({layout:'list',scen:'std',pr:true,prBadge:'fastest',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up'});
+/* seller line: grey placeholder until a size is picked, then sold by the fascia ('site'; a marketplace key, e.g. 'amass', makes it a link → seller modal) */
+let SELLER=null;
+const DG_OPTS=()=>({layout:'list',scen:'std',pr:true,prBadge:'fastest',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
 /* Subscribe & Save: the product at 5% off, size = the first size until one is picked; centred modal from 600px, bottom sheet on phones */
 const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(document.querySelector('.sz.on')||{}).textContent||P.sizes[0],colour:P.colour,pct:5});
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
@@ -120,7 +122,8 @@ function wire(){
   if(window.DG_delivery)DG_delivery.mount(document,DG_OPTS());
   if(window.DG_subscribe){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams;document.querySelectorAll('[data-sns-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-sns-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_subscribe.modal(SNS(P),{desk:innerWidth>=600}));DG_subscribe.wire(document.querySelector('[data-sns-modal]'))})}
   document.querySelectorAll('.acc-h').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
-  document.querySelectorAll('.sz').forEach(z=>z.onclick=()=>{document.querySelectorAll('.sz').forEach(x=>x.classList.toggle('on',x===z));const l=document.querySelector('.sizes-head b');if(l)l.textContent=z.textContent});
+  document.querySelectorAll('.sz').forEach(z=>z.onclick=()=>{document.querySelectorAll('.sz').forEach(x=>x.classList.toggle('on',x===z));const l=document.querySelector('.sizes-head b');if(l)l.textContent=z.textContent;
+    if(!SELLER){SELLER='site';if(window.DG_delivery)DG_delivery.setSeller(document,DG_OPTS())}});
   document.addEventListener('click',e=>{if(e.target.closest('a[href="#"]'))e.preventDefault()});
 }
 function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);

@@ -1288,6 +1288,17 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dgrid-ret{display:flex;gap:var(--gap-3,12px);align-items:center;padding-top:var(--gap-4,16px);border-top:var(--border-w,1px) solid var(--border-subtle)}
 .dgrid-ret img{width:24px;height:24px;flex:none}
 .dgrid-ret .t{font-size:14px;line-height:20px}.dgrid-ret .s{font-size:12px;line-height:16px;font-weight:300}.dgrid-ret a{color:inherit}
+/* Sold & Delivered by (under the returns line): box icon (icons-order) centred · 14/20 · marketplace seller name is an underlined link → seller modal.
+   Placeholder before a size is picked (.is-empty): "Select a size to see seller info" in --text-secondary, the icon at 40% */
+.dgrid-seller{display:flex;gap:var(--gap-3,12px);align-items:center;font-size:14px;line-height:20px}
+.dgrid-seller img{width:24px;height:24px;flex:none}
+.dgrid-seller .lnk{padding:0;border:0;background:none;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.dgrid-seller.is-empty{color:var(--text-secondary)}.dgrid-seller.is-empty img{opacity:.4}
+/* Seller modal (.dseller on the DS .mdl): seller name title · label 16 semibold / value 16 regular, gap 4 (16px) between · returns copy */
+.dseller dl{margin:0;display:flex;flex-direction:column;gap:var(--gap-4,16px)}
+.dseller dt{font-size:16px;line-height:22px;font-weight:var(--w-strong,600)}
+.dseller dd{margin:0;font-size:16px;line-height:22px}
+.dseller-ret .t{font-size:14px;line-height:20px}.dseller-ret .s{font-size:12px;line-height:16px;font-weight:300}.dseller-ret a{color:inherit}
 .dgrid-bulky{display:flex;align-items:flex-start;gap:var(--gap-2,8px);margin:0;font-family:var(--font-family-base);font-size:12px;line-height:16px;color:var(--text-primary)}
 .dgrid-bulky img{width:16px;height:16px;flex:none}
 /* modal */
