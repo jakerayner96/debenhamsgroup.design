@@ -12,7 +12,7 @@
   const EVERY=['Every 2 weeks','Every 4 weeks','Every 6 weeks','Every 8 weeks','Every 12 weeks'];
   function box(p){const pct=p.pct||5;
     return `<div class="sns" data-sns><div class="t"><div class="sns-hd"><b>Subscribe &amp; Save</b><span class="sns-tag">Save ${pct}%</span></div>
-      <ul class="sns-ticks"><li>Get it for only <b class="sale">${sub(p)}</b></li><li><span><b>Save an extra ${pct}%</b> when you subscribe</span></li><li>Choose your subscription frequency</li></ul></div>
+      <ul class="sns-ticks"><li><span>Get it for only <b class="sale">${sub(p)}</b></span></li><li><span><b>Save an extra ${pct}%</b> when you subscribe</span></li><li>Choose your subscription frequency</li></ul></div>
       <button class="add" type="button" data-sns-open>Add</button></div>`}
   function modal(p,o){o=o||{};const pct=p.pct||5;
     return `<div class="sns-layer${o.desk?'':' sns-layer--up'}" data-sns-modal><div class="mdl-scrim" data-sns-close></div>

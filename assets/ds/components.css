@@ -737,7 +737,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .bnpl{background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:var(--radius-default);padding:16px;display:flex;flex-direction:column;gap:12px;font-size:14px}
 .bnpl .chips{display:flex;gap:4px}
 .bnpl .pc{width:32px;height:22px;border-radius:calc(var(--radius-default)*.75);display:grid;place-items:center;overflow:hidden}
-.bnpl .pc img{max-width:27px;max-height:14px}
+.bnpl .pc img{max-width:24px;max-height:11px;object-fit:contain}   /* DS Figma 12484:4028: each logo inset in its 32×22 badge, never edge to edge */
 .bnpl .pc--payplus{background:#003B61}.bnpl .pc--klarna{background:#FFB1D2}.bnpl .pc--clearpay{background:#B2FCE3}.bnpl .pc--paypal{background:#FFF;border:1px solid var(--border-subtle)}
 .bnpl .terms{font-weight:var(--w-regular)}.bnpl .small{font-size:12px;color:var(--text-secondary)}
 .thresh{display:flex;flex-direction:column;gap:12px;font-size:14px}

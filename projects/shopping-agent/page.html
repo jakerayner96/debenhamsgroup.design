@@ -18,7 +18,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 @media(min-width:1024px){.h1{font-size:28px}}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 8px}
 @media(min-width:1024px){.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 16px}}
-.pc{width:auto!important}
+article.pc{width:auto!important}   /* product cards only — .bnpl badges also use .pc */
 .pgfoot{margin-top:40px}.pgfoot>*,.pgfoot>*>*{width:100%!important;max-width:none!important}
 #hdrwrap{position:relative;z-index:20}
 .hd-search span.q{color:var(--text-primary)}
@@ -159,7 +159,8 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .unl button{flex:none;height:32px;padding:0 16px;border:0;border-radius:4px;background:#000;color:#FFF;font:600 14px var(--font-family-base);letter-spacing:.02em;cursor:pointer}.ctas2>*{flex:1}
 .glance-blk h3,.sec-h{font-size:16px;font-weight:600;margin:0 0 12px}
 .glance{margin:0}
-.under{display:flex;flex-direction:column;gap:24px;margin-top:24px}
+.under{display:flex;flex-direction:column;gap:24px;margin-top:0}   /* same gap 4 (16px) as between the cards above */
+@media(min-width:1024px){.under{margin-top:24px}}
 .dbox{border:1px solid var(--border-subtle);border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:12px;font-size:14px}
 .dbox div{display:flex;gap:12px;align-items:flex-start}.dbox img{width:20px;height:20px;flex:none}
 /* html2canvas cannot parse color-mix(): flatten the one the Deliver+ banner uses */
