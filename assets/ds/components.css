@@ -1083,11 +1083,17 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
    .ai-pill--outline   white pill with the AI gradient outline — stands on its own (outside the search box, prompt chips)
    .ai-pill--soft      white pill on the DS puck shadow — prompt chips, on-image buttons (no solid outline)
    .ai-pill--sm        32px · .ai-icon  the icon on its own (header icon row) */
-.ai-icon{display:inline-block;width:20px;height:20px;flex:none;background:url("icons/ai.svg") center/contain no-repeat}
+/* AI by fascia (Jake 16 Oct): Debenhams = the teal AI gradient (its aqua CTA #7BE7D8 is only 1.4:1 on white, so the icon cannot take it).
+   Every other fascia draws the icon and the outline in its primary CTA colour (--surface-action), which passes AA for graphics (3:1) on white
+   on all 16 today; a fascia whose CTA fails 3:1 sets --ai-fg:#000 instead. --ai-tint / --ai-ink = the soft surface and text for AI chips. */
+:root,[data-brand]{--ai-fg:var(--surface-action,#000);--ai-tint:var(--surface-sunken,#F5F5F5);--ai-ink:var(--text-primary,#000);--ai-icon-bg:var(--ai-fg);--ai-icon-mask:url("icons/ai.svg") center/contain no-repeat}
+[data-brand]:not([data-brand="debenhams"]){--ai-gradient:linear-gradient(var(--ai-fg),var(--ai-fg))}
+:root:not([data-brand]),[data-brand="debenhams"]{--ai-fg:#2E7F79;--ai-tint:#F2F8F7;--ai-ink:#2F6B63;--ai-icon-bg:url("icons/ai.svg") center/contain no-repeat;--ai-icon-mask:none;--ai-gradient:linear-gradient(107deg,#70BEB3 0%,#9DEDE2 99.4%)}
+.ai-icon{display:inline-block;width:20px;height:20px;flex:none;background:var(--ai-icon-bg);-webkit-mask:var(--ai-icon-mask);mask:var(--ai-icon-mask)}
 .ai-pill{display:flex;align-items:center;gap:6px;height:36px;padding:0 16px 0 12px;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);border:0;color:var(--text-primary);font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-mid,500);line-height:1.2;white-space:nowrap;cursor:pointer;text-align:left}
 .ai-pill .ai-icon{width:18px;height:18px}
 .ai-pill--outline{border:var(--ai-outline) solid transparent;background:linear-gradient(var(--surface-raised,#FFF),var(--surface-raised,#FFF)) padding-box,var(--ai-gradient) border-box}
-.ai-pill--outline:hover{background:linear-gradient(#F5FBFA,#F5FBFA) padding-box,var(--ai-gradient) border-box}
+.ai-pill--outline:hover{background:linear-gradient(var(--ai-tint),var(--ai-tint)) padding-box,var(--ai-gradient) border-box}
 .ai-pill--soft{box-shadow:var(--shadow-puck)}.ai-pill--soft:hover{box-shadow:var(--shadow-pill)}   /* prompt chips: shadow, never a solid outline */
 .ai-pill--sm{height:32px;font-size:13px;padding:0 12px 0 10px}.ai-pill--sm .ai-icon{width:16px;height:16px}
 .ai-pill--wrap{height:auto;min-height:40px;padding:8px 16px 8px 12px;white-space:normal;font-weight:var(--w-regular,400)}
@@ -1381,3 +1387,86 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .sns-f .fsel{width:100%}
 .qty--lg button{width:44px;height:48px}.qty--lg span{height:48px;min-width:32px;font-size:16px}.qty--lg button img{width:20px;height:20px}
 .sns-legal{margin:0;font-size:12px;line-height:17px;color:var(--text-secondary)}.sns-legal a{color:inherit}
+
+
+/* ───────────── Promoted from the Shopping agent prototype (projects/shopping-agent), 16 Oct 2026 ─────────────
+   Static DS versions; the prototype's chat window still renders from salesAgentConfig.json. Every AI colour reads --ai-* (per fascia, above). */
+
+/* AI search button — beside the search field (exposed search) or left of the X when search is active. 44px white circle on the puck shadow. */
+.ai-circle{display:grid;place-items:center;width:44px;height:44px;flex:none;padding:0;border:0;border-radius:50%;background:var(--surface-raised,#FFF);box-shadow:var(--shadow-puck);cursor:pointer;transition:box-shadow .15s,transform .15s}
+.ai-circle:hover{box-shadow:var(--shadow-pill)}.ai-circle:active{transform:scale(.96)}.ai-circle .ai-icon{width:22px;height:22px}
+
+/* Search suggestions (search active, Search Figma gKuKG9M8kSM2BCL6dy0G30 · 1012:2295 re-ordered): Recent · Popular (one scrolling row each) ·
+   Need some help? (agent prompts, stacked) · Recently viewed. No dividers; gap 4 (16px) per section, gap 3 (12px) heading → content. */
+.srch-sugg{display:flex;flex-direction:column;font-family:var(--font-family-base);--ss-pad:16px}
+.srch-sugg .ss-sec{display:flex;flex-direction:column;gap:12px;padding:16px 0}
+.srch-sugg h4{margin:0;font-size:16px;font-weight:var(--w-strong,600);color:var(--text-primary)}
+.srch-sugg .ss-row{display:flex;gap:10px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 calc(-1 * var(--ss-pad));padding:0 var(--ss-pad)}.srch-sugg .ss-row::-webkit-scrollbar{display:none}
+.srch-sugg .ss-chip{flex:none;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:0;border-radius:var(--radius-pill);background:var(--surface-media,#F2F2F2);font:var(--w-regular,400) 14px/1.2 var(--font-family-base);color:var(--text-primary);white-space:nowrap;cursor:pointer}
+.srch-sugg .ss-chip img,.srch-sugg .ss-chip svg{width:14px;height:14px;flex:none}
+.srch-sugg .ss-prompts{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+
+/* Agent chat (Ask Deb): start screen, bubbles, reply parts, input. PA Deck Figma OUmnWDam0w0czh9VZnaqx0 · 6:167. Text is Geologica; colours from --ai-*. */
+.agent-chat{display:flex;flex-direction:column;gap:16px;font-family:var(--font-family-base);color:#222;font-size:14px;line-height:1.4}
+.ac-start{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.ac-start h2{margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:12px;font-size:22px;font-weight:300;line-height:1.3;color:#222}
+.ac-start h2 b{font-weight:var(--w-strong,600);color:var(--ai-fg)}
+.ac-start p{margin:0;font-size:15px;font-weight:300;line-height:1.5;color:var(--text-primary)}
+.ac-starters{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:8px}
+.ac-starter{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:12px 14px;border:1px solid transparent;border-radius:14px;background:#F8F8F8;font:400 14px/1.3 var(--font-family-base);color:#222;text-align:left;cursor:pointer}
+.ac-starter:hover{background:#FFF;border-color:var(--ai-fg)}.ac-starter .ai-icon{width:16px;height:16px}
+.ac-user{align-self:flex-end;max-width:80%;padding:12px 16px;border-radius:16px 4px 16px 16px;background:#EEE;color:#222}
+.ac-bot{display:flex;flex-direction:column;gap:12px}
+.ac-ctx{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ac-ctx .lbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6B6B6B}.ac-ctx .lbl .ai-icon{width:14px;height:14px}
+.ac-ctx .c{display:inline-flex;align-items:center;height:27px;padding:0 10px;border-radius:var(--radius-pill);background:var(--ai-tint);color:var(--ai-ink);font-size:12px;white-space:nowrap}
+.ac-car{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
+.ac-tile{flex:none;width:120px;display:flex;flex-direction:column;gap:6px}.ac-tile .im{display:block;aspect-ratio:2/3;background:var(--surface-media)}
+.ac-tile .n{font-size:12px;font-weight:500;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ac-cart{width:100%;height:32px;border:0;border-radius:var(--radius-default,4px);background:var(--surface-action);color:var(--text-on-action);font:var(--w-strong,600) 12px var(--font-family-base);letter-spacing:.02em;text-transform:uppercase;cursor:pointer}   /* the primary CTA, small */
+.ac-pd{display:flex;gap:12px;padding:12px;border:1px solid var(--border-subtle,#E7E7E7);border-radius:16px}.ac-pd .im{width:96px;aspect-ratio:2/3;flex:none;background:var(--surface-media)}
+.ac-pd .pd{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px}.ac-pd .pbd{font-size:12px;font-weight:600}.ac-pd .n{font-size:14px;font-weight:500}
+.ac-pd .psz{display:flex;gap:6px;flex-wrap:wrap}.ac-pd .psz span{min-width:34px;height:30px;display:grid;place-items:center;border:1px solid var(--border-control,#B5B5B5);border-radius:4px;font-size:12px;font-weight:300}.ac-pd .psz span.on{border-color:#000;font-weight:600}
+.ac-pd .ac-cart{margin-top:auto}
+.ac-qr{display:flex;flex-wrap:wrap;gap:8px}.ac-qr .ai-pill{font-size:13px}
+.ac-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}.ac-list li{display:flex;gap:8px}.ac-list li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ai-fg);margin-top:7px;flex:none}
+.ac-fit{padding:12px 14px;border-radius:12px;background:var(--ai-tint);display:flex;flex-direction:column;gap:8px}.ac-fit .bar{position:relative;height:4px;border-radius:99px;background:var(--border-subtle)}.ac-fit .bar i{position:absolute;top:-4px;width:12px;height:12px;border-radius:50%;background:var(--ai-fg);transform:translateX(-50%)}.ac-fit .lbl{display:flex;justify-content:space-between;font-size:11px;color:#555}
+.ac-look{display:grid;grid-template-columns:1.2fr 1fr;gap:4px}.ac-look .im{background:var(--surface-media);min-height:120px}.ac-look .r{display:grid;grid-template-rows:1fr 1fr;gap:4px}
+.ac-input{display:flex;align-items:center;gap:12px;height:60px;padding:4px 8px 4px 20px;border:2px solid transparent;border-radius:24px;background:linear-gradient(#FFF,#FFF) padding-box,var(--ai-gradient) border-box}
+.ac-input .ph{flex:1;font-size:16px;font-weight:300;color:#777}
+.ac-send{width:40px;height:40px;flex:none;display:grid;place-items:center;border:0;border-radius:50%;background:var(--action-disabled-bg,#E7E7E7);color:var(--action-disabled-fg,#B5B5B5)}   /* empty: the disabled primary */
+.ac-send.on{background:var(--surface-action);color:var(--text-on-action)}   /* typing: the primary CTA */
+.ac-disc{font-size:11px;color:#555}
+
+/* AI modules: next best action (PLP, a grid row or under the filters) and content prompts (CMS: image + prompts, editable colour) */
+.ai-nba{display:flex;flex-direction:column;gap:16px;padding:16px;border-radius:var(--radius-lg,8px);background:var(--surface-sunken,#F8F8F8);font-family:var(--font-family-base)}
+.ai-nba .grp,.ai-cp .grp{display:flex;flex-direction:column;gap:4px}
+.ai-nba h3{margin:0;font-size:18px;font-weight:var(--w-strong,600)}.ai-nba p{margin:0;font-size:14px;font-weight:300;line-height:1.4;color:var(--text-primary)}
+.ai-nba .set,.ai-cp .set{display:flex;flex-wrap:wrap;gap:8px}
+.ai-cp{display:grid;grid-template-columns:1fr;font-family:var(--font-family-base)}
+@media(min-width:1024px){.ai-cp{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}}
+.ai-cp .pan{display:flex;flex-direction:column;justify-content:center;gap:16px;padding:24px 16px;background:var(--ai-cp-bg,#F4F4F2);color:var(--ai-cp-fg,#000)}
+@media(min-width:1024px){.ai-cp .pan{padding:40px}}
+.ai-cp h3{margin:0;font-size:26px;font-weight:300;line-height:1.1;color:inherit}.ai-cp .sub{font-size:16px;font-weight:300;line-height:1.4;color:inherit}
+.ai-cp .set{flex-direction:column;align-items:flex-start}
+.ai-cp .im{display:block;min-height:220px;background:var(--surface-media)}
+
+/* Membership banner on the PDP (Debenhams Unlimited, live 15 Oct): lockup + one line + ADD, between the buy buttons and Deliver+. Copy styled as the Deliver+ list items. */
+.memb-banner{display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:var(--radius-default,4px);background:linear-gradient(100deg,#F2F2F2 0%,#C9C9C9 100%);font-family:var(--font-family-base)}
+.memb-banner>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}.memb-banner img{height:30px;width:auto;align-self:flex-start}
+.memb-banner p{margin:0;font-size:12px;line-height:normal;font-weight:var(--w-regular,400);color:#000}
+.memb-banner button{flex:none;height:32px;padding:0 16px;border:0;border-radius:var(--radius-default,4px);background:#000;color:#FFF;font:var(--w-strong,600) 14px var(--font-family-base);letter-spacing:.02em;cursor:pointer}
+
+/* Wishlist button: a white circle on the puck shadow — 44px beside the PDP title (VTO Figma 15656:21955), 32px on product cards */
+.wl-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;padding:0;border:0;border-radius:50%;background:#FFF;box-shadow:var(--shadow-puck);cursor:pointer}.wl-btn img{width:20px;height:20px;object-fit:contain}
+.wl-btn--sm{width:32px;height:32px}.wl-btn--sm img{width:16px;height:16px}
+
+/* Mobile sort + filters, live (debenhams.com 15 Oct): full-bleed Filters | Relevance bar, then NDD toggle left and Size / Colour pills right */
+.mf-bar{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);font-family:var(--font-family-base)}
+.mf-bar button{display:flex;align-items:center;justify-content:space-between;height:44px;padding:0 16px;background:none;border:0;font:300 16px var(--font-family-base);color:var(--text-primary)}
+.mf-bar button+button{border-left:1px solid var(--border-subtle);padding-left:8px}
+.mf-bar .fic{width:18px;height:18px;background:url("icons/lib/icons-filter.svg") center/contain no-repeat}.mf-bar .ch{width:16px;height:16px;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
+.mf-row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;font-family:var(--font-family-base)}
+.mf-ndd{display:flex;align-items:center;gap:8px;background:none;border:0;padding:0;font:300 14px var(--font-family-base);color:var(--text-primary);cursor:pointer}
+.mf-ndd .tg{width:46px;height:24px;border-radius:12px;background:#888;position:relative;flex:none}.mf-ndd .tg::after{content:"";position:absolute;left:2px;top:2px;width:20px;height:20px;border-radius:50%;background:#FFF}
+.mf-ndd.on .tg{background:var(--surface-action)}.mf-ndd.on .tg::after{left:24px}
+.mf-pills{display:flex;flex-wrap:wrap;gap:8px}.mf-pills span{display:flex;align-items:center;padding:4px 16px;border:1px solid var(--border-subtle);border-radius:var(--radius-pill);font:300 14px/20px var(--font-family-base);cursor:pointer}
