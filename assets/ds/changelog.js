@@ -29,6 +29,7 @@ window.DG_CHANGELOG=[
    "USP banner prototype uses the DS bag summary; projects/usp-banner/bag.js removed"
   ],
   "fixed": [
+   "Breadcrumb: padding gap 4 (16px) below as well as above (was 16 / 4), so the trail sits evenly between the header and the page · by PDP delivery grid",
    "Size guide glyph sized by the DS (was inline per page)",
    "Export: footer chevron drawn without a CSS mask while html.exporting (was a sign-in page override)",
    "Site PDP overview: two missing icons (icons-chevron-down, icons-bell) → icons-down-arrow, icons-notification"

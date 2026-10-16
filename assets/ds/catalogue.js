@@ -451,7 +451,7 @@ const DG_CATALOGUE = [
   summary:'12px trail with slash separators, never wrapping. The first layer (Home) is dropped.',
   use:['PLP and PDP above the title.'],
   avoid:['Wrapping onto two lines — truncate instead.'],
-  anatomy:['12px --w-regular capitalised · slash separators · share icon on PDP mobile only'],
+  anatomy:['12px --w-regular capitalised · slash separators · share icon on PDP mobile only','Padding gap 4 (16px) above and below — the same space under the trail as over it (16 Oct 2026)'],
   variants:[{name:'Default', html:'<nav class="bc" aria-label="Breadcrumb" style="width:360px"><a href="#">New In</a><span class="sep">/</span><a href="#">Womens New In</a><span class="sep">/</span><span class="cur">New In Dresses</span></nav>'}],
   dev:{title:'—', status:'ours', note:'Not in the dev Storybook.'} },
 
