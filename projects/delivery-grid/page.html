@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Inside debenhamsgroup.design/projects/delivery-grid/: resolve every asset from the repo root -->
+<base href="../../">
+<title>PDP delivery grid · in situ</title>
+<style>
+/* No page of its own: the DS PDP template (templates/pdp.html) is embedded as it is, and the DS delivery grid + modal
+   (assets/ds/delivery.js + components.css) are injected into it. App view adds the DS app chrome (.app-top + .app-tabbar). */
+html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
+.emb{display:block;width:100%;height:100vh;border:0}
+</style>
+</head>
+<body>
+<iframe class="emb" id="emb" title="Page"></iframe>
+<script src="assets/ds/delivery.js"></script>
+<script src="assets/ds/membership.js"></script>
+<script>
+/* ---- page contract with the shell (review-prototype) ----
+   in:  ?s=<json state>  ·  {protoSet:state, exporting?}  ·  {protoPing:1}
+   out: {protoReady:1} once loaded  ·  {protoPong:1,h} in reply to a ping */
+const DG=window.DG_delivery;
+let S={brand:'debenhams',platform:'web',layout:'tabs'},EXPORTING=false;
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}  // URLSearchParams already decodes
+
+const emb=document.getElementById('emb');
+let KEY='',ready=Promise.resolve(),obs=null,openTab=null;
+const D=()=>{try{return emb.contentDocument}catch(e){return null}};
+const W=()=>emb.contentWindow;
+const desk=()=>{const w=W();return !!w&&w.innerWidth>=1024};
+const app=()=>S.platform==='app';
+const IC='assets/ds/icons/',AP=IC+'app/';
+const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt:'plt-heart'};
+const prog=b=>{const m=(window.DG_MEMBERSHIP||{})[b];return m?m.name.replace(/^Debenhams /,''):''};
+const opts=()=>Object.assign({},S,{prog:prog(S.brand),desk:desk()&&!app(),sheet:app()?'up':(S.sheet||'alert')});
+
+/* app chrome: DS .app-top (status + nav) and .app-tabbar; the web header, USP bars, breadcrumb and footer go */
+const APP_HIDE='.hd,[data-usp-banners],.hd-usp,.bc,footer,[data-ftr]{display:none!important}';
+function appTop(){const b=S.brand;
+  return `<div class="app-top" data-dgx><div class="sb"><span>9:41</span><span class="sys">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="#000"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M4 7a5.8 5.8 0 0 1 8 0"/><circle cx="8" cy="10.2" r="1" fill="#000" stroke="none"/></svg>
+    <svg width="28" height="13" viewBox="0 0 28 13"><rect x=".5" y=".5" width="24" height="12" rx="3.5" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="2" y="2" width="21" height="9" rx="2" fill="#000"/><path d="M26 4.5v4a2 2 0 0 0 0-4z" fill="#000" fill-opacity=".4"/></svg></span></div>
+    <div class="nav"><button aria-label="Back"><img src="${IC}lib/icons-left.svg" alt=""></button><span><button aria-label="Share"><img src="${IC}lib/icons-share.svg" alt=""></button><button aria-label="Wishlist"><img src="${IC}${WISH[b]||'heart-24'}.svg" alt=""></button></span></div></div>`}
+function tabbar(){const b=S.brand;
+  if(b==='plt')return `<div data-dgx style="position:sticky;bottom:0;z-index:5"><div class="app-tabbar app-tabbar--plt"><div class="tabs">${[['plt-tab-home','Home'],['plt-tab-shop','Shop'],['plt-tab-discover','Discover'],['plt-tab-wishlist','Wishlist'],['plt-tab-bag','Bag']].map(([t,l],i)=>`<button class="tab${i===1?' on':''}"><img src="${AP}${t}.svg" alt=""><span>${l}</span></button>`).join('')}</div></div></div>`;
+  const fav=WISH[b]==='bookmark'?'tab-bookmark':'tab-wishlist';
+  return `<div data-dgx style="position:sticky;bottom:0;z-index:5"><div class="app-tabbar"><div class="tabs">${['tab-home','tab-menusearch','tab-bag',fav,'tab-account'].map((t,i)=>`<button class="tab${i===1?' on':''}" aria-label="${t.slice(4)}"><img src="${AP}${t}.svg" alt=""></button>`).join('')}</div><span class="hi"></span></div></div>`}
+
+function clear(d){d.querySelectorAll('[data-dg],[data-dgx],[data-dg-modal],.dgrid-bulky').forEach(n=>n.remove())}
+function style(d){let st=d.getElementById('dg-style');if(!st){st=d.createElement('style');st.id='dg-style';d.head.appendChild(st)}
+  /* the static USP box is the old Strappy delivery copy — ecom removed it, the grid replaces it */
+  st.textContent='.buy>.usp-box{display:none!important}'+(S.context?'':'.buy>.member-box,.buy>.dplus{display:none!important}')+(app()?APP_HIDE:'')+(EXPORTING?'html,body{overflow:visible!important}':'')}
+function openModal(tab){const d=D();if(!d)return;d.querySelectorAll('[data-dg-modal]').forEach(n=>n.remove());
+  openTab=tab;d.body.insertAdjacentHTML('beforeend',DG.modal(opts(),tab));
+  const m=d.querySelector('[data-dg-modal]');
+  if(EXPORTING){const h=app()?844:desk()?900:844;m.style.cssText=`position:absolute;top:0;left:0;right:0;bottom:auto;height:${h}px`;m.querySelectorAll('.mdl').forEach(x=>x.style.animation='none')}
+  DG.wire(m,opts());m.querySelectorAll('[data-dg-close]').forEach(x=>x.onclick=()=>{m.remove();openTab=null})}
+function inject(){const d=D();if(!d||!d.body||!d.querySelector('.buy'))return;
+  if(obs)obs.disconnect();
+  style(d);clear(d);
+  const buy=d.querySelector('.buy'),o=opts();
+  /* placement: 'atc' = straight under Add to bag (Demi: delivery dates drive the decision) · 'live' = under the membership + Deliver+ boxes */
+  const atc=buy.querySelector(':scope>.bd.pri'),after=S.place==='live'?([...buy.querySelectorAll(':scope>.member-box,:scope>.dplus')].pop()||atc):atc;
+  if(after)after.insertAdjacentHTML('afterend',DG.grid(o));
+  if(S.scen==='bulky'){const pr=buy.querySelector(':scope>.price-blk');if(pr)pr.insertAdjacentHTML('afterend',DG.bulky())}
+  DG.wire(d,o,openModal);
+  if(app()){d.body.insertAdjacentHTML('afterbegin',appTop());d.body.insertAdjacentHTML('beforeend',tabbar())}
+  if(S.open||openTab)openModal(openTab||S.open);
+  watch(d);
+}
+/* the template re-renders itself (breakpoint, its own state) — put the grid back when it does */
+function watch(d){let t;obs=new MutationObserver(()=>{clearTimeout(t);t=setTimeout(()=>{if(d.querySelector('.buy')&&!d.querySelector('[data-dg]'))inject()},120)});
+  obs.observe(d.body,{childList:true,subtree:true})}
+
+function load(){
+  const key=S.brand;
+  if(key===KEY){inject();return ready}
+  KEY=key;
+  ready=new Promise(res=>{
+    emb.onload=()=>{inject();
+      const d=D(),t0=Date.now();
+      const done=()=>{const imgs=d?[...d.images].filter(i=>i.loading!=='lazy'||i.getBoundingClientRect().top<3000):[];return imgs.every(i=>i.complete)};
+      const iv=setInterval(()=>{if(done()||Date.now()-t0>9000){clearInterval(iv);inject();res()}},150)};
+    emb.src=`templates/pdp.html?brand=${S.brand}`;
+  });
+  return ready;
+}
+/* export: let the embedded page run to its full height so the shell can capture it in one pass */
+async function full(){await ready;const d=D();if(!d)return 900;
+  try{W().postMessage({protoSet:{brand:S.brand},exporting:true},'*')}catch(e){}await new Promise(r=>setTimeout(r,600));inject();
+  d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
+  let h=0;for(let i=0;i<6;i++){const nh=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight);emb.style.height=nh+'px';await new Promise(r=>setTimeout(r,350));if(Math.abs(nh-h)<2)break;h=nh}
+  inject();await new Promise(r=>setTimeout(r,500));
+  const t0=Date.now();
+  while(Date.now()-t0<10000){d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
+    if([...d.images].every(i=>i.complete&&(i.naturalWidth||!i.currentSrc)))break;await new Promise(r=>setTimeout(r,200))}
+  return Math.max(d.documentElement.scrollHeight,d.body.scrollHeight)}
+window.EXPORT_DOC=()=>D();
+
+load().then(()=>parent.postMessage({protoReady:1},'*'));
+addEventListener('message',e=>{const m=e.data||{};
+  if(m.protoSet){const was=S.open;S=Object.assign({},m.protoSet);EXPORTING=!!m.exporting;if(was!==S.open)openTab=null;load()}
+  if(m.protoPing)(EXPORTING?full():ready.then(()=>{const d=D();return d?d.documentElement.scrollHeight:900})).then(h=>parent.postMessage({protoPong:1,h},'*'));
+});
+</script>
+</body>
+</html>

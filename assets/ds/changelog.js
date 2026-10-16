@@ -5,9 +5,12 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-16",
   "v": "2026.10.16",
-  "title": "DS page templates + Taggstar",
-  "by": "Taggstar prototype (projects/taggstar)",
+  "title": "DS page templates + Taggstar + PDP delivery grid",
+  "by": "Taggstar prototype (projects/taggstar) · PDP delivery grid prototype (projects/delivery-grid)",
   "added": [
+   "Delivery grid (.dgrid-* + delivery.js drop-in) — the PDP Delivery Methods box in three layouts (live sentences + James's PR badges / third home row, Delivery / Click & Collect tabs, one-liner), Premier view, bulky surcharge caveat (.dgrid-bulky), returns line · by PDP delivery grid",
+   "Delivery options modal (.dopts-* on the DS .mdl) — Paul's Gifting Figma 209-294935 / 209-295333: Home Delivery / Collect Nearby toggle, one-list and single-tab variants, Northern Ireland split, footnote · by PDP delivery grid",
+   "App top bar (.app-top) — iOS status row + PDP nav (back · share · wishlist) · by PDP delivery grid",
    "PDP gallery (.pdp-gal) — mobile scroller + pagination, desktop thumbs + main with prev / next",
    "PDP title (.pdp-head) — brand, name, 44px wishlist",
    "Delivery countdown (.ndd)",

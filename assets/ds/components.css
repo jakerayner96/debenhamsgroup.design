@@ -1231,3 +1231,82 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .sizes-head .guide img{width:16px;height:16px;display:block;flex:none}
 /* Export (html2canvas can't paint CSS masks): pages set html.exporting while capturing — DS fix 16 Oct, was a sign-in page override */
 html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/icons-down.svg) center/contain no-repeat}
+
+/* ---- Delivery grid (PDP "Delivery Methods" box) + Delivery options modal — 16 Oct 2026 · assets/ds/delivery.js ----
+   Live PDP box (Dynamo = what checkout serves) · Demi Adesanya's tabbed mockup · Paul Dossis's modal (Gifting PIh1ikzvYNH1FR4arKJbe4 · 209-294935 / 209-295333).
+   Box: 1px --border-subtle, radius --radius-default, padding gap 4 (16px), gap 4 (16px) between parts. Three layouts:
+     .dgrid-list  live sentences ("Get it Tomorrow with … (£5.99)"), fastest first, cheapest last, + James's third home row when both are click & collect
+     .dgrid-tabs  Delivery / Click & Collect underline tabs, checkout-style .dgrid-row (when + badge · method · cut-off | price, was struck under)
+     .dgrid--line one line ("Get it Tomorrow to M4 7BB"), no box title; everything else in the modal
+   Badges .dgrid-badge: 12px medium on --surface-sunken, --radius-pill (square on PLT). --member = the fascia's programme (Premier, Unlimited, Royalty).
+   Bulky: .dgrid-bulky under the price (upfront) + .dgrid-note in the box + a neutral .msg in the modal.
+   Modal = the DS .mdl (desktop .mdl--sm · mobile web .mdl--alert as the Figma 358 · app .mdl--up) inside .dopts-layer; body = .dopts-seg toggle
+   (Home Delivery / Collect Nearby, 44px, active = --surface-action), .dopts-list rows (name strong · "Arrives by …" | was struck + price strong),
+   .dopts-hr before Northern Ireland, .dopts-grp section heads (one-list variant), .dopts-note 12px footnote. Rows gap 4 (16px). */
+.dgrid{display:flex;flex-direction:column;gap:var(--gap-4,16px);padding:var(--gap-4,16px);border:var(--border-w,1px) solid var(--border-subtle);border-radius:var(--radius-default);font-family:var(--font-family-base);color:var(--text-primary);text-align:left;background:var(--surface-page)}
+.dgrid--line{gap:var(--gap-3,12px)}
+.dgrid-hd{display:flex;align-items:center;justify-content:space-between;gap:var(--gap-4,16px)}
+.dgrid-hd h2{margin:0;font-size:14px;font-weight:var(--w-mid,500);line-height:20px}
+.dgrid-badge{display:inline-flex;align-items:center;height:20px;padding:0 var(--gap-2,8px);border-radius:var(--radius-pill);background:var(--surface-sunken);font-size:12px;font-weight:var(--w-mid,500);line-height:1;white-space:nowrap;vertical-align:middle}
+.dgrid-badge--member{background:var(--text-primary);color:var(--text-inverse,#FFF)}
+.dgrid-list{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
+.dgrid-line{display:flex;flex-direction:column;align-items:flex-start;gap:var(--gap-1,4px)}
+.dgrid-line p{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-regular)}
+.dgrid-line b{font-weight:var(--w-strong)}.dgrid-line s{color:var(--text-secondary);font-weight:var(--w-regular)}
+.dgrid-more{align-self:flex-start;padding:0;border:0;background:none;font:inherit;font-size:14px;line-height:20px;color:var(--text-primary);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.dgrid-more:hover{text-decoration:none}
+.dgrid-tabs{display:flex;gap:var(--gap-4,16px);margin-top:calc(var(--gap-2,8px)*-1)}
+.dgrid-tabs button{padding:var(--gap-1,4px) 0;border:0;border-bottom:2px solid transparent;background:none;font:inherit;font-size:12px;font-weight:300;color:var(--text-primary);cursor:pointer}
+.dgrid-tabs button.on{border-bottom-color:var(--text-primary);font-weight:var(--w-mid,500)}
+.dgrid-panel{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.dgrid-panel[hidden]{display:none}
+.dgrid-rows{list-style:none;margin:0;padding:0}
+.dgrid-row{display:flex;justify-content:space-between;gap:var(--gap-4,16px);padding:var(--gap-3,12px) 0;border-top:var(--border-w,1px) solid var(--border-subtle)}
+.dgrid-row:first-child{border-top:0;padding-top:0}
+.dgrid-row .l{display:flex;flex-direction:column;gap:2px;min-width:0}
+.dgrid-row .w{display:flex;align-items:center;gap:var(--gap-2,8px);flex-wrap:wrap;font-size:14px;line-height:20px}.dgrid-row .w b{font-weight:var(--w-mid,500)}
+.dgrid-row .n{font-size:14px;line-height:20px;font-weight:300}
+.dgrid-row .c{font-size:12px;line-height:16px;font-weight:300;color:var(--text-secondary)}
+.dgrid-row .r{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:none;font-size:14px;line-height:20px;white-space:nowrap}
+.dgrid-row .r b{font-weight:var(--w-mid,500)}.dgrid-row .r s{font-size:12px;font-weight:300;color:var(--text-secondary)}
+.dgrid-one{display:flex;gap:var(--gap-3,12px);align-items:flex-start}
+.dgrid-one img{width:24px;height:24px;flex:none}
+.dgrid-one p{margin:0;font-size:14px;line-height:20px}.dgrid-one p b{font-weight:var(--w-strong)}
+.dgrid-one .s{display:block;font-size:12px;line-height:16px;font-weight:300;color:var(--text-secondary);margin-top:2px}
+.dgrid--line .dgrid-more{margin-left:36px;font-size:12px;line-height:16px}
+.dgrid-note{margin:0;font-size:12px;line-height:16px;color:var(--text-secondary)}
+.dgrid-ret{display:flex;gap:var(--gap-3,12px);align-items:flex-start;padding-top:var(--gap-4,16px);border-top:var(--border-w,1px) solid var(--border-subtle)}
+.dgrid-ret img{width:24px;height:24px;flex:none}
+.dgrid-ret .t{font-size:14px;line-height:20px}.dgrid-ret .s{font-size:12px;line-height:16px;font-weight:300}.dgrid-ret a{color:inherit}
+.dgrid-bulky{display:flex;align-items:flex-start;gap:var(--gap-2,8px);margin:0;font-family:var(--font-family-base);font-size:12px;line-height:16px;color:var(--text-primary)}
+.dgrid-bulky img{width:16px;height:16px;flex:none}
+/* modal */
+.dopts-layer{position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--gap-4,16px) 0}
+.dopts-layer--up{align-items:flex-end;padding:var(--gap-14,56px) 0 0}
+.dopts-layer>.mdl{z-index:3;max-height:100%;animation:mdlfade .3s ease-in-out both}
+.dopts-layer--up>.mdl{animation-name:mdlup}
+.dopts .mdl-bd{overflow-y:auto;gap:var(--gap-4,16px)}
+.dopts .mdl-bd [hidden]{display:none}
+.dopts [data-dg-mpanel]{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
+.dopts-seg{display:flex;padding:var(--gap-1,4px);border:var(--border-w,1px) solid var(--border-subtle);border-radius:calc(var(--radius-default)*2);flex:none}
+.dopts-seg button{flex:1;height:44px;border:0;border-radius:var(--radius-default);background:none;font:inherit;font-size:16px;color:var(--text-primary);cursor:pointer}
+.dopts-seg button.on{background:var(--surface-action);color:var(--text-on-action)}
+.dopts-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-4,16px)}
+.dopts-row{display:flex;justify-content:space-between;gap:var(--gap-3,12px);font-size:16px;line-height:22px}
+.dopts-row .l{display:flex;flex-direction:column;gap:2px;min-width:0}.dopts-row .l b{font-weight:var(--w-strong)}
+.dopts-row .l span{font-weight:var(--w-regular)}
+.dopts-row .r{display:flex;gap:var(--gap-2,8px);align-items:baseline;flex:none;white-space:nowrap}.dopts-row .r b{font-weight:var(--w-strong)}
+.dopts-row .r s{font-weight:var(--w-regular);color:var(--text-primary)}
+.dopts-hr{border:0;border-top:var(--border-w,1px) solid var(--border-subtle);margin:0;width:100%}
+.dopts-grp{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-strong);text-transform:uppercase;letter-spacing:.02em}
+.dopts-empty{margin:0;font-size:14px;color:var(--text-secondary)}
+.dopts-note{margin:var(--gap-2,8px) 0 0;font-size:12px;line-height:15px;color:var(--text-secondary)}
+
+/* App top bar (.app-top) — native-app status bar + PDP nav: 9:41 / island-safe status row (47px) then a 44px row: back · share + wishlist (24px icons).
+   Sticky to the top of an app screen; pairs with .app-tabbar at the bottom. 16 Oct 2026 (PDP delivery grid prototype). */
+.app-top{position:sticky;top:0;z-index:5;background:var(--surface-page);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif}
+.app-top .sb{height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 26px 0 40px;font-size:17px;font-weight:600;color:#000}
+.app-top .sb .sys{display:flex;gap:6px;align-items:center}.app-top .sb svg{display:block}
+.app-top .nav{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gap-3,12px)}
+.app-top .nav span{display:flex;gap:var(--gap-2,8px)}
+.app-top .nav button{width:40px;height:40px;display:grid;place-items:center;padding:0;border:0;background:none;cursor:pointer}
+.app-top .nav img{width:24px;height:24px}
