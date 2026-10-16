@@ -359,17 +359,20 @@ const APP_SRC='app/?brand=debenhams&inset=62,34';
 const APP_PDP='/product/P-a29ae3cd-c063-47be-ac02-7f8d214fe84b';   // a Debenhams dress with a full PDP record
 const APP_PLP='/plp?slug=womens-dresses';
 function appState(){const c=S.cfg,on=f=>(c.on||{})[f]!==false;
-  const chip=c.chipPos==='image'||c.chipPos==='bl'?'image':'title';
+  /* The app (16 Oct): one PDP chip — Virtual Stylist or Shop Similar — at a position; the
+     content prompts are the module only, with this panel's colours and picture; search
+     suggestions and PDP prompts are always on (the app has no off for them). */
+  const kind=c.chipKind==='similar'||(!on('vto')&&on('shopSimilar'))?'similar':'vto';
+  const pos=c.chipPos==='image'||c.chipPos==='bl'?'image':'title';
+  const pl={
+      entry:c.launcher==='outAsk'?'ask':'icon',
+      nbaRow:+c.nbaRow||0,
+      pdpPrompts:c.pdpPos==='belowCta'?'belowBuy':'afterBnpl',
+      chip:kind,chipPos:pos};
+  if(c.cpBg)pl.bannerBg=c.cpBg;if(c.cpFg)pl.bannerFg=c.cpFg;pl.bannerImage=c.cpImg||null;
   return {brand:'debenhams',chat:!!c.chat,
     path:c.search?'/search-view':c.page==='pdp'?APP_PDP:c.page==='plp'?APP_PLP:'/',
-    placements:{
-      entry:{outIcon:'icon',outAsk:'ask',lift:'icon',icon:'header'}[c.launcher]||'icon',
-      promptsBanner:on('custom')?({module:'module',strip:'strip',hero:'hero'}[c.cpPos]||'module'):'off',
-      searchHelp:on('autocomplete'),
-      nbaRow:on('nba')?(+c.nbaRow||0):-1,
-      pdpPrompts:on('pdpPrompts')?(c.pdpPos==='belowCta'?'belowBuy':'afterBnpl'):'off',
-      vto:on('vto')?chip:'off',
-      similar:on('shopSimilar')?chip:'off'}}}
+    placements:pl}}
 function sendApp(){if(S.app&&appframe.src)try{appframe.contentWindow.postMessage({appState:appState()},'*')}catch(e){}}
 addEventListener('message',e=>{if(e.data&&e.data.appReady&&e.source===appframe.contentWindow)sendApp()});
 function panel(){renderPanel($('#cfgpanel'),S,()=>{update()})}
