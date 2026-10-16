@@ -1162,8 +1162,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 @media(min-width:1024px){
   .pdp-gal{display:grid;grid-template-columns:100px minmax(0,1fr);gap:24px;align-items:start}
   .pdp-gal .thumbs{display:flex;flex-direction:column;gap:8px}
-  .pdp-gal .thumbs button{padding:0;border:1px solid transparent;background:none;cursor:pointer;display:block}
-  .pdp-gal .thumbs button.on{border-color:var(--text-primary)}
+  .pdp-gal .thumbs button{padding:0;border:0;background:none;cursor:pointer;display:block;opacity:.3;transition:opacity .2s}
+  .pdp-gal .thumbs button.on,.pdp-gal .thumbs button:hover{opacity:1}   /* no outline: the selected thumb is full strength, the rest 30% */
   .pdp-gal .thumbs img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:var(--surface-media)}
   .pdp-gal .slides{grid-auto-columns:100%;gap:0}
   .pdp-gal .nav{display:grid;place-items:center;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:99px;background:var(--surface-raised,#FFF);border:0;box-shadow:var(--shadow-pill,0 1px 4px rgba(0,0,0,.15));cursor:pointer;z-index:2}

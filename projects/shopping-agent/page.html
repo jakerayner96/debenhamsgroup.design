@@ -578,7 +578,8 @@ function pdp(){
   /* one product shot in the data set: four crops of it stand in for the live four-image gallery */
   const SH=['','object-position:50% 12%;transform:scale(1.7);transform-origin:50% 18%','object-position:50% 50%;transform:scale(1.35)','object-position:50% 95%;transform:scale(1.6);transform-origin:50% 92%'];
   /* chips: in the row above the title (default) or stacked top right of the first image — one choice for both (S.chipPos) */
-  const onImg=S.chipPos==='image'||S.chipPos==='bl';S.vtoPos=S.ssPos=onImg?'img-tr':'title';S.vtoMode='agent';
+  const cpos=desk()?'image':S.chipPos;   /* desktop: always pinned top right of the main image */
+  const onImg=cpos==='image'||cpos==='bl';S.vtoPos=S.ssPos=onImg?'img-tr':'title';S.vtoMode='agent';
   const ai='';
   /* VTO Figma 15656:21934: none, one or both chips in a row above the brand (13px light, white, puck shadow) */
   /* one chip, switched between Shop Similar (AI icon) and Virtual Try On (hanger) — S.chipKind */
@@ -588,7 +589,7 @@ function pdp(){
   /* tags: always on, bottom right of the first image — smaller, white at 90%, no outline */
   const tags=`<span class="ptags"><span>Petite</span><span>As Seen In Our Ad</span></span>`;
   const gal=`<div class="galwrap"><div class="thumbs">${SH.map((st,i)=>`<button class="${i?'':'on'}" data-slide="${i}" aria-label="Image ${i+1}"><img src="${IMG(1)}" alt="" style="${st}"></button>`).join('')}</div>
-    <div class="galmain">${onImg&&chipsArr.length?`<span class="${S.chipPos==='bl'?'bl-chips':'tr-chips'}">${chipsArr.join('')}</span>`:''}${tags}<div class="gal" id="gal">${SH.map((st,i)=>`<div class="slide"><img src="${IMG(1)}" alt="${esc(p.name)} — image ${i+1}" style="${st}"></div>`).join('')}</div>
+    <div class="galmain">${onImg&&chipsArr.length?`<span class="${cpos==='bl'?'bl-chips':'tr-chips'}">${chipsArr.join('')}</span>`:''}${tags}<div class="gal" id="gal">${SH.map((st,i)=>`<div class="slide"><img src="${IMG(1)}" alt="${esc(p.name)} — image ${i+1}" style="${st}"></div>`).join('')}</div>
       <button class="arrow l" data-step="-1" aria-label="Previous"><img src="assets/ds/icons/lib/icons-left.svg" alt=""></button><button class="arrow r" data-step="1" aria-label="Next"><img src="assets/ds/icons/lib/icons-right.svg" alt=""></button></div>
     <div class="pag"><div class="track"><div class="fill" id="pagfill"></div></div></div></div>`;
   const ctaRow=[S.vtoPos==='cta'&&ON('vto')?`<button class="ai-pill ai-pill--soft ai-cta vs-chip" ${F('vto','B · under CTA')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'',S.ssPos==='cta'&&ON('shopSimilar')?`<button class="ai-pill ai-pill--soft ai-cta" ${F('shopSimilar','B · under CTA')} data-q="Shop similar">${spk(16)}Shop similar</button>`:''].filter(Boolean);
