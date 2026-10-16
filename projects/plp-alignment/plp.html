@@ -38,28 +38,7 @@ body:not(.mode-new) .hd-usp .s{line-height:12px}
 /* rotation: crossfade in place — no slide, nothing leaves the clip */
 @media(max-width:1023px){.mode-new:not(.usp-old) .usp-strip .usp-cell.rot-on{animation:usp-fade var(--dur-slow) var(--ease-standard)}}
 @keyframes usp-fade{from{opacity:0}to{opacity:1}}
-/* PLP content slot — DS Figma 8556-18755. Square tile after row 3 (new format), three types:
-   Button (media + white CTA), Text (media + gradient + View All + optional Sponsored), Get The Look. */
-.cslot{grid-column:1/span 2;aspect-ratio:1/1;position:relative;overflow:hidden;cursor:pointer;border-radius:0;margin-bottom:2px} /* always opens its row */
-.cslot .slot-cut{position:absolute;right:0;bottom:0;background:#FFF;min-width:44px;min-height:44px;padding:10px 14px;display:flex;gap:8px;align-items:center;justify-content:center;color:#000;font-size:14px;font-weight:var(--w-regular)}
-.cslot .slot-cut svg{width:16px;height:16px;display:block}
-.cslot>img.media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.cslot .slot-btn{position:absolute;right:24px;bottom:24px;height:50px;padding:8px 24px;background:#FFF;color:#000;border:none;border-radius:4px;font-family:var(--font-family-base);font-size:16px;line-height:24px;font-weight:var(--w-btn,600);text-transform:uppercase;display:flex;align-items:center}
-.cslot .slot-grad{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.7))}
-@media(min-width:1024px){.cslot .slot-grad{height:200px}}
-.cslot .slot-view{position:absolute;right:24px;bottom:24px;display:flex;gap:8px;align-items:center;color:#FFF;font-size:14px;font-weight:var(--w-regular)}
-@media(min-width:1024px){.cslot .slot-view{right:32px;bottom:32px}}
-.cslot .slot-view svg{width:16px;height:16px;display:block}
-.cslot .slot-spon{position:absolute;top:8px;right:8px;color:#FFF;font-size:10px;text-shadow:0 0 4px rgba(0,0,0,.8)}
-.cslot--gtl{background:var(--surface-sunken);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:16px;aspect-ratio:auto} /* height follows the mosaic — right cells stay true squares */
-@media(min-width:1024px){.cslot--gtl{padding:24px;gap:24px}}
-.cslot--gtl .slot-title{font-size:18px;font-weight:var(--w-strong);color:var(--text-primary)}
-@media(min-width:1024px){.cslot--gtl .slot-title{font-size:20px}}
-.cslot--gtl .slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px} /* 2x2: first image takes the full left column, the other two are squares */
-@media(min-width:1024px){.cslot--gtl .slot-grid{gap:12px}}
-.cslot--gtl .slot-grid img{width:100%;object-fit:cover;border-radius:4px;display:block}
-.cslot--gtl .slot-grid img:first-child{grid-row:1/span 2;height:100%}
-.cslot--gtl .slot-grid img:not(:first-child){aspect-ratio:1/1;height:auto}
+/* content slot (.cslot) moved to the DS (components.css) 16 Oct 2026 */
 /* card anatomy modal — review tooling (new format): which component layers this instance uses */
 #anat{position:fixed;inset:0;z-index:975;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}
 #anat[hidden]{display:none}
@@ -105,13 +84,11 @@ body:not(.mode-new) .hd-usp .s{line-height:12px}
 #sed .tgl.on i{left:12px;background:#FFF}
 #sed .sed-skuimg{margin-top:2px;margin-bottom:8px}
 #sed .sed-skuclr{background:none;border:none;color:#FF6B6B;font:10.5px 'Google Sans',system-ui,sans-serif;cursor:pointer;text-align:left;padding:0 0 8px;margin-top:-4px}
+/* PLP title, SEO copy, Show more and the grid-view toggle moved to the DS (components.css) 16 Oct 2026 */
 .plp{padding:0 var(--plp-margin) 24px;max-width:2000px;margin:0 auto} /* whole container caps at 2000px (PLT live) */
-.plp-title{text-align:left;padding:6px 0 2px;position:relative}
 /* grid-view selector — Figma PLP-Grid-View 194-2513 / 157-2631 / 157-2683: 16px icon right of the title,
    mobile only. Two views: thumbnail (2-col, full card) ⇄ tile grid (3-col, images only — wishlist + AI badge only).
    The icon shows the view you switch TO: exact design assets (view-grid.svg / view-thumb.svg). */
-.gt{display:none;position:absolute;right:0;top:10px;width:24px;height:24px;padding:4px;background:none;border:none;cursor:pointer}
-.gt img{width:16px;height:16px;display:block}
 @media(max-width:767px){body.mode-new .gt{display:block} /* the view toggle is a new-format feature — live keeps the standard grid */
   .mode-new .grid[data-mcols="3"]{grid-template-columns:repeat(3,1fr);gap:0;margin:0 calc(var(--plp-margin,16px)*-1)} /* tile view: edge to edge, zero gaps — every fascia */
   .mode-new .grid[data-mcols="3"] .pc-info,.mode-new .grid[data-mcols="3"] .pc-badges,.mode-new .grid[data-mcols="3"] .pc-taggstar,.mode-new .grid[data-mcols="3"] .pc-add{display:none}
@@ -120,20 +97,11 @@ body:not(.mode-new) .hd-usp .s{line-height:12px}
   .mode-new .grid[data-mcols="1"]{grid-template-columns:1fr}
   .mode-new .grid[data-mcols="1"] .cslot{grid-column:1/span 1} /* a span-2 item in a 1-col grid spawns an implicit track and breaks the list */
 }
-.plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em}
-.plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
-.seo{color:var(--text-secondary);font-size:13px;max-width:860px;margin:6px 0 2px}
-.seo--line{display:flex;gap:6px;align-items:baseline;white-space:nowrap;overflow:hidden;max-width:860px}
-.seo[hidden]{display:none}
-.seo--line .t{overflow:hidden;text-overflow:ellipsis;min-width:0}
 .cat-wrap.edge{justify-content:flex-start;margin-right:calc(var(--plp-margin) * -1);overflow-x:auto}
 @media(min-width:1024px){.cat-wrap.edge{justify-content:center;margin-right:0;overflow-x:visible}}
-@media(min-width:768px){.plp-title{text-align:center}.plp-title h1{font-size:26px}.seo{margin:6px auto 2px;text-align:center}}
 .cat-wrap{display:flex;justify-content:flex-start;overflow:visible}
 @media(max-width:1023px){.cat-wrap{margin-right:calc(var(--plp-margin) * -1)}.cat-wrap .cat-row{padding-right:var(--plp-margin)}} /* pills run to the screen edge and iceberg */
 @media(min-width:768px){.cat-wrap{justify-content:center}}
-.showmore{display:block;font-size:14px;color:var(--text-primary);padding:2px 0 12px}
-.showmore[hidden]{display:none}
 .grid{display:grid;margin-top:8px}
 .grid.gap-tight{gap:16px 4px}
 .grid.gap-imp{gap:18.5px 16px} /* Debenhams live import: 16px columns, 18.5px rows */
@@ -158,11 +126,6 @@ body:not(.mode-new) .hd-usp .s{line-height:12px}
 .grid.view-1{grid-template-columns:1fr}
 @media(min-width:768px){.grid,.grid.view-1{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:1280px){.grid,.grid.view-1{grid-template-columns:repeat(var(--cols,4),1fr)}}
-.viewtoggle{display:inline-flex;border:var(--border-w) solid var(--border-default);border-radius:var(--radius-default);overflow:hidden}
-.viewtoggle button{width:36px;height:38px;display:grid;place-items:center;padding:0}
-.viewtoggle img{width:16px;height:16px;object-fit:contain;opacity:.45}
-.viewtoggle button.on img{opacity:1}
-.viewtoggle button.on{background:var(--surface-sunken)}
 </style>
 </head>
 <body>

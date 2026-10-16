@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../">
+<title>PDP · DS template</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* DS page template — PDP. Page scaffolding only (columns, gutters, gaps); every visible piece is a DS component:
+   header (header.js) · USP banners (usp.js) · breadcrumb · PDP gallery · PDP title · ratings · price · delivery countdown · option label ·
+   colour swatches · size selector · button · membership box (membership.js) · Deliver+ · USP box · BNPL · at a glance · accordion ·
+   section rail + product card · footer (footer.js). Any fascia: ?brand=<slug>. Drop components in by targeting the data-slot hooks. */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+.pg{padding:0 var(--gap-4)}
+.pdp{display:flex;flex-direction:column;gap:var(--gap-4)}
+.pdp>.gal{margin:0 calc(var(--gap-4)*-1)}
+.buy{display:flex;flex-direction:column;gap:var(--gap-4)}
+.buy .bd{width:100%}
+.below{display:flex;flex-direction:column;gap:var(--gap-6);margin:var(--gap-8) 0}
+@media(min-width:1024px){
+  .pg{padding:0 var(--gap-12);max-width:1440px;margin:0 auto}
+  .pdp{display:grid;grid-template-columns:minmax(0,1fr) 446px;gap:var(--gap-16);align-items:start}
+  .pdp>.gal{margin:0}
+  .buy{gap:var(--gap-5)}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/ds/header.js"></script>
+<script src="assets/ds/usp-live.js"></script>
+<script src="assets/ds/usp.js"></script>
+<script src="assets/ds/footer.js"></script>
+<script src="assets/ds/membership.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script src="templates/products.js"></script>
+<script>
+/* in: ?brand=<slug> or ?s={"brand":…}; {protoSet} / {protoPing} as the review shell expects. out: {protoReady}, {protoPong,h}. */
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const q=new URLSearchParams(location.search);
+let S={brand:q.get('brand')||'debenhams'},EXPORTING=false;
+try{const s=q.get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
+const desk=()=>innerWidth>=1024;
+const IC='assets/ds/icons/',LIB=IC+'lib/';
+const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt:'plt-heart'};
+const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
+const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
+
+function header(){const dev=desk()?'desktop':'mobile';
+  return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header><div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`}
+function gallery(p){
+  return `<div class="pdp-gal" data-slot="gallery">
+    <div class="thumbs">${p.imgs.map((s,i)=>`<button class="${i?'':'on'}" data-i="${i}" aria-label="Image ${i+1}"><img src="${s}" alt=""></button>`).join('')}</div>
+    <div class="main">${p.tag?`<div class="tags"><span class="badge">${esc(p.tag)}</span></div>`:''}
+      <div class="slides">${p.imgs.map((s,i)=>`<img src="${s}" alt="${esc(p.name)}, view ${i+1}">`).join('')}</div>
+      <button class="nav prev" aria-label="Previous image"><img src="${LIB}icons-left.svg" alt=""></button><button class="nav next" aria-label="Next image"><img src="${LIB}icons-right.svg" alt=""></button></div>
+    <div class="pag"><i style="width:${Math.round(100/p.imgs.length)}%"></i></div></div>`}
+function price(p){return `<div class="price-blk price-blk--pdp"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>${p.save?`<span class="save">${esc(p.save)}</span>`:''}`:''}</div>${p.code?`<div class="price-code">${esc(p.code)}</div>`:''}</div>`}
+function card(x,i){if(!x)return '';const b=S.brand,sq=WISH[b]==='bookmark',pl=b==='plt';
+  return `<article class="pc"><div class="pc-img"><img class="ph" src="projects/plp-alignment/img/${b}/p${x.img??i}.jpg" alt="" loading="lazy"><div class="pc-actions"><button class="pc-iconbtn${sq?' pc-iconbtn--sq':pl?' pc-fav--plain':''}" aria-label="Add to wishlist"><img src="${IC}${sq?'bookmark':pl?'plt-heart':'heart-16'}.svg" alt=""></button></div></div>
+    <div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${x.brand?`<div class="pc-brand">${esc(x.brand)}</div>`:''}<div class="pc-name">${esc(x.name)}</div></div></div>
+    <div class="pc-price${x.was?' sale':''}"><span class="now">${esc(x.price)}</span>${x.was?`<span class="was">${esc(x.was)}</span>`:''}${x.pct?`<span class="pct">${esc(x.pct)}</span>`:''}</div></div></article>`}
+function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams,recs=((window.PRODUCTS_ALL||{})[S.brand]||[]).slice(0,8);
+  const crumbs=P.crumbs.map((c,i)=>i<P.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('');
+  return `${header()}<main class="pg">
+  <nav class="bc" aria-label="Breadcrumb">${crumbs}</nav>
+  <div class="pdp">
+    <div class="gal">${gallery(P)}</div>
+    <div class="buy" data-slot="buy">
+      <div class="pdp-head"><div class="titles"><span class="brand">${esc(P.brand)}</span><h1 class="name">${esc(P.name)}</h1></div><button class="wish" aria-label="Add to wishlist"><img src="${wishIcon(S.brand)}" alt=""></button></div>
+      ${price(P)}
+      ${P.ndd?`<div class="ndd"><img src="${LIB}icons-delivery-fast.svg" alt=""><span>Order in <b>${esc(P.ndd)}</b> for Next Day Delivery</span></div>`:''}
+      <div class="opt-label">Colour: <b>${esc(P.colour)}</b></div>
+      <div class="cswatches"><button class="cswatch on" aria-label="${esc(P.colour)}"><img src="${P.imgs[0]}" alt=""></button></div>
+      <div class="sizes"><div class="sizes-head"><span>Size: <b>Select a size</b></span><span class="guide"><img src="${LIB}icons-measure.svg" alt="">Size guide</span></div><div class="set">${P.sizes.map(z=>`<button class="sz">${esc(z)}</button>`).join('')}</div></div>
+      <button class="bd pri">Add to bag</button>
+      ${window.DG_memberBoxHTML?DG_memberBoxHTML(S.brand):''}
+      ${DPLUS.includes(S.brand)?`<div class="dplus"><div class="col"><div class="h">Peace of mind, guaranteed</div><ul><li>Free &amp; simple resale - recover value and give your items a second life</li><li>+14-day return extension</li><li>£5/day late delivery compensation</li><li>Full order coverage (lost, stolen, damaged) with instant payout on eligible claims</li></ul><span class="more">Learn More</span></div></div>`:''}
+      <div class="usp-box"><div class="r"><img src="${LIB}icons-delivery-fast.svg" alt=""><div><div class="t">Next day delivery</div><div class="s">Order by midnight</div></div></div><div class="r"><img src="${LIB}icons-return.svg" alt=""><div><div class="t">Free returns</div><div class="s">28 days, in store or by post</div></div></div></div>
+      <div class="bnpl"><div class="chips"><span class="pc pc--klarna"><img src="assets/ds/icons/payments/bnpl-klarna-word.svg" alt="Klarna"></span><span class="pc pc--clearpay"><img src="assets/ds/icons/payments/clearpay-lockup-mini.svg" alt="Clearpay"></span><span class="pc pc--paypal"><img src="assets/ds/icons/payments/bnpl-paypal-logo.svg" alt="PayPal"></span></div><div class="terms">Pay in 3 interest-free payments</div><div class="small">18+, T&amp;C apply. Credit subject to status.</div></div>
+    </div>
+  </div>
+  <div class="below" data-slot="below">
+    ${P.glance?`<div class="sec-head"><h3>At a Glance</h3></div><ul class="glance glance--chips">${P.glance.map(g=>`<li><i>✓</i>${esc(g)}</li>`).join('')}</ul>`:''}
+    <div><div class="acc open"><button class="acc-h">Description<img src="${LIB}icons-down-arrow.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${esc(P.name)}. ${P.glance?esc(P.glance.join('. '))+'.':''}</div></div><div class="hr"></div>
+      <div class="acc"><button class="acc-h">Delivery &amp; returns<img src="${LIB}icons-down-arrow.svg" alt="" onerror="this.remove()"></button><div class="acc-b">Free returns within 28 days.</div></div></div>
+    ${recs.length?`<div style="display:flex;flex-direction:column;gap:12px"><div class="sec-head"><h3>You may also like</h3><a href="#">View all</a></div><div class="prail">${recs.map(card).join('')}</div></div>`:''}
+  </div></main><footer data-ftr="${S.brand}"></footer>`}
+function wire(){
+  const g=document.querySelector('.pdp-gal');if(!g)return;const sl=g.querySelector('.slides'),th=[...g.querySelectorAll('.thumbs button')],bar=g.querySelector('.pag i');
+  const go=i=>{const im=sl.children[i];if(im)sl.scrollTo({left:im.offsetLeft-sl.offsetLeft,behavior:'smooth'})};
+  th.forEach(b=>b.onclick=()=>go(+b.dataset.i));
+  const cur=()=>Math.round(sl.scrollLeft/(sl.children[0].offsetWidth+4));
+  g.querySelector('.prev').onclick=()=>go(Math.max(0,cur()-1));g.querySelector('.next').onclick=()=>go(Math.min(sl.children.length-1,cur()+1));
+  sl.addEventListener('scroll',()=>{const i=cur(),n=sl.children.length,max=sl.scrollWidth-sl.clientWidth;th.forEach((b,j)=>b.classList.toggle('on',j===i));
+    if(bar)bar.style.left=Math.round((max?sl.scrollLeft/max:0)*(100-100/n))+'%'},{passive:true});
+  document.querySelectorAll('.acc-h').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
+  document.querySelectorAll('.sz').forEach(z=>z.onclick=()=>{document.querySelectorAll('.sz').forEach(x=>x.classList.toggle('on',x===z));const l=document.querySelector('.sizes-head b');if(l)l.textContent=z.textContent});
+  document.addEventListener('click',e=>{if(e.target.closest('a[href="#"]'))e.preventDefault()});
+}
+function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
+  document.getElementById('app').innerHTML=page();
+  if(window.DG_uspMount)DG_uspMount();
+  document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,S.brand));
+  wire();document.dispatchEvent(new CustomEvent('dg:render'))}
+render();
+let rz,lw=innerWidth;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if((lw>=1024)!==desk()){lw=innerWidth;render()}},150)});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+</script>
+</body>
+</html>

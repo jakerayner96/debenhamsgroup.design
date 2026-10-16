@@ -1,4 +1,6 @@
-/* Bag payment summary, matched to the live bags (captured 06 Oct 2026, /basket on each fascia, 390 + 1440).
+/* DG Group Design System — Bag payment summary (order-summary v2), drop-in. Promoted 16 Oct 2026 from projects/usp-banner/bag.js; CSS lives in components.css (.bs-*).
+   Use: DG_bagSummaryHTML(brand, items, desk) · DG_bagTopHTML(brand, items) · window.BAG_LIVE (per-fascia data).
+   Bag payment summary, matched to the live bags (captured 06 Oct 2026, /basket on each fascia, 390 + 1440).
    All seven fascias run the same basket. Desktop: a 390px right column on --surface-sunken holding a white summary card
    (Order Summary, Deliver+ CTAs, OR, wallets, card logos) and a separate Promo Code card under it. Mobile: the same block sits
    below the items, full-bleed, with Promo Code first, then a hairline, then the summary. There is no sticky checkout bar.
@@ -6,7 +8,7 @@
    renderBagSummary(brand, items, desk) returns the right-column html. renderBagTop(brand, items) is the mobile-only
    "Order Total + Checkout" strip live shows under "Your Bag (n)", above the items. */
 (function(){
-const I='assets/ds/icons/pay/',W='assets/ds/icons/payments/',L='projects/usp-banner/img/bag/';
+const A=(window.DG_ASSET_BASE||''),I=A+'assets/ds/icons/pay/',W=A+'assets/ds/icons/payments/',L=A+'assets/ds/icons/pay/';
 const CARDS16=['visa','mastercard','amex','maestro','visa-electron','apple-pay','payplus','paypal','klarna','clearpay','google-pay','revolut'];
 const CARDS25=['visa','mastercard','amex','maestro','visa-electron','apple-pay','paypal','klarna','clearpay','google-pay'];
 const D=(o)=>Object.assign({dplus:null,dprice:2.99,cta:['Checkout with Deliver+','Checkout without Deliver+'],bg:'#000',fg:'#FFF',up:true,promo:null,
@@ -32,7 +34,7 @@ const WAL={
   apple:()=>`<button type="button" class="bs-w bs-ap"><img src="${W}applepay-onblack.svg" alt="Apple Pay" style="height:22px"></button>`,
   klarna:()=>`<button type="button" class="bs-w bs-kl"><span>Pay with</span><img src="${W}klarna-badge.svg" alt="Klarna" style="height:26px"></button>`
 };
-window.renderBagSummary=function(brand,items,desk){
+window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk){
   const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]),pct=t.sub?Math.round(t.disc/t.sub*100):0;
   const sum=`<div class="bs-sum"><div class="bs-h">Order Summary</div>${row('Subtotal',gbp(t.sub))}${t.disc?row('Discount','-'+gbp(t.disc)):''}
     ${c.dplus?`<div class="bs-r bs-dp"><span>${esc(c.dplus)}<small>Optional add-on</small></span><span>${gbp(c.dprice)}</span></div>`:''}${row('Order Total',`<b>${gbp(t.total)}</b>`,'bs-tot')}</div>
@@ -45,48 +47,6 @@ window.renderBagSummary=function(brand,items,desk){
   const vars=`--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}`;
   return `<div class="bs${desk?' bs--d':' bs--m'}${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="${vars}">${desk?`<div class="bs-card">${sum}${pay}</div>${promo}`:`${promo}<div class="bs-hr"></div><div class="bs-card bs-flat">${sum}${pay}</div>`}</div>`;
 };
-window.renderBagTop=function(brand,items){const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]);
+window.DG_bagTopHTML=window.renderBagTop=function(brand,items){const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]);
   return `<div class="bs bs-top${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}"><div class="bs-ot">Order Total: <b>${gbp(t.goods)}</b></div><button type="button" class="bs-cta">${esc(c.cta[0])}</button></div>`};
-window.BAG_CSS=`
-.bs{font-family:var(--font-family-base);color:#000;background:var(--surface-sunken,#FAFAFA);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;text-align:left;line-height:normal;box-sizing:border-box}
-.bs *{box-sizing:border-box}
-.bs--d{gap:16px;width:100%;max-width:390px}.bs--m{padding-top:24px}
-.bs-card{background:var(--surface-raised,#FFF);padding:24px;border-radius:var(--radius-default);display:flex;flex-direction:column;gap:24px}
-.bs--m .bs-card{padding:24px 16px}.bs--m .bs-flat{background:none;border-radius:0}
-.bs-hr{height:1px;background:#E5E7EB}
-.bs-sum{display:flex;flex-direction:column;gap:16px}
-.bs-h{font-size:20px;line-height:20px;font-weight:600}
-.bs-r{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:16px;line-height:24px;font-weight:400}
-.bs-r>span:last-child{white-space:nowrap}
-.bs-dp{margin:8px 0}.bs-dp small{display:block;font-size:12px;line-height:18px;color:#6B7280}
-.bs-tot{border-top:1px solid #E5E7EB;padding-top:16px;margin-top:0}.bs-tot b{font-weight:600}
-.bs-di{display:flex;flex-direction:column;align-items:flex-end;font-size:14px;line-height:21px;margin-bottom:12px}
-.bs-di b{font-weight:600}.bs-di .bs-r{font-size:14px;line-height:21px;justify-content:flex-end;gap:0}.bs-di .bs-r>span:first-child{text-align:right}.bs-di .bs-r>span:last-child{min-width:85px;text-align:right}
-.bs-ctas{display:flex;flex-direction:column;gap:8px}
-.bs-cta{display:flex;align-items:center;justify-content:center;width:100%;height:50px;border:0;border-radius:var(--radius-default);background:var(--bs-bg);color:var(--bs-fg);font:600 16px/16px var(--font-family-base);text-transform:var(--bs-case);cursor:pointer;padding:0 12px}
-.bs-or{display:flex;align-items:center;gap:16px;color:#9CA3AF;font-size:14px;line-height:21px;margin:0 0 0}
-.bs-or:before,.bs-or:after{content:"";flex:1;height:1px;background:#E5E7EB}
-.bs-w{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:50px;border:0;border-radius:4px;cursor:pointer;font:400 18px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;padding:0}
-.bs-w img{display:block;width:auto}
-.bs-pp{background:#FFC439;color:#2C2E2F}.bs-ap{background:#000}.bs-kl{background:#0E0E0E;color:#FFF;font-size:16px;gap:6px}
-.bs-msg{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 6px;font:400 11px/16px 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#2C2E2F;text-align:center;margin:4px 0 0}
-.bs-msg img{height:12px;width:auto;display:block}.bs-msg u{color:#0070E0}
-.bs-cards{display:flex;justify-content:space-between;align-items:center;gap:2px}
-.bs-cards img{height:21px;width:auto;min-width:0;flex:0 1 auto;display:block;object-fit:contain}
-.bs-pr{gap:16px}
-.bs-ph{font-size:18px;line-height:27px;font-weight:600}
-.bs-pf{display:flex;gap:16px}
-.bs-in{flex:1;min-width:0;height:50px;display:flex;align-items:center;padding:0 16px;border:1px solid #B5B5B5;border-radius:var(--radius-default);background:var(--surface-raised,#FFF);font-size:16px;font-weight:300;color:#757575;white-space:nowrap;overflow:hidden}
-.bs-ap2{flex:none;height:50px;padding:0 20px;border:1px solid #B5B5B5;border-radius:var(--radius-default);background:var(--surface-raised,#FFF);font:400 16px/16px var(--font-family-base);color:#000;cursor:pointer}
-.bs--lt .bs-cta{font-weight:400}
-.bs--sm,.bs--sm .bs-ap2{color:#333}
-.bs--sm .bs-h{font-size:16px;line-height:16px;font-weight:400}
-.bs--sm .bs-r{font-size:12px;line-height:18px;font-weight:300}.bs--sm .bs-r>span:last-child{font-weight:400}
-.bs--sm .bs-tot b{font-weight:400}.bs--sm .bs-di,.bs--sm .bs-di .bs-r{font-size:12px;line-height:18px}.bs--sm .bs-di b{font-weight:400}
-.bs--sm .bs-cta{font-size:14px;font-weight:400}.bs--sm .bs-or{font-size:12px}
-.bs--sm .bs-ph{font-size:16px;line-height:24px;font-weight:400}.bs--sm .bs-ap2{font-size:14px;font-weight:300}
-.bs-top{background:var(--surface-raised,#FFF);gap:24px;padding:0 0 24px}
-.bs-top .bs-ot{font-size:16px;line-height:24px}.bs-top .bs-ot b{font-weight:600;margin-left:4px}
-.bs-top.bs--sm .bs-ot{font-size:12px}.bs-top.bs--sm .bs-ot b{font-weight:400}
-`;
 })();

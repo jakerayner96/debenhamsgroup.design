@@ -5,13 +5,12 @@
 
 Standard review shell (review-prototype skill): fascia chips · Desktop/Mobile · width preset · Full page/Fold · Export on top, configuration on the left, resizable frame.
 
-## No new pages
-`page.html` embeds the pages we already have and injects the DS Taggstar drop-in (`assets/ds/taggstar.js`) into them:
-- **PLP** — `projects/plp-alignment/plp.html?brand=…&mode=new` (all seven fascias). The PLP's own retired trophy chip is removed; the message goes under the Add button / image, above the brand line.
-- **PDP** — Core PDP 2026 `../core-pdp-2026/pdp.html?mode=new` for boohooMAN; the live PDP recreation `../core-pdp-2026/live.html?brand=…` for Debenhams, boohoo, PLT, Karen Millen. **No Warehouse or Brand Room PDP has been built yet** — those two show the Core PDP (boohooMAN build) with their own message settings; the panel says so.
-- **Bag** — `projects/usp-banner/page.html` bag (the live `/basket` rebuild), on the first line item (or every item).
-
-Same origin on Pages, so the wrapper writes into the iframes. Locally, serve a folder holding `debenhamsgroup.design` and `core-pdp-2026` side by side.
+## Design-system pages only (16 Oct, v2)
+`page.html` embeds the DS page templates and injects the DS Taggstar component (`assets/ds/taggstar.js` markup + behaviour, CSS in `components.css` only):
+- **PLP** — `projects/plp-alignment/plp.html?brand=…&mode=new` (its local component CSS was promoted into the DS today).
+- **PDP** — `templates/pdp.html?brand=…`: all seven fascias, one live product each (captured 16 Oct), DS components only — header / USP / footer drop-ins, PDP gallery, PDP title, price, delivery countdown, option label, swatches, sizes, button, membership box, Deliver+, USP box, BNPL, at a glance, accordion, rail.
+- **Bag** — `templates/bag.html?brand=…`: page title, threshold, bag items, DS bag summary (`bag-summary.js`).
+v1 embedded core-pdp-2026 (own CSS, ~20% DS classes); replaced so every visible piece is a DS component. Components added for this are listed on the DS Changelog (site #changelog).
 
 ## Per fascia (left panel)
 - **Background** per placement (PLP / PDP / Bag): Figma Grey 1 · live colour · white (warm white on PLT) · brand · brand light · black · any hex, plus opacity. Text, icon and close flip to black or white, whichever contrasts more; the panel shows the ratio and warns under 4.5:1 and on pure white for PLT.

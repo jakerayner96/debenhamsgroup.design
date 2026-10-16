@@ -177,7 +177,7 @@ const P={
   page:'page.html',
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
-  files:['page.html','home.js','bag.js','README.md'],
+  files:['page.html','home.js','../../assets/ds/bag-summary.js','README.md'],
   store:'proto-usp-banner-v6', // v6 (08 Oct pm): live re-check + per-row countdown colour
   initial:b=>({page:'home',auto:5,caveats:false,banners:live(b)}),
 };
@@ -290,7 +290,7 @@ async function doExport(){const btns=[$('#exportbtn'),$('#exportbtn2')];btns.for
     exptxt.textContent='Packaging…';const zip=new JSZip(),root=zip.folder(name);
     root.file(`${name}-mobile-390.png`,m);root.file(`${name}-desktop-1440.png`,d);
     root.file('config.json',JSON.stringify(Object.assign(state(),{exportedAt:new Date().toISOString()}),null,2));
-    for(const f of P.files){try{const r=await fetch(f);if(r.ok)root.file(f,await r.blob())}catch(e){}}
+    for(const f of P.files){try{const r=await fetch(f);if(r.ok)root.file(f.split("/").pop(),await r.blob())}catch(e){}}
     root.file('README.txt',`${P.title} — ${S.brand}\nExported ${new Date().toISOString()}\n\n${name}-mobile-390.png / -desktop-1440.png = full-page designs at this configuration.\nconfig.json = the decision record. Open ${P.page} over HTTP with ?s=<config.json> to reproduce it.\n`);
     const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.zip';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../">
+<title>Bag · DS template</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* DS page template — Bag (live /basket layout, 06 Oct 2026). Page scaffolding only; every visible piece is a DS component:
+   header (header.js) · USP banners (usp.js) · page title · threshold · bag item · bag payment summary (bag-summary.js) · footer (footer.js).
+   Any fascia: ?brand=<slug>. Desktop: 1024 container, items | 390px summary column on --surface-sunken. Mobile: total + checkout under the
+   title, summary full-bleed after the items. */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+.pg{padding:0 var(--gap-4)}
+.items{display:flex;flex-direction:column;gap:var(--gap-4)}
+.items>*{max-width:100%}
+.sumcol{margin-top:var(--gap-6)}
+footer[data-ftr]{margin-top:var(--gap-10)}
+@media(min-width:1024px){.pg{max-width:1024px;margin:0 auto}.cols{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:var(--gap-4);align-items:start}.sumcol{margin:0;background:var(--surface-sunken)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/ds/catalogue.js"></script>
+<script src="assets/ds/header.js"></script>
+<script src="assets/ds/usp-live.js"></script>
+<script src="assets/ds/usp.js"></script>
+<script src="assets/ds/footer.js"></script>
+<script src="assets/ds/bag-summary.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script>
+/* in: ?brand=<slug> or ?s={"brand":…}; {protoSet} / {protoPing}. out: {protoReady}, {protoPong,h}. */
+const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C&&C.find(x=>x.slug===slug);return c?c.variants[i].html.replace(/ style="width:[^"]*"/,''):''};
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const q=new URLSearchParams(location.search);
+let S={brand:q.get('brand')||'debenhams'},EXPORTING=false;
+try{const s=q.get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
+const desk=()=>innerWidth>=1024;
+function header(){const dev=desk()?'desktop':'mobile';
+  return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header><div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`}
+function page(){const ps=((window.PRODUCTS_ALL||{})[S.brand]||[]).slice(0,2),it=ps.map(p=>({price:p.price,was:p.was}));
+  const items=ps.map((p,i)=>`<div class="bag-item"><img src="projects/plp-alignment/img/${S.brand}/p${p.img??i}.jpg" alt=""><div class="info">${p.brand?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`).join('');
+  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML(S.brand,it,desk()):V('order-summary',0);
+  const title=`<div class="pg-title"><h1>Your Bag (${ps.length})</h1></div>`;
+  return header()+(desk()
+    ?`<main class="pg">${title}<div class="cols"><div class="items" data-slot="items">${V('threshold',0)}${items}</div><div class="sumcol" data-slot="summary">${sum}</div></div></main>`
+    :`<main class="pg">${title}${window.DG_bagTopHTML?DG_bagTopHTML(S.brand,it):''}<div class="items" data-slot="items">${V('threshold',0)}${items}</div></main><div class="sumcol" data-slot="summary">${sum}</div>`)
+    +`<footer data-ftr="${S.brand}"></footer>`}
+function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
+  document.getElementById('app').innerHTML=page();
+  if(window.DG_uspMount)DG_uspMount();
+  document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,S.brand));
+  document.dispatchEvent(new CustomEvent('dg:render'))}
+render();
+let rz,lw=innerWidth;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if((lw>=1024)!==desk()){lw=innerWidth;render()}},150)});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+document.addEventListener('click',e=>{if(e.target.closest('a[href="#"],button'))e.preventDefault()});
+</script>
+</body>
+</html>

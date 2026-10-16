@@ -6,8 +6,8 @@
 <base href="../../">
 <title>Taggstar · in situ</title>
 <style>
-/* No page of its own: the PLP, PDP and Bag we already have are embedded as they are, and the DS Taggstar drop-in
-   (assets/ds/taggstar.js) is injected into them. Same origin on Pages (jakerayner96.github.io/{debenhamsgroup.design,core-pdp-2026}). */
+/* No page of its own: the DS page templates (PLP projects/plp-alignment/plp.html · PDP templates/pdp.html · Bag templates/bag.html)
+   are embedded as they are, and the DS Taggstar component (assets/ds/taggstar.js + components.css) is injected into them. */
 html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
 .emb{display:block;width:100%;height:100vh;border:0}
 .miss{font:14px/1.5 system-ui,sans-serif;color:#555;padding:24px}
@@ -25,21 +25,20 @@ const T=window.DG_taggstar;
 let S={brand:'boohooman',page:'pdp'},EXPORTING=false;
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}  // URLSearchParams already decodes
 
-/* the pages we already have — never rebuilt here */
-const LIVE_PDP=['debenhams','boohoo','plt','karenmillen'];
+/* the DS page templates — every piece on them is a DS component; never rebuilt here */
 const SRC={
   plp:b=>`projects/plp-alignment/plp.html?brand=${b}&mode=new`,
-  pdp:b=>LIVE_PDP.includes(b)?`../core-pdp-2026/live.html?brand=${b}`:`../core-pdp-2026/pdp.html?brand=boohooman&mode=new`,
-  bag:b=>`projects/usp-banner/page.html?s=${encodeURIComponent(JSON.stringify({brand:b,page:'bag',banners:b,auto:0}))}`
+  pdp:b=>`templates/pdp.html?brand=${b}`,
+  bag:b=>`templates/bag.html?brand=${b}`
 };
-const HIDE={plp:'',pdp:'#edbar,.edbar,#toast{display:none!important}',bag:'.ct{display:none!important}'};
+const HIDE={plp:'',pdp:'',bag:''};
 
 const emb=document.getElementById('emb');
 let KEY='',ready=Promise.resolve(),obs=null,pinFn=null;
 const D=()=>{try{return emb.contentDocument}catch(e){return null}};
 const W=()=>emb.contentWindow;
 const desk=()=>{const w=W();return !!w&&w.innerWidth>=1024};
-const opt=k=>Object.assign({icon:!!S.icon,set:S.set||'line',upper:!!S.upper},S.brand==='plt'?{radius:'0px'}:{},S[k]||{});   /* PLT: square, never round (the live PDPs don't load the DS radius token) */
+const opt=k=>Object.assign({icon:!!S.icon,set:S.set||'line',upper:!!S.upper},S[k]||{});
 
 function clear(d){d.querySelectorAll('[data-ts]').forEach(n=>n.remove())}
 function injectPLP(d){
@@ -54,7 +53,7 @@ function injectPLP(d){
     if(at)at.insertAdjacentHTML('afterend',html);else card.insertAdjacentHTML('afterbegin',html);
   });
 }
-function gallery(d){return d.querySelector('.galmain')||d.querySelector('.lp-galmain')||d.querySelector('.gal')}
+function gallery(d){return d.querySelector('.pdp-gal .main')}
 function injectPDP(d){
   const o=opt('pdp'),g=gallery(d);if(!g)return;
   if(getComputedStyle(g).position==='static')g.style.position='relative';
@@ -66,7 +65,6 @@ function injectPDP(d){
     /* export: where the pinned toast sits on landing — 24px above the bottom of a 900px window, or the image's bottom if that comes first */
     if(mode==='pin'){const t=g.querySelector('[data-ts]'),gt=g.getBoundingClientRect().top+W().scrollY,h=t.offsetHeight;
       t.style.cssText+=`;left:50%;bottom:auto;top:${Math.round(Math.min(900-24-h-gt,g.offsetHeight-24-h))}px;transform:translateX(-50%)`}}
-  const ff=getComputedStyle(g).fontFamily;d.querySelectorAll('.sp-pdp[data-ts]').forEach(t=>t.style.fontFamily=ff);   /* the pinned toast sits on <body>, which doesn't carry the fascia font on the live PDPs */
   d.querySelectorAll('.sp-pdp[data-ts] .sp-x').forEach(x=>x.onclick=e=>{e.preventDefault();e.stopPropagation();x.closest('.sp-pdp').classList.add('off');S._closed=true});
   if(S._closed)d.querySelectorAll('.sp-pdp[data-ts]').forEach(t=>t.classList.add('off'));
 }
@@ -74,7 +72,7 @@ function injectPDP(d){
 function pin(d,g){const w=W(),t=d.querySelector('.sp-pdp.sp-pin[data-ts]');if(!t)return;
   const f=()=>{const r=g.getBoundingClientRect(),h=t.offsetHeight,tw=t.offsetWidth;
     const top=Math.min(w.innerHeight-24-h,r.bottom-24-h);
-    t.style.left=Math.round(r.left+(r.width-tw)/2)+'px';t.style.top=Math.round(top)+'px';
+    t.style.left=Math.round(r.left+(r.width-tw)/2)+'px';t.style.top=Math.round(top)+'px';t.style.bottom='auto';
     t.style.visibility=(r.bottom<h+24||r.top>w.innerHeight-h)?'hidden':'visible'};
   if(pinFn){w.removeEventListener('scroll',pinFn);w.removeEventListener('resize',pinFn)}
   pinFn=f;w.addEventListener('scroll',f,{passive:true});w.addEventListener('resize',f);f();setTimeout(f,300)}
@@ -113,6 +111,8 @@ function load(){
 }
 /* export: let the embedded page run to its full height so the shell can capture it in one pass */
 async function full(){await ready;const d=D();if(!d)return 900;
+  /* tell the DS template it is exporting: it re-renders with rotation / animation frozen (USP banners), then the message goes back in */
+  try{W().postMessage({protoSet:{brand:S.brand},exporting:true},'*')}catch(e){}await new Promise(r=>setTimeout(r,600));inject();
   d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
   let h=0;for(let i=0;i<6;i++){const nh=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight);emb.style.height=nh+'px';await new Promise(r=>setTimeout(r,350));if(Math.abs(nh-h)<2)break;h=nh}
   inject();await new Promise(r=>setTimeout(r,500));

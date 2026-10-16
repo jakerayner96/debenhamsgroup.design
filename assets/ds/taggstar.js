@@ -1,8 +1,7 @@
 /* Taggstar social proof — DS drop-in.
    Figma Taggstar 00YKWCHwTarfwWZ1HayFUI · MAN use case 3483-23105 (PLP card 9196-26858 · PDP 3553-78608 / 3574-156761 · Bag 3510-4230)
    · message library Taggstar/V2 3001-3762 (PDP 1–14, Bag 1–9). Live check 16 Oct 2026 (390 + 1440, 10 PDPs per fascia).
-   Same component as components.css .pc-taggstar / .sp-pdp / .sp-bag, packaged so it can drop into pages that don't load the DS
-   (the Core PDP and the live PDPs): it carries its own CSS and injects it into the target document.
+   Markup + behaviour for the components.css .pc-taggstar / .sp-pdp / .sp-bag component (CSS lives only in components.css).
 
    API
      DG_taggstar.load(base)          → Promise; preloads the line glyphs. base = URL of assets/ds/ (resolved against this document)
@@ -48,27 +47,6 @@
     brandroom:  {icon:false, seen:'not seen on 10 PDPs'}
   };
   const SVG={};let BASE=null;
-  const CSS=`
-.pc-taggstar.ts,.sp-pdp.ts,.sp-bag.ts{background:var(--sp-bg,var(--surface-media,#F2F2F2));color:var(--sp-fg,var(--text-primary,#000));border-radius:var(--sp-r,var(--radius-default,4px));font-family:inherit;line-height:normal;letter-spacing:normal;text-transform:var(--sp-case,none);text-align:left;box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px);border:0;margin:0}
-.ts b{font-weight:600}.ts span{font-weight:400}.ts span b{font-weight:600}
-.ts img.sp-ico{display:block;flex:none;width:16px;height:16px;margin:0;object-fit:contain;max-width:none}
-.pc-taggstar.ts{display:flex;align-items:center;gap:4px;width:fit-content;max-width:100%;padding:4px 8px;font-size:12px;white-space:nowrap;overflow:hidden}
-.pc-taggstar.ts img.sp-ico{width:14px;height:14px}
-.pc-taggstar.ts .t{overflow:hidden;text-overflow:ellipsis;min-width:0}
-.sp-pdp.ts{display:inline-flex;align-items:center;gap:32px;padding:8px 12px;font-size:12px;box-shadow:0 0 8.7px rgba(0,0,0,.22);max-width:calc(100% - 24px)}
-.sp-pdp.ts .in{display:flex;align-items:center;gap:8px;min-width:0}
-.sp-pdp.ts img.sp-ico{width:24px;height:24px}
-.sp-pdp.ts .tx{display:flex;flex-direction:column;gap:2px;min-width:0}
-.sp-pdp.ts .sp-x{width:12px;height:12px;flex:none;padding:0;border:0;background:none;cursor:pointer;display:block;margin:0}
-.sp-pdp.ts .sp-x img{display:block;width:12px;height:12px}
-.sp-pdp.ts.sp-pdp--lg{font-size:14px}
-.sp-pdp.ts.off{display:none!important}
-.sp-pdp.ts.sp-on-img{position:absolute;left:12px;bottom:12px;z-index:6}
-.sp-pdp.ts.sp-centre{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6}
-.sp-pdp.ts.sp-pin{position:fixed;z-index:60}
-.sp-bag.ts{display:flex;align-items:center;gap:4px;width:100%;padding:8px;font-size:12px}
-.sp-bag.ts img.sp-ico{width:20px;height:20px}
-.sp-bag.ts .t{flex:1;min-width:0}`;
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const md=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
   const hex=c=>{c=String(c||'').trim().replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');return /^[0-9a-f]{6}$/i.test(c)?'#'+c.toUpperCase():null};
@@ -88,7 +66,8 @@
   const T={
     TYPES,TYPE_NAMES,LIB,LIVE,fg,hex,contrast,
     load(b){if(b)BASE=new URL(b,document.baseURI).href;return Promise.all(Object.values(TYPES).map(k=>SVG[k]?0:fetch(base()+'icons/lib/icons-'+k+'.svg').then(r=>r.ok?r.text():'').then(t=>{if(t)SVG[k]=t}).catch(()=>{})))},
-    css(doc){doc=doc||document;if(doc.getElementById('dg-taggstar-css'))return;const st=doc.createElement('style');st.id='dg-taggstar-css';st.textContent=CSS;(doc.head||doc.documentElement).appendChild(st)},
+    /* the component CSS lives in components.css only (16 Oct 2026). DS pages already load it; this links it into a page that doesn't. */
+    css(doc){doc=doc||document;if([...doc.styleSheets].some(s=>/assets\/ds\/components\.css/.test(s.href||''))||doc.getElementById('dg-components-css'))return;const l=doc.createElement('link');l.id='dg-components-css';l.rel='stylesheet';l.href=base()+'components.css';(doc.head||doc.documentElement).appendChild(l)},
     plp(o){const m=msgOf(o);return `<div class="pc-taggstar ts" data-ts style="${vars(o)}">${ico(o,m)}<span class="t">${m.c?`<b>${esc(m.c)}</b> `:''}<span>${md(m.d)}</span></span></div>`},
     pdp(o){const m=msgOf(o),x=uri(CLOSE,fg(hex(o.bg)||'#F2F2F2')),pos=o.pos==='pin'?' sp-pin':o.pos==='centre'?' sp-centre':' sp-on-img';
       return `<div class="sp-pdp ts${o.lg?' sp-pdp--lg':''}${pos}" data-ts style="${vars(o)}"><div class="in">${ico(o,m)}<div class="tx">${m.c?`<b>${esc(m.c)}</b>`:''}<span>${md(m.d)}</span></div></div><button class="sp-x" type="button" aria-label="Dismiss"><img src="${x}" alt=""></button></div>`},

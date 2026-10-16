@@ -96,6 +96,11 @@
 .sp-bag{display:block;width:100%;box-sizing:border-box;padding:8px;background:var(--sp-bg,var(--surface-media));color:var(--sp-fg,var(--text-primary));border-radius:var(--sp-r,var(--radius-default));font-family:var(--font-family-base);font-size:12px;line-height:normal;font-weight:var(--w-regular);text-transform:var(--sp-case,none);-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px)}
 .sp-bag:has(.sp-ico){display:flex;align-items:center;gap:4px}.sp-bag .sp-ico{display:block;width:20px;height:20px;flex:none}
 .sp-bag b{font-weight:var(--w-strong)}
+/* placement + text details (were only in the taggstar.js copy — single source here since 16 Oct) */
+.pc-taggstar{overflow:hidden}.pc-taggstar .t{overflow:hidden;text-overflow:ellipsis;min-width:0}.pc-taggstar span b,.sp-bag span b,.sp-pdp span b{font-weight:var(--w-strong)}
+.sp-pdp{max-width:calc(100% - 24px)}.sp-pdp .in{min-width:0}.sp-pdp .tx{min-width:0}.sp-pdp.off{display:none!important}
+.sp-centre{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2}
+.sp-bag .t{flex:1;min-width:0}
 /* info block */
 .pc-info{display:flex;flex-direction:column;gap:8px;font-size:14px;min-width:0}
 .pc-sponsored{color:var(--text-secondary);font-weight:var(--w-mid)} /* Figma uses Grey 4 — lifted to Grey 5 for the AA text floor */
@@ -1087,3 +1092,142 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .ai-pill--sm{height:32px;font-size:13px;padding:0 12px 0 10px}.ai-pill--sm .ai-icon{width:16px;height:16px}
 .ai-pill--wrap{height:auto;min-height:40px;padding:8px 16px 8px 12px;white-space:normal;font-weight:var(--w-regular,400)}
 .ai-iconbtn{display:grid;place-items:center;width:32px;height:32px;padding:0;border:0;background:none;cursor:pointer}.ai-iconbtn .ai-icon{width:24px;height:24px}
+
+/* ============================================================
+   16 Oct 2026 — components added for the DS page templates (templates/pdp.html, templates/bag.html) and promoted from the
+   PLP / bag prototypes so no page carries its own component CSS. Changelog: assets/ds/changelog.js.
+   ============================================================ */
+/* Page title (C-pg-title) — h1 + optional count line. "Your Bag (2)", account pages. 22px mobile / 26px desktop, strong. */
+.pg-title{display:flex;flex-direction:column;gap:2px;font-family:var(--font-family-base);padding:16px 0 4px}
+.pg-title h1{margin:0;font-size:22px;line-height:1.2;font-weight:var(--w-strong);letter-spacing:.01em}
+.pg-title .count{font-size:13px;color:var(--text-secondary)}
+@media(min-width:1024px){.pg-title h1{font-size:26px}}
+/* PLP title (promoted from plp-alignment) — the category h1 + product count, centred from 768 */
+.plp-title{text-align:left;padding:6px 0 2px;position:relative}
+.plp-title h1{font-size:22px;font-weight:var(--w-strong);letter-spacing:.01em;margin:0}
+.plp-title .count{font-size:13px;color:var(--text-secondary);margin-top:2px}
+@media(min-width:768px){.plp-title{text-align:center}.plp-title h1{font-size:26px}}
+/* SEO copy (promoted) — category intro under the title; one-line clamp variant with Show more */
+.seo{color:var(--text-secondary);font-size:13px;max-width:860px;margin:6px 0 2px}
+.seo--line{display:flex;gap:6px;align-items:baseline;white-space:nowrap;overflow:hidden;max-width:860px}
+.seo[hidden]{display:none}
+.seo--line .t{overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media(min-width:768px){.seo{margin:6px auto 2px;text-align:center}}
+.showmore{display:block;font-size:14px;color:var(--text-primary);padding:2px 0 12px;background:none;border:0;cursor:pointer;font-family:inherit}
+.showmore[hidden]{display:none}
+/* Grid view toggle (promoted) — PLP-Grid-View 194-2513: 16px icon right of the PLP title on mobile; desktop segmented toggle */
+.gt{display:none;position:absolute;right:0;top:10px;width:24px;height:24px;padding:4px;background:none;border:none;cursor:pointer}
+.gt img{width:16px;height:16px;display:block}
+.viewtoggle{display:inline-flex;border:var(--border-w) solid var(--border-default);border-radius:var(--radius-default);overflow:hidden}
+.viewtoggle button{width:36px;height:38px;display:grid;place-items:center;padding:0;background:none;border:0;cursor:pointer}
+.viewtoggle img{width:16px;height:16px;object-fit:contain;opacity:.45}
+.viewtoggle button.on img{opacity:1}
+.viewtoggle button.on{background:var(--surface-sunken)}
+/* Content slot (promoted from plp-alignment) — DS Figma 8556-18755. Square in-grid tile that opens its row: Button (media + white CTA),
+   Text (media + gradient + View All + optional Sponsored), Get The Look (.cslot--gtl, sunken card + 2x2 mosaic). */
+.cslot{grid-column:1/span 2;aspect-ratio:1/1;position:relative;overflow:hidden;cursor:pointer;border-radius:0;margin-bottom:2px}
+.cslot .slot-cut{position:absolute;right:0;bottom:0;background:#FFF;min-width:44px;min-height:44px;padding:10px 14px;display:flex;gap:8px;align-items:center;justify-content:center;color:#000;font-size:14px;font-weight:var(--w-regular)}
+.cslot .slot-cut svg{width:16px;height:16px;display:block}
+.cslot>img.media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cslot .slot-btn{position:absolute;right:24px;bottom:24px;height:50px;padding:8px 24px;background:#FFF;color:#000;border:none;border-radius:4px;font-family:var(--font-family-base);font-size:16px;line-height:24px;font-weight:var(--w-btn,600);text-transform:uppercase;display:flex;align-items:center}
+.cslot .slot-grad{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.7))}
+.cslot .slot-view{position:absolute;right:24px;bottom:24px;display:flex;gap:8px;align-items:center;color:#FFF;font-size:14px;font-weight:var(--w-regular)}
+.cslot .slot-view svg{width:16px;height:16px;display:block}
+.cslot .slot-spon{position:absolute;top:8px;right:8px;color:#FFF;font-size:10px;text-shadow:0 0 4px rgba(0,0,0,.8)}
+.cslot--gtl{background:var(--surface-sunken);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:16px;aspect-ratio:auto}
+.cslot--gtl .slot-title{font-size:18px;font-weight:var(--w-strong);color:var(--text-primary)}
+.cslot--gtl .slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cslot--gtl .slot-grid img{width:100%;object-fit:cover;border-radius:4px;display:block}
+.cslot--gtl .slot-grid img:first-child{grid-row:1/span 2;height:100%}
+.cslot--gtl .slot-grid img:not(:first-child){aspect-ratio:1/1;height:auto}
+@media(min-width:1024px){.cslot .slot-grad{height:200px}.cslot .slot-view{right:32px;bottom:32px}.cslot--gtl{padding:24px;gap:24px}.cslot--gtl .slot-title{font-size:20px}.cslot--gtl .slot-grid{gap:12px}}
+/* PDP gallery (C-pdp-gallery) — Figma Taggstar MAN PDP 3484:23546 / 3484:21984 · live PDPs 16 Oct 2026.
+   Mobile: 2:3 slides at 60% width, gap 1 (4px), scroll-snap, full bleed, 4px pagination bar gap 4 (16px) under. Tags top-left 12px.
+   Desktop (≥1024): 100px thumbnail column (selected = 1px black keyline) + one main slide with 32px round prev / next. */
+.pdp-gal{position:relative;font-family:var(--font-family-base)}
+.pdp-gal .main{position:relative;min-width:0}
+.pdp-gal .slides{display:grid;grid-auto-flow:column;grid-auto-columns:60%;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.pdp-gal .slides::-webkit-scrollbar{display:none}
+.pdp-gal .slides img{width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--surface-media);display:block;scroll-snap-align:start}
+.pdp-gal .tags{position:absolute;left:12px;top:12px;display:flex;gap:4px;z-index:2}
+.pdp-gal .thumbs,.pdp-gal .nav{display:none}
+.pdp-gal .pag{height:4px;background:var(--border-subtle,#E7E7E7);border-radius:99px;margin:16px 16px 0;position:relative;overflow:hidden}
+.pdp-gal .pag i{position:absolute;left:0;top:0;bottom:0;background:var(--text-primary);border-radius:99px}
+@media(min-width:1024px){
+  .pdp-gal{display:grid;grid-template-columns:100px minmax(0,1fr);gap:24px;align-items:start}
+  .pdp-gal .thumbs{display:flex;flex-direction:column;gap:8px}
+  .pdp-gal .thumbs button{padding:0;border:1px solid transparent;background:none;cursor:pointer;display:block}
+  .pdp-gal .thumbs button.on{border-color:var(--text-primary)}
+  .pdp-gal .thumbs img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:var(--surface-media)}
+  .pdp-gal .slides{grid-auto-columns:100%;gap:0}
+  .pdp-gal .nav{display:grid;place-items:center;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:99px;background:var(--surface-raised,#FFF);border:0;box-shadow:var(--shadow-pill,0 1px 4px rgba(0,0,0,.15));cursor:pointer;z-index:2}
+  .pdp-gal .nav.prev{left:12px}.pdp-gal .nav.next{right:12px}
+  .pdp-gal .nav img{width:16px;height:16px;display:block}
+  .pdp-gal .pag{display:none}}
+/* PDP title (C-pdp-head) — brand strong over name regular, 16px, with the 44px round wishlist (production shadow) on the right */
+.pdp-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;font-family:var(--font-family-base)}
+.pdp-head .titles{display:flex;flex-direction:column;gap:4px;min-width:0}
+.pdp-head .brand{font-size:16px;line-height:20px;font-weight:var(--w-strong)}
+.pdp-head .name{font-size:16px;line-height:20px;font-weight:var(--w-regular);margin:0}
+.pdp-head .wish{flex:none;width:44px;height:44px;border-radius:99px;background:var(--surface-raised,#FFF);border:0;box-shadow:var(--shadow-pill,0 1px 6px rgba(0,0,0,.15));display:grid;place-items:center;cursor:pointer}
+.pdp-head .wish img{width:20px;height:20px;display:block}
+/* Delivery countdown (C-ndd) — "Order in 14 hrs 50 mins for Next Day Delivery", 20px delivery icon, gap 2 (8px), time strong. Markup: <div class=ndd><img><span>Order in <b>…</b> for …</span></div> */
+.ndd{display:flex;align-items:center;gap:8px;font-family:var(--font-family-base);font-size:14px;line-height:20px}
+.ndd img{width:20px;height:20px;flex:none;display:block}
+.ndd b{font-weight:var(--w-strong)}
+/* Option label (C-opt-label) — "Colour: Black" above swatches / fits, 16px, value mid weight */
+.opt-label{font-family:var(--font-family-base);font-size:16px;line-height:24px}
+.opt-label b{font-weight:var(--w-mid)}
+/* Membership box (C-member-box) — PDP Premier / Premier Club / Unlimited / Royalty box, live 10 Sep + 16 Oct 2026.
+   Fascia art + colours from assets/ds/membership.js (--mb-*). Padding gap 4 / 5 (16px 20px), gap 6 (24px) to the ADD button. */
+.member-box{display:flex;align-items:center;gap:24px;padding:16px 20px;border-radius:var(--radius-default);background:var(--mb-bg,var(--surface-sunken)) var(--mb-img,none) center/100% 100% no-repeat;color:var(--mb-fg,var(--text-primary));font-family:var(--font-family-base)}
+.member-box .t{flex:1;min-width:0;font-size:14px;line-height:20px}
+.member-box .lg{display:block;margin-bottom:12px}
+.member-box .lg img{height:var(--mb-lg-h,24px);width:auto;display:block}
+.member-box .add{flex:none;height:32px;padding:0 16px;border:0;border-radius:var(--radius-default);background:var(--mb-cta-bg,#000);color:var(--mb-cta-fg,#FFF);font:var(--w-strong) 14px/1 var(--font-family-base);text-transform:uppercase;cursor:pointer}
+/* Bag payment summary (order-summary v2, promoted 16 Oct from projects/usp-banner/bag.js — the live /basket rebuild of 06 Oct).
+   Rendered by assets/ds/bag-summary.js (DG_bagSummaryHTML / DG_bagTopHTML). */
+.bs{font-family:var(--font-family-base);color:#000;background:var(--surface-sunken,#FAFAFA);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;text-align:left;line-height:normal;box-sizing:border-box}
+.bs *{box-sizing:border-box}
+.bs--d{gap:16px;width:100%;max-width:390px}.bs--m{padding-top:24px}
+.bs-card{background:var(--surface-raised,#FFF);padding:24px;border-radius:var(--radius-default);display:flex;flex-direction:column;gap:24px}
+.bs--m .bs-card{padding:24px 16px}.bs--m .bs-flat{background:none;border-radius:0}
+.bs-hr{height:1px;background:#E5E7EB}
+.bs-sum{display:flex;flex-direction:column;gap:16px}
+.bs-h{font-size:20px;line-height:20px;font-weight:600}
+.bs-r{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:16px;line-height:24px;font-weight:400}
+.bs-r>span:last-child{white-space:nowrap}
+.bs-dp{margin:8px 0}.bs-dp small{display:block;font-size:12px;line-height:18px;color:#6B7280}
+.bs-tot{border-top:1px solid #E5E7EB;padding-top:16px;margin-top:0}.bs-tot b{font-weight:600}
+.bs-di{display:flex;flex-direction:column;align-items:flex-end;font-size:14px;line-height:21px;margin-bottom:12px}
+.bs-di b{font-weight:600}.bs-di .bs-r{font-size:14px;line-height:21px;justify-content:flex-end;gap:0}.bs-di .bs-r>span:first-child{text-align:right}.bs-di .bs-r>span:last-child{min-width:85px;text-align:right}
+.bs-ctas{display:flex;flex-direction:column;gap:8px}
+.bs-cta{display:flex;align-items:center;justify-content:center;width:100%;height:50px;border:0;border-radius:var(--radius-default);background:var(--bs-bg);color:var(--bs-fg);font:600 16px/16px var(--font-family-base);text-transform:var(--bs-case);cursor:pointer;padding:0 12px}
+.bs-or{display:flex;align-items:center;gap:16px;color:#9CA3AF;font-size:14px;line-height:21px;margin:0 0 0}
+.bs-or:before,.bs-or:after{content:"";flex:1;height:1px;background:#E5E7EB}
+.bs-w{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:50px;border:0;border-radius:4px;cursor:pointer;font:400 18px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;padding:0}
+.bs-w img{display:block;width:auto}
+.bs-pp{background:#FFC439;color:#2C2E2F}.bs-ap{background:#000}.bs-kl{background:#0E0E0E;color:#FFF;font-size:16px;gap:6px}
+.bs-msg{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 6px;font:400 11px/16px 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#2C2E2F;text-align:center;margin:4px 0 0}
+.bs-msg img{height:12px;width:auto;display:block}.bs-msg u{color:#0070E0}
+.bs-cards{display:flex;justify-content:space-between;align-items:center;gap:2px}
+.bs-cards img{height:21px;width:auto;min-width:0;flex:0 1 auto;display:block;object-fit:contain}
+.bs-pr{gap:16px}
+.bs-ph{font-size:18px;line-height:27px;font-weight:600}
+.bs-pf{display:flex;gap:16px}
+.bs-in{flex:1;min-width:0;height:50px;display:flex;align-items:center;padding:0 16px;border:1px solid #B5B5B5;border-radius:var(--radius-default);background:var(--surface-raised,#FFF);font-size:16px;font-weight:300;color:#757575;white-space:nowrap;overflow:hidden}
+.bs-ap2{flex:none;height:50px;padding:0 20px;border:1px solid #B5B5B5;border-radius:var(--radius-default);background:var(--surface-raised,#FFF);font:400 16px/16px var(--font-family-base);color:#000;cursor:pointer}
+.bs--lt .bs-cta{font-weight:400}
+.bs--sm,.bs--sm .bs-ap2{color:#333}
+.bs--sm .bs-h{font-size:16px;line-height:16px;font-weight:400}
+.bs--sm .bs-r{font-size:12px;line-height:18px;font-weight:300}.bs--sm .bs-r>span:last-child{font-weight:400}
+.bs--sm .bs-tot b{font-weight:400}.bs--sm .bs-di,.bs--sm .bs-di .bs-r{font-size:12px;line-height:18px}.bs--sm .bs-di b{font-weight:400}
+.bs--sm .bs-cta{font-size:14px;font-weight:400}.bs--sm .bs-or{font-size:12px}
+.bs--sm .bs-ph{font-size:16px;line-height:24px;font-weight:400}.bs--sm .bs-ap2{font-size:14px;font-weight:300}
+.bs-top{background:var(--surface-raised,#FFF);gap:24px;padding:0 0 24px}
+.bs-top .bs-ot{font-size:16px;line-height:24px}.bs-top .bs-ot b{font-weight:600;margin-left:4px}
+.bs-top.bs--sm .bs-ot{font-size:12px}.bs-top.bs--sm .bs-ot b{font-weight:400}
+/* Size selector: the size-guide glyph (fix 16 Oct — was sized inline per page) */
+.sizes-head .guide img{width:16px;height:16px;display:block;flex:none}
+/* Export (html2canvas can't paint CSS masks): pages set html.exporting while capturing — DS fix 16 Oct, was a sign-in page override */
+html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/icons-down.svg) center/contain no-repeat}

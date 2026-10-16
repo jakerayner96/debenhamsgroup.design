@@ -637,6 +637,7 @@ body.sbm .hdrbtns{display:none}
       <a href="#gallery">All components</a>
       <!-- component pages are appended here from assets/ds/catalogue.js -->
       <a href="#dev-overlay">Dev alignment</a>
+      <a href="#changelog">Changelog</a>
       <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/" target="_blank" rel="noopener" title="Opens our Storybook in a new tab"><span class="ic">▤</span>Storybook</a>
     </div>
   </div>
@@ -1335,13 +1336,13 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
           <div class="price"><span class="now sale">£70.00</span><span class="was">£139.00</span><span class="save">Save 50%</span></div>
           <div class="price-promo">£63.00 with code FASHION</div>
           <div class="sizes"><div class="sizes-head"><span>Size: <b>M</b></span><span class="guide">Size guide</span></div>
-            <div class="set"><button class="sz">XS</button><button class="sz">S</button><button class="sz on">M</button><button class="sz oos oos--strike">L</button><button class="sz oos">XL<img class="bell" src="assets/ds/icons/lib/icons-bell.svg" alt="" onerror="this.remove()"></button><button class="sz">One size</button></div></div>
+            <div class="set"><button class="sz">XS</button><button class="sz">S</button><button class="sz on">M</button><button class="sz oos oos--strike">L</button><button class="sz oos">XL<img class="bell" src="assets/ds/icons/lib/icons-notification.svg" alt="" onerror="this.remove()"></button><button class="sz">One size</button></div></div>
           <div class="cswatches"><button class="cswatch on"><img src="projects/plp-alignment/img/debenhams/p1.jpg" alt="" onerror="this.style.display='none'"></button><button class="cswatch"><img src="projects/plp-alignment/img/debenhams/p2.jpg" alt="" onerror="this.style.display='none'"></button><button class="cswatch"><img src="projects/plp-alignment/img/debenhams/p3.jpg" alt="" onerror="this.style.display='none'"></button></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:16px">
-          <div class="acc open"><button class="acc-h">Description<img src="assets/ds/icons/lib/icons-chevron-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">Long sleeve lace and pleated midi shirt dress in pink. Regular fit, concealed zip.</div></div>
+          <div class="acc open"><button class="acc-h">Description<img src="assets/ds/icons/lib/icons-down-arrow.svg" alt="" onerror="this.remove()"></button><div class="acc-b">Long sleeve lace and pleated midi shirt dress in pink. Regular fit, concealed zip.</div></div>
           <div class="hr"></div>
-          <div class="acc"><button class="acc-h">Delivery &amp; returns<img src="assets/ds/icons/lib/icons-chevron-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">Free returns within 28 days.</div></div>
+          <div class="acc"><button class="acc-h">Delivery &amp; returns<img src="assets/ds/icons/lib/icons-down-arrow.svg" alt="" onerror="this.remove()"></button><div class="acc-b">Free returns within 28 days.</div></div>
           <div class="hr"></div>
           <div class="usp-box"><div class="r"><img src="assets/ds/icons/lib/icons-delivery-fast.svg" alt=""><div><div class="t">Next day delivery</div><div class="s">Order by midnight</div></div></div><div class="r"><img src="assets/ds/icons/lib/icons-quick-add.svg" alt=""><div><div class="t">Free returns</div><div class="s">28 days, in store or by post</div></div></div></div>
           <div class="thresh"><span>Spend <b>£12.01</b> more for free delivery</span><div class="track"><div class="fill" style="width:60%"></div></div></div>
@@ -1421,6 +1422,14 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
     <div class="tbl tmx"></div>
     <h2>Source</h2>
     <p><code style="font-family:var(--mono);font-size:12px;color:var(--aq)">.context/inventory/05-dev-storybook.md</code> — the full ingest: every component with its props, per-fascia theme variables, 1440 + 390 renders of all 178 stories. <a style="color:var(--aq)" href="https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/" target="_blank" rel="noopener">DG Group Design System Storybook ↗</a> — generated from the same catalogue (<code style="font-family:var(--mono);font-size:12px;color:var(--aq)">storybook/</code>).</p>
+  </section>
+
+  <!-- CHANGELOG (assets/ds/changelog.js) -->
+  <section class="page" id="changelog" data-crumb="Design system / Changelog">
+    <div class="kick">system <b>· assets/ds/changelog.js</b></div>
+    <h1>Changelog</h1>
+    <p class="lede">What was added, changed and fixed in the design system in each iteration, newest first, and which project drove it. Projects build only from these components: a wrong one is fixed here and pushed back, a missing one is added here first.</p>
+    <div class="cl"></div>
   </section>
 
   <!-- FOUNDATIONS (single page — the eight foundation sections are merged in at load) -->
@@ -1567,6 +1576,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 
 <script src="assets/ds/dplus-logos.js"></script>
 <script src="assets/ds/footer.js"></script>
+<script src="assets/ds/changelog.js"></script>
 <script src="assets/ds/header.js"></script>
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/usp.js"></script>
@@ -1659,7 +1669,7 @@ ov.querySelector('.tmx').innerHTML=`<div class="tr h"><span>Dev variable</span><
 /* demo links inside catalogue canvases are inert */
 main.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&a.closest('.canvas,.cv')&&a.closest('.page[id^="c-"],#gallery'))e.preventDefault();});
 /* search registry */
-window.DG_REG=[{h:'gallery',t:'Component library',k:'gallery wiki all components visual',ic:'▦',s:'Design system'},{h:'dev-overlay',t:'Dev alignment',k:'storybook front-end dev overlay tokens tailwind react mapping',ic:'⇄',s:'Design system'}].concat(C.map(c=>({h:'c-'+c.slug,t:c.name,k:(c.group+' '+c.css+' '+c.dev.title+' '+c.variants.map(v=>v.name).join(' ')).toLowerCase(),ic:'▢',s:'Component'})));
+window.DG_REG=[{h:'gallery',t:'Component library',k:'gallery wiki all components visual',ic:'▦',s:'Design system'},{h:'changelog',t:'Changelog',k:'changelog changes added updated fixed release iteration history what is new',ic:'≡',s:'Design system'},{h:'dev-overlay',t:'Dev alignment',k:'storybook front-end dev overlay tokens tailwind react mapping',ic:'⇄',s:'Design system'}].concat(C.map(c=>({h:'c-'+c.slug,t:c.name,k:(c.group+' '+c.css+' '+c.dev.title+' '+c.variants.map(v=>v.name).join(' ')).toLowerCase(),ic:'▢',s:'Component'})));
 })();
 </script>
 <script>
@@ -1982,6 +1992,24 @@ addEventListener('keydown',e=>{
 function mark(){res.querySelectorAll('.ri').forEach((el,i)=>el.classList.toggle('sel',i===sel))}
 
 route();paint();
+</script>
+<style>
+#changelog .cl-e{border-top:1px solid var(--line-2,rgba(255,255,255,.12));padding:24px 0}
+#changelog .cl-e h2{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;margin:0 0 6px}
+#changelog .cl-e h2 code{font-size:12px}
+#changelog .cl-by{font-size:13px;opacity:.7;margin:0 0 12px}
+#changelog .cl-k{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin:12px 0 6px;opacity:.75}
+#changelog .cl-e ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.5}
+#changelog .cl-rule{margin:12px 0 0;font-size:13px;padding:10px 12px;border:1px solid var(--line-2,rgba(255,255,255,.18));border-radius:8px}
+</style>
+<script>
+/* Changelog page — renders assets/ds/changelog.js (window.DG_CHANGELOG) */
+(function(){const el=document.querySelector('#changelog .cl');if(!el||!window.DG_CHANGELOG)return;
+  const esc=x=>String(x).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  const list=(k,a)=>a&&a.length?'<span class="cl-k">'+k+' · '+a.length+'</span><ul>'+a.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'';
+  el.innerHTML=DG_CHANGELOG.map(e=>'<div class="cl-e"><h2>'+fmt(e.d)+' <code>'+esc(e.v)+'</code> <span style="font-weight:400;opacity:.75">'+esc(e.title||'')+'</span></h2>'+(e.by?'<p class="cl-by">Driven by '+esc(e.by)+'</p>':'')+list('Added',e.added)+list('Changed',e.changed)+list('Fixed',e.fixed)+(e.rule?'<p class="cl-rule">'+esc(e.rule)+'</p>':'')+'</div>').join('');
+})();
 </script>
 </body>
 </html>

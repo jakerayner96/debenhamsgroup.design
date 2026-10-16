@@ -170,10 +170,7 @@ const BR={debenhams:['#7BE7D8','#D6FFF9'],boohoo:['#F8B5CC','#FEE0EA'],boohooman
 const GREY=b=>b==='plt'?'#FAF5E7':'#F2F2F2';              /* Figma Grey 1 · PLT sand (no white / grey on PLT) */
 const PLACES=[['plp','PLP'],['pdp','PDP'],['bag','Bag']];
 const DEF_MSG={plp:'fast-sold',pdp:'fast-min',bag:'since-sold'};  /* the Figma MAN use case */
-const LIVE_PDP=['debenhams','boohoo','plt','karenmillen'];
-const SOURCE={plp:()=>'PLP prototype · plp-alignment/plp.html (new format)',
-  pdp:b=>LIVE_PDP.includes(b)?'Live PDP recreation · core-pdp-2026/live.html':b==='boohooman'?'Core PDP 2026 · core-pdp-2026/pdp.html (new format)':'Core PDP 2026 (boohooMAN build) — no '+(b==='warehouse'?'Warehouse':'Brand Room')+' PDP has been built yet',
-  bag:()=>'Bag · usp-banner/page.html (live /basket rebuild)'};
+const SOURCE={plp:()=>'DS PLP · projects/plp-alignment/plp.html (new format)',pdp:()=>'DS PDP template · templates/pdp.html',bag:()=>'DS Bag template · templates/bag.html'};
 const P={
   name:'taggstar',
   title:'Taggstar',
@@ -202,9 +199,9 @@ function renderPanel(host,S,update){
     :k==='pdp'?['figma','img','live'].map(v=>`<button class="opt${p.pos===v?' on':''}" data-pos="${v}"><span class="r"></span><span class="t"><b>${{figma:'Figma',img:'On the image',live:'Live'}[v]}</b><span>${{figma:'Mobile: on the main image, 12px from its left and bottom · desktop: pinned 24px above the bottom of the window, centred on the image',img:'On the main image, 12px from its left and bottom, at every width',live:'Centred on the main image — where Debenhams, boohoo and PLT run it today'}[v]}</span></span></button>`).join('')
     :`<div class="f"><span>Which items</span>${seg('cover',p.cover,[['first','First item'],['all','Every item']])}</div>`;
   const rows=P.brands.map(([v,n])=>{const cc=S.by[v]||P.initial(v);return `<tr class="${v===b?'cur':''}" data-b="${v}"><td>${n}</td>${PLACES.map(([pk])=>`<td><i class="dot" style="background:${T.hex(cc[pk].bg)};opacity:${cc[pk].alpha==null?1:Math.max(.25,cc[pk].alpha)}"></i></td>`).join('')}<td>${cc.icon?'On':'<span class="dim">Off</span>'}</td></tr>`}).join('');
-  host.innerHTML=`<h1>Taggstar</h1><p class="intro">The Taggstar message dropped into the PLP, PDP and Bag we already have (DS drop-in <b>assets/ds/taggstar.js</b>). Background, icon and message are set per fascia; pick the page to set that placement.</p>
+  host.innerHTML=`<h1>Taggstar</h1><p class="intro">The Taggstar message dropped into the design system’s PLP, PDP and Bag templates (DS component <b>assets/ds/taggstar.js</b>). Background, icon and message are set per fascia; pick the page to set that placement.</p>
   <div class="card"><h3>Page <small>${bn}</small></h3>${PLACES.map(([v,l])=>`<button class="opt${k===v?' on':''}" data-page="${v}"><span class="r"></span><span class="t"><b>${l}</b><span>${esc(SOURCE[v](b))}</span></span></button>`).join('')}
-    ${k==='pdp'&&['warehouse','brandroom'].includes(b)?'<p class="warn">No '+bn+' PDP exists yet, so this shows the Core PDP (boohooMAN build). The message, colour and icon are '+bn+'’s.</p>':''}</div>
+    <p class="rules" style="margin-top:8px">Every page is built from design-system components only.</p></div>
   <div class="card"><h3>Icon <small>${bn} · all placements</small><label class="sw"><input type="checkbox" id="icon"${c.icon?' checked':''}><i></i>${c.icon?'On':'Off'}</label></h3>
     <p>One icon per message type, before the text: ${Object.entries(T.TYPES).map(([t,i])=>`<span class="ic"><img src="../../assets/ds/icons/lib/${ICON_OF[i]}.svg" alt="">${T.TYPE_NAMES[t]}</span>`).join('')}</p>
     <div class="f"><span>Icon set</span>${seg('set',c.set,[['line','DS line icons'],['boohoo','boohoo animated']])}<small>${c.set==='boohoo'?'boohoo’s live set: animated eyes for views, a heart for everything else.':'The V2 Figma glyphs (DS icons/lib, cart added 16 Oct). They take the text colour.'}</small></div></div>

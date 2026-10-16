@@ -60,7 +60,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/usp-live.js"></script>
 <script src="assets/ds/usp.js"></script>
 <script src="projects/usp-banner/home.js"></script>
-<script src="projects/usp-banner/bag.js"></script>
+<script src="assets/ds/bag-summary.js"></script>   <!-- DS bag payment summary (order-summary v2) -->
 <script>
 const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C.find(x=>x.slug===slug);return c?c.variants[i].html:''};
 const strip=h=>h.replace(/ style="width:[^"]*"/,'');
@@ -113,7 +113,7 @@ const PAGES={
   home:()=>window.renderHome?renderHome(S.brand,desk()):'',  /* each fascia's live homepage (home.js, captured 06 Oct) */
   plp:()=>`<iframe class="emb" data-emb="plp" title="PLP" src="${EMB.plp()}"></iframe>`,
   pdp:()=>`<iframe class="emb" data-emb="pdp" title="PDP" src="${EMB.pdp()}"></iframe>`,
-  /* bag: live layout (06 Oct /basket) — 1024 container, items | 390px summary column on grey; mobile: total + checkout under the title, summary full-bleed after the items. Summary = bag.js */
+  /* bag: live layout (06 Oct /basket) — 1024 container, items | 390px summary column on grey; mobile: total + checkout under the title, summary full-bleed after the items. Summary = DS assets/ds/bag-summary.js */
   bag:()=>{const ps=P().slice(0,2),it=ps.map(p=>({price:p.price,was:p.was})),items=ps.map((p,i)=>`<div class="bag-item"><img src="${IMG(p.img??i)}" alt=""><div class="info">${p.brand?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`).join('');
     const sum=window.renderBagSummary?renderBagSummary(S.brand,it,desk()):V('order-summary',0);
     return desk()?`<div class="bagpg"><div class="h1">Your Bag (${ps.length})</div><div class="bag"><div class="stack"><div data-slot>${V('threshold',0)}</div>${items}</div><div class="bagcol">${sum}</div></div></div>`

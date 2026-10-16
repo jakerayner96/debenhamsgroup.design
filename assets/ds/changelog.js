@@ -1,0 +1,241 @@
+/* DG Group Design System — changelog. Newest first. One entry per iteration (a day's push).
+   Every DS change adds to the top entry: added (new components / tokens / assets), changed, fixed, and which project drove it (by).
+   Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
+window.DG_CHANGELOG=[
+ {
+  "d": "2026-10-16",
+  "v": "2026.10.16",
+  "title": "DS page templates + Taggstar",
+  "by": "Taggstar prototype (projects/taggstar)",
+  "added": [
+   "PDP gallery (.pdp-gal) — mobile scroller + pagination, desktop thumbs + main with prev / next",
+   "PDP title (.pdp-head) — brand, name, 44px wishlist",
+   "Delivery countdown (.ndd)",
+   "Option label (.opt-label) — \"Colour: Black\"",
+   "Membership box (.member-box + membership.js) — Unlimited, Premier Club, Premier, Royalty per fascia",
+   "Page title (.pg-title)",
+   "Taggstar icon slot (.sp-ico) + per-fascia background hooks (--sp-bg / --sp-fg / --sp-case); taggstar.js drop-in with the V2 message library",
+   "Icons: icons-cart.svg (V2 Figma); boohoo animated Taggstar eyes / heart (icons/taggstar)",
+   "Page templates: templates/pdp.html and templates/bag.html — every fascia, DS components only",
+   "Changelog (this page, assets/ds/changelog.js)"
+  ],
+  "changed": [
+   "Order summary → the live bag payment summary (v2, .bs-* + bag-summary.js), promoted from the USP banner bag; .summary kept as legacy",
+   "Promoted from the PLP prototype into the DS: content slot (.cslot), PLP title (.plp-title), SEO copy + Show more, grid view toggle — removed from plp-alignment/plp.html",
+   "Taggstar CSS now lives only in components.css (taggstar.js no longer carries a copy)",
+   "USP banner prototype uses the DS bag summary; projects/usp-banner/bag.js removed"
+  ],
+  "fixed": [
+   "Size guide glyph sized by the DS (was inline per page)",
+   "Export: footer chevron drawn without a CSS mask while html.exporting (was a sign-in page override)",
+   "Site PDP overview: two missing icons (icons-chevron-down, icons-bell) → icons-down-arrow, icons-notification"
+  ],
+  "rule": "From today every project builds only from DS components; a wrong component is fixed here and pushed, a missing one is added here first — and logged on this page."
+ },
+ {
+  "d": "2026-10-15",
+  "v": "2026.10.15",
+  "title": "From the commit history",
+  "changed": [
+   "Header: boohoo desktop nav 14px (was 16)",
+   "Component pages use the full width and nothing is scaled: 1440 headers / footers and desktop modals render 1:1 (no CSS zoom) so inspect element gives real values; fascia boxes hug their real content, narrow screens…",
+   "Taggstar to the Figma (00YKWCHwTarfwWZ1HayFUI 3483-23105): no icon, Grey 1 chip on every fascia (sand on PLT) — PLP 'Selling Fast! 79 Sold', PDP two-line card with close (on image on mobile, pinned to the browser…",
+   "Buy It Now button off across the DS for every fascia (Button page stacks, foundations canvas, overview row, USP banner PDP) — .bd.buy and --action-buy tokens kept for the CTA-colour icon buttons and an easy return",
+   "Component pages: no scroll bars (variants never scroll; wide ones scale via .zfit). Price rebuilt from live debenhams/boohoo/PLT/KM capture: PDP, PLP card, rail, quick add, added to bag, basket, chat instances with…",
+   "Shopping agent chat: text replies alternate with components (word-by-word dynamic-bot-writing), optional labels mapping each reply part to its salesAgentConfig key or flagging it as outside Google's widget (also…",
+   "DS modal close (16x16 1pt at 24px) + shopping agent chat v3: one start screen, close only, every reply component, aqua 4px ADD TO BAG"
+  ]
+ },
+ {
+  "d": "2026-10-14",
+  "v": "2026.10.14",
+  "title": "From the commit history",
+  "changed": [
+   "Unlimited+ account dot = the pill gradient (--mpill-grad-plus); aqua dot stays inside the pill (log 33)",
+   "Active-membership dot: one token (--mpill-dot / --mpill-dot-plus) for the checkout pill and the account row Active status (log 33)",
+   "PLT sand rule: app pages on warm white #FFFDF7, app checkout links garnet + disabled pair (log 33)",
+   "PLT sand + square rules written into the DS: no pure white on PLT, pills/status pills square via --radius-pill, checkout colours from Checkout 2026 2290:437863; new .mpill membership pill and .co-tile checkout tiles…"
+  ]
+ },
+ {
+  "d": "2026-10-12",
+  "v": "2026.10.12",
+  "title": "From the commit history",
+  "changed": [
+   "Sign in: mobile boxes 16px sides; 24px above create account when the password link is not there",
+   "DS footer: newsletter band = the page background (--surface-sunken #FAFAFA, PLT #FAF5E7), was Grey 1 #F2F2F2",
+   "Fascia token pass: remove Maine, Gorgeous, Forever Unique, Nasty Gal; Warehouse 300 buttons; Outlet black (no aqua); Burton = boohoo/MAN type + buttons; Misspap boohoo/MAN in #101820 with grey secondary outline;…",
+   "Sign in: extra 8px above \"Sign in with password\" instead of above create account",
+   "Sign in: \"Sign in with password\" below the social buttons, directly above create account",
+   "Header catalogue entry: pages without header.js get the previous [mobile, desktop] markup in slots 0 / 1 instead of an empty list, so prototypes calling V('header',0|1) (shopping-agent, usp-banner,…",
+   "Sign in: copy trims (Sign in with password, reset screen = one centred link, no links on the sent screens, Check Your Inbox), every box 24px all round with the brand radius",
+   "One Header page: main header + checkout header, each mobile and desktop, for every fascia (header.js drop-in, content from each live header 12 Oct): own logo fitted 106 / 141 wide, PLT icon set, bookmark on MAN / KM…",
+   "Sign in: one shared config for every fascia (fascia switch = brand skin only); create account below the social buttons",
+   "Sign in: PLT social buttons square with the field fill; no rule under the checkout header",
+   "Secondary CTA has no fill of its own: background transparent so it takes the surface it sits on (PLT sand panels, grey cards) instead of a page-colour box; outline, label and pressed state unchanged",
+   "Sign in: checkout sign in CTAs primary",
+   "Sign in: copy pass (Send link, We've Emailed You a Sign-In / Password Reset Link, expiry, Resend / Use a different email), Title Case headers, \"or continue with\"",
+   "Sign in: divider reads \"Or continue with\" (sentence case)",
+   "CTAs: no letter spacing (Figma 9144-1820 is 0) — removed the .02em on every .bd button and the .04em / caps tracking on the sort & filter and quick-add CTAs",
+   "Sign in: social toggle, all four tiles or the full-width Continue with Klarna button (Sign-In-Link 4421-999)",
+   "Sign in: checkout entry context (signed out → checkout): guest first, then the same sign in form",
+   "Sign in: small print to Grey 5 (--text-secondary #6B6B6B) per the DS body-text floor",
+   "Sign in: spam-folder line as small print (.auth-note: 12/16, light 300, Grey 4, same on every fascia)",
+   "Inputs to the DS Figma (9925-5828): Grey 3 #B5B5B5 outline at rest and when filled, black only while focused, back to grey on blur; caret #2797FF; Inactive state (Grey 1 fill, grey text) and empty-error variant;…",
+   "Footer component page: the desktop footer renders at its real 1440 layout and scales to the full width of the page (no clipping); mobile stays at 390",
+   "Footer rebuilt to the DS Figma (664-1064): one responsive component (.ftr + footer.js, container queries) — desktop columns with social · country · app rail at 1024+, accordions below; content is each fascia's live…",
+   "Sign in: password switch inside the Weighting card (A only), Methods card removed; spam line on its own paragraph",
+   "Sign in: link sent is one clean message, new link-first intro, family-of-brands line removed",
+   "Sign in: panel leads with weighting, password switch live on A only; security switch and Klarna full width removed",
+   "Sign in: social tiles exact to Social-Login 2032-2027, password link below the CTA, panel play labels removed",
+   "Sign in prototype: remove em dashes from the copy, panel, docs and the C-19 / catalogue entry",
+   "AI look in the DS + shopping agent header options; size selector selected = 1px black (Figma 9000:3082)",
+   "Sign in prototype: link-first vs password-first across Debenhams, PLT, boohoo, boohooMAN",
+   "Checkbox + radio to the DS Figma: checkbox tick is the exact 1pt Icons / Tick path in white on the action colour (669-892 / 5915-6388); radio is 24px with a 1px Grey 3 ring that stays grey and a 13.7px dot in the CTA…"
+  ]
+ },
+ {
+  "d": "2026-10-09",
+  "v": "2026.10.09",
+  "title": "From the commit history",
+  "changed": [
+   "Size selector: out of stock is a two-state pattern — .sz.oos (just out of stock) or .sz.oos.oos--notify (with the notification bell → back-in-stock alert), never the info i; own catalogue variants, Figma Coming Soon…"
+  ]
+ },
+ {
+  "d": "2026-10-08",
+  "v": "2026.10.08",
+  "title": "From the commit history",
+  "changed": [
+   "Deliver+ checkout banner: copy is now 'Peace of mind, guaranteed £x.xx' (price strong); banner fills its container and the checkbox sits on the right margin (margin-left:auto, width:100%) — catalogue variants size…",
+   "Deliver+ checkout banner: new Small New design (SEEL Enhancements 2026 3516:156668 + 3522:* per fascia) — no ground, lockup + 24px checkbox, one line with the price strong, Learn more in the fascia colour; each…",
+   "Account 2026 into the DS: app tab bars, membership wordmarks, Misspap USP, project entry",
+   "Spacing measured in gaps: 1 gap = 4px = Tailwind unit 1 — --gap-N tokens (space-* alias them), Tailwind preset, Foundations spacing rewritten (gap · px · Tailwind · token), spec + CLAUDE.md + catalogue spacing notes…",
+   "Icons: menu renamed android-menu (the vertical kebab) — file, Icons page tile, search keywords, PLP asset manifest",
+   "Icons: completion-time, delivery-insurance, info, resale and support were partial exports (fragments centred in the frame) — now the whole Figma components on the 24 base with 1pt non-scaling lines; question gets its…",
+   "Icons: cross-circle, expand, expand-filled, play-thumb, tick-circle-fill, university, spinner and zoom rebuilt from the DS icon library (470-935) so they read in one colour — glyphs are real cut-outs (no white shapes…",
+   "Fix: catalogue.js syntax error (unescaped quotes in the USP countdown rule) blanked the USP prototype and every catalogue-driven page",
+   "USP banners match live (08 Oct pm re-check): Debenhams row 1 Top Fashion + Extra 15%, KM two-line countdown message, live text + cell colours in tokens (Debenhams, MAN, PLT, Warehouse); countdown colour per row on…",
+   "USP banners as a DS drop-in: live content re-scraped 08 Oct into assets/ds/usp-live.js, renderer in usp.js (data-usp-banners / DG_uspHTML), prototype renders through it; red countdown digits only on black bars (DS…",
+   "USP banner: swipe between messages on mobile (DS usp.js), Auto animate 0–5s, Position above / below the menu per row or all rows"
+  ]
+ },
+ {
+  "d": "2026-10-07",
+  "v": "2026.10.07",
+  "title": "From the commit history",
+  "changed": [
+   "USP banner v3: rows that never jump, live content in situ, rows promoted to the DS"
+  ]
+ },
+ {
+  "d": "2026-10-06",
+  "v": "2026.10.06",
+  "title": "From the commit history",
+  "changed": [
+   "PLT Royalty icon: the Royalty emblem (crown over the PLT monogram, ROY-EMBLEM-11) on the 24×24 base, replacing the crown-only glyph; source emblem kept in memberships",
+   "USP prototype v2: each fascia's live banners (Shop Now stripped, Code: XYZ, live click-throughs), rotating message lists, brand chips like the PLP configurator, one grey + one black rule, no inline links",
+   "USP banner rebuilt to the Figma (height follows the copy: 23px single line on mobile; dash, Code: XYZ, countdown row, attached caveat, Figma colourways), usp.js for countdown + dash wrap, and an in-situ prototype…",
+   "Memberships in Brand Centre; unlimited infinity + unlimited+ icons; every library icon on a 24×24 base with 1pt non-scaling strokes; Icons page tiles/list, A–Z sort, search; Gift Card Email project; title \"Design…",
+   "Sidebar holds the chrome (group logo, home, search, theme, brand); Nasty Gal removed from the DS; Brand Room set in Archivo; grey backdrop for black fascias on every page; project status dropped, date is Latest Version",
+   "Site IA: Brand Centre, Projects and Planning and Tools menus; a page per brand; group logos; country flags"
+  ]
+ },
+ {
+  "d": "2026-09-30",
+  "v": "2026.09.30",
+  "title": "From the commit history",
+  "changed": [
+   "DS: promo Apply matches the 50px field; floating label glides to the top on focus with the caret beneath",
+   "DS: radii read the brand tokens (PLT + Brand Room fully square), spinner buttons keep their label width, canvases knocked back to light grey",
+   "DS: spinner is the DS ring icon with an eased 1.2s turn; Pay CTA moves to Payment buttons; full PayPal wordmark; universal components shown once; one wishlist glyph per fascia",
+   "Button: CTAs stack at the Figma width (358), icons inline SVG in the label colour at 16px"
+  ]
+ },
+ {
+  "d": "2026-09-10",
+  "v": "2026.09.10",
+  "title": "From the commit history",
+  "changed": [
+   "Promote: Deliver+ exact checkout/modal/PLT surfaces, variant order, live controls, inactive fascias",
+   "Promote: single-SVG Deliver+ lockups, per-fascia component pages, no sign-off wording",
+   "Publish: Deliver+ hero set",
+   "Publish: Design system IA + 21 fascia modes"
+  ]
+ },
+ {
+  "d": "2026-09-09",
+  "v": "2026.09.09",
+  "title": "From the commit history",
+  "changed": [
+   "Publish: component catalogue, Component library + wiki + Dev alignment pages, DG Group Design System Storybook at /storybook/dist/, front-end Storybook ingest",
+   "Publish: project names + Tools group, content-sized sidebar, PLP configurator on the PDP shell, mini quick add on the titles row, AI strip spacing"
+  ]
+ },
+ {
+  "d": "2026-09-08",
+  "v": "2026.09.08",
+  "title": "From the commit history",
+  "changed": [
+   "Publish: Extended component library + estate inventory",
+   "Publish P-05: quick add mini price-row variant + strip select; MAN production header sizes, icon aspect fix"
+  ]
+ },
+ {
+  "d": "2026-09-07",
+  "v": "2026.09.07",
+  "title": "From the commit history",
+  "changed": [
+   "Publish P-05: brand-by-brand round"
+  ]
+ },
+ {
+  "d": "2026-09-04",
+  "v": "2026.09.04",
+  "title": "From the commit history",
+  "changed": [
+   "Publish P-05: USP component auto-layout rules",
+   "Publish P-05: PLT production USP",
+   "Publish P-05: production USP sizing",
+   "Publish P-05: MAN production USP structure"
+  ]
+ },
+ {
+  "d": "2026-09-03",
+  "v": "2026.09.03",
+  "title": "From the commit history",
+  "changed": [
+   "DS promote: grid-view icon assets (photo/2col), session log",
+   "DS promote: one-size swatches, grid-view icons",
+   "DS promote: C-01 golden buttons, swatch spec 921-7470, app badges, PLT sand + icon tokens",
+   "DS promote: USP banner content spec + asterisk rule, equal-height USP, review comments kit, offer-line spacing",
+   "DS: offer line 2px under price",
+   "DS: sf-split full-bleed rules",
+   "DS: roundel sizing per App-PLP + MAN import specs; taggstar inherits card text size",
+   "DS: pc-taggstar--lt variant (grey inline pill, flame)",
+   "DS: Grey 1 filter keylines",
+   "DS: Grey 05 filter keylines, 8px pill gaps",
+   "DS: sf-filters no-grow (show-more adjacent), sf-bar pill padding fix, cat-row--pills 4px",
+   "DS: sf-filters clamp/expand, 160px dropdowns, roundel white variant, usp rotation animation, logo sizes, 1:1 count badge, iceberg pills",
+   "DS: usp-rotate animation for mobile cell rotation",
+   "DS: sf-float pills grey keyline, no shadow",
+   "DS: sf-float 8px vertical padding",
+   "DS: header/footer inners cap at 2000px",
+   "DS: grey-1 catpills, chip radius via radius-default, MAN badge tokens",
+   "DS: pc--flush variant for zero-gutter grids",
+   "DS: sf-float shadow softness + unclipped scroll padding",
+   "DS: sf-float floating filter pills (new-format mobile) + site C-06 demo",
+   "DS: payment badge assets + footer pay row as images",
+   "DS: pc-ndd delivery line into components.css, size-inherits card text",
+   "DS: usp-strip flat spec + mobile rotation, sticky usp bar, edge roundel responsive rules",
+   "DS: usp-strip component, badge-format category pills, edge roundel row, usp token flips",
+   "DS: signed-off button palette per fascia, link/focus token split, Google Sans chrome",
+   "DS: roundel variants, solid pill, breadcrumb component, USP/nav sizing",
+   "DS: icon library (146), footer C-08, PLT card chrome tokens, icon-locked glyphs",
+   "DS: card/header/sort-filter corrections from the live audit",
+   "DS: promote P-05 components — product card, PLP header, sort & filter, badges",
+   "Repo live: scaffold warehouse/brandroom modes, log 14, repo+Pages links",
+   "Extract DS tokens + Button to assets/ds/ — shared by site and project prototypes"
+  ]
+ }
+];
