@@ -193,6 +193,7 @@ function renderPanel(host,S,update){
   const m=T.LIB.find(x=>x.id===p.msg)||T.LIB[0];
   const sw=[['Figma Grey 1',GREY(b)]];if(L[k])sw.push(['Live '+bn,L[k].bg]);
   sw.push([b==='plt'?'Warm white':'White',b==='plt'?'#FFFDF7':'#FFFFFF'],['Brand',BR[b][0]],['Brand light',BR[b][1]],['Black','#000000']);
+  for(let i=sw.length-1;i>0;i--)if(sw.findIndex(x=>T.hex(x[1])===T.hex(sw[i][1]))<i)sw.splice(i,1);   /* one swatch per colour */
   const bg=T.hex(p.bg)||GREY(b),fg=T.fg(bg),cr=T.contrast(bg,fg);
   const typeOpts=Object.keys(T.TYPES).map(t=>`<optgroup label="${T.TYPE_NAMES[t]} · ${T.TYPES[t]} icon">${T.LIB.filter(x=>x.t===t).map(x=>`<option value="${x.id}"${x.id===p.msg?' selected':''}>${esc((x.c?x.c+' ':'')+x.d.replace(/\*\*/g,''))}${x.at.includes(k)?'':' — written for '+x.at.split(' ').map(a=>a.toUpperCase()).join(' / ')}</option>`).join('')}</optgroup>`).join('');
   const seg=(id,cur,opts)=>`<span class="seg" data-seg="${id}">${opts.map(([v,l])=>`<button data-v="${v}" class="${String(cur)===String(v)?'on':''}">${l}</button>`).join('')}</span>`;
