@@ -7,7 +7,8 @@
    Use:  DG_delivery.grid(o)  → the PDP box html      (o.layout 'list' live sentences · 'tabs' Demi · 'line' one-liner)
          DG_delivery.modal(o) → the modal layer html  (o.modal 'toggle' Paul's Figma · 'list' one sectioned list · 'tab' the tab you came from)
          DG_delivery.bulky()  → the surcharge caveat that sits under the price
-         DG_delivery.wire(root, o) → tabs, See more, modal toggle / close (root = the document or element holding them)
+         DG_delivery.wire(root, o, open) → tabs, See more (calls open(tab)), modal toggle (root = the document or element holding them)
+         DG_delivery.mount(document, o) → wire + See more opens the modal over the page, X / scrim closes it (what templates/pdp.html uses)
    o: {layout, scen:'std'|'cc'|'market'|'bulky', premier, prog, pr, prBadge:'fastest'|'home', badges, tab, modal, ni:'split'|'mixed',
        sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date} */
 (function(root){
@@ -119,6 +120,10 @@
     q('[data-dg-more]').forEach(b=>b.onclick=e=>{e.preventDefault();open&&open(b.dataset.dgMore)});
     q('[data-dg-seg]').forEach(b=>b.onclick=()=>{const k=b.dataset.dgSeg;q('[data-dg-seg]').forEach(x=>x.classList.toggle('on',x===b));q('[data-dg-mpanel]').forEach(p=>p.hidden=p.dataset.dgMpanel!==k)});
   }
+  /* page drop-in: grid already in the page → See more opens the modal over doc.body; X or the scrim closes it */
+  function mount(doc,o){const open=tab=>{doc.querySelectorAll('[data-dg-modal]').forEach(n=>n.remove());doc.body.insertAdjacentHTML('beforeend',modal(o,tab));
+      const m=doc.querySelector('[data-dg-modal]');wire(m,o);m.querySelectorAll('[data-dg-close]').forEach(x=>x.onclick=()=>m.remove())};
+    wire(doc,o,open);return open}
   const bulky=()=>`<p class="dgrid-bulky"><img src="${IC}icons-info.svg" alt="">${BULKY_COPY}</p>`;
-  root.DG_delivery={grid,modal,wire,bulky,methods,rows:rowsList,HOME,COLLECT};
+  root.DG_delivery={grid,modal,wire,mount,bulky,methods,rows:rowsList,HOME,COLLECT};
 })(typeof window!=='undefined'?window:globalThis);

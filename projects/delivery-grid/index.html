@@ -218,9 +218,10 @@ function renderPanel(host,S,update){
     <div class="f"><span>Next-day cut-off copy</span>${seg('cut',[['midnight','Order by midnight'],['12am','Order by 12AM (live)']])}<small>Cut-offs vary 11pm / midnight by item; “12AM” reads as lunchtime to some.</small></div>
     <div class="f"><span>Returns line</span><div class="row2">${sw('ret','Show')}<input id="rd" type="number" min="1" value="${esc(c.retDays)}" ${c.ret?'':'disabled'}></div><small>Demi: returns are called out three times (14, 21, 35 days).</small></div></div>
   <div class="card"><h3>Placement</h3>
-    ${radio('place','atc','Straight under Add to bag','Demi: delivery dates drive the decision more than the loyalty boxes.')}
+    ${radio('place','atc','Under the buy buttons','Above the Google prompts. Demi: delivery dates drive the decision more than the loyalty boxes.')}
+    ${radio('place','prompts','Under the Google prompts','Add to bag · PayPal · Apple Pay, then the Ask Deb prompts, then the grid — the open question from the meeting (Charlotte to weigh in).')}
     ${radio('place','live','Under membership + Deliver+','Where it sits live today.')}
-    <div class="f">${sw('context','Show the membership + Deliver+ boxes')}<small>Off by default (out of scope for this review). The static USP box is always off — ecom removed it from Strappy.</small></div></div>
+    <div class="f">${sw('context','Show the membership + Deliver+ boxes')}<small>Off by default (out of scope for this review). Every PDP carries Add to bag → PayPal → Apple Pay and the Google prompts (DS template).</small></div></div>
   <div class="card"><h3>Agreed 16 Oct</h3><p class="rules"><b>Phase 1</b> static logic for everyone: fastest, cheapest, fastest home if both are C&amp;C; modal priced low → high like checkout.<br><b>Web + app</b> stay the same.<br><b>Bulky</b> surcharge upfront by the price and repeated in the modal.<br><b>Open</b> NI split (JB) · tabs vs one-liner · combined vs single-tab modal · placement vs Deliver+ — test, don’t opine (Demi).</p></div>`;
   host.querySelectorAll('.opt[data-k]').forEach(x=>x.onclick=()=>{if(x.disabled)return;c[x.dataset.k]=x.dataset.v;re()});
   host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(x=>x.onclick=()=>{const k=g.dataset.seg,v=x.dataset.v;c[k]=v==='true'?true:v==='false'?false:v;re()}));

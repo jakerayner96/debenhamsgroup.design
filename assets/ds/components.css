@@ -1084,9 +1084,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
    .ai-pill--soft      white pill on the DS puck shadow — prompt chips, on-image buttons (no solid outline)
    .ai-pill--sm        32px · .ai-icon  the icon on its own (header icon row) */
 .ai-icon{display:inline-block;width:20px;height:20px;flex:none;background:url("icons/ai.svg") center/contain no-repeat}
-.ai-pill{display:flex;align-items:center;gap:6px;height:36px;padding:0 16px 0 12px;border-radius:var(--radius-pill);background:#FFF;border:0;color:var(--text-primary);font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-mid,500);line-height:1.2;white-space:nowrap;cursor:pointer;text-align:left}
+.ai-pill{display:flex;align-items:center;gap:6px;height:36px;padding:0 16px 0 12px;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);border:0;color:var(--text-primary);font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-mid,500);line-height:1.2;white-space:nowrap;cursor:pointer;text-align:left}
 .ai-pill .ai-icon{width:18px;height:18px}
-.ai-pill--outline{border:var(--ai-outline) solid transparent;background:linear-gradient(#FFF,#FFF) padding-box,var(--ai-gradient) border-box}
+.ai-pill--outline{border:var(--ai-outline) solid transparent;background:linear-gradient(var(--surface-raised,#FFF),var(--surface-raised,#FFF)) padding-box,var(--ai-gradient) border-box}
 .ai-pill--outline:hover{background:linear-gradient(#F5FBFA,#F5FBFA) padding-box,var(--ai-gradient) border-box}
 .ai-pill--soft{box-shadow:var(--shadow-puck)}.ai-pill--soft:hover{box-shadow:var(--shadow-pill)}   /* prompt chips: shadow, never a solid outline */
 .ai-pill--sm{height:32px;font-size:13px;padding:0 12px 0 10px}.ai-pill--sm .ai-icon{width:16px;height:16px}
@@ -1310,3 +1310,20 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .app-top .nav span{display:flex;gap:var(--gap-2,8px)}
 .app-top .nav button{width:40px;height:40px;display:grid;place-items:center;padding:0;border:0;background:none;cursor:pointer}
 .app-top .nav img{width:24px;height:24px}
+
+/* PDP buy buttons (.pdp-ctas) — every PDP: Add to bag, then PayPal, then Apple Pay, stacked full width, gap 2 (8px). Order is fixed (Jake, 16 Oct 2026).
+   PayPal carries the "Checkout" label (.pp-co, 20px #2C2E2F) after the wordmark, as live. Promoted from the Shopping agent PDP. */
+.pdp-ctas{display:flex;flex-direction:column;gap:var(--gap-2,8px)}
+.pdp-ctas>.bd,.pdp-ctas>.pay{width:100%}
+.pay .pp-co{font:500 20px/1 var(--font-family-base);color:#2C2E2F}
+
+/* Google PDP prompts (.ai-prompts) — Google Cloud shopping agent's <google-ai-prompts product-id direction="column"> on every PDP, under the buy buttons.
+   DOM mirrors the web component's shadow parts: .prompts-container[data-dir=column|row] > .prompt-item > .prompt-link (.prompt-link__icon + __text).
+   Heading "Ask Deb" 16 semibold with the 18px AI icon; chips = .ai-pill--soft --wrap (puck shadow, never an outline); last chip "Ask anything" = .ai-pill--outline.
+   Gap 3 (12px) heading → chips, gap 2 (8px) between chips. Promoted from the Shopping agent prototype (projects/shopping-agent), 16 Oct 2026. */
+.ai-prompts{display:flex;flex-direction:column;gap:var(--gap-3,12px);font-family:var(--font-family-base)}
+.ai-prompts-hd{display:flex;align-items:center;gap:6px;margin:0;font-size:16px;font-weight:var(--w-strong,600);color:var(--text-primary)}
+.ai-prompts .prompts-container{display:flex;flex-wrap:wrap;gap:var(--gap-2,8px)}
+.ai-prompts .prompts-container[data-dir="column"]{flex-direction:column;align-items:stretch}
+.ai-prompts .prompts-container[data-dir="column"] .prompt-link{width:100%}
+.ai-prompts .prompt-link__icon{display:inline-flex}

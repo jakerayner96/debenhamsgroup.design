@@ -10,7 +10,8 @@
 <style>
 /* DS page template — PDP. Page scaffolding only (columns, gutters, gaps); every visible piece is a DS component:
    header (header.js) · USP banners (usp.js) · breadcrumb · PDP gallery · PDP title · ratings · price · delivery countdown · option label ·
-   colour swatches · size selector · button · membership box (membership.js) · Deliver+ · USP box · BNPL · at a glance · accordion ·
+   colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always that order) · Google PDP prompts (ai-prompts.js) ·
+   membership box (membership.js) · Deliver+ · delivery grid + delivery options modal (delivery.js) · BNPL · at a glance · accordion ·
    section rail + product card · footer (footer.js). Any fascia: ?brand=<slug>. Drop components in by targeting the data-slot hooks. */
 *{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
 body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
@@ -35,6 +36,8 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/usp.js"></script>
 <script src="assets/ds/footer.js"></script>
 <script src="assets/ds/membership.js"></script>
+<script src="assets/ds/delivery.js"></script>
+<script src="assets/ds/ai-prompts.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
 <script src="templates/products.js"></script>
 <script>
@@ -47,6 +50,8 @@ const desk=()=>innerWidth>=1024;
 const IC='assets/ds/icons/',LIB=IC+'lib/';
 const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt:'plt-heart'};
 const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
+/* delivery grid as live (DS delivery.js): fastest first, cheapest last, James's two-click-&-collect rule, badges, returns line */
+const DG_OPTS=()=>({layout:'list',scen:'std',pr:true,prBadge:'fastest',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'alert'});
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
 
 function header(){const dev=desk()?'desktop':'mobile';
@@ -76,10 +81,11 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
       <div class="opt-label">Colour: <b>${esc(P.colour)}</b></div>
       <div class="cswatches"><button class="cswatch on" aria-label="${esc(P.colour)}"><img src="${P.imgs[0]}" alt=""></button></div>
       <div class="sizes"><div class="sizes-head"><span>Size: <b>Select a size</b></span><span class="guide"><img src="${LIB}icons-measure.svg" alt="">Size guide</span></div><div class="set">${P.sizes.map(z=>`<button class="sz">${esc(z)}</button>`).join('')}</div></div>
-      <button class="bd pri">Add to bag</button>
+      <div class="pdp-ctas" data-slot="ctas"><button class="bd pri">Add to bag</button><button class="pay pay--paypal"><img src="assets/ds/icons/payments/paypal-wordmark.svg" alt="PayPal"><span class="pp-co">Checkout</span></button><button class="pay pay--apple"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button></div>
+      ${window.DG_aiPromptsHTML?DG_aiPromptsHTML(S.brand,{sku:P.sku||''}):''}
       ${window.DG_memberBoxHTML?DG_memberBoxHTML(S.brand):''}
       ${DPLUS.includes(S.brand)?`<div class="dplus"><div class="col"><div class="h">Peace of mind, guaranteed</div><ul><li>Free &amp; simple resale - recover value and give your items a second life</li><li>+14-day return extension</li><li>£5/day late delivery compensation</li><li>Full order coverage (lost, stolen, damaged) with instant payout on eligible claims</li></ul><span class="more">Learn More</span></div></div>`:''}
-      <div class="usp-box"><div class="r"><img src="${LIB}icons-delivery-fast.svg" alt=""><div><div class="t">Next day delivery</div><div class="s">Order by midnight</div></div></div><div class="r"><img src="${LIB}icons-return.svg" alt=""><div><div class="t">Free returns</div><div class="s">28 days, in store or by post</div></div></div></div>
+      ${window.DG_delivery?DG_delivery.grid(DG_OPTS()):''}
       <div class="bnpl"><div class="chips"><span class="pc pc--klarna"><img src="assets/ds/icons/payments/bnpl-klarna-word.svg" alt="Klarna"></span><span class="pc pc--clearpay"><img src="assets/ds/icons/payments/clearpay-lockup-mini.svg" alt="Clearpay"></span><span class="pc pc--paypal"><img src="assets/ds/icons/payments/bnpl-paypal-logo.svg" alt="PayPal"></span></div><div class="terms">Pay in 3 interest-free payments</div><div class="small">18+, T&amp;C apply. Credit subject to status.</div></div>
     </div>
   </div>
@@ -97,6 +103,7 @@ function wire(){
   g.querySelector('.prev').onclick=()=>go(Math.max(0,cur()-1));g.querySelector('.next').onclick=()=>go(Math.min(sl.children.length-1,cur()+1));
   sl.addEventListener('scroll',()=>{const i=cur(),n=sl.children.length,max=sl.scrollWidth-sl.clientWidth;th.forEach((b,j)=>b.classList.toggle('on',j===i));
     if(bar)bar.style.left=Math.round((max?sl.scrollLeft/max:0)*(100-100/n))+'%'},{passive:true});
+  if(window.DG_delivery)DG_delivery.mount(document,DG_OPTS());
   document.querySelectorAll('.acc-h').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
   document.querySelectorAll('.sz').forEach(z=>z.onclick=()=>{document.querySelectorAll('.sz').forEach(x=>x.classList.toggle('on',x===z));const l=document.querySelector('.sizes-head b');if(l)l.textContent=z.textContent});
   document.addEventListener('click',e=>{if(e.target.closest('a[href="#"]'))e.preventDefault()});

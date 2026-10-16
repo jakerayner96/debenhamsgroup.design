@@ -51,7 +51,7 @@ function tabbar(){const b=S.brand;
 function clear(d){d.querySelectorAll('[data-dg],[data-dgx],[data-dg-modal],.dgrid-bulky').forEach(n=>n.remove())}
 function style(d){let st=d.getElementById('dg-style');if(!st){st=d.createElement('style');st.id='dg-style';d.head.appendChild(st)}
   /* the static USP box is the old Strappy delivery copy — ecom removed it, the grid replaces it */
-  st.textContent='.buy>.usp-box{display:none!important}'+(S.context?'':'.buy>.member-box,.buy>.dplus{display:none!important}')+(app()?APP_HIDE:'')+(EXPORTING?'html,body{overflow:visible!important}':'')}
+  st.textContent=(S.context?'':'.buy>.member-box,.buy>.dplus{display:none!important}')+(app()?APP_HIDE:'')+(EXPORTING?'html,body{overflow:visible!important}':'')}
 function openModal(tab){const d=D();if(!d)return;d.querySelectorAll('[data-dg-modal]').forEach(n=>n.remove());
   openTab=tab;d.body.insertAdjacentHTML('beforeend',DG.modal(opts(),tab));
   const m=d.querySelector('[data-dg-modal]');
@@ -61,9 +61,11 @@ function inject(){const d=D();if(!d||!d.body||!d.querySelector('.buy'))return;
   if(obs)obs.disconnect();
   style(d);clear(d);
   const buy=d.querySelector('.buy'),o=opts();
-  /* placement: 'atc' = straight under Add to bag (Demi: delivery dates drive the decision) · 'live' = under the membership + Deliver+ boxes */
-  const atc=buy.querySelector(':scope>.bd.pri'),after=S.place==='live'?([...buy.querySelectorAll(':scope>.member-box,:scope>.dplus')].pop()||atc):atc;
-  if(after)after.insertAdjacentHTML('afterend',DG.grid(o));
+  /* placement: 'atc' = straight under the buy buttons, above the Google prompts (Demi: delivery dates drive the decision) · 'prompts' = under the Google prompts
+     · 'live' = under the membership + Deliver+ boxes. The template's own grid (live defaults) is replaced by this configured one. */
+  const atc=buy.querySelector(':scope>.pdp-ctas'),pr=buy.querySelector(':scope>.ai-prompts')||atc;
+  const after=S.place==='live'?([...buy.querySelectorAll(':scope>.member-box,:scope>.dplus')].pop()||pr):S.place==='prompts'?pr:atc;
+  if(after){after.insertAdjacentHTML('afterend',DG.grid(o));after.nextElementSibling.setAttribute('data-dgp','')}
   if(S.scen==='bulky'){const pr=buy.querySelector(':scope>.price-blk');if(pr)pr.insertAdjacentHTML('afterend',DG.bulky())}
   DG.wire(d,o,openModal);
   if(app()){d.body.insertAdjacentHTML('afterbegin',appTop());d.body.insertAdjacentHTML('beforeend',tabbar())}
@@ -71,7 +73,7 @@ function inject(){const d=D();if(!d||!d.body||!d.querySelector('.buy'))return;
   watch(d);
 }
 /* the template re-renders itself (breakpoint, its own state) — put the grid back when it does */
-function watch(d){let t;obs=new MutationObserver(()=>{clearTimeout(t);t=setTimeout(()=>{if(d.querySelector('.buy')&&!d.querySelector('[data-dg]'))inject()},120)});
+function watch(d){let t;obs=new MutationObserver(()=>{clearTimeout(t);t=setTimeout(()=>{if(d.querySelector('.buy')&&!d.querySelector('[data-dgp]'))inject()},120)});
   obs.observe(d.body,{childList:true,subtree:true})}
 
 function load(){

@@ -8,6 +8,8 @@ window.DG_CHANGELOG=[
   "title": "DS page templates + Taggstar + PDP delivery grid",
   "by": "Taggstar prototype (projects/taggstar) · PDP delivery grid prototype (projects/delivery-grid)",
   "added": [
+   "PDP buy buttons (.pdp-ctas) — Add to bag → PayPal Checkout → Apple Pay stacked, the fixed order on every PDP (Jake's rule); .pay .pp-co label promoted from the Shopping agent · by PDP delivery grid",
+   "Google PDP prompts (.ai-prompts + ai-prompts.js) — the <google-ai-prompts> chips + Ask anything, promoted from the Shopping agent prototype, on every PDP · by PDP delivery grid",
    "Delivery grid (.dgrid-* + delivery.js drop-in) — the PDP Delivery Methods box in three layouts (live sentences + James's PR badges / third home row, Delivery / Click & Collect tabs, one-liner), Premier view, bulky surcharge caveat (.dgrid-bulky), returns line · by PDP delivery grid",
    "Delivery options modal (.dopts-* on the DS .mdl) — Paul's Gifting Figma 209-294935 / 209-295333: Home Delivery / Collect Nearby toggle, one-list and single-tab variants, Northern Ireland split, footnote · by PDP delivery grid",
    "App top bar (.app-top) — iOS status row + PDP nav (back · share · wishlist) · by PDP delivery grid",
@@ -23,12 +25,14 @@ window.DG_CHANGELOG=[
    "Changelog (this page, assets/ds/changelog.js)"
   ],
   "changed": [
+   "PDP template (templates/pdp.html) now carries the buy-button stack, the Google prompts under it and the delivery grid (live layout, See more → Delivery Options modal) in place of the static USP box · by PDP delivery grid",
    "Order summary → the live bag payment summary (v2, .bs-* + bag-summary.js), promoted from the USP banner bag; .summary kept as legacy",
    "Promoted from the PLP prototype into the DS: content slot (.cslot), PLP title (.plp-title), SEO copy + Show more, grid view toggle — removed from plp-alignment/plp.html",
    "Taggstar CSS now lives only in components.css (taggstar.js no longer carries a copy)",
    "USP banner prototype uses the DS bag summary; projects/usp-banner/bag.js removed"
   ],
   "fixed": [
+   "AI pill: fill from --surface-raised (was #FFF), so PLT prompt chips are warm white per the sand rule · by PDP delivery grid",
    "Breadcrumb: padding gap 4 (16px) below as well as above (was 16 / 4), so the trail sits evenly between the header and the page · by PDP delivery grid",
    "Size guide glyph sized by the DS (was inline per page)",
    "Export: footer chevron drawn without a CSS mask while html.exporting (was a sign-in page override)",
