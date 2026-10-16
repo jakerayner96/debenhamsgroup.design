@@ -82,7 +82,7 @@
     const order=first==='collect'?['collect','home']:['home','collect'];
     const T={home:'Delivery',collect:'Click &amp; Collect'};
     return `${hasC?`<div class="dgrid-tabs" role="tablist">${order.map(k=>`<button role="tab" data-dg-tab="${k}" class="${k===first?'on':''}" aria-selected="${k===first}">${T[k]}</button>`).join('')}</div>`:''}
-      ${panel('home','Delivery','See more delivery options')}${hasC?panel('collect','Click & Collect','See more collection options'):''}`}
+      <div class="dgrid-panes">${panel('home','Delivery','See more delivery options')}${hasC?panel('collect','Click & Collect','See more collection options'):''}</div>`}
 
   /* C · one-liner (Amazon style) — everything else lives in the modal */
   function line(o){const M=methods(o),f=fastest(pdpPool(M.home)),cc=cheapest(M.collect);if(!f)return '';
@@ -110,7 +110,7 @@
     if(o.modal==='list'){body=homeBlock(o,M,1)+(M.collect.length?`<hr class="dopts-hr">`+collectBlock(o,M,1):'')}
     else if(o.modal==='tab'){title=tab==='collect'?'Collection Options':'Delivery Options';body=tab==='collect'?collectBlock(o,M,0):homeBlock(o,M,0)}
     else{body=`<div class="dopts-seg" role="tablist"><button data-dg-seg="home" class="${tab==='home'?'on':''}">Home Delivery</button><button data-dg-seg="collect" class="${tab==='collect'?'on':''}">Collect Nearby</button></div>
-      <div data-dg-mpanel="home"${tab==='home'?'':' hidden'}>${homeBlock(o,M,0)}</div><div data-dg-mpanel="collect"${tab==='collect'?'':' hidden'}>${collectBlock(o,M,0)}</div>`}
+      <div class="dopts-panes"><div data-dg-mpanel="home"${tab==='home'?'':' hidden'}>${homeBlock(o,M,0)}</div><div data-dg-mpanel="collect"${tab==='collect'?'':' hidden'}>${collectBlock(o,M,0)}</div></div>`}
     return `<div class="dopts-layer${lay==='mdl--up'?' dopts-layer--up':''}" data-dg-modal><div class="mdl-scrim" data-dg-close></div>
       <div class="mdl ${lay} dopts" role="dialog" aria-modal="true" aria-label="${title}"><div class="modal-hd"><span class="mt">${title}</span><button class="modal-x" data-dg-close aria-label="Close"></button></div>
       <div class="mdl-bd">${bulky}${body}<p class="dopts-note">${FOOT}</p></div></div></div>`}

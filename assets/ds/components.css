@@ -1287,6 +1287,12 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dopts .mdl-bd{overflow-y:auto;gap:var(--gap-4,16px)}
 .dopts .mdl-bd [hidden]{display:none}
 .dopts [data-dg-mpanel]{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
+/* tabs never change the height: both panes share one grid cell, so the window is always as tall as the longer list and the
+   footnote doesn't move when you switch (Jake, 16 Oct 2026). The hidden pane keeps its space but is invisible (and out of the a11y tree). */
+.dopts-panes,.dgrid-panes{display:grid}
+.dopts-panes>*,.dgrid-panes>*{grid-area:1/1;align-self:start}
+.dopts .mdl-bd .dopts-panes>[hidden]{display:flex;visibility:hidden}
+.dgrid-panes>[hidden]{display:flex;visibility:hidden}
 .dopts-seg{display:flex;padding:var(--gap-1,4px);border:var(--border-w,1px) solid var(--border-subtle);border-radius:calc(var(--radius-default)*2);flex:none}
 .dopts-seg button{flex:1;height:44px;border:0;border-radius:var(--radius-default);background:none;font:inherit;font-size:16px;color:var(--text-primary);cursor:pointer}
 .dopts-seg button.on{background:var(--surface-action);color:var(--text-on-action)}

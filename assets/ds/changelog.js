@@ -32,6 +32,7 @@ window.DG_CHANGELOG=[
    "USP banner prototype uses the DS bag summary; projects/usp-banner/bag.js removed"
   ],
   "fixed": [
+   "Delivery options modal + delivery grid tabs: both panes share one grid cell, so switching Home Delivery / Collect Nearby (or Delivery / Click & Collect) never changes the height · by PDP delivery grid",
    "AI pill: fill from --surface-raised (was #FFF), so PLT prompt chips are warm white per the sand rule · by PDP delivery grid",
    "Breadcrumb: padding gap 4 (16px) below as well as above (was 16 / 4), so the trail sits evenly between the header and the page · by PDP delivery grid",
    "Size guide glyph sized by the DS (was inline per page)",
