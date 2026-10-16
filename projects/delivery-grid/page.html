@@ -33,7 +33,7 @@ const app=()=>S.platform==='app';
 const IC='assets/ds/icons/',AP=IC+'app/';
 const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt:'plt-heart'};
 const prog=b=>{const m=(window.DG_MEMBERSHIP||{})[b];return m?m.name.replace(/^Debenhams /,''):''};
-const opts=()=>Object.assign({},S,{prog:prog(S.brand),desk:desk()&&!app(),sheet:app()?'up':(S.sheet||'alert')});
+const opts=()=>Object.assign({},S,{prog:prog(S.brand),desk:desk()&&!app(),sheet:'up'});
 
 /* app chrome: DS .app-top (status + nav) and .app-tabbar; the web header, USP bars, breadcrumb and footer go */
 const APP_HIDE='.hd,[data-usp-banners],.hd-usp,.bc,footer,[data-ftr]{display:none!important}';

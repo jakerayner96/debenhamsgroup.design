@@ -21,8 +21,8 @@
 | **A · Live + James's PR** | sentences, fastest top / cheapest bottom; badges; if both are C&C add the fastest home delivery (badge "Fastest" as the PR, or "Fastest home delivery") |
 | **B · Tabs** | Delivery / Click & Collect, checkout-style rows, price right; See more opens the modal on that tab |
 | **C · One-liner** | "Get it Tomorrow to M4 7BB" + "or collect from £2.49" + one link into the modal |
-| Modal | toggle (Paul) · one sectioned list · only the tab you came from (B) |
-| Rules | NI own section / mixed · sort price ↑ / fastest · cut-off "midnight" / "12AM" · See more with two methods · returns line + days |
+| Modal | fixed (Jake, 16 Oct): Home Delivery / Collect Nearby toggle (Paul) only, page grid type · NI always its own section · price low → high · slides up on mobile web + app, DS small modal on desktop |
+| Rules | cut-off "midnight" / "12AM" · See more with two methods · returns line + days |
 | Product | standard · C&C comes back first (the live bug) · marketplace (two methods) · bulky (caveat under the price, in the box and in the modal) |
 | Customer | Standard / the fascia's programme (Unlimited, Premier Club, Premier, Royalty — next day free) |
 | Placement | under Ask Deb (below the buy buttons) / under membership + Deliver+ — both boxes always shown |
