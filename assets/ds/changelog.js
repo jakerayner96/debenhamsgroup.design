@@ -29,6 +29,7 @@ window.DG_CHANGELOG=[
    "Changelog (this page, assets/ds/changelog.js)"
   ],
   "changed": [
+   "Subscribe & Save modal: centred modal (.mdl--sm) on desktop and tablet, the slide-up sheet only on phones; product row as Debenhams live — 72px image with small 14/20 details beside it (brand, name, tag, line price, Size, Colour); Quantity beside Add to bag on one row; .qty--lg 50px to match the button · by Jake (PDP delivery grid)",
    "PDP template: the Delivery Options modal slides up (.mdl--up) on mobile web as well as app; desktop stays the DS small modal · by Jake (PDP delivery grid)",
    "Delivery options modal: Home Delivery / Collect Nearby tabs, rows, prices and section heads now use the page grid type (12px underline tabs, 14/20 rows, 14 semibold price, 12 light was price), replacing the 44px filled toggle and 16px rows · by Jake (PDP delivery grid)",
    "PDP template: Ask Deb (Google prompts) moved up to sit straight under Apple Pay in the buy column; Subscribe & Save under it; accordions stay under the gallery on desktop / after the buy column on mobile · by Jake (PDP delivery grid)",

@@ -58,8 +58,8 @@ const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt
 const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
 /* delivery grid as live (DS delivery.js): fastest first, cheapest last, James's two-click-&-collect rule, badges, returns line */
 const DG_OPTS=()=>({layout:'list',scen:'std',pr:true,prBadge:'fastest',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up'});
-/* Subscribe & Save: the product at 5% off, size = the first size until one is picked */
-const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(document.querySelector('.sz.on')||{}).textContent||P.sizes[0],pct:5});
+/* Subscribe & Save: the product at 5% off, size = the first size until one is picked; centred modal from 600px, bottom sheet on phones */
+const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(document.querySelector('.sz.on')||{}).textContent||P.sizes[0],colour:P.colour,pct:5});
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
 
 function header(){const dev=desk()?'desktop':'mobile';
@@ -116,7 +116,7 @@ function wire(){
   sl.addEventListener('scroll',()=>{const i=cur(),n=sl.children.length,max=sl.scrollWidth-sl.clientWidth;th.forEach((b,j)=>b.classList.toggle('on',j===i));
     if(bar)bar.style.left=Math.round((max?sl.scrollLeft/max:0)*(100-100/n))+'%'},{passive:true});
   if(window.DG_delivery)DG_delivery.mount(document,DG_OPTS());
-  if(window.DG_subscribe){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams;document.querySelectorAll('[data-sns-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-sns-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_subscribe.modal(SNS(P),{desk:desk()}));DG_subscribe.wire(document.querySelector('[data-sns-modal]'))})}
+  if(window.DG_subscribe){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams;document.querySelectorAll('[data-sns-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-sns-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_subscribe.modal(SNS(P),{desk:innerWidth>=600}));DG_subscribe.wire(document.querySelector('[data-sns-modal]'))})}
   document.querySelectorAll('.acc-h').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
   document.querySelectorAll('.sz').forEach(z=>z.onclick=()=>{document.querySelectorAll('.sz').forEach(x=>x.classList.toggle('on',x===z));const l=document.querySelector('.sizes-head b');if(l)l.textContent=z.textContent});
   document.addEventListener('click',e=>{if(e.target.closest('a[href="#"]'))e.preventDefault()});

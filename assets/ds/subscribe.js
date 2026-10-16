@@ -1,10 +1,10 @@
 /* DG Group DS — Subscribe & Save drop-in (Figma ed2M0bCy3GMtlTRdtkwM4F · PDP box 172:24095 · modal 34:8920), added 16 Oct 2026.
    The PDP box carries an ADD button like the membership box (Jake); ADD opens the Subscribe & Save modal on the DS .mdl
-   (desktop .mdl--sm · mobile + app .mdl--up bottom sheet as the Figma).
+   (centred .mdl--sm from 600px up — desktop and tablet · phones, web and app, the .mdl--up bottom sheet as the Figma).
    Use:  DG_subscribe.box(p)        → the PDP box html
-         DG_subscribe.modal(p,o)    → the modal layer html (o.desk → .mdl--sm)
+         DG_subscribe.modal(p,o)    → the modal layer html (o.desk → centred .mdl--sm; pass innerWidth>=600)
          DG_subscribe.mount(doc,p,o)→ wires every [data-sns-open] in doc to open the modal over doc.body; X / scrim close it
-   p = {brand,name,price:'£21.60',img,size,pct:5} — the subscribe price is price less pct. */
+   p = {brand,name,price:'£21.60',img,size,colour,pct:5} — the subscribe price is price less pct. */
 (function(root){
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
@@ -21,12 +21,12 @@
       <div class="mdl-bd">
         <div class="sns-prod">${p.img?`<img src="${esc(p.img)}" alt="">`:''}<div class="i"><b>${esc(p.brand)}</b><span>${esc(p.name)}</span>
           <span class="sns-tag">Save extra ${pct}%</span>
-          <div class="price-blk price-blk--pdp"><div class="price"><span class="now sale">${sub(p)}</span><span class="was">${esc(p.price)}</span></div></div>
-          ${p.size?`<span class="sns-size">Size: <b>${esc(p.size)}</b></span>`:''}</div></div>
-        <label class="sns-f"><span>Deliver every:</span><div class="fsel"><span data-sns-every>Please select</span><select aria-label="Deliver every"><option value="" selected disabled>Please select</option>${EVERY.map(e=>`<option>${e}</option>`).join('')}</select></div></label>
-        <div class="sns-f"><span>Quantity:</span><div class="qty qty--lg"><button type="button" aria-label="Decrease" data-sns-q="-1"><img src="assets/ds/icons/lib/icons-minus.svg" alt=""></button><span data-sns-n>1</span><button type="button" aria-label="Increase" data-sns-q="1"><img src="assets/ds/icons/lib/icons-add.svg" alt=""></button></div></div>
+          <div class="price-blk price-blk--line"><div class="price"><span class="now sale">${sub(p)}</span><span class="was">${esc(p.price)}</span></div></div>
+          ${p.size?`<span>Size: ${esc(p.size)}</span>`:''}${p.colour?`<span>Colour: ${esc(p.colour)}</span>`:''}</div></div>
+        <label class="sns-f"><span>Deliver Every:</span><div class="fsel"><span data-sns-every>Please select</span><select aria-label="Deliver every"><option value="" selected disabled>Please select</option>${EVERY.map(e=>`<option>${e}</option>`).join('')}</select></div></label>
+        <div class="sns-f"><span>Quantity:</span><div class="sns-buy"><div class="qty qty--lg"><button type="button" aria-label="Decrease" data-sns-q="-1"><img src="assets/ds/icons/lib/icons-minus.svg" alt=""></button><span data-sns-n>1</span><button type="button" aria-label="Increase" data-sns-q="1"><img src="assets/ds/icons/lib/icons-add.svg" alt=""></button></div><button class="bd pri" type="button">Add to bag</button></div></div>
       </div>
-      <div class="mdl-ft"><button class="bd pri" type="button">Add to bag</button>
+      <div class="mdl-ft">
         <p class="sns-legal">By signing up to a Subscribe &amp; Save subscription you agree to our <a href="#">Terms &amp; Conditions</a>.</p>
         <p class="sns-legal">Your subscription will continue until cancelled, subject to a 30-day cancellation notice period. Please note that live prices may fluctuate.</p></div>
       </div></div>`}

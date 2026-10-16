@@ -1365,8 +1365,8 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .acc-set .acc-b .glance{margin:0;padding:0}
 
 /* Subscribe & Save (C-sns + assets/ds/subscribe.js) — Figma ed2M0bCy3GMtlTRdtkwM4F · PDP box 172:24095 · modal 34:8920, 16 Oct 2026.
-   Box: title + Save tag, three ticks, ADD button like the membership box (opens the modal). Modal: the DS .mdl (desktop --sm · mobile --up)
-   inside .sns-layer (shares the delivery modal layer rules) · product row · Deliver every (.fsel) · Quantity (.qty--lg) · Add to bag · legal. */
+   Box: title + Save tag, three ticks, ADD button like the membership box (opens the modal). Modal: the DS .mdl (centred --sm from 600px · phones --up)
+   inside .sns-layer (shares the delivery modal layer rules) · product row (small details beside the image) · Deliver Every (.fsel) · Quantity (.qty--lg) beside Add to bag · legal. */
 .sns{display:flex;align-items:center;gap:var(--gap-6,24px);padding:var(--gap-4,16px);border:1px solid var(--border-subtle);border-radius:var(--radius-default);background:var(--surface-raised);color:var(--text-primary);font-family:var(--font-family-base)}
 .sns .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--gap-3,12px)}
 .sns-hd{display:flex;align-items:center;gap:var(--gap-2,8px);flex-wrap:wrap}
@@ -1379,14 +1379,18 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .sns .add{flex:none;height:32px;padding:0 var(--gap-4,16px);border:0;border-radius:var(--radius-default);background:var(--text-primary);color:var(--text-inverse,#FFF);font:var(--w-strong) 14px/1 var(--font-family-base);text-transform:uppercase;cursor:pointer}
 .sns-mdl .modal-hd .mt{display:flex;align-items:center;gap:var(--gap-3,12px)}
 .sns-mdl .mdl-bd{gap:var(--gap-6,24px)}
-.sns-prod{display:flex;gap:var(--gap-4,16px);align-items:flex-start}
-.sns-prod img{width:96px;aspect-ratio:3/4;object-fit:cover;flex:none;border-radius:var(--radius-default)}
-.sns-prod .i{display:flex;flex-direction:column;gap:var(--gap-2,8px);min-width:0;font-size:16px;line-height:22px}
+.sns-mdl .mdl-ft{gap:var(--gap-3,12px)}
+/* product row (Debenhams live): 72px image on the left, the details small beside it — 14/20, brand semibold, line price */
+.sns-prod{display:flex;gap:var(--gap-6,24px);align-items:center}
+.sns-prod img{width:72px;height:96px;object-fit:contain;flex:none}
+.sns-prod .i{display:flex;flex-direction:column;align-items:flex-start;gap:var(--gap-2,8px);min-width:0;font-size:14px;line-height:20px}
 .sns-prod .i>b{font-weight:var(--w-strong,600)}
-.sns-size{font-size:14px}.sns-size b{font-weight:var(--w-strong,600);margin-left:var(--gap-6,24px)}
-.sns-f{display:flex;flex-direction:column;align-items:flex-start;gap:var(--gap-3,12px);font-size:16px}
+.sns-f{display:flex;flex-direction:column;align-items:stretch;gap:var(--gap-3,12px);font-size:16px}
 .sns-f .fsel{width:100%}
-.qty--lg button{width:44px;height:48px}.qty--lg span{height:48px;min-width:32px;font-size:16px}.qty--lg button img{width:20px;height:20px}
+/* Quantity + Add to bag on one row */
+.sns-buy{display:flex;gap:var(--gap-4,16px);align-items:stretch}
+.sns-buy .qty{flex:none}.sns-buy .bd{flex:1;min-width:0}
+.qty--lg button{width:44px;height:50px}.qty--lg span{height:50px;min-width:32px;font-size:16px}.qty--lg button img{width:20px;height:20px}
 .sns-legal{margin:0;font-size:12px;line-height:17px;color:var(--text-secondary)}.sns-legal a{color:inherit}
 
 
