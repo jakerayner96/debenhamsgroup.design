@@ -8,6 +8,8 @@ window.DG_CHANGELOG=[
   "title": "DS page templates + Taggstar + PDP delivery grid",
   "by": "Taggstar prototype (projects/taggstar) · PDP delivery grid prototype (projects/delivery-grid)",
   "added": [
+   "Accordion set (.acc-set) — PDP info rows with keylines between, 15px semibold heads, icons-down chevron; promoted from the Shopping agent · by master PDP",
+   "AI tag chip (.ai-pill--tag + .pdp-chips) — Shop Similar above the PDP title; promoted from the Shopping agent · by master PDP",
    "PDP buy buttons (.pdp-ctas) — Add to bag → PayPal Checkout → Apple Pay stacked, the fixed order on every PDP (Jake's rule); .pay .pp-co label promoted from the Shopping agent · by PDP delivery grid",
    "Google PDP prompts (.ai-prompts + ai-prompts.js) — the <google-ai-prompts> chips + Ask anything, promoted from the Shopping agent prototype, on every PDP · by PDP delivery grid",
    "Delivery grid (.dgrid-* + delivery.js drop-in) — the PDP Delivery Methods box in three layouts (live sentences + James's PR badges / third home row, Delivery / Click & Collect tabs, one-liner), Premier view, bulky surcharge caveat (.dgrid-bulky), returns line · by PDP delivery grid",
@@ -25,6 +27,8 @@ window.DG_CHANGELOG=[
    "Changelog (this page, assets/ds/changelog.js)"
   ],
   "changed": [
+   "MASTER PDP: templates/pdp.html rebuilt to the Shopping agent PDP (banked as the master) — no breadcrumb on mobile; product tags bottom right; Shop Similar chip above the title; ratings; size guide as text; buy stack; membership; Deliver+ with logo + quote (catalogue variant); delivery grid where the old delivery box sat; BNPL with Pay+ and the instalment; Google prompts + the accordion set (At a Glance open · Description · Product Details & Care · Delivery · Returns · Manufacturer) under the buy column, left column on desktop; no rail · by Shopping agent → master PDP",
+   "PDP gallery: product tags moved to .ptags, bottom right, stacked (was a badge top left) · by master PDP",
    "Delivery grid: Fastest / Cheapest tags restyled to James's PR (Fastest red on --error-bg, Cheapest grey, 4px radius, semibold) and set beside the arrival line; option A is the PR's row layout (arrival + tag / method | price); Delivery / Click & Collect tabs moved top right on the title line · by PDP delivery grid",
    "PDP template (templates/pdp.html) now carries the buy-button stack, the Google prompts under it and the delivery grid (live layout, See more → Delivery Options modal) in place of the static USP box · by PDP delivery grid",
    "Order summary → the live bag payment summary (v2, .bs-* + bag-summary.js), promoted from the USP banner bag; .summary kept as legacy",

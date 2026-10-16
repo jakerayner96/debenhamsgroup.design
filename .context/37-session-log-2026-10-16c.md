@@ -14,3 +14,11 @@ A PDP = `templates/pdp.html` as it stands, including every component a project h
 
 ## Follow-up
 projects/shopping-agent still carries its own copies of the buy stack (.ctas) and prompts (.gap-wrap / .prompts-container) — switch it to `.pdp-ctas` / `.ai-prompts` next time it's touched.
+
+## Later — Shopping agent PDP banked as the master
+**Jake:** the Shopping agent PDP is the latest PDP — bank it as the master in the DS and use it in the delivery grid prototype.
+- templates/pdp.html rebuilt to it (order in the header comment). DS kept for chrome: header.js / footer.js (the agent's exposed search + AI circle is the agent's entry-point option, not promoted); member-box (DS) for the agent's local .unl.
+- Promoted: `.acc-set`, `.pdp-gal .ptags`, `.ai-pill--tag` + `.pdp-chips`. Deliver+ and BNPL now come from their catalogue variants.
+- Dropped to match the master: mobile breadcrumb, the Next Day countdown (.ndd), the "You may also like" rail.
+- Google prompts moved from under the buy buttons to above the accordions (the master's default).
+- delivery-grid: placement "under the Google prompts" removed (they're no longer in the buy column).

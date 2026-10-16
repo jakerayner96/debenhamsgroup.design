@@ -61,10 +61,9 @@ function inject(){const d=D();if(!d||!d.body||!d.querySelector('.buy'))return;
   if(obs)obs.disconnect();
   style(d);clear(d);
   const buy=d.querySelector('.buy'),o=opts();
-  /* placement: 'atc' = straight under the buy buttons, above the Google prompts (Demi: delivery dates drive the decision) · 'prompts' = under the Google prompts
-     · 'live' = under the membership + Deliver+ boxes. The template's own grid (live defaults) is replaced by this configured one. */
-  const atc=buy.querySelector(':scope>.pdp-ctas'),pr=buy.querySelector(':scope>.ai-prompts')||atc;
-  const after=S.place==='live'?([...buy.querySelectorAll(':scope>.member-box,:scope>.dplus')].pop()||pr):S.place==='prompts'?pr:atc;
+  /* placement: 'atc' = straight under the buy buttons (Demi: delivery dates drive the decision) · 'live' = under the membership + Deliver+ boxes (master PDP). The template's own grid (live defaults) is replaced by this configured one. */
+  const atc=buy.querySelector(':scope>.pdp-ctas');
+  const after=S.place==='live'?([...buy.querySelectorAll(':scope>.member-box,:scope>.dplus')].pop()||atc):atc;
   if(after){after.insertAdjacentHTML('afterend',DG.grid(o));after.nextElementSibling.setAttribute('data-dgp','')}
   if(S.scen==='bulky'){const pr=buy.querySelector(':scope>.price-blk');if(pr)pr.insertAdjacentHTML('afterend',DG.bulky())}
   DG.wire(d,o,openModal);

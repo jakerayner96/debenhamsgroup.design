@@ -8,23 +8,26 @@
 <link rel="stylesheet" href="assets/ds/tokens.css">
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
-/* DS page template — PDP. Page scaffolding only (columns, gutters, gaps); every visible piece is a DS component:
-   header (header.js) · USP banners (usp.js) · breadcrumb · PDP gallery · PDP title · ratings · price · delivery countdown · option label ·
-   colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always that order) · Google PDP prompts (ai-prompts.js) ·
-   membership box (membership.js) · Deliver+ · delivery grid + delivery options modal (delivery.js) · BNPL · at a glance · accordion ·
-   section rail + product card · footer (footer.js). Any fascia: ?brand=<slug>. Drop components in by targeting the data-slot hooks. */
+/* DS page template — PDP. THE MASTER PDP: the Shopping agent PDP (projects/shopping-agent, banked 16 Oct 2026) rebuilt on DS components only.
+   Order — mobile: header · USP banners · gallery (product tags bottom right) · AI tag chip (Shop Similar) · PDP title · ratings · price ·
+   option label + colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always) · membership box · Deliver+ ·
+   delivery grid (delivery.js; See more → Delivery Options modal) · BNPL · then Google PDP prompts (ai-prompts.js) and the accordion set
+   (At a Glance open · Description · Product Details & Care · Delivery · Returns · Manufacturer) · footer.
+   Desktop: breadcrumb, then gallery + prompts + accordions on the left, the buy column on the right.
+   New PDP features land HERE so every next PDP gets them. Any fascia: ?brand=<slug>. Drop components in via the data-slot hooks. */
 *{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
 body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
 .pg{padding:0 var(--gap-4)}
 .pdp{display:flex;flex-direction:column;gap:var(--gap-4)}
-.pdp>.gal{margin:0 calc(var(--gap-4)*-1)}
+.pdp .gal{margin:0 calc(var(--gap-4)*-1)}
 .buy{display:flex;flex-direction:column;gap:var(--gap-4)}
 .buy .bd{width:100%}
-.below{display:flex;flex-direction:column;gap:var(--gap-6);margin:var(--gap-8) 0}
+.under{display:flex;flex-direction:column;gap:var(--gap-6);margin:var(--gap-2) 0 var(--gap-8)}
 @media(min-width:1024px){
   .pg{padding:0 var(--gap-12);max-width:1440px;margin:0 auto}
   .pdp{display:grid;grid-template-columns:minmax(0,1fr) 446px;gap:var(--gap-16);align-items:start}
-  .pdp>.gal{margin:0}
+  .pdp .gal{margin:0}
+  .under{margin-top:var(--gap-6)}
   .buy{gap:var(--gap-5)}
 }
 </style>
@@ -38,7 +41,8 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/membership.js"></script>
 <script src="assets/ds/delivery.js"></script>
 <script src="assets/ds/ai-prompts.js"></script>
-<script src="projects/plp-alignment/data.js"></script>
+<script src="assets/ds/dplus-logos.js"></script>
+<script src="assets/ds/catalogue.js"></script>
 <script src="templates/products.js"></script>
 <script>
 /* in: ?brand=<slug> or ?s={"brand":…}; {protoSet} / {protoPing} as the review shell expects. out: {protoReady}, {protoPong,h}. */
@@ -59,42 +63,44 @@ function header(){const dev=desk()?'desktop':'mobile';
 function gallery(p){
   return `<div class="pdp-gal" data-slot="gallery">
     <div class="thumbs">${p.imgs.map((s,i)=>`<button class="${i?'':'on'}" data-i="${i}" aria-label="Image ${i+1}"><img src="${s}" alt=""></button>`).join('')}</div>
-    <div class="main">${p.tag?`<div class="tags"><span class="badge">${esc(p.tag)}</span></div>`:''}
+    <div class="main">${(p.tags||(p.tag?[p.tag]:[])).length?`<span class="ptags">${(p.tags||[p.tag]).map(x=>`<span>${esc(x)}</span>`).join('')}</span>`:''}
       <div class="slides">${p.imgs.map((s,i)=>`<img src="${s}" alt="${esc(p.name)}, view ${i+1}">`).join('')}</div>
       <button class="nav prev" aria-label="Previous image"><img src="${LIB}icons-left.svg" alt=""></button><button class="nav next" aria-label="Next image"><img src="${LIB}icons-right.svg" alt=""></button></div>
     <div class="pag"><i style="width:${Math.round(100/p.imgs.length)}%"></i></div></div>`}
 function price(p){return `<div class="price-blk price-blk--pdp"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>${p.save?`<span class="save">${esc(p.save)}</span>`:''}`:''}</div>${p.code?`<div class="price-code">${esc(p.code)}</div>`:''}</div>`}
-function card(x,i){if(!x)return '';const b=S.brand,sq=WISH[b]==='bookmark',pl=b==='plt';
-  return `<article class="pc"><div class="pc-img"><img class="ph" src="projects/plp-alignment/img/${b}/p${x.img??i}.jpg" alt="" loading="lazy"><div class="pc-actions"><button class="pc-iconbtn${sq?' pc-iconbtn--sq':pl?' pc-fav--plain':''}" aria-label="Add to wishlist"><img src="${IC}${sq?'bookmark':pl?'plt-heart':'heart-16'}.svg" alt=""></button></div></div>
-    <div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${x.brand?`<div class="pc-brand">${esc(x.brand)}</div>`:''}<div class="pc-name">${esc(x.name)}</div></div></div>
-    <div class="pc-price${x.was?' sale':''}"><span class="now">${esc(x.price)}</span>${x.was?`<span class="was">${esc(x.was)}</span>`:''}${x.pct?`<span class="pct">${esc(x.pct)}</span>`:''}</div></div></article>`}
-function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams,recs=((window.PRODUCTS_ALL||{})[S.brand]||[]).slice(0,8);
+const C=window.DG_CATALOGUE||[],V=(slug,i=0)=>{const c=C.find(x=>x.slug===slug);return c&&c.variants[i]?c.variants[i].html:''};
+const strip=h=>h.replace(/ style="width:[^"]*"/,'');
+const num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
+function accSet(P){const rows=[['At a Glance',P.glance?`<ul class="glance glance--chips">${P.glance.map(g=>`<li><i>✓</i>${esc(g)}</li>`).join('')}</ul>`:'',true],
+    ['Description',`${esc(P.name)}.${P.glance?' '+esc(P.glance.join('. '))+'.':''}`],
+    ['Product Details &amp; Care','Fabric and care from the product feed.'],
+    ['Delivery','Every way to get this item, and its price, is in Delivery Methods above.'],
+    ['Returns','Eligible for return within 21 days. Exclusions apply.'],
+    ['Manufacturer',`${esc(P.brand)}, Debenhams Group, Manchester M1 2DU.`]].filter(r=>r[1]);
+  return `<div class="acc-set" data-slot="info">${rows.map(([h,b,o])=>`<div class="acc${o?' open':''}"><button class="acc-h">${h}<img src="${LIB}icons-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${b}</div></div>`).join('')}</div>`}
+function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams,d=desk();
   const crumbs=P.crumbs.map((c,i)=>i<P.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('');
-  return `${header()}<main class="pg">
-  <nav class="bc" aria-label="Breadcrumb">${crumbs}</nav>
-  <div class="pdp">
-    <div class="gal">${gallery(P)}</div>
-    <div class="buy" data-slot="buy">
+  const bnpl=strip(V('bnpl',0)).replace(/£23\.33/,'£'+(num(P.price)/3).toFixed(2));
+  const dplus=DPLUS.includes(S.brand)?strip(V('deliver-plus',d?1:0)):'';
+  const under=`<div class="under" data-slot="below">${window.DG_aiPromptsHTML?DG_aiPromptsHTML(S.brand,{sku:P.sku||''}):''}${accSet(P)}</div>`;
+  const buy=`<div class="buy" data-slot="buy">
+      <div class="pdp-chips" data-slot="ai-chips"><button class="ai-pill ai-pill--soft ai-pill--tag"><i class="ai-icon"></i>Shop Similar</button></div>
       <div class="pdp-head"><div class="titles"><span class="brand">${esc(P.brand)}</span><h1 class="name">${esc(P.name)}</h1></div><button class="wish" aria-label="Add to wishlist"><img src="${wishIcon(S.brand)}" alt=""></button></div>
+      ${V('ratings',0).replace(/ style="[^"]*"/,'')}
       ${price(P)}
-      ${P.ndd?`<div class="ndd"><img src="${LIB}icons-delivery-fast.svg" alt=""><span>Order in <b>${esc(P.ndd)}</b> for Next Day Delivery</span></div>`:''}
       <div class="opt-label">Colour: <b>${esc(P.colour)}</b></div>
       <div class="cswatches"><button class="cswatch on" aria-label="${esc(P.colour)}"><img src="${P.imgs[0]}" alt=""></button></div>
-      <div class="sizes"><div class="sizes-head"><span>Size: <b>Select a size</b></span><span class="guide"><img src="${LIB}icons-measure.svg" alt="">Size guide</span></div><div class="set">${P.sizes.map(z=>`<button class="sz">${esc(z)}</button>`).join('')}</div></div>
+      <div class="sizes"><div class="sizes-head"><span>Size: <b>Select a size</b></span><span class="guide">Size guide</span></div><div class="set">${P.sizes.map(z=>`<button class="sz">${esc(z)}</button>`).join('')}</div></div>
       <div class="pdp-ctas" data-slot="ctas"><button class="bd pri">Add to bag</button><button class="pay pay--paypal"><img src="assets/ds/icons/payments/paypal-wordmark.svg" alt="PayPal"><span class="pp-co">Checkout</span></button><button class="pay pay--apple"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button></div>
-      ${window.DG_aiPromptsHTML?DG_aiPromptsHTML(S.brand,{sku:P.sku||''}):''}
       ${window.DG_memberBoxHTML?DG_memberBoxHTML(S.brand):''}
-      ${DPLUS.includes(S.brand)?`<div class="dplus"><div class="col"><div class="h">Peace of mind, guaranteed</div><ul><li>Free &amp; simple resale - recover value and give your items a second life</li><li>+14-day return extension</li><li>£5/day late delivery compensation</li><li>Full order coverage (lost, stolen, damaged) with instant payout on eligible claims</li></ul><span class="more">Learn More</span></div></div>`:''}
+      ${dplus}
       ${window.DG_delivery?DG_delivery.grid(DG_OPTS()):''}
-      <div class="bnpl"><div class="chips"><span class="pc pc--klarna"><img src="assets/ds/icons/payments/bnpl-klarna-word.svg" alt="Klarna"></span><span class="pc pc--clearpay"><img src="assets/ds/icons/payments/clearpay-lockup-mini.svg" alt="Clearpay"></span><span class="pc pc--paypal"><img src="assets/ds/icons/payments/bnpl-paypal-logo.svg" alt="PayPal"></span></div><div class="terms">Pay in 3 interest-free payments</div><div class="small">18+, T&amp;C apply. Credit subject to status.</div></div>
-    </div>
-  </div>
-  <div class="below" data-slot="below">
-    ${P.glance?`<div class="sec-head"><h3>At a Glance</h3></div><ul class="glance glance--chips">${P.glance.map(g=>`<li><i>✓</i>${esc(g)}</li>`).join('')}</ul>`:''}
-    <div><div class="acc open"><button class="acc-h">Description<img src="${LIB}icons-down-arrow.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${esc(P.name)}. ${P.glance?esc(P.glance.join('. '))+'.':''}</div></div><div class="hr"></div>
-      <div class="acc"><button class="acc-h">Delivery &amp; returns<img src="${LIB}icons-down-arrow.svg" alt="" onerror="this.remove()"></button><div class="acc-b">Free returns within 28 days.</div></div></div>
-    ${recs.length?`<div style="display:flex;flex-direction:column;gap:12px"><div class="sec-head"><h3>You may also like</h3><a href="#">View all</a></div><div class="prail">${recs.map(card).join('')}</div></div>`:''}
-  </div></main><footer data-ftr="${S.brand}"></footer>`}
+      ${bnpl}
+    </div>`;
+  return `${header()}<main class="pg">
+  ${d?`<nav class="bc" aria-label="Breadcrumb">${crumbs}</nav>`:''}
+  <div class="pdp">${d?`<div><div class="gal">${gallery(P)}</div>${under}</div>${buy}`:`<div class="gal">${gallery(P)}</div>${buy}${under}`}</div>
+  </main><footer data-ftr="${S.brand}"></footer>`}
 function wire(){
   const g=document.querySelector('.pdp-gal');if(!g)return;const sl=g.querySelector('.slides'),th=[...g.querySelectorAll('.thumbs button')],bar=g.querySelector('.pag i');
   const go=i=>{const im=sl.children[i];if(im)sl.scrollTo({left:im.offsetLeft-sl.offsetLeft,behavior:'smooth'})};

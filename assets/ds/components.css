@@ -1338,3 +1338,21 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .ai-prompts .prompts-container[data-dir="column"]{flex-direction:column;align-items:stretch}
 .ai-prompts .prompts-container[data-dir="column"] .prompt-link{width:100%}
 .ai-prompts .prompt-link__icon{display:inline-flex}
+
+/* ---- Promoted from the Shopping agent PDP — the master PDP from 16 Oct 2026 (templates/pdp.html) ---- */
+/* PDP gallery product tags (.pdp-gal .ptags): bottom right of the gallery, stacked, white 90% · 13px light (14px desktop), 4px radius. Pinned to the
+   gallery, gap 4 (16px) from the edge, so they stay put as the images scroll. */
+.pdp-gal .ptags{position:absolute;z-index:3;right:var(--gap-4,16px);bottom:var(--gap-3,12px);display:flex;flex-direction:column;align-items:flex-end;gap:var(--gap-1,4px);pointer-events:none}
+.pdp-gal .ptags span{background:rgba(255,255,255,.9);color:#000;font:300 13px/1 var(--font-family-base);padding:7px 10px;border-radius:var(--radius-default)}
+@media(min-width:1024px){.pdp-gal .ptags{bottom:var(--gap-4,16px)}.pdp-gal .ptags span{font-size:14px;padding:8px 12px}}
+/* AI tag chip (.ai-pill--tag): the Shop Similar / Virtual Stylist chip in the row above the PDP title — 13px light, 9 / 14 padding, 16px icon */
+.ai-pill--tag{height:auto;padding:9px 14px;gap:6px;font-size:13px;font-weight:300}.ai-pill--tag .ai-icon{width:16px;height:16px}.ai-pill--tag img{width:16px;height:12px}
+.pdp-chips{display:flex;gap:10px;flex-wrap:wrap}
+/* Accordion set (.acc-set): the PDP info rows — At a Glance (open) · Description · Product Details & Care · Delivery · Returns · Manufacturer.
+   Keyline only between rows, gap 4 (16px) row padding, 15px semibold head, 16px chevron (icons-down) that flips open. */
+.acc-set .acc{display:block;border:0}.acc-set .acc+.acc{border-top:var(--border-w,1px) solid var(--border-subtle)}
+.acc-set .acc:not(.open) .acc-b{display:none}
+.acc-set .acc-h{padding:var(--gap-4,16px) 0;font:var(--w-strong,600) 15px var(--font-family-base)}
+.acc-set .acc-h img{width:16px;height:16px}
+.acc-set .acc-b{padding:0 0 var(--gap-4,16px);font-size:14px;font-weight:300;line-height:1.6}
+.acc-set .acc-b .glance{margin:0;padding:0}
