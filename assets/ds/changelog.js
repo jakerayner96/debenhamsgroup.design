@@ -13,7 +13,7 @@ window.DG_CHANGELOG=[
   "changed": [
    "Tooltip: white (--surface-raised) with a soft drop shadow and the nib centred, like the desktop account hover menu; --tip-x now measures from the left (default 50%) · by Shopping agent",
    "Tooltip: the New tag moved above the copy (.tip-b body wrapper) · by Shopping agent",
-   "Tooltip rebuilt to Figma HoBuVNEhf1qpL61XFipy0f 135:8952 (nib up): fascia page colour + font, 12/16 light centred copy under a semibold NEW!, 24px diamond nib, 12px close top right, 8px corners on every fascia · by Shopping agent"
+   "Tooltip rebuilt to Figma HoBuVNEhf1qpL61XFipy0f 135:8952 (nib up): fascia page colour + font, 12/16 light centred copy under a semibold NEW!, 24px diamond nib, 12px close top right, 8px corners on every fascia, hug width (no wrapping) · by Shopping agent"
   ],
   "fixed": [
    "USP data (usp-live.js): boohoo middle message is now the live “MID SEASON SALE – 50% OFF SELECTED LINES*” (re-checked 19 Oct) · by Shopping agent"

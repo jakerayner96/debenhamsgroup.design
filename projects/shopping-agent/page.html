@@ -538,7 +538,7 @@ function header(){
   h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
   const cls=[lift?'lifted'+(header.was?'':' lifting'):'',S.search&&!header.was&&!EXPORTING?'opening srch-in':'',!S.search&&header.was&&!EXPORTING?'srch-out':'',lo+'-lo',ni?'ni-lo':'',S.search&&!ni&&header.was?'ask-ic':'',S.search&&S.q&&lo!=='niAsk'?'typing':''].filter(Boolean).join(' ');
   /* DS tooltip: “something new” behind the search icon (not exposed) / the Ask pill (exposed); panel toggle S.tip, X dismisses for the session */
-  const tip=S.tip&&!S.tipX&&!S.search&&!CHAT.open?`<div class="tip ag-tip${EXPORTING?'':' tip--in'}" role="status"><span class="tip-b"><span class="tip-new">New!</span><span><b>${esc(ask())}</b>, our AI shopping assistant, is now in search.</span></span><button class="tip-x" data-tipx="1" aria-label="Dismiss"><svg viewBox="0 0 6.25 6.25" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="round"><path d="M5.875.375l-5.5 5.5M.375.375l5.5 5.5"/></svg></button></div>`:'';
+  const tip=S.tip&&!S.tipX&&!S.search&&!CHAT.open?`<div class="tip ag-tip${EXPORTING?'':' tip--in'}" role="status"><span class="tip-b"><span class="tip-new">New!</span><span><b>${esc(ask())}</b>, our new AI shopping assistant!</span></span><button class="tip-x" data-tipx="1" aria-label="Dismiss"><svg viewBox="0 0 6.25 6.25" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="round"><path d="M5.875.375l-5.5 5.5M.375.375l5.5 5.5"/></svg></button></div>`:'';
   return `<div id="hdrwrap" class="${cls}">${h}${S.search?autocomplete():''}${tip}</div>`;
 }
 

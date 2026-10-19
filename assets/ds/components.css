@@ -1478,9 +1478,9 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .wl-btn--sm{width:32px;height:32px}.wl-btn--sm img{width:16px;height:16px}
 /* Tooltip (.tip) — "something new here" coach mark. Figma HoBuVNEhf1qpL61XFipy0f 135:8952 (Best App Ever), nib flipped to point up:
    a flat bubble on the fascia's page colour, centred copy — "NEW!" semibold over 12/16 text in the fascia's regular weight (--w-regular; Figma = Roboto Light for PLT) — a 24px diamond nib and a 12px close top right.
-   Each fascia's font (--font-family-base) and page colour (--surface-page, e.g. PLT cream #FFFDF7); 8px corners on every fascia (Jake, 19 Oct)
+   Each fascia's font (--font-family-base) and page colour (--surface-page, e.g. PLT cream #FFFDF7); 8px corners on every fascia, hugs its copy — one line per row, no wrapping (Jake, 19 Oct)
    and a soft shadow so it reads on white pages. --tip-x = the nib's distance from the left edge (default the centre); .tip--left = 22px in. */
-.tip{position:relative;display:inline-block;width:max-content;max-width:min(232px,calc(100vw - 32px));padding:8px 20px;border-radius:8px;background:var(--surface-page,#FFF);color:var(--text-primary);font-family:var(--font-family-base);font-size:12px;line-height:16px;font-weight:var(--w-regular,300);text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.12),0 1px 3px rgba(0,0,0,.06)}
+.tip{position:relative;display:inline-block;width:max-content;max-width:calc(100vw - 16px);white-space:nowrap;padding:8px 20px;border-radius:8px;background:var(--surface-page,#FFF);color:var(--text-primary);font-family:var(--font-family-base);font-size:12px;line-height:16px;font-weight:var(--w-regular,300);text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.12),0 1px 3px rgba(0,0,0,.06)}
 .tip::before{content:"";position:absolute;top:-8px;left:var(--tip-x,50%);width:24px;height:24px;margin-left:-12px;background:inherit;border-radius:2px;transform:rotate(45deg);box-shadow:-3px -3px 6px -2px rgba(0,0,0,.06);z-index:0}
 .tip>*{position:relative;z-index:1}
 .tip--left{--tip-x:22px}
