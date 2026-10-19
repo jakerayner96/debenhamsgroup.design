@@ -1088,6 +1088,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
    on all 16 today; a fascia whose CTA fails 3:1 sets --ai-fg:#000 instead. --ai-tint / --ai-ink = the soft surface and text for AI chips. */
 :root,[data-brand]{--ai-fg:var(--surface-action,#000);--ai-tint:var(--surface-sunken,#F5F5F5);--ai-ink:var(--text-primary,#000);--ai-icon-bg:var(--ai-fg);--ai-icon-mask:url("icons/ai.svg") center/contain no-repeat}
 [data-brand]:not([data-brand="debenhams"]){--ai-gradient:linear-gradient(var(--ai-fg),var(--ai-fg))}
+[data-brand="karenmillen"]{--ai-fg:#000}   /* Karen Millen's AI is black, not its orange CTA (Jake 19 Oct) — the app's brands.ts ai tokens mirror this whole block */
 :root:not([data-brand]),[data-brand="debenhams"]{--ai-fg:#2E7F79;--ai-tint:#F2F8F7;--ai-ink:#2F6B63;--ai-icon-bg:url("icons/ai.svg") center/contain no-repeat;--ai-icon-mask:none;--ai-gradient:linear-gradient(107deg,#70BEB3 0%,#9DEDE2 99.4%)}
 .ai-icon{display:inline-block;width:20px;height:20px;flex:none;background:var(--ai-icon-bg);-webkit-mask:var(--ai-icon-mask);mask:var(--ai-icon-mask)}
 .ai-pill{display:flex;align-items:center;gap:6px;height:36px;padding:0 16px 0 12px;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);border:0;color:var(--text-primary);font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-mid,500);line-height:1.2;white-space:nowrap;cursor:pointer;text-align:left}
