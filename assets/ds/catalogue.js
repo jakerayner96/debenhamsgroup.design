@@ -705,15 +705,6 @@ const DG_CATALOGUE = [
   variants:[{name:'PDP + card', html:'<div style="display:flex;gap:12px;align-items:center;padding:8px"><button class="wl-btn" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button><button class="wl-btn wl-btn--sm" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button></div>'}],
   dev:{title:'Atoms/WishlistButton', status:'partial', note:'Dev renders a rounded square on cards — make it a circle.'} },
 
-{ slug:'tooltip', name:'Tooltip', group:'Feedback', tier:'atom', css:'.tip · .tip--left · .tip--in · .tip-b · .tip-new · .tip-x', figma:'HoBuVNEhf1qpL61XFipy0f · 135-8952 (nib flipped up)',
-  summary:'A small bubble that points up at a control to say something new is there — e.g. Ask Deb behind the header search icon. Fascia font and page colour, 8px corners, centred copy. One at a time, dismissable.',
-  use:['A coach mark for a new feature behind an existing control (search icon, Ask pill).','Once per session; the X dismisses it.'],
-  avoid:['Long copy: it hugs its text on one line under the NEW! label, so keep it to a short sentence.','More than one on screen.','Hover-only help text on mobile.'],
-  anatomy:['--surface-page · --font-family-base · 12/16 light, centred · “NEW!” .tip-new semibold on its own line · 8/20 padding · 8px radius · soft shadow · 24px diamond nib on top (--tip-x from the left, or .tip--left) · 12px close 4px in (6px cross, .75 stroke)'],
-  variants:[{name:'New feature', html:'<div style="padding:24px 16px 16px"><div class="tip"><span class="tip-b"><span class="tip-new">New!</span><span><b>Ask Deb</b>, our new AI shopping assistant!</span></span><button class="tip-x" aria-label="Dismiss"><svg viewBox="0 0 6.25 6.25" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="round"><path d="M5.875.375l-5.5 5.5M.375.375l5.5 5.5"/></svg></button></div></div>'},
-            {name:'Nib left', html:'<div style="padding:24px 16px 16px"><div class="tip tip--left">Tap here to try it.</div></div>'}],
-  dev:{title:'—', status:'ours', note:'Not in the dev Storybook. Shopping agent coach mark.'} },
-
 { slug:'entry-chip', name:'Entry chip', group:'Chips & pills', tier:'atom', css:'.entry-chip',
   summary:'Floating white chip with an icon and count badge — the PDP entry to Virtual Try On or a set.',
   use:['Over the PDP gallery.'],

@@ -5,16 +5,12 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-19",
   "v": "2026.10.19",
-  "title": "Tooltip + review-shell Screenshot",
+  "title": "Review-shell Screenshot",
   "by": "Shopping agent prototype (projects/shopping-agent)",
   "added": [
    "Review shell Screenshot button (assets/ds/proto-shot.js) — beside Export in every prototype shell: saves a 2x PNG of what is on screen in the device frame to Downloads · by Shopping agent",
-   "Tooltip (.tip, .tip--left, .tip--in, .tip-new, .tip-x) — bubble with a top nib (--tip-x), optional New tag and close; the coach mark for Ask Deb behind the header search icon · by Shopping agent"
   ],
   "changed": [
-   "Tooltip: white (--surface-raised) with a soft drop shadow and the nib centred, like the desktop account hover menu; --tip-x now measures from the left (default 50%) · by Shopping agent",
-   "Tooltip: the New tag moved above the copy (.tip-b body wrapper) · by Shopping agent",
-   "Tooltip rebuilt to Figma HoBuVNEhf1qpL61XFipy0f 135:8952 (nib up): fascia page colour + font, 12/16 light centred copy under a semibold NEW!, 24px diamond nib, 12px close top right, 8px corners on every fascia, hug width (no wrapping) · by Shopping agent"
   ],
   "fixed": [
    "Grey text is Grey 4 #767676 everywhere (Jake's rule): --text-secondary and --action-disabled-fg moved off Grey 5 #6B6B6B, hardcoded greys in components.css (.dplus-bag .powered, .ac-ctx .lbl, field fallbacks, .auth-note) now use the token — fixes the delivery grid “Select a size to see seller info” placeholder · by PDP delivery grid",
