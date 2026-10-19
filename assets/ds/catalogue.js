@@ -706,12 +706,12 @@ const DG_CATALOGUE = [
   dev:{title:'Atoms/WishlistButton', status:'partial', note:'Dev renders a rounded square on cards — make it a circle.'} },
 
 { slug:'tooltip', name:'Tooltip', group:'Feedback', tier:'atom', css:'.tip · .tip--left · .tip--in · .tip-new · .tip-x',
-  summary:'A small black bubble that points at a control to say something new is there — e.g. Ask Deb behind the header search icon. One at a time, dismissable.',
+  summary:'A small white bubble (soft drop shadow, centred nib — like the desktop account hover menu) that points at a control to say something new is there — e.g. Ask Deb behind the header search icon. One at a time, dismissable.',
   use:['A coach mark for a new feature behind an existing control (search icon, Ask pill).','Once per session; the X dismisses it.'],
   avoid:['Long copy (two lines max).','More than one on screen.','Hover-only help text on mobile.'],
-  anatomy:['--surface-inverse · --text-inverse 13px · 10/12 padding · --radius-lg · 12px arrow on top (--tip-x from the right, or .tip--left) · optional .tip-new tag (--surface-action) · 18px close'],
-  variants:[{name:'New feature', html:'<div style="padding:16px 8px 8px"><div class="tip"><span class="tip-new">New</span><span><b>Ask Deb</b>, our AI shopping assistant, is now in search.</span><button class="tip-x" aria-label="Dismiss"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg></button></div></div>'},
-            {name:'Arrow left', html:'<div style="padding:16px 8px 8px"><div class="tip tip--left">Tap here to try it.</div></div>'}],
+  anatomy:['--surface-raised · --text-primary 13px · 12/14 padding · --radius-lg · 0 4px 24px shadow · 12px nib centred on top (--tip-x from the left when clamped, or .tip--left) · optional .tip-new tag (--surface-action) · 18px close'],
+  variants:[{name:'New feature', html:'<div style="padding:20px 16px 16px"><div class="tip"><span class="tip-new">New</span><span><b>Ask Deb</b>, our AI shopping assistant, is now in search.</span><button class="tip-x" aria-label="Dismiss"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg></button></div></div>'},
+            {name:'Nib left', html:'<div style="padding:16px 8px 8px"><div class="tip tip--left">Tap here to try it.</div></div>'}],
   dev:{title:'—', status:'ours', note:'Not in the dev Storybook. Shopping agent coach mark.'} },
 
 { slug:'entry-chip', name:'Entry chip', group:'Chips & pills', tier:'atom', css:'.entry-chip',

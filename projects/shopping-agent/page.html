@@ -779,11 +779,12 @@ function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat()
   const body=document.getElementById('cmbody');if(body&&CHAT.msgs.length)body.scrollTop=body.scrollHeight;
   const inp=document.getElementById('cminput');if(inp&&CHAT.focus&&!EXPORTING){inp.focus();inp.setSelectionRange(inp.value.length,inp.value.length);CHAT.focus=false}}
 
-/* the tooltip sits under the header search icon (not exposed, mobile) or the Ask pill, arrow on the anchor's centre */
+/* the tooltip sits under the header search icon (not exposed, mobile) or the Ask pill, nib on the anchor's centre */
 function placeTip(){const tp=document.querySelector('.ag-tip'),hw=document.getElementById('hdrwrap');if(!tp||!hw)return;
   const a=hw.querySelector('.hd-sicon')||hw.querySelector('.ag-ask');if(!a){tp.remove();return}
-  const W=hw.clientWidth,hr=hw.getBoundingClientRect(),r=a.getBoundingClientRect(),cx=r.left+r.width/2-hr.left;
-  const right=Math.max(8,W-(cx+26));tp.style.top=(r.bottom-hr.top+10)+'px';tp.style.right=right+'px';tp.style.setProperty('--tip-x',Math.round(W-right-cx-6)+'px')}
+  /* centred under the anchor, clamped 8px inside the page; the nib stays on the anchor's centre */
+  const W=hw.clientWidth,hr=hw.getBoundingClientRect(),r=a.getBoundingClientRect(),cx=r.left+r.width/2-hr.left,w=tp.offsetWidth;
+  const left=Math.min(Math.max(8,cx-w/2),W-w-8);tp.style.top=(r.bottom-hr.top+12)+'px';tp.style.left=left+'px';tp.style.right='auto';tp.style.setProperty('--tip-x',Math.round(cx-left)+'px')}
 /* ================= render ================= */
 /* ================= BAG — DS templates/bag.html (live /basket, 06 Oct): title · threshold · bag items · bag-summary.js ================= */
 function bag(){const ix=[3,12],ps=ix.map(i=>PR()[i]).filter(Boolean),it=ps.map(p=>({price:p.price,was:p.was}));
