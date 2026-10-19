@@ -11,7 +11,8 @@ window.DG_CHANGELOG=[
    "Tooltip (.tip, .tip--left, .tip--in, .tip-new, .tip-x) — bubble with a top nib (--tip-x), optional New tag and close; the coach mark for Ask Deb behind the header search icon · by Shopping agent"
   ],
   "changed": [
-   "Tooltip: white (--surface-raised) with a soft drop shadow and the nib centred, like the desktop account hover menu; --tip-x now measures from the left (default 50%) · by Shopping agent"
+   "Tooltip: white (--surface-raised) with a soft drop shadow and the nib centred, like the desktop account hover menu; --tip-x now measures from the left (default 50%) · by Shopping agent",
+   "Tooltip: the New tag moved above the copy (.tip-b body wrapper) · by Shopping agent"
   ],
   "fixed": []
  },
