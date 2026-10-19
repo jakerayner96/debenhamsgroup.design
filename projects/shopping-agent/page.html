@@ -317,7 +317,6 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .hd-search .ph>span{grid-area:1/1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .25s ease,transform .25s ease}
 .hd-search .ph.act::before{content:"";position:absolute;left:0;top:50%;width:2px;height:22px;margin-top:-11px;border-radius:99px;background:#5877FF;animation:caret 1s steps(1) infinite}
 /* bag page scaffolding (as templates/bag.html) */
-.ag-tip{position:absolute;z-index:35}   /* placed by placeTip() under its anchor */
 .bagpg{padding:0 var(--gap-4)}.bitems{display:flex;flex-direction:column;gap:var(--gap-4)}.bitems>*{max-width:100%}.bsum{margin-top:var(--gap-6)}
 @media(min-width:1024px){.bagpg{max-width:1024px;margin:0 auto}.bcols{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:var(--gap-4);align-items:start}.bsum{margin:0;background:var(--surface-sunken)}}
 /* open / close motion. srch-in = the render that opened search (kept until the next render, so nothing is cut short);
@@ -479,7 +478,7 @@ const IMG=i=>{if(DEB())return `projects/plp-alignment/img/debenhams/p${i<7?i:i+1
 const A='projects/shopping-agent/';
 
 /* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
-let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'niAsk',tip:true,mCam:16,mSearchIcon:true,mTxt:14,start:'config',pdpPos:'belowCta',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
+let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'niAsk',mCam:16,mSearchIcon:true,mTxt:14,start:'config',pdpPos:'belowCta',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
   pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
   ssPos:'title',vtoPos:'title',chipPos:'title',chipKind:'similar',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
@@ -537,9 +536,7 @@ function header(){
   /* USP banners stay put: the search panel fades in over them, so nothing on the page disappears instantly */
   h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
   const cls=[lift?'lifted'+(header.was?'':' lifting'):'',S.search&&!header.was&&!EXPORTING?'opening srch-in':'',!S.search&&header.was&&!EXPORTING?'srch-out':'',lo+'-lo',ni?'ni-lo':'',S.search&&!ni&&header.was?'ask-ic':'',S.search&&S.q&&lo!=='niAsk'?'typing':''].filter(Boolean).join(' ');
-  /* DS tooltip: “something new” behind the search icon (not exposed) / the Ask pill (exposed); panel toggle S.tip, X dismisses for the session */
-  const tip=S.tip&&!S.tipX&&!S.search&&!CHAT.open?`<div class="tip ag-tip${EXPORTING?'':' tip--in'}" role="status"><span class="tip-b"><span class="tip-new">New!</span><span><b>${esc(ask())}</b>, our new AI shopping assistant!</span></span><button class="tip-x" data-tipx="1" aria-label="Dismiss"><svg viewBox="0 0 6.25 6.25" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="round"><path d="M5.875.375l-5.5 5.5M.375.375l5.5 5.5"/></svg></button></div>`:'';
-  return `<div id="hdrwrap" class="${cls}">${h}${S.search?autocomplete():''}${tip}</div>`;
+  return `<div id="hdrwrap" class="${cls}">${h}${S.search?autocomplete():''}</div>`;
 }
 
 /* ================= SEARCH ACTIVE — Search Figma 1012:2295, re-ordered (Jake 15 Oct):
@@ -779,12 +776,6 @@ function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat()
   const body=document.getElementById('cmbody');if(body&&CHAT.msgs.length)body.scrollTop=body.scrollHeight;
   const inp=document.getElementById('cminput');if(inp&&CHAT.focus&&!EXPORTING){inp.focus();inp.setSelectionRange(inp.value.length,inp.value.length);CHAT.focus=false}}
 
-/* the tooltip sits under the header search icon (not exposed, mobile) or the Ask pill, nib on the anchor's centre */
-function placeTip(){const tp=document.querySelector('.ag-tip'),hw=document.getElementById('hdrwrap');if(!tp||!hw)return;
-  const a=hw.querySelector('.hd-sicon')||hw.querySelector('.ag-ask');if(!a){tp.remove();return}
-  /* centred under the anchor, clamped 8px inside the page; the nib stays on the anchor's centre */
-  const W=hw.clientWidth,hr=hw.getBoundingClientRect(),r=a.getBoundingClientRect(),cx=r.left+r.width/2-hr.left,w=tp.offsetWidth;
-  const left=Math.min(Math.max(8,cx-w/2),W-w-8);tp.style.top=(r.bottom-hr.top+16)+'px';tp.style.left=left+'px';tp.style.right='auto';tp.style.setProperty('--tip-x',Math.round(cx-left)+'px')}
 /* ================= render ================= */
 /* ================= BAG — DS templates/bag.html (live /basket, 06 Oct): title · threshold · bag items · bag-summary.js ================= */
 function bag(){const ix=[3,12],ps=ix.map(i=>PR()[i]).filter(Boolean),it=ps.map(p=>({price:p.price,was:p.was}));
@@ -814,7 +805,7 @@ function render(){
   {const hw=document.getElementById('hdrwrap');if(hw&&hw.classList.contains('opening'))requestAnimationFrame(()=>requestAnimationFrame(()=>hw.classList.remove('opening')))}
   if(window.DG_uspMount)DG_uspMount();
   if(!DEB())document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,BR()));
-  galSync();wirePdp();placeTip();
+  galSync();wirePdp();
   if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
   drawChat();
   if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el&&el.closest('#ac')){scrollTo(0,0);document.getElementById('ac').scrollTop=0}else if(el)el.scrollIntoView({block:'center',behavior:'auto'})}   /* instant, no highlight; search panel features open from the top */
@@ -827,7 +818,7 @@ function focusSearch(){const i=document.querySelector('#hdrwrap .srch-field');if
 document.addEventListener('input',e=>{if(!e.target.classList||!e.target.classList.contains('srch-field'))return;S.q=e.target.value;const hw=document.getElementById('hdrwrap');if(hw)hw.classList.toggle('typing',!!S.q.trim()&&S.launcher!=='niAsk')   /* chosen option (niAsk): Ask stays, no push-out */});
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('srch-field')&&e.target.value.trim()){e.preventDefault();e.target.blur();const t=document.getElementById('ct');t.textContent='Search results for “'+e.target.value.trim()+'”';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2000)}});
 addEventListener('message',e=>{const d=e.data||{};
-  if(d.protoSet){if(d.protoSet.tip&&!S.tip)S.tipX=false;S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;if(BASE)CFG=AG.build(BASE,S.agent,BR());if(BASE)render()}
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;if(BASE)CFG=AG.build(BASE,S.agent,BR());if(BASE)render()}
   if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
 /* gallery: progress bar follows the rail; thumbs + arrows step it (desktop) */
 function galIdx(){const g=document.getElementById('gal');if(!g)return 0;const s=g.querySelector('.slide');const w=s.offsetWidth+(parseFloat(getComputedStyle(g).columnGap)||0);return Math.min(Math.round(g.scrollLeft/w),g.children.length-1)}
@@ -839,7 +830,6 @@ document.addEventListener('submit',e=>{if(e.target.id==='cmform'){e.preventDefau
 document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.target.value;const b=document.getElementById('cmsend');if(b)b.classList.toggle('on',!!e.target.value.trim())}});
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
-  if(e.target.closest('[data-tipx]')){S.tipX=true;const tp=document.querySelector('.ag-tip');if(tp)tp.remove();return}
   if(e.target.closest('.hd-burger')){parent.postMessage({protoMenu:1},'*');return}   /* prototype: the hamburger opens the shell's settings panel (phones) */
   if(!S.search&&e.target.closest('[data-opensearch]')){scrollTo(0,0);S.search=true;S.q='';parent.postMessage({protoSearch:true},'*');render();focusSearch();return}
   if(e.target.closest('[data-closesearch]')){const hw=document.getElementById('hdrwrap');
