@@ -12,6 +12,7 @@ window.DG_CHANGELOG=[
    "Tooltip (.tip, .tip--left, .tip--in, .tip-new, .tip-x) — bubble with a top nib (--tip-x), optional New tag and close; the coach mark for Ask Deb behind the header search icon · by Shopping agent"
   ],
   "changed": [
+   "AI tokens: --ai-accent (mid aqua: bullets, hover keylines) and --ai-track (light aqua track) join --ai-fg / --ai-tint / --ai-ink — Debenhams #70BEB3 / #D6E9E6, every other fascia its own palette (--ai-fg / --border-subtle), so no aqua is hard-coded on a non-Debenhams page · by Shopping agent",
    "Tooltip: white (--surface-raised) with a soft drop shadow and the nib centred, like the desktop account hover menu; --tip-x now measures from the left (default 50%) · by Shopping agent",
    "Tooltip: the New tag moved above the copy (.tip-b body wrapper) · by Shopping agent",
    "Tooltip rebuilt to Figma HoBuVNEhf1qpL61XFipy0f 135:8952 (nib up): fascia page colour + font, 12/16 light centred copy under a semibold NEW!, 24px diamond nib, 12px close top right, 8px corners on every fascia, hug width (no wrapping) · by Shopping agent"
