@@ -457,5 +457,6 @@ async function doExport(){const btns=[$('#exportbtn'),$('#exportbtn2')];btns.for
 addEventListener('message',e=>{if(e.source!==frame.contentWindow||!e.data)return;if(e.data.protoMenu&&matchMedia('(max-width:760px)').matches){$('#panel').classList.add('open');return}if('protoChat' in e.data&&S.cfg.chat!==e.data.protoChat){S.cfg.chat=e.data.protoChat;save();panel()}if('protoSearch' in e.data){S.cfg.search=e.data.protoSearch;save();panel()}});
 $('#exportbtn').onclick=doExport;$('#exportbtn2').onclick=doExport;
 </script>
+<script src="../../assets/ds/proto-shot.js"></script>   <!-- Screenshot button beside Export: PNG of what is on screen in the device frame -->
 </body>
 </html>

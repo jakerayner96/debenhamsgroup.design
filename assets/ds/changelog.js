@@ -5,9 +5,10 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-19",
   "v": "2026.10.19",
-  "title": "Tooltip",
+  "title": "Tooltip + review-shell Screenshot",
   "by": "Shopping agent prototype (projects/shopping-agent)",
   "added": [
+   "Review shell Screenshot button (assets/ds/proto-shot.js) — beside Export in every prototype shell: saves a 2x PNG of what is on screen in the device frame to Downloads · by Shopping agent",
    "Tooltip (.tip, .tip--left, .tip--in, .tip-new, .tip-x) — bubble with a top nib (--tip-x), optional New tag and close; the coach mark for Ask Deb behind the header search icon · by Shopping agent"
   ],
   "changed": [

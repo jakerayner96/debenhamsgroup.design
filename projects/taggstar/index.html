@@ -310,5 +310,6 @@ async function doExport(){const btns=[$('#exportbtn'),$('#exportbtn2')];btns.for
   finally{btns.forEach(b=>b.disabled=false);exp.hidden=true;setTimeout(()=>status.textContent='',8000)}}
 $('#exportbtn').onclick=doExport;$('#exportbtn2').onclick=doExport;
 </script>
+<script src="../../assets/ds/proto-shot.js"></script>   <!-- Screenshot button beside Export: PNG of what is on screen in the device frame -->
 </body>
 </html>
