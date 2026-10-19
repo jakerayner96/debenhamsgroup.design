@@ -3,6 +3,17 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-10-19",
+  "v": "2026.10.19",
+  "title": "Tooltip",
+  "by": "Shopping agent prototype (projects/shopping-agent)",
+  "added": [
+   "Tooltip (.tip, .tip--left, .tip--in, .tip-new, .tip-x) — inverse bubble with a top arrow (--tip-x), optional New tag and close; the coach mark for Ask Deb behind the header search icon · by Shopping agent"
+  ],
+  "changed": [],
+  "fixed": []
+ },
+ {
   "d": "2026-10-16",
   "v": "2026.10.16",
   "title": "DS page templates + Taggstar + PDP delivery grid",

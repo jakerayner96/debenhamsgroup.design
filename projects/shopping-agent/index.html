@@ -207,7 +207,7 @@ const P={
   domains:{debenhams:'debenhams.com'},
   files:['page.html','agent.js','base-config.json'],
   store:'proto-shopping-agent',
-  initial:()=>({page:'home',feat:'ep-ni-ask',epTab:'ni',dec19:1,mCam:16,mSearchIcon:true,mTxt:14,on:{},launcher:'niAsk',start:'config',pdpPos:'belowCta',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
+  initial:()=>({page:'home',tip:true,feat:'ep-ni-ask',epTab:'ni',dec19:1,mCam:16,mSearchIcon:true,mTxt:14,on:{},launcher:'niAsk',start:'config',pdpPos:'belowCta',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
     pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
     ssPos:'title',vtoPos:'title',chipPos:'title',chipKind:'similar',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
     acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
@@ -224,7 +224,7 @@ function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search i
   if(BASE)AG.diff(BASE,cfgFile()).forEach(d=>lines.push(`- \`${d.path}\`: ${JSON.stringify(d.from)} → ${JSON.stringify(d.to)}`));
   lines.push('','Start screen: sparkle + “Hi there, I’m Deb” · one line · four one-line starter prompts (a custom_template in the messages-header slot, replacing the hero + zero-state intro). Close = DS modal close, 16×16 1pt at 24px in; no title bar text or icon.');
   lines.push('Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
-  lines.push('## 2 · Entry point + features (front end)','',`- **Entry point**: ${ep}`,`- **Mobile search field**: camera + search icons ${c.mCam||20}px · search icon ${c.mSearchIcon===false?'hidden (the keyboard search key does it)':'shown'} · text ${c.mTxt||16}px${(c.mTxt||16)<16?' (input kept at 16px and scaled by '+((c.mTxt||16)/16).toFixed(3)+' so iOS does not zoom)':''}.`);
+  lines.push('## 2 · Entry point + features (front end)','',`- **Entry point**: ${ep}`,`- **“New” tooltip**: ${c.tip?'on — DS Tooltip (.tip) under the header search icon / Ask pill: “New · Ask Deb, our AI shopping assistant, is now in search.”, dismissable':'off'}`,`- **Mobile search field**: camera + search icons ${c.mCam||20}px · search icon ${c.mSearchIcon===false?'hidden (the keyboard search key does it)':'shown'} · text ${c.mTxt||16}px${(c.mTxt||16)<16?' (input kept at 16px and scaled by '+((c.mTxt||16)/16).toFixed(3)+' so iOS does not zoom)':''}.`);
   FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${o?o[1]+' — '+o[2]:''}`)});
   lines.push(`- **Virtual Try On / Shop Similar**: chips ${c.chipPos==='image'?'stacked top right of the PDP gallery':c.chipPos==='bl'?'stacked bottom left of the PDP gallery':'in a row above the product title (VTO Figma 15656:21934)'} — one chip: ${c.chipKind==='vto'?'Virtual Stylist (hanger)':'Shop Similar (AI icon)'}.`);
   lines.push(`- **PLP Next Best Action**: ${c.nbaRow?`a full-width row of the grid after row ${c.nbaRow} (${c.nbaRow*2} products on mobile, ${c.nbaRow*5} on desktop)`:'below the filters, above the first row of products'}.`);
@@ -264,6 +264,7 @@ function renderPanel(host,S,update){
   if(!c.dec19){c.dec19=1;Object.assign(c,{launcher:'niAsk',feat:'ep-ni-ask',epTab:'ni',mCam:16,mSearchIcon:true,mTxt:14})}
   if(!c.dec19b){c.dec19b=1;if(c.launcher==='niAsk')c.mSearchIcon=true}   /* 19 Oct: the small search icon is back */
   if(c.launcher==='icon'||c.launcher==='niLift')Object.assign(c,{launcher:'niAsk',feat:'ep-ni-ask',mCam:16,mSearchIcon:true,mTxt:14});
+  if(c.tip===undefined)c.tip=true;
   if(c.launcher==='outIcon'){c.launcher='outAsk';c.feat='ep-oa'}   /* the AI-icon-only option was removed 19 Oct */
   if(!['outAsk','lift','niAsk'].includes(c.launcher))c.launcher='niAsk';
   if(!FEATS.some(x=>x.k===c.feat))c.feat={outAsk:'ep-oa',lift:'ep-lift',niAsk:'ep-ni-ask'}[c.launcher];if(!c.start)c.start='config';
@@ -277,6 +278,7 @@ function renderPanel(host,S,update){
     <span class="seg" id="eptab" style="margin-bottom:6px"><button data-v="ex" class="${tab==='ex'?'on':''}">Exposed search</button><button data-v="ni" class="${tab==='ni'?'on':''}">Not exposed</button></span>
     ${FEATS.filter(x=>x.grp===tab).map(x=>opt(x.k===c.feat,x.n,'',`data-feat="${x.k}"`)).join('')}
     <div class="f" style="margin-top:10px"><span>See it on</span><span class="seg" id="eppage">${[['home','Home'],['plp','PLP'],['pdp','PDP'],['bag','Bag']].map(([v,n])=>`<button data-v="${v}" class="${(c.page||'home')===v?'on':''}">${n}</button>`).join('')}</span></div>
+    <div class="f"><span>“New” tooltip on the search</span><span class="seg" id="eptip"><button data-v="1" class="${c.tip?'on':''}">On</button><button data-v="0" class="${c.tip?'':'on'}">Off</button></span><small>DS Tooltip under the search icon (or the Ask pill). The X hides it until you turn it back on.</small></div>
     <p style="margin:8px 0 0">Desktop search is always exposed, with the Ask pill.</p>
     ${tab==='ni'?`<p style="margin:8px 0 0">Mobile field: camera + search icons at 16px, 14px text (decided 19 Oct).</p>`:`<div class="f" style="margin-top:14px"><span>Mobile search field · camera + search icons</span><span class="seg" id="mcam"><button data-v="20" class="${(c.mCam||20)==20?'on':''}">20px (live)</button><button data-v="16" class="${c.mCam==16?'on':''}">16px</button></span></div>
     <div class="f"><span>Mobile search field · search icon</span><span class="seg" id="msi"><button data-v="1" class="${c.mSearchIcon!==false?'on':''}">Show</button><button data-v="0" class="${c.mSearchIcon===false?'on':''}">Hide</button></span><small>The keyboard has its own search key, so the icon in the field can go.</small></div>
@@ -331,6 +333,7 @@ function renderPanel(host,S,update){
   const go=()=>{update();panel()};
   host.querySelectorAll('[data-feat]').forEach(b=>b.onclick=()=>{const x=FEATS.find(f=>f.k===b.dataset.feat);c.feat=x.k;if(x.set)Object.assign(c,x.set);if(x.k==='vto')c.chipKind='vto';if(x.k==='shopSimilar')c.chipKind='similar';
     c.page=x.k.startsWith('ep-')?(c.page||'home'):x.pg;c.search=!!x.search;c.chat=false;c.focus={f:x.k.startsWith('ep-')?'launcher':x.k,n:Date.now()};go()});
+  host.querySelectorAll('#eptip button').forEach(b=>b.onclick=()=>{c.tip=b.dataset.v==='1';c.search=false;c.chat=false;c.focus=null;go()});
   host.querySelectorAll('#eppage button').forEach(b=>b.onclick=()=>{c.page=b.dataset.v;c.search=false;c.chat=false;c.focus=null;go()});
   host.querySelectorAll('#eptab button').forEach(b=>b.onclick=()=>{c.epTab=b.dataset.v;const first=FEATS.find(x=>x.grp===b.dataset.v);c.feat=first.k;Object.assign(c,first.set);c.page=c.page||'home';c.search=false;c.chat=false;go()});
   const ms=(id,k,f)=>host.querySelectorAll(id+' button').forEach(b=>b.onclick=()=>{c[k]=f(b.dataset.v);c.page=c.page||'home';c.search=true;c.focus=null;go()});

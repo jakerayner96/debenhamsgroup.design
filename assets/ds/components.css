@@ -1476,6 +1476,17 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 /* Wishlist button: a white circle on the puck shadow — 44px beside the PDP title (VTO Figma 15656:21955), 32px on product cards */
 .wl-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;padding:0;border:0;border-radius:50%;background:#FFF;box-shadow:var(--shadow-puck);cursor:pointer}.wl-btn img{width:20px;height:20px;object-fit:contain}
 .wl-btn--sm{width:32px;height:32px}.wl-btn--sm img{width:16px;height:16px}
+/* Tooltip (.tip) — a small inverse bubble pointing at a control, for "something new here" coach marks. Arrow on top by default (it sits under the
+   control), --tip-x = arrow distance from the right edge; .tip--left puts the arrow at --tip-x from the left. Optional "New" tag and close. Shopping agent, 19 Oct. */
+.tip{position:relative;display:inline-flex;align-items:flex-start;gap:8px;width:max-content;max-width:min(264px,calc(100vw - 32px));padding:10px 12px;border-radius:var(--radius-lg,8px);background:var(--surface-inverse,#000);color:var(--text-inverse,#FFF);font-family:var(--font-family-base);font-size:13px;line-height:1.35;font-weight:400;text-align:left;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.tip::before{content:"";position:absolute;top:-5px;right:var(--tip-x,16px);width:12px;height:12px;background:inherit;border-radius:2px;transform:rotate(45deg)}
+.tip--left::before{right:auto;left:var(--tip-x,16px)}
+.tip b{font-weight:600}
+.tip-new{flex:none;margin-top:1px;padding:1px 7px;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);font-size:11px;font-weight:600;line-height:16px}
+.tip-x{flex:none;display:grid;place-items:center;width:18px;height:18px;margin:0 -4px 0 2px;padding:0;border:0;background:none;color:inherit;cursor:pointer}.tip-x svg{width:12px;height:12px}
+.tip--in{animation:tipIn .32s cubic-bezier(.2,.8,.2,1) both}
+@keyframes tipIn{from{opacity:0;transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){.tip--in{animation:none}}
 
 /* Mobile sort + filters, live (debenhams.com 15 Oct): full-bleed Filters | Relevance bar, then NDD toggle left and Size / Colour pills right */
 .mf-bar{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);font-family:var(--font-family-base)}
