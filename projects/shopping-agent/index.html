@@ -187,10 +187,12 @@ body.app .device .tb,body.app .device .chin{display:none}
 /* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
 /* the feature list, in Jake's order (15 Oct) — one radio per feature; picking one shows its page and scrolls to it */
 const FEATS=[
-  {k:'ep-oi',n:'Entry point · Exposed search + AI icon',pg:'home',d:'The search field is exposed under the header bar with the AI icon in a gradient-outline circle beside it (44px). Desktop: the same circle beside the field. Search active keeps it beside the field, left of the X.',set:{launcher:'outIcon'}},
-  {k:'ep-oa',n:'Entry point · Exposed search + Ask',pg:'home',d:'The search field is exposed with a gradient-outline “Ask” pill beside it (44px). Desktop: the same pill beside the field.',set:{launcher:'outAsk'}},
-  {k:'ep-lift',n:'Entry point · Exposed search, lifts when active',pg:'home',d:'Exposed search with the AI circle beside it. Tapping the field slides the search row up over the logo row (burger, logo, icons) so the search overlay gets the extra height; close and it drops back. Desktop: the circle beside the field, as the first option.',set:{launcher:'lift'}},
-  {k:'ep-icon',n:'Entry point · Icon next to search',pg:'home',d:'Mobile search is the header search icon only. Tap it and search opens (the Search Figma overlay) with the AI circle left of the X, outside the field. Desktop search is always exposed, so the circle sits beside the field.',set:{launcher:'icon'}},
+  {k:'ep-oi',grp:'ex',n:'AI icon beside the field',pg:'home',d:'Exposed search under the header bar with the AI circle beside it (44px, puck shadow). Search active: the X joins it; typing pushes the circle out, the X stays.',set:{launcher:'outIcon'}},
+  {k:'ep-oa',grp:'ex',n:'Ask beside the field',pg:'home',d:'Exposed search with an outline “Ask” pill beside it (44px). Typing pushes it out; the X stays.',set:{launcher:'outAsk'}},
+  {k:'ep-lift',grp:'ex',n:'Lifts over the logo row',pg:'home',d:'Exposed search with the AI circle. Tapping the field slides it up over the logo row for more room; close and it drops back.',set:{launcher:'lift'}},
+  {k:'ep-icon',grp:'ni',n:'Search icon · AI icon beside the field',pg:'home',d:'The header has the search icon only. Tap it: the search row opens with the field focused (keyboard up), the AI circle and the X beside it. Typing pushes the circle out; the X stays.',set:{launcher:'icon'}},
+  {k:'ep-ni-ask',grp:'ni',n:'Search icon · Ask beside the field',pg:'home',d:'The header has the search icon only. Tap it: the field opens focused with the “Ask” pill and the X beside it. Typing pushes Ask out; the X stays.',set:{launcher:'niAsk'}},
+  {k:'ep-ni-lift',grp:'ni',n:'Search icon · opens over the logo row',pg:'home',d:'The header has the search icon only. Tap it: the search row opens over the logo row (more room for suggestions), field focused, AI circle and X beside it.',set:{launcher:'niLift'}},
   {k:'custom',n:'Content Prompts Banner',pg:'home',d:'Fixed prompts we choose and place (CMS-fed); each one opens the agent with that question. Homepage shown; the same works on category pages.',opts:[['module','A · Homepage module','Image + prompt panel under the hero.'],['strip','B · Promo strip','A slim AI-gradient bar at the top of the page.'],['hero','C · Chips on the hero','Prompt chips over the first hero image.']]},
   {k:'autocomplete',n:'Search Suggestions',pg:'plp',search:true,d:'Search active, as the Search Figma (1012:2295): an overlay under the header (USP banners hidden): Recent Searches and Popular Searches as one scrolling row each, then “Need some help?” with the agent’s prompts stacked, then Recently Viewed. The last prompt (Help me discover) is the open-ended one.'},
   {k:'nba',n:'PLP Next Best Action',pg:'plp',d:'Co-shop module on the PLP (live Women’s Partywear layout): a question, answer chips and the open-ended Help me decide. Place it below the filters or as a full-width row after row 1–5 of products (2 per row on mobile, 5 on desktop). Chips are contextual in production (FDE build).',rows:true},
@@ -219,7 +221,7 @@ const cfgFile=()=>AG.build(BASE,S.cfg.agent);
 const H=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 function dl(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
 /* the dev hand-off: placements chosen + the calls each entry point makes */
-function handoff(c){const lines=[];const ep={outIcon:'Exposed search, AI icon in a gradient-outline circle beside the field (both 44px)',outAsk:'Exposed search, gradient-outline “Ask” pill beside the field (both 44px)',lift:'Exposed search + AI circle; search active slides the field up over the logo row (mobile)',icon:'Mobile: header search icon only; search active shows the AI circle left of the X. Desktop: circle beside the field'}[c.launcher];
+function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search icon; opens the field focused with an Ask pill and the X (typing pushes Ask out)',niLift:'Not exposed: header search icon; the search row opens over the logo row, field focused, AI circle + X',outIcon:'Exposed search, AI icon in a gradient-outline circle beside the field (both 44px)',outAsk:'Exposed search, gradient-outline “Ask” pill beside the field (both 44px)',lift:'Exposed search + AI circle; search active slides the field up over the logo row (mobile)',icon:'Mobile: header search icon only; search active shows the AI circle left of the X. Desktop: circle beside the field'}[c.launcher];
   lines.push('# Shopping agent — Debenhams · dev hand-off','',`Exported ${new Date().toISOString()}`,'');
   lines.push('## 1 · Agent config (backend)','`salesAgentConfig.json` = the dev retrieveConfig with our edits applied. Changed keys:','');
   if(BASE)AG.diff(BASE,cfgFile()).forEach(d=>lines.push(`- \`${d.path}\`: ${JSON.stringify(d.from)} → ${JSON.stringify(d.to)}`));
@@ -261,15 +263,20 @@ P.extra=(root)=>{if(!BASE)return;root.file('salesAgentConfig.json',JSON.stringif
 function renderPanel(host,S,update){
   const c=S.cfg,e=Object.assign({},AG.DEF,c.agent);
   if(!['belowCta','aboveGlance'].includes(c.pdpPos))c.pdpPos='aboveGlance';
-  if(!['outIcon','outAsk','lift','icon'].includes(c.launcher))c.launcher='outIcon';
-  if(!FEATS.some(x=>x.k===c.feat))c.feat={outIcon:'ep-oi',outAsk:'ep-oa',lift:'ep-lift',icon:'ep-icon'}[c.launcher];if(!c.start)c.start='config';
+  if(!['outIcon','outAsk','lift','icon','niAsk','niLift'].includes(c.launcher))c.launcher='outIcon';
+  if(!FEATS.some(x=>x.k===c.feat))c.feat={outIcon:'ep-oi',outAsk:'ep-oa',lift:'ep-lift',icon:'ep-icon',niAsk:'ep-ni-ask',niLift:'ep-ni-lift'}[c.launcher];if(!c.start)c.start='config';
   const fe=FEATS.find(x=>x.k===c.feat);
+  const tab=c.epTab||(['icon','niAsk','niLift'].includes(c.launcher)?'ni':'ex');
   const opt=(on,b,s,attr)=>`<button class="opt${on?' on':''}" ${attr}><span class="r"></span><span class="t"><b>${b}</b>${s?`<span>${s}</span>`:''}</span></button>`;
   const changed=BASE?AG.diff(BASE,cfgFile()):[];
   host.innerHTML=`<h1>Shopping agent · Debenhams</h1>
   <p class="intro">Google Cloud Shopping Agent, Holiday 2026 package — Debenhams only. Pick a feature to see it in place, choose its placement, and edit the config file the devs deploy. Every entry point opens the chat, and you can type to it.</p>
+  <div class="card"><h3>Entry point</h3>
+    <span class="seg" id="eptab" style="margin-bottom:6px"><button data-v="ex" class="${tab==='ex'?'on':''}">Exposed search</button><button data-v="ni" class="${tab==='ni'?'on':''}">Not exposed</button></span>
+    ${FEATS.filter(x=>x.grp===tab).map(x=>opt(x.k===c.feat,x.n,'',`data-feat="${x.k}"`)).join('')}
+    <p style="margin:8px 0 0">Desktop search is always exposed; the button follows the option (AI icon or Ask).</p></div>
   <div class="card"><h3>Features</h3>
-    ${FEATS.map(x=>opt(x.k===c.feat,x.n,'',`data-feat="${x.k}"`)).join('')}
+    ${FEATS.filter(x=>!x.grp).map(x=>opt(x.k===c.feat,x.n,'',`data-feat="${x.k}"`)).join('')}
     <p style="margin:10px 0 0">Not in this phase: ${OUT.join(' · ')}.</p></div>
   <div class="card"><h3>${fe.n}</h3><p>${H(fe.d)}</p>
     ${fe.opts?fe.opts.map(o=>opt(c[POSKEY[fe.k]]===o[0],o[1],o[2],`data-pos="${o[0]}"`)).join(''):''}
@@ -318,6 +325,7 @@ function renderPanel(host,S,update){
   const go=()=>{update();panel()};
   host.querySelectorAll('[data-feat]').forEach(b=>b.onclick=()=>{const x=FEATS.find(f=>f.k===b.dataset.feat);c.feat=x.k;if(x.set)Object.assign(c,x.set);if(x.k==='vto')c.chipKind='vto';if(x.k==='shopSimilar')c.chipKind='similar';
     c.page=x.pg;c.search=!!x.search;c.chat=false;c.focus={f:x.k.startsWith('ep-')?'launcher':x.k,n:Date.now()};go()});
+  host.querySelectorAll('#eptab button').forEach(b=>b.onclick=()=>{c.epTab=b.dataset.v;const first=FEATS.find(x=>x.grp===b.dataset.v);c.feat=first.k;Object.assign(c,first.set);c.page='home';c.search=false;c.chat=false;go()});
   host.querySelector('#t-chat').onchange=ev=>{c.chat=ev.target.checked;go()};
   host.querySelector('#t-labels').onchange=ev=>{c.labels=ev.target.checked;c.chat=true;go()};
   host.querySelectorAll('[data-pos]').forEach(b=>b.onclick=()=>{c[POSKEY[fe.k]]=b.dataset.pos;c.page=fe.pg;c.focus={f:fe.k,n:Date.now()};go()});
