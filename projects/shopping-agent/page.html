@@ -460,7 +460,7 @@ const IMG=i=>`projects/plp-alignment/img/debenhams/p${i<7?i:i+1}.jpg`;
 const A='projects/shopping-agent/';
 
 /* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
-let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'niAsk',mCam:16,mSearchIcon:false,mTxt:14,start:'config',pdpPos:'belowCta',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
+let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'niAsk',mCam:16,mSearchIcon:true,mTxt:14,start:'config',pdpPos:'belowCta',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
   pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
   ssPos:'title',vtoPos:'title',chipPos:'title',chipKind:'similar',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
@@ -796,6 +796,7 @@ document.addEventListener('submit',e=>{if(e.target.id==='cmform'){e.preventDefau
 document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.target.value;const b=document.getElementById('cmsend');if(b)b.classList.toggle('on',!!e.target.value.trim())}});
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
+  if(e.target.closest('.hd-burger')){parent.postMessage({protoMenu:1},'*');return}   /* prototype: the hamburger opens the shell's settings panel (phones) */
   if(!S.search&&e.target.closest('[data-opensearch]')){scrollTo(0,0);S.search=true;S.q='';parent.postMessage({protoSearch:true},'*');render();focusSearch();return}
   if(e.target.closest('[data-closesearch]')){const hw=document.getElementById('hdrwrap');
     const done=()=>{document.body.classList.remove('closing-search');S.search=false;S.q='';parent.postMessage({protoSearch:false},'*');render()};
