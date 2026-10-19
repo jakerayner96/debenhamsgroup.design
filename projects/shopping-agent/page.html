@@ -217,11 +217,11 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .grid .nba{grid-column:1/-1}
 .pc-img .onimg.br{bottom:8px;right:8px;left:auto}
 
-/* ---------- Home: the roundel row (first module) — smaller, padded ---------- */
-.hm>.hm-m:first-child>.hm-row{padding:16px;gap:12px!important}
-.hm>.hm-m:first-child>.hm-row{overflow-x:auto;scrollbar-width:none}.hm>.hm-m:first-child>.hm-row::-webkit-scrollbar{display:none}
-.hm>.hm-m:first-child .hm-t{flex:0 0 80px!important;width:80px!important;margin-left:0!important}
-@media(min-width:1024px){.hm>.hm-m:first-child>.hm-row{padding:24px 40px;gap:20px!important;justify-content:safe center}.hm>.hm-m:first-child .hm-t{flex:0 0 100px!important;width:100px!important}}
+/* ---------- Home: the Debenhams roundel row (its first module) — smaller, padded. Debenhams only: every other fascia opens on a full-width hero ---------- */
+[data-brand="debenhams"] .hm>.hm-m:first-child>.hm-row{padding:16px;gap:12px!important}
+[data-brand="debenhams"] .hm>.hm-m:first-child>.hm-row{overflow-x:auto;scrollbar-width:none}[data-brand="debenhams"] .hm>.hm-m:first-child>.hm-row::-webkit-scrollbar{display:none}
+[data-brand="debenhams"] .hm>.hm-m:first-child .hm-t{flex:0 0 80px!important;width:80px!important;margin-left:0!important}
+@media(min-width:1024px){[data-brand="debenhams"] .hm>.hm-m:first-child>.hm-row{padding:24px 40px;gap:20px!important;justify-content:safe center}[data-brand="debenhams"] .hm>.hm-m:first-child .hm-t{flex:0 0 100px!important;width:100px!important}}
 /* ---------- Home: custom prompts ---------- */
 .cp-strip{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:10px 16px;background:var(--ai-gradient);color:var(--text-primary);font-size:14px;text-align:center}
 .cp-strip button{display:inline-flex;align-items:center;gap:6px;color:var(--text-primary);font:600 14px var(--font-family-base);text-decoration:underline;background:none;border:0;cursor:pointer}
@@ -538,7 +538,7 @@ function header(){
   h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
   const cls=[lift?'lifted'+(header.was?'':' lifting'):'',S.search&&!header.was&&!EXPORTING?'opening srch-in':'',!S.search&&header.was&&!EXPORTING?'srch-out':'',lo+'-lo',ni?'ni-lo':'',S.search&&!ni&&header.was?'ask-ic':'',S.search&&S.q&&lo!=='niAsk'?'typing':''].filter(Boolean).join(' ');
   /* DS tooltip: “something new” behind the search icon (not exposed) / the Ask pill (exposed); panel toggle S.tip, X dismisses for the session */
-  const tip=S.tip&&!S.tipX&&!S.search&&!CHAT.open?`<div class="tip ag-tip${EXPORTING?'':' tip--in'}" role="status"><span class="tip-b"><span class="tip-new">New</span><span><b>${esc(ask())}</b>, our AI shopping assistant, is now in search.</span></span><button class="tip-x" data-tipx="1" aria-label="Dismiss"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg></button></div>`:'';
+  const tip=S.tip&&!S.tipX&&!S.search&&!CHAT.open?`<div class="tip ag-tip${EXPORTING?'':' tip--in'}" role="status"><span class="tip-b"><span class="tip-new">New!</span><span><b>${esc(ask())}</b>, our AI shopping assistant, is now in search.</span></span><button class="tip-x" data-tipx="1" aria-label="Dismiss"><svg viewBox="0 0 6.25 6.25" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="round"><path d="M5.875.375l-5.5 5.5M.375.375l5.5 5.5"/></svg></button></div>`:'';
   return `<div id="hdrwrap" class="${cls}">${h}${S.search?autocomplete():''}${tip}</div>`;
 }
 
@@ -784,7 +784,7 @@ function placeTip(){const tp=document.querySelector('.ag-tip'),hw=document.getEl
   const a=hw.querySelector('.hd-sicon')||hw.querySelector('.ag-ask');if(!a){tp.remove();return}
   /* centred under the anchor, clamped 8px inside the page; the nib stays on the anchor's centre */
   const W=hw.clientWidth,hr=hw.getBoundingClientRect(),r=a.getBoundingClientRect(),cx=r.left+r.width/2-hr.left,w=tp.offsetWidth;
-  const left=Math.min(Math.max(8,cx-w/2),W-w-8);tp.style.top=(r.bottom-hr.top+12)+'px';tp.style.left=left+'px';tp.style.right='auto';tp.style.setProperty('--tip-x',Math.round(cx-left)+'px')}
+  const left=Math.min(Math.max(8,cx-w/2),W-w-8);tp.style.top=(r.bottom-hr.top+16)+'px';tp.style.left=left+'px';tp.style.right='auto';tp.style.setProperty('--tip-x',Math.round(cx-left)+'px')}
 /* ================= render ================= */
 /* ================= BAG — DS templates/bag.html (live /basket, 06 Oct): title · threshold · bag items · bag-summary.js ================= */
 function bag(){const ix=[3,12],ps=ix.map(i=>PR()[i]).filter(Boolean),it=ps.map(p=>({price:p.price,was:p.was}));
