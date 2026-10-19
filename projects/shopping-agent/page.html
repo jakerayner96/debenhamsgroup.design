@@ -337,7 +337,9 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .hd-search .srch-field{flex:1;min-width:0;width:100%;border:0;outline:0;background:none;padding:0;margin:0;font:inherit;font-size:inherit;color:var(--text-primary);text-overflow:ellipsis;-webkit-appearance:none;appearance:none}
 .hd-search .srch-field::placeholder{color:var(--text-secondary,#6B6B6B);opacity:1}
 .hd-search .srch-field::-webkit-search-cancel-button,.hd-search .srch-field::-webkit-search-decoration{-webkit-appearance:none;display:none}
-@media(max-width:1023px){.ag-mrow .hd-search .srch-field{font-size:16px}}   /* 16px or iOS zooms on focus */
+@media(max-width:1023px){.ag-mrow .hd-search .srch-field{font-size:var(--m-txt,16px)}   /* 16px or iOS zooms on focus */
+  .ag-mrow .ag-sw .hd-search .ics img[src*="camera"]{width:var(--m-cam,20px);height:var(--m-cam,20px)}
+  html.m-nosearch .ag-mrow .ag-sw .hd-search .ics img[src*="search.svg"]{display:none}}   /* the keyboard has its own search key */
 .hd-search .srch-field:focus{caret-color:#5877FF}
 /* typing pushes the AI button out (both directions animate); the X stays */
 .ag-sw>.ai-circle,.ag-sw>.ag-ask{max-width:160px;transition:max-width .24s cubic-bezier(.4,0,.2,1),opacity .2s ease,margin .24s cubic-bezier(.4,0,.2,1),padding .24s cubic-bezier(.4,0,.2,1)}
@@ -753,6 +755,8 @@ const PAGES={home,plp,pdp};
 function render(){
   document.documentElement.setAttribute('data-brand','debenhams');
   document.body.classList.toggle('exporting',EXPORTING);
+  /* mobile search field options (panel) */
+  document.documentElement.style.setProperty('--m-cam',(S.mCam||20)+'px');document.documentElement.style.setProperty('--m-txt',(S.mTxt||16)+'px');document.documentElement.classList.toggle('m-nosearch',S.mSearchIcon===false);
   if(window.HOME_CSS&&!document.getElementById('homecss')){const st=document.createElement('style');st.id='homecss';st.textContent=HOME_CSS;document.head.appendChild(st)}
   if(CFG){const r=document.documentElement.style,e=E();r.setProperty('--ai-primary',e.primary);r.setProperty('--ai-chip-bg',e.chipBg);r.setProperty('--ai-chip-border',e.chipBorder);r.setProperty('--ai-chip-radius',e.chipRadius+'px')}
   gid=0;
