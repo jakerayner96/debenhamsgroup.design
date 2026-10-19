@@ -96,7 +96,7 @@ const DG_CATALOGUE = [
   summary:'Floating-label input. The label shrinks from 14 to 12 as the value arrives; errors turn the keyline red and add a message underneath.',
   use:['Every text entry: email, address, promo code, search inside forms.'],
   avoid:['Placeholder text as the only label.','Error colour without an error message.'],
-  anatomy:['50px · padding gap 2 (8px) top/bottom, gap 4 (16px) sides · radius 4 (brand) · Figma 9925-5828','Outline Grey 3 #B5B5B5 at rest and when filled — black only while focused (caret in the field), back to grey on blur','Label 14 grey #6B6B6B, floats to 12 on focus / filled; value 14 black; caret #2797FF','Error: #D33F3F outline + 14 regular message gap 2 (8px) under · Inactive: Grey 1 #F2F2F2 fill, grey text'],
+  anatomy:['50px · padding gap 2 (8px) top/bottom, gap 4 (16px) sides · radius 4 (brand) · Figma 9925-5828','Outline Grey 3 #B5B5B5 at rest and when filled — black only while focused (caret in the field), back to grey on blur','Label 14 grey #767676, floats to 12 on focus / filled; value 14 black; caret #2797FF','Error: #D33F3F outline + 14 regular message gap 2 (8px) under · Inactive: Grey 1 #F2F2F2 fill, grey text'],
   variants:[
     {name:'Empty', html:'<label class="fld" style="width:280px"><input placeholder=" "><span class="lbl">Email address</span></label>'},
     {name:'Filled', html:'<label class="fld" style="width:280px"><input placeholder=" " value="jake@debenhams.com"><span class="lbl">Email address</span></label>'},
@@ -856,7 +856,7 @@ const DG_TOKEN_MAP = [
  {dev:'--color-primary-alt / --color-button-text-primary-alt', ours:'--brand-primary (boohoo F8B5CC)', note:'Alt pink button on boohoo — no variant on our side; token exists.'},
  {dev:'--color-primary-dark-alt', ours:'--brand-primary-dark', note:'boohoo BB305F vs ours CB4870 — confirm.'},
  {dev:'--color-secondary', ours:'--surface-raised', note:'White — but KM / Warehouse / TBR set it to black ✗ (check usage).'},
- {dev:'--color-text-secondary', ours:'--text-secondary', note:'Dev 767676 (Grey 4) vs ours 6B6B6B (Grey 5, AA body floor) ✗.'},
+ {dev:'--color-text-secondary', ours:'--text-secondary', note:'767676 (Grey 4) both ✓ — all grey text.'},
  {dev:'--color-bg-grey', ours:'--surface-sunken', note:'F8F8F8 vs ours FAFAFA · PLT FAF5E7 sand ✓.'},
  {dev:'--color-bg-secondary', ours:'--surface-media', note:'Grey 1 F2F2F2 ✓ (also feeds bg-grey-1/2 utilities).'},
  {dev:'--color-button-secondary-border', ours:'--btn-outline', note:'Dev grey B5B5B5 on every fascia; ours brand outline (70BEB3 / 000 / 360502) ✗ — decide.'},

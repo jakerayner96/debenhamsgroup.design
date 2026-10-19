@@ -18,7 +18,7 @@
 :root {
   /* Text */
   --text-primary: #0f0f0f; /* Soft Black */
-  --text-secondary: #6b6b6b; /* Grey 5 — floor for body text (AA) */
+  --text-secondary: #767676; /* Grey 4 — all grey text (AA 4.54:1) */
   --text-disabled: #b5b5b5; /* Grey 3 */
   --text-inverse: #ffffff;
   --text-on-action: #ffffff;

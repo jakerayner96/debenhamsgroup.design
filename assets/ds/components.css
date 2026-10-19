@@ -584,7 +584,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .fld:focus-within{border-color:#000}
 .fld.invalid,.fld.invalid:focus-within{border-color:var(--text-error)}
 .fld.inactive,.fld:has(input:disabled),.fld:has(textarea:disabled){background:#F2F2F2;border-color:var(--border-control,#B5B5B5);cursor:default}
-.fld.inactive input,.fld input:disabled,.fld textarea:disabled{color:var(--text-secondary,#6B6B6B);-webkit-text-fill-color:var(--text-secondary,#6B6B6B)}
+.fld.inactive input,.fld input:disabled,.fld textarea:disabled{color:var(--text-secondary,#767676);-webkit-text-fill-color:var(--text-secondary,#767676)}
 /* floating label: centred while empty and idle; on focus (or once there is a value) it glides to the top and shrinks, and the caret sits beneath it */
 .fld input,.fld textarea{font:inherit;font-size:14px;line-height:18px;color:#000;caret-color:#2797FF;border:0;outline:0;padding:15px 0 0;margin:0;background:none;width:100%}
 .fld .lbl{position:absolute;left:16px;right:16px;top:50%;transform:translateY(-50%);font-size:14px;line-height:18px;color:var(--text-secondary);pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:top var(--dur-base) var(--ease-standard),transform var(--dur-base) var(--ease-standard),font-size var(--dur-base) var(--ease-standard),line-height var(--dur-base) var(--ease-standard)}
@@ -836,7 +836,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .dplus-bag .tp{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
 .dplus-bag .tp img{height:20px;width:auto}
 .dplus-bag .tp .r{font-size:10px;line-height:1.2;color:#000}.dplus-bag .tp .r b{font-weight:var(--w-strong)}
-.dplus-bag .powered{font-size:12px;color:#6B6B6B;display:flex;gap:4px;align-items:center;white-space:nowrap}
+.dplus-bag .powered{font-size:12px;color:var(--text-secondary,#767676);display:flex;gap:4px;align-items:center;white-space:nowrap}
 .dplus-bag .powered img{height:14px}
 .dplus-bag--desktop .body{flex-direction:row;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px}
 .dplus-bag--desktop .row{flex:1;flex-direction:column;text-align:center;gap:12px}
@@ -1034,8 +1034,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .lnk-row{display:flex;align-items:center;flex-wrap:wrap;gap:var(--gap-3,12px);row-gap:var(--gap-2,8px)}
 .lnk-row .lnk{font-size:14px;line-height:18px;background:none;border:0;padding:0;font-family:inherit;text-align:left}
 .lnk-row .sep{width:1px;height:16px;background:var(--border-default)}
-/* small print under a message (link sent / reset sent): 12/16, light 300, Grey 5 #6B6B6B (--text-secondary, the body-text floor), the same on every fascia */
-.auth-note{font-size:12px;line-height:16px;font-weight:300;color:var(--text-secondary,#6B6B6B);margin:calc(var(--gap-2,8px) * -1) 0 0}
+/* small print under a message (link sent / reset sent): 12/16, light 300, Grey 4 #767676 (--text-secondary, all grey text), the same on every fascia */
+.auth-note{font-size:12px;line-height:16px;font-weight:300;color:var(--text-secondary,#767676);margin:calc(var(--gap-2,8px) * -1) 0 0}
 .auth-alt{font-size:14px;line-height:20px;text-align:center;margin:var(--gap-2,8px) 0 0} /* 24px above "New to X?" (gap 4 + gap 2) when it follows the social buttons… */
 .auth-pw+.auth-alt{margin-top:0} /* …but 16px when "Sign in with password" sits above it (that link takes the 24px) */
 .auth-pw{margin-top:var(--gap-2,8px)} /* "Sign in with password" under the social buttons: 1.5× the block gap above it, gap 4 + gap 2 = gap 6 (24px) */
@@ -1435,7 +1435,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .ac-starter:hover{background:#FFF;border-color:var(--ai-fg)}.ac-starter .ai-icon{width:16px;height:16px}
 .ac-user{align-self:flex-end;max-width:80%;padding:12px 16px;border-radius:16px 4px 16px 16px;background:#EEE;color:#222}
 .ac-bot{display:flex;flex-direction:column;gap:12px}
-.ac-ctx{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ac-ctx .lbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6B6B6B}.ac-ctx .lbl .ai-icon{width:14px;height:14px}
+.ac-ctx{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ac-ctx .lbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary,#767676)}.ac-ctx .lbl .ai-icon{width:14px;height:14px}
 .ac-ctx .c{display:inline-flex;align-items:center;height:27px;padding:0 10px;border-radius:var(--radius-pill);background:var(--ai-tint);color:var(--ai-ink);font-size:12px;white-space:nowrap}
 .ac-car{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
 .ac-tile{flex:none;width:120px;display:flex;flex-direction:column;gap:6px}.ac-tile .im{display:block;aspect-ratio:2/3;background:var(--surface-media)}

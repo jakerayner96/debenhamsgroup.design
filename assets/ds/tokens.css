@@ -11,7 +11,7 @@
 /* Layer 1: mode-invariant semantic tokens + scales. Same across every fascia. */
 :root{
   /* text — body floor is Grey 5 (AA); Grey 4 and below never used for body text */
-  --text-primary:#0F0F0F;--text-secondary:#6B6B6B;--text-disabled:#B5B5B5;--text-inverse:#FFF;
+  --text-primary:#0F0F0F;--text-secondary:#767676;--text-disabled:#B5B5B5;--text-inverse:#FFF;
   --text-error:#D33F3F;--text-success:#1F7A25;--text-warning:#7A5800;
   /* surface */
   --surface-sunken:#FAFAFA;--surface-raised:#FFF;--surface-inverse:#0F0F0F;--surface-overlay:rgba(0,0,0,.6);
@@ -228,7 +228,7 @@
 }
 [data-brand="karenmillen"]{
   --action-buy:#892D05;--action-buy-pressed:#7E2905;--action-buy-disabled:#7E2905; /* Figma anomaly: disabled darker than default */
-  --action-disabled-bg:#FAE9E1;--action-disabled-fg:#6B6B6B;
+  --action-disabled-bg:#FAE9E1;--action-disabled-fg:#767676;
   --sec-pressed:#F4D1C1;--sec-disabled-border:#FAE9E1;
   --surface-neutral:#FAE9E1;--surface-neutral-pressed:#F6DACE;
   --text-link-pressed:#2A0E02;--text-link-disabled:#7E2905;--link-w:500;
