@@ -99,9 +99,9 @@ root.DG_USP_LIVE={
      "caveat": "*Selected lines only, exclusions apply"
     },
     {
-     "type": "single",
-     "t1": "20% OFF ALMOST EVERYTHING*",
-     "t2": "",
+     "type": "double",
+     "t1": "MID SEASON SALE",
+     "t2": "50% OFF SELECTED LINES*",
      "code": "",
      "hours": 12,
      "href": "/categories/womens-clothing?homepage_topstrip",

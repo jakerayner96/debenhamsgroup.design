@@ -15,7 +15,9 @@ window.DG_CHANGELOG=[
    "Tooltip: the New tag moved above the copy (.tip-b body wrapper) · by Shopping agent",
    "Tooltip rebuilt to Figma HoBuVNEhf1qpL61XFipy0f 135:8952 (nib up): fascia page colour + font, 12/16 light centred copy under a semibold NEW!, 24px diamond nib, 12px close top right, 8px corners on every fascia · by Shopping agent"
   ],
-  "fixed": []
+  "fixed": [
+   "USP data (usp-live.js): boohoo middle message is now the live “MID SEASON SALE – 50% OFF SELECTED LINES*” (re-checked 19 Oct) · by Shopping agent"
+  ]
  },
  {
   "d": "2026-10-16",
