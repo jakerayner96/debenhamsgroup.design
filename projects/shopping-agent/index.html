@@ -203,8 +203,8 @@ const P={
   name:'shopping-agent',
   title:'Shopping agent',
   page:'page.html',
-  brands:[['debenhams','Debenhams']],
-  domains:{debenhams:'debenhams.com'},
+  brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
+  domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','agent.js','base-config.json'],
   store:'proto-shopping-agent',
   initial:()=>({page:'home',tip:true,feat:'ep-ni-ask',epTab:'ni',dec19:1,mCam:16,mSearchIcon:true,mTxt:14,on:{},launcher:'niAsk',start:'config',pdpPos:'belowCta',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
@@ -214,12 +214,12 @@ const P={
     cpPos:'module',search:false,chat:false,agent:{},focus:null}),
 };
 let BASE=null;fetch('base-config.json').then(r=>r.json()).then(b=>{BASE=b;panel()});
-const cfgFile=()=>AG.build(BASE,S.cfg.agent);
+const cfgFile=()=>AG.build(BASE,S.cfg.agent,S.brand);
 const H=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 function dl(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
 /* the dev hand-off: placements chosen + the calls each entry point makes */
 function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search icon; opens the field focused with an Ask pill and the X (Ask stays while typing); field = camera + search icons at 16px, 14px text (16px input scaled, no iOS zoom)',niLift:'Not exposed: header search icon; the search row opens over the logo row, field focused, AI circle + X',outAsk:'Exposed search, “Ask” pill beside the field (both 44px); search active: the word Ask animates out to the sparkle circle, typing pushes it out, X always there',lift:'Exposed search + “Ask” pill; search active slides the field up over the logo row (mobile) and Ask animates to the sparkle',icon:'Mobile: header search icon only; search active shows the AI circle left of the X. Desktop: circle beside the field'}[c.launcher];
-  lines.push('# Shopping agent — Debenhams · dev hand-off','',`Exported ${new Date().toISOString()}`,'');
+  lines.push(`# Shopping agent — ${AG.def(S.brand).brandName} · dev hand-off`,'',`Exported ${new Date().toISOString()}`,'');
   lines.push('## 1 · Agent config (backend)','`salesAgentConfig.json` = the dev retrieveConfig with our edits applied. Changed keys:','');
   if(BASE)AG.diff(BASE,cfgFile()).forEach(d=>lines.push(`- \`${d.path}\`: ${JSON.stringify(d.from)} → ${JSON.stringify(d.to)}`));
   lines.push('','Start screen: sparkle + “Hi there, I’m Deb” · one line · four one-line starter prompts (a custom_template in the messages-header slot, replacing the hero + zero-state intro). Close = DS modal close, 16×16 1pt at 24px in; no title bar text or icon.');
@@ -245,7 +245,7 @@ function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search i
     '| User bubble | Native | --chat-messenger-internal-message-user-* |',
     '| Product carousel | Native | rich-content-config.tileConfig · --chat-messenger-product-carousel-* |',
     '| Product detail card | Native | rich-content-config.productDetailConfig (size picker: confirm) |',
-    `| ADD TO BAG | Native | settings.custom-cart + cart-button-text · --cart-button-background-color ${(c.agent.cartBg||AG.DEF.cartBg)} · --cart-button-font-color ${(c.agent.cartFg||AG.DEF.cartFg)} · corner radii ${(c.agent.cartRadius??AG.DEF.cartRadius)}px |`,
+    `| ADD TO BAG | Native | settings.custom-cart + cart-button-text · --cart-button-background-color ${(c.agent.cartBg||AG.def(S.brand).cartBg)} · --cart-button-font-color ${(c.agent.cartFg||AG.def(S.brand).cartFg)} · corner radii ${(c.agent.cartRadius??AG.def(S.brand).cartRadius)}px |`,
     '| Quick-reply chips | Native | --chat-messenger-internal-chips-* |',
     '| Bullet list | Native (markdown text) | bot message styles |',
     '| “Using” context chips | Not in the widget | custom_template or FDE |',
@@ -258,7 +258,7 @@ function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search i
 P.extra=(root)=>{if(!BASE)return;root.file('salesAgentConfig.json',JSON.stringify(cfgFile(),null,2));root.file('HANDOFF.md',handoff(S.cfg))};
 
 function renderPanel(host,S,update){
-  const c=S.cfg,e=Object.assign({},AG.DEF,c.agent);
+  const c=S.cfg,e=Object.assign({},AG.def(S.brand),c.agent);
   if(!['belowCta','aboveGlance'].includes(c.pdpPos))c.pdpPos='aboveGlance';
   /* decision 19 Oct: not exposed · Ask beside the field (no push-out), camera only at 16px, 14px text — applied once to saved settings */
   if(!c.dec19){c.dec19=1;Object.assign(c,{launcher:'niAsk',feat:'ep-ni-ask',epTab:'ni',mCam:16,mSearchIcon:true,mTxt:14})}
@@ -272,8 +272,8 @@ function renderPanel(host,S,update){
   const tab=c.epTab||(c.launcher==='niAsk'?'ni':'ex');
   const opt=(on,b,s,attr)=>`<button class="opt${on?' on':''}" ${attr}><span class="r"></span><span class="t"><b>${b}</b>${s?`<span>${s}</span>`:''}</span></button>`;
   const changed=BASE?AG.diff(BASE,cfgFile()):[];
-  host.innerHTML=`<h1>Shopping agent · Debenhams</h1>
-  <p class="intro">Google Cloud Shopping Agent, Holiday 2026 package — Debenhams only. Pick a feature to see it in place, choose its placement, and edit the config file the devs deploy. Every entry point opens the chat, and you can type to it.</p>
+  host.innerHTML=`<h1>Shopping agent · ${AG.def(S.brand).brandName}</h1>
+  <p class="intro">Google Cloud Shopping Agent, Holiday 2026 package — every fascia (pick one at the top; each keeps its own settings and config file). Pick a feature to see it in place, choose its placement, and edit the config file the devs deploy. Every entry point opens the chat, and you can type to it.</p>
   <div class="card"><h3>Entry point</h3>
     <span class="seg" id="eptab" style="margin-bottom:6px"><button data-v="ex" class="${tab==='ex'?'on':''}">Exposed search</button><button data-v="ni" class="${tab==='ni'?'on':''}">Not exposed</button></span>
     ${FEATS.filter(x=>x.grp===tab).map(x=>opt(x.k===c.feat,x.n,'',`data-feat="${x.k}"`)).join('')}

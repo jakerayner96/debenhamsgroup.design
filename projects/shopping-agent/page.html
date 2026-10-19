@@ -454,6 +454,10 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 <script src="assets/ds/dplus-logos.js"></script>   <!-- Deliver+ lockups: the catalogue reads them when it loads -->
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/bag-summary.js"></script>
+<script src="assets/ds/header.js"></script>
+<script src="assets/ds/footer.js"></script>
+<script src="assets/ds/membership.js"></script>
+<script src="templates/products.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
 <script src="assets/ds/usp-live.js"></script>
 <script src="assets/ds/usp.js"></script>
@@ -464,9 +468,14 @@ const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C&&C.find(x=>x.slug===slug);r
 const strip=h=>h.replace(/ style="width:[^"]*"/,'');
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const desk=()=>innerWidth>=1024;
-const PR=()=>(window.PRODUCTS_ALL||{}).debenhams||[];
+/* fascia (19 Oct: every brand). Debenhams keeps its own captures; the others come from the DS per-fascia sources
+   (header.js · usp-banner/home.js · plp-alignment/data.js · templates/products.js · membership.js · footer.js) */
+const BR=()=>S.brand||'debenhams',DEB=()=>BR()==='debenhams',BN=()=>((window.AG&&AG.BRANDS[BR()])||{n:'Debenhams'}).n;
+const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (as templates/pdp.html) */
+const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt:'plt-heart'},wishIcon=()=>'assets/ds/icons/'+(WISH[BR()]||'heart-24')+'.svg';
+const PR=()=>(window.PRODUCTS_ALL||{})[BR()]||[];
 /* data.js product i shows p{i}.jpg up to 6, then p{i+1}.jpg (p7 is an unlisted coat) */
-const IMG=i=>`projects/plp-alignment/img/debenhams/p${i<7?i:i+1}.jpg`;
+const IMG=i=>{if(DEB())return `projects/plp-alignment/img/debenhams/p${i<7?i:i+1}.jpg`;const p=PR()[i];return `projects/plp-alignment/img/${BR()}/p${p&&p.img!=null?p.img:i}.jpg`};
 const A='projects/shopping-agent/';
 
 /* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
@@ -483,7 +492,7 @@ let EXPORTING=false,BASE=null,CFG=null,CHAT={open:false,msgs:[]};
 let gid=0;
 /* the DS AI icon (assets/ds/icons/ai.svg, Figma 27:37643) — every AI entry point */
 function spk(sz=18){return `<i class="ai-icon" style="width:${sz}px;height:${sz}px"></i>`}
-const E=()=>Object.assign({},AG.DEF,S.agent||{});
+const E=()=>Object.assign({},AG.def(BR()),S.agent||{});
 const ask=()=>'Ask '+E().name;
 /* data-feat = the feature (panel navigation + jump-to highlight); data-q = the query sent to the agent (window.googleAgent.sendQuery) */
 const F=(f,opt)=>`data-feat="${f}" data-tag="${esc(TAG[f]+(opt?' · '+opt:''))}"`;
@@ -502,32 +511,34 @@ const NI=['icon','niAsk','niLift'];
 function header(){
   header.was=header.now;header.now=!!S.search;
   const d=desk(),lo=S.launcher,ni=NI.includes(lo)&&!d,exp=!ni||S.search;
-  let h=strip(d?V('header',1):V('header',0)).replace(/ style="[^"]*border[^"]*"/,'');
+  let h=DEB()?strip(d?V('header',1):V('header',0)).replace(/ style="[^"]*border[^"]*"/,''):`<div class="hd${d?' hd--desktop':''}" data-hd-brand="${BR()}">${window.DG_headerHTML?DG_headerHTML(BR(),'main',d?'desktop':'mobile'):''}</div>`;
   h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
-  const ph='Search Fashion, Home &amp; Beauty';   /* the live placeholder, both breakpoints */
+  /* placeholder + field modifier + search icon per fascia, from header.js desktop — checked against each live homepage 19 Oct (Debenhams “Search Fashion, Home & Beauty”, PLT “SEARCH”, the rest “Search Products and Brands”) */
+  const HD=DEB()?'':(window.DG_headerHTML?DG_headerHTML(BR(),'main','desktop'):''),hm=HD.match(/<div class="hd-search([^"]*)"><span>([^<]*)<\/span>/)||[0,'','Search Products and Brands'];
+  const ph=DEB()?'Search Fashion, Home &amp; Beauty':hm[2],smod=hm[1],sico=(HD.match(/<img src="([^"]*search[^"]*\.svg)"/)||[0,'assets/ds/icons/search.svg'])[1];   /* the live placeholder, both breakpoints (per fascia from header.js) */
   /* a real input: the native keyboard opens on tap; 16px on mobile so iOS does not zoom */
   const q=`<span class="sf-wrap"><input class="srch-field" type="search" placeholder="${ph}" aria-label="Search" autocomplete="off" enterkeyhint="search" value="${esc(S.q||'')}"></span>`;
-  const ics='<span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="assets/ds/icons/search.svg" alt=""></span>';
+  const ics=`<span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="${sico}" alt=""></span>`;
   const circle=`<button class="ai-circle" ${F('launcher','AI icon beside search')} data-q="" aria-label="${ask()}"><i class="ai-icon"></i></button>`;
   const askPill=`<button class="ai-pill ai-pill--outline ag-ask" ${F('launcher','Ask beside search')} data-q="">${spk(18)}<span class="ag-lbl">Ask</span></button>`;
   const btn=askPill;   /* 19 Oct: Ask on every option (the AI-icon-only option is gone) */
   const X=`<button class="ag-x" data-closesearch="1" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.replaceWith('✕')"></button>`;
-  const sIcon='<button aria-label="Search"><img src="assets/ds/icons/search.svg" alt=""></button>';
+  const sIcon=(h.match(/<button aria-label="Search"><img src="[^"]*" alt=""><\/button>/)||[''])[0];
   /* the button sits beside the field; while search is active the X is always there, and typing pushes the button out (#hdrwrap.typing) */
   const after=btn+(S.search?X:'');
   const lift=lo==='lift'&&S.search&&!d;
-  const field=`<div class="ag-sw"><div class="hd-search" data-opensearch="1">${q}${ics}</div>${after}</div>`;
+  const field=`<div class="ag-sw"><div class="hd-search${smod}" data-opensearch="1">${q}${ics}</div>${after}</div>`;
   if(d){
-    h=h.replace(/<div class="hd-search">[\s\S]*?<\/span><\/div>/,field);
+    h=h.replace(/<div class="hd-search[^"]*">[\s\S]*?<\/span><\/div>/,field);
   }else{
-    h=h.replace(sIcon,ni?`<button aria-label="Search" data-opensearch="1" class="hd-sicon${S.search?' off':''}"><img src="assets/ds/icons/search.svg" alt=""></button>`:'');
+    h=h.replace(sIcon,ni?`<button aria-label="Search" data-opensearch="1" class="hd-sicon${S.search?' off':''}"><img src="${(sIcon.match(/src="([^"]*)"/)||[0,'assets/ds/icons/search.svg'])[1]}" alt=""></button>`:'');
     if(exp)h=h.replace(/(<div class="hd-bar">[\s\S]*?<\/div><\/div>)/,'$1'+`<div class="ag-mrow">${field}</div>`);
   }
   /* USP banners stay put: the search panel fades in over them, so nothing on the page disappears instantly */
   h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
   const cls=[lift?'lifted'+(header.was?'':' lifting'):'',S.search&&!header.was&&!EXPORTING?'opening srch-in':'',!S.search&&header.was&&!EXPORTING?'srch-out':'',lo+'-lo',ni?'ni-lo':'',S.search&&!ni&&header.was?'ask-ic':'',S.search&&S.q&&lo!=='niAsk'?'typing':''].filter(Boolean).join(' ');
   /* DS tooltip: “something new” behind the search icon (not exposed) / the Ask pill (exposed); panel toggle S.tip, X dismisses for the session */
-  const tip=S.tip&&!S.tipX&&!S.search&&!CHAT.open?`<div class="tip ag-tip${EXPORTING?'':' tip--in'}" role="status"><span class="tip-new">New</span><span><b>Ask Deb</b>, our AI shopping assistant, is now in search.</span><button class="tip-x" data-tipx="1" aria-label="Dismiss"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg></button></div>`:'';
+  const tip=S.tip&&!S.tipX&&!S.search&&!CHAT.open?`<div class="tip ag-tip${EXPORTING?'':' tip--in'}" role="status"><span class="tip-new">New</span><span><b>${esc(ask())}</b>, our AI shopping assistant, is now in search.</span><button class="tip-x" data-tipx="1" aria-label="Dismiss"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg></button></div>`:'';
   return `<div id="hdrwrap" class="${cls}">${h}${S.search?autocomplete():''}${tip}</div>`;
 }
 
@@ -556,7 +567,7 @@ function card(p,i,mini){
 
 /* ================= HOME — Debenhams live homepage (usp-banner/home.js, captured 06 Oct) + custom prompts ================= */
 function home(){
-  const d=desk(),doc=new DOMParser().parseFromString(renderHome('debenhams',d),'text/html'),hm=doc.querySelector('.hm'),mods=[...hm.children];
+  const d=desk(),doc=new DOMParser().parseFromString(renderHome(BR(),d),'text/html'),hm=doc.querySelector('.hm'),mods=[...hm.children];
   if(ON('custom')){
     const chips=(S.cpChips||['Gifts for her under £50','Stocking fillers she’ll love','What do I get my dad?']).filter(Boolean);
     const set=chips.map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14,false)}${esc(c)}</button>`).join('')+`<button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me find the perfect gift">${spk(14)}Help me choose</button>`;
@@ -569,13 +580,14 @@ function home(){
 
 /* ================= PLP — Women's Partywear as live (15 Oct): roundels, filters, 2-up / 5-up grid, "Get It Tomorrow", ad badges; next best action below the filters or after row N ================= */
 const CATS=[['Party Dresses',1],['Party Jumpsuits',21],['Party Tops',5],['Faux Fur Coats',7],['Party Shoes & Heels',6],['Accessories',28],['Sequin Outfits',24],['Velvet Outfits',31],['Lace Outfits',29]];
+const CATS_M=[['Shirts',1],['Suits',21],['Jackets',5],['Knitwear',7],['Shoes',6],['Accessories',28],['Trousers',24],['Jeans',31],['T-Shirts',29]];
 function pcard(p,i,k){
   if(!p)return '';const sale=p.was?' sale':'';
   const badges=[k%5===2||k%5===4?'As Seen In Our Ad':'',p.tag||''].filter(Boolean);
   const ss=ON('shopSimilar')&&S.ssPos==='card'?`<span class="onimg br"><button class="ai-pill ai-pill--soft" ${F('shopSimilar','C · PLP card')} data-q="Shop similar" data-ctx="${esc(p.name)}">${spk(14)}Similar</button></span>`:'';
   const sw=k%3===1?`<div class="sw"><i class="on" style="background:#1A1A1A"></i><i style="background:#C9BFA8"></i>${k%2?'<i style="background:#6B2A3A"></i>':''}</div>`:'';
   return `<article class="pc pc--compact"><div class="pc-img"><img class="ph" src="${IMG(i)}" alt="" loading="lazy">
-    <div class="pc-actions"><button class="pc-iconbtn" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-16.svg" alt=""></button></div>
+    <div class="pc-actions"><button class="pc-iconbtn" aria-label="Add to wishlist"><img src="${DEB()||!WISH[BR()]?'assets/ds/icons/heart-16.svg':wishIcon()}" alt=""></button></div>
     ${badges.length?`<div class="pc-badges">${badges.map(b=>`<span class="badge">${esc(b)}</span>`).join('')}</div>`:''}${ss}</div>
     <div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${p.brand?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div>
     <div class="pc-price${sale}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${p.pct?`<span class="pct">${esc(p.pct)}</span>`:''}</div>${sw}
@@ -587,20 +599,21 @@ function plp(){
   const cards=ids.map((i,k)=>pcard(PR()[i],i,k));
   const row=+S.nbaRow||0;
   if(nba&&row>0)cards.splice(Math.min(row*cols,cards.length),0,nba);
-  const bc=`<nav class="bc" aria-label="Breadcrumb"><a href="#">Home</a><span class="sep">/</span><a href="#">Womens</a><span class="sep">/</span><a href="#">Shop By Collection</a><span class="sep">/</span><span class="cur">Partywear</span></nav>`;
-  const rnd=`<div class="rnd">${CATS.map(([n,i])=>`<a class="roundel" href="#"><i><img src="${IMG(i)}" alt=""></i><span>${n}</span></a>`).join('')}</div>`;
+  const bc=`<nav class="bc" aria-label="Breadcrumb"><a href="#">Home</a><span class="sep">/</span><a href="#">${AG.BRANDS[BR()]&&AG.BRANDS[BR()].men?'Mens':'Womens'}</a><span class="sep">/</span><a href="#">Shop By Collection</a><span class="sep">/</span><span class="cur">Partywear</span></nav>`;
+  const rnd=`<div class="rnd">${(AG.BRANDS[BR()]&&AG.BRANDS[BR()].men?CATS_M:CATS).map(([n,i])=>`<a class="roundel" href="#"><i><img src="${IMG(i)}" alt=""></i><span>${n}</span></a>`).join('')}</div>`;
   const filters=d
     ?`<div class="fbar"><span class="sf-ndd"><span class="track"></span>Next Day Delivery</span>${['Category','Size','Colour','Style'].map(f=>`<button class="sf-dd">${f}<i></i></button>`).join('')}<a class="more" href="#">Show more filters</a><button class="sf-dd sort">Relevance<i></i></button></div>`
     :`<div class="mfs"><button><span>Filters</span><span class="fic"></span></button><button><span>Relevance</span><i class="ch"></i></button></div>
       <div class="mff"><button class="mndd" aria-pressed="false"><svg viewBox="0 0 46 24" width="46" height="24"><rect width="46" height="24" rx="12" fill="#888888"/><circle cx="12" cy="12" r="10" fill="#fff"/><path d="M7 12H17" stroke="#000" stroke-linecap="round"/></svg><span>Next Day Delivery</span></button>
       <div class="mfp"><span>Size</span><span>Colour</span></div></div>`;
-  return `<div class="wrap"><div class="plp-top">${bc}<h1 class="plp-h">Women's Partywear</h1><p class="plp-n">1,000+ products</p>${rnd}</div>${filters}${nba&&row===0?`<div style="margin-top:12px">${nba}</div>`:''}<div class="grid">${cards.join('')}</div></div>`;
+  return `<div class="wrap"><div class="plp-top">${bc}<h1 class="plp-h">${AG.BRANDS[BR()]&&AG.BRANDS[BR()].men?'Men’s Partywear':'Women’s Partywear'}</h1><p class="plp-n">1,000+ products</p>${rnd}</div>${filters}${nba&&row===0?`<div style="margin-top:12px">${nba}</div>`:''}<div class="grid">${cards.join('')}</div></div>`;
 }
 
 /* ================= PDP — Debenhams live order (12 Oct): gallery · brand / name · price · colour · size · ADD TO BAG · Deliver+ · delivery · BNPL · At a glance · accordions ================= */
 function pdp(){
-  const d=desk(),p=PR()[1];
-  const glance=`<div class="glance-blk"><h3>At a Glance</h3>${V('at-a-glance',0).replace(/<li><i>✓<\/i>Regular fit<\/li><li><i>✓<\/i>Machine washable<\/li><li><i>✓<\/i>Recycled polyester<\/li>/,['Delicate lace bodice','Pleated midi skirt','Shirt collar and button front','Long sleeves','Regular fit'].map(t=>`<li><i>✓</i>${t}</li>`).join(''))}</div>`;
+  const d=desk(),DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,pct:DP.save&&DP.save.replace(/save\s*/i,''),off:DP.code}:PR()[1];
+  const GI=DP?DP.imgs:[0,1,2,3].map(()=>IMG(1));
+  const glance=`<div class="glance-blk"><h3>At a Glance</h3>${V('at-a-glance',0).replace(/<li><i>✓<\/i>Regular fit<\/li><li><i>✓<\/i>Machine washable<\/li><li><i>✓<\/i>Recycled polyester<\/li>/,(DP&&DP.glance||['Delicate lace bodice','Pleated midi skirt','Shirt collar and button front','Long sleeves','Regular fit']).map(t=>`<li><i>✓</i>${t}</li>`).join(''))}</div>`;
   const prompts=ON('pdpPrompts')?`<div class="gap-wrap" ${F('pdpPrompts',L('pdpPrompts',S.pdpPos)+' · '+{aboveGlance:'above At a Glance',belowCta:'below the buy buttons'}[S.pdpPos]+' · '+S.pdpDir)}>
     ${S.pdpHead?`<div class="gap-head">${spk(18)}${ask()}</div>`:''}
     <div class="prompts-container" data-dir="${S.pdpDir}" data-product-id="GZZ66300">${S.pdpPrompts.filter(Boolean).map(t=>`<div class="prompt-item"><button class="prompt-link ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(t)}" aria-label="${esc(t)}"><span class="prompt-link__icon">${spk(16,false)}</span><span class="prompt-link__text">${esc(t)}</span></button></div>`).join('')}
@@ -608,7 +621,7 @@ function pdp(){
   const ssBtn=ON('shopSimilar')?`<button class="ai-pill ai-pill--soft" ${F('shopSimilar','A · on image')} data-q="Shop similar">${spk(16)}Shop similar</button>`:'';
   const vtoBtn=ON('vto')?`<button class="ai-pill ai-pill--soft vs-chip" ${F('vto','A · on image')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'';
   /* one product shot in the data set: four crops of it stand in for the live four-image gallery */
-  const SH=['','object-position:50% 12%;transform:scale(1.7);transform-origin:50% 18%','object-position:50% 50%;transform:scale(1.35)','object-position:50% 95%;transform:scale(1.6);transform-origin:50% 92%'];
+  const SH=DP?['','','','']:['','object-position:50% 12%;transform:scale(1.7);transform-origin:50% 18%','object-position:50% 50%;transform:scale(1.35)','object-position:50% 95%;transform:scale(1.6);transform-origin:50% 92%'];
   /* chips: in the row above the title (default) or stacked top right of the first image — one choice for both (S.chipPos) */
   const cpos=desk()?'image':S.chipPos;   /* desktop: always pinned top right of the main image */
   const onImg=cpos==='image'||cpos==='bl';S.vtoPos=S.ssPos=onImg?'img-tr':'title';S.vtoMode='agent';
@@ -620,20 +633,20 @@ function pdp(){
   const top=onImg?[]:chipsArr;
   /* tags: always on, bottom right of the first image — smaller, white at 90%, no outline */
   const tags=`<span class="ptags"><span>Petite</span><span>As Seen In Our Ad</span></span>`;
-  const gal=`<div class="galwrap"><div class="thumbs">${SH.map((st,i)=>`<button class="${i?'':'on'}" data-slide="${i}" aria-label="Image ${i+1}"><img src="${IMG(1)}" alt="" style="${st}"></button>`).join('')}</div>
-    <div class="galmain">${onImg&&chipsArr.length?`<span class="${cpos==='bl'?'bl-chips':'tr-chips'}">${chipsArr.join('')}</span>`:''}${tags}<div class="gal" id="gal">${SH.map((st,i)=>`<div class="slide"><img src="${IMG(1)}" alt="${esc(p.name)} — image ${i+1}" style="${st}"></div>`).join('')}</div>
+  const gal=`<div class="galwrap"><div class="thumbs">${SH.map((st,i)=>`<button class="${i?'':'on'}" data-slide="${i}" aria-label="Image ${i+1}"><img src="${GI[i]}" alt="" style="${st}"></button>`).join('')}</div>
+    <div class="galmain">${onImg&&chipsArr.length?`<span class="${cpos==='bl'?'bl-chips':'tr-chips'}">${chipsArr.join('')}</span>`:''}${tags}<div class="gal" id="gal">${SH.map((st,i)=>`<div class="slide"><img src="${GI[i]}" alt="${esc(p.name)} — image ${i+1}" style="${st}"></div>`).join('')}</div>
       <button class="arrow l" data-step="-1" aria-label="Previous"><img src="assets/ds/icons/lib/icons-left.svg" alt=""></button><button class="arrow r" data-step="1" aria-label="Next"><img src="assets/ds/icons/lib/icons-right.svg" alt=""></button></div>
     <div class="pag"><div class="track"><div class="fill" id="pagfill"></div></div></div></div>`;
   const ctaRow=[S.vtoPos==='cta'&&ON('vto')?`<button class="ai-pill ai-pill--soft ai-cta vs-chip" ${F('vto','B · under CTA')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'',S.ssPos==='cta'&&ON('shopSimilar')?`<button class="ai-pill ai-pill--soft ai-cta" ${F('shopSimilar','B · under CTA')} data-q="Shop similar">${spk(16)}Shop similar</button>`:''].filter(Boolean);
-  const info=`<div class="buy">${top.length?`<div class="tchips">${top.join('')}</div>`:''}<div class="prow"><div><div class="pbrand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div></div><button class="wl-c" aria-label="Add to wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button></div>
+  const info=`<div class="buy">${top.length?`<div class="tchips">${top.join('')}</div>`:''}<div class="prow"><div><div class="pbrand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div></div><button class="wl-c" aria-label="Add to wishlist"><img src="${wishIcon()}" alt=""></button></div>
     ${V('ratings',0)}
     ${prc(p,'pdp')}
-    <div style="font-size:14px">Colour: <b>Hot Pink</b></div><div class="cswatches"><button class="cswatch on"><img src="${IMG(1)}" alt="" style="width:60px;height:89px;object-fit:cover;display:block"></button></div>
+    <div style="font-size:14px">Colour: <b>${esc(DP?DP.colour:'Hot Pink')}</b></div><div class="cswatches"><button class="cswatch on"><img src="${GI[0]}" alt="" style="width:60px;height:89px;object-fit:cover;display:block"></button></div>
     ${V('size-selector',0).replace(' style="width:360px"','').replace(/<button class="sz">One size<\/button>/,'')}
     <div class="ctas"><button class="bd pri">Add to Bag</button><button class="pay pay--paypal"><img src="assets/ds/icons/payments/paypal-wordmark.svg" alt="PayPal"><span class="pp-co">Checkout</span></button><button class="pay pay--apple"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button>${ctaRow.length?`<div class="ctas2">${ctaRow.join('')}</div>`:''}</div>
     ${S.pdpPos==='belowCta'?prompts:''}
-    <div class="unl"><div><img src="assets/brands/memberships/unlimited-logo.svg" alt="Debenhams Unlimited"><p>Enjoy unlimited delivery for an entire year for just £10.00</p></div><button>ADD</button></div>
-    ${strip(V('deliver-plus',d?1:0))}
+    ${DEB()?`<div class="unl"><div><img src="assets/brands/memberships/unlimited-logo.svg" alt="Debenhams Unlimited"><p>Enjoy unlimited delivery for an entire year for just £10.00</p></div><button>ADD</button></div>`:(window.DG_memberBoxHTML?DG_memberBoxHTML(BR()):'')}
+    ${DPLUS.includes(BR())?strip(V('deliver-plus',d?1:0)):''}
     ${window.DG_delivery?DG_delivery.grid(DG_OPTS()):''}
     ${strip(V('bnpl',0))}
     ${window.DG_subscribe?DG_subscribe.box(SNS()):''}</div>`;
@@ -644,13 +657,15 @@ function pdp(){
   const rows=[...(S.glance!==false?[['At a Glance',glanceBody,true]]:[]),['Description','Long sleeve lace and pleated midi shirt dress in hot pink. Delicate lace bodice, shirt collar, button front and a softly pleated midi skirt. Regular fit.',false],['Product Details &amp; Care','100% polyester. Machine wash at 30°C. Do not tumble dry.',false],['Delivery','Delivery from £2.99, or 99p on orders over £30. Next day delivery if you order by 10pm.',false],['Returns','Free returns within 21 days, plus 14 more with Debenhams Deliver+.',false],['Manufacturer','Coast, Debenhams Group, Manchester M1 2DU.',false]];
   const acc=`<div class="acc-set">${rows.map(([h,b,o])=>`<div class="acc${o?' open':''}"><button class="acc-h">${h}<img src="assets/ds/icons/lib/icons-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${b}</div></div>`).join('')}</div>`;
   const under=`<div class="under">${glanceSlot}${acc}</div>`;
-  return d?`<div class="wrap">${strip(V('breadcrumb',0)).replace('New In</a>','Womens</a>').replace('Womens New In','Dresses').replace('New In Dresses','Midi Dresses')}<div class="pdp"><div>${gal}${under}</div>${info}</div></div>`
+  const bc=DP?`<nav class="bc" aria-label="Breadcrumb">${DP.crumbs.map((c,i)=>i<DP.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('')}</nav>`:'';
+  return d?`<div class="wrap">${DP?bc:strip(V('breadcrumb',0)).replace('New In</a>','Womens</a>').replace('Womens New In','Dresses').replace('New In Dresses','Midi Dresses')}<div class="pdp"><div>${gal}${under}</div>${info}</div></div>`
           :`<div class="wrap"><div class="pdp">${gal}${info}${under}</div></div>`;
 }
 
 /* PDP buy column order (Jake 16 Oct): buy buttons · Google prompts · Unlimited · Deliver+ · delivery grid (DS delivery.js) · BNPL · Subscribe & Save (DS subscribe.js) */
-const DG_OPTS=()=>({layout:'list',scen:'std',pr:true,prBadge:'fastest',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up'});
-const SNS=()=>{const p=PR()[1];return {brand:p.brand,name:p.name,price:p.price,img:IMG(1),size:(document.querySelector('.sz.on')||{}).textContent||'M',colour:'Hot Pink',pct:5}};
+const DG_OPTS=()=>({layout:'list',scen:'std',pr:true,prBadge:'fastest',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:BR()});
+const PDPP=()=>!DEB()&&window.DG_PDP_PRODUCTS&&DG_PDP_PRODUCTS[BR()]||null;
+const SNS=()=>{const DP=PDPP(),p=DP||PR()[1];return {brand:p.brand,name:p.name,price:p.price,img:DP?DP.imgs[0]:IMG(1),size:(document.querySelector('.sz.on')||{}).textContent||'M',colour:DP?DP.colour:'Hot Pink',pct:5}};
 function wirePdp(){if(S.page!=='pdp')return;
   if(window.DG_delivery)DG_delivery.mount(document,DG_OPTS());
   if(window.DG_subscribe)document.querySelectorAll('[data-sns-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-sns-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_subscribe.modal(SNS(),{desk:innerWidth>=600}));DG_subscribe.wire(document.querySelector('[data-sns-modal]'))})}
@@ -665,7 +680,7 @@ function chat(){
   let head;
   /* start screen (Gemini-style): sparkle + "Hi there, I'm Deb" · one line · four one-line starter prompts. Fits inside the fold. */
   const sts=(E().starters||[]).filter(Boolean).slice(0,4);
-  head=`<div class="cm-start"><h2>${spk(24)}<span>Hi there – I’m <b>${name}</b>, your Debenhams Personal Assistant!</span></h2><p>${esc(E().tagline)}</p>
+  head=`<div class="cm-start"><h2>${spk(24)}<span>${DEB()?`Hi there – I’m <b>${name}</b>, your Debenhams Personal Assistant!`:`Hi there – I’m your <b>${esc(BN())}</b> Personal Assistant!`}</span></h2><p>${esc(E().tagline)}</p>
     <div class="cm-starters">${sts.map(q=>`<button class="cm-starter" data-q="${esc(q)}">${spk(16)}<span>${esc(q)}</span></button>`).join('')}</div>${tc}</div>`;
   if(CHAT.msgs.length)head='';   /* once the conversation starts the start screen scrolls away, as in the Figma */
   const msgs=CHAT.msgs.map((m,i)=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b" data-mi="${i}">${m.cut!=null?words(m.b,m.cut):m.b}</div>${S.labels&&m.cut==null?cfgTags(m.b):''}`).join('');
@@ -711,7 +726,7 @@ function words(h,n){return h.split(/(\s+)/).slice(0,n*2).join('')}
 const TEXTS=[
   q=>`Happy to help with that. Tell me a little more: is it for a particular occasion, and do you have a budget in mind? I’ll pull together a shortlist in your size.`,
   q=>`Good news, that’s in stock in your size and it can be with you tomorrow if you order before 10pm. Delivery is £2 with code SPEEDY, or free on orders over £50.`,
-  q=>`Our returns are free within 21 days, in store or by post. If you add Debenhams Deliver+ at checkout you get an extra 14 days, so 35 in total.`,
+  q=>`Our returns are free within 21 days, in store or by post. If you add ${BN()} Deliver+ at checkout you get an extra 14 days, so 35 in total.`,
   q=>`I’d go for the midi in a 10. It’s fitted through the waist but has a little stretch, so it’s comfortable for a long day. If you’d like it looser, the 12 is the better choice.`,
 ];
 const KINDS=[
@@ -773,21 +788,21 @@ function placeTip(){const tp=document.querySelector('.ag-tip'),hw=document.getEl
 /* ================= BAG — DS templates/bag.html (live /basket, 06 Oct): title · threshold · bag items · bag-summary.js ================= */
 function bag(){const ix=[3,12],ps=ix.map(i=>PR()[i]).filter(Boolean),it=ps.map(p=>({price:p.price,was:p.was}));
   const items=ps.map((p,k)=>`<div class="bag-item"><img src="${IMG(ix[k])}" alt=""><div class="info">${p.brand?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`).join('');
-  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML('debenhams',it,desk()):V('order-summary',0);
+  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML(BR(),it,desk()):V('order-summary',0);
   const title=`<div class="pg-title"><h1>Your Bag (${ps.length})</h1></div>`;
   return desk()
     ?`<main class="bagpg">${title}<div class="bcols"><div class="bitems">${V('threshold',0)}${items}</div><div class="bsum">${sum}</div></div></main>`
-    :`<main class="bagpg">${title}${window.DG_bagTopHTML?DG_bagTopHTML('debenhams',it):''}<div class="bitems">${V('threshold',0)}${items}</div></main><div class="bsum">${sum}</div>`}
+    :`<main class="bagpg">${title}${window.DG_bagTopHTML?DG_bagTopHTML(BR(),it):''}<div class="bitems">${V('threshold',0)}${items}</div></main><div class="bsum">${sum}</div>`}
 const PAGES={home,plp,pdp,bag};
 function render(){
-  document.documentElement.setAttribute('data-brand','debenhams');
+  document.documentElement.setAttribute('data-brand',BR());document.title='Shopping agent · '+BN();
   document.body.classList.toggle('exporting',EXPORTING);
   /* mobile search field options (panel) */
   document.documentElement.style.setProperty('--m-cam',(S.mCam||20)+'px');document.documentElement.style.setProperty('--m-s',((S.mTxt||16)/16).toFixed(4));document.documentElement.classList.toggle('m-nosearch',S.mSearchIcon===false);
   if(window.HOME_CSS&&!document.getElementById('homecss')){const st=document.createElement('style');st.id='homecss';st.textContent=HOME_CSS;document.head.appendChild(st)}
   if(CFG){const r=document.documentElement.style,e=E();r.setProperty('--ai-primary',e.primary);r.setProperty('--ai-chip-bg',e.chipBg);r.setProperty('--ai-chip-border',e.chipBorder);r.setProperty('--ai-chip-radius',e.chipRadius+'px')}
   gid=0;
-  document.getElementById('app').innerHTML=`${header()}<div id="body">${(PAGES[S.page]||pdp)()}</div><div class="pgfoot">${strip(V('footer',0))}</div><div id="chat"></div>`;
+  document.getElementById('app').innerHTML=`${header()}<div id="body">${(PAGES[S.page]||pdp)()}</div><div class="pgfoot">${DEB()?strip(V('footer',0)):`<footer data-ftr="${BR()}"></footer>`}</div><div id="chat"></div>`;
   if(S.search&&scrollY>0)scrollTo(0,0);
   if(S.search&&!header.was){const ac=document.getElementById('ac');if(ac)ac.scrollTop=0}   /* search opens from the top, wherever the page was */
   document.body.classList.toggle('searching',!!S.search);
@@ -797,12 +812,13 @@ function render(){
     document.documentElement.style.setProperty('--ac-top',Math.round(top)+'px')}
   {const hw=document.getElementById('hdrwrap');if(hw&&hw.classList.contains('opening'))requestAnimationFrame(()=>requestAnimationFrame(()=>hw.classList.remove('opening')))}
   if(window.DG_uspMount)DG_uspMount();
+  if(!DEB())document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,BR()));
   galSync();wirePdp();placeTip();
   if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
   drawChat();
   if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el&&el.closest('#ac')){scrollTo(0,0);document.getElementById('ac').scrollTop=0}else if(el)el.scrollIntoView({block:'center',behavior:'auto'})}   /* instant, no highlight; search panel features open from the top */
 }
-fetch('projects/shopping-agent/base-config.json').then(r=>r.json()).then(b=>{BASE=b;CFG=AG.build(BASE,S.agent);render();parent.postMessage({protoReady:1},'*')});
+fetch('projects/shopping-agent/base-config.json').then(r=>r.json()).then(b=>{BASE=b;CFG=AG.build(BASE,S.agent,BR());render();parent.postMessage({protoReady:1},'*')});
 /* re-render on a real width change only: the phone keyboard resizes the viewport, and a re-render would replace the focused input (keyboard drops) */
 let rz,lastW=innerWidth;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const a=document.activeElement;if(innerWidth===lastW||(a&&/^(INPUT|TEXTAREA)$/.test(a.tagName)))return;lastW=innerWidth;render()},150)});
 /* focus the search field in the same tap that opened it, so the keyboard comes up without a second tap */
@@ -810,7 +826,7 @@ function focusSearch(){const i=document.querySelector('#hdrwrap .srch-field');if
 document.addEventListener('input',e=>{if(!e.target.classList||!e.target.classList.contains('srch-field'))return;S.q=e.target.value;const hw=document.getElementById('hdrwrap');if(hw)hw.classList.toggle('typing',!!S.q.trim()&&S.launcher!=='niAsk')   /* chosen option (niAsk): Ask stays, no push-out */});
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('srch-field')&&e.target.value.trim()){e.preventDefault();e.target.blur();const t=document.getElementById('ct');t.textContent='Search results for “'+e.target.value.trim()+'”';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2000)}});
 addEventListener('message',e=>{const d=e.data||{};
-  if(d.protoSet){if(d.protoSet.tip&&!S.tip)S.tipX=false;S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;if(BASE)CFG=AG.build(BASE,S.agent);if(BASE)render()}
+  if(d.protoSet){if(d.protoSet.tip&&!S.tip)S.tipX=false;S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;if(BASE)CFG=AG.build(BASE,S.agent,BR());if(BASE)render()}
   if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
 /* gallery: progress bar follows the rail; thumbs + arrows step it (desktop) */
 function galIdx(){const g=document.getElementById('gal');if(!g)return 0;const s=g.querySelector('.slide');const w=s.offsetWidth+(parseFloat(getComputedStyle(g).columnGap)||0);return Math.min(Math.round(g.scrollLeft/w),g.children.length-1)}
@@ -832,7 +848,7 @@ document.addEventListener('click',e=>{
   {const ah=e.target.closest('.acc-set .acc-h');if(ah){e.preventDefault();ah.parentNode.classList.toggle('open');return}}
   if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
-  if(qb&&qb.dataset.vto&&S.vtoMode==='own'){e.preventDefault();const t=document.getElementById('ct');t.textContent='Opens the Debenhams Virtual Stylist (our own VTO)';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200);return}
+  if(qb&&qb.dataset.vto&&S.vtoMode==='own'){e.preventDefault();const t=document.getElementById('ct');t.textContent='Opens the '+BN()+' Virtual Stylist (our own VTO)';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200);return}
   if(qb){e.preventDefault();CHAT.user=true;const q=qb.dataset.q;openChat(q?(qb.dataset.ctx&&/similar/i.test(q)?q:q):'',!!qb.dataset.vto);return}
   if(e.target.closest('[data-close]')){CHAT.user=false;CHAT.msgs=[];closeChat();return}
   const a=e.target.closest('a[data-href],a[href]');
