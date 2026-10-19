@@ -187,9 +187,8 @@ body.app .device .tb,body.app .device .chin{display:none}
 /* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
 /* the feature list, in Jake's order (15 Oct) — one radio per feature; picking one shows its page and scrolls to it */
 const FEATS=[
-  {k:'ep-oi',grp:'ex',n:'AI icon beside the field',pg:'home',d:'Exposed search under the header bar with the AI circle beside it (44px, puck shadow). Search active: the X joins it; typing pushes the circle out, the X stays.',set:{launcher:'outIcon'}},
-  {k:'ep-oa',grp:'ex',n:'Ask beside the field',pg:'home',d:'Exposed search with an outline “Ask” pill beside it (44px). Typing pushes it out; the X stays.',set:{launcher:'outAsk'}},
-  {k:'ep-lift',grp:'ex',n:'Lifts over the logo row',pg:'home',d:'Exposed search with the AI circle. Tapping the field slides it up over the logo row for more room; close and it drops back.',set:{launcher:'lift'}},
+  {k:'ep-oa',grp:'ex',n:'Ask beside the field',pg:'home',d:'Exposed search with the “Ask” pill beside it (44px). Search active: the word Ask animates out, leaving the sparkle; typing pushes it out; the X stays.',set:{launcher:'outAsk'}},
+  {k:'ep-lift',grp:'ex',n:'Lifts over the logo row',pg:'home',d:'Exposed search with the “Ask” pill. Tapping the field slides it up over the logo row for more room and Ask animates down to the sparkle; close and it drops back.',set:{launcher:'lift'}},
   {k:'ep-ni-ask',grp:'ni',n:'Search icon · Ask beside the field',pg:'home',d:'Chosen 19 Oct. The header has the search icon only. Tap it: the field opens focused (keyboard up) with the “Ask” pill and the X beside it; Ask stays while typing. Field: camera + search icons at 16px, 14px text (input kept at 16px and scaled, no iOS zoom).',set:{launcher:'niAsk',mCam:16,mSearchIcon:true,mTxt:14}},
   {k:'custom',n:'Content Prompts Banner',pg:'home',d:'Fixed prompts we choose and place (CMS-fed); each one opens the agent with that question. Homepage shown; the same works on category pages.',opts:[['module','A · Homepage module','Image + prompt panel under the hero.'],['strip','B · Promo strip','A slim AI-gradient bar at the top of the page.'],['hero','C · Chips on the hero','Prompt chips over the first hero image.']]},
   {k:'autocomplete',n:'Search Suggestions',pg:'plp',search:true,d:'Search active, as the Search Figma (1012:2295): an overlay under the header (USP banners hidden): Recent Searches and Popular Searches as one scrolling row each, then “Need some help?” with the agent’s prompts stacked, then Recently Viewed. The last prompt (Help me discover) is the open-ended one.'},
@@ -219,7 +218,7 @@ const cfgFile=()=>AG.build(BASE,S.cfg.agent);
 const H=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 function dl(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
 /* the dev hand-off: placements chosen + the calls each entry point makes */
-function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search icon; opens the field focused with an Ask pill and the X (Ask stays while typing); field = camera + search icons at 16px, 14px text (16px input scaled, no iOS zoom)',niLift:'Not exposed: header search icon; the search row opens over the logo row, field focused, AI circle + X',outIcon:'Exposed search, AI icon in a gradient-outline circle beside the field (both 44px)',outAsk:'Exposed search, gradient-outline “Ask” pill beside the field (both 44px)',lift:'Exposed search + AI circle; search active slides the field up over the logo row (mobile)',icon:'Mobile: header search icon only; search active shows the AI circle left of the X. Desktop: circle beside the field'}[c.launcher];
+function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search icon; opens the field focused with an Ask pill and the X (Ask stays while typing); field = camera + search icons at 16px, 14px text (16px input scaled, no iOS zoom)',niLift:'Not exposed: header search icon; the search row opens over the logo row, field focused, AI circle + X',outAsk:'Exposed search, “Ask” pill beside the field (both 44px); search active: the word Ask animates out to the sparkle circle, typing pushes it out, X always there',lift:'Exposed search + “Ask” pill; search active slides the field up over the logo row (mobile) and Ask animates to the sparkle',icon:'Mobile: header search icon only; search active shows the AI circle left of the X. Desktop: circle beside the field'}[c.launcher];
   lines.push('# Shopping agent — Debenhams · dev hand-off','',`Exported ${new Date().toISOString()}`,'');
   lines.push('## 1 · Agent config (backend)','`salesAgentConfig.json` = the dev retrieveConfig with our edits applied. Changed keys:','');
   if(BASE)AG.diff(BASE,cfgFile()).forEach(d=>lines.push(`- \`${d.path}\`: ${JSON.stringify(d.from)} → ${JSON.stringify(d.to)}`));
@@ -265,8 +264,9 @@ function renderPanel(host,S,update){
   if(!c.dec19){c.dec19=1;Object.assign(c,{launcher:'niAsk',feat:'ep-ni-ask',epTab:'ni',mCam:16,mSearchIcon:true,mTxt:14})}
   if(!c.dec19b){c.dec19b=1;if(c.launcher==='niAsk')c.mSearchIcon=true}   /* 19 Oct: the small search icon is back */
   if(c.launcher==='icon'||c.launcher==='niLift')Object.assign(c,{launcher:'niAsk',feat:'ep-ni-ask',mCam:16,mSearchIcon:true,mTxt:14});
-  if(!['outIcon','outAsk','lift','niAsk'].includes(c.launcher))c.launcher='niAsk';
-  if(!FEATS.some(x=>x.k===c.feat))c.feat={outIcon:'ep-oi',outAsk:'ep-oa',lift:'ep-lift',niAsk:'ep-ni-ask'}[c.launcher];if(!c.start)c.start='config';
+  if(c.launcher==='outIcon'){c.launcher='outAsk';c.feat='ep-oa'}   /* the AI-icon-only option was removed 19 Oct */
+  if(!['outAsk','lift','niAsk'].includes(c.launcher))c.launcher='niAsk';
+  if(!FEATS.some(x=>x.k===c.feat))c.feat={outAsk:'ep-oa',lift:'ep-lift',niAsk:'ep-ni-ask'}[c.launcher];if(!c.start)c.start='config';
   const fe=FEATS.find(x=>x.k===c.feat);
   const tab=c.epTab||(c.launcher==='niAsk'?'ni':'ex');
   const opt=(on,b,s,attr)=>`<button class="opt${on?' on':''}" ${attr}><span class="r"></span><span class="t"><b>${b}</b>${s?`<span>${s}</span>`:''}</span></button>`;
@@ -276,7 +276,8 @@ function renderPanel(host,S,update){
   <div class="card"><h3>Entry point</h3>
     <span class="seg" id="eptab" style="margin-bottom:6px"><button data-v="ex" class="${tab==='ex'?'on':''}">Exposed search</button><button data-v="ni" class="${tab==='ni'?'on':''}">Not exposed</button></span>
     ${FEATS.filter(x=>x.grp===tab).map(x=>opt(x.k===c.feat,x.n,'',`data-feat="${x.k}"`)).join('')}
-    <p style="margin:8px 0 0">Desktop search is always exposed; the button follows the option (AI icon or Ask).</p>
+    <div class="f" style="margin-top:10px"><span>See it on</span><span class="seg" id="eppage">${[['home','Home'],['plp','PLP'],['pdp','PDP'],['bag','Bag']].map(([v,n])=>`<button data-v="${v}" class="${(c.page||'home')===v?'on':''}">${n}</button>`).join('')}</span></div>
+    <p style="margin:8px 0 0">Desktop search is always exposed, with the Ask pill.</p>
     ${tab==='ni'?`<p style="margin:8px 0 0">Mobile field: camera + search icons at 16px, 14px text (decided 19 Oct).</p>`:`<div class="f" style="margin-top:14px"><span>Mobile search field · camera + search icons</span><span class="seg" id="mcam"><button data-v="20" class="${(c.mCam||20)==20?'on':''}">20px (live)</button><button data-v="16" class="${c.mCam==16?'on':''}">16px</button></span></div>
     <div class="f"><span>Mobile search field · search icon</span><span class="seg" id="msi"><button data-v="1" class="${c.mSearchIcon!==false?'on':''}">Show</button><button data-v="0" class="${c.mSearchIcon===false?'on':''}">Hide</button></span><small>The keyboard has its own search key, so the icon in the field can go.</small></div>
     <div class="f"><span>Mobile search field · text size</span><span class="seg" id="mtxt">${[16,15,14].map(n=>`<button data-v="${n}" class="${(c.mTxt||16)==n?'on':''}">${n}px</button>`).join('')}</span><small>The input stays 16px and is scaled down, so iOS Safari never zooms on tap.</small></div>`}</div>
@@ -329,9 +330,10 @@ function renderPanel(host,S,update){
     <b>Chips:</b> white pill on the puck shadow, 14px Geologica, gap 2 (8px); the last chip of a group is the gradient-outline pill (Ask anything · Help me decide · Help me discover · Help me choose).</div></div>`;
   const go=()=>{update();panel()};
   host.querySelectorAll('[data-feat]').forEach(b=>b.onclick=()=>{const x=FEATS.find(f=>f.k===b.dataset.feat);c.feat=x.k;if(x.set)Object.assign(c,x.set);if(x.k==='vto')c.chipKind='vto';if(x.k==='shopSimilar')c.chipKind='similar';
-    c.page=x.pg;c.search=!!x.search;c.chat=false;c.focus={f:x.k.startsWith('ep-')?'launcher':x.k,n:Date.now()};go()});
-  host.querySelectorAll('#eptab button').forEach(b=>b.onclick=()=>{c.epTab=b.dataset.v;const first=FEATS.find(x=>x.grp===b.dataset.v);c.feat=first.k;Object.assign(c,first.set);c.page='home';c.search=false;c.chat=false;go()});
-  const ms=(id,k,f)=>host.querySelectorAll(id+' button').forEach(b=>b.onclick=()=>{c[k]=f(b.dataset.v);c.page='home';c.search=true;c.focus=null;go()});
+    c.page=x.k.startsWith('ep-')?(c.page||'home'):x.pg;c.search=!!x.search;c.chat=false;c.focus={f:x.k.startsWith('ep-')?'launcher':x.k,n:Date.now()};go()});
+  host.querySelectorAll('#eppage button').forEach(b=>b.onclick=()=>{c.page=b.dataset.v;c.search=false;c.chat=false;c.focus=null;go()});
+  host.querySelectorAll('#eptab button').forEach(b=>b.onclick=()=>{c.epTab=b.dataset.v;const first=FEATS.find(x=>x.grp===b.dataset.v);c.feat=first.k;Object.assign(c,first.set);c.page=c.page||'home';c.search=false;c.chat=false;go()});
+  const ms=(id,k,f)=>host.querySelectorAll(id+' button').forEach(b=>b.onclick=()=>{c[k]=f(b.dataset.v);c.page=c.page||'home';c.search=true;c.focus=null;go()});
   ms('#mcam','mCam',v=>+v);ms('#msi','mSearchIcon',v=>v==='1');ms('#mtxt','mTxt',v=>+v);
   host.querySelector('#t-chat').onchange=ev=>{c.chat=ev.target.checked;go()};
   host.querySelector('#t-labels').onchange=ev=>{c.labels=ev.target.checked;c.chat=true;go()};

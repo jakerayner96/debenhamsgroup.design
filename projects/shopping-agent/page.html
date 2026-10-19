@@ -316,6 +316,9 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .hd-search .ph{position:relative;display:grid;padding-left:3px}
 .hd-search .ph>span{grid-area:1/1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .25s ease,transform .25s ease}
 .hd-search .ph.act::before{content:"";position:absolute;left:0;top:50%;width:2px;height:22px;margin-top:-11px;border-radius:99px;background:#5877FF;animation:caret 1s steps(1) infinite}
+/* bag page scaffolding (as templates/bag.html) */
+.bagpg{padding:0 var(--gap-4)}.bitems{display:flex;flex-direction:column;gap:var(--gap-4)}.bitems>*{max-width:100%}.bsum{margin-top:var(--gap-6)}
+@media(min-width:1024px){.bagpg{max-width:1024px;margin:0 auto}.bcols{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:var(--gap-4);align-items:start}.bsum{margin:0;background:var(--surface-sunken)}}
 /* open / close motion. srch-in = the render that opened search (kept until the next render, so nothing is cut short);
    closing = the 240ms before search closes; srch-out = the render that closed it */
 #hdrwrap.srch-in .ag-x{animation:agIn .26s cubic-bezier(.4,0,.2,1) both}
@@ -345,6 +348,11 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .hd-search .srch-field:focus{caret-color:#5877FF}
 /* typing pushes the AI button out (both directions animate); the X stays */
 .ag-sw>.ai-circle,.ag-sw>.ag-ask{max-width:160px;transition:max-width .24s cubic-bezier(.4,0,.2,1),opacity .2s ease,margin .24s cubic-bezier(.4,0,.2,1),padding .24s cubic-bezier(.4,0,.2,1)}
+/* exposed search (19 Oct): while search is active the word “Ask” animates out, leaving the sparkle in a circle; it comes back on close */
+.ag-ask .ag-lbl{display:inline-block;max-width:44px;overflow:hidden;transition:max-width .24s cubic-bezier(.4,0,.2,1),opacity .18s ease}
+.ag-sw>.ag-ask{transition:max-width .24s cubic-bezier(.4,0,.2,1),opacity .2s ease,margin .24s cubic-bezier(.4,0,.2,1),padding .24s cubic-bezier(.4,0,.2,1),gap .24s cubic-bezier(.4,0,.2,1)}
+#hdrwrap.ask-ic .ag-ask .ag-lbl{max-width:0;opacity:0}
+#hdrwrap.ask-ic .ag-sw>.ag-ask{gap:0;padding:0 calc((var(--ag-h) - 18px) / 2)!important}
 #hdrwrap.typing .ag-sw>.ai-circle,#hdrwrap.typing .ag-sw>.ag-ask{max-width:0;opacity:0;margin-left:-10px;padding-left:0!important;padding-right:0!important;overflow:hidden;box-shadow:none;pointer-events:none}
 /* option 4: the search row lies over the page (under the logo bar) instead of joining the header, so the USP banners never move */
 @media(max-width:1023px){#hdrwrap.ni-lo .hd{position:relative}#hdrwrap.ni-lo .ag-mrow{position:absolute;left:0;right:0;top:56px;z-index:31;background:#FFF;padding-top:0}
@@ -444,6 +452,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 <script src="assets/ds/subscribe.js"></script>
 <script src="assets/ds/dplus-logos.js"></script>   <!-- Deliver+ lockups: the catalogue reads them when it loads -->
 <script src="assets/ds/catalogue.js"></script>
+<script src="assets/ds/bag-summary.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
 <script src="assets/ds/usp-live.js"></script>
 <script src="assets/ds/usp.js"></script>
@@ -499,8 +508,8 @@ function header(){
   const q=`<span class="sf-wrap"><input class="srch-field" type="search" placeholder="${ph}" aria-label="Search" autocomplete="off" enterkeyhint="search" value="${esc(S.q||'')}"></span>`;
   const ics='<span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="assets/ds/icons/search.svg" alt=""></span>';
   const circle=`<button class="ai-circle" ${F('launcher','AI icon beside search')} data-q="" aria-label="${ask()}"><i class="ai-icon"></i></button>`;
-  const askPill=`<button class="ai-pill ai-pill--outline ag-ask" ${F('launcher','Ask beside search')} data-q="">${spk(18)}Ask</button>`;
-  const btn=(lo==='outAsk'||lo==='niAsk')?askPill:circle;
+  const askPill=`<button class="ai-pill ai-pill--outline ag-ask" ${F('launcher','Ask beside search')} data-q="">${spk(18)}<span class="ag-lbl">Ask</span></button>`;
+  const btn=askPill;   /* 19 Oct: Ask on every option (the AI-icon-only option is gone) */
   const X=`<button class="ag-x" data-closesearch="1" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.replaceWith('✕')"></button>`;
   const sIcon='<button aria-label="Search"><img src="assets/ds/icons/search.svg" alt=""></button>';
   /* the button sits beside the field; while search is active the X is always there, and typing pushes the button out (#hdrwrap.typing) */
@@ -515,7 +524,7 @@ function header(){
   }
   /* USP banners stay put: the search panel fades in over them, so nothing on the page disappears instantly */
   h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
-  const cls=[lift?'lifted'+(header.was?'':' lifting'):'',S.search&&!header.was&&!EXPORTING?'opening srch-in':'',!S.search&&header.was&&!EXPORTING?'srch-out':'',lo+'-lo',ni?'ni-lo':'',S.search&&S.q&&lo!=='niAsk'?'typing':''].filter(Boolean).join(' ');
+  const cls=[lift?'lifted'+(header.was?'':' lifting'):'',S.search&&!header.was&&!EXPORTING?'opening srch-in':'',!S.search&&header.was&&!EXPORTING?'srch-out':'',lo+'-lo',ni?'ni-lo':'',S.search&&!ni&&header.was?'ask-ic':'',S.search&&S.q&&lo!=='niAsk'?'typing':''].filter(Boolean).join(' ');
   return `<div id="hdrwrap" class="${cls}">${h}${S.search?autocomplete():''}</div>`;
 }
 
@@ -753,7 +762,15 @@ function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat()
   const inp=document.getElementById('cminput');if(inp&&CHAT.focus&&!EXPORTING){inp.focus();inp.setSelectionRange(inp.value.length,inp.value.length);CHAT.focus=false}}
 
 /* ================= render ================= */
-const PAGES={home,plp,pdp};
+/* ================= BAG — DS templates/bag.html (live /basket, 06 Oct): title · threshold · bag items · bag-summary.js ================= */
+function bag(){const ix=[3,12],ps=ix.map(i=>PR()[i]).filter(Boolean),it=ps.map(p=>({price:p.price,was:p.was}));
+  const items=ps.map((p,k)=>`<div class="bag-item"><img src="${IMG(ix[k])}" alt=""><div class="info">${p.brand?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`).join('');
+  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML('debenhams',it,desk()):V('order-summary',0);
+  const title=`<div class="pg-title"><h1>Your Bag (${ps.length})</h1></div>`;
+  return desk()
+    ?`<main class="bagpg">${title}<div class="bcols"><div class="bitems">${V('threshold',0)}${items}</div><div class="bsum">${sum}</div></div></main>`
+    :`<main class="bagpg">${title}${window.DG_bagTopHTML?DG_bagTopHTML('debenhams',it):''}<div class="bitems">${V('threshold',0)}${items}</div></main><div class="bsum">${sum}</div>`}
+const PAGES={home,plp,pdp,bag};
 function render(){
   document.documentElement.setAttribute('data-brand','debenhams');
   document.body.classList.toggle('exporting',EXPORTING);
@@ -766,6 +783,7 @@ function render(){
   if(S.search&&scrollY>0)scrollTo(0,0);
   if(S.search&&!header.was){const ac=document.getElementById('ac');if(ac)ac.scrollTop=0}   /* search opens from the top, wherever the page was */
   document.body.classList.toggle('searching',!!S.search);
+  {const hw=document.getElementById('hdrwrap');if(S.search&&hw&&!hw.classList.contains('ni-lo')&&!hw.classList.contains('ask-ic'))requestAnimationFrame(()=>requestAnimationFrame(()=>hw.classList.add('ask-ic')))}
   if(S.search){const hw=document.getElementById('hdrwrap'),hb=hw.querySelector('.hd-bar'),row=hw.querySelector('.ag-mrow'),last=row||hb;
     let top=last?last.getBoundingClientRect().bottom:120;if(hw.classList.contains('lifting'))top=top-hb.offsetHeight+8;
     document.documentElement.style.setProperty('--ac-top',Math.round(top)+'px')}
@@ -801,7 +819,7 @@ document.addEventListener('click',e=>{
   if(e.target.closest('[data-closesearch]')){const hw=document.getElementById('hdrwrap');
     const done=()=>{document.body.classList.remove('closing-search');S.search=false;S.q='';parent.postMessage({protoSearch:false},'*');render()};
     if(EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches||!hw)return done();
-    if(hw.classList.contains('closing'))return;hw.classList.remove('srch-in');hw.classList.add('closing');document.body.classList.add('closing-search');setTimeout(done,240);return}
+    if(hw.classList.contains('closing'))return;hw.classList.remove('srch-in','ask-ic');hw.classList.add('closing');document.body.classList.add('closing-search');setTimeout(done,240);return}
   {const ah=e.target.closest('.acc-set .acc-h');if(ah){e.preventDefault();ah.parentNode.classList.toggle('open');return}}
   if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
