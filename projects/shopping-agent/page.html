@@ -372,6 +372,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .ac-chips{display:flex;flex-wrap:wrap;gap:10px}
 .ac-chip{font-family:var(--font-family-base);display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:99px;background:var(--surface-media,#F2F2F2);font-size:14px;font-weight:var(--w-regular,400);line-height:1.2;color:var(--text-primary);border:0;cursor:pointer;white-space:nowrap}
 .ac-chip img{width:14px;height:14px;opacity:.7}
+.ac-chip,.ac .ac-prompts .ai-pill{font-size:var(--s-txt,16px)}   /* LIVE 16 / NEW 14 (panel switch) */
 .ac-hd{display:flex;align-items:center;gap:8px}.ac-hd h4{flex:1}
 .ac-rv{display:grid;grid-auto-flow:column;grid-auto-columns:42%;gap:10px;overflow:hidden}
 @media(min-width:1024px){.ac-rv{grid-auto-columns:calc((100% - 60px)/6)}.ac{padding:0 24px 24px}}
@@ -793,7 +794,11 @@ function render(){
   document.documentElement.setAttribute('data-brand',BR());document.title='Shopping agent · '+BN();
   document.body.classList.toggle('exporting',EXPORTING);
   /* mobile search field options (panel) */
-  document.documentElement.style.setProperty('--m-cam',(S.mCam||20)+'px');document.documentElement.style.setProperty('--m-s',((S.mTxt||16)/16).toFixed(4));document.documentElement.classList.toggle('m-nosearch',S.mSearchIcon===false);
+  /* LIVE / NEW (panel top, 20 Oct): LIVE = what is going live — 16px search text, 20px camera + search icons; NEW = 14px text, 16px icons.
+     Covers the placeholder / typed text and every line in the search panel (Recent, Popular, Need some help?). */
+  const NEWV=S.ver==='new',txt=S.ver?(NEWV?14:16):(S.mTxt||16),cam=S.ver?(NEWV?16:20):(S.mCam||20);
+  document.documentElement.style.setProperty('--s-txt',txt+'px');document.documentElement.classList.toggle('ver-new',NEWV);
+  document.documentElement.style.setProperty('--m-cam',cam+'px');document.documentElement.style.setProperty('--m-s',(txt/16).toFixed(4));document.documentElement.classList.toggle('m-nosearch',S.mSearchIcon===false);
   if(window.HOME_CSS&&!document.getElementById('homecss')){const st=document.createElement('style');st.id='homecss';st.textContent=HOME_CSS;document.head.appendChild(st)}
   if(CFG){const r=document.documentElement.style,e=E();r.setProperty('--ai-primary',e.primary);r.setProperty('--ai-chip-bg',e.chipBg);r.setProperty('--ai-chip-border',e.chipBorder);r.setProperty('--ai-chip-radius',e.chipRadius+'px')}
   gid=0;
