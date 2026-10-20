@@ -373,6 +373,17 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .ac-hs .ac-chip{flex:none}.ac-chip svg{flex:none}
 .ac-prompts{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .ac-rv .pc-name{font-size:13px}
+/* typing view: autocomplete rows (live: bold terms, ~40px), the agent prompts on one scrolling row, then products */
+.ac.typing .ac-sec{padding:12px 0}
+.ac-ac{list-style:none;margin:0;padding:6px 0 4px}.ac-term{display:block;width:100%;text-align:left;background:none;border:0;padding:0;height:40px;line-height:40px;font:var(--w-strong,600) var(--s-txt,16px)/40px var(--font-family-base);color:var(--text-primary);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac-prompts-row{padding-top:6px;padding-bottom:8px;margin-top:-6px;margin-bottom:-8px}.ac-prompts-row .ai-pill{flex:none;font-size:var(--s-txt,16px);white-space:nowrap}   /* room for the pill shadow inside the scrolling row */
+/* keep the panel above the keyboard: the mock (review aid) or the real one on a phone */
+.ac{bottom:max(var(--kbv,0px),var(--kbm,0px))}
+.kbm{position:fixed;left:0;right:0;bottom:0;z-index:45;height:var(--kbm,336px);background:#D1D4DB;padding:0 3px 34px;font:400 15px/1 -apple-system,system-ui,sans-serif;color:#000;user-select:none;pointer-events:none;box-sizing:border-box;display:flex;flex-direction:column}
+.kbm .kb-sug{display:flex;height:44px;align-items:center;flex:none}.kbm .kb-sug span{flex:1;text-align:center;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}.kbm .kb-sug span+span{border-left:1px solid rgba(0,0,0,.15)}
+.kbm .kb-r{display:flex;gap:6px;justify-content:center;margin-top:11px}.kbm .kb-r:first-of-type{margin-top:4px}
+.kbm i,.kbm b{flex:1;max-width:32px;height:42px;display:grid;place-items:center;background:#FFF;border-radius:5px;box-shadow:0 1px 0 #898A8D;font-style:normal;font-size:22px;font-weight:300}
+.kbm .r2{padding:0 18px}.kbm .r3 b{max-width:44px;flex:1.4;background:#ABB0BA;font-size:18px}.kbm .r4 b{max-width:none;flex:1.2;background:#ABB0BA;font-size:15px}.kbm .r4 .sp{max-width:none;flex:4.6;font-size:15px}.kbm .r4 .go{flex:2;background:#007AFF;color:#FFF}
 /* ---------- chat window, as the PA Deck Figma (OUmnWDam0w0czh9VZnaqx0 · 6:167) ---------- */
 .cm .cm-tb{padding:24px 24px 0;justify-content:flex-end;min-height:40px;gap:10px;align-items:center}
 .cm .cm-tb .t{flex:1;font-size:16px;font-weight:600}.cm .cm-tb .ic{display:grid;place-items:center;width:auto;height:auto;margin:0}
@@ -480,6 +491,7 @@ let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'niAsk',mCam:20
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
   cpPos:'module',search:false,chat:false,agent:{},focus:null};
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes
+if(S.sqn){S._sqn=S.sqn;S.q=S.sq||''}
 const OOS=['vto','shopSimilar'];   /* Virtual Try On + Shop Similar: NOT IN SCOPE this phase (Jake, 20 Oct) — never rendered */
 const ON=f=>!OOS.includes(f)&&S.on[f]!==false;
 let EXPORTING=false,BASE=null,CFG=null,CHAT={open:false,msgs:[]};
@@ -537,19 +549,48 @@ function header(){
   return `<div id="hdrwrap" class="${cls}">${h}${S.search?autocomplete():''}</div>`;
 }
 
-/* ================= SEARCH ACTIVE — Search Figma 1012:2295, re-ordered (Jake 15 Oct):
-   Recent Searches (one scrolling row) · Popular Searches (one scrolling row) · "Need some help?" agent prompts (stacked) · Recently Viewed.
-   An overlay under the header: the page behind does not scroll, and the panel ends at Recently Viewed. ================= */
-function autocomplete(){
+/* ================= SEARCH ACTIVE — Search Figma 1012:2295, re-ordered (Jake 15 + 20 Oct). An overlay under the header; the page behind does not scroll.
+   Landing (empty field): Recent Searches (one scrolling row) · Popular Searches (one scrolling row) · Recently Viewed.
+   Typing (Jake 20 Oct, as live debenhams.com + the app): up to 4 autocomplete terms · “Need some help?” agent prompts for the typed term, one scrolling row,
+   so they sit above the keyboard on a phone · Products matching “…”. Redrawn on every keystroke without touching the input (the keyboard stays up). ================= */
+const TERMS=['dresses','dress','dressing table','white dress women','sequin dress','midi dresses','maxi dresses','party dresses','wedding guest dresses','black dress','jeans','mom jeans','skinny jeans','wide leg jeans','jackets','denim jacket','leather jacket','coats','puffer coat','trench coat','boots','ankle boots','knee high boots','trainers','heels','sandals','tops','going out tops','shirts','t-shirts','jumpers','cardigans','knitwear','skirts','trousers','wide leg trousers','suits','blazers','swimwear','bikini','lingerie','pyjamas','nightwear','handbags','bags','sunglasses','watches','mens watches','jewellery','perfume','fragrance','makeup','skincare','beauty','bedding','duvet cover','towels','cushions','candles','gifts','gifts for her','gifts for him','christmas jumper','sale','new in','co-ords','activewear','gym leggings','loungewear','hoodies','joggers','burton mens','burton mens shirt','burton suit','karen millen dresses','coast dresses sale'];
+function terms(q){q=(q||'').toLowerCase().trim();if(!q)return[];
+  const pool=[...new Set([...TERMS,...PR().map(p=>(p.brand||'').toLowerCase()).filter(Boolean)])];
+  const sc=x=>x.startsWith(q)?0:x.split(/\s+/).some(w=>w.startsWith(q))?1:x.includes(q)?2:9;
+  return pool.map(x=>[sc(x),x]).filter(x=>x[0]<9).sort((a,b)=>a[0]-b[0]||a[1].length-b[1].length).slice(0,4).map(x=>x[1])}
+const CTX=[[/dres/,['Wedding guest dresses under £100','Which dress shape suits me?','Dresses to wear with trainers']],
+  [/jean|denim/,['Jeans that fit a curvy waist','Which jeans are in this season?','What goes with straight-leg jeans?']],
+  [/boot|shoe|heel|trainer|sandal/,['Comfortable heels for a wedding','Boots that go with a midi dress','Trainers for everyday wear']],
+  [/coat|jacket|puffer|trench|blazer/,['Warmest coats under £100','Which coat suits a petite frame?','A smart jacket for work']],
+  [/suit|burton|shirt/,['A suit for a winter wedding','Which shirt goes with a navy suit?','Smart-casual outfits for work']],
+  [/top|tee|jumper|knit|cardi|hood/,['Going-out tops under £30','What goes with wide-leg trousers?','A cosy jumper for the weekend']],
+  [/gift|present|christ/,['Gifts for her under £50','Stocking fillers she’ll love','What do I get my dad?']],
+  [/beaut|make|perfum|fragr|skin|clarins/,['A perfume that lasts all day','Skincare for dry skin','Make-up gift sets under £40']],
+  [/bed|duvet|towel|cushion|candle|living|home|dressing table/,['Cosy bedding for winter','Gifts for a new home','Cushions to brighten a grey sofa']],
+  [/watch|bag|jewel|sunglass|access/,['A watch for everyday wear','Bags that go with everything','Sunglasses for a round face']]];
+function ctxPrompts(q){const top=(terms(q)[0]||q).toLowerCase(),k=q.toLowerCase();const hit=CTX.find(([r])=>r.test(top)||r.test(k));
+  const T=top.charAt(0).toUpperCase()+top.slice(1);return hit?hit[1]:[`Help me choose ${top}`,`${T} under £50`,`What goes with ${top}?`]}
+function matches(q){const k=(q||'').toLowerCase().trim().replace(/(es|s)$/,''),all=PR().map((p,i)=>[p,i]);
+  const hit=k.length<2?[]:all.filter(([p])=>((p.name||'')+' '+(p.brand||'')).toLowerCase().includes(k));return (hit.length?hit:all).slice(0,8)}
+function acLanding(){
   const recent=['mens watches','living and home','clarins','hermes','hermes kelly'];
   const popular=['Sunglasses','Garden Furniture','Men’s Watches','Dresses','Wedding','Party Dresses'];
   const R=`<div class="ac-sec"><h4>Recent Searches</h4><div class="ac-chips ac-hs">${recent.map(r=>`<button class="ac-chip">${esc(r)}<img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.remove()"></button>`).join('')}</div></div>`;
   const Pp=`<div class="ac-sec"><h4>Popular Searches</h4><div class="ac-chips ac-hs">${popular.map(r=>`<button class="ac-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17l6.5-6.5 4 4L22 5"/><path d="M15 5h7v7"/></svg>${esc(r)}</button>`).join('')}</div></div>`;
-  const AI=`<div class="ac-sec" ${F('autocomplete','Need some help?')}><h4>Need some help?</h4><div class="ac-prompts">${S.acChips.filter(Boolean).map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14)}${esc(c)}</button>`).join('')}<button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me discover something new">${spk(14)}Help me discover</button></div></div>`;
   const rv=`<div class="ac-sec"><h4>Recently Viewed</h4><div class="ac-rv">${[1,21,5,24,31,27].map(i=>card(PR()[i],i,true)).join('')}</div></div>`;
-  return `<div class="ac" id="ac">${R}${Pp}${AI}${rv}</div>`;
-}
-
+  return R+Pp+rv}
+function acTyping(q){const ts=terms(q),ps=ctxPrompts(q),ms=matches(q),qq=esc(q.trim());
+  const AC=ts.length?`<ul class="ac-ac">${ts.map(x=>`<li><button class="ac-term" data-term="${esc(x)}">${esc(x)}</button></li>`).join('')}</ul>`:'';
+  const AI=ON('autocomplete')?`<div class="ac-sec ac-ask" ${F('autocomplete','Need some help? · for “'+q.trim()+'”')}><h4>Need some help?</h4><div class="ac-chips ac-hs ac-prompts-row">${ps.map(c=>`<button class="ai-pill ai-pill--soft" data-q="${esc(c)}">${spk(14)}${esc(c)}</button>`).join('')}<button class="ai-pill ai-pill--outline" data-q="${qq}">${spk(14)}${esc(ask())} about “${qq}”</button></div></div>`:'';
+  const PM=`<div class="ac-sec"><h4>Products matching “${qq}”</h4><div class="ac-rv">${ms.map(([p,i])=>card(p,i,true)).join('')}</div></div>`;
+  return AC+AI+PM}
+function acInner(){return (S.q||'').trim()?acTyping(S.q):acLanding()}
+function autocomplete(){return `<div class="ac${(S.q||'').trim()?' typing':''}" id="ac">${acInner()}</div>${keyboard()}`}
+/* review aid (panel: Keyboard on screen): an iOS keyboard over the bottom of a phone, so you can judge what sits above it. Real phones: the panel
+   stops at the real keyboard (visualViewport → --kbv). */
+function keyboard(){if(S.kb===false||desk())return '';const sug=(terms(S.q)[0]||'the');const R=k=>k.split('').map(c=>`<i>${c}</i>`).join('');
+  return `<div class="kbm" aria-hidden="true"><div class="kb-sug"><span>“${esc((S.q||'').trim()||'I')}”</span><span>${esc(sug)}</span><span>${esc((terms(S.q)[1])||'and')}</span></div>
+    <div class="kb-r">${R('qwertyuiop')}</div><div class="kb-r r2">${R('asdfghjkl')}</div><div class="kb-r r3"><b>⇧</b>${R('zxcvbnm')}<b>⌫</b></div><div class="kb-r r4"><b>123</b><b class="em">☺</b><i class="sp">space</i><b class="go">search</b></div></div>`}
 /* ================= product card (DS .pc) ================= */
 function card(p,i,mini){
   if(!p)return '';const sale=p.was?' sale':'';
@@ -798,6 +839,7 @@ function render(){
   if(CFG){const r=document.documentElement.style,e=E();r.setProperty('--ai-primary',e.primary);r.setProperty('--ai-chip-bg',e.chipBg);r.setProperty('--ai-chip-border',e.chipBorder);r.setProperty('--ai-chip-radius',e.chipRadius+'px')}
   gid=0;
   document.getElementById('app').innerHTML=`${header()}<div id="body">${(PAGES[S.page]||pdp)()}</div><div class="pgfoot">${DEB()?strip(V('footer',0)):`<footer data-ftr="${BR()}"></footer>`}</div><div id="chat"></div>`;
+  document.documentElement.style.setProperty('--kbm',document.querySelector('.kbm')?'336px':'0px');parent.postMessage({protoKb:!!document.querySelector('.kbm')},'*');   /* shell hides the Safari bar while the keyboard is up, as iOS does */   /* the review keyboard's height (iPhone 13 incl. the predictive bar) */
   if(S.search&&scrollY>0)scrollTo(0,0);
   if(S.search&&!header.was){const ac=document.getElementById('ac');if(ac)ac.scrollTop=0}   /* search opens from the top, wherever the page was */
   document.body.classList.toggle('searching',!!S.search);
@@ -817,10 +859,15 @@ fetch('projects/shopping-agent/base-config.json').then(r=>r.json()).then(b=>{BAS
 let rz,lastW=innerWidth;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const a=document.activeElement;if(innerWidth===lastW||(a&&/^(INPUT|TEXTAREA)$/.test(a.tagName)))return;lastW=innerWidth;render()},150)});
 /* focus the search field in the same tap that opened it, so the keyboard comes up without a second tap */
 function focusSearch(){const i=document.querySelector('#hdrwrap .srch-field');if(!i)return;try{i.focus({preventScroll:true})}catch(e){i.focus()}const n=i.value.length;try{i.setSelectionRange(n,n)}catch(e){}}
-document.addEventListener('input',e=>{if(!e.target.classList||!e.target.classList.contains('srch-field'))return;S.q=e.target.value});   /* Ask always stays: no push-out while typing */
+document.addEventListener('input',e=>{if(!e.target.classList||!e.target.classList.contains('srch-field'))return;S.q=e.target.value;acRedraw()});   /* Ask always stays; the panel switches landing ⇄ typing as you type */
+/* redraw the search panel only (never the header), so the focused input and the keyboard stay */
+function acRedraw(){const ac=document.getElementById('ac');if(!ac)return;const ty=!!(S.q||'').trim();ac.classList.toggle('typing',ty);ac.innerHTML=acInner();ac.scrollTop=0;const k=document.querySelector('.kbm');if(k)k.outerHTML=keyboard();parent.postMessage({protoKb:!!document.querySelector('.kbm')},'*')}
+/* a real phone keyboard covers fixed panels: keep the search panel's bottom at the keyboard's top */
+if(window.visualViewport){const vv=visualViewport,kb=()=>document.documentElement.style.setProperty('--kbv',Math.max(0,Math.round(innerHeight-vv.height-vv.offsetTop))+'px');vv.addEventListener('resize',kb);vv.addEventListener('scroll',kb)}
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('srch-field')&&e.target.value.trim()){e.preventDefault();e.target.blur();const t=document.getElementById('ct');t.textContent='Search results for “'+e.target.value.trim()+'”';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2000)}});
 addEventListener('message',e=>{const d=e.data||{};
-  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;if(BASE)CFG=AG.build(BASE,S.agent,BR());if(BASE)render()}
+  if(d.protoSet){const nq=d.protoSet.sqn&&d.protoSet.sqn!==S._sqn;S=Object.assign(S,d.protoSet);if(nq){S._sqn=S.sqn;S.q=S.sq||''}   /* panel: Search screen Landing / Typing */
+    EXPORTING=!!d.exporting;if(BASE)CFG=AG.build(BASE,S.agent,BR());if(BASE)render()}
   if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
 /* gallery: progress bar follows the rail; thumbs + arrows step it (desktop) */
 function galIdx(){const g=document.getElementById('gal');if(!g)return 0;const s=g.querySelector('.slide');const w=s.offsetWidth+(parseFloat(getComputedStyle(g).columnGap)||0);return Math.min(Math.round(g.scrollLeft/w),g.children.length-1)}
@@ -833,6 +880,7 @@ document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.t
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
   if(e.target.closest('.hd-burger')){parent.postMessage({protoMenu:1},'*');return}   /* prototype: the hamburger opens the shell's settings panel (phones) */
+  const tm=e.target.closest('[data-term]');if(tm){S.q=tm.dataset.term;const i=document.querySelector('#hdrwrap .srch-field');if(i)i.value=S.q;acRedraw();focusSearch();return}   /* autocomplete row → fills the field */
   if(!S.search&&e.target.closest('[data-opensearch]')){scrollTo(0,0);S.search=true;S.q='';parent.postMessage({protoSearch:true},'*');render();focusSearch();return}
   if(e.target.closest('[data-closesearch]')){const hw=document.getElementById('hdrwrap');
     const done=()=>{document.body.classList.remove('closing-search');S.search=false;S.q='';parent.postMessage({protoSearch:false},'*');render()};
