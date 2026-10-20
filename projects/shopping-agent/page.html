@@ -516,7 +516,8 @@ function header(){
   h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
   /* placeholder + field modifier + search icon per fascia, from header.js desktop — checked against each live homepage 19 Oct (Debenhams “Search Fashion, Home & Beauty”, PLT “SEARCH”, the rest “Search Products and Brands”) */
   const HD=DEB()?'':(window.DG_headerHTML?DG_headerHTML(BR(),'main','desktop'):''),hm=HD.match(/<div class="hd-search([^"]*)"><span>([^<]*)<\/span>/)||[0,'','Search Products and Brands'];
-  const ph=DEB()?'Search Fashion, Home &amp; Beauty':hm[2],smod=hm[1],sico=(HD.match(/<img src="([^"]*search[^"]*\.svg)"/)||[0,'assets/ds/icons/search.svg'])[1];   /* the live placeholder, both breakpoints (per fascia from header.js) */
+  /* placeholder: editable in the panel (S.ph), default 'Search product or brand' on every fascia (Jake, 20 Oct; the live copy per fascia was hm[2]) */
+  const ph=esc((S.ph||'').trim()||'Search product or brand'),smod=hm[1],sico=(HD.match(/<img src="([^"]*search[^"]*\.svg)"/)||[0,'assets/ds/icons/search.svg'])[1];   /* the live placeholder, both breakpoints (per fascia from header.js) */
   /* a real input: the native keyboard opens on tap; 16px on mobile so iOS does not zoom */
   const q=`<span class="sf-wrap"><input class="srch-field" type="search" placeholder="${ph}" aria-label="Search" autocomplete="off" enterkeyhint="search" value="${esc(S.q||'')}"></span>`;
   const ics=`<span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="${sico}" alt=""></span>`;
