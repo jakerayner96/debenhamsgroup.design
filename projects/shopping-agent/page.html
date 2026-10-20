@@ -480,7 +480,7 @@ const IMG=i=>{if(DEB())return `projects/plp-alignment/img/debenhams/p${i<7?i:i+1
 const A='projects/shopping-agent/';
 
 /* ---- state (the shell sends it; defaults here so the page also opens on its own) ---- */
-let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'niAsk',mCam:16,mSearchIcon:true,mTxt:14,start:'config',pdpPos:'belowCta',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
+let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'niAsk',mCam:20,mSearchIcon:true,mTxt:16,start:'config',pdpPos:'belowCta',glance:true,pdpDir:'column',pdpHead:true,pdpAsk:true,
   pdpPrompts:['Does this fit true to size?','What shoes would go with this dress?','Is this suitable for a winter wedding?'],
   ssPos:'title',vtoPos:'title',chipPos:'title',chipKind:'similar',vtoMode:'agent',vtoLabel:'Virtual Stylist',nbaRow:0,nbaQ:'What’s the occasion?',nbaOpts:['Wedding guest','Party season','Workwear','Everyday'],
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
@@ -492,7 +492,7 @@ let EXPORTING=false,BASE=null,CFG=null,CHAT={open:false,msgs:[]};
 /* ---- the sparkle: the dev build's shopping-agent-sparkle path, gradient in the agent primary ---- */
 let gid=0;
 /* the DS AI icon (assets/ds/icons/ai.svg, Figma 27:37643) — every AI entry point */
-function spk(sz=18){return `<i class="ai-icon" style="width:${sz}px;height:${sz}px"></i>`}
+function spk(sz=18){return `<i class="ai-icon ai-icon--twinkle" style="width:${sz}px;height:${sz}px;animation-delay:-${(Math.random()*3.6).toFixed(2)}s"></i>`}   /* DS twinkle, staggered */
 const E=()=>Object.assign({},AG.def(BR()),S.agent||{});
 const ask=()=>'Ask '+E().name;
 /* data-feat = the feature (panel navigation + jump-to highlight); data-q = the query sent to the agent (window.googleAgent.sendQuery) */

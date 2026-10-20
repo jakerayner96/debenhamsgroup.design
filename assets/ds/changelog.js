@@ -8,6 +8,7 @@ window.DG_CHANGELOG=[
   "title": "Tooltip + review-shell Screenshot",
   "by": "Shopping agent prototype (projects/shopping-agent)",
   "added": [
+   "AI sparkle twinkle (.ai-icon--twinkle) — subtle 3.6s scale / tilt / brightness breathe on the AI icon, staggered by animation-delay; off for reduced motion and exports · by Shopping agent",
    "Review shell Screenshot button (assets/ds/proto-shot.js) — beside Export in every prototype shell: saves a PNG of exactly what is on screen in the device frame to Downloads. Real pixels via the browser's tab capture (Chrome asks once to share the tab; kept 2 min for runs of shots), cropped to the visible #device; html2canvas render only as the fallback · by Shopping agent",
    "Tooltip (.tip, .tip--left, .tip--in, .tip-new, .tip-x) — bubble with a top nib (--tip-x), optional New tag and close; the coach mark for Ask Deb behind the header search icon · by Shopping agent"
   ],

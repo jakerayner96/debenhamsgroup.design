@@ -1091,6 +1091,12 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 [data-brand="karenmillen"]{--ai-fg:#000}   /* Karen Millen's AI is black, not its orange CTA (Jake 19 Oct) — the app's brands.ts ai tokens mirror this whole block */
 :root:not([data-brand]),[data-brand="debenhams"]{--ai-fg:#2E7F79;--ai-tint:#F2F8F7;--ai-ink:#2F6B63;--ai-icon-bg:url("icons/ai.svg") center/contain no-repeat;--ai-icon-mask:none;--ai-gradient:linear-gradient(107deg,#70BEB3 0%,#9DEDE2 99.4%);--ai-accent:#70BEB3;--ai-track:#D6E9E6}   /* --ai-accent = the mid aqua (bullets, hover keylines), --ai-track = the light aqua track; other fascias map both to their own palette */
 .ai-icon{display:inline-block;width:20px;height:20px;flex:none;background:var(--ai-icon-bg);-webkit-mask:var(--ai-icon-mask);mask:var(--ai-icon-mask)}
+/* .ai-icon--twinkle: a subtle, slow twinkle on the AI sparkle (Jake, 20 Oct) — 3.6s breathe: up to 8% larger, 6° tilt, a touch brighter. Stagger with a negative
+   animation-delay so a row of sparkles never pulses in sync. Off for reduced motion and in exports (html.exporting / body.exporting). */
+.ai-icon--twinkle{animation:aiTwinkle 3.6s ease-in-out infinite;transform-origin:50% 50%}
+@keyframes aiTwinkle{0%,100%{transform:scale(1) rotate(0deg);opacity:1}45%{transform:scale(1.08) rotate(6deg);opacity:.86}60%{transform:scale(1.04) rotate(3deg);opacity:1}}
+@media (prefers-reduced-motion:reduce){.ai-icon--twinkle{animation:none}}
+.exporting .ai-icon--twinkle{animation:none}
 .ai-pill{display:flex;align-items:center;gap:6px;height:36px;padding:0 16px 0 12px;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);border:0;color:var(--text-primary);font-family:var(--font-family-base);font-size:14px;font-weight:var(--w-mid,500);line-height:1.2;white-space:nowrap;cursor:pointer;text-align:left}
 .ai-pill .ai-icon{width:18px;height:18px}
 .ai-pill--outline{border:var(--ai-outline) solid transparent;background:linear-gradient(var(--surface-raised,#FFF),var(--surface-raised,#FFF)) padding-box,var(--ai-gradient) border-box}
