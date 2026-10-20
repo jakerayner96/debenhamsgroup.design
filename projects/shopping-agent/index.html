@@ -132,6 +132,7 @@ body.app .device .tb,body.app .device .chin{display:none}
 .panel textarea{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:6px 8px;font:inherit;font-size:11.5px;width:100%;resize:vertical;line-height:1.45}
 .panel input[type=color]{height:30px;padding:2px 4px}
 .f input+input{margin-top:4px}
+.opt.oos{opacity:.45;cursor:not-allowed}.opt.oos em{margin-left:auto;font-style:normal;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:2px 6px;border:1px solid rgba(255,255,255,.35);border-radius:4px;white-space:nowrap}   /* Virtual Try On + Shop Similar: out of scope (Jake, 20 Oct) */
 .vertog{display:flex;flex-direction:column;gap:6px;margin:0 0 14px}.vertog .seg{align-self:flex-start}.vertog .seg button{min-width:72px;font-weight:700;letter-spacing:.04em}.vertog small{color:var(--dim)}
 .phbox{position:relative;display:block}.phbox input{padding-right:46px}.phbox b{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:10.5px;font-weight:600;color:var(--dim);pointer-events:none}.phbox b.over{color:#FF8A80}   /* character count inside the field */
 .diff{max-height:150px;overflow:auto;border:1px solid var(--line);border-radius:7px;padding:6px 8px;background:#080808}
@@ -196,10 +197,10 @@ const FEATS=[
   {k:'autocomplete',n:'Search Suggestions',pg:'plp',search:true,d:'Search active, as the Search Figma (1012:2295): an overlay under the header (USP banners hidden): Recent Searches and Popular Searches as one scrolling row each, then “Need some help?” with the agent’s prompts stacked, then Recently Viewed. The last prompt (Help me discover) is the open-ended one.'},
   {k:'nba',n:'PLP Next Best Action',pg:'plp',d:'Co-shop module on the PLP (live Women’s Partywear layout): a question, answer chips and the open-ended Help me decide. Place it below the filters or as a full-width row after row 1–5 of products (2 per row on mobile, 5 on desktop). Chips are contextual in production (FDE build).',rows:true},
   {k:'pdpPrompts',n:'PDP Prompts',pg:'pdp',d:'<google-ai-prompts product-id direction>. Pre-baked at launch, dynamic as the agent learns. The last chip (Ask anything) is outlined so it reads as the open-ended option.',opts:[['belowCta','A · Below the buy buttons','Under ADD TO BAG · PayPal · Apple Pay, then Unlimited · Deliver+ · delivery grid · BNPL · Subscribe & Save.'],['aboveGlance','B · Above At a Glance','Directly above the At a Glance block (or where it would be, if At a Glance is off).']]},
-  {k:'vto',n:'Virtual Try On',pg:'pdp',d:'The Virtual Stylist chip sits in the row above the product title (VTO Figma 15656:21934). It opens Ask Deb, which asks for a photo.',onoff:true},
-  {k:'shopSimilar',n:'Shop Similar',pg:'pdp',d:'The Shop Similar chip sits in the row above the product title, beside Virtual Stylist when both are on. It calls sendQuery("Shop similar").',onoff:true},
+  {k:'vto',oos:true,n:'Virtual Try On',pg:'pdp',d:'The Virtual Stylist chip sits in the row above the product title (VTO Figma 15656:21934). It opens Ask Deb, which asks for a photo.',onoff:true},
+  {k:'shopSimilar',oos:true,n:'Shop Similar',pg:'pdp',d:'The Shop Similar chip sits in the row above the product title, beside Virtual Stylist when both are on. It calls sendQuery("Shop similar").',onoff:true},
 ];
-const OUT=['AI Overview','Compare','Shop the look'];
+const OUT=['AI Overview','Compare','Shop the look','Virtual Try On','Shop Similar'];
 const POSKEY={pdpPrompts:'pdpPos',shopSimilar:'ssPos',vto:'vtoPos',custom:'cpPos'};
 const P={
   name:'shopping-agent',
@@ -228,7 +229,7 @@ function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search i
   lines.push('Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
   lines.push('## 2 · Entry point + features (front end)','',`- **Entry point**: ${ep}`,`- **Search sizes**: ${(S.ver||'live')==='new'?'NEW — search text 14px (placeholder, typed text, Recent / Popular chips, Need some help? prompts), camera + search icons 16px':'LIVE — search text 16px (placeholder, typed text, Recent / Popular chips, Need some help? prompts), camera + search icons 20px'}`,`- **Search placeholder**: “${(c.ph||'').trim()||'Search product or brand'}” (${((c.ph||'').trim()||'Search product or brand').length} characters; ${(S.ver||'live')==='new'?'14 max at NEW 14px':'11 max at LIVE 16px'} for no clipping from 360px in the not-exposed + Ask + X layout)`,`- **Mobile search field**: camera + search icons ${c.mCam||20}px · search icon ${c.mSearchIcon===false?'hidden (the keyboard search key does it)':'shown'} · text ${c.mTxt||16}px${(c.mTxt||16)<16?' (input kept at 16px and scaled by '+((c.mTxt||16)/16).toFixed(3)+' so iOS does not zoom)':''}.`);
   FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${o?o[1]+' — '+o[2]:''}`)});
-  lines.push(`- **Virtual Try On / Shop Similar**: chips ${c.chipPos==='image'?'stacked top right of the PDP gallery':c.chipPos==='bl'?'stacked bottom left of the PDP gallery':'in a row above the product title (VTO Figma 15656:21934)'} — one chip: ${c.chipKind==='vto'?'Virtual Stylist (hanger)':'Shop Similar (AI icon)'}.`);
+  lines.push('- **Virtual Try On / Shop Similar**: NOT IN SCOPE this phase (removed from the PDP).');
   lines.push(`- **PLP Next Best Action**: ${c.nbaRow?`a full-width row of the grid after row ${c.nbaRow} (${c.nbaRow*2} products on mobile, ${c.nbaRow*5} on desktop)`:'below the filters, above the first row of products'}.`);
   lines.push('- **Search Suggestions**: Popular Searches → the agent’s suggestions; Recent Searches and Recently Viewed unchanged (Search Figma 1012:2295).');
   lines.push('','Calls:','```js',
@@ -269,6 +270,7 @@ function renderPanel(host,S,update){
   if(c.launcher==='icon'||c.launcher==='niLift')Object.assign(c,{launcher:'niAsk',feat:'ep-ni-ask',mCam:20,mSearchIcon:true,mTxt:16});
   if(c.launcher==='outIcon'){c.launcher='outAsk';c.feat='ep-oa'}   /* the AI-icon-only option was removed 19 Oct */
   if(!['outAsk','lift','niAsk'].includes(c.launcher))c.launcher='niAsk';
+  if(c.feat==='vto'||c.feat==='shopSimilar')c.feat='ep-ni-ask';   /* out of scope (20 Oct) */
   if(!FEATS.some(x=>x.k===c.feat))c.feat={outAsk:'ep-oa',lift:'ep-lift',niAsk:'ep-ni-ask'}[c.launcher];if(!c.start)c.start='config';
   const fe=FEATS.find(x=>x.k===c.feat);
   const tab=c.epTab||(c.launcher==='niAsk'?'ni':'ex');
@@ -286,7 +288,8 @@ function renderPanel(host,S,update){
     <p style="margin:8px 0 0">Desktop search is always exposed, with the Ask pill.</p>
     <p style="margin:8px 0 0">Search text and camera + search icon sizes follow LIVE / NEW at the top of the panel.</p></div>
   <div class="card"><h3>Features</h3>
-    ${FEATS.filter(x=>!x.grp).map(x=>opt(x.k===c.feat,x.n,'',`data-feat="${x.k}"`)).join('')}
+    ${FEATS.filter(x=>!x.grp&&!x.oos).map(x=>opt(x.k===c.feat,x.n,'',`data-feat="${x.k}"`)).join('')}
+    ${FEATS.filter(x=>x.oos).map(x=>`<button class="opt oos" disabled title="Not in scope this phase"><span class="r"></span><span class="t"><b>${x.n}</b></span><em>NOT IN SCOPE</em></button>`).join('')}
     <p style="margin:10px 0 0">Not in this phase: ${OUT.join(' · ')}.</p></div>
   <div class="card"><h3>${fe.n}</h3><p>${H(fe.d)}</p>
     ${fe.opts?fe.opts.map(o=>opt(c[POSKEY[fe.k]]===o[0],o[1],o[2],`data-pos="${o[0]}"`)).join(''):''}

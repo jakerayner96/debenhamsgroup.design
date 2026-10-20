@@ -480,7 +480,8 @@ let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'niAsk',mCam:20
   acMode:'below',acChips:['Wedding guest dresses under £100','Midi dresses with sleeves','Dresses for a Christmas party','Petite occasion dresses'],
   cpPos:'module',search:false,chat:false,agent:{},focus:null};
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes
-const ON=f=>S.on[f]!==false;
+const OOS=['vto','shopSimilar'];   /* Virtual Try On + Shop Similar: NOT IN SCOPE this phase (Jake, 20 Oct) — never rendered */
+const ON=f=>!OOS.includes(f)&&S.on[f]!==false;
 let EXPORTING=false,BASE=null,CFG=null,CHAT={open:false,msgs:[]};
 
 /* ---- the sparkle: the dev build's shopping-agent-sparkle path, gradient in the agent primary ---- */
@@ -624,6 +625,7 @@ function pdp(){
   /* one chip, switched between Shop Similar (AI icon) and Virtual Try On (hanger) — S.chipKind */
   const chipsArr=[S.chipKind==='vto'?`<button class="ai-pill ai-pill--soft tchip" ${F('vto','chip')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`
     :`<button class="ai-pill ai-pill--soft tchip" ${F('shopSimilar','chip')} data-q="Shop similar">${spk(16)}Shop Similar</button>`];
+  if(!ON('vto')&&!ON('shopSimilar'))chipsArr.length=0;   /* both out of scope: no chip on the PDP */
   const top=onImg?[]:chipsArr;
   /* tags: always on, bottom right of the first image — smaller, white at 90%, no outline */
   const tags=`<span class="ptags"><span>Petite</span><span>As Seen In Our Ad</span></span>`;
