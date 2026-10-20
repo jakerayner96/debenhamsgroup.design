@@ -379,6 +379,8 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .ac-prompts-row{padding-top:6px;padding-bottom:8px;margin-top:-6px;margin-bottom:-8px}.ac-prompts-row .ai-pill{flex:none;font-size:var(--s-txt,16px);white-space:nowrap}   /* room for the pill shadow inside the scrolling row */
 /* keep the panel above the keyboard: the mock (review aid) or the real one on a phone */
 .ac{bottom:max(var(--kbv,0px),var(--kbm,0px))}
+/* floating visual search: a 56px white circle, bottom right, 16px above the keyboard (the mock or the real one) */
+.vs-fab{position:fixed;right:16px;bottom:calc(max(var(--kbv,0px),var(--kbm,0px)) + 16px);z-index:46;width:56px;height:56px;border-radius:50%;border:0;background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.18),0 1px 3px rgba(0,0,0,.1);display:grid;place-items:center;cursor:pointer;animation:acIn .3s cubic-bezier(.2,.8,.2,1) both}.vs-fab img{width:26px;height:26px}
 .kbm{position:fixed;left:0;right:0;bottom:0;z-index:45;height:var(--kbm,336px);background:#D1D4DB;padding:0 3px 34px;font:400 15px/1 -apple-system,system-ui,sans-serif;color:#000;user-select:none;pointer-events:none;box-sizing:border-box;display:flex;flex-direction:column}
 .kbm .kb-sug{display:flex;height:44px;align-items:center;flex:none}.kbm .kb-sug span{flex:1;text-align:center;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}.kbm .kb-sug span+span{border-left:1px solid rgba(0,0,0,.15)}
 .kbm .kb-r{display:flex;gap:6px;justify-content:center;margin-top:11px}.kbm .kb-r:first-of-type{margin-top:4px}
@@ -523,11 +525,13 @@ function header(){
   h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
   /* placeholder + field modifier + search icon per fascia, from header.js desktop — checked against each live homepage 19 Oct (Debenhams “Search Fashion, Home & Beauty”, PLT “SEARCH”, the rest “Search Products and Brands”) */
   const HD=DEB()?'':(window.DG_headerHTML?DG_headerHTML(BR(),'main','desktop'):''),hm=HD.match(/<div class="hd-search([^"]*)"><span>([^<]*)<\/span>/)||[0,'','Search Products and Brands'];
-  /* placeholder: editable in the panel (S.ph), default 'Search product or brand' on every fascia (Jake, 20 Oct; the live copy per fascia was hm[2]) */
-  const ph=esc((S.ph||'').trim()||'Search product or brand'),smod=hm[1],sico=(HD.match(/<img src="([^"]*search[^"]*\.svg)"/)||[0,'assets/ds/icons/search.svg'])[1];   /* the live placeholder, both breakpoints (per fascia from header.js) */
+  /* placeholders: editable in the panel per breakpoint (Jake, 20 Oct) — mobile S.phM default 'Search...', desktop S.phD default 'Search Fashion, Home & Beauty...' */
+  const ph=esc(d?((S.phD||'').trim()||'Search Fashion, Home & Beauty...'):((S.phM||'').trim()||'Search...')),smod=hm[1],sico=(HD.match(/<img src="([^"]*search[^"]*\.svg)"/)||[0,'assets/ds/icons/search.svg'])[1];   /* the live placeholder, both breakpoints (per fascia from header.js) */
   /* a real input: the native keyboard opens on tap; 16px on mobile so iOS does not zoom */
   const q=`<span class="sf-wrap"><input class="srch-field" type="search" placeholder="${ph}" aria-label="Search" autocomplete="off" enterkeyhint="search" value="${esc(S.q||'')}"></span>`;
-  const ics=`<span class="ics"><img src="assets/ds/icons/camera.svg" alt=""><img src="${sico}" alt=""></span>`;
+  /* visual search (panel): the camera in the field, or (phones) a floating button above the keyboard while search is open — then the field has no camera */
+  const camIn=d||S.vs!=='float';
+  const ics=`<span class="ics">${camIn?'<img src="assets/ds/icons/camera.svg" alt="">':''}<img src="${sico}" alt=""></span>`;
   const circle=`<button class="ai-circle" ${F('launcher','AI icon beside search')} data-q="" aria-label="${ask()}"><i class="ai-icon"></i></button>`;
   const askPill=`<button class="ai-pill ai-pill--outline ag-ask" ${F('launcher','Ask beside search')} data-q="">${spk(18)}<span class="ag-lbl">Ask</span></button>`;
   const btn=askPill;   /* 19 Oct: Ask on every option (the AI-icon-only option is gone) */
@@ -585,7 +589,7 @@ function acTyping(q){const ts=terms(q),ps=ctxPrompts(q),ms=matches(q),qq=esc(q.t
   const PM=`<div class="ac-sec"><h4>Products matching “${qq}”</h4><div class="ac-rv">${ms.map(([p,i])=>card(p,i,true)).join('')}</div></div>`;
   return AC+AI+PM}
 function acInner(){return (S.q||'').trim()?acTyping(S.q):acLanding()}
-function autocomplete(){return `<div class="ac${(S.q||'').trim()?' typing':''}" id="ac">${acInner()}</div>${keyboard()}`}
+function autocomplete(){return `<div class="ac${(S.q||'').trim()?' typing':''}" id="ac">${acInner()}</div>${S.vs==='float'&&!desk()?'<button class="vs-fab" aria-label="Visual search"><img src="assets/ds/icons/camera.svg" alt=""></button>':''}${keyboard()}`}
 /* review aid (panel: Keyboard on screen): an iOS keyboard over the bottom of a phone, so you can judge what sits above it. Real phones: the panel
    stops at the real keyboard (visualViewport → --kbv). */
 function keyboard(){if(S.kb===false||desk())return '';const sug=(terms(S.q)[0]||'the');const R=k=>k.split('').map(c=>`<i>${c}</i>`).join('');

@@ -228,7 +228,7 @@ function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search i
   if(BASE)AG.diff(BASE,cfgFile()).forEach(d=>lines.push(`- \`${d.path}\`: ${JSON.stringify(d.from)} → ${JSON.stringify(d.to)}`));
   lines.push('','Start screen: sparkle + “Hi there, I’m Deb” · one line · four one-line starter prompts (a custom_template in the messages-header slot, replacing the hero + zero-state intro). Close = DS modal close, 16×16 1pt at 24px in; no title bar text or icon.');
   lines.push('Images must be hosted on our CDN before go-live (hero, chat icon); load them via the backend config, not client-side overrides (flicker).','');
-  lines.push('## 2 · Entry point + features (front end)','',`- **Entry point**: ${ep}`,`- **Search sizes**: ${(S.ver||'live')==='new'?'NEW — search text 14px (placeholder, typed text, Recent / Popular chips, Need some help? prompts), camera + search icons 16px':'LIVE — search text 16px (placeholder, typed text, Recent / Popular chips, Need some help? prompts), camera + search icons 20px'}`,`- **Search placeholder**: “${(c.ph||'').trim()||'Search product or brand'}” (${((c.ph||'').trim()||'Search product or brand').length} characters; ${(S.ver||'live')==='new'?'14 max at NEW 14px':'11 max at LIVE 16px'} for no clipping from 360px in the not-exposed + Ask + X layout)`,`- **Mobile search field**: camera + search icons ${c.mCam||20}px · search icon ${c.mSearchIcon===false?'hidden (the keyboard search key does it)':'shown'} · text ${c.mTxt||16}px${(c.mTxt||16)<16?' (input kept at 16px and scaled by '+((c.mTxt||16)/16).toFixed(3)+' so iOS does not zoom)':''}.`);
+  lines.push('## 2 · Entry point + features (front end)','',`- **Entry point**: ${ep}`,`- **Search sizes**: ${(S.ver||'live')==='new'?'NEW — search text 14px (placeholder, typed text, Recent / Popular chips, Need some help? prompts), camera + search icons 16px':'LIVE — search text 16px (placeholder, typed text, Recent / Popular chips, Need some help? prompts), camera + search icons 20px'}`,`- **Search placeholder**: mobile “${(c.phM??'Search...').trim()||'Search...'}”, desktop “${(c.phD??'Search Fashion, Home & Beauty...').trim()||'Search Fashion, Home & Beauty...'}”`,`- **Visual search (phones)**: ${c.vs==='float'?'floating camera button bottom right, 16px above the keyboard, while search is open (no camera in the field)':'camera icon in the search field'}`,`- **Mobile search field**: camera + search icons ${c.mCam||20}px · search icon ${c.mSearchIcon===false?'hidden (the keyboard search key does it)':'shown'} · text ${c.mTxt||16}px${(c.mTxt||16)<16?' (input kept at 16px and scaled by '+((c.mTxt||16)/16).toFixed(3)+' so iOS does not zoom)':''}.`);
   FEATS.filter(x=>x.opts).forEach(x=>{const o=x.opts.find(o=>o[0]===c[POSKEY[x.k]]);lines.push(`- **${x.n}**: ${o?o[1]+' — '+o[2]:''}`)});
   lines.push('- **Virtual Try On / Shop Similar**: NOT IN SCOPE this phase (removed from the PDP).');
   lines.push(`- **PLP Next Best Action**: ${c.nbaRow?`a full-width row of the grid after row ${c.nbaRow} (${c.nbaRow*2} products on mobile, ${c.nbaRow*5} on desktop)`:'below the filters, above the first row of products'}.`);
@@ -284,7 +284,9 @@ function renderPanel(host,S,update){
   <div class="card"><h3>Entry point</h3>
     <span class="seg" id="eptab" style="margin-bottom:6px"><button data-v="ex" class="${tab==='ex'?'on':''}">Exposed search</button><button data-v="ni" class="${tab==='ni'?'on':''}">Not exposed</button></span>
     ${FEATS.filter(x=>x.grp===tab).map(x=>opt(x.k===c.feat,x.n,'',`data-feat="${x.k}"`)).join('')}
-    <div class="f" style="margin-top:10px"><span>Search placeholder</span><span class="phbox"><input id="phin" value="${H(c.ph||'Search product or brand')}" placeholder="Search product or brand" autocomplete="off" spellcheck="false"><b id="phct"></b></span><small id="phnote"></small></div>
+    <div class="f" style="margin-top:10px"><span>Search placeholder · mobile</span><span class="phbox"><input id="phin" value="${H(c.phM??'Search...')}" placeholder="Search..." autocomplete="off" spellcheck="false"><b id="phct"></b></span><small id="phnote"></small></div>
+    <div class="f"><span>Search placeholder · desktop</span><input id="phd" value="${H(c.phD??'Search Fashion, Home & Beauty...')}" placeholder="Search Fashion, Home & Beauty..." autocomplete="off" spellcheck="false"></div>
+    <div class="f"><span>Visual search (phones)</span><span class="seg" id="vsseg"><button data-v="field" class="${c.vs!=='float'?'on':''}">Camera in the field</button><button data-v="float" class="${c.vs==='float'?'on':''}">Floating button</button></span><small>Floating = a camera button bottom right, just above the keyboard, while search is open; the field loses its camera. Desktop keeps the camera in the field.</small></div>
     <div class="f" style="margin-top:10px"><span>See it on</span><span class="seg" id="eppage">${[['home','Home'],['plp','PLP'],['pdp','PDP'],['bag','Bag']].map(([v,n])=>`<button data-v="${v}" class="${(c.page||'home')===v?'on':''}">${n}</button>`).join('')}</span></div>
     <p style="margin:8px 0 0">Desktop search is always exposed, with the Ask pill.</p>
     <p style="margin:8px 0 0">Search text and camera + search icon sizes follow LIVE / NEW at the top of the panel.</p></div>
@@ -346,7 +348,9 @@ function renderPanel(host,S,update){
   const phUpd=()=>{const n=phin.value.trim().length,ni=c.launcher==='niAsk',from=Math.ceil((ni?OFF[0]:OFF[1])+n*PHC),ct=host.querySelector('#phct');
     ct.textContent=n+'/'+PHMAX;ct.classList.toggle('over',n>PHMAX);
     host.querySelector('#phnote').innerHTML=(n>PHMAX?`<b style="color:#FF8A80">Over ${PHMAX}: clips below ~${from}px</b>`:`Fits from ~${from}px`)+` on every fascia (${ni?'not exposed, search open: field + Ask + X':'exposed: field + Ask'}). ${PHMAX} characters = no clipping from 360px (${NV?'NEW: 14px text':'LIVE: 16px text'}).`};
-  if(phin){phUpd();phin.oninput=()=>{c.ph=phin.value;phUpd();update()}}
+  if(phin){phUpd();phin.oninput=()=>{c.phM=phin.value;phUpd();update()}}
+  const phd=host.querySelector('#phd');if(phd)phd.oninput=()=>{c.phD=phd.value;update()};
+  host.querySelectorAll('#vsseg button').forEach(b=>b.onclick=()=>{c.vs=b.dataset.v;c.search=true;c.page=c.page||'home';go()});
   host.querySelectorAll('#vertog button').forEach(b=>b.onclick=()=>{S.ver=b.dataset.v;go()});
   host.querySelectorAll('#sqseg button').forEach(b=>b.onclick=()=>{c.sq=b.dataset.v;c.sqn=Date.now();c.page=c.page||'plp';c.search=true;c.chat=false;go()});
   host.querySelectorAll('#kbseg button').forEach(b=>b.onclick=()=>{c.kb=b.dataset.v==='1';c.search=true;go()});
@@ -382,6 +386,8 @@ function renderPanel(host,S,update){
 let S={brand:new URLSearchParams(location.search).get('brand')||'',w:390,fold:false,by:{}};
 try{const s=JSON.parse(localStorage.getItem(P.store)||'null');if(s)S=Object.assign(S,s,{brand:S.brand||s.brand})}catch(e){}
 if(!P.brands.some(b=>b[0]===S.brand))S.brand=P.brands[0][0];
+/* every load starts clean (Jake, 20 Oct): Home, not exposed search selected, search / chat closed — whatever was open when the tab was left */
+for(const k in S.by){const c=S.by[k];if(c&&typeof c==='object')Object.assign(c,{page:'home',launcher:'niAsk',feat:'ep-ni-ask',epTab:'ni',search:false,chat:false,sq:'',focus:null})}
 Object.defineProperty(S,'cfg',{get(){return S.by[S.brand]||(S.by[S.brand]=P.initial(S.brand))},set(v){S.by[S.brand]=v},enumerable:false});
 const $=s=>document.querySelector(s),frame=$('#frame'),stage=$('#stage'),win=$('#win'),preset=$('#preset');
 const save=()=>{try{localStorage.setItem(P.store,JSON.stringify({brand:S.brand,w:S.w,fold:S.fold,app:!!S.app,ver:S.ver||'live',by:S.by}))}catch(e){}};
