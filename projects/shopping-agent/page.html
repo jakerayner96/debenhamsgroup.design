@@ -346,14 +346,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
   .ag-mrow .ag-sw .hd-search .ics img{width:var(--m-cam,20px);height:var(--m-cam,20px)}   /* camera + search icons, one size */
   html.m-nosearch .ag-mrow .ag-sw .hd-search .ics img[src*="search.svg"]{display:none}}   /* the keyboard has its own search key */
 .hd-search .srch-field:focus{caret-color:#5877FF}
-/* typing pushes the AI button out (both directions animate); the X stays */
-.ag-sw>.ai-circle,.ag-sw>.ag-ask{max-width:160px;transition:max-width .24s cubic-bezier(.4,0,.2,1),opacity .2s ease,margin .24s cubic-bezier(.4,0,.2,1),padding .24s cubic-bezier(.4,0,.2,1)}
-/* exposed search (19 Oct): while search is active the word “Ask” animates out, leaving the sparkle in a circle; it comes back on close */
-.ag-ask .ag-lbl{display:inline-block;max-width:44px;overflow:hidden;transition:max-width .24s cubic-bezier(.4,0,.2,1),opacity .18s ease}
-.ag-sw>.ag-ask{transition:max-width .24s cubic-bezier(.4,0,.2,1),opacity .2s ease,margin .24s cubic-bezier(.4,0,.2,1),padding .24s cubic-bezier(.4,0,.2,1),gap .24s cubic-bezier(.4,0,.2,1)}
-#hdrwrap.ask-ic .ag-ask .ag-lbl{max-width:0;opacity:0}
-#hdrwrap.ask-ic .ag-sw>.ag-ask{gap:0;padding:0 calc((var(--ag-h) - 18px) / 2)!important}
-#hdrwrap.typing .ag-sw>.ai-circle,#hdrwrap.typing .ag-sw>.ag-ask{max-width:0;opacity:0;margin-left:-10px;padding-left:0!important;padding-right:0!important;overflow:hidden;box-shadow:none;pointer-events:none}
+/* the Ask pill always reads “Ask”, in every option: no shrink to the sparkle when search opens, no push-out while typing (Jake, 20 Oct) */
 /* option 4: the search row lies over the page (under the logo bar) instead of joining the header, so the USP banners never move */
 @media(max-width:1023px){#hdrwrap.ni-lo .hd{position:relative}#hdrwrap.ni-lo .ag-mrow{position:absolute;left:0;right:0;top:56px;z-index:31;background:#FFF;padding-top:0}
   #hdrwrap.niLift-lo .ag-mrow{top:0;padding-top:6px}}   /* not exposed + lift: the row opens over the logo row for the extra height */
@@ -527,7 +520,7 @@ function header(){
   const btn=askPill;   /* 19 Oct: Ask on every option (the AI-icon-only option is gone) */
   const X=`<button class="ag-x" data-closesearch="1" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.replaceWith('✕')"></button>`;
   const sIcon=(h.match(/<button aria-label="Search"><img src="[^"]*" alt=""><\/button>/)||[''])[0];
-  /* the button sits beside the field; while search is active the X is always there, and typing pushes the button out (#hdrwrap.typing) */
+  /* the Ask pill sits beside the field and always reads “Ask”; while search is active the X is always there */
   const after=btn+(S.search?X:'');
   const lift=lo==='lift'&&S.search&&!d;
   const field=`<div class="ag-sw"><div class="hd-search${smod}" data-opensearch="1">${q}${ics}</div>${after}</div>`;
@@ -539,7 +532,7 @@ function header(){
   }
   /* USP banners stay put: the search panel fades in over them, so nothing on the page disappears instantly */
   h=h.replace(/<\/div>$/,`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>`);
-  const cls=[lift?'lifted'+(header.was?'':' lifting'):'',S.search&&!header.was&&!EXPORTING?'opening srch-in':'',!S.search&&header.was&&!EXPORTING?'srch-out':'',lo+'-lo',ni?'ni-lo':'',S.search&&!ni&&header.was?'ask-ic':'',S.search&&S.q&&lo!=='niAsk'?'typing':''].filter(Boolean).join(' ');
+  const cls=[lift?'lifted'+(header.was?'':' lifting'):'',S.search&&!header.was&&!EXPORTING?'opening srch-in':'',!S.search&&header.was&&!EXPORTING?'srch-out':'',lo+'-lo',ni?'ni-lo':'',''].filter(Boolean).join(' ');
   return `<div id="hdrwrap" class="${cls}">${h}${S.search?autocomplete():''}</div>`;
 }
 
@@ -806,7 +799,6 @@ function render(){
   if(S.search&&scrollY>0)scrollTo(0,0);
   if(S.search&&!header.was){const ac=document.getElementById('ac');if(ac)ac.scrollTop=0}   /* search opens from the top, wherever the page was */
   document.body.classList.toggle('searching',!!S.search);
-  {const hw=document.getElementById('hdrwrap');if(S.search&&hw&&!hw.classList.contains('ni-lo')&&!hw.classList.contains('ask-ic'))requestAnimationFrame(()=>requestAnimationFrame(()=>hw.classList.add('ask-ic')))}
   if(S.search){const hw=document.getElementById('hdrwrap'),hb=hw.querySelector('.hd-bar'),row=hw.querySelector('.ag-mrow'),last=row||hb;
     let top=last?last.getBoundingClientRect().bottom:120;if(hw.classList.contains('lifting'))top=top-hb.offsetHeight+8;
     document.documentElement.style.setProperty('--ac-top',Math.round(top)+'px')}
@@ -823,7 +815,7 @@ fetch('projects/shopping-agent/base-config.json').then(r=>r.json()).then(b=>{BAS
 let rz,lastW=innerWidth;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const a=document.activeElement;if(innerWidth===lastW||(a&&/^(INPUT|TEXTAREA)$/.test(a.tagName)))return;lastW=innerWidth;render()},150)});
 /* focus the search field in the same tap that opened it, so the keyboard comes up without a second tap */
 function focusSearch(){const i=document.querySelector('#hdrwrap .srch-field');if(!i)return;try{i.focus({preventScroll:true})}catch(e){i.focus()}const n=i.value.length;try{i.setSelectionRange(n,n)}catch(e){}}
-document.addEventListener('input',e=>{if(!e.target.classList||!e.target.classList.contains('srch-field'))return;S.q=e.target.value;const hw=document.getElementById('hdrwrap');if(hw)hw.classList.toggle('typing',!!S.q.trim()&&S.launcher!=='niAsk')   /* chosen option (niAsk): Ask stays, no push-out */});
+document.addEventListener('input',e=>{if(!e.target.classList||!e.target.classList.contains('srch-field'))return;S.q=e.target.value});   /* Ask always stays: no push-out while typing */
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('srch-field')&&e.target.value.trim()){e.preventDefault();e.target.blur();const t=document.getElementById('ct');t.textContent='Search results for “'+e.target.value.trim()+'”';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2000)}});
 addEventListener('message',e=>{const d=e.data||{};
   if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;if(BASE)CFG=AG.build(BASE,S.agent,BR());if(BASE)render()}
@@ -843,7 +835,7 @@ document.addEventListener('click',e=>{
   if(e.target.closest('[data-closesearch]')){const hw=document.getElementById('hdrwrap');
     const done=()=>{document.body.classList.remove('closing-search');S.search=false;S.q='';parent.postMessage({protoSearch:false},'*');render()};
     if(EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches||!hw)return done();
-    if(hw.classList.contains('closing'))return;hw.classList.remove('srch-in','ask-ic');hw.classList.add('closing');document.body.classList.add('closing-search');setTimeout(done,240);return}
+    if(hw.classList.contains('closing'))return;hw.classList.remove('srch-in');hw.classList.add('closing');document.body.classList.add('closing-search');setTimeout(done,240);return}
   {const ah=e.target.closest('.acc-set .acc-h');if(ah){e.preventDefault();ah.parentNode.classList.toggle('open');return}}
   if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
