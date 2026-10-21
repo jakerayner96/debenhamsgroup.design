@@ -135,8 +135,8 @@
   --brand-name:'Karen Millen';--font-family-base:'Jost',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:400;--w-strong:600;--w-btn:400;--case-btn1:none;--btn-outline:#000; /* KM buttons: lighter, sentence case both, black outline (colour-alignment) */
   --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#000;--usp-b-fg:#FFF;
-  --brand-primary:#D24508;--surface-action:#D24508;--surface-action-hover:#892D05;--surface-action-pressed:#892D05;
-  --border-action:#892D05;--border-focus:#892D05;--text-link:#892D05;--text-link-hover:#000;--icon-action:#892D05;
+  --brand-primary:#D24508;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424; /* KM buttons black, as production (--color-primary 000) and Jake's Figma, 21 Oct 2026 — orange stays the brand accent */
+  --border-action:#000;--border-focus:#892D05;--text-link:#892D05;--text-link-hover:#000;--icon-action:#892D05;
   --brand-light-3:#F3C1A7;--brand-light-2:#F0B597;--brand-light-1:#E88A5B;--brand-primary-dark:#892D05;
   --nav-bg:#FFF;
 }
@@ -227,7 +227,7 @@
   --dplus-bg:#E7ADA2;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#5F0000; /* check colour unverified vs CA */
 }
 [data-brand="karenmillen"]{
-  --action-buy:#892D05;--action-buy-pressed:#7E2905;--action-buy-disabled:#7E2905; /* Figma anomaly: disabled darker than default */
+  --action-buy:#000;--action-buy-pressed:#242424;--action-buy-disabled:#B5B5B5; /* black like every KM button (21 Oct 2026; was #892D05, disabled #7E2905) */
   --action-disabled-bg:#FAE9E1;--action-disabled-fg:#767676;
   --sec-pressed:#F4D1C1;--sec-disabled-border:#FAE9E1;
   --surface-neutral:#FAE9E1;--surface-neutral-pressed:#F6DACE;

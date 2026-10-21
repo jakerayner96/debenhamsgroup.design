@@ -5,7 +5,7 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-21",
   "v": "2026.10.21c",
-  "title": "Membership box + Deliver+ light grounds",
+  "title": "KM black buttons + Membership box / Deliver+ light grounds",
   "by": "KM Premier colours (projects/km-premier-colours)",
   "added": [
    "Membership box: --mb-line (1px keyline) and --mb-cta-line (outlined ADD); DG_memberBoxHTML(brand,{bg,fg,ctaBg,ctaFg,ctaLine,line}) overrides the ground, and a dark fg swaps in the fascia's dark-ink logo · by KM Premier colours",
@@ -14,6 +14,7 @@ window.DG_CHANGELOG=[
    "Catalogue: Membership box variants Karen Millen Premier + Karen Millen Premier · light ground · by KM Premier colours"
   ],
   "changed": [
+   "Karen Millen buttons black: --surface-action #000 (hover / pressed #242424), --border-action #000, --action-buy #000 (pressed #242424, disabled #B5B5B5) — was orange #D24508 / #892D05. Matches Jake's Figma and production (--color-primary #000). Orange stays the KM brand accent (links, dots, New, cards) · by KM Premier colours",
    "Membership box + Deliver+ banner: padding 15/19 inside an always-present 1px border (transparent by default), so they are the same size as before and can take a keyline · by KM Premier colours"
   ],
   "fixed": [

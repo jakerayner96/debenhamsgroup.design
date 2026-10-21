@@ -163,16 +163,16 @@ body.fold .device iframe{box-shadow:none}
 <div id="hidden"></div>
 <script>
 /* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
-/* Karen Millen colours from assets/ds/tokens.css: brand #D24508 (Add to bag) · link #892D05 · surface-neutral #FAE9E1 · sec-pressed #F4D1C1 · Grey 1 #F2F2F2 · Grey 2 #E7E7E7 */
+/* Karen Millen colours from assets/ds/tokens.css: brand accent #D24508 · buttons #000 (21 Oct 2026) · link #892D05 · surface-neutral #FAE9E1 · sec-pressed #F4D1C1 · Grey 1 #F2F2F2 · Grey 2 #E7E7E7 */
 const K={orange:'#D24508',brown:'#892D05',blush:'#FAE9E1',blushLine:'#F4D1C1',grey:'#F2F2F2',greyLine:'#E7E7E7'};
 /* Each option: Premier box (pm) + Deliver+ banner (dp). null = the DS default as live today (solid black). */
 const OPTS=[
   {id:'current',n:'Today — solid black',d:'Both boxes black with white ink, as live. The baseline.',pm:null,dp:null},
   {id:'blush-white',n:'Blush Premier · white Deliver+',d:'Inspo 1. Premier on KM blush with an outlined white Add; Deliver+ white with a grey keyline, Learn More in KM brown.',
     pm:{bg:K.blush,fg:'#000',line:K.blushLine,ctaBg:'#FFF',ctaFg:'#000',ctaLine:'#000'},dp:{bg:'#FFF',fg:'#000',link:K.brown,line:K.greyLine}},
-  {id:'orange-accent',n:'Orange accent',d:'Inspo 2. Premier white with an orange keyline and orange Add; Deliver+ on blush. Shares the Add to bag orange — check the clash.',
+  {id:'orange-accent',n:'Orange accent',d:'Inspo 2. Premier white with an orange keyline and orange Add; Deliver+ on blush. The only orange in the buy column now Add to bag is black.',
     pm:{bg:'#FFF',fg:'#000',line:K.orange,ctaBg:K.orange,ctaFg:'#FFF'},dp:{bg:K.blush,fg:'#000',link:K.brown,line:K.blushLine}},
-  {id:'blush-both',n:'Blush, both',d:'Both boxes on KM blush with a blush keyline; black Add, Learn More in KM brown. One warm family under the orange CTA.',
+  {id:'blush-both',n:'Blush, both',d:'Both boxes on KM blush with a blush keyline; black Add, Learn More in KM brown. One warm family under the black CTA.',
     pm:{bg:K.blush,fg:'#000',line:K.blushLine,ctaBg:'#000',ctaFg:'#FFF'},dp:{bg:K.blush,fg:'#000',link:K.brown,line:K.blushLine}},
   {id:'keyline',n:'White + black keyline',d:'Both white with a 1px black keyline and a black Add. Quietest; follows the KM outline buttons.',
     pm:{bg:'#FFF',fg:'#000',line:'#000',ctaBg:'#000',ctaFg:'#FFF'},dp:{bg:'#FFF',fg:'#000',link:'#000',line:'#000'}},
@@ -210,7 +210,6 @@ function renderPanel(host,S,update){
   if(r1<4.5)warn.push(`Premier copy ${r1.toFixed(1)}:1 — below AA 4.5:1`);
   if(r2<4.5)warn.push(`Deliver+ Learn More ${r2.toFixed(1)}:1 — below AA 4.5:1`);
   if(r3<4.5)warn.push(`Premier Add ${r3.toFixed(1)}:1 — below AA 4.5:1`);
-  if(up(pm.ctaBg)===up(K.orange))warn.push('Premier Add is the Add to bag orange — two orange buttons in the buy column.');
   if(up(pm.bg)===up(pm.ctaBg)&&!pm.ctaLine)warn.push('Premier Add has the same fill as the box — give it an outline.');
   if(up(pm.bg)==='#000'||up(dp.bg)==='#000')warn.push('A box is still solid black — the clash this prototype is fixing.');
   host.innerHTML=`<h1>KM Premier colours</h1><p class="intro">The Karen Millen PDP from the DS template (the Shopping agent PDP). Only the <b>Premier</b> (Membership box) and <b>Deliver+</b> backgrounds and text colours change. Layout, copy and lockups stay as they are.</p>
@@ -227,7 +226,7 @@ function renderPanel(host,S,update){
     <div class="f2"><span>Learn More</span>${sw('dp.link',dp.link,LINKS)}</div>
     <p style="margin-top:10px">Text <b>${dark(dp.fg)?'black':'white'}</b> · Learn More ${r2.toFixed(1)}:1${r2>=4.5?' <span class="ok">AA</span>':''} · lockup ${dark(dp.fg)?'dark ink (checkout art)':'white'}</p></div>
   ${warn.length?`<div class="card"><h3>Checks</h3>${warn.map(w=>`<p class="warn">${esc(w)}</p>`).join('')}</div>`:''}
-  <div class="card"><h3>Rules</h3><p class="rules">Text and icons go black on any light background and white on black, and the logos follow: dark-ink Premier logo, and the white-background Deliver+ lockup. Contrast is checked against AA 4.5:1. Add to bag stays the DS Karen Millen orange (${K.orange}).</p>
+  <div class="card"><h3>Rules</h3><p class="rules">Text and icons go black on any light background and white on black, and the logos follow: dark-ink Premier logo, and the white-background Deliver+ lockup. Contrast is checked against AA 4.5:1. Add to bag is the DS Karen Millen button: black (21 Oct 2026).</p>
     <p class="rules">Colours come from the Karen Millen DS tokens. The boxes are DS components (Membership box, Deliver+), coloured through their own --mb-* / --dplus-* settings.</p></div>`;
   const re=()=>{update();renderPanel(host,S,update)};
   const custom=()=>{if(c.opt!=='custom'){c.pm={...pm};c.dp={...dp};c.opt='custom'}};

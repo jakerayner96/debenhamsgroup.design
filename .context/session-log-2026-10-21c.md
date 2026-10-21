@@ -4,3 +4,4 @@
 - DS fix: .dplus .foot rule color-mix() → ::before (html2canvas Export failed on every PDP with Deliver+).
 - Verified with Playwright (chromium_headless_shell-1243; the 1217 build and Chrome won't launch here): 6 options × 390/1440, panel → Custom, Export zip with both PNGs.
 - Open: html2canvas draws mask icons as squares in Export (Ask AI, Deliver+ ticks).
+- Jake: KM buttons black like his Figma → tokens.css KM --surface-action/#000, hover+pressed #242424, --border-action #000, --action-buy #000. Orange kept for brand accent. Checked PDP / bag / PLP at 390. App (brands.ts) not in this repo — not updated.

@@ -16,9 +16,9 @@
 | White + black keyline | #FFF, keyline #000, black Add | #FFF, keyline #000 |
 | Grey | #F2F2F2, black Add | #F2F2F2 |
 
-Plus Custom: background, keyline and Add style for Premier; background, keyline and Learn More colour for Deliver+. Text and logos flip black/white with the ground. Contrast is checked against AA. A warning shows when the Premier Add matches the Add to bag orange (#D24508).
+Plus Custom: background, keyline and Add style for Premier; background, keyline and Learn More colour for Deliver+. Text and logos flip black/white with the ground. Contrast is checked against AA.
 
 ## Notes
 - Copy and layout are left as the DS has them. The inspo's shorter copy and bold price were not applied (brief: colours only).
-- The KM Add to bag in the DS is orange #D24508. The inspo shows it black.
+- KM buttons went black in the DS on 21 Oct 2026 (Jake: match the Figma; production's --color-primary is #000 too). Before that the DS had them orange #D24508.
 - Export: the html2canvas fallback draws mask icons (Ask AI sparkles, Deliver+ ticks) as solid squares. This is an existing limitation on every PDP export; the browser view is correct.

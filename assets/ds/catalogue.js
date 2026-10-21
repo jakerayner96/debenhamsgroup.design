@@ -898,7 +898,7 @@ const DG_DEV_OVERLAY = [
 
 /* Dev theme variables (per fascia, RGB triplets consumed by Tailwind) → our semantic tokens. */
 const DG_TOKEN_MAP = [
- {dev:'--color-primary', ours:'--surface-action', note:'Button fill. Debenhams 7BE7D8 ✓ · PLT 550503 ✓ · MAN/WH/TBR 000 ✓ · boohoo 444444 ✗ (ours 000) · KM 000 ✗ (ours D24508).'},
+ {dev:'--color-primary', ours:'--surface-action', note:'Button fill. Debenhams 7BE7D8 ✓ · PLT 550503 ✓ · MAN/WH/TBR 000 ✓ · boohoo 444444 ✗ (ours 000) · KM 000 ✓ (black since 21 Oct 2026).'},
  {dev:'--color-button-text-primary', ours:'--text-on-action', note:'Debenhams black ✓, others white ✓ (Warehouse F1F1F1 ~).'},
  {dev:'--color-cta-primary / --color-cta-accent', ours:'--text-link · --border-action · --icon-action', note:'Debenhams 00787D ✓.'},
  {dev:'--color-primary-dark', ours:'--surface-action-pressed · --brand-dark-3', note:'Debenhams 529C92 = our brand-dark-3 ✓.'},
