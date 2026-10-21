@@ -1548,3 +1548,93 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .tabs button:hover{color:var(--text-primary)}
 .tabs button.on{color:var(--text-primary);font-weight:var(--w-strong,600);border-bottom-color:var(--text-primary)}
 .tabs button .tagpill{margin-left:6px}
+
+/* ===== Sign-up modal (.mdl--signup) — 21 Oct 2026, Brand Room sign-up popup (projects/brandroom-signup) =====
+   The marketing email / SMS capture that opens over the page on entry. On live it is a Bloomreach Engagement weblayer ("A - Email & SMS Signup",
+   custom HTML / CSS / JS), so every layout here can be pasted in as weblayer markup. It is a type of the Modal: same 16px close inset gap 6 (24px),
+   50% overlay, 300ms fade (slide up on mobile for the sheet), close on X, "No thanks" or a tap outside.
+   Layouts  .sup--split   image beside the form (desktop 880) · image on top under 768w
+            .sup--bleed   full-bleed image, form on a dark gradient at the bottom, white copy
+            .sup--lockup  co-brand lockup band (brand | The Brand Room, rotating) over a white form — the live structure, rebuilt on the DS
+            .sup--sheet   non-blocking: card bottom-left on desktop, slide up on mobile, no overlay; minimises to the .sup-tab
+            .sup--flat    one flat image (.sup-art) — the whole creative is a single exportable PNG, the window is a link
+   Slots    .sup-media (img cover) · .sup-body · .sup-hd (.sup-eyebrow, .sup-title, .sup-sub) · .sup-form (.fld, .fld--tel, .bd.pri) · .sup-no (.bd.txt) · .sup-legal
+            .sup-brands (DS .chip picks, step 2) · .sup-step[hidden] for multi-step · .sup-logo (fascia logo).
+   Fields are the DS Input field; the CTA is the DS primary button (white on the dark layouts). */
+.sup-layer{position:fixed;inset:0;z-index:var(--z-modal,1000);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;font-family:var(--font-family-base);color:var(--text-primary)}
+.sup-layer>.mdl-scrim{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:0;animation:mdlfade .3s ease-in-out both}
+.sup-layer>.mdl{z-index:1}
+.sup-layer--free{pointer-events:none;align-items:flex-end;justify-content:flex-start;padding:24px}
+.sup-layer--free>*{pointer-events:auto}
+.mdl--signup{padding:0;gap:0;overflow:hidden;width:480px;max-height:calc(100vh - 32px);overflow-y:auto;scrollbar-width:none}
+.mdl--signup::-webkit-scrollbar{display:none}
+.mdl--signup .modal-x--abs{z-index:3}
+.modal-x--inv::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M23 1L1 23M1 1l22 22' stroke='%23FFF' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E")} /* white close for dark surfaces and images */
+.sup-media{position:relative;background:var(--surface-media,#F2F2F2);overflow:hidden}
+.sup-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.sup-body{position:relative;display:flex;flex-direction:column;gap:24px;padding:40px 24px 24px}
+.sup-hd{display:flex;flex-direction:column;gap:8px;padding-right:24px}
+.sup-logo{height:13px;width:auto;display:block;align-self:flex-start;margin-bottom:8px}
+.sup-eyebrow{font-size:12px;line-height:16px;font-weight:var(--w-strong);letter-spacing:.08em;text-transform:uppercase;margin:0}
+.sup-title{font-size:28px;line-height:32px;font-weight:var(--w-strong);letter-spacing:-.01em;margin:0;text-wrap:balance}
+.sup-sub{font-size:14px;line-height:20px;margin:0}
+.sup-form{display:flex;flex-direction:column;gap:12px;margin:0}
+.sup-form .bd{width:100%;height:50px;margin-top:4px}
+.sup-form .fld-err{margin-top:-4px}
+.sup-no{align-self:center;min-height:0;padding:4px 16px;font-size:14px}
+.sup-legal{font-size:11px;line-height:15px;color:var(--text-secondary);margin:0}
+.sup-legal a{color:inherit;text-decoration:underline}
+.sup-brands{display:flex;flex-wrap:wrap;gap:8px}
+.sup-brands .chip{height:36px;padding:0 14px;font-size:13px}
+.sup-dots{display:flex;gap:6px}.sup-dots i{width:24px;height:2px;background:var(--border-default,#E7E7E7)}.sup-dots i.on{background:var(--text-primary)}
+/* phone field — the DS Input field with a country prefix (flag + dialling code) */
+.fld--tel{padding-left:92px}
+.fld--tel .lbl{left:92px}
+.fld-pre{position:absolute;left:16px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:6px;font-size:14px;line-height:18px;color:var(--text-primary);padding-right:12px;border-right:1px solid var(--border-control,#B5B5B5);height:24px}
+.fld-pre img{width:20px;height:14px;object-fit:cover;display:block}
+/* split */
+.sup--split{width:880px;display:grid;grid-template-columns:400px 1fr}
+.sup--split .sup-media{min-height:560px}
+.sup--split .sup-body{padding:48px 40px 32px;justify-content:center}
+@media(max-width:767px){.sup--split{display:flex;flex-direction:column;width:100%;max-width:358px}.sup--split .sup-media{flex:none;min-height:0;height:200px}
+  .sup--split .modal-x--abs::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M23 1L1 23M1 1l22 22' stroke='%23FFF' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E")}
+  .sup--split .sup-body{padding:24px 16px 16px}}
+/* full bleed */
+.sup--bleed{background:#000;color:#FFF;display:flex;flex-direction:column;min-height:min(680px,calc(100vh - 32px))}
+.sup--bleed .sup-media{position:absolute;inset:0}
+.sup--bleed .sup-body{margin-top:auto;padding-top:160px;background:linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,.55) 120px,rgba(0,0,0,.88) 100%)}
+.sup--bleed .sup-title,.sup--bleed .sup-sub,.sup--bleed .sup-eyebrow{color:#FFF}
+.sup--bleed .sup-legal{color:rgba(255,255,255,.78)}
+.sup--bleed .bd.pri{background:#FFF;color:#000}
+.sup--bleed .bd.txt{color:#FFF}
+.sup--bleed .fld{border-color:#FFF}
+.sup--bleed .fld-err{color:#FF8A8A}
+/* co-brand lockup */
+.sup--lockup .sup-lock{position:relative;background:#000;aspect-ratio:600/234}
+.sup--lockup .sup-lock img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .6s ease-in-out}
+.sup--lockup .sup-lock img.on{opacity:1}
+.sup--lockup .sup-body{padding-top:32px}
+/* sheet (non-blocking) */
+.sup--sheet{width:400px;box-shadow:var(--shadow-float,0 8px 18px rgba(22,19,20,.14))}
+.sup--sheet .sup-media{aspect-ratio:3/1}
+.sup--sheet .sup-body{padding:24px;gap:16px}
+.sup--sheet .sup-title{font-size:22px;line-height:26px}
+.sup-tab{position:absolute;left:24px;bottom:24px;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;background:#000;color:#FFF;border:0;font:inherit;font-size:14px;font-weight:var(--w-strong);text-transform:var(--cta-case,none);cursor:pointer;box-shadow:var(--shadow-float)}
+@media(max-width:767px){.sup-layer--free{padding:0;justify-content:center}.sup--sheet{width:100%;max-width:none}.sup--sheet .sup-media{display:none}.sup-tab{left:16px;bottom:16px}}
+/* flat image */
+.sup--flat{width:480px;aspect-ratio:4/5;max-height:none;overflow:hidden;background:#000}
+.sup--flat.sup--r34{aspect-ratio:3/4}.sup--flat.sup--r11{aspect-ratio:1/1}
+.sup--flat>a{position:absolute;inset:0;display:block;color:inherit;text-decoration:none}
+.sup-art{position:absolute;inset:0;overflow:hidden;color:#FFF;container-type:inline-size;font-family:var(--font-family-base)}
+.sup-art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sup-art .sup-art-fade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35) 0,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 45%,rgba(0,0,0,.82) 100%)}
+.sup-art .sup-art-top{position:absolute;left:6.6cqw;right:6.6cqw;top:6.6cqw;display:flex;justify-content:center}
+.sup-art .sup-art-top img{height:3cqw;width:auto}
+.sup-art .sup-art-bot{position:absolute;left:6.6cqw;right:6.6cqw;bottom:6.6cqw;display:flex;flex-direction:column;gap:3.3cqw;align-items:flex-start}
+.sup-art .sup-eyebrow{font-size:2.6cqw;line-height:1.3;color:#FFF}
+.sup-art .sup-title{font-size:7.4cqw;line-height:1.08;color:#FFF}
+.sup-art .sup-art-cta{display:inline-flex;align-items:center;justify-content:center;height:11cqw;padding:0 8cqw;background:#FFF;color:#000;font-size:3.4cqw;font-weight:var(--w-btn,var(--w-strong));text-transform:var(--case-btn1,uppercase);letter-spacing:.02em}
+@media(max-width:767px){.sup--flat{width:100%;max-width:358px}}
+.mdl--signup.mdl-anim-fade{animation:mdlfade .3s ease-in-out both}
+@media(max-width:767px){.sup--sheet.mdl-anim-up{animation:mdlup .3s ease-in-out both}}
+@media(max-width:767px){.sup-title{font-size:24px;line-height:28px}.mdl--signup:not(.sup--split) .sup-body{padding:32px 16px 16px}.sup--bleed .sup-body{padding-top:140px}}

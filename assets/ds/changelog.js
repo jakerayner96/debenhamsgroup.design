@@ -4,6 +4,20 @@
 window.DG_CHANGELOG=[
  {
   "d": "2026-10-21",
+  "v": "2026.10.21b",
+  "title": "Sign-up modal + phone field",
+  "by": "Brand Room sign-up popup (projects/brandroom-signup)",
+  "added": [
+   "Sign-up modal (.mdl--signup, .sup-layer, .sup--split / --bleed / --lockup / --sheet / --flat, .sup-* slots) — the marketing email + SMS capture as a Modal type; six layouts incl. a flat exportable image (.sup-art) and a two-step brand picker; markup + behaviour in assets/ds/signup.js (DG_signup.html / bind / LIVE copy from the live Bloomreach weblayer); catalogue Overlays & bag · by Brand Room sign-up popup",
+   "Phone field (.fld--tel, .fld-pre) — the Input field with a flag + dialling-code prefix; catalogue Text field · Phone · by Brand Room sign-up popup",
+   "White modal close (.modal-x--inv) — the 16px close drawn white for images and black surfaces (data-URI, export-safe) · by Brand Room sign-up popup",
+   "Asset: assets/brands/brandroom-white.svg — The Brand Room wordmark in white · by Brand Room sign-up popup"
+  ],
+  "changed": [],
+  "fixed": []
+ },
+ {
+  "d": "2026-10-21",
   "v": "2026.10.21",
   "title": "App Store Screenshot Exporter + File drop, Progress bar, Tabs",
   "by": "App Store Screenshot Exporter (tools/app-store-screens)",

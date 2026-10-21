@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Inside debenhamsgroup.design/projects/brandroom-signup/: resolve every asset from the repo root -->
+<base href="../../">
+<title>Brand Room sign-up popup · in situ</title>
+<style>
+/* No page of its own: the DS PLP template (projects/plp-alignment/plp.html, Brand Room, new format) is embedded as it is,
+   and the DS Sign-up modal (components.css .mdl--signup + assets/ds/signup.js) is injected over it. */
+html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
+.emb{display:block;width:100%;height:100vh;border:0}
+</style>
+</head>
+<body>
+<iframe class="emb" id="emb" title="Page"></iframe>
+<script src="assets/ds/signup.js"></script>
+<script>
+/* ---- page contract with the shell (review-prototype) ----
+   in:  ?s=<json state>  ·  {protoSet:state, exporting?}  ·  {protoPing:1}  ·  {flatPNG:{w}} → {flatPNG:dataURL}
+   out: {protoReady:1} once loaded  ·  {protoPong:1,h} in reply to a ping (h = the embedded page's full height)
+   state: {brand, opt:'flat'|'split'|'bleed'|'lockup'|'sheet'|'steps', img, lock, eyebrow, title, sub, cta, phone, no, state, ratio, page} */
+const U=window.DG_signup;
+let S={brand:'brandroom',opt:'split'},EXPORTING=false;
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}  // URLSearchParams already decodes
+const abs=p=>new URL(p,document.baseURI).href;
+const IMG={lacoste:'lacoste',guess:'guess',sweaty:'sweaty'};
+const LOCKUPS=[1,2,3,4,5,6,7,8].map(i=>abs(`projects/brandroom-signup/img/lockup-${i}.png`));
+const SRC={plp:b=>`projects/plp-alignment/plp.html?brand=${b}&mode=new`};
+
+const emb=document.getElementById('emb');
+let KEY='',ready=Promise.resolve();
+const D=()=>{try{return emb.contentDocument}catch(e){return null}};
+const W=()=>emb.contentWindow;
+const VH=()=>{const w=W();return w&&w.innerWidth>=768?900:844};   /* first screen the popup opens on: 1440×900 desktop · 390×844 iPhone */
+
+function opts(){
+  const land=S.opt==='steps'||S.opt==='split';
+  const img=abs(`projects/brandroom-signup/img/${IMG[S.img]||'lacoste'}-${(S.opt==='sheet'&&W()&&W().innerWidth>=768)?'l':'p'}.jpg`);
+  return {layout:S.opt,img:S.opt==='lockup'?'':img,lockups:LOCKUPS,lock:+S.lock||0,rotate:S.rotate!==false,
+    logo:abs('assets/brands/brandroom.svg'),logoInv:abs('assets/brands/brandroom-white.svg'),flag:abs('assets/ds/icons/flags/united-kingdom.svg'),
+    eyebrow:S.eyebrow,title:S.title,sub:S.sub,cta:S.cta,phone:S.phone,no:S.no!==false,state:S.state||'form',ratio:S.ratio,exporting:EXPORTING,tab:S.tab};
+}
+function inject(){const d=D();if(!d||!d.body)return;
+  d.querySelectorAll('[data-sup],[data-sup-x]').forEach(n=>n.remove());
+  d.body.insertAdjacentHTML('beforeend',U.html(opts()));
+  const layer=d.querySelector('[data-sup]');
+  U.bind(layer,opts(),{onClose:()=>parent.postMessage({supClosed:1},'*'),onFlat:()=>parent.postMessage({supFlat:1},'*')});
+  if(EXPORTING)pinExport(d,layer);
+}
+/* export: the popup sits on the first screen (where it opens on entry), the 50% overlay runs the whole page */
+function pinExport(d,layer){
+  const h=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight),vh=VH(),win=layer.querySelector('.mdl--signup');
+  const sheet=S.opt==='sheet',wh=win.offsetHeight;
+  layer.style.cssText=`position:absolute;left:0;right:0;top:0;height:${vh}px;`+(sheet?'':`align-items:flex-start;padding-top:${Math.max(16,Math.round((vh-wh)/2))}px;`);
+  if(sheet&&W().innerWidth<768)layer.style.cssText+=`;align-items:flex-start;padding-top:${vh-wh}px`;
+  if(!sheet){const sc=d.createElement('div');sc.className='mdl-scrim';sc.setAttribute('data-sup-x','');sc.style.cssText=`position:absolute;left:0;right:0;top:0;height:${h}px;z-index:499`;d.body.appendChild(sc);
+    layer.querySelector('.mdl-scrim').style.background='transparent'}
+}
+function load(){
+  const key='plp|'+S.brand;
+  if(key===KEY){inject();return ready}
+  KEY=key;
+  ready=new Promise(res=>{
+    emb.onload=()=>{const d=D(),t0=Date.now();
+      const done=()=>{const imgs=d?[...d.images].filter(i=>i.loading!=='lazy'||i.getBoundingClientRect().top<3000):[];return imgs.every(i=>i.complete)};
+      const iv=setInterval(()=>{if(done()||Date.now()-t0>9000){clearInterval(iv);inject();res()}},150)};
+    emb.src=SRC.plp(S.brand);
+  });
+  return ready;
+}
+/* export: let the embedded page run to its full height so the shell can capture it in one pass */
+async function full(){await ready;const d=D();if(!d)return 900;
+  try{W().postMessage({protoSet:{brand:S.brand},exporting:true},'*')}catch(e){}await new Promise(r=>setTimeout(r,600));
+  d.querySelectorAll('[data-sup],[data-sup-x]').forEach(n=>n.remove());
+  d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
+  let h=0;for(let i=0;i<6;i++){const nh=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight);emb.style.height=nh+'px';await new Promise(r=>setTimeout(r,350));if(Math.abs(nh-h)<2)break;h=nh}
+  const t0=Date.now();
+  while(Date.now()-t0<10000){d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
+    if([...d.images].every(i=>i.complete&&(i.naturalWidth||!i.currentSrc)))break;await new Promise(r=>setTimeout(r,200))}
+  inject();await new Promise(r=>setTimeout(r,500));
+  return Math.max(d.documentElement.scrollHeight,d.body.scrollHeight)}
+window.EXPORT_DOC=()=>D();
+
+/* flat image: capture only the creative (.sup-art) at the asked width, in the embedded page's own realm */
+async function flatPNG(w){const d=D(),el=d&&d.querySelector('.sup-art');if(!el)throw new Error('no flat creative on the page');
+  const iw=d.defaultView;if(!iw.html2canvas)await new Promise((res,rej)=>{const sc=d.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';sc.onload=res;sc.onerror=()=>rej(new Error('html2canvas did not load'));d.head.appendChild(sc)});
+  const x=el.parentNode.parentNode.querySelector('.modal-x');if(x)x.style.visibility='hidden';
+  const run=iw.Function('el','k','return new Promise((res,rej)=>setTimeout(()=>html2canvas(el,{scale:k,useCORS:true,backgroundColor:null,logging:false}).then(c=>res(c.toDataURL("image/png"))).catch(rej),0))');
+  try{return await run(el,w/el.offsetWidth)}finally{if(x)x.style.visibility=''}}
+
+load().then(()=>parent.postMessage({protoReady:1},'*'));
+addEventListener('message',e=>{const m=e.data||{};
+  if(m.protoSet){S=Object.assign({},m.protoSet);EXPORTING=!!m.exporting;load()}
+  if(m.protoPing)(EXPORTING?full():ready.then(()=>{const d=D();return d?d.documentElement.scrollHeight:900})).then(h=>parent.postMessage({protoPong:1,h},'*'));
+  if(m.flatPNG)flatPNG(m.flatPNG.w).then(u=>parent.postMessage({flatPNG:u},'*'),err=>parent.postMessage({flatPNG:null,err:err.message},'*'));
+});
+addEventListener('resize',()=>{clearTimeout(window._rz);window._rz=setTimeout(inject,200)});
+</script>
+</body>
+</html>
