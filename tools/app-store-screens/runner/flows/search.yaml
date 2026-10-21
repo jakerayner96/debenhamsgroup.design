@@ -7,6 +7,7 @@ appId: ${APP}
     id: navSearch
 - tapOn:
     id: fakeSearchInputBar
+- waitForAnimationToEnd           # let the real search field take focus first (Android dropped the first letter)
 - inputText: ${TERM}
 - pressKey: Enter
 - extendedWaitUntil:

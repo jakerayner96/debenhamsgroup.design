@@ -24,3 +24,4 @@ flows/tap-point.yaml
 flows/wait.yaml
 flows/wish-here.yaml
 flows/wishlist.yaml
+flows/pick.yaml

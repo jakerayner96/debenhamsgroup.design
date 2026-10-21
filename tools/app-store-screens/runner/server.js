@@ -47,7 +47,8 @@ const readJSON = (f, d) => { try { return JSON.parse(fs.readFileSync(f, 'utf8'))
 const writeJSON = (f, o) => fs.writeFileSync(f, JSON.stringify(o, null, 2));
 
 /* ---------- gentle mode: never push the Mac over (antivirus scanning simulator files made a 16 GB Mac seize up, 21 Oct) ---------- */
-const CALM = os.cpus().length * 1.5;          // wait while the 1-minute load average is above this
+const CALM = os.cpus().length * 3;   // pause while the 1-minute load is above this (simulator + antivirus sits ~30; the freeze was 868)
+const STEP_LIMIT = 4 * 60000;                 // longest a single Maestro step may run          // wait while the 1-minute load average is above this
 async function calm() {
   let said = false;
   for (let i = 0; i < 60 && os.loadavg()[0] > CALM; i++) {
@@ -66,7 +67,7 @@ const PAGES = {
   menu: { n: 'Menu (categories)' },
   plp: { n: 'Category page (PLP)', input: 'url', hint: 'Category URL from the website, e.g. https://www.boohooman.com/categories/mens-jeans' },
   search: { n: 'Search results', input: 'term', hint: 'Search term' },
-  pdp: { n: 'Product page (PDP)', input: 'sku', hint: 'Product SKU, e.g. CMM33848' },
+  pdp: { n: 'Product page (PDP)', input: 'sku', hint: 'Product SKU (e.g. CMM33848), or a category URL + which product on it' },
   bag: { n: 'Bag', input: 'items', hint: 'Products in the bag, one per line: SKU size, or product name | size' },
   wishlist: { n: 'Wishlist', input: 'skus', hint: 'Products to save, one per line: SKU or product name', signedIn: true },
   signin: { n: 'Sign in' },
@@ -111,14 +112,19 @@ async function maestro(d, file, env = {}, label) {
   for (const [k, v] of Object.entries(env)) args.push('-e', `${k}=${v}`);
   args.push(file);
   return await new Promise(res => {
-    const p = spawn('nice', ['-n', '15', MAESTRO, ...args], { env: ENV, cwd: FLOWS }); child = p; let tail = '';   // low priority
+    const p = spawn('nice', ['-n', '15', MAESTRO, ...args], { env: ENV, cwd: FLOWS }); child = p; let tail = '', hung = false;   // low priority
     const on = b => { const t = String(b).replace(/\x1b\[[0-9;]*[A-Za-z]/g, ''); tail = (tail + t).slice(-4000);
       t.split('\n').filter(l => /FAILED/.test(l)).forEach(l => log(`   ⚠︎ ${label || file}: ${l.trim()}`)); };
     p.stdout.on('data', on); p.stderr.on('data', on);
-    p.on('close', code => { child = null; res({ ok: code === 0, tail }); });
+    const limit = setTimeout(() => { hung = true; p.kill('SIGKILL'); }, STEP_LIMIT);   // a step that hangs (Maestro's driver) must not stall the run
+    p.on('close', code => { clearTimeout(limit); child = null; res({ ok: code === 0 && !hung, hung, tail }); });
   });
 }
-async function flow(d, file, env, label) { const r = await maestro(d, file, env, label); return r.ok; }
+async function flow(d, file, env, label) {
+  let r = await maestro(d, file, env, label);
+  if (r.hung) { log(`   ⚠︎ ${label || file}: Maestro hung — retrying once`); await sh('pkill', ['-f', 'xcodebuild test-without-building']); await wait(3000); r = await maestro(d, file, env, label); }
+  return r.ok;
+}
 async function hierarchy(d) {
   const r = await sh(MAESTRO, ['--device', d.id, 'hierarchy'], { timeout: 180000 });
   const i = r.out.indexOf('{'); try { return JSON.parse(r.out.slice(i)); } catch { return null; }
@@ -308,10 +314,10 @@ async function openPath(d, ctx, p) {
 
 /* ---------- app session: reset, language, country, sign in ---------- */
 async function freshSession(d, APP, locale) {
-  if (d.platform === 'ios') { await sh('xcrun', ['simctl', 'terminate', d.id, APP]); await sh('xcrun', ['simctl', 'keychain', d.id, 'reset']); }
+  if (d.platform === 'ios') { await sh('xcrun', ['simctl', 'terminate', d.id, APP], { timeout: 60000 }); await sh('xcrun', ['simctl', 'keychain', d.id, 'reset'], { timeout: 60000 }); }
   await flow(d, 'prep.yaml', { APP }, 'reset app');
   if (d.platform === 'ios') {
-    await sh('xcrun', ['simctl', 'terminate', d.id, APP]);
+    await sh('xcrun', ['simctl', 'terminate', d.id, APP], { timeout: 60000 });
     await sh('xcrun', ['simctl', 'launch', d.id, APP, '-AppleLanguages', `(${locale})`, '-AppleLocale', locale.replace('-', '_')]);
   } else {
     await sh(ADB, ['-s', d.id, 'shell', 'pm', 'grant', APP, 'android.permission.POST_NOTIFICATIONS']);   // no system prompt over the first screen
@@ -346,7 +352,7 @@ function missing(s) {                      // what a slot still needs before it 
   if (s.page === 'plp' && !s.url) return 'add the category URL';
   if (s.page === 'content' && !s.url) return 'add the page URL';
   if (s.page === 'search' && !s.term) return 'add a search term';
-  if (s.page === 'pdp' && !s.sku && !s.label) return 'add the SKU';
+  if (s.page === 'pdp' && !s.sku && !s.url && !s.label) return 'add the SKU';
   return '';
 }
 const toTabs = (d, APP) => flow(d, 'tabs.yaml', { APP }, 'back to tabs');
@@ -358,7 +364,9 @@ async function goTo(d, ctx, s) {
     case 'menu': return flow(d, 'menu.yaml', { APP }, 'Menu');
     case 'plp': case 'content': return openPath(d, ctx, pathOf(s.url));
     case 'search': return flow(d, 'search.yaml', { APP, TERM: s.term }, 'Search');
-    case 'pdp': { const ok = s.sku ? await openPath(d, ctx, skuPath(s.sku)) : await flow(d, 'find.yaml', { APP, TERM: s.label }, 'find product');
+    case 'pdp': { const ok = s.sku ? await openPath(d, ctx, skuPath(s.sku))
+        : s.url ? (await openPath(d, ctx, pathOf(s.url)), await flow(d, 'pick.yaml', { APP, N: Math.max(0, (+s.pick || 1) - 1) }, `product ${s.pick || 1} on the category`))
+        : await flow(d, 'find.yaml', { APP, TERM: s.label }, 'find product');
       // scroll first, then pick the colour (scrolling back up afterwards would trigger pull-to-refresh and reset the colour)
       if (s.view === 'details') await flow(d, 'pdp-details.yaml', { APP }, 'scroll to sizes');
       if (s.colour) { await flow(d, 'colour.yaml', { APP, COLOUR: s.colour }, 'colour ' + s.colour);

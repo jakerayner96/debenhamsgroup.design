@@ -278,7 +278,10 @@ const pageOpts=sel=>`<option value="">Choose a page…</option>`+Object.entries(
 function inputFor(s){const p=PAGES[s.page];if(!p)return'';
   if(p.input==='url')return `<label class="fld"><input data-k="url" value="${H(s.url||'')}" placeholder=" "><span class="lbl">${s.page==='plp'?'Category URL':'Page URL'} — from the website</span></label>`;
   if(p.input==='term')return `<label class="fld"><input data-k="term" value="${H(s.term||'')}" placeholder=" "><span class="lbl">Search term</span></label>`;
-  if(p.input==='sku')return `<div class="row"><label class="fld grow"><input data-k="sku" value="${H(s.sku||'')}" placeholder=" "><span class="lbl">SKU${s.label&&!s.sku?` — or found by name: ${H(s.label)}`:''}</span></label>
+  if(p.input==='sku')return `<div class="row"><label class="fld grow"><input data-k="sku" value="${H(s.sku||'')}" placeholder=" "><span class="lbl">SKU${s.label&&!s.sku&&!s.url?` — or found by name: ${H(s.label)}`:''}</span></label></div>
+    <div class="row"><label class="fld grow"><input data-k="url" value="${H(s.url||'')}" placeholder=" "><span class="lbl">Or: category URL — opens a product from that page</span></label>
+    <div class="fsel" style="width:150px"><span>Product ${+s.pick||1}</span><select data-k="pick">${[1,2,3,4,5,6].map(n=>`<option value="${n}"${(+s.pick||1)===n?' selected':''}>Product ${n}</option>`).join('')}</select></div></div>
+    <div class="row">
     <label class="fld" style="width:150px"><input data-k="colour" value="${H(s.colour||'')}" placeholder=" "><span class="lbl">Colour (optional)</span></label>
     <div class="fsel" style="width:190px"><span>${s.view==='details'?'Show: price &amp; sizes':'Show: images'}</span><select data-k="view"><option value="top"${s.view!=='details'?' selected':''}>Show: images</option><option value="details"${s.view==='details'?' selected':''}>Show: price &amp; sizes</option></select></div></div>`;
   if(p.input==='items')return `<textarea class="paste" data-k="items" rows="2" placeholder="One per line: SKU size (CMM33848 L) — or product name | size">${H(s.items||'')}</textarea>`;

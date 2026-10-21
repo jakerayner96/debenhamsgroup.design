@@ -1,6 +1,10 @@
 # Fresh guest session: wipe app data, deny permission prompts, clear the first-run pop-ups.
 appId: ${APP}
 ---
+# Android "System UI isn't responding" / "App isn't responding" — choose Wait
+- tapOn:
+    text: "Wait"
+    optional: true
 - launchApp:
     clearState: true
     permissions:
