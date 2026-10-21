@@ -34,14 +34,14 @@ const DEF={
    AI colour = the CTA colour, all pass 3:1). Debenhams keeps DEF as delivered. */
 const BRANDS={
   debenhams:{n:'Debenhams',d:'debenhams.com'},
-  boohoo:{n:'boohoo',d:'boohoo.com',cta:'#000000',on:'#ffffff'},
-  boohooman:{n:'boohooMAN',d:'boohooman.com',cta:'#000000',on:'#ffffff',men:true},
-  plt:{n:'PrettyLittleThing',d:'prettylittlething.com',cta:'#550503',on:'#ffffff',r:0},
-  karenmillen:{n:'Karen Millen',d:'karenmillen.com',cta:'#d24508',on:'#ffffff',ai:'#000000'},   /* KM AI is black, not its orange CTA (DS --ai-fg) */
-  warehouse:{n:'Warehouse',d:'warehousefashion.com',cta:'#000000',on:'#ffffff'},
-  brandroom:{n:'The Brand Room',d:'thebrandroom.com',cta:'#000000',on:'#ffffff',r:0}};
+  boohoo:{n:'boohoo',d:'boohoo.com',cta:'#000000',on:'#ffffff',font:'Montserrat'},
+  boohooman:{n:'boohooMAN',d:'boohooman.com',cta:'#000000',on:'#ffffff',men:true,font:'Montserrat'},
+  plt:{n:'PrettyLittleThing',d:'prettylittlething.com',cta:'#550503',on:'#ffffff',r:0,font:'Roboto'},
+  karenmillen:{n:'Karen Millen',d:'karenmillen.com',cta:'#d24508',on:'#ffffff',ai:'#000000',font:'Jost'},   /* KM AI is black, not its orange CTA (DS --ai-fg) */
+  warehouse:{n:'Warehouse',d:'warehousefashion.com',cta:'#000000',on:'#ffffff',font:'Roboto'},
+  brandroom:{n:'The Brand Room',d:'thebrandroom.com',cta:'#000000',on:'#ffffff',r:0,font:'Archivo'}};
 function def(b){const B=BRANDS[b]||BRANDS.debenhams;if(!B.cta)return Object.assign({},DEF,{brandName:B.n,domain:B.d});
-  return Object.assign({},DEF,{brandName:B.n,domain:B.d,name:B.n,title:'Ask '+B.n,
+  return Object.assign({},DEF,{brandName:B.n,domain:B.d,font:B.font,name:B.n,title:'Ask '+B.n,
     intro:`Hi there – I’m your ${B.n} Personal Assistant! Whatever you’re looking for, I’ll help you find it. I can guide you based on budget, occasion, colour, style, size & more. Let me know what you’re shopping for today and we can get started…`,
     prompts:B.men?['Shirts','New In','Jeans','Shoes & Trainers']:['Party Dresses','New In','Going Out Tops','Shoes & Accessories'],
     starters:B.men?['Find me an outfit for a wedding','Does this shirt come in tall?','Gifts for my dad under £50','What goes with my black jeans?']:DEF.starters,
@@ -50,7 +50,8 @@ const clone=o=>JSON.parse(JSON.stringify(o));
 const rx=(s)=>new RegExp(s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
 function build(base,e,brand){
   e=Object.assign({},def(brand),e||{});
-  const c=clone(base),p=c.payload,st=p.settings,sy=p.style,zs=p.components.zeroState.payload;
+  /* typography: the dev file sets Geologica (Debenhams) on every text key; other fascias get their DS font (tokens.css --font-family-base) */
+  const c=e.font?JSON.parse(JSON.stringify(base).replace(/Geologica/g,e.font)):clone(base),p=c.payload,st=p.settings,sy=p.style,zs=p.components.zeroState.payload;
   st['chat-title']=e.title;
   st['placeholder-text']=e.placeholder;
   st['disclosure-text']=e.disclosure;

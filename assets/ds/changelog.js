@@ -13,6 +13,8 @@ window.DG_CHANGELOG=[
    "Tooltip (.tip, .tip--left, .tip--in, .tip-new, .tip-x) — bubble with a top nib (--tip-x), optional New tag and close; the coach mark for Ask Deb behind the header search icon · by Shopping agent"
   ],
   "changed": [
+   "Typography: 27 unscoped font-weight:300 rules in components.css now use --w-regular (delivery grid, accordion body, AI modules, agent chat start, sort & filter, membership pill, auth note, bag summary …) — Debenhams keeps Geologica Light (its --w-regular is 300), every other fascia gets its own regular instead of a too-thin light; brand-scoped live rules (PLT nav) unchanged · by Shopping agent",
+   "Search suggestions: autocomplete terms 14px, only the typed part bold (.ss-term b), the rest the fascia regular · by Shopping agent",
    "Search suggestions: typing state (.ss-terms / .ss-term autocomplete rows, .ss-ask one-row agent prompts for the term, products matching) — the agent prompts moved off the landing state to the typing state so they show above the phone keyboard · by Shopping agent",
    "AI tokens: --ai-accent (mid aqua: bullets, hover keylines) and --ai-track (light aqua track) join --ai-fg / --ai-tint / --ai-ink — Debenhams #70BEB3 / #D6E9E6, every other fascia its own palette (--ai-fg / --border-subtle), so no aqua is hard-coded on a non-Debenhams page · by Shopping agent",
    "Tooltip: white (--surface-raised) with a soft drop shadow and the nib centred, like the desktop account hover menu; --tip-x now measures from the left (default 50%) · by Shopping agent",
