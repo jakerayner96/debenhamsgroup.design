@@ -11,7 +11,8 @@ window.DG_CHANGELOG=[
    "Membership box: --mb-line (1px keyline) and --mb-cta-line (outlined ADD); DG_memberBoxHTML(brand,{bg,fg,ctaBg,ctaFg,ctaLine,line}) overrides the ground, and a dark fg swaps in the fascia's dark-ink logo · by KM Premier colours",
    "Asset: assets/ds/membership/prem-logo-km-ink.png — the Karen Millen Premier logo in black, for light grounds · by KM Premier colours",
    "Deliver+: --dplus-line (1px keyline); catalogue variant PDP banner · light ground (dark-ink checkout lockup) · by KM Premier colours",
-   "Catalogue: Membership box variants Karen Millen Premier + Karen Millen Premier · light ground · by KM Premier colours"
+   "Catalogue: Membership box variants Karen Millen Premier + Karen Millen Premier · light ground · by KM Premier colours",
+   "Rule: a Membership box / Deliver+ keyline goes on a white ground only, in #E7E7E7 (like the delivery grid, BNPL, Subscribe boxes) or the fascia accent; a shaded ground has none (Jake 21 Oct) · by KM Premier colours"
   ],
   "changed": [
    "Karen Millen buttons black: --surface-action #000 (hover / pressed #242424), --border-action #000, --action-buy #000 (pressed #242424, disabled #B5B5B5) — was orange #D24508 / #892D05. Matches Jake's Figma and production (--color-primary #000). Orange stays the KM brand accent (links, dots, New, cards) · by KM Premier colours",

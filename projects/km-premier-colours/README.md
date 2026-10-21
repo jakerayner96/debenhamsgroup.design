@@ -10,11 +10,13 @@
 | Option | Premier | Deliver+ |
 |---|---|---|
 | Today | #000 / white, white Add | #000 / white |
-| Blush Premier · white Deliver+ (inspo 1) | #FAE9E1, keyline #F4D1C1, outlined white Add | #FFF, keyline #E7E7E7, Learn More #892D05 |
-| Orange accent (inspo 2) | #FFF, keyline #D24508, Add #D24508 | #FAE9E1, keyline #F4D1C1, Learn More #892D05 |
-| Blush, both | #FAE9E1, keyline #F4D1C1, black Add | same, Learn More #892D05 |
-| White + black keyline | #FFF, keyline #000, black Add | #FFF, keyline #000 |
+| Blush Premier · white Deliver+ (inspo 1) | #FAE9E1, outlined white Add | #FFF, keyline #E7E7E7, Learn More #892D05 |
+| Orange accent (inspo 2) | #FFF, keyline #D24508, Add #D24508 | #FAE9E1, Learn More #892D05 |
+| Blush, both | #FAE9E1, black Add | same, Learn More #892D05 |
+| White + grey keyline | #FFF, keyline #E7E7E7, black Add | #FFF, keyline #E7E7E7 |
 | Grey | #F2F2F2, black Add | #F2F2F2 |
+
+**Keyline rule (Jake, 21 Oct):** a keyline only on a white box, in grey #E7E7E7 (the delivery / BNPL / Subscribe boxes) or orange #D24508. A shaded box never has one.
 
 Plus Custom: background, keyline and Add style for Premier; background, keyline and Learn More colour for Deliver+. Text and logos flip black/white with the ground. Contrast is checked against AA.
 

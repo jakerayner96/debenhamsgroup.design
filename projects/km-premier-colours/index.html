@@ -168,14 +168,14 @@ const K={orange:'#D24508',brown:'#892D05',blush:'#FAE9E1',blushLine:'#F4D1C1',gr
 /* Each option: Premier box (pm) + Deliver+ banner (dp). null = the DS default as live today (solid black). */
 const OPTS=[
   {id:'current',n:'Today — solid black',d:'Both boxes black with white ink, as live. The baseline.',pm:null,dp:null},
-  {id:'blush-white',n:'Blush Premier · white Deliver+',d:'Inspo 1. Premier on KM blush with an outlined white Add; Deliver+ white with a grey keyline, Learn More in KM brown.',
-    pm:{bg:K.blush,fg:'#000',line:K.blushLine,ctaBg:'#FFF',ctaFg:'#000',ctaLine:'#000'},dp:{bg:'#FFF',fg:'#000',link:K.brown,line:K.greyLine}},
-  {id:'orange-accent',n:'Orange accent',d:'Inspo 2. Premier white with an orange keyline and orange Add; Deliver+ on blush. The only orange in the buy column now Add to bag is black.',
-    pm:{bg:'#FFF',fg:'#000',line:K.orange,ctaBg:K.orange,ctaFg:'#FFF'},dp:{bg:K.blush,fg:'#000',link:K.brown,line:K.blushLine}},
-  {id:'blush-both',n:'Blush, both',d:'Both boxes on KM blush with a blush keyline; black Add, Learn More in KM brown. One warm family under the black CTA.',
-    pm:{bg:K.blush,fg:'#000',line:K.blushLine,ctaBg:'#000',ctaFg:'#FFF'},dp:{bg:K.blush,fg:'#000',link:K.brown,line:K.blushLine}},
-  {id:'keyline',n:'White + black keyline',d:'Both white with a 1px black keyline and a black Add. Quietest; follows the KM outline buttons.',
-    pm:{bg:'#FFF',fg:'#000',line:'#000',ctaBg:'#000',ctaFg:'#FFF'},dp:{bg:'#FFF',fg:'#000',link:'#000',line:'#000'}},
+  {id:'blush-white',n:'Blush Premier · white Deliver+',d:'Inspo 1. Premier on KM blush (no keyline) with an outlined white Add; Deliver+ white with the grey keyline of the boxes below, Learn More in KM brown.',
+    pm:{bg:K.blush,fg:'#000',ctaBg:'#FFF',ctaFg:'#000',ctaLine:'#000'},dp:{bg:'#FFF',fg:'#000',link:K.brown,line:K.greyLine}},
+  {id:'orange-accent',n:'Orange accent',d:'Inspo 2. Premier white with an orange keyline and orange Add; Deliver+ on blush, no keyline. The only orange in the buy column now Add to bag is black.',
+    pm:{bg:'#FFF',fg:'#000',line:K.orange,ctaBg:K.orange,ctaFg:'#FFF'},dp:{bg:K.blush,fg:'#000',link:K.brown}},
+  {id:'blush-both',n:'Blush, both',d:'Both boxes on KM blush, no keyline; black Add, Learn More in KM brown. One warm family under the black CTA.',
+    pm:{bg:K.blush,fg:'#000',ctaBg:'#000',ctaFg:'#FFF'},dp:{bg:K.blush,fg:'#000',link:K.brown}},
+  {id:'keyline',n:'White + grey keyline',d:'Both white with the #E7E7E7 keyline of the delivery, BNPL and Subscribe boxes below, and a black Add. The quietest option; the buy column reads as one set.',
+    pm:{bg:'#FFF',fg:'#000',line:K.greyLine,ctaBg:'#000',ctaFg:'#FFF'},dp:{bg:'#FFF',fg:'#000',link:'#000',line:K.greyLine}},
   {id:'grey',n:'Grey',d:'Both on Grey 1 with a black Add. Neutral, like the boohooMAN / Debenhams boxes.',
     pm:{bg:K.grey,fg:'#000',ctaBg:'#000',ctaFg:'#FFF'},dp:{bg:K.grey,fg:'#000',link:'#000'}},
 ];
@@ -194,7 +194,9 @@ const lum=h=>{const x=String(h).replace('#','');const f=x.length===3?x.split('')
 const cr=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
 const up=h=>String(h||'').toUpperCase();
 const GROUNDS=[['White','#FFF'],['KM blush',K.blush],['Grey 1',K.grey],['KM blush 2',K.blushLine],['Black','#000']];
-const LINES=[['None',''],['Grey 2',K.greyLine],['Blush',K.blushLine],['Orange',K.orange],['Black','#000']];
+/* rule (Jake 21 Oct): a keyline only on a white box — grey (the other boxes' #E7E7E7) or orange; a shaded fill never has one */
+const LINES=[['Grey (matches the boxes below)',K.greyLine],['Orange',K.orange]];
+const WHITE=h=>up(h)==='#FFF'||up(h)==='#FFFFFF';
 const ADDS=[['black','Black'],['outline','Outline'],['orange','Orange'],['white','White']];
 const ADD={black:{ctaBg:'#000',ctaFg:'#FFF',ctaLine:''},outline:{ctaBg:'#FFF',ctaFg:'#000',ctaLine:'#000'},orange:{ctaBg:K.orange,ctaFg:'#FFF',ctaLine:''},white:{ctaBg:'#FFF',ctaFg:'#000',ctaLine:''}};
 const LINKS=[['Black','#000'],['KM brown',K.brown],['Orange',K.orange],['White','#FFF']];
@@ -217,23 +219,24 @@ function renderPanel(host,S,update){
     <button class="opt${c.opt==='custom'?' on':''}" data-opt="custom"><span class="r"></span><span class="t"><b>Custom</b><span>Your own mix. Changing anything below switches to Custom.</span></span></button></div>
   <div class="card"><h3>Premier <small>Membership box</small></h3>
     <div class="f2"><span>Background</span>${sw('pm.bg',pm.bg,GROUNDS)}</div>
-    <div class="f2"><span>Keyline <small>1px, inside</small></span>${sw('pm.line',pm.line,LINES)}</div>
+    ${WHITE(pm.bg)?`<div class="f2"><span>Keyline <small>white boxes only</small></span>${sw('pm.line',pm.line,LINES)}</div>`:'<p class="rules" style="margin-top:10px">No keyline on a shaded box.</p>'}
     <div class="f2"><span>Add button</span><span class="seg" data-add>${ADDS.map(([v,l])=>`<button data-v="${v}" class="${addOf(c.pm)===v?'on':''}">${l}</button>`).join('')}</span></div>
     <p style="margin-top:10px">Text <b>${dark(pm.fg)?'black':'white'}</b> · ${r1.toFixed(1)}:1${r1>=4.5?' <span class="ok">AA</span>':''} · logo ${dark(pm.fg)?'dark ink':'white'}</p></div>
   <div class="card"><h3>Deliver+ <small>PDP banner</small></h3>
     <div class="f2"><span>Background</span>${sw('dp.bg',dp.bg,GROUNDS)}</div>
-    <div class="f2"><span>Keyline <small>1px, inside</small></span>${sw('dp.line',dp.line,LINES)}</div>
+    ${WHITE(dp.bg)?`<div class="f2"><span>Keyline <small>white boxes only</small></span>${sw('dp.line',dp.line,LINES)}</div>`:'<p class="rules" style="margin-top:10px">No keyline on a shaded box.</p>'}
     <div class="f2"><span>Learn More</span>${sw('dp.link',dp.link,LINKS)}</div>
     <p style="margin-top:10px">Text <b>${dark(dp.fg)?'black':'white'}</b> · Learn More ${r2.toFixed(1)}:1${r2>=4.5?' <span class="ok">AA</span>':''} · lockup ${dark(dp.fg)?'dark ink (checkout art)':'white'}</p></div>
   ${warn.length?`<div class="card"><h3>Checks</h3>${warn.map(w=>`<p class="warn">${esc(w)}</p>`).join('')}</div>`:''}
-  <div class="card"><h3>Rules</h3><p class="rules">Text and icons go black on any light background and white on black, and the logos follow: dark-ink Premier logo, and the white-background Deliver+ lockup. Contrast is checked against AA 4.5:1. Add to bag is the DS Karen Millen button: black (21 Oct 2026).</p>
+  <div class="card"><h3>Rules</h3><p class="rules">Keyline only on a white box, in grey (#E7E7E7, like the boxes below) or orange. A shaded box has none.</p>
+    <p class="rules">Text and icons go black on any light background and white on black, and the logos follow: dark-ink Premier logo, and the white-background Deliver+ lockup. Contrast is checked against AA 4.5:1. Add to bag is the DS Karen Millen button: black (21 Oct 2026).</p>
     <p class="rules">Colours come from the Karen Millen DS tokens. The boxes are DS components (Membership box, Deliver+), coloured through their own --mb-* / --dplus-* settings.</p></div>`;
   const re=()=>{update();renderPanel(host,S,update)};
   const custom=()=>{if(c.opt!=='custom'){c.pm={...pm};c.dp={...dp};c.opt='custom'}};
   host.querySelectorAll('[data-opt]').forEach(x=>x.onclick=()=>{const o=OPTS.find(o=>o.id===x.dataset.opt);
     if(o){c.opt=o.id;c.pm=o.pm&&{...o.pm};c.dp=o.dp&&{...o.dp}}else custom();re()});
   host.querySelectorAll('[data-sw]').forEach(g=>g.querySelectorAll('button').forEach(x=>x.onclick=()=>{custom();const [box,k]=g.dataset.sw.split('.'),o=c[box],v=x.dataset.v;
-    o[k]=v;if(k==='bg'){o.fg=dark(v)?'#FFF':'#000';if(box==='dp'&&(!o.link||cr(v,o.link)<3))o.link=o.fg;
+    o[k]=v;if(k==='bg'){o.fg=dark(v)?'#FFF':'#000';o.line=WHITE(v)?(o.line||K.greyLine):'';if(box==='dp'&&(!o.link||cr(v,o.link)<3))o.link=o.fg;
       if(box==='pm'&&cr(v,o.ctaBg)<1.3&&!o.ctaLine)Object.assign(o,dark(v)?ADD.white:ADD.black)}re()}));
   host.querySelector('[data-add]').querySelectorAll('button').forEach(x=>x.onclick=()=>{custom();Object.assign(c.pm,ADD[x.dataset.v]);re()});
 }
