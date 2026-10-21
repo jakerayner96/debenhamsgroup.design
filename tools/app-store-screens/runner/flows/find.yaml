@@ -1,0 +1,29 @@
+# Search for a product and open the first result, scrolled to the buy area
+appId: ${APP}
+---
+- tapOn:
+    id: navSearch
+- tapOn:
+    id: navSearch
+- tapOn:
+    id: fakeSearchInputBar
+- inputText: ${TERM}
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: plpItem-0
+    timeout: 20000
+- tapOn:
+    id: plpItem-0
+- extendedWaitUntil:
+    visible:
+      id: productImageCarousel
+    timeout: 20000
+- swipe:
+    start: "50%,75%"
+    end: "50%,35%"
+- waitForAnimationToEnd
+- tapOn:
+    text: "(?i)${COLOUR}"
+    optional: true
+- waitForAnimationToEnd

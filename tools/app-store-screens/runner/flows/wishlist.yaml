@@ -1,0 +1,6 @@
+appId: ${APP}
+---
+- tapOn:
+    id: navWishlist
+- waitForAnimationToEnd:
+    timeout: 10000

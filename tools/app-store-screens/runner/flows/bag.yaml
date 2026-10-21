@@ -1,0 +1,6 @@
+appId: ${APP}
+---
+- tapOn:
+    id: navCart
+- waitForAnimationToEnd:
+    timeout: 10000

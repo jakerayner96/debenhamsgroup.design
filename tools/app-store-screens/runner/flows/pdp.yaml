@@ -1,0 +1,14 @@
+appId: ${APP}
+---
+- tapOn:
+    id: navWishlist
+- tapOn: ${NAME}
+- extendedWaitUntil:
+    visible:
+      id: productImageCarousel
+    timeout: 20000
+- swipe:
+    start: "50%,70%"
+    end: "50%,30%"
+    duration: 1500
+- waitForAnimationToEnd

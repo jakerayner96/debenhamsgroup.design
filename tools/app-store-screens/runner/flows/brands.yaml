@@ -1,0 +1,10 @@
+appId: ${APP}
+---
+- tapOn:
+    id: navSearch
+- tapOn:
+    id: navSearch
+- tapOn: ${MENU}
+- tapOn: ${ITEM}
+- waitForAnimationToEnd:
+    timeout: 10000

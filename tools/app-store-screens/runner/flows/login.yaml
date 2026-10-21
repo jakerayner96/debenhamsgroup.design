@@ -1,0 +1,23 @@
+appId: ${APP}
+---
+- tapOn:
+    id: navAccount
+- tapOn:
+    id: emailTextInput
+- inputText: ${EMAIL}
+- tapOn:
+    id: passwordTextInput
+- inputText: ${PW}
+- tapOn:
+    id: signInButton
+- waitForAnimationToEnd:
+    timeout: 10000
+# iOS "Save Password?" sheet is a system dialog — tap Not Now by position
+- extendedWaitUntil:
+    visible: "Hey,.*"
+    timeout: 15000
+    optional: true
+- tapOn:
+    text: "Not Now"
+    optional: true
+- waitForAnimationToEnd

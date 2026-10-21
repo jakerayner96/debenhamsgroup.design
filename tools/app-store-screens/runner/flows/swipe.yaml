@@ -1,0 +1,6 @@
+appId: ${APP}
+---
+- swipe:
+    start: "50%,75%"
+    end: "50%,35%"
+- waitForAnimationToEnd

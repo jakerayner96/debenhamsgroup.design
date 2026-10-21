@@ -1,0 +1,11 @@
+# Only taps the heart when the item isn't saved yet (tapping a saved item removes it)
+appId: ${APP}
+---
+- runFlow: find.yaml
+- runFlow:
+    when:
+      visible: "Add to wishlist"
+    commands:
+      - tapOn:
+          id: wishlistButton
+      - waitForAnimationToEnd

@@ -1,0 +1,64 @@
+{
+  "_note": "Seed config. The runner copies a brand here into its data folder the first time it sees that brand; edits made in the tool live there (~/Library/Application Support/DG App Store Screens/brands/<brand>.json). expo = the Expo project slug in debenhams-tech; ds = the design-system data-brand slug (logo + theme).",
+  "boohooman": {
+    "name": "boohooMAN", "ds": "boohooman", "expo": ["boohooman"],
+    "ios": ["com.boohoo.boohooMAN"], "android": ["com.gpshopper.boohooman"],
+    "stores": [
+      { "code": "UK", "label": "BOOHOOMAN UK" },
+      { "code": "IE", "label": "BOOHOOMAN IE.*" },
+      { "code": "US", "label": "BOOHOOMAN US" },
+      { "code": "AU", "label": "BOOHOOMAN AU.*" },
+      { "code": "FR", "label": "BOOHOOMAN FR.*" },
+      { "code": "DE", "label": "BOOHOOMAN DE.*" },
+      { "code": "AT", "label": "BOOHOOMAN AT.*" },
+      { "code": "NL", "label": "BOOHOOMAN NL.*" },
+      { "code": "BE", "label": "BOOHOOMAN BE.*" }
+    ],
+    "bag": [
+      { "search": "Regular Fit Woven Contrast Collar Puffer", "colour": "charcoal", "size": "3XL" },
+      { "search": "White Oversized Homme Official Print Long Sleeve Spray Wash T-Shirt", "colour": "white", "size": "L" }
+    ],
+    "wishlist": [
+      { "search": "Essential Baggy Fit Rigid Washed Jeans", "colour": "stone" },
+      { "search": "Charcoal Oversized Shrunken Gothic Doodle Print Zip Through Hoodie", "colour": "charcoal" },
+      { "search": "Oversized Ripstop Translucent Duvet Puffer Jacket", "colour": "charcoal" },
+      { "search": "Oversized Fit Striped Long Sleeve Man Embroidered T-Shirt", "colour": "black" }
+    ],
+    "screens": [
+      { "id": "home", "name": "Home", "type": "home", "session": "guest" },
+      { "id": "wishlist", "name": "Wishlist", "type": "wishlist", "session": "signed-in" },
+      { "id": "bag", "name": "Bag", "type": "bag", "session": "guest" },
+      { "id": "brands", "name": "Brands at BOOHOOMAN", "type": "menu", "session": "guest", "params": { "menu": "BRANDS", "item": "View All" } },
+      { "id": "premier", "name": "Premier page", "type": "home-tile", "session": "guest", "params": { "swipes": 7, "tap": "25%,60%" } },
+      { "id": "pdp", "name": "Product page", "type": "pdp", "session": "signed-in", "params": { "fromWishlist": "Essential Baggy Fit Rigid Washed Jeans" } }
+    ]
+  },
+  "thebrandroom": {
+    "name": "The Brand Room", "ds": "brandroom", "expo": ["thebrandroom"],
+    "ios": ["com.dbztech.thebrandroom"], "android": ["com.dbztech.thebrandroom"],
+    "stores": [],
+    "bag": [], "wishlist": [],
+    "screens": [
+      { "id": "home", "name": "Home", "type": "home", "session": "guest" },
+      { "id": "wishlist", "name": "Wishlist", "type": "wishlist", "session": "signed-in" },
+      { "id": "bag", "name": "Bag", "type": "bag", "session": "guest" }
+    ]
+  },
+  "_expoOnly": {
+    "boohooww": { "name": "boohoo", "ds": "boohoo" },
+    "burton": { "name": "Burton", "ds": "burton" },
+    "coast": { "name": "Coast", "ds": "coast" },
+    "debenhams": { "name": "Debenhams", "ds": "debenhams" },
+    "debenhamsoutlet": { "name": "Debenhams Outlet", "ds": "debenhamsoutlet" },
+    "dorothy-perkins": { "name": "Dorothy Perkins", "ds": "dorothyperkins" },
+    "dsgnstudio": { "name": "DSGN Studio", "ds": "dsgnstudio" },
+    "karenmillen": { "name": "Karen Millen", "ds": "karenmillen" },
+    "misspap": { "name": "Misspap", "ds": "misspap" },
+    "nastygal": { "name": "Nasty Gal", "ds": "nastygal" },
+    "oasis": { "name": "Oasis", "ds": "oasis" },
+    "prettylittlething": { "name": "PLT", "ds": "plt" },
+    "principles": { "name": "Principles", "ds": "principles" },
+    "wallis": { "name": "Wallis", "ds": "wallis" },
+    "warehouse": { "name": "Warehouse", "ds": "warehouse" }
+  }
+}

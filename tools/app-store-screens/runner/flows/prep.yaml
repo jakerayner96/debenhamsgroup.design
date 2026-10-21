@@ -1,0 +1,19 @@
+# Fresh guest session: wipe app data, deny permission prompts, clear the first-run pop-ups.
+appId: ${APP}
+---
+- launchApp:
+    clearState: true
+    permissions:
+      all: deny
+- extendedWaitUntil:
+    visible:
+      id: navHome
+    timeout: 60000
+- repeat:
+    times: 3
+    commands:
+      - tapOn:
+          text: "(?i)(ask app not to track|do not track|maybe later|not now|don.t allow)"
+          optional: true
+      - waitForAnimationToEnd:
+          timeout: 3000

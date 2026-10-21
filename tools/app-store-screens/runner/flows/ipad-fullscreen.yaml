@@ -1,0 +1,12 @@
+# iPadOS 26 windowed apps draw a resize handle in the corner — switch to Full-Screen Apps
+appId: com.apple.Preferences
+---
+- launchApp
+- scrollUntilVisible:
+    element:
+      text: "Multitasking.*"
+    direction: DOWN
+    optional: true
+- tapOn: "Multitasking.*"
+- tapOn: "Full-Screen Apps"
+- stopApp

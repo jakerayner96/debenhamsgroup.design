@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>App Store Screenshot Exporter · Debenhams Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/ds/tokens.css">
+<link rel="stylesheet" href="../../assets/ds/components.css">
+<style>
+/* page layout only — every control is a DS component (.bd .fld .fsel .chk .chip .tagpill .msg .drop .prog .tabs .spin) */
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font-family-base);color:var(--text-primary);background:var(--surface-sunken,#F2F2F2)}
+.top{background:var(--surface-raised,#fff);border-bottom:1px solid var(--border-subtle)}
+.top-in{max-width:1240px;margin:0 auto;padding:20px 24px 0}
+.crumb{font-size:12px;color:var(--text-secondary);margin-bottom:6px}.crumb a{color:inherit}
+.hd{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.hd h1{margin:0;font-size:24px;line-height:32px}
+.hd p{margin:2px 0 0;color:var(--text-secondary);font-size:14px;line-height:20px;max-width:640px}
+.hd .sp{flex:1}
+.conn{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);padding-top:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--text-disabled,#B5B5B5)}.dot.on{background:#2E8540}
+main{max-width:1240px;margin:0 auto;padding:24px}
+.panel[hidden]{display:none}
+.card{background:var(--surface-raised,#fff);border:1px solid var(--border-subtle);border-radius:8px;padding:20px;margin-bottom:16px}
+.card h2{font-size:16px;line-height:24px;margin:0 0 4px}
+.card .help{margin:0 0 16px;color:var(--text-secondary);font-size:13px;line-height:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row>.grow{flex:1;min-width:200px}
+textarea.paste{width:100%;min-height:96px;resize:vertical;font:13px/18px ui-monospace,Menlo,monospace;padding:12px 16px;border:1px solid var(--border-control,#B5B5B5);border-radius:var(--radius-default);background:var(--surface-raised,#fff);color:var(--text-primary)}
+textarea.paste:focus{outline:0;border-color:#000}
+.builds{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.build{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--border-subtle);border-radius:8px;background:var(--surface-raised,#fff)}
+.build img{width:64px;height:28px;object-fit:contain;flex:none}
+.build b{display:block;font-size:14px}.build span{font-size:12px;color:var(--text-secondary)}
+.screens{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.scr{border:1px solid var(--border-subtle);border-radius:8px;background:var(--surface-raised,#fff);padding:12px;display:flex;flex-direction:column;gap:10px}
+.scr-n{display:flex;align-items:center;gap:8px}.scr-n .fld{flex:1}
+.pics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pic{aspect-ratio:9/19.5;border-radius:6px;overflow:hidden;background:var(--surface-sunken,#F2F2F2);position:relative;display:flex}
+.pic img{width:100%;height:100%;object-fit:cover;object-position:top}
+.pic .drop{flex:1;min-height:0;border-radius:6px}
+.pic em{position:absolute;left:6px;bottom:6px;font-style:normal}
+.scr .acts{display:flex;gap:6px;flex-wrap:wrap}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.matrix{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px 16px}
+.chk-row{display:flex;align-items:center;gap:8px;font-size:14px;line-height:20px;cursor:pointer;user-select:none}
+.chk-row small{color:var(--text-secondary);font-size:12px}
+#log{background:#0F0F0F;color:#E7E7E7;font:12px/18px ui-monospace,Menlo,monospace;border-radius:8px;padding:12px 14px;height:240px;overflow:auto;white-space:pre-wrap;margin:0}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.gal a{font-size:10px;line-height:14px;color:var(--text-secondary);text-decoration:none;word-break:break-word}
+.gal img{width:100%;border-radius:6px;border:1px solid var(--border-subtle);display:block;margin-bottom:4px;background:#fff}
+.tree{font:12px/18px ui-monospace,Menlo,monospace;background:var(--surface-sunken,#F2F2F2);border-radius:6px;padding:12px 14px;margin:0;white-space:pre;overflow:auto}
+.doc{list-style:none;margin:0;padding:0}
+.doc li{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--border-subtle);font-size:14px}.doc li:first-child{border-top:0}
+.doc small{display:block;color:var(--text-secondary);font-size:12px;margin-top:2px}
+code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0F0F0F;color:#E7E7E7;border-radius:6px;padding:12px 14px;word-break:break-all}
+.offline{max-width:720px}
+.items{width:100%;min-height:80px}
+</style>
+</head>
+<body>
+<div class="top"><div class="top-in">
+  <div class="crumb"><a href="../../#tools">Planning and Tools</a> / App Store Screenshot Exporter</div>
+  <div class="hd">
+    <div><h1>App Store Screenshot Exporter</h1>
+      <p>Paste the dev's Expo links, choose the screens, and export every App Store and Google Play size in every store language, ready to drop into Figma.</p></div>
+    <span class="sp"></span>
+    <div class="conn"><span class="dot" id="dot"></span><span id="connTxt">Looking for the runner on this Mac…</span></div>
+  </div>
+  <div class="tabs" id="tabs" style="margin-top:16px">
+    <button data-t="builds" class="on">1 · Builds</button><button data-t="screens">2 · Screens</button><button data-t="export">3 · Export</button><button data-t="setup">Setup</button>
+  </div>
+</div></div>
+
+<main>
+  <!-- runner not running -->
+  <section class="panel offline" id="offline" hidden>
+    <div class="card">
+      <h2>Start the runner on your Mac</h2>
+      <p class="help">This page drives the iPhone/iPad Simulator and Android emulator on your Mac through a small local runner. Install it once (needs Xcode, Android Studio and Node.js); it then starts by itself at login. Use Chrome.</p>
+      <code class="cmd" id="installCmd">curl -fsSL https://jakerayner96.github.io/debenhamsgroup.design/tools/app-store-screens/runner/install.sh | bash</code>
+      <div class="row" style="margin-top:12px"><button class="bd pri" id="copyCmd">Copy install command</button><button class="bd sec" id="retry">I've run it — check again</button></div>
+      <p class="help" style="margin-top:12px">Already installed and stopped? <code>launchctl load ~/Library/LaunchAgents/com.debenhamsgroup.appstorescreens.plist</code></p>
+    </div>
+  </section>
+
+  <!-- 1 BUILDS -->
+  <section class="panel" id="p-builds">
+    <div class="grid2">
+      <div class="card">
+        <h2>Paste from Slack</h2>
+        <p class="help">Paste the dev's whole message: the tool picks out every Expo build link and works out the brand, platform and version on its own.</p>
+        <div class="stack">
+          <textarea class="paste" id="paste" placeholder="iOS preview build for simulator https://expo.dev/accounts/debenhams-tech/projects/…/builds/…&#10;Android AAB file https://expo.dev/accounts/…/builds/…"></textarea>
+          <div class="row"><button class="bd pri" id="addLinks">Get builds</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Or drop the files</h2>
+        <p class="help">If you've downloaded them: the iOS <b>simulator</b> build (.tar.gz) and the Android .aab or .apk.</p>
+        <label class="drop" id="buildDrop"><input type="file" id="buildFile" multiple accept=".gz,.tgz,.zip,.aab,.apk"><b>Drop the build files here</b>or click to choose<small>.tar.gz (iOS simulator) · .aab · .apk</small></label>
+      </div>
+    </div>
+    <div class="card"><h2>Builds on this Mac</h2><p class="help">Newest first. The brand is recognised from the app id; Screens and Export use the newest build of each brand.</p><div class="builds" id="buildList"></div></div>
+    <div class="card" id="busyCard" hidden><div class="prog prog--busy" id="busyProg"><div class="prog-hd"><span id="busyTxt">Working…</span><span></span></div><div class="prog-bar"><i></i></div></div></div>
+  </section>
+
+  <!-- 2 SCREENS -->
+  <section class="panel" id="p-screens" hidden>
+    <div class="card">
+      <div class="row">
+        <div class="fsel grow" style="max-width:320px"><span id="brandLbl">Brand</span><select id="brand" aria-label="Brand"></select></div>
+        <div class="fsel" style="width:260px"><span id="ldevLbl">Learn &amp; test on: iPhone 6.9in</span><select id="ldev" aria-label="Learn and test on"><option value="iphone-69">Learn &amp; test on: iPhone 6.9in</option><option value="ipad-13">Learn &amp; test on: iPad 13in</option><option value="play-phone">Learn &amp; test on: Android phone</option></select></div>
+        <span class="help" style="margin:0" id="brandMeta"></span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Screens to capture</h2>
+      <p class="help">The brand team sends screenshots of the screens they want, in order. Drop them here: each becomes a screen. <b>Learn</b> has Claude find the way to it in the app once; after that the route replays on every device and language. Known screens (Home, Wishlist, Bag…) can use a built-in route instead.</p>
+      <label class="drop" id="refDrop" style="margin-bottom:16px"><input type="file" id="refFile" multiple accept="image/*"><b>Drop the brand's reference screenshots</b>one per screen, in the order they should appear<small>PNG or JPG from the live app</small></label>
+      <div class="screens" id="screenList"></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h2>Test account</h2>
+        <p class="help">Used for screens marked "Signed in" (wishlist, saved items). Stored in this Mac's Keychain, never on the site.</p>
+        <div class="stack">
+          <label class="fld"><input id="accEmail" placeholder=" " autocomplete="off"><span class="lbl">Email</span></label>
+          <label class="fld"><input id="accPw" type="password" placeholder=" " autocomplete="new-password"><span class="lbl">Password (leave blank to keep the saved one)</span></label>
+          <div class="row"><button class="bd sec" id="saveAcc">Save account</button><span class="help" style="margin:0" id="accState"></span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Stores &amp; languages</h2>
+        <p class="help">One set of screenshots per store. Read them from the app's Country/Region list, or edit the list in the brand file.</p>
+        <div class="chips" id="storeChips" style="margin-bottom:12px"></div>
+        <button class="bd sec" id="discover">Read stores from the app</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Products to show</h2>
+      <p class="help">Put in the bag before the Bag screen, and saved to the wishlist before signed-in screens. One per line: <code>search term | colour | size</code> (product codes work in every store language).</p>
+      <div class="grid2">
+        <div class="stack"><b style="font-size:14px">Bag</b><textarea class="paste items" id="bagItems"></textarea></div>
+        <div class="stack"><b style="font-size:14px">Wishlist</b><textarea class="paste items" id="wishItems"></textarea></div>
+      </div>
+      <div class="row" style="margin-top:12px"><button class="bd sec" id="saveItems">Save products</button></div>
+    </div>
+  </section>
+
+  <!-- 3 EXPORT -->
+  <section class="panel" id="p-export" hidden>
+    <div class="card">
+      <div class="row"><div class="fsel grow" style="max-width:320px"><span id="brandLbl2">Brand</span><select id="brand2" aria-label="Brand"></select></div><span class="help" style="margin:0" id="expBuilds"></span></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h2>Device sizes</h2><p class="help">Required sizes are ticked. One device runs at a time.</p><div class="stack" id="devList"></div></div>
+      <div class="card"><h2>Stores &amp; languages</h2><p class="help" id="storeHelp"></p><div class="matrix" id="storeList"></div><h2 style="margin-top:20px">Screens</h2><div class="matrix" id="scrList"></div></div>
+    </div>
+    <div class="card">
+      <div class="row"><button class="bd pri" id="run">Export screenshots</button><button class="bd sec" id="stop">Stop</button><span class="sp grow"></span><button class="bd sec" id="openOut">Open folder</button></div>
+      <div class="prog" id="prog" style="margin-top:16px;--p:0%"><div class="prog-hd"><span id="progTxt">Ready</span><span id="progN"></span></div><div class="prog-bar"><i></i></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h2>Log</h2><pre id="log"></pre></div>
+      <div class="card"><h2>Folder for Figma</h2><p class="help">Drag a device folder into Figma: each PNG lands as its own frame at full size.</p>
+<pre class="tree" id="tree">~/Desktop/App Store Screens/
+  boohooMAN/
+    80.20.0 (20261016.1820)/
+      App Store/
+        iPhone 6.9in 1320×2868/
+          UK en-GB/ 01 Home.png … 06 Product page.png
+          FR fr-FR/ …
+        iPad 13in 2064×2752/ …
+      Google Play/
+        Phone 1080×1920/ …
+        Tablet 7in 1200×1920/ …
+        Tablet 10in 1600×2560/ …
+      manifest.json</pre></div>
+    </div>
+    <div class="card"><h2>Latest screenshots</h2><div class="gal" id="gal"></div></div>
+  </section>
+
+  <!-- SETUP -->
+  <section class="panel" id="p-setup" hidden>
+    <div class="grid2">
+      <div class="card"><h2>Setup check</h2><ul class="doc" id="doctor"></ul><div class="row" style="margin-top:12px"><button class="bd sec" id="recheck">Check again</button></div></div>
+      <div class="card"><h2>Claude API key</h2><p class="help">Needed only for <b>Learn</b> (finding the route to a new screen). Stored in this Mac's Keychain. Uses Claude Opus 5.5, a few pence per screen learned.</p>
+        <div class="stack"><label class="fld"><input id="apiKey" type="password" placeholder=" " autocomplete="off"><span class="lbl">sk-ant-…</span></label><div class="row"><button class="bd sec" id="saveKey">Save key</button></div></div>
+        <h2 style="margin-top:20px">Update the runner</h2><p class="help">Run the install command again to pick up the latest version.</p><code class="cmd">curl -fsSL https://jakerayner96.github.io/debenhamsgroup.design/tools/app-store-screens/runner/install.sh | bash</code></div>
+    </div>
+    <div class="card"><h2>How the brands ask for screens</h2>
+      <p class="help" style="margin:0">Ask each brand to screenshot the live app on their phone, one screenshot per screen they want in the listing, numbered in order (01-home.png, 02-wishlist.png…), plus anything that must show (products in the bag, a campaign). Drop them into Screens, press Learn on each, then Test. From then on every new build is one paste and one Export.</p></div>
+  </section>
+</main>
+
+<script>
+const R='http://localhost:4567', $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const H=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const pref=(k,v)=>{try{if(v===undefined)return localStorage.getItem('ase-'+k);localStorage.setItem('ase-'+k,v)}catch(e){}};
+let ONLINE=false,BRANDS=[],BUILDS=[],DEVS=[],B=null,BUSY=null;
+const api=async(p,o)=>{const r=await fetch(R+p,o===undefined?{}:{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(o)});const j=await r.json().catch(()=>({}));if(j.error){alert(j.error);throw new Error(j.error)}return j};
+const logo=ds=>`../../assets/brands/${ds}.svg`;
+
+/* tabs */
+$$('#tabs button').forEach(b=>b.onclick=()=>show(b.dataset.t));
+function show(t){pref('tab',t);$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  ['builds','screens','export','setup'].forEach(k=>$('#p-'+k).hidden=!ONLINE||k!==t);$('#offline').hidden=ONLINE;
+  if(ONLINE&&t==='export')renderExport();if(ONLINE&&t==='setup')doctor();}
+
+/* connection */
+async function connect(){
+  try{const h=await fetch(R+'/api/hello').then(r=>r.json());ONLINE=!!h.ok;}catch(e){ONLINE=false}
+  $('#dot').classList.toggle('on',ONLINE);$('#connTxt').textContent=ONLINE?'Runner connected on this Mac':'Runner not running on this Mac';
+  if(ONLINE){await Promise.all([loadBrands(),loadBuilds(),loadDevs()]);events();}
+  show(pref('tab')||'builds');
+}
+$('#retry').onclick=connect;
+$('#copyCmd').onclick=()=>{navigator.clipboard.writeText($('#installCmd').textContent);$('#copyCmd').textContent='Copied'};
+
+/* live events from the runner */
+function events(){
+  const es=new EventSource(R+'/api/events');
+  es.onmessage=e=>{const m=JSON.parse(e.data);
+    if(m.type==='log'){const l=$('#log');l.textContent+=m.line+'\n';l.scrollTop=l.scrollHeight;$('#busyTxt').textContent=m.line.replace(/^\[[^\]]+\]\s*/,'');}
+    if(m.type==='busy'){BUSY=m.busy;$('#busyCard').hidden=!BUSY;$('#run').disabled=!!BUSY;if(!BUSY){loadBuilds();if(B)loadBrand(B.key)}}
+    if(m.type==='builds')loadBuilds();
+    if(m.type==='brand'&&B&&m.brand===B.key)loadBrand(B.key);
+    if(m.type==='preview'&&B&&m.brand===B.key){const i=$(`[data-prev="${m.screen}"]`);if(i)i.innerHTML=`<img src="${R}/api/preview?b=${B.key}&s=${m.screen}&t=${Date.now()}" alt=""><em class="tagpill">Test</em>`}
+    if(m.type==='progress'){const p=m.total?Math.round(m.done/m.total*100):0;$('#prog').style.setProperty('--p',p+'%');
+      if(m.cur)$('#progTxt').textContent=m.cur;$('#progN').textContent=m.total?`${m.done} / ${m.total}${m.eta!=null?` · ${m.eta} min left`:''}`:''}
+    if(m.type==='shot')addShot(m.file);
+  };
+  es.onerror=()=>{es.close();setTimeout(connect,4000)};
+}
+
+/* builds */
+async function loadBuilds(){BUILDS=await api('/api/builds');
+  $('#buildList').innerHTML=BUILDS.map(b=>{const br=BRANDS.find(x=>x.key===b.brand)||{};return `<div class="build"><img src="${logo(br.ds||b.brand)}" alt="${H(b.brandName)}" onerror="this.style.display='none'"><div><b>${H(b.brandName)} · ${b.platform==='ios'?'iOS simulator':'Android'}</b><span>${H(b.version)} (${H(b.build)}) · added ${new Date(b.added).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}${b.platform==='ios'&&b.ipad===false?' · iPhone only':''}</span></div></div>`}).join('')||'<p class="help" style="margin:0">No builds yet — paste the links above.</p>';
+  if(BUILDS[0]&&!pref('brand'))setBrand(BUILDS[0].brand);}
+$('#addLinks').onclick=async()=>{const t=$('#paste').value;if(!/expo\.dev/.test(t))return alert('Paste the Expo build links from the dev');await api('/api/link',{text:t});$('#paste').value='';
+  const slug=(t.match(/projects\/([^/]+)/)||[])[1];const b=BRANDS.find(x=>(x.expo||[]).includes(slug)||x.key===slug);if(b)setBrand(b.key)};
+async function upload(file,q){const r=await fetch(`${R}/api/upload?${q}`,{method:'POST',headers:{'x-file-name':file.name},body:file});const j=await r.json();if(j.error)alert(j.error);return j}
+function dropzone(el,input,fn){['dragenter','dragover'].forEach(e=>el.addEventListener(e,ev=>{ev.preventDefault();el.classList.add('over')}));
+  ['dragleave','drop'].forEach(e=>el.addEventListener(e,()=>el.classList.remove('over')));
+  el.addEventListener('drop',ev=>{ev.preventDefault();fn([...ev.dataTransfer.files])});input.onchange=()=>{fn([...input.files]);input.value=''}}
+dropzone($('#buildDrop'),$('#buildFile'),async fs=>{for(const f of fs)await upload(f,'kind=build')});
+
+/* brands + screens */
+async function loadBrands(){BRANDS=await api('/api/brands');
+  const opts=BRANDS.sort((a,b)=>(b.builds-a.builds)||a.name.localeCompare(b.name)).map(b=>`<option value="${b.key}">${H(b.name)}${b.builds?'':' (no build yet)'}</option>`).join('');
+  $('#brand').innerHTML=opts;$('#brand2').innerHTML=opts;const k=pref('brand')||BRANDS[0]?.key;if(k)setBrand(k);}
+function setBrand(k){pref('brand',k);$('#brand').value=k;$('#brand2').value=k;loadBrand(k)}
+$('#brand').onchange=e=>setBrand(e.target.value);
+$('#ldev').value=pref('learnDev')||'iphone-69';$('#ldevLbl').textContent=$('#ldev').selectedOptions[0].textContent;$('#ldev').onchange=e=>{pref('learnDev',e.target.value);$('#ldevLbl').textContent=e.target.selectedOptions[0].textContent};$('#brand2').onchange=e=>setBrand(e.target.value);
+async function loadBrand(k){B=await api('/api/brand?k='+k);const br=BRANDS.find(x=>x.key===k)||{};
+  document.documentElement.dataset.brand=B.ds||'debenhams';
+  $('#brandLbl').textContent=$('#brandLbl2').textContent=B.name;
+  const bl=BUILDS.filter(x=>x.brand===k);$('#brandMeta').textContent=bl.length?`Newest: ${bl.map(x=>`${x.platform==='ios'?'iOS':'Android'} ${x.version} (${x.build})`).filter((v,i,a)=>a.indexOf(v)===i).slice(0,2).join(' · ')}`:'No build yet for this brand';
+  renderScreens();
+  $('#accEmail').value=B.accountEmail||'';$('#accState').textContent=B.hasAccount?'Saved in Keychain':'Not set';
+  $('#storeChips').innerHTML=(B.stores||[]).map(s=>`<span class="chip on">${H(s.code)}</span>`).join('')||'<span class="help" style="margin:0">No stores yet</span>';
+  $('#bagItems').value=(B.bag||[]).map(i=>[i.search,i.colour||'',i.size||''].join(' | ')).join('\n');
+  $('#wishItems').value=(B.wishlist||[]).map(i=>[i.search,i.colour||''].join(' | ')).join('\n');
+  if(!$('#p-export').hidden)renderExport();}
+const TYPES=[['auto','Learn from reference'],['learned','Learned route'],['home','Home'],['wishlist','Wishlist'],['bag','Bag'],['pdp','Product page'],['search','Search results'],['menu','Menu item'],['home-tile','Home page tile']];
+function renderScreens(){
+  $('#screenList').innerHTML=B.screens.map((s,i)=>`<div class="scr" data-i="${i}">
+    <div class="scr-n"><span class="tagpill tagpill--n">${String(i+1).padStart(2,'0')}</span><label class="fld"><input data-k="name" value="${H(s.name)}" placeholder=" "><span class="lbl">Screen name</span></label></div>
+    <div class="pics">
+      <div class="pic">${s.ref?`<img src="${R}/api/ref?b=${B.key}&f=${encodeURIComponent(s.ref)}" alt=""><em class="tagpill">Reference</em>`:`<label class="drop drop--sm"><input type="file" accept="image/*" data-ref="${s.id}">Drop the reference</label>`}</div>
+      <div class="pic" data-prev="${s.id}"><img src="${R}/api/preview?b=${B.key}&s=${s.id}&t=${Date.now()}" alt="" onerror="this.parentNode.innerHTML='<label class=&quot;drop drop--sm&quot;>Test to see it here</label>'"><em class="tagpill">Test</em></div>
+    </div>
+    <div class="fsel"><span>${H((TYPES.find(t=>t[0]===s.type)||TYPES[0])[1])}${s.type==='learned'?` · ${s.steps?.length||0} steps`:''}</span><select data-k="type">${TYPES.map(t=>`<option value="${t[0]}"${t[0]===s.type?' selected':''}>${t[1]}</option>`).join('')}</select></div>
+    ${['menu','home-tile','pdp','search'].includes(s.type)?`<label class="fld"><input data-k="params" value="${H(paramText(s))}" placeholder=" "><span class="lbl">${{menu:'Menu | item',['home-tile']:'Swipes | tap point',pdp:'Product (from wishlist)',search:'Search term'}[s.type]}</span></label>`:''}
+    <div class="chk-row" data-k="session"><button class="chk${s.session==='signed-in'?' on':''}" aria-checked="${s.session==='signed-in'}"></button>Signed in</div>
+    <div class="acts">
+      <button class="bd pri sm" data-a="learn"${s.ref?'':' disabled'}>Learn</button><button class="bd sec sm" data-a="test">Test</button>
+      <button class="bd sec sm" data-a="up" aria-label="Move up">↑</button><button class="bd sec sm" data-a="down" aria-label="Move down">↓</button><button class="bd sec sm" data-a="del">Remove</button>
+    </div></div>`).join('')||'<p class="help">No screens yet — drop the brand\'s screenshots above.</p>';
+  $$('[data-ref]').forEach(inp=>inp.onchange=async()=>{await upload(inp.files[0],`kind=ref&brand=${B.key}&screen=${inp.dataset.ref}`);loadBrand(B.key)});
+}
+function paramText(s){const p=s.params||{};return s.type==='menu'?`${p.menu||''} | ${p.item||''}`:s.type==='home-tile'?`${p.swipes||5} | ${p.tap||'50%,50%'}`:s.type==='pdp'?(p.fromWishlist||p.search||''):(p.search||'')}
+function parseParams(type,v){const [a,b]=v.split('|').map(x=>x.trim());return type==='menu'?{menu:a,item:b}:type==='home-tile'?{swipes:+a||5,tap:b||'50%,50%'}:type==='pdp'?{fromWishlist:a}:{search:a}}
+const saveScreens=()=>api('/api/brand/save',{key:B.key,screens:B.screens});
+$('#screenList').addEventListener('change',e=>{const c=e.target.closest('.scr');if(!c)return;const s=B.screens[c.dataset.i],k=e.target.dataset.k;
+  if(k==='name')s.name=e.target.value;if(k==='type'){s.type=e.target.value;if(s.type!=='learned')delete s.steps}if(k==='params')s.params=parseParams(s.type,e.target.value);
+  saveScreens();if(k==='type')renderScreens();});
+$('#screenList').addEventListener('click',async e=>{const c=e.target.closest('.scr');if(!c)return;const i=+c.dataset.i,s=B.screens[i];
+  const ses=e.target.closest('[data-k="session"]');if(ses){s.session=s.session==='signed-in'?'guest':'signed-in';await saveScreens();return renderScreens()}
+  const a=e.target.closest('[data-a]')?.dataset.a;if(!a)return;
+  if(a==='up'&&i>0){[B.screens[i-1],B.screens[i]]=[B.screens[i],B.screens[i-1]];await saveScreens();renderScreens()}
+  if(a==='down'&&i<B.screens.length-1){[B.screens[i+1],B.screens[i]]=[B.screens[i],B.screens[i+1]];await saveScreens();renderScreens()}
+  if(a==='del'&&confirm(`Remove "${s.name}"?`)){B.screens.splice(i,1);await saveScreens();renderScreens()}
+  if(a==='learn')api('/api/learn',{brand:B.key,screen:s.id,device:pref('learnDev')||'iphone-69'});
+  if(a==='test')api('/api/test',{brand:B.key,screen:s.id,device:pref('learnDev')||'iphone-69'});
+});
+dropzone($('#refDrop'),$('#refFile'),async fs=>{for(const f of fs.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true})))await upload(f,`kind=ref&brand=${B.key}`);loadBrand(B.key)});
+$('#saveAcc').onclick=async()=>{await api('/api/account',{brand:B.key,email:$('#accEmail').value.trim(),password:$('#accPw').value||undefined});$('#accPw').value='';loadBrand(B.key)};
+$('#discover').onclick=()=>api('/api/stores/discover',{brand:B.key});
+const lines=(t,keys)=>t.split('\n').map(l=>l.split('|').map(x=>x.trim())).filter(a=>a[0]).map(a=>Object.fromEntries(keys.map((k,i)=>[k,a[i]||''])));
+$('#saveItems').onclick=async()=>{await api('/api/brand/save',{key:B.key,bag:lines($('#bagItems').value,['search','colour','size']),wishlist:lines($('#wishItems').value,['search','colour'])});$('#saveItems').textContent='Saved';setTimeout(()=>$('#saveItems').textContent='Save products',1500)};
+
+/* export */
+async function loadDevs(){DEVS=await api('/api/devices')}
+const chk=(on,label,attr,sub='')=>`<div class="chk-row" ${attr}><button class="chk${on?' on':''}" aria-checked="${on}"></button><span>${label}${sub?` <small>${sub}</small>`:''}</span></div>`;
+function renderExport(){if(!B)return;
+  const bl=BUILDS.filter(x=>x.brand===B.key),ios=bl.find(x=>x.platform==='ios'),and=bl.find(x=>x.platform==='android');
+  $('#expBuilds').textContent=[ios&&`iOS ${ios.version} (${ios.build})`,and&&`Android ${and.version} (${and.build})`].filter(Boolean).join(' · ')||'No builds for this brand yet — add them in Builds';
+  $('#devList').innerHTML=['appstore','play'].map(st=>`<b style="font-size:14px">${st==='appstore'?'App Store':'Google Play'}${(st==='appstore'?ios:and)?'':' <small class="help">— no build</small>'}</b>`+DEVS.filter(d=>d.store===st).map(d=>chk(d.required&&!!(st==='appstore'?ios:and)&&!(d.ipad&&ios?.ipad===false),`${d.label}`,`data-dev="${d.key}"`,`${d.size}${d.required?' · required':''}${d.ipad&&ios?.ipad===false?' · build is iPhone-only':''}`)).join('')).join('');
+  const stores=B.stores.length?B.stores:[{code:'UK'}];
+  $('#storeHelp').textContent=B.stores.length?'The app is switched to each store, with the device in that language.':'No store list yet — Screens > Read stores from the app. Exports use UK until then.';
+  $('#storeList').innerHTML=stores.map(s=>chk(true,s.code,`data-store="${s.code}"`,s.locale||'')).join('');
+  $('#scrList').innerHTML=B.screens.map((s,i)=>chk(s.type!=='auto',`${String(i+1).padStart(2,'0')} ${H(s.name)}`,`data-scr="${s.id}"`,s.type==='auto'?'not learned yet':'')).join('');
+}
+document.addEventListener('click',e=>{const r=e.target.closest('#p-export .chk-row');if(!r)return;const c=r.querySelector('.chk'),on=!c.classList.contains('on');c.classList.toggle('on',on);c.setAttribute('aria-checked',on)});
+const picked=a=>$$(`[data-${a}] .chk.on`).map(c=>c.parentNode.dataset[a]);
+$('#run').onclick=()=>{const o={brand:B.key,devices:picked('dev'),stores:picked('store'),screens:picked('scr')};
+  if(!o.devices.length||!o.screens.length)return alert('Pick at least one device size and one screen');$('#gal').innerHTML='';$('#log').textContent='';api('/api/export',o)};
+$('#stop').onclick=()=>api('/api/stop');$('#openOut').onclick=()=>api('/api/open',{});
+function addShot(f){$('#gal').insertAdjacentHTML('afterbegin',`<a href="${R}/api/shot?f=${encodeURIComponent(f)}" target="_blank"><img src="${R}/api/shot?f=${encodeURIComponent(f)}" alt="">${H(f.split('/').slice(-3).join(' / '))}</a>`)}
+
+/* setup */
+async function doctor(){const d=await api('/api/doctor');$('#doctor').innerHTML=d.map(c=>`<li><span>${c.ok?'✅':'❌'}</span><div>${H(c.n)}${c.ok?'':`<small>${H(c.fix)}</small>`}</div></li>`).join('')}
+$('#recheck').onclick=doctor;$('#saveKey').onclick=async()=>{await api('/api/settings',{anthropicKey:$('#apiKey').value.trim()});$('#apiKey').value='';doctor()};
+
+connect();
+</script>
+</body>
+</html>

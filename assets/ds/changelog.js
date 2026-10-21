@@ -3,6 +3,20 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-10-21",
+  "v": "2026.10.21",
+  "title": "App Store Screenshot Exporter + File drop, Progress bar, Tabs",
+  "by": "App Store Screenshot Exporter (tools/app-store-screens)",
+  "added": [
+   "File drop (.drop, .drop.over, .drop--sm) — dashed drag-and-drop target over a hidden file input; catalogue Forms · by App Store Screenshot Exporter",
+   "Progress bar (.prog, .prog-hd, .prog-bar, .prog--busy) — 4px bar with a label row for long jobs, determinate via --p or indeterminate; catalogue Feedback · by App Store Screenshot Exporter",
+   "Tabs (.tabs) — underlined text tabs for panels inside one page; catalogue Navigation · by App Store Screenshot Exporter",
+   "Tool: App Store Screenshot Exporter (tools/app-store-screens/) — paste the Expo build links, pick screens, export every App Store / Google Play size in every store language; local runner in tools/app-store-screens/runner · by App Store Screenshot Exporter"
+  ],
+  "changed": [],
+  "fixed": []
+ },
+ {
   "d": "2026-10-19",
   "v": "2026.10.19",
   "title": "Tooltip + review-shell Screenshot",

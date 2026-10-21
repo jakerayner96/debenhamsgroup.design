@@ -1,0 +1,6 @@
+appId: ${APP}
+---
+- tapOn:
+    point: ${POINT}
+    optional: true
+- waitForAnimationToEnd

@@ -1,0 +1,15 @@
+# App already launched (with its language) — wait for Home, clear first-run pop-ups
+appId: ${APP}
+---
+- extendedWaitUntil:
+    visible:
+      id: navHome
+    timeout: 60000
+- repeat:
+    times: 3
+    commands:
+      - tapOn:
+          text: "(?i)(ask app not to track|do not track|maybe later|not now|don.t allow|pas maintenant|nicht jetzt|niet nu|inte nu)"
+          optional: true
+      - waitForAnimationToEnd:
+          timeout: 3000

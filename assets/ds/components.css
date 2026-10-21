@@ -1514,3 +1514,37 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .mf-ndd .tg{width:46px;height:24px;border-radius:12px;background:#888;position:relative;flex:none}.mf-ndd .tg::after{content:"";position:absolute;left:2px;top:2px;width:20px;height:20px;border-radius:50%;background:#FFF}
 .mf-ndd.on .tg{background:var(--surface-action)}.mf-ndd.on .tg::after{left:24px}
 .mf-pills{display:flex;flex-wrap:wrap;gap:8px}.mf-pills span{display:flex;align-items:center;padding:4px 16px;border:1px solid var(--border-subtle);border-radius:var(--radius-pill);font:var(--w-regular,300) 14px/20px var(--font-family-base);cursor:pointer}
+
+/* ===== File drop (.drop) — 21 Oct 2026, App Store Screenshot Exporter =====
+   Dashed target for dragging files in; the whole box is a label over a hidden <input type=file>, so click also opens the picker.
+   .drop.over while a file is dragged over it · .drop--sm for an inline (thumbnail-sized) target. */
+.drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:140px;padding:24px;
+  border:1.5px dashed var(--border-control,#B5B5B5);border-radius:var(--radius-default);background:var(--surface-raised,#fff);
+  font-family:var(--font-family-base);font-size:14px;line-height:20px;color:var(--text-secondary);text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.drop b{color:var(--text-primary);font-weight:var(--w-strong,600)}
+.drop small{font-size:12px;line-height:16px}
+.drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop:hover,.drop.over{border-color:var(--border-strong,#767676)}
+.drop.over{background:var(--surface-sunken,#F2F2F2)}
+.drop--sm{min-height:0;padding:12px;gap:4px;font-size:12px;line-height:16px}
+
+/* ===== Progress bar (.prog) — 21 Oct 2026, App Store Screenshot Exporter =====
+   4px track, fill in the action colour; label row above (what is happening · count / time left). Set the fill with style="--p:42%". */
+.prog{font-family:var(--font-family-base)}
+.prog-hd{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px;font-size:14px;line-height:20px;color:var(--text-primary)}
+.prog-hd span:last-child{color:var(--text-secondary);white-space:nowrap}
+.prog-bar{height:4px;border-radius:2px;background:var(--surface-action-disabled,#E7E7E7);overflow:hidden}
+.prog-bar i{display:block;height:100%;width:var(--p,0%);background:var(--surface-action);transition:width .4s ease}
+.prog--busy .prog-bar i{width:30%;animation:prog-slide 1.4s ease-in-out infinite}
+@keyframes prog-slide{0%{transform:translateX(-100%)}100%{transform:translateX(340%)}}
+@media (prefers-reduced-motion:reduce){.prog--busy .prog-bar i{animation:none;width:100%;opacity:.4}}
+
+/* ===== Tabs (.tabs) — 21 Oct 2026, App Store Screenshot Exporter =====
+   Underlined text tabs for switching panels of one page (not page navigation). 2px underline in the action/text colour on .on. */
+.tabs{display:flex;gap:24px;border-bottom:1px solid var(--border-subtle);font-family:var(--font-family-base);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{appearance:none;background:none;border:0;padding:12px 0;margin-bottom:-1px;font:inherit;font-size:14px;line-height:20px;color:var(--text-secondary);
+  border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+.tabs button:hover{color:var(--text-primary)}
+.tabs button.on{color:var(--text-primary);font-weight:var(--w-strong,600);border-bottom-color:var(--text-primary)}
+.tabs button .tagpill{margin-left:6px}
