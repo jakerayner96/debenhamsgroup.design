@@ -7,6 +7,7 @@ const { spawn, execFile } = require('child_process');
 const learn = require('./learn');
 
 const PORT = 4567;
+const PAGE = 'https://jakerayner96.github.io/debenhamsgroup.design/tools/app-store-screens/';
 const RUNNER = __dirname, FLOWS = path.join(RUNNER, 'flows');
 const HOME = os.homedir();
 const DATA = path.join(HOME, 'Library', 'Application Support', 'DG App Store Screens');
@@ -414,7 +415,10 @@ http.createServer(async (req, res) => {
   cors(req, res); if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
   const u = new URL(req.url, 'http://x'), P = u.pathname;
   try {
-    if (P === '/' ) { res.writeHead(302, { location: 'https://jakerayner96.github.io/debenhamsgroup.design/tools/app-store-screens/' }); return res.end(); }
+    if (P === '/') {   // same page, served from this Mac (no browser local-network prompt); assets still load from the DS site via <base>
+      const html = await fetch(PAGE + '?t=' + Date.now()).then(r => r.text()).catch(() => null);
+      if (!html) { res.writeHead(502, { 'content-type': 'text/plain' }); return res.end('Could not load the tool page from ' + PAGE + ' - check the internet connection.'); }
+      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' }); return res.end(html.replace('<head>', `<head><base href="${PAGE}">`)); }
     if (P === '/api/events') { res.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-cache' }); res.write(`data: ${JSON.stringify({ type: 'busy', busy })}\n\n`); clients.add(res); req.on('close', () => clients.delete(res)); return; }
     if (P === '/api/hello') return json(res, { ok: true, version: 1, out: OUT, busy });
     if (P === '/api/doctor') return json(res, await doctor());

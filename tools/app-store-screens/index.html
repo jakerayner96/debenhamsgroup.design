@@ -83,7 +83,8 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
       <p class="help">This page drives the iPhone/iPad Simulator and Android emulator on your Mac through a small local runner. Install it once (needs Xcode, Android Studio and Node.js); it then starts by itself at login. Use Chrome.</p>
       <code class="cmd" id="installCmd">curl -fsSL https://jakerayner96.github.io/debenhamsgroup.design/tools/app-store-screens/runner/install.sh | bash</code>
       <div class="row" style="margin-top:12px"><button class="bd pri" id="copyCmd">Copy install command</button><button class="bd sec" id="retry">I've run it — check again</button></div>
-      <p class="help" style="margin-top:12px">Already installed and stopped? <code>launchctl load ~/Library/LaunchAgents/com.debenhamsgroup.appstorescreens.plist</code></p>
+      <div class="msg msg--neutral" style="margin-top:16px"><i></i><div class="body"><span style="flex:1">Already installed? Chrome asks once to let this page <b>access other apps and services on this device</b> — click <b>Allow</b>, then check again. Or open the tool straight from your Mac:</span><a class="bd sec sm" href="http://localhost:4567/" target="_blank" rel="noopener">localhost:4567</a></div></div>
+      <p class="help" style="margin-top:12px">Installed but stopped? <code>launchctl load ~/Library/LaunchAgents/com.debenhamsgroup.appstorescreens.plist</code></p>
     </div>
   </section>
 
@@ -198,7 +199,7 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
 </main>
 
 <script>
-const R='http://localhost:4567', $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const R=location.port==='4567'?location.origin:'http://localhost:4567', $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const H=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const pref=(k,v)=>{try{if(v===undefined)return localStorage.getItem('ase-'+k);localStorage.setItem('ase-'+k,v)}catch(e){}};
 let ONLINE=false,BRANDS=[],BUILDS=[],DEVS=[],B=null,BUSY=null;
