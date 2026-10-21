@@ -215,7 +215,7 @@ function show(t){pref('tab',t);$$('#tabs button').forEach(b=>b.classList.toggle(
 /* connection */
 async function connect(){
   try{const h=await fetch(R+'/api/hello').then(r=>r.json());ONLINE=!!h.ok;}catch(e){ONLINE=false}
-  $('#dot').classList.toggle('on',ONLINE);$('#connTxt').textContent=ONLINE?'Runner connected on this Mac':'Runner not running on this Mac';
+  $('#dot').classList.toggle('on',ONLINE);$('#connTxt').textContent=ONLINE?'Runner connected on this Mac':'Can\'t reach the runner on this Mac';
   if(ONLINE){await Promise.all([loadBrands(),loadBuilds(),loadDevs()]);events();}
   show(pref('tab')||'builds');
 }
