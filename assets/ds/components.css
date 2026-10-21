@@ -749,14 +749,15 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .thresh--ok .tick::after{content:"";width:8px;height:4px;border-left:2px solid #FFF;border-bottom:2px solid #FFF;transform:translateY(-1px) rotate(-45deg)}
 /* Deliver+ — SEEL Enhancements 2026 exact (Latest Components 28.08.26). Ground/ink/link/checkbox/radius per fascia via --dplus-*;
    the lockup is the brand's own vector (all fifteen are in the markup, the fascia mode reveals one). */
-.dplus{background:var(--dplus-bg);color:var(--dplus-fg);border-radius:var(--dplus-radius,4px);padding:16px 20px;display:flex;gap:24px;align-items:center;min-width:288px;font-family:var(--font-family-base)}
+.dplus{background:var(--dplus-bg);color:var(--dplus-fg);border-radius:var(--dplus-radius,4px);padding:15px 19px;border:1px solid var(--dplus-line,transparent);background-origin:border-box;display:flex;gap:24px;align-items:center;min-width:288px;font-family:var(--font-family-base)} /* --dplus-line: 1px keyline for light grounds — transparent border by default, padding 15/19 so the box is the same 16/20 size (21 Oct 2026) */
 .dplus .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
 .dplus .h{font-size:14px;font-weight:var(--w-strong);line-height:normal}
 .dplus ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
 .dplus li{display:flex;align-items:center;gap:8px;font-size:12px;line-height:normal;font-weight:var(--w-regular)}
 .dplus li::before{content:"";width:16px;height:16px;flex:none;background:currentColor;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.2'><path d='M3 8.5l3.2 3L13 5'/></svg>") center/contain no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.2'><path d='M3 8.5l3.2 3L13 5'/></svg>") center/contain no-repeat}
 .dplus .more{font-size:12px;font-weight:var(--w-strong);line-height:1.4;color:var(--dplus-link);cursor:pointer}
-.dplus .foot{border-top:1px solid color-mix(in srgb,currentColor 25%,transparent);padding-top:12px;font-size:12px;font-style:italic;font-weight:var(--w-regular);opacity:.75;line-height:1.35}
+.dplus .foot{position:relative;padding-top:12px;font-size:12px;font-style:italic;font-weight:var(--w-regular);opacity:.75;line-height:1.35}
+.dplus .foot::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:currentColor;opacity:.25} /* the 25% rule — was color-mix(), which html2canvas can't parse (broke Export on every PDP with Deliver+), 21 Oct 2026 */
 .dplus--checkout .top{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%} /* design: lockup left, 24px checkbox top-right */
 .dplus--checkout .chk{flex:none;width:24px;height:24px;border-radius:calc(var(--radius-default)*.75);border:1px solid #B5B5B5;background:var(--dplus-white,#FFF)}
 .dplus--checkout .chk.on,.dplus--checkout .chk[aria-checked="true"]{background:var(--dplus-check);border-color:var(--dplus-check)}
@@ -1192,12 +1193,12 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .opt-label{font-family:var(--font-family-base);font-size:16px;line-height:24px}
 .opt-label b{font-weight:var(--w-mid)}
 /* Membership box (C-member-box) — PDP Premier / Premier Club / Unlimited / Royalty box, live 10 Sep + 16 Oct 2026.
-   Fascia art + colours from assets/ds/membership.js (--mb-*). Padding gap 4 / 5 (16px 20px), gap 6 (24px) to the ADD button. */
-.member-box{display:flex;align-items:center;gap:24px;padding:16px 20px;border-radius:var(--radius-default);background:var(--mb-bg,var(--surface-sunken)) var(--mb-img,none) center/100% 100% no-repeat;color:var(--mb-fg,var(--text-primary));font-family:var(--font-family-base)}
+   Fascia art + colours from assets/ds/membership.js (--mb-*; --mb-line keyline). Padding gap 4 / 5 (16px 20px), gap 6 (24px) to the ADD button. */
+.member-box{display:flex;align-items:center;gap:24px;padding:15px 19px;border:1px solid var(--mb-line,transparent);border-radius:var(--radius-default);background:var(--mb-bg,var(--surface-sunken)) var(--mb-img,none) center/100% 100% no-repeat;background-origin:border-box;color:var(--mb-fg,var(--text-primary));font-family:var(--font-family-base)} /* --mb-line: 1px keyline — transparent border by default, padding 15/19 so the box keeps its 16/20 size (21 Oct 2026) */
 .member-box .t{flex:1;min-width:0;font-size:14px;line-height:20px}
 .member-box .lg{display:block;margin-bottom:12px}
 .member-box .lg img{height:var(--mb-lg-h,24px);width:auto;display:block}
-.member-box .add{flex:none;height:32px;padding:0 16px;border:0;border-radius:var(--radius-default);background:var(--mb-cta-bg,#000);color:var(--mb-cta-fg,#FFF);font:var(--w-strong) 14px/1 var(--font-family-base);text-transform:uppercase;cursor:pointer}
+.member-box .add{flex:none;height:32px;box-sizing:border-box;padding:0 15px;border:1px solid var(--mb-cta-line,transparent);border-radius:var(--radius-default);background:var(--mb-cta-bg,#000);color:var(--mb-cta-fg,#FFF);font:var(--w-strong) 14px/1 var(--font-family-base);text-transform:uppercase;cursor:pointer}
 /* Bag payment summary (order-summary v2, promoted 16 Oct from projects/usp-banner/bag.js — the live /basket rebuild of 06 Oct).
    Rendered by assets/ds/bag-summary.js (DG_bagSummaryHTML / DG_bagTopHTML). */
 .bs{font-family:var(--font-family-base);color:#000;background:var(--surface-sunken,#FAFAFA);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;text-align:left;line-height:normal;box-sizing:border-box}

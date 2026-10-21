@@ -4,6 +4,24 @@
 window.DG_CHANGELOG=[
  {
   "d": "2026-10-21",
+  "v": "2026.10.21c",
+  "title": "Membership box + Deliver+ light grounds",
+  "by": "KM Premier colours (projects/km-premier-colours)",
+  "added": [
+   "Membership box: --mb-line (1px keyline) and --mb-cta-line (outlined ADD); DG_memberBoxHTML(brand,{bg,fg,ctaBg,ctaFg,ctaLine,line}) overrides the ground, and a dark fg swaps in the fascia's dark-ink logo · by KM Premier colours",
+   "Asset: assets/ds/membership/prem-logo-km-ink.png — the Karen Millen Premier logo in black, for light grounds · by KM Premier colours",
+   "Deliver+: --dplus-line (1px keyline); catalogue variant PDP banner · light ground (dark-ink checkout lockup) · by KM Premier colours",
+   "Catalogue: Membership box variants Karen Millen Premier + Karen Millen Premier · light ground · by KM Premier colours"
+  ],
+  "changed": [
+   "Membership box + Deliver+ banner: padding 15/19 inside an always-present 1px border (transparent by default), so they are the same size as before and can take a keyline · by KM Premier colours"
+  ],
+  "fixed": [
+   "Deliver+ testimonial rule: drawn as a 25% currentColor ::before instead of color-mix(). html2canvas can't parse color-mix(), so Export failed on every prototype with Deliver+ on the PDP · by KM Premier colours"
+  ]
+ },
+ {
+  "d": "2026-10-21",
   "v": "2026.10.21b",
   "title": "Sign-up modal + phone field",
   "by": "Brand Room sign-up popup (projects/brandroom-signup)",

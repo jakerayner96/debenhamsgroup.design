@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Inside debenhamsgroup.design/projects/km-premier-colours/: resolve every asset from the repo root -->
+<base href="../../">
+<title>KM Premier colours · in situ</title>
+<style>
+/* No page of its own: the DS PDP template (templates/pdp.html = the Shopping agent PDP master) is embedded as it stands for Karen Millen.
+   Only the two DS boxes change, through their own colour API — Membership box via DG_memberBoxHTML(brand,o) (--mb-*),
+   Deliver+ PDP banner via --dplus-bg / --dplus-fg / --dplus-link / --dplus-line, with the dark-ink lockup (DG_DPLUS_CO_LOGOS) on light grounds. */
+html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
+.emb{display:block;width:100%;height:100vh;border:0}
+</style>
+</head>
+<body>
+<iframe class="emb" id="emb" title="Page"></iframe>
+<script>
+/* ---- page contract with the shell (review-prototype) ----
+   in:  ?s=<json state>  ·  {protoSet:state, exporting?}  ·  {protoPing:1}
+   out: {protoReady:1} once loaded  ·  {protoPong:1,h} in reply to a ping
+   state: {brand, opt, pm:{bg,fg,line,ctaBg,ctaFg,ctaLine}|null, dp:{bg,fg,link,line}|null}  (null = the DS default, i.e. today's black) */
+let S={brand:'karenmillen',opt:'current',pm:null,dp:null},EXPORTING=false;
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}  // URLSearchParams already decodes
+
+const emb=document.getElementById('emb');
+let KEY='',ready=Promise.resolve(),obs=null;
+const D=()=>{try{return emb.contentDocument}catch(e){return null}};
+const W=()=>emb.contentWindow;
+const dark=h=>{const x=String(h||'').replace('#','');if(x.length<6)return x==='000';const n=parseInt(x.slice(0,6),16);return ((n>>16)*299+((n>>8)&255)*587+(n&255)*114)/1000<128};
+
+function inject(){const d=D(),w=W();if(!d||!d.body||!w)return;
+  if(obs)obs.disconnect();
+  /* Premier: re-render the DS box with the option's ground (dark fg → the dark-ink logo) */
+  const mb=d.querySelector('.member-box');
+  if(mb&&w.DG_memberBoxHTML){mb.insertAdjacentHTML('afterend',w.DG_memberBoxHTML(S.brand,S.pm||undefined));const n=mb.nextElementSibling;n.dataset.km='1';mb.remove()}
+  /* Deliver+: the PDP banner's own custom properties; lockup = the white-ground (checkout) art when the ink is dark */
+  const dp=d.querySelector('.dplus');
+  if(dp){['--dplus-bg','--dplus-fg','--dplus-link','--dplus-check','--dplus-line'].forEach(k=>dp.style.removeProperty(k));
+    const o=S.dp;if(o){dp.style.setProperty('--dplus-bg',o.bg);dp.style.setProperty('--dplus-fg',o.fg);dp.style.setProperty('--dplus-link',o.link||o.fg);dp.style.setProperty('--dplus-check',o.link||o.fg);if(o.line)dp.style.setProperty('--dplus-line',o.line)}
+    const col=dp.querySelector('.col');if(col){col.querySelectorAll(':scope > .dpl').forEach(x=>x.remove());col.insertAdjacentHTML('afterbegin',(o&&dark(o.fg)?w.DG_DPLUS_CO_LOGOS:w.DG_DPLUS_LOGOS)||'')}
+    dp.dataset.km='1'}
+  watch(d);
+}
+/* the template re-renders itself (desktop ↔ mobile) — put the colours back when it does */
+function watch(d){let t;obs=new MutationObserver(()=>{clearTimeout(t);t=setTimeout(()=>{
+    if(d.querySelector('.member-box:not([data-km]),.dplus:not([data-km])'))inject()},80)});
+  obs.observe(d.body,{childList:true,subtree:true})}
+
+function load(){
+  const key=S.brand;
+  if(key===KEY){inject();return ready}
+  KEY=key;
+  ready=new Promise(res=>{
+    emb.onload=()=>{inject();
+      const d=D(),t0=Date.now();
+      const done=()=>{const imgs=d?[...d.images].filter(i=>i.loading!=='lazy'||i.getBoundingClientRect().top<3000):[];return imgs.every(i=>i.complete)};
+      const iv=setInterval(()=>{if(done()||Date.now()-t0>9000){clearInterval(iv);inject();res()}},150)};
+    emb.src=`templates/pdp.html?brand=${S.brand}`;
+  });
+  return ready;
+}
+/* export: let the embedded page run to its full height so the shell can capture it in one pass */
+async function full(){await ready;const d=D();if(!d)return 900;
+  /* tell the DS template it is exporting: it re-renders with rotation / animation frozen (USP banners), then the message goes back in */
+  try{W().postMessage({protoSet:{brand:S.brand},exporting:true},'*')}catch(e){}await new Promise(r=>setTimeout(r,600));inject();
+  d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
+  let h=0;for(let i=0;i<6;i++){const nh=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight);emb.style.height=nh+'px';await new Promise(r=>setTimeout(r,350));if(Math.abs(nh-h)<2)break;h=nh}
+  inject();await new Promise(r=>setTimeout(r,500));
+  /* the export frame sits off-screen, so lazy images never load — and the embedded pages re-render (new lazy images) when resized */
+  const t0=Date.now();
+  while(Date.now()-t0<10000){d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
+    if([...d.images].every(i=>i.complete&&(i.naturalWidth||!i.currentSrc)))break;await new Promise(r=>setTimeout(r,200))}
+  return Math.max(d.documentElement.scrollHeight,d.body.scrollHeight)}
+window.EXPORT_DOC=()=>D();
+
+load().then(()=>parent.postMessage({protoReady:1},'*'));
+addEventListener('message',e=>{const m=e.data||{};
+  if(m.protoSet){S=Object.assign({},m.protoSet);EXPORTING=!!m.exporting;load()}
+  if(m.protoPing)(EXPORTING?full():ready.then(()=>{const d=D();return d?d.documentElement.scrollHeight:900})).then(h=>parent.postMessage({protoPong:1,h},'*'));
+});
+</script>
+</body>
+</html>
