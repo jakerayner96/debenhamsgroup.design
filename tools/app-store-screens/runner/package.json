@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "description": "Local runner for the DS App Store Screenshot Exporter (tools/app-store-screens).",
   "main": "server.js",
-  "scripts": { "start": "node server.js" },
-  "dependencies": { "@anthropic-ai/sdk": "*" }
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {}
 }

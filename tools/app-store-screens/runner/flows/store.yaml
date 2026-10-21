@@ -1,14 +1,16 @@
-# Switch storefront: Account > App Settings > Change Country/Region (button is disabled if already on that store)
+# Switch country: Account > Settings (gear) > Change Country/Region > the country > confirm
 appId: ${APP}
 ---
 - tapOn:
     id: navAccount
 - tapOn:
     id: settingsButton
-- tapOn: "(?i)change country/region.*"
+- tapOn:
+    text: "(?i).*(country|region|pays|land|regio).*"
+    index: 0
 - tapOn: ${STORE}
 - tapOn:
-    text: "CHANGE COUNTRY/REGION"
+    text: "(?i)(change country/region|changer|ändern|wijzigen|ändra).*"
     optional: true
 - waitForAnimationToEnd:
     timeout: 10000

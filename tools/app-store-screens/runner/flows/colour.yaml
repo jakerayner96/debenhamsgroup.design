@@ -1,0 +1,14 @@
+# On a product page: pick a colour swatch by its name (e.g. stone)
+appId: ${APP}
+---
+- scrollUntilVisible:
+    element:
+      text: "(?i)${COLOUR}"
+    direction: DOWN
+    timeout: 8000
+    optional: true
+- tapOn:
+    text: "(?i)${COLOUR}"
+    index: 0
+    optional: true
+- waitForAnimationToEnd

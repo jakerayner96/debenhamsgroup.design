@@ -1,0 +1,16 @@
+# Search results for a term (stays on the results list)
+appId: ${APP}
+---
+- tapOn:
+    id: navSearch
+- tapOn:
+    id: navSearch
+- tapOn:
+    id: fakeSearchInputBar
+- inputText: ${TERM}
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: plpItem-0
+    timeout: 20000
+- waitForAnimationToEnd

@@ -1,10 +1,9 @@
-// DG App Store Screenshot Exporter — local runner.
-// The DS page (tools/app-store-screens/) is the interface; this drives the iOS Simulator / Android emulator
-// on this Mac with Maestro and writes store-size PNGs into a Figma-ready folder tree.
-// Start: node server.js (install.sh sets it up to start at login).
+// DG App Store Screenshot Exporter — local runner (v2).
+// The DS page (tools/app-store-screens/) is the interface; this drives the iOS Simulator / Android emulator on this Mac
+// with Maestro and writes store-size PNGs into a Figma-ready folder tree. No API keys: screens are picked from a page
+// list (deep links for PLP / PDP / content pages) or recognised from uploaded references with macOS's offline text recognition.
 const http = require('http'), fs = require('fs'), path = require('path'), os = require('os');
 const { spawn, execFile } = require('child_process');
-const learn = require('./learn');
 
 const PORT = 4567;
 const PAGE = 'https://jakerayner96.github.io/debenhamsgroup.design/tools/app-store-screens/';
@@ -31,10 +30,6 @@ const DEVICES = [
   { key: 'play-10', store: 'play', platform: 'android', label: 'Tablet 10in', avd: 'DG_Play_Tablet_10', w: 1600, h: 2560, dpi: 320, size: '1600 × 2560' },
 ];
 const STORE_NAME = { appstore: 'App Store', play: 'Google Play' };
-const LOCALES = { UK: 'en-GB', GB: 'en-GB', IE: 'en-IE', US: 'en-US', AU: 'en-AU', NZ: 'en-NZ', CA: 'en-CA', FR: 'fr-FR', BE: 'fr-BE', DE: 'de-DE', AT: 'de-AT', CH: 'de-CH',
-  NL: 'nl-NL', SE: 'sv-SE', DK: 'da-DK', NO: 'nb-NO', FI: 'fi-FI', ES: 'es-ES', IT: 'it-IT', PL: 'pl-PL', PT: 'pt-PT', IL: 'he-IL', AE: 'en-AE', SA: 'ar-SA', IN: 'en-IN' };
-const localeOf = s => s.locale || LOCALES[s.code] || 'en-GB';
-
 /* ---------- helpers ---------- */
 const clients = new Set();
 let busy = null, child = null, stop = false;
@@ -51,23 +46,57 @@ const rx = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const readJSON = (f, d) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')) } catch { return d } };
 const writeJSON = (f, o) => fs.writeFileSync(f, JSON.stringify(o, null, 2));
 
+/* ---------- gentle mode: never push the Mac over (antivirus scanning simulator files made a 16 GB Mac seize up, 21 Oct) ---------- */
+const CALM = os.cpus().length * 1.5;          // wait while the 1-minute load average is above this
+async function calm() {
+  let said = false;
+  for (let i = 0; i < 60 && os.loadavg()[0] > CALM; i++) {
+    if (!said) { log(`   …Mac is busy (load ${os.loadavg()[0].toFixed(0)}), pausing until it settles`); said = true; }
+    await wait(10000);
+  }
+  await wait(1500);                            // a breather between steps
+}
+
 /* ---------- brands (seed + local edits) ---------- */
 const SEED = readJSON(path.join(RUNNER, 'brands.json'), {});
+const COUNTRIES = SEED._countries || {};
+// The pages an app has. input = what the slot needs; signedIn = taken after signing in with the test account.
+const PAGES = {
+  home: { n: 'Home' },
+  menu: { n: 'Menu (categories)' },
+  plp: { n: 'Category page (PLP)', input: 'url', hint: 'Category URL from the website, e.g. https://www.boohooman.com/categories/mens-jeans' },
+  search: { n: 'Search results', input: 'term', hint: 'Search term' },
+  pdp: { n: 'Product page (PDP)', input: 'sku', hint: 'Product SKU, e.g. CMM33848' },
+  bag: { n: 'Bag', input: 'items', hint: 'Products in the bag, one per line: SKU size, or product name | size' },
+  wishlist: { n: 'Wishlist', input: 'skus', hint: 'Products to save, one per line: SKU or product name', signedIn: true },
+  signin: { n: 'Sign in' },
+  account: { n: 'My account', signedIn: true },
+  content: { n: 'Content page', input: 'url', hint: 'Page URL from the website, e.g. https://www.boohooman.com/pages/informational/premier-delivery' },
+};
+const SCHEMA = 2;
 const brandFile = k => path.join(DATA, 'brands', k + '.json');
+const uid = () => 's' + Math.random().toString(36).slice(2, 8);
+function seedBrand(k) {
+  const s = SEED[k]; if (!s || k.startsWith('_')) return null;
+  return { v: SCHEMA, key: k, ios: [], android: [], expo: [k], markets: ['UK'], ...s,
+    screens: (s.screens || SEED._defaultScreens || [{ page: 'home' }]).map(x => ({ id: uid(), ...x })) };
+}
 function brand(k) {
-  if (exists(brandFile(k))) return readJSON(brandFile(k));
-  const s = SEED[k] || (SEED._expoOnly || {})[k]; if (!s) return null;
-  const b = { stores: [], bag: [], wishlist: [], screens: [{ id: 'home', name: 'Home', type: 'home', session: 'guest' }], ios: [], android: [], expo: [k], ...s, key: k };
+  const saved = exists(brandFile(k)) ? readJSON(brandFile(k)) : null;
+  if (saved && saved.v === SCHEMA) { const s = SEED[k] || {}; saved.markets = s.markets || saved.markets; return saved; }  // markets always follow the seed list
+  const b = seedBrand(k); if (!b) return null;
+  if (saved) { b.ios = [...new Set([...(b.ios || []), ...(saved.ios || [])])]; b.android = [...new Set([...(b.android || []), ...(saved.android || [])])]; }
   writeJSON(brandFile(k), b); return b;
 }
-const saveBrand = b => writeJSON(brandFile(b.key), b);
-function allBrandKeys() { return [...new Set([...Object.keys(SEED).filter(k => !k.startsWith('_')), ...Object.keys(SEED._expoOnly || {}), ...fs.readdirSync(path.join(DATA, 'brands')).map(f => f.replace(/\.json$/, ''))])]; }
+const saveBrand = b => writeJSON(brandFile(b.key), { ...b, v: SCHEMA });
+const allBrandKeys = () => Object.keys(SEED).filter(k => !k.startsWith('_'));
 function brandFor({ appId, slug }) {
-  for (const k of allBrandKeys()) { const b = brand(k); if (!b) continue;
+  for (const k of allBrandKeys()) { const b = brand(k);
     if (slug && (b.expo || []).includes(slug)) return b;
     if (appId && [...(b.ios || []), ...(b.android || [])].includes(appId)) return b; }
   return null;
 }
+const localeOf = code => (COUNTRIES[code] || {}).lang || 'en-GB';
 
 /* ---------- secrets (macOS keychain) ---------- */
 const KC = 'DG App Store Screens';
@@ -75,13 +104,14 @@ const getSecret = async a => { const r = await sh('security', ['find-generic-pas
 const setSecret = (a, v) => v ? sh('security', ['add-generic-password', '-U', '-s', KC, '-a', a, '-w', v]) : sh('security', ['delete-generic-password', '-s', KC, '-a', a]);
 
 /* ---------- Maestro ---------- */
-function maestro(d, file, env = {}, label) {
+async function maestro(d, file, env = {}, label) {
   if (stop) throw new Error('Stopped');
+  await calm();
   const args = ['--device', d.id, 'test'];
   for (const [k, v] of Object.entries(env)) args.push('-e', `${k}=${v}`);
   args.push(file);
-  return new Promise(res => {
-    const p = spawn(MAESTRO, args, { env: ENV, cwd: FLOWS }); child = p; let tail = '';
+  return await new Promise(res => {
+    const p = spawn('nice', ['-n', '15', MAESTRO, ...args], { env: ENV, cwd: FLOWS }); child = p; let tail = '';   // low priority
     const on = b => { const t = String(b).replace(/\x1b\[[0-9;]*[A-Za-z]/g, ''); tail = (tail + t).slice(-4000);
       t.split('\n').filter(l => /FAILED/.test(l)).forEach(l => log(`   ⚠︎ ${label || file}: ${l.trim()}`)); };
     p.stdout.on('data', on); p.stderr.on('data', on);
@@ -153,7 +183,7 @@ async function shutdownAll(except) {
   for (const [n, serial] of Object.entries(run)) if (serial !== except) { log(`Shutting down Android ${n}`); await sh(ADB, ['-s', serial, 'emu', 'kill']); }
 }
 async function boot(d) {
-  d = await ensureDevice(d); await shutdownAll(d.id);
+  d = await ensureDevice(d); await shutdownAll(d.id); await calm();
   if (d.platform === 'ios') {
     log(`Booting ${d.name}…`); await sh('xcrun', ['simctl', 'boot', d.id]); await sh('xcrun', ['simctl', 'bootstatus', d.id, '-b']); await sh('open', ['-a', 'Simulator']);
   } else if (!d.id) {
@@ -207,7 +237,9 @@ async function inspectFile(file) {
     if (!app) throw new Error('No .app inside that file. iOS needs the simulator build (.tar.gz) — .ipa files cannot run in a simulator.');
     const p = k => sh('/usr/libexec/PlistBuddy', ['-c', `Print :${k}`, path.join(app, 'Info.plist')]).then(r => r.out.trim());
     const fam = await p('UIDeviceFamily');
-    return { platform: 'ios', app, appId: await p('CFBundleIdentifier'), version: await p('CFBundleShortVersionString'), build: await p('CFBundleVersion'), appName: await p('CFBundleDisplayName') || await p('CFBundleName'), ipad: /2/.test(fam) };
+    const appId = await p('CFBundleIdentifier');
+    const scheme = ((await p('CFBundleURLTypes')).match(/^\s{12}(\S+)$/gm) || []).map(x => x.trim()).find(x => x !== appId && !/^exp\+|googleusercontent|^fb\d/.test(x));
+    return { platform: 'ios', app, scheme, appId, version: await p('CFBundleShortVersionString'), build: await p('CFBundleVersion'), appName: await p('CFBundleDisplayName') || await p('CFBundleName'), ipad: /2/.test(fam) };
   }
   if (/\.ipa$/.test(file)) throw new Error('.ipa files are device builds and cannot run in the simulator. Ask the dev for the "preview-ios-simulator" build.');
   if (/\.(aab|apk)$/.test(file)) {
@@ -215,7 +247,9 @@ async function inspectFile(file) {
       ? (await sh('java', ['-jar', BUNDLETOOL, 'dump', 'manifest', `--bundle=${file}`])).out
       : (await sh(path.join(SDK, 'build-tools', fs.readdirSync(path.join(SDK, 'build-tools')).sort().pop(), 'aapt'), ['dump', 'badging', file])).out;
     const g = re => (m.match(re) || [])[1];
-    return { platform: 'android', appId: g(/package="([^"]+)"/) || g(/package: name='([^']+)'/), version: g(/versionName="([^"]+)"/) || g(/versionName='([^']+)'/), build: g(/versionCode="([^"]+)"/) || g(/versionCode='([^']+)'/) };
+    const hosts = (m.match(/android:host="(www\.[^"]+)"/g) || []).map(x => x.slice(14, -1));
+    const host = hosts.sort((a, b2) => hosts.filter(h => h === b2).length - hosts.filter(h => h === a).length)[0];
+    return { platform: 'android', host, appId: g(/package="([^"]+)"/) || g(/package: name='([^']+)'/), version: g(/versionName="([^"]+)"/) || g(/versionName='([^']+)'/), build: g(/versionCode="([^"]+)"/) || g(/versionCode='([^']+)'/) };
   }
   throw new Error('Unknown file type — use the Expo link, a .tar.gz (iOS simulator) or a .aab / .apk.');
 }
@@ -229,7 +263,7 @@ async function addFromLink(url) {
     const r = await sh('curl', ['-fsSL', '-o', file + '.part', e.url], { timeout: 3600000 }); if (!r.ok) throw new Error('Download failed: ' + r.err); fs.renameSync(file + '.part', file); }
   const info = await inspectFile(file);
   rememberAppId(b, e.platform, e.appId);
-  return addBuild({ brand: b.key, brandName: b.name, platform: e.platform, version: e.version, build: e.build, appId: e.appId, file, app: info.app, ipad: info.ipad, source: url, added: Date.now() });
+  return addBuild({ brand: b.key, brandName: b.name, platform: e.platform, version: e.version, build: e.build, appId: e.appId, file, app: info.app, ipad: info.ipad, scheme: info.scheme, host: info.host, source: url, added: Date.now() });
 }
 async function addFromFile(file) {
   const info = await inspectFile(file);
@@ -252,8 +286,27 @@ async function install(d, bd) {
   const r2 = await sh('java', ['-jar', BUNDLETOOL, 'install-apks', `--apks=${apks}`, `--device-id=${d.id}`]); if (!r2.ok) throw new Error(r2.err);
 }
 
-/* ---------- app session: reset, language, store, sign in ---------- */
-const appIdOn = (b, d, bd) => bd?.appId || (d.platform === 'ios' ? b.ios[0] : b.android[0]);
+
+/* ---------- app links (PLP / PDP / content pages open directly) ---------- */
+// Web URL → app path: strip the domain and any region prefix (/au/, /de/…); the region is set in the app instead.
+function pathOf(u) {
+  let p = String(u || '').trim().replace(/^https?:\/\/[^/]+/i, '').replace(/[?#].*$/, '').replace(/^\/+/, '');
+  p = p.replace(/^(au|de|eu|fr|ie|nl|us|se|uk|row|ca|nz)\//i, '');
+  return p;
+}
+const skuPath = sku => 'product/' + String(sku).trim().toLowerCase().replace(/^.*_/, '');
+async function openPath(d, ctx, p) {
+  if (d.platform === 'ios') {
+    const scheme = ctx.bd.scheme || ctx.b.scheme || ctx.b.key;
+    return flow(d, 'link-ios.yaml', { APP: ctx.APP, URL: `${scheme}://${p}` }, 'open ' + p);
+  }
+  const host = ctx.bd.host || ctx.b.web;
+  const r = await sh(ADB, ['-s', d.id, 'shell', 'am', 'start', '-W', '-a', 'android.intent.action.VIEW', '-d', `https://${host}/${p}`, ctx.APP]);
+  if (!r.ok || /Error/.test(r.out)) log(`   ⚠︎ open ${p}: ${(r.out + r.err).trim().split('\n').pop()}`);
+  return flow(d, 'settle.yaml', { APP: ctx.APP }, 'open ' + p);
+}
+
+/* ---------- app session: reset, language, country, sign in ---------- */
 async function freshSession(d, APP, locale) {
   if (d.platform === 'ios') { await sh('xcrun', ['simctl', 'terminate', d.id, APP]); await sh('xcrun', ['simctl', 'keychain', d.id, 'reset']); }
   await flow(d, 'prep.yaml', { APP }, 'reset app');
@@ -268,79 +321,130 @@ async function freshSession(d, APP, locale) {
   }
   await flow(d, 'wait.yaml', { APP }, 'open app');
 }
+// The country list reads e.g. "BOOHOOMAN AU (Australia)" — match the two-letter code as a word.
+const countryRow = code => `.*\\b${code}\\b.*`;
+async function switchCountry(d, APP, code) { await flow(d, 'store.yaml', { APP, STORE: countryRow(code) }, 'country ' + code); }
 async function signIn(d, b, APP) {
   const email = await getSecret(b.key + ':email'), pw = await getSecret(b.key + ':password');
-  if (!email || !pw) { log(`⚠︎ No test account saved for ${b.name} — signed-in screens skipped (Screens tab > Test account).`); return false; }
-  await flow(d, 'login.yaml', { APP, EMAIL: email, PW: pw }, 'sign in');
+  if (!email || !pw) { log(`⚠︎ No test account saved for ${b.name} — signed-in screens skipped (Screens > Test account).`); return false; }
+  await toTabs(d, APP); await flow(d, 'login.yaml', { APP, EMAIL: email, PW: pw }, 'sign in');
   if (d.ipad) await flow(d, 'tap-point.yaml', { APP, POINT: '43%,57%' }, 'dismiss Save Password');   // iPad: centred system sheet, not in the app's hierarchy
   return true;
 }
-async function discoverStores(d, b, APP) {
-  await flow(d, 'stores-open.yaml', { APP }, 'open country list');
-  const els = elements(await hierarchy(d)).map(e => e.text).filter(Boolean);
-  const i = els.findIndex(t => /^change country\/region$/i.test(t)), j = els.findIndex((t, k) => k > i && /^CHANGE COUNTRY\/REGION$/.test(t));
-  if (i < 0 || j < 0) { log('⚠︎ Could not open the Country/Region list in this app — add stores to the brand file, or this brand has one store.'); await flow(d, 'back-home.yaml', { APP }, 'home'); return b.stores; }
-  const rows = els.slice(i + 1, j > i ? j : undefined).filter(t => /\b[A-Z]{2}\b/.test(t) && !/^(Back|nav)/.test(t));
-  const stores = rows.map(t => ({ code: (t.match(/\b([A-Z]{2})\b(?!.*\b[A-Z]{2}\b)/) || [])[1] || t, label: rx(t) })).filter(s => s.code.length === 2);
-  if (stores.length) { b.stores = stores; saveBrand(b); log(`Found ${stores.length} stores: ${stores.map(s => s.code).join(', ')}`); }
-  else log('⚠︎ Could not read the country list — add stores in the Screens tab.');
-  await flow(d, 'back-home.yaml', { APP }, 'home');
-  return b.stores;
-}
-async function switchStore(d, APP, s) { await flow(d, 'store.yaml', { APP, STORE: s.label }, 'store ' + s.code); }
 
 /* ---------- screens ---------- */
-async function goTo(d, b, s, APP) {
-  const p = s.params || {};
-  switch (s.type) {
-    case 'home': return flow(d, 'home.yaml', { APP }, s.name);
-    case 'wishlist': return flow(d, 'wishlist.yaml', { APP }, s.name);
-    case 'bag': return flow(d, 'bag.yaml', { APP }, s.name);
-    case 'menu': return flow(d, 'brands.yaml', { APP, MENU: p.menu, ITEM: p.item }, s.name);
-    case 'home-tile': return flow(d, 'premier.yaml', { APP, SWIPES: p.swipes || 5, TAP: p.tap || '50%,50%' }, s.name);
-    case 'pdp': return p.fromWishlist ? flow(d, 'pdp.yaml', { APP, NAME: p.fromWishlist }, s.name) : flow(d, 'find.yaml', { APP, TERM: p.search, COLOUR: p.colour || 'zzz' }, s.name);
-    case 'search': return flow(d, 'find.yaml', { APP, TERM: p.search, COLOUR: 'zzz' }, s.name);
-    case 'learned': {
-      await flow(d, 'home.yaml', { APP }, 'home');
-      const f = path.join(FLOWS, `_learned-${b.key}-${s.id}.yaml`); fs.writeFileSync(f, learn.toYaml(s.steps || []));
-      return flow(d, path.basename(f), { APP }, s.name);
-    }
-  }
-  log(`⚠︎ ${s.name} has no route yet — Learn it from its reference first.`); return false;
+const isSignedIn = s => s.session ? s.session === 'signed-in' : !!PAGES[s.page]?.signedIn;
+// A product line is a SKU (opens directly, works in every country) or a product name (searched in the app).
+const isSku = t => /^[a-z]{2,4}\d{4,8}(-\d+)?$/i.test(t);
+const bagItems = s => String(s.items || '').split('\n').map(l => l.trim()).filter(Boolean).map(l => {
+  if (l.includes('|')) { const [a, b] = l.split('|').map(x => x.trim()); return isSku(a) ? { sku: a, size: b || 'M' } : { name: a, size: b || 'M' }; }
+  const [a, ...rest] = l.split(/\s+/); return isSku(a) ? { sku: a, size: rest.join(' ') || 'M' } : { name: l, size: 'M' }; });
+const skuList = s => String(s.skus || '').split('\n').map(x => x.trim()).filter(Boolean).flatMap(l => l.split(/[\s,]+/).every(isSku) ? l.split(/[\s,]+/) : [l]);
+const openProduct = (d, ctx, it) => it.sku || isSku(it) ? openPath(d, ctx, skuPath(it.sku || it)) : flow(d, 'find.yaml', { APP: ctx.APP, TERM: it.name || it }, 'find ' + String(it.name || it).slice(0, 30));
+function missing(s) {                      // what a slot still needs before it can be captured
+  if (!PAGES[s.page]) return 'choose a page';
+  if (s.page === 'plp' && !s.url) return 'add the category URL';
+  if (s.page === 'content' && !s.url) return 'add the page URL';
+  if (s.page === 'search' && !s.term) return 'add a search term';
+  if (s.page === 'pdp' && !s.sku && !s.label) return 'add the SKU';
+  return '';
 }
-const needsBag = l => l.some(s => s.type === 'bag' || s.setup === 'bag');
-const needsWish = l => l.some(s => s.type === 'wishlist' || s.params?.fromWishlist || s.setup === 'wishlist');
-async function setupBag(d, b, APP) { for (const it of b.bag || []) await flow(d, 'bag-add.yaml', { APP, TERM: it.search, COLOUR: it.colour || 'zzz', SIZE: it.size }, 'bag + ' + it.search.slice(0, 30)); }
-async function setupWish(d, b, APP) { for (const it of b.wishlist || []) await flow(d, 'wish-add.yaml', { APP, TERM: it.search, COLOUR: it.colour || 'zzz' }, 'wishlist + ' + it.search.slice(0, 30)); }
+const toTabs = (d, APP) => flow(d, 'tabs.yaml', { APP }, 'back to tabs');
+async function goTo(d, ctx, s) {
+  const APP = ctx.APP;
+  await toTabs(d, APP);                       // every screen starts from the tab bar (and link-opened pages get "< Home")
+  switch (s.page) {
+    case 'home': return flow(d, 'home.yaml', { APP }, 'Home');
+    case 'menu': return flow(d, 'menu.yaml', { APP }, 'Menu');
+    case 'plp': case 'content': return openPath(d, ctx, pathOf(s.url));
+    case 'search': return flow(d, 'search.yaml', { APP, TERM: s.term }, 'Search');
+    case 'pdp': { const ok = s.sku ? await openPath(d, ctx, skuPath(s.sku)) : await flow(d, 'find.yaml', { APP, TERM: s.label }, 'find product');
+      // scroll first, then pick the colour (scrolling back up afterwards would trigger pull-to-refresh and reset the colour)
+      if (s.view === 'details') await flow(d, 'pdp-details.yaml', { APP }, 'scroll to sizes');
+      if (s.colour) { await flow(d, 'colour.yaml', { APP, COLOUR: s.colour }, 'colour ' + s.colour);
+        if (s.view !== 'details') await flow(d, 'scroll-up-once.yaml', { APP }, 'back to the images'); }
+      return ok; }
+    case 'bag': return flow(d, 'bag.yaml', { APP }, 'Bag');
+    case 'wishlist': return flow(d, 'wishlist.yaml', { APP }, 'Wishlist');
+    case 'signin': case 'account': return flow(d, 'account.yaml', { APP }, 'Account');
+  }
+  return false;
+}
+async function fillBag(d, ctx, list) {
+  for (const it of list) { log(`   bag + ${it.sku || it.name} (${it.size})`); await toTabs(d, ctx.APP); await openProduct(d, ctx, it); await flow(d, 'bag-here.yaml', { APP: ctx.APP, SIZE: it.size }, 'add to bag'); }
+}
+async function fillWishlist(d, ctx, skus) {
+  for (const it of skus) { log(`   wishlist + ${it}`); await toTabs(d, ctx.APP); await openProduct(d, ctx, it); await flow(d, 'wish-here.yaml', { APP: ctx.APP }, 'save to wishlist'); }
+}
+// One country on one device: guest screens first (the guest bag), then sign in for the rest.
+async function captureSet(d, ctx, code, slots, outDir, onShot) {
+  await freshSession(d, ctx.APP, localeOf(code));
+  if (ctx.b.markets.length > 1) await switchCountry(d, ctx.APP, code);
+  const guest = slots.filter(s => !isSignedIn(s)), signed = slots.filter(isSignedIn);
+  const bag = guest.filter(s => s.page === 'bag').flatMap(bagItems); if (bag.length) await fillBag(d, ctx, bag);
+  const shoot = async s => { await goTo(d, ctx, s); await wait(2500); await onShot(s, await shot(d, path.join(outDir, `${String(s.n).padStart(2, '0')} ${safe(s.title)}.png`))); };
+  for (const s of guest) await shoot(s);
+  if (!signed.length) return;
+  if (!(await signIn(d, ctx.b, ctx.APP))) { for (const s of signed) await onShot(s, null); return; }
+  const wish = signed.filter(s => s.page === 'wishlist').flatMap(skuList); if (wish.length) await fillWishlist(d, ctx, wish);
+  for (const s of signed) await shoot(s);
+}
+const titleOf = s => s.label || PAGES[s.page]?.n || 'Screen';
 
-/* ---------- export: every device × store × screen ---------- */
+/* ---------- reference screenshots: offline text recognition (macOS Vision) ---------- */
+const OCR_BIN = path.join(DATA, 'ocr');
+async function ocr(file) {
+  if (!exists(OCR_BIN)) { log('Preparing text recognition (one-off)…'); const r = await sh('xcrun', ['swiftc', '-O', path.join(RUNNER, 'ocr.swift'), '-o', OCR_BIN], { timeout: 300000 }); if (!r.ok) { log('⚠︎ Text recognition unavailable: ' + r.err.split('\n')[0]); return []; } }
+  const r = await sh(OCR_BIN, [file], { timeout: 60000 }); if (!r.ok) return [];
+  return r.out.split('\n').map(l => { const [y, x, ...t] = l.split('\t'); return { y: +y, x: +x, t: t.join('\t').trim() }; }).filter(o => o.t);
+}
+// Which page is this screenshot? Reads the words on it (any of our app languages) and suggests the page + a label.
+function classify(lines) {
+  const topL = lines.filter(l => l.y >= 2 && l.y <= 9 && !/^\d{1,2}[:.]\d{2}|app store|%$/i.test(l.t)), top = topL.map(l => l.t);
+  const all = lines.map(l => l.t).join('\n'); const has = re => re.test(all);
+  // the page title is the centred heading; the back label sits on the left
+  const title = ((topL.filter(l => l.x >= 30 && l.x <= 70 && l.t.length > 2).sort((a, b) => Math.abs(a.x - 50) - Math.abs(b.x - 50))[0] || {}).t || '').replace(/^[<‹]\s*/, '');
+  if (has(/^(bag|basket|panier|warenkorb|tasche|winkelmand|tas|varukorg|kundvagn)\b.*(\(\d+\))?$/im) || /^(bag|basket|panier)\s*\(\d+\)/i.test(title)) return { page: 'bag' };
+  if (has(/^(wishlist|saved items|favoris|liste de souhaits|wunschliste|verlanglijst|önskelista)$/im)) return { page: 'wishlist' };
+  if (has(/i have an account|j'ai un compte|ich habe ein konto|ik heb een account|jag har ett konto/i) && has(/password|mot de passe|passwort|wachtwoord|lösenord/i)) return { page: 'signin' };
+  if (has(/order history|my details|historique des commandes|bestellverlauf|bestelgeschiedenis|orderhistorik/i)) return { page: 'account' };
+  if (has(/\bfilter\b|filtrer|filtern|filteren|filtrera/i) && has(/\bsort\b|trier|sortieren|sorteren|sortera/i) && has(/items\)|articles\)|artikel\)|producten\)|artiklar\)/i))
+    return /^(<|‹)?\s*(search|recherche|suche|zoeken|sök)\b/i.test(top.join(' ')) ? { page: 'search', term: title } : { page: 'plp', label: title };
+  if (has(/select a size|size guide|add to bag|choisir une taille|größe wählen|kies een maat|välj storlek|notify me/i)) {
+    const i = lines.findIndex(l => /^[£€$]\s?\d|\d[.,]\d{2}\s?(€|kr)/.test(l.t)); const name = i > 0 ? lines[i - 1].t : '';
+    return { page: 'pdp', label: name.length > 6 ? name : '', view: lines.find(l => /size|taille|größe|maat|storlek/i.test(l.t))?.y < 80 ? 'details' : 'top' };
+  }
+  if (has(/^(sale|new|clothing|shoes|accessories|soldes|nouveautés|neu|nieuw|rea)$/im) && has(/find products|search|rechercher|suchen|zoeken|sök/i) && lines.filter(l => /^[A-Z &]{3,}$/.test(l.t)).length >= 5) return { page: 'menu' };
+  if (has(/find products|rechercher des produits|produkte finden|producten zoeken|sök produkter/i) && lines.findIndex(l => /find products|rechercher|finden|zoeken|sök/i.test(l.t)) < 8 && !title) return { page: 'home' };
+  if (has(/find products/i) && top.some(t => /sign in|hey|hi |good (morning|afternoon|evening)|bonjour|hallo/i.test(t))) return { page: 'home' };
+  return { page: 'content', label: title };
+}
+
+/* ---------- export: every device × country × screen ---------- */
+const STOP_MSG = 'Stopped';
 async function exportRun(o) {
   const b = brand(o.brand); const st = await deviceStatus();
   const devs = DEVICES.filter(d => o.devices.includes(d.key));
-  const stores = (b.stores.length ? b.stores : [{ code: 'UK', label: 'UK' }]).filter(s => !o.stores?.length || o.stores.includes(s.code));
-  const screens = b.screens.filter(s => o.screens.includes(s.id));
-  const total = devs.length * stores.length * screens.length; let done = 0; const t0 = Date.now(); const manifest = [];
+  const markets = b.markets.filter(c => !o.markets?.length || o.markets.includes(c));
+  const used = b.screens.filter(s => PAGES[s.page] && !missing(s)).map((s, i) => ({ ...s, n: i + 1, title: titleOf(s) }));
+  const slots = used.filter(s => !o.screens?.length || o.screens.includes(s.id));
+  const total = devs.length * markets.length * slots.length; let done = 0; const t0 = Date.now(); const manifest = [];
   const progress = cur => emit({ type: 'progress', done, total, cur, eta: done ? Math.round((Date.now() - t0) / done * (total - done) / 60000) : null });
-  log(`▶ ${b.name} — ${devs.length} device sizes × ${stores.length} stores × ${screens.length} screens = ${total} screenshots`);
+  log(`▶ ${b.name} — ${devs.length} device sizes × ${markets.length} countries × ${slots.length} screens = ${total} screenshots`);
   for (const def of devs) {
-    const bd = builds().find(x => x.brand === b.key && x.platform === def.platform && (!o.version || x.version === o.version));
-    if (!bd) { log(`⚠︎ No ${def.platform === 'ios' ? 'iOS' : 'Android'} build for ${b.name} — skipping ${def.label}`); done += stores.length * screens.length; continue; }
-    if (def.ipad && bd.ipad === false) { log(`This iOS build is iPhone-only — skipping iPad.`); done += stores.length * screens.length; continue; }
+    const bd = builds().find(x => x.brand === b.key && x.platform === def.platform);
+    if (!bd) { log(`⚠︎ No ${def.platform === 'ios' ? 'iOS' : 'Android'} build for ${b.name} — skipping ${def.label}`); done += markets.length * slots.length; continue; }
+    if (def.ipad && bd.ipad === false) { log('This iOS build is iPhone-only — skipping iPad.'); done += markets.length * slots.length; continue; }
     progress(`Booting ${def.label}`);
-    const d = await boot({ ...def, id: st.find(x => x.key === def.key)?.id }); await install(d, bd); const APP = appIdOn(b, d, bd);
+    const d = await boot({ ...def, id: st.find(x => x.key === def.key)?.id }); await install(d, bd);
+    const ctx = { b, bd, APP: bd.appId || (def.platform === 'ios' ? b.ios[0] : b.android[0]) };
     const base = path.join(OUT, b.name, `${bd.version} (${bd.build})`, STORE_NAME[def.store], `${def.label} ${def.size.replace(/ /g, '')}`);
-    for (const s of stores) {
-      const loc = localeOf(s); log(`— ${def.label} · ${s.code} (${loc})`);
-      await freshSession(d, APP, loc); if (b.stores.length > 1) await switchStore(d, APP, s);
-      const guest = screens.filter(x => x.session !== 'signed-in'), signed = screens.filter(x => x.session === 'signed-in');
-      if (needsBag(guest)) await setupBag(d, b, APP);
-      const take = async x => { progress(`${def.label} · ${s.code} · ${x.name}`);
-        await goTo(d, b, x, APP); await wait(2500);
-        const f = path.join(base, `${s.code} ${loc}`, `${String(b.screens.indexOf(x) + 1).padStart(2, '0')} ${safe(x.name)}.png`);
-        await shot(d, f); done++; manifest.push({ store: STORE_NAME[def.store], device: def.label, size: def.size, locale: loc, storeCode: s.code, screen: x.name, file: path.relative(OUT, f) });
-        emit({ type: 'shot', file: path.relative(OUT, f) }); progress(); };
-      for (const x of guest) await take(x);
-      if (signed.length) { if (await signIn(d, b, APP)) { if (needsWish(signed)) await setupWish(d, b, APP); for (const x of signed) await take(x); } else done += signed.length; }
+    for (const code of markets) {
+      const c = COUNTRIES[code] || {}; log(`— ${def.label} · ${c.name || code} · ${c.language || localeOf(code)}`);
+      await captureSet(d, ctx, code, slots, path.join(base, `${code} ${localeOf(code)}`), async (s, f) => {
+        done++; progress(`${def.label} · ${code} · ${s.title}`);
+        if (!f) return; manifest.push({ store: STORE_NAME[def.store], device: def.label, size: def.size, country: code, locale: localeOf(code), n: s.n, screen: s.title, file: path.relative(OUT, f) });
+        emit({ type: 'shot', file: path.relative(OUT, f) }); });
     }
     writeJSON(path.join(OUT, b.name, `${bd.version} (${bd.build})`, 'manifest.json'), manifest);
   }
@@ -348,50 +452,26 @@ async function exportRun(o) {
   log(`✅ Done — ${manifest.length} screenshots in ${path.join(OUT, b.name)}`); emit({ type: 'progress', done: total, total, cur: 'Done' });
   sh('open', [path.join(OUT, b.name)]);
 }
-
-/* ---------- learning a screen from its reference ---------- */
-async function prepareFor(b, key, version) {
-  const def = DEVICES.find(d => d.key === key);
-  const bd = builds().find(x => x.brand === b.key && x.platform === def.platform && (!version || x.version === version));
-  if (!bd) throw new Error(`Add a ${def.platform === 'ios' ? 'iOS' : 'Android'} build for ${b.name} first`);
+async function testScreen(o) {                // one slot, UK, on one device → preview next to the reference
+  const b = brand(o.brand), s = b.screens.find(x => x.id === o.screen); if (!s) throw new Error('Unknown screen');
+  const m = missing(s); if (m) throw new Error(`"${titleOf(s)}": ${m} first`);
+  const def = DEVICES.find(x => x.key === (o.device || 'iphone-69'));
+  const bd = builds().find(x => x.brand === b.key && x.platform === def.platform); if (!bd) throw new Error(`Add a ${def.platform === 'ios' ? 'iOS' : 'Android'} build for ${b.name} first (Builds tab)`);
   const st = await deviceStatus(); const d = await boot({ ...def, id: st.find(x => x.key === def.key)?.id }); await install(d, bd);
-  return { d, APP: appIdOn(b, d, bd) };
-}
-async function learnScreen(o) {
-  const b = brand(o.brand), s = b.screens.find(x => x.id === o.screen); if (!s?.ref) throw new Error('Add a reference screenshot to this screen first');
-  const { d, APP } = await prepareFor(b, o.device || 'iphone-69', o.version);
-  await freshSession(d, APP, 'en-GB');
-  if (s.session === 'signed-in') { await signIn(d, b, APP); if (needsWish([s])) await setupWish(d, b, APP); }
-  if (needsBag([s])) await setupBag(d, b, APP);
-  await flow(d, 'home.yaml', { APP }, 'home');
-  const res = await learn.run({ device: d, appId: APP, refFile: path.join(DATA, 'refs', b.key, s.ref), screenName: s.name, notes: s.notes,
-    act: async cmd => { const f = path.join(FLOWS, '_step.yaml'); fs.writeFileSync(f, learn.toYaml([cmd])); return flow(d, '_step.yaml', { APP }, 'step'); },
-    look: async () => { const f = path.join(DATA, 'previews', '_now.png'); await shot(d, f); return { png: f, els: elements(await hierarchy(d)) }; },
-    log, shouldStop: () => stop, getKey: () => getSecret('anthropic-api-key') });
-  if (res.ok) { s.type = 'learned'; s.steps = res.steps; s.learned = Date.now(); saveBrand(b); log(`✅ Learned "${s.name}" in ${res.steps.length} steps.`); }
-  else log(`❌ Could not reach "${s.name}": ${res.reason}`);
-  await shot(d, path.join(DATA, 'previews', b.key, s.id + '.png')); emit({ type: 'preview', brand: b.key, screen: s.id });
-}
-async function testScreen(o) {
-  const b = brand(o.brand), s = b.screens.find(x => x.id === o.screen);
-  const { d, APP } = await prepareFor(b, o.device || 'iphone-69', o.version);
-  await freshSession(d, APP, 'en-GB');
-  if (s.session === 'signed-in') { if (await signIn(d, b, APP) && needsWish([s])) await setupWish(d, b, APP); } else if (needsBag([s])) await setupBag(d, b, APP);
-  await goTo(d, b, s, APP); await wait(2500);
-  await shot(d, path.join(DATA, 'previews', b.key, s.id + '.png')); emit({ type: 'preview', brand: b.key, screen: s.id }); log(`✅ Test shot of "${s.name}" ready.`);
+  const ctx = { b, bd, APP: bd.appId };
+  await captureSet(d, ctx, b.markets[0] || 'UK', [{ ...s, n: 0, title: titleOf(s) }], path.join(DATA, 'previews', b.key, '_tmp'), async (x, f) => {
+    if (f) { fs.renameSync(f, path.join(DATA, 'previews', b.key, s.id + '.png')); emit({ type: 'preview', brand: b.key, screen: s.id }); log(`✅ Test of "${titleOf(s)}" ready.`); } });
 }
 
 /* ---------- setup check ---------- */
 async function doctor() {
   const ios = await iosList();
-  const tok = await expoToken();
   return [
     { k: 'xcode', n: 'Xcode + iOS Simulator', ok: ios.length > 0, fix: 'Install Xcode from the Mac App Store, open it once, add the iOS platform.' },
     { k: 'studio', n: 'Android Studio + emulator', ok: exists(EMU) && exists(JBR), fix: 'Install Android Studio (developer.android.com/studio), run the setup wizard, then create any phone with a Google Play image.' },
     { k: 'maestro', n: 'Maestro', ok: exists(MAESTRO), fix: 'Run the install command again.' },
     { k: 'bundletool', n: 'bundletool (Android .aab)', ok: exists(BUNDLETOOL), fix: 'Run the install command again.' },
-    { k: 'expo', n: 'Expo account (to read build links)', ok: !!tok, fix: 'In Terminal: npx eas-cli login — with an account that has access to debenhams-tech.' },
-    { k: 'ai', n: 'Claude API key (to learn new screens)', ok: !!(process.env.ANTHROPIC_API_KEY || await getSecret('anthropic-api-key')), fix: 'Settings > Claude API key. Only needed for "Learn from reference".' },
+    { k: 'expo', n: 'Expo account (to read build links)', ok: !!(await expoToken()), fix: 'In Terminal: npx eas-cli login — with an account that has access to debenhams-tech.' },
   ];
 }
 
@@ -407,9 +487,11 @@ const json = (res, o, code = 200) => { res.writeHead(code, { 'content-type': 'ap
 async function job(res, name, fn) {
   if (busy) return json(res, { error: `Busy: ${busy}. Wait for it, or press Stop.` }, 409);
   busy = name; stop = false; emit({ type: 'busy', busy }); json(res, { started: true });
-  try { await fn(); } catch (e) { log('❌ ' + e.message); } finally { busy = null; emit({ type: 'busy', busy: null }); }
+  try { await fn(); } catch (e) { log(e.message === STOP_MSG ? '⏹ Stopped.' : '❌ ' + e.message); } finally { busy = null; emit({ type: 'busy', busy: null }); }
 }
 function sendFile(res, f, type) { if (!exists(f)) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'content-type': type || 'image/png', 'cache-control': 'no-store' }); fs.createReadStream(f).pipe(res); }
+const brandOut = b => ({ ...b, countries: b.markets.map(c => ({ code: c, ...(COUNTRIES[c] || { name: c, lang: 'en-GB', language: '' }) })),
+  screens: b.screens.map(s => ({ ...s, title: titleOf(s), missing: missing(s), signedIn: isSignedIn(s), hasPreview: exists(path.join(DATA, 'previews', b.key, s.id + '.png')) })) });
 
 http.createServer(async (req, res) => {
   cors(req, res); if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
@@ -420,40 +502,48 @@ http.createServer(async (req, res) => {
       if (!html) { res.writeHead(502, { 'content-type': 'text/plain' }); return res.end('Could not load the tool page from ' + PAGE + ' - check the internet connection.'); }
       res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' }); return res.end(html.replace('<head>', `<head><base href="${PAGE}">`)); }
     if (P === '/api/events') { res.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-cache' }); res.write(`data: ${JSON.stringify({ type: 'busy', busy })}\n\n`); clients.add(res); req.on('close', () => clients.delete(res)); return; }
-    if (P === '/api/hello') return json(res, { ok: true, version: 1, out: OUT, busy });
+    if (P === '/api/hello') return json(res, { ok: true, version: 2, out: OUT, busy });
     if (P === '/api/doctor') return json(res, await doctor());
     if (P === '/api/devices') return json(res, await deviceStatus());
     if (P === '/api/builds') return json(res, builds());
-    if (P === '/api/brands') return json(res, allBrandKeys().map(k => brand(k)).filter(Boolean).map(b => ({ key: b.key, name: b.name, ds: b.ds, expo: b.expo || [], screens: b.screens.length, builds: builds().filter(x => x.brand === b.key).length })));
+    if (P === '/api/pages') return json(res, PAGES);
+    if (P === '/api/brands') return json(res, allBrandKeys().map(brand).filter(Boolean).map(b => ({ key: b.key, name: b.name, ds: b.ds, expo: b.expo, markets: b.markets, builds: builds().filter(x => x.brand === b.key).length })));
     if (P === '/api/brand') { const b = brand(u.searchParams.get('k')); if (!b) return json(res, { error: 'unknown brand' }, 404);
-      return json(res, { ...b, hasAccount: !!(await getSecret(b.key + ':email')), accountEmail: await getSecret(b.key + ':email') }); }
-    if (P === '/api/ref') return sendFile(res, path.join(DATA, 'refs', u.searchParams.get('b'), path.basename(u.searchParams.get('f'))));
-    if (P === '/api/preview') return sendFile(res, path.join(DATA, 'previews', u.searchParams.get('b'), path.basename(u.searchParams.get('s')) + '.png'));
+      const email = await getSecret(b.key + ':email'); return json(res, { ...brandOut(b), hasAccount: !!email, accountEmail: email }); }
+    if (P === '/api/ref') return sendFile(res, path.join(DATA, 'refs', path.basename(u.searchParams.get('b')), path.basename(u.searchParams.get('f'))));
+    if (P === '/api/preview') return sendFile(res, path.join(DATA, 'previews', path.basename(u.searchParams.get('b')), path.basename(u.searchParams.get('s')) + '.png'));
     if (P === '/api/shot') { const f = path.join(OUT, u.searchParams.get('f')); if (!f.startsWith(OUT)) { res.writeHead(403); return res.end(); } return sendFile(res, f); }
     if (P === '/api/stop') { stop = true; if (child) child.kill('SIGTERM'); log('⏹ Stopping after this step…'); return json(res, { ok: true }); }
     if (req.method !== 'POST') { res.writeHead(404); return res.end(); }
 
     if (P === '/api/upload') {                      // raw file body; ?kind=build | ref&brand=&screen=
       const kind = u.searchParams.get('kind'), name = path.basename(req.headers['x-file-name'] || 'upload.bin');
-      const dir = kind === 'ref' ? path.join(DATA, 'refs', u.searchParams.get('brand')) : path.join(DATA, 'builds', '_incoming'); fs.mkdirSync(dir, { recursive: true });
+      const bk = path.basename(u.searchParams.get('brand') || '');
+      const dir = kind === 'ref' ? path.join(DATA, 'refs', bk) : path.join(DATA, 'builds', '_incoming'); fs.mkdirSync(dir, { recursive: true });
       const f = path.join(dir, kind === 'ref' ? `${Date.now()}-${name.replace(/[^\w.-]+/g, '_')}` : name);
       await new Promise((ok, bad) => { const w = fs.createWriteStream(f); req.pipe(w); w.on('finish', ok); w.on('error', bad); });
-      if (kind === 'ref') { const b = brand(u.searchParams.get('brand')); const sid = u.searchParams.get('screen');
+      if (kind === 'ref') {
+        const b = brand(bk); const sid = u.searchParams.get('screen');
+        const guess = classify(await ocr(f));
         let s = sid && b.screens.find(x => x.id === sid);
-        if (!s) { s = { id: 's' + Date.now().toString(36), name: name.replace(/\.(png|jpe?g)$/i, '').replace(/[-_]+/g, ' ').replace(/^\d+\s*/, '') || 'New screen', type: 'auto', session: 'guest' }; b.screens.push(s); }
-        s.ref = path.basename(f); saveBrand(b); return json(res, { ok: true, screen: s }); }
+        const norm = v => String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+        if (!s) s = (guess.label && b.screens.find(x => !x.ref && x.page === guess.page && norm(x.label) === norm(guess.label)))   // same page + same name
+          || b.screens.find(x => !x.ref && x.page === guess.page) || b.screens.find(x => !x.ref && !x.page);
+        if (!s) { s = { id: uid() }; b.screens.push(s); }
+        if (s.page !== guess.page) { for (const k of ['url', 'sku', 'term', 'items', 'skus', 'view']) delete s[k]; s.page = guess.page; }
+        for (const [k, v] of Object.entries(guess)) if (v && !s[k]) s[k] = v;          // fill gaps, never overwrite what was typed
+        s.ref = path.basename(f); s.detected = PAGES[guess.page]?.n; saveBrand(b);
+        return json(res, { ok: true, screen: s, guess });
+      }
       return job(res, 'Reading build', async () => { const bd = await addFromFile(f); log(`✅ ${bd.brandName} ${bd.platform === 'ios' ? 'iOS' : 'Android'} ${bd.version} (${bd.build}) added.`); emit({ type: 'builds' }); });
     }
     const o = await body(req);
     if (P === '/api/link') return job(res, 'Fetching build', async () => {
       for (const url of String(o.text || '').match(/https?:\/\/\S+/g) || []) { if (!/expo\.dev/.test(url)) { log(`Skipped ${url} — paste the Expo build link.`); continue; }
         const bd = await addFromLink(url.replace(/[)>.,]+$/, '')); log(`✅ ${bd.brandName} ${bd.platform === 'ios' ? 'iOS' : 'Android'} ${bd.version} (${bd.build}) ready.`); emit({ type: 'builds' }); } });
-    if (P === '/api/brand/save') { const b = brand(o.key); for (const k of ['screens', 'stores', 'bag', 'wishlist']) if (o[k]) b[k] = o[k]; saveBrand(b); return json(res, b); }
-    if (P === '/api/account') { await setSecret(o.brand + ':email', o.email); if (o.password !== undefined) await setSecret(o.brand + ':password', o.password); return json(res, { ok: true }); }
-    if (P === '/api/settings') { if (o.anthropicKey !== undefined) await setSecret('anthropic-api-key', o.anthropicKey); return json(res, { ok: true }); }
-    if (P === '/api/stores/discover') return job(res, 'Reading stores', async () => { const b = brand(o.brand); const { d, APP } = await prepareFor(b, o.device || 'iphone-69'); await freshSession(d, APP, 'en-GB'); await discoverStores(d, b, APP); emit({ type: 'brand', brand: b.key }); });
-    if (P === '/api/learn') return job(res, 'Learning ' + o.screen, () => learnScreen(o).then(() => emit({ type: 'brand', brand: o.brand })));
-    if (P === '/api/test') return job(res, 'Testing ' + o.screen, () => testScreen(o));
+    if (P === '/api/brand/save') { const b = brand(o.key); if (o.screens) b.screens = o.screens.map(s => { const { title, missing: _m, signedIn, hasPreview, ...keep } = s; return keep; }); saveBrand(b); return json(res, brandOut(b)); }
+    if (P === '/api/account') { await setSecret(o.brand + ':email', o.email); if (o.password) await setSecret(o.brand + ':password', o.password); return json(res, { ok: true }); }
+    if (P === '/api/test') return job(res, 'Testing a screen', () => testScreen(o));
     if (P === '/api/export') return job(res, 'Exporting', () => exportRun(o));
     if (P === '/api/open') { sh('open', [o.path ? path.join(OUT, o.path) : OUT]); return json(res, { ok: true }); }
     res.writeHead(404); res.end();

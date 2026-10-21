@@ -18,7 +18,7 @@ echo; echo "Downloading the runner to $DIR…"
 mkdir -p "$DIR/flows"
 for f in $(curl -fsSL "$BASE/files.txt"); do curl -fsSL "$BASE/$f" -o "$DIR/$f"; done
 ok "Runner files"
-(cd "$DIR" && npm install --silent --no-fund --no-audit >/dev/null 2>&1) && ok "Claude SDK" || no "npm install" "check your internet connection"
+(cd "$DIR" && npm install --silent --no-fund --no-audit >/dev/null 2>&1) && ok "Dependencies" || no "npm install" "check your internet connection"
 
 export JAVA_HOME="$JBR"; export PATH="$JBR/bin:$HOME/.maestro/bin:$PATH"
 [ -x "$HOME/.maestro/bin/maestro" ] && ok "Maestro" || { curl -fsSL "https://get.maestro.mobile.dev" | bash >/dev/null 2>&1 && ok "Maestro installed"; }
@@ -38,6 +38,7 @@ cat > "$PL" <<PLIST
   <key>WorkingDirectory</key><string>$DIR</string>
   <key>EnvironmentVariables</key><dict><key>PATH</key><string>$PATH:/usr/bin:/bin:/usr/sbin:/sbin</string><key>JAVA_HOME</key><string>$JBR</string></dict>
   <key>RunAtLoad</key><true/><key>KeepAlive</key><true/>
+  <key>Nice</key><integer>10</integer><key>ProcessType</key><string>Background</string>
   <key>StandardOutPath</key><string>$HOME/Library/Logs/dg-app-store-screens.log</string>
   <key>StandardErrorPath</key><string>$HOME/Library/Logs/dg-app-store-screens.log</string>
 </dict></plist>

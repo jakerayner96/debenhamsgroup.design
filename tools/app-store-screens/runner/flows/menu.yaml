@@ -1,0 +1,7 @@
+appId: ${APP}
+---
+- tapOn:
+    id: navSearch
+- tapOn:
+    id: navSearch
+- waitForAnimationToEnd

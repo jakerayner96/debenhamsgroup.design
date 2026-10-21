@@ -1,0 +1,21 @@
+# On a product page (opened by SKU): pick the size, add to bag, leave the "Added to bag" sheet
+appId: ${APP}
+---
+- extendedWaitUntil:
+    visible:
+      id: productImageCarousel
+    timeout: 20000
+- swipe:
+    start: "50%,72%"
+    end: "50%,32%"
+- tapOn:
+    text: ${SIZE}
+    optional: true
+- tapOn:
+    id: addToBagButton
+- waitForAnimationToEnd:
+    timeout: 6000
+- tapOn:
+    text: "(?i)(view bag|voir (le |mon )?panier|warenkorb|tasche|bekijk|winkelmand|visa|varukorg|kasse)"
+    optional: true
+- waitForAnimationToEnd

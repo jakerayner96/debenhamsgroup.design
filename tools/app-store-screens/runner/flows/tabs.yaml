@@ -1,0 +1,35 @@
+# Back out of pages opened by a link (they sit above the tab bar) until the tab bar is there again
+appId: ${APP}
+---
+- repeat:
+    while:
+      notVisible:
+        id: navHome
+    times: 6
+    commands:
+      - runFlow:
+          when:
+            platform: Android
+          commands:
+            - back
+      - runFlow:
+          when:
+            platform: iOS
+          commands:
+            - tapOn:
+                text: "(Back|Retour|Zurück|Terug|Tillbaka|Atrás)"
+                index: 0
+                optional: true
+            - runFlow:
+                when:
+                  notVisible:
+                    id: navHome
+                commands:
+                  - swipe:
+                      start: "1%,50%"
+                      end: "85%,50%"
+                      duration: 400
+      - waitForAnimationToEnd:
+          timeout: 3000
+- tapOn:
+    id: navHome

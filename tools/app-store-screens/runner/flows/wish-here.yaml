@@ -1,0 +1,14 @@
+# On a product page (opened by SKU): save it, unless it is already saved (tapping again would remove it)
+appId: ${APP}
+---
+- extendedWaitUntil:
+    visible:
+      id: productImageCarousel
+    timeout: 20000
+- runFlow:
+    when:
+      notVisible: "(?i).*(remove|retirer|entfernen|verwijder|ta bort).*"
+    commands:
+      - tapOn:
+          id: wishlistButton
+      - waitForAnimationToEnd

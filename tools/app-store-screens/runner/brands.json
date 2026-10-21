@@ -1,64 +1,295 @@
 {
-  "_note": "Seed config. The runner copies a brand here into its data folder the first time it sees that brand; edits made in the tool live there (~/Library/Application Support/DG App Store Screens/brands/<brand>.json). expo = the Expo project slug in debenhams-tech; ds = the design-system data-brand slug (logo + theme).",
+  "_note": "Seed config (v2). One app per brand; countries are switched inside the app (Account > Settings > Change Country/Region). markets = the countries we operate in per app (Jake, 21 Oct 2026). expo = Expo project slug(s) in debenhams-tech; ds = design-system data-brand slug. Edits made in the tool live in ~/Library/Application Support/DG App Store Screens/brands/<brand>.json.",
+  "_countries": {
+    "UK": {
+      "name": "United Kingdom",
+      "lang": "en-GB",
+      "language": "English (UK)",
+      "flag": "united-kingdom"
+    },
+    "IE": {
+      "name": "Ireland",
+      "lang": "en-IE",
+      "language": "English (Ireland)",
+      "flag": "ireland"
+    },
+    "US": {
+      "name": "United States",
+      "lang": "en-US",
+      "language": "English (US)",
+      "flag": "united-states"
+    },
+    "AU": {
+      "name": "Australia",
+      "lang": "en-AU",
+      "language": "English (Australia)",
+      "flag": "australia"
+    },
+    "FR": {
+      "name": "France",
+      "lang": "fr-FR",
+      "language": "French",
+      "flag": "france"
+    },
+    "DE": {
+      "name": "Germany",
+      "lang": "de-DE",
+      "language": "German",
+      "flag": "germany"
+    },
+    "NL": {
+      "name": "Netherlands",
+      "lang": "nl-NL",
+      "language": "Dutch",
+      "flag": "netherlands"
+    },
+    "SE": {
+      "name": "Sweden",
+      "lang": "sv-SE",
+      "language": "Swedish",
+      "flag": "sweden"
+    }
+  },
+  "_defaultScreens": [
+    {
+      "page": "home"
+    },
+    {
+      "page": "plp"
+    },
+    {
+      "page": "pdp"
+    },
+    {
+      "page": "bag"
+    },
+    {
+      "page": "wishlist"
+    }
+  ],
   "boohooman": {
-    "name": "boohooMAN", "ds": "boohooman", "expo": ["boohooman"],
-    "ios": ["com.boohoo.boohooMAN"], "android": ["com.gpshopper.boohooman"],
-    "stores": [
-      { "code": "UK", "label": "BOOHOOMAN UK" },
-      { "code": "IE", "label": "BOOHOOMAN IE.*" },
-      { "code": "US", "label": "BOOHOOMAN US" },
-      { "code": "AU", "label": "BOOHOOMAN AU.*" },
-      { "code": "FR", "label": "BOOHOOMAN FR.*" },
-      { "code": "DE", "label": "BOOHOOMAN DE.*" },
-      { "code": "AT", "label": "BOOHOOMAN AT.*" },
-      { "code": "NL", "label": "BOOHOOMAN NL.*" },
-      { "code": "BE", "label": "BOOHOOMAN BE.*" }
+    "name": "boohooMAN",
+    "ds": "boohooman",
+    "expo": [
+      "boohooman"
     ],
-    "bag": [
-      { "search": "Regular Fit Woven Contrast Collar Puffer", "colour": "charcoal", "size": "3XL" },
-      { "search": "White Oversized Homme Official Print Long Sleeve Spray Wash T-Shirt", "colour": "white", "size": "L" }
-    ],
-    "wishlist": [
-      { "search": "Essential Baggy Fit Rigid Washed Jeans", "colour": "stone" },
-      { "search": "Charcoal Oversized Shrunken Gothic Doodle Print Zip Through Hoodie", "colour": "charcoal" },
-      { "search": "Oversized Ripstop Translucent Duvet Puffer Jacket", "colour": "charcoal" },
-      { "search": "Oversized Fit Striped Long Sleeve Man Embroidered T-Shirt", "colour": "black" }
+    "web": "www.boohooman.com",
+    "scheme": "boohooman",
+    "markets": [
+      "UK",
+      "AU",
+      "DE",
+      "FR",
+      "IE",
+      "NL",
+      "US"
     ],
     "screens": [
-      { "id": "home", "name": "Home", "type": "home", "session": "guest" },
-      { "id": "wishlist", "name": "Wishlist", "type": "wishlist", "session": "signed-in" },
-      { "id": "bag", "name": "Bag", "type": "bag", "session": "guest" },
-      { "id": "brands", "name": "Brands at BOOHOOMAN", "type": "menu", "session": "guest", "params": { "menu": "BRANDS", "item": "View All" } },
-      { "id": "premier", "name": "Premier page", "type": "home-tile", "session": "guest", "params": { "swipes": 7, "tap": "25%,60%" } },
-      { "id": "pdp", "name": "Product page", "type": "pdp", "session": "signed-in", "params": { "fromWishlist": "Essential Baggy Fit Rigid Washed Jeans" } }
+      {
+        "page": "home"
+      },
+      {
+        "page": "wishlist",
+        "skus": "Oversized Fit Striped Long Sleeve Man Embroidered T-Shirt\nOversized Ripstop Translucent Duvet Puffer Jacket\nCharcoal Oversized Shrunken Gothic Doodle Print Zip Through Hoodie\nEssential Baggy Fit Rigid Washed Jeans"
+      },
+      {
+        "page": "bag",
+        "items": "Regular Fit Woven Contrast Collar Puffer | 3XL\nWhite Oversized Homme Official Print Long Sleeve Spray Wash T-Shirt | L"
+      },
+      {
+        "page": "plp",
+        "url": "https://www.boohooman.com/categories/view-all",
+        "label": "Brands at BOOHOOMAN"
+      },
+      {
+        "page": "content",
+        "url": "https://www.boohooman.com/pages/informational/premier-delivery",
+        "label": "Premier Delivery"
+      },
+      {
+        "page": "pdp",
+        "label": "Essential Baggy Fit Rigid Washed Jeans",
+        "view": "details",
+        "colour": "stone"
+      }
+    ]
+  },
+  "boohooww": {
+    "name": "boohoo",
+    "ds": "boohoo",
+    "expo": [
+      "boohooww"
+    ],
+    "web": "www.boohoo.com",
+    "markets": [
+      "UK",
+      "AU",
+      "FR",
+      "IE",
+      "NL",
+      "SE",
+      "US"
+    ]
+  },
+  "debenhams": {
+    "name": "Debenhams",
+    "ds": "debenhams",
+    "expo": [
+      "debenhams"
+    ],
+    "web": "www.debenhams.com",
+    "markets": [
+      "UK",
+      "AU",
+      "IE",
+      "US"
+    ]
+  },
+  "karenmillen": {
+    "name": "Karen Millen",
+    "ds": "karenmillen",
+    "expo": [
+      "karenmillen"
+    ],
+    "web": "www.karenmillen.com",
+    "markets": [
+      "UK",
+      "IE",
+      "US"
+    ]
+  },
+  "prettylittlething": {
+    "name": "PLT",
+    "ds": "plt",
+    "expo": [
+      "prettylittlething"
+    ],
+    "web": "www.prettylittlething.com",
+    "markets": [
+      "UK",
+      "AU",
+      "FR",
+      "IE",
+      "US"
+    ]
+  },
+  "burton": {
+    "name": "Burton",
+    "ds": "burton",
+    "expo": [
+      "burton"
+    ],
+    "web": "www.burton.co.uk",
+    "markets": [
+      "UK"
+    ]
+  },
+  "coast": {
+    "name": "Coast",
+    "ds": "coast",
+    "expo": [
+      "coast"
+    ],
+    "web": "www.coastfashion.com",
+    "markets": [
+      "UK"
+    ]
+  },
+  "debenhamsoutlet": {
+    "name": "Debenhams Outlet",
+    "ds": "debenhamsoutlet",
+    "expo": [
+      "debenhamsoutlet"
+    ],
+    "markets": [
+      "UK"
+    ]
+  },
+  "dorothy-perkins": {
+    "name": "Dorothy Perkins",
+    "ds": "dorothyperkins",
+    "expo": [
+      "dorothy-perkins"
+    ],
+    "web": "www.dorothyperkins.com",
+    "markets": [
+      "UK"
+    ]
+  },
+  "dsgnstudio": {
+    "name": "DSGN Studio",
+    "ds": "dsgnstudio",
+    "expo": [
+      "dsgnstudio"
+    ],
+    "markets": [
+      "UK"
+    ]
+  },
+  "misspap": {
+    "name": "Misspap",
+    "ds": "misspap",
+    "expo": [
+      "misspap"
+    ],
+    "web": "www.misspap.com",
+    "markets": [
+      "UK"
+    ]
+  },
+  "oasis": {
+    "name": "Oasis",
+    "ds": "oasis",
+    "expo": [
+      "oasis"
+    ],
+    "web": "www.oasis-stores.com",
+    "markets": [
+      "UK"
+    ]
+  },
+  "principles": {
+    "name": "Principles",
+    "ds": "principles",
+    "expo": [
+      "principles"
+    ],
+    "markets": [
+      "UK"
+    ]
+  },
+  "wallis": {
+    "name": "Wallis",
+    "ds": "wallis",
+    "expo": [
+      "wallis"
+    ],
+    "web": "www.wallis.co.uk",
+    "markets": [
+      "UK"
+    ]
+  },
+  "warehouse": {
+    "name": "Warehouse",
+    "ds": "warehouse",
+    "expo": [
+      "warehouse"
+    ],
+    "web": "www.warehousefashion.com",
+    "markets": [
+      "UK"
     ]
   },
   "thebrandroom": {
-    "name": "The Brand Room", "ds": "brandroom", "expo": ["thebrandroom"],
-    "ios": ["com.dbztech.thebrandroom"], "android": ["com.dbztech.thebrandroom"],
-    "stores": [],
-    "bag": [], "wishlist": [],
-    "screens": [
-      { "id": "home", "name": "Home", "type": "home", "session": "guest" },
-      { "id": "wishlist", "name": "Wishlist", "type": "wishlist", "session": "signed-in" },
-      { "id": "bag", "name": "Bag", "type": "bag", "session": "guest" }
+    "name": "The Brand Room",
+    "ds": "brandroom",
+    "expo": [
+      "thebrandroom"
+    ],
+    "web": "www.thebrandroom.com",
+    "scheme": "thebrandroom",
+    "markets": [
+      "UK"
     ]
-  },
-  "_expoOnly": {
-    "boohooww": { "name": "boohoo", "ds": "boohoo" },
-    "burton": { "name": "Burton", "ds": "burton" },
-    "coast": { "name": "Coast", "ds": "coast" },
-    "debenhams": { "name": "Debenhams", "ds": "debenhams" },
-    "debenhamsoutlet": { "name": "Debenhams Outlet", "ds": "debenhamsoutlet" },
-    "dorothy-perkins": { "name": "Dorothy Perkins", "ds": "dorothyperkins" },
-    "dsgnstudio": { "name": "DSGN Studio", "ds": "dsgnstudio" },
-    "karenmillen": { "name": "Karen Millen", "ds": "karenmillen" },
-    "misspap": { "name": "Misspap", "ds": "misspap" },
-    "nastygal": { "name": "Nasty Gal", "ds": "nastygal" },
-    "oasis": { "name": "Oasis", "ds": "oasis" },
-    "prettylittlething": { "name": "PLT", "ds": "plt" },
-    "principles": { "name": "Principles", "ds": "principles" },
-    "wallis": { "name": "Wallis", "ds": "wallis" },
-    "warehouse": { "name": "Warehouse", "ds": "warehouse" }
   }
 }

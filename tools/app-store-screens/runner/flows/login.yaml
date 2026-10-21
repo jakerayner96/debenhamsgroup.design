@@ -3,6 +3,8 @@ appId: ${APP}
 - tapOn:
     id: navAccount
 - tapOn:
+    id: navAccount        # second tap pops the tab back to its first page (the country switch leaves it on Settings)
+- tapOn:
     id: emailTextInput
 - inputText: ${EMAIL}
 - tapOn:

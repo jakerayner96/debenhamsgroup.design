@@ -29,19 +29,35 @@ The page is a static DS page on GitHub Pages. It can't drive simulators on its o
 
 ## Screens
 
-Each brand has an ordered screen list. Every screen has a **route**:
+Each brand has an ordered list of at least 5 screens. You can add more, and they export in that order. There are two ways to fill the list, and both feed the same list:
 
-- **Built-in routes:** Home · Wishlist · Bag · Product page (opened from the wishlist) · Search results · Menu item (for example BRANDS → View All) · Home page tile (scroll N times, tap a point).
-- **Learn from reference:** drop the brand team's screenshot of the screen. `learn.js` sends Claude (Opus 5.5, with server-side refusal fallback on) the reference, the live screen and its element list. Claude picks one tap, swipe or text entry at a time until the screens match. Each step is saved as a Maestro command, and the saved route replays on every device and language without the model. Routes prefer element ids (`navHome`, `plpItem-0`, `wishlistButton`…), which stay the same across languages.
+- **Pick from the app.** Tick pages from the page list. Each page takes its own input:
 
-The shared app codebase gives the same ids in every brand. On 21 Oct, boohooMAN and The Brand Room both used `navHome/navSearch/navCart/navWishlist/navAccount`, `fakeSearchInputBar`, `plpItem-N`, `productImageCarousel`, `wishlistButton`, `addToBagButton`, `emailTextInput`, `passwordTextInput`, `signInButton` and `settingsButton`.
+  | Page | What it needs |
+  |---|---|
+  | Home | nothing |
+  | Menu | nothing |
+  | Category page (PLP) | the category URL from the website |
+  | Search results | a search term |
+  | Product page (PDP) | a SKU (or a product name), plus an optional colour and whether to show the images or the price and sizes |
+  | Bag | the products to add: `SKU size`, or `name \| size` |
+  | Wishlist | SKUs or product names; signs in first |
+  | Sign in | nothing |
+  | My account | nothing; signs in first |
+  | Content page | the page URL, for example Premier Delivery |
+
+- **Upload reference screens.** The brand team's screenshots are read on the Mac with macOS's offline text recognition (`ocr.swift`, Vision framework). That needs no API key and no network. Each screenshot is matched to its page and slot from its title and words, in en, fr, de, nl and sv. You then add any SKU or URL the page needs.
+
+PLP, PDP and content pages open **directly** in the app through its links. iOS uses the app's URL scheme (for example `boohooman://categories/mens-jeans`). Android uses an https link sent to the app's package (`https://www.boohooman.com/product/cmm33848`). The scheme and host are read from each build. A SKU opens the exact product in every country. A product name is searched in the app, which only works in English stores. Before each screen the runner steps back to the tab bar, because pages opened by a link sit above it.
+
+**Gentle mode:** the runner works one device at a time. Every Maestro step waits while the 1-minute load average is above 1.5× the CPU count, and runs at low priority (`nice`). The LaunchAgent itself is `Nice 10`, `ProcessType Background`. On 21 Oct, ESET antivirus scanning the simulator's files made the Mac seize up, with a load of 868. Asking IT to exclude `~/Library/Developer/CoreSimulator`, `~/.android` and the tool's data folder helps.
 
 ## Where things are stored on the Mac
 
-- **Brand config:** `~/Library/Application Support/DG App Store Screens/brands/<brand>.json`, seeded from `runner/brands.json`. It holds the screens, stores, bag and wishlist products, and learned routes.
+- **Brand config:** `~/Library/Application Support/DG App Store Screens/brands/<brand>.json` (schema 2), seeded from `runner/brands.json`. It holds the screens and their inputs. The countries per brand always follow `markets` in the seed (Jake's list, 21 Oct).
 - **Reference screenshots and test previews:** `…/refs/`, `…/previews/`.
 - **Builds:** `…/builds/<brand>/<version>-<build>/`.
-- **Secrets:** stored in the macOS Keychain under the service "DG App Store Screens". That covers each brand's test account and the Claude API key.
+- **Secrets:** each brand's test account, stored in the macOS Keychain under the service "DG App Store Screens".
 - **Output:**
 
 ```
@@ -64,6 +80,5 @@ A new runner file must be added to `runner/files.txt`, or the installer won't do
 - iOS needs the **simulator** build (`preview-ios-simulator` profile). App Store and TestFlight `.ipa` builds can't run in a simulator.
 - On Android, the AAB is re-signed with the local debug key so the emulator can install it. That's fine for screenshots. It would only matter if the app blocks re-signed builds.
 - Home page content is live and changes during the day.
-- A "Home page tile" route taps a position, so it breaks when the home layout changes. Re-learn it, or adjust the swipes and point.
-- Products in the bag and wishlist are found by search. A product code searches the same in every store language. A product name may only match in English stores.
+- Product names in the bag, wishlist or PDP are searched in the app, which only works reliably in English stores. Use SKUs for other countries.
 - The Brand Room app has no Country/Region setting, so it's a single store (UK).

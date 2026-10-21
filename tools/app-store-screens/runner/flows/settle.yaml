@@ -1,0 +1,4 @@
+appId: ${APP}
+---
+- waitForAnimationToEnd:
+    timeout: 10000

@@ -1,8 +1,0 @@
-appId: ${APP}
----
-- tapOn:
-    id: navAccount
-- tapOn:
-    id: settingsButton
-- tapOn: "(?i)change country/region.*"
-- waitForAnimationToEnd

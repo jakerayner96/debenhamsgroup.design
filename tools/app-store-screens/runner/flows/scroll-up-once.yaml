@@ -1,0 +1,8 @@
+# One gentle scroll back up (never a pull from the very top — that refreshes the page)
+appId: ${APP}
+---
+- swipe:
+    start: "50%,35%"
+    end: "50%,70%"
+    duration: 900
+- waitForAnimationToEnd

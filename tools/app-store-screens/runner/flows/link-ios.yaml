@@ -1,0 +1,9 @@
+# Open an app link on iOS (simctl openurl) and confirm the "Open in …?" sheet
+appId: ${APP}
+---
+- openLink: ${URL}
+- tapOn:
+    text: "(Open|Ouvrir|Öffnen|Openen|Öppna)"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 10000

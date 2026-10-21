@@ -59,6 +59,18 @@ textarea.paste:focus{outline:0;border-color:#000}
 code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0F0F0F;color:#E7E7E7;border-radius:6px;padding:12px 14px;word-break:break-all}
 .offline{max-width:720px}
 .items{width:100%;min-height:80px}
+.slots{display:flex;flex-direction:column;gap:10px}
+.slot{display:grid;grid-template-columns:auto 64px 1fr 64px auto;gap:12px;align-items:start;padding:12px;border:1px solid var(--border-subtle);border-radius:8px;background:var(--surface-raised,#fff)}
+.slot>.tagpill{margin-top:14px}
+.slot-main{display:flex;flex-direction:column;gap:8px;min-width:0}
+.slot-st{display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-height:20px}
+.slot-acts{display:flex;gap:6px;margin-top:9px}
+.thumb{width:64px;aspect-ratio:9/19.5;border-radius:6px;overflow:hidden;background:var(--surface-sunken,#F2F2F2);display:flex}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top}
+.thumb .drop{flex:1;border-radius:6px;padding:4px}
+.slot textarea.paste{min-height:56px}
+@media (max-width:760px){.slot{grid-template-columns:auto 1fr auto}.slot .thumb[data-prev]{display:none}.slot>.thumb{grid-row:span 2}.slot-acts{grid-column:1/-1}}
+.chk-row.dis{opacity:.5;cursor:default}
 </style>
 </head>
 <body>
@@ -114,41 +126,37 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
     <div class="card">
       <div class="row">
         <div class="fsel grow" style="max-width:320px"><span id="brandLbl">Brand</span><select id="brand" aria-label="Brand"></select></div>
-        <div class="fsel" style="width:260px"><span id="ldevLbl">Learn &amp; test on: iPhone 6.9in</span><select id="ldev" aria-label="Learn and test on"><option value="iphone-69">Learn &amp; test on: iPhone 6.9in</option><option value="ipad-13">Learn &amp; test on: iPad 13in</option><option value="play-phone">Learn &amp; test on: Android phone</option></select></div>
+        <div class="fsel" style="width:260px"><span id="tdevLbl">Test on: iPhone 6.9in</span><select id="tdev" aria-label="Test on"><option value="iphone-69">Test on: iPhone 6.9in</option><option value="ipad-13">Test on: iPad 13in</option><option value="play-phone">Test on: Android phone</option></select></div>
         <span class="help" style="margin:0" id="brandMeta"></span>
       </div>
     </div>
+
     <div class="card">
-      <h2>Screens to capture</h2>
-      <p class="help">The brand team sends screenshots of the screens they want, in order. Drop them here: each becomes a screen. <b>Learn</b> has Claude find the way to it in the app once; after that the route replays on every device and language. Known screens (Home, Wishlist, Bag…) can use a built-in route instead.</p>
-      <label class="drop" id="refDrop" style="margin-bottom:16px"><input type="file" id="refFile" multiple accept="image/*"><b>Drop the brand's reference screenshots</b>one per screen, in the order they should appear<small>PNG or JPG from the live app</small></label>
-      <div class="screens" id="screenList"></div>
-    </div>
-    <div class="grid2">
-      <div class="card">
-        <h2>Test account</h2>
-        <p class="help">Used for screens marked "Signed in" (wishlist, saved items). Stored in this Mac's Keychain, never on the site.</p>
-        <div class="stack">
-          <label class="fld"><input id="accEmail" placeholder=" " autocomplete="off"><span class="lbl">Email</span></label>
-          <label class="fld"><input id="accPw" type="password" placeholder=" " autocomplete="new-password"><span class="lbl">Password (leave blank to keep the saved one)</span></label>
-          <div class="row"><button class="bd sec" id="saveAcc">Save account</button><span class="help" style="margin:0" id="accState"></span></div>
-        </div>
+      <h2>Choose the screens</h2>
+      <p class="help">Pick the pages from the list, or upload the brand's screenshots and the tool works out which page each one is. At least 5 screens; add as many more as you need. They export in this order.</p>
+      <div class="chips" id="modeChips" style="margin-bottom:16px"><button class="chip" data-m="pick">Pick from the app</button><button class="chip" data-m="upload">Upload reference screens</button></div>
+
+      <div id="m-pick">
+        <div class="matrix" id="pageChecks" style="margin-bottom:8px"></div>
+        <p class="help" style="margin:0 0 16px">SKUs open the exact product in every country; product names are searched in the app (English stores). Ticking a page adds it to the list below. Need two of the same (e.g. two product pages)? Use <b>Add another screen</b>.</p>
       </div>
-      <div class="card">
-        <h2>Stores &amp; languages</h2>
-        <p class="help">One set of screenshots per store. Read them from the app's Country/Region list, or edit the list in the brand file.</p>
-        <div class="chips" id="storeChips" style="margin-bottom:12px"></div>
-        <button class="bd sec" id="discover">Read stores from the app</button>
+      <div id="m-upload" hidden>
+        <label class="drop" id="refDrop" style="margin-bottom:16px"><input type="file" id="refFile" multiple accept="image/*"><b>Drop the brand's screenshots</b>one per screen, in order (01-home.png, 02-wishlist.png…)<small>Each one is read on this Mac and matched to a page; check the SKU / URL it needs</small></label>
       </div>
+
+      <div class="msg msg--neutral" id="minMsg" style="margin-bottom:12px;display:none"><i></i><div class="body"><span style="flex:1" id="minTxt"></span></div></div>
+      <div class="slots" id="slotList"></div>
+      <div class="row" style="margin-top:12px"><button class="bd sec" id="addSlot">+ Add another screen</button></div>
     </div>
+
     <div class="card">
-      <h2>Products to show</h2>
-      <p class="help">Put in the bag before the Bag screen, and saved to the wishlist before signed-in screens. One per line: <code>search term | colour | size</code> (product codes work in every store language).</p>
-      <div class="grid2">
-        <div class="stack"><b style="font-size:14px">Bag</b><textarea class="paste items" id="bagItems"></textarea></div>
-        <div class="stack"><b style="font-size:14px">Wishlist</b><textarea class="paste items" id="wishItems"></textarea></div>
+      <h2>Test account</h2>
+      <p class="help">For the screens that need signing in (Wishlist, My account). Stored in this Mac's Keychain, never on the site.</p>
+      <div class="row">
+        <label class="fld grow"><input id="accEmail" placeholder=" " autocomplete="off"><span class="lbl">Email</span></label>
+        <label class="fld grow"><input id="accPw" type="password" placeholder=" " autocomplete="new-password"><span class="lbl">Password (blank keeps the saved one)</span></label>
+        <button class="bd sec" id="saveAcc">Save account</button><span class="help" style="margin:0" id="accState"></span>
       </div>
-      <div class="row" style="margin-top:12px"><button class="bd sec" id="saveItems">Save products</button></div>
     </div>
   </section>
 
@@ -159,8 +167,9 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
     </div>
     <div class="grid2">
       <div class="card"><h2>Device sizes</h2><p class="help">Required sizes are ticked. One device runs at a time.</p><div class="stack" id="devList"></div></div>
-      <div class="card"><h2>Stores &amp; languages</h2><p class="help" id="storeHelp"></p><div class="matrix" id="storeList"></div><h2 style="margin-top:20px">Screens</h2><div class="matrix" id="scrList"></div></div>
+      <div class="card"><h2>Countries &amp; languages</h2><p class="help">The countries this app trades in. Each one is captured with the app switched to that country and the device in its language.</p><div class="stack" id="ctryList"></div></div>
     </div>
+    <div class="card"><h2>Screens</h2><p class="help" id="scrHelp"></p><div class="matrix" id="scrList"></div></div>
     <div class="card">
       <div class="row"><button class="bd pri" id="run">Export screenshots</button><button class="bd sec" id="stop">Stop</button><span class="sp grow"></span><button class="bd sec" id="openOut">Open folder</button></div>
       <div class="prog" id="prog" style="margin-top:16px;--p:0%"><div class="prog-hd"><span id="progTxt">Ready</span><span id="progN"></span></div><div class="prog-bar"><i></i></div></div>
@@ -168,13 +177,13 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
     <div class="grid2">
       <div class="card"><h2>Log</h2><pre id="log"></pre></div>
       <div class="card"><h2>Folder for Figma</h2><p class="help">Drag a device folder into Figma: each PNG lands as its own frame at full size.</p>
-<pre class="tree" id="tree">~/Desktop/App Store Screens/
+<pre class="tree">~/Desktop/App Store Screens/
   boohooMAN/
     80.20.0 (20261016.1820)/
       App Store/
         iPhone 6.9in 1320×2868/
-          UK en-GB/ 01 Home.png … 06 Product page.png
-          FR fr-FR/ …
+          UK en-GB/  01 Home.png … 06 …
+          FR fr-FR/  …
         iPad 13in 2064×2752/ …
       Google Play/
         Phone 1080×1920/ …
@@ -189,12 +198,10 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
   <section class="panel" id="p-setup" hidden>
     <div class="grid2">
       <div class="card"><h2>Setup check</h2><ul class="doc" id="doctor"></ul><div class="row" style="margin-top:12px"><button class="bd sec" id="recheck">Check again</button></div></div>
-      <div class="card"><h2>Claude API key</h2><p class="help">Needed only for <b>Learn</b> (finding the route to a new screen). Stored in this Mac's Keychain. Uses Claude Opus 5.5, a few pence per screen learned.</p>
-        <div class="stack"><label class="fld"><input id="apiKey" type="password" placeholder=" " autocomplete="off"><span class="lbl">sk-ant-…</span></label><div class="row"><button class="bd sec" id="saveKey">Save key</button></div></div>
-        <h2 style="margin-top:20px">Update the runner</h2><p class="help">Run the install command again to pick up the latest version.</p><code class="cmd">curl -fsSL https://jakerayner96.github.io/debenhamsgroup.design/tools/app-store-screens/runner/install.sh | bash</code></div>
+      <div class="card"><h2>Update the runner</h2><p class="help">Run the install command again to pick up the latest version.</p><code class="cmd">curl -fsSL https://jakerayner96.github.io/debenhamsgroup.design/tools/app-store-screens/runner/install.sh | bash</code>
+        <h2 style="margin-top:20px">How the brands ask for screens</h2>
+        <p class="help" style="margin:0">Either they list the pages (Home, a category, a product SKU…) and you tick them under <b>Pick from the app</b>, or they screenshot the live app, one image per screen, numbered in order, and you drop them into <b>Upload reference screens</b>. Each upload is read on this Mac and matched to its page; add the SKU or category URL it needs. After that, every new build is one paste and one Export.</p></div>
     </div>
-    <div class="card"><h2>How the brands ask for screens</h2>
-      <p class="help" style="margin:0">Ask each brand to screenshot the live app on their phone, one screenshot per screen they want in the listing, numbered in order (01-home.png, 02-wishlist.png…), plus anything that must show (products in the bag, a campaign). Drop them into Screens, press Learn on each, then Test. From then on every new build is one paste and one Export.</p></div>
   </section>
 </main>
 
@@ -202,9 +209,10 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
 const R=location.port==='4567'?location.origin:'http://localhost:4567', $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const H=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const pref=(k,v)=>{try{if(v===undefined)return localStorage.getItem('ase-'+k);localStorage.setItem('ase-'+k,v)}catch(e){}};
-let ONLINE=false,BRANDS=[],BUILDS=[],DEVS=[],B=null,BUSY=null;
+let ONLINE=false,BRANDS=[],BUILDS=[],DEVS=[],PAGES={},B=null,BUSY=null;
+const MIN=5;
 const api=async(p,o)=>{const r=await fetch(R+p,o===undefined?{}:{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(o)});const j=await r.json().catch(()=>({}));if(j.error){alert(j.error);throw new Error(j.error)}return j};
-const logo=ds=>`../../assets/brands/${ds}.svg`;
+const logo=ds=>`../../assets/brands/${ds}.svg`, flag=f=>`../../assets/ds/icons/flags/${f}.svg`;
 
 /* tabs */
 $$('#tabs button').forEach(b=>b.onclick=()=>show(b.dataset.t));
@@ -216,7 +224,7 @@ function show(t){pref('tab',t);$$('#tabs button').forEach(b=>b.classList.toggle(
 async function connect(){
   try{const h=await fetch(R+'/api/hello').then(r=>r.json());ONLINE=!!h.ok;}catch(e){ONLINE=false}
   $('#dot').classList.toggle('on',ONLINE);$('#connTxt').textContent=ONLINE?'Runner connected on this Mac':'Can\'t reach the runner on this Mac';
-  if(ONLINE){await Promise.all([loadBrands(),loadBuilds(),loadDevs()]);events();}
+  if(ONLINE){PAGES=await api('/api/pages');await Promise.all([loadBrands(),loadBuilds(),loadDevs()]);events();}
   show(pref('tab')||'builds');
 }
 $('#retry').onclick=connect;
@@ -229,8 +237,7 @@ function events(){
     if(m.type==='log'){const l=$('#log');l.textContent+=m.line+'\n';l.scrollTop=l.scrollHeight;$('#busyTxt').textContent=m.line.replace(/^\[[^\]]+\]\s*/,'');}
     if(m.type==='busy'){BUSY=m.busy;$('#busyCard').hidden=!BUSY;$('#run').disabled=!!BUSY;if(!BUSY){loadBuilds();if(B)loadBrand(B.key)}}
     if(m.type==='builds')loadBuilds();
-    if(m.type==='brand'&&B&&m.brand===B.key)loadBrand(B.key);
-    if(m.type==='preview'&&B&&m.brand===B.key){const i=$(`[data-prev="${m.screen}"]`);if(i)i.innerHTML=`<img src="${R}/api/preview?b=${B.key}&s=${m.screen}&t=${Date.now()}" alt=""><em class="tagpill">Test</em>`}
+    if(m.type==='preview'&&B&&m.brand===B.key){const i=$(`[data-prev="${m.screen}"]`);if(i)i.innerHTML=`<img src="${R}/api/preview?b=${B.key}&s=${m.screen}&t=${Date.now()}" alt="">`}
     if(m.type==='progress'){const p=m.total?Math.round(m.done/m.total*100):0;$('#prog').style.setProperty('--p',p+'%');
       if(m.cur)$('#progTxt').textContent=m.cur;$('#progN').textContent=m.total?`${m.done} / ${m.total}${m.eta!=null?` · ${m.eta} min left`:''}`:''}
     if(m.type==='shot')addShot(m.file);
@@ -240,8 +247,7 @@ function events(){
 
 /* builds */
 async function loadBuilds(){BUILDS=await api('/api/builds');
-  $('#buildList').innerHTML=BUILDS.map(b=>{const br=BRANDS.find(x=>x.key===b.brand)||{};return `<div class="build"><img src="${logo(br.ds||b.brand)}" alt="${H(b.brandName)}" onerror="this.style.display='none'"><div><b>${H(b.brandName)} · ${b.platform==='ios'?'iOS simulator':'Android'}</b><span>${H(b.version)} (${H(b.build)}) · added ${new Date(b.added).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}${b.platform==='ios'&&b.ipad===false?' · iPhone only':''}</span></div></div>`}).join('')||'<p class="help" style="margin:0">No builds yet — paste the links above.</p>';
-  if(BUILDS[0]&&!pref('brand'))setBrand(BUILDS[0].brand);}
+  $('#buildList').innerHTML=BUILDS.map(b=>{const br=BRANDS.find(x=>x.key===b.brand)||{};return `<div class="build"><img src="${logo(br.ds||b.brand)}" alt="${H(b.brandName)}" onerror="this.style.display='none'"><div><b>${H(b.brandName)} · ${b.platform==='ios'?'iOS simulator':'Android'}</b><span>${H(b.version)} (${H(b.build)}) · added ${new Date(b.added).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}${b.platform==='ios'&&b.ipad===false?' · iPhone only':''}</span></div></div>`}).join('')||'<p class="help" style="margin:0">No builds yet — paste the links above.</p>';}
 $('#addLinks').onclick=async()=>{const t=$('#paste').value;if(!/expo\.dev/.test(t))return alert('Paste the Expo build links from the dev');await api('/api/link',{text:t});$('#paste').value='';
   const slug=(t.match(/projects\/([^/]+)/)||[])[1];const b=BRANDS.find(x=>(x.expo||[]).includes(slug)||x.key===slug);if(b)setBrand(b.key)};
 async function upload(file,q){const r=await fetch(`${R}/api/upload?${q}`,{method:'POST',headers:{'x-file-name':file.name},body:file});const j=await r.json();if(j.error)alert(j.error);return j}
@@ -250,83 +256,95 @@ function dropzone(el,input,fn){['dragenter','dragover'].forEach(e=>el.addEventLi
   el.addEventListener('drop',ev=>{ev.preventDefault();fn([...ev.dataTransfer.files])});input.onchange=()=>{fn([...input.files]);input.value=''}}
 dropzone($('#buildDrop'),$('#buildFile'),async fs=>{for(const f of fs)await upload(f,'kind=build')});
 
-/* brands + screens */
+/* brands */
 async function loadBrands(){BRANDS=await api('/api/brands');
   const opts=BRANDS.sort((a,b)=>(b.builds-a.builds)||a.name.localeCompare(b.name)).map(b=>`<option value="${b.key}">${H(b.name)}${b.builds?'':' (no build yet)'}</option>`).join('');
   $('#brand').innerHTML=opts;$('#brand2').innerHTML=opts;const k=pref('brand')||BRANDS[0]?.key;if(k)setBrand(k);}
 function setBrand(k){pref('brand',k);$('#brand').value=k;$('#brand2').value=k;loadBrand(k)}
-$('#brand').onchange=e=>setBrand(e.target.value);
-$('#ldev').value=pref('learnDev')||'iphone-69';$('#ldevLbl').textContent=$('#ldev').selectedOptions[0].textContent;$('#ldev').onchange=e=>{pref('learnDev',e.target.value);$('#ldevLbl').textContent=e.target.selectedOptions[0].textContent};$('#brand2').onchange=e=>setBrand(e.target.value);
-async function loadBrand(k){B=await api('/api/brand?k='+k);const br=BRANDS.find(x=>x.key===k)||{};
+$('#brand').onchange=e=>setBrand(e.target.value);$('#brand2').onchange=e=>setBrand(e.target.value);
+$('#tdev').value=pref('tdev')||'iphone-69';$('#tdevLbl').textContent=$('#tdev').selectedOptions[0].textContent;$('#tdev').onchange=e=>{pref('tdev',e.target.value);$('#tdevLbl').textContent=e.target.selectedOptions[0].textContent};
+async function loadBrand(k){B=await api('/api/brand?k='+k);
   document.documentElement.dataset.brand=B.ds||'debenhams';
   $('#brandLbl').textContent=$('#brandLbl2').textContent=B.name;
-  const bl=BUILDS.filter(x=>x.brand===k);$('#brandMeta').textContent=bl.length?`Newest: ${bl.map(x=>`${x.platform==='ios'?'iOS':'Android'} ${x.version} (${x.build})`).filter((v,i,a)=>a.indexOf(v)===i).slice(0,2).join(' · ')}`:'No build yet for this brand';
-  renderScreens();
+  const bl=BUILDS.filter(x=>x.brand===k);$('#brandMeta').textContent=bl.length?`Newest: ${[...new Set(bl.map(x=>`${x.platform==='ios'?'iOS':'Android'} ${x.version} (${x.build})`))].slice(0,2).join(' · ')}`:'No build yet for this brand';
   $('#accEmail').value=B.accountEmail||'';$('#accState').textContent=B.hasAccount?'Saved in Keychain':'Not set';
-  $('#storeChips').innerHTML=(B.stores||[]).map(s=>`<span class="chip on">${H(s.code)}</span>`).join('')||'<span class="help" style="margin:0">No stores yet</span>';
-  $('#bagItems').value=(B.bag||[]).map(i=>[i.search,i.colour||'',i.size||''].join(' | ')).join('\n');
-  $('#wishItems').value=(B.wishlist||[]).map(i=>[i.search,i.colour||''].join(' | ')).join('\n');
-  if(!$('#p-export').hidden)renderExport();}
-const TYPES=[['auto','Learn from reference'],['learned','Learned route'],['home','Home'],['wishlist','Wishlist'],['bag','Bag'],['pdp','Product page'],['search','Search results'],['menu','Menu item'],['home-tile','Home page tile']];
+  renderScreens();if(!$('#p-export').hidden)renderExport();}
+
+/* screens: pick from the app / upload references — one ordered list */
+const mode=()=>pref('mode')||'pick';
+function setMode(m){pref('mode',m);$$('#modeChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.m===m));$('#m-pick').hidden=m!=='pick';$('#m-upload').hidden=m!=='upload'}
+$$('#modeChips .chip').forEach(c=>c.onclick=()=>setMode(c.dataset.m));setMode(mode());
+const pageOpts=sel=>`<option value="">Choose a page…</option>`+Object.entries(PAGES).map(([k,p])=>`<option value="${k}"${k===sel?' selected':''}>${H(p.n)}</option>`).join('');
+function inputFor(s){const p=PAGES[s.page];if(!p)return'';
+  if(p.input==='url')return `<label class="fld"><input data-k="url" value="${H(s.url||'')}" placeholder=" "><span class="lbl">${s.page==='plp'?'Category URL':'Page URL'} — from the website</span></label>`;
+  if(p.input==='term')return `<label class="fld"><input data-k="term" value="${H(s.term||'')}" placeholder=" "><span class="lbl">Search term</span></label>`;
+  if(p.input==='sku')return `<div class="row"><label class="fld grow"><input data-k="sku" value="${H(s.sku||'')}" placeholder=" "><span class="lbl">SKU${s.label&&!s.sku?` — or found by name: ${H(s.label)}`:''}</span></label>
+    <label class="fld" style="width:150px"><input data-k="colour" value="${H(s.colour||'')}" placeholder=" "><span class="lbl">Colour (optional)</span></label>
+    <div class="fsel" style="width:190px"><span>${s.view==='details'?'Show: price &amp; sizes':'Show: images'}</span><select data-k="view"><option value="top"${s.view!=='details'?' selected':''}>Show: images</option><option value="details"${s.view==='details'?' selected':''}>Show: price &amp; sizes</option></select></div></div>`;
+  if(p.input==='items')return `<textarea class="paste" data-k="items" rows="2" placeholder="One per line: SKU size (CMM33848 L) — or product name | size">${H(s.items||'')}</textarea>`;
+  if(p.input==='skus')return `<textarea class="paste" data-k="skus" rows="2" placeholder="One per line: SKU or product name (blank = what is already saved on the test account)">${H(s.skus||'')}</textarea>`;
+  return '';}
 function renderScreens(){
-  $('#screenList').innerHTML=B.screens.map((s,i)=>`<div class="scr" data-i="${i}">
-    <div class="scr-n"><span class="tagpill tagpill--n">${String(i+1).padStart(2,'0')}</span><label class="fld"><input data-k="name" value="${H(s.name)}" placeholder=" "><span class="lbl">Screen name</span></label></div>
-    <div class="pics">
-      <div class="pic">${s.ref?`<img src="${R}/api/ref?b=${B.key}&f=${encodeURIComponent(s.ref)}" alt=""><em class="tagpill">Reference</em>`:`<label class="drop drop--sm"><input type="file" accept="image/*" data-ref="${s.id}">Drop the reference</label>`}</div>
-      <div class="pic" data-prev="${s.id}"><img src="${R}/api/preview?b=${B.key}&s=${s.id}&t=${Date.now()}" alt="" onerror="this.parentNode.innerHTML='<label class=&quot;drop drop--sm&quot;>Test to see it here</label>'"><em class="tagpill">Test</em></div>
+  const used=new Set(B.screens.map(s=>s.page));
+  $('#pageChecks').innerHTML=Object.entries(PAGES).map(([k,p])=>`<div class="chk-row" data-page="${k}"><button class="chk${used.has(k)?' on':''}" aria-checked="${used.has(k)}"></button><span>${H(p.n)}${p.signedIn?' <small>signs in</small>':''}</span></div>`).join('');
+  const n=B.screens.filter(s=>s.page).length;$('#minMsg').style.display=n>=MIN?'none':'';$('#minTxt').textContent=`${n} of at least ${MIN} screens chosen — pick ${MIN-n} more.`;
+  $('#slotList').innerHTML=B.screens.map((s,i)=>`<div class="slot" data-i="${i}">
+    <span class="tagpill tagpill--n">${String(i+1).padStart(2,'0')}</span>
+    <div class="thumb">${s.ref?`<img src="${R}/api/ref?b=${B.key}&f=${encodeURIComponent(s.ref)}" alt="" title="Reference">`:`<label class="drop drop--sm" title="Add a reference screenshot"><input type="file" accept="image/*" data-ref="${s.id}">Ref</label>`}</div>
+    <div class="slot-main">
+      <div class="row"><div class="fsel grow"><span>${H(PAGES[s.page]?.n||'Choose a page…')}</span><select data-k="page">${pageOpts(s.page)}</select></div>
+        <label class="fld grow"><input data-k="label" value="${H(s.label||'')}" placeholder=" "><span class="lbl">Name in the file (optional)</span></label></div>
+      ${inputFor(s)}
+      <div class="slot-st">${s.page?(s.missing?`<span class="badge">To do: ${H(s.missing)}</span>`:'<span class="tagpill">Ready</span>'):''}${s.signedIn?' <span class="badge">Signs in</span>':''}${s.detected?` <span class="help" style="margin:0">Matched from upload: ${H(s.detected)}</span>`:''}</div>
     </div>
-    <div class="fsel"><span>${H((TYPES.find(t=>t[0]===s.type)||TYPES[0])[1])}${s.type==='learned'?` · ${s.steps?.length||0} steps`:''}</span><select data-k="type">${TYPES.map(t=>`<option value="${t[0]}"${t[0]===s.type?' selected':''}>${t[1]}</option>`).join('')}</select></div>
-    ${['menu','home-tile','pdp','search'].includes(s.type)?`<label class="fld"><input data-k="params" value="${H(paramText(s))}" placeholder=" "><span class="lbl">${{menu:'Menu | item',['home-tile']:'Swipes | tap point',pdp:'Product (from wishlist)',search:'Search term'}[s.type]}</span></label>`:''}
-    <div class="chk-row" data-k="session"><button class="chk${s.session==='signed-in'?' on':''}" aria-checked="${s.session==='signed-in'}"></button>Signed in</div>
-    <div class="acts">
-      <button class="bd pri sm" data-a="learn"${s.ref?'':' disabled'}>Learn</button><button class="bd sec sm" data-a="test">Test</button>
-      <button class="bd sec sm" data-a="up" aria-label="Move up">↑</button><button class="bd sec sm" data-a="down" aria-label="Move down">↓</button><button class="bd sec sm" data-a="del">Remove</button>
-    </div></div>`).join('')||'<p class="help">No screens yet — drop the brand\'s screenshots above.</p>';
+    <div class="thumb" data-prev="${s.id}">${s.hasPreview?`<img src="${R}/api/preview?b=${B.key}&s=${s.id}&t=${Date.now()}" alt="" title="Test shot">`:''}</div>
+    <div class="slot-acts"><button class="bd sec sm" data-a="test"${s.page&&!s.missing?'':' disabled'}>Test</button>
+      <button class="bd sec sm" data-a="up" aria-label="Move up"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 10V2M2.5 5.5 6 2l3.5 3.5"/></svg></button><button class="bd sec sm" data-a="down" aria-label="Move down"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2.5 6.5 6 10l3.5-3.5"/></svg></button><button class="bd sec sm" data-a="del" aria-label="Remove"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></button></div>
+  </div>`).join('');
   $$('[data-ref]').forEach(inp=>inp.onchange=async()=>{await upload(inp.files[0],`kind=ref&brand=${B.key}&screen=${inp.dataset.ref}`);loadBrand(B.key)});
 }
-function paramText(s){const p=s.params||{};return s.type==='menu'?`${p.menu||''} | ${p.item||''}`:s.type==='home-tile'?`${p.swipes||5} | ${p.tap||'50%,50%'}`:s.type==='pdp'?(p.fromWishlist||p.search||''):(p.search||'')}
-function parseParams(type,v){const [a,b]=v.split('|').map(x=>x.trim());return type==='menu'?{menu:a,item:b}:type==='home-tile'?{swipes:+a||5,tap:b||'50%,50%'}:type==='pdp'?{fromWishlist:a}:{search:a}}
-const saveScreens=()=>api('/api/brand/save',{key:B.key,screens:B.screens});
-$('#screenList').addEventListener('change',e=>{const c=e.target.closest('.scr');if(!c)return;const s=B.screens[c.dataset.i],k=e.target.dataset.k;
-  if(k==='name')s.name=e.target.value;if(k==='type'){s.type=e.target.value;if(s.type!=='learned')delete s.steps}if(k==='params')s.params=parseParams(s.type,e.target.value);
-  saveScreens();if(k==='type')renderScreens();});
-$('#screenList').addEventListener('click',async e=>{const c=e.target.closest('.scr');if(!c)return;const i=+c.dataset.i,s=B.screens[i];
-  const ses=e.target.closest('[data-k="session"]');if(ses){s.session=s.session==='signed-in'?'guest':'signed-in';await saveScreens();return renderScreens()}
-  const a=e.target.closest('[data-a]')?.dataset.a;if(!a)return;
-  if(a==='up'&&i>0){[B.screens[i-1],B.screens[i]]=[B.screens[i],B.screens[i-1]];await saveScreens();renderScreens()}
-  if(a==='down'&&i<B.screens.length-1){[B.screens[i+1],B.screens[i]]=[B.screens[i],B.screens[i+1]];await saveScreens();renderScreens()}
-  if(a==='del'&&confirm(`Remove "${s.name}"?`)){B.screens.splice(i,1);await saveScreens();renderScreens()}
-  if(a==='learn')api('/api/learn',{brand:B.key,screen:s.id,device:pref('learnDev')||'iphone-69'});
-  if(a==='test')api('/api/test',{brand:B.key,screen:s.id,device:pref('learnDev')||'iphone-69'});
+async function save(){B=await api('/api/brand/save',{key:B.key,screens:B.screens}).then(r=>({...B,...r}));renderScreens()}
+const newSlot=page=>({id:'s'+Math.random().toString(36).slice(2,8),page:page||''});
+$('#pageChecks').addEventListener('click',e=>{const r=e.target.closest('[data-page]');if(!r)return;const k=r.dataset.page;
+  if(B.screens.some(s=>s.page===k))B.screens=B.screens.filter(s=>s.page!==k||s.ref);   // untick removes it (keeps ones with a reference)
+  else{const empty=B.screens.find(s=>!s.page);if(empty)empty.page=k;else B.screens.push(newSlot(k))}
+  save()});
+$('#addSlot').onclick=()=>{B.screens.push(newSlot());save()};
+$('#slotList').addEventListener('change',e=>{const c=e.target.closest('.slot');if(!c)return;const s=B.screens[c.dataset.i],k=e.target.dataset.k;if(!k)return;
+  s[k]=e.target.value;if(k==='page'){delete s.detected}save()});
+$('#slotList').addEventListener('click',async e=>{const c=e.target.closest('.slot');if(!c)return;const i=+c.dataset.i,s=B.screens[i];const a=e.target.closest('[data-a]')?.dataset.a;if(!a)return;
+  if(a==='up'&&i>0){[B.screens[i-1],B.screens[i]]=[B.screens[i],B.screens[i-1]];save()}
+  if(a==='down'&&i<B.screens.length-1){[B.screens[i+1],B.screens[i]]=[B.screens[i],B.screens[i+1]];save()}
+  if(a==='del'){B.screens.splice(i,1);save()}
+  if(a==='test')api('/api/test',{brand:B.key,screen:s.id,device:pref('tdev')||'iphone-69'});
 });
 dropzone($('#refDrop'),$('#refFile'),async fs=>{for(const f of fs.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true})))await upload(f,`kind=ref&brand=${B.key}`);loadBrand(B.key)});
 $('#saveAcc').onclick=async()=>{await api('/api/account',{brand:B.key,email:$('#accEmail').value.trim(),password:$('#accPw').value||undefined});$('#accPw').value='';loadBrand(B.key)};
-$('#discover').onclick=()=>api('/api/stores/discover',{brand:B.key});
-const lines=(t,keys)=>t.split('\n').map(l=>l.split('|').map(x=>x.trim())).filter(a=>a[0]).map(a=>Object.fromEntries(keys.map((k,i)=>[k,a[i]||''])));
-$('#saveItems').onclick=async()=>{await api('/api/brand/save',{key:B.key,bag:lines($('#bagItems').value,['search','colour','size']),wishlist:lines($('#wishItems').value,['search','colour'])});$('#saveItems').textContent='Saved';setTimeout(()=>$('#saveItems').textContent='Save products',1500)};
 
 /* export */
 async function loadDevs(){DEVS=await api('/api/devices')}
-const chk=(on,label,attr,sub='')=>`<div class="chk-row" ${attr}><button class="chk${on?' on':''}" aria-checked="${on}"></button><span>${label}${sub?` <small>${sub}</small>`:''}</span></div>`;
+const chk=(on,label,attr,sub='',dis=false)=>`<div class="chk-row${dis?' dis':''}" ${attr}><button class="chk${on?' on':''}" aria-checked="${on}"${dis?' disabled':''}></button><span>${label}${sub?` <small>${sub}</small>`:''}</span></div>`;
 function renderExport(){if(!B)return;
   const bl=BUILDS.filter(x=>x.brand===B.key),ios=bl.find(x=>x.platform==='ios'),and=bl.find(x=>x.platform==='android');
   $('#expBuilds').textContent=[ios&&`iOS ${ios.version} (${ios.build})`,and&&`Android ${and.version} (${and.build})`].filter(Boolean).join(' · ')||'No builds for this brand yet — add them in Builds';
   $('#devList').innerHTML=['appstore','play'].map(st=>`<b style="font-size:14px">${st==='appstore'?'App Store':'Google Play'}${(st==='appstore'?ios:and)?'':' <small class="help">— no build</small>'}</b>`+DEVS.filter(d=>d.store===st).map(d=>chk(d.required&&!!(st==='appstore'?ios:and)&&!(d.ipad&&ios?.ipad===false),`${d.label}`,`data-dev="${d.key}"`,`${d.size}${d.required?' · required':''}${d.ipad&&ios?.ipad===false?' · build is iPhone-only':''}`)).join('')).join('');
-  const stores=B.stores.length?B.stores:[{code:'UK'}];
-  $('#storeHelp').textContent=B.stores.length?'The app is switched to each store, with the device in that language.':'No store list yet — Screens > Read stores from the app. Exports use UK until then.';
-  $('#storeList').innerHTML=stores.map(s=>chk(true,s.code,`data-store="${s.code}"`,s.locale||'')).join('');
-  $('#scrList').innerHTML=B.screens.map((s,i)=>chk(s.type!=='auto',`${String(i+1).padStart(2,'0')} ${H(s.name)}`,`data-scr="${s.id}"`,s.type==='auto'?'not learned yet':'')).join('');
+  $('#ctryList').innerHTML=B.countries.map(c=>`<div class="chk-row" data-ctry="${c.code}"><button class="chk on" aria-checked="true"></button><img src="${flag(c.flag)}" alt="" width="20" height="14" style="border-radius:2px"><span>${H(c.name)} <small>${H(c.language)} · ${H(c.lang)}</small></span></div>`).join('');
+  const ready=B.screens.filter(s=>s.page&&!s.missing);
+  $('#scrHelp').textContent=`${ready.length} ready${ready.length<MIN?` — at least ${MIN} needed (Screens tab)`:''}${B.screens.some(s=>s.page&&s.missing)?' · screens marked To do are skipped until filled in':''}`;
+  $('#scrList').innerHTML=B.screens.filter(s=>s.page).map((s,i)=>chk(!s.missing,`${String(i+1).padStart(2,'0')} ${H(s.title)}`,`data-scr="${s.id}"`,s.missing?`to do: ${s.missing}`:'',!!s.missing)).join('');
 }
-document.addEventListener('click',e=>{const r=e.target.closest('#p-export .chk-row');if(!r)return;const c=r.querySelector('.chk'),on=!c.classList.contains('on');c.classList.toggle('on',on);c.setAttribute('aria-checked',on)});
+document.addEventListener('click',e=>{const r=e.target.closest('#p-export .chk-row');if(!r||r.classList.contains('dis'))return;const c=r.querySelector('.chk'),on=!c.classList.contains('on');c.classList.toggle('on',on);c.setAttribute('aria-checked',on)});
 const picked=a=>$$(`[data-${a}] .chk.on`).map(c=>c.parentNode.dataset[a]);
-$('#run').onclick=()=>{const o={brand:B.key,devices:picked('dev'),stores:picked('store'),screens:picked('scr')};
-  if(!o.devices.length||!o.screens.length)return alert('Pick at least one device size and one screen');$('#gal').innerHTML='';$('#log').textContent='';api('/api/export',o)};
+$('#run').onclick=()=>{const o={brand:B.key,devices:picked('dev'),markets:picked('ctry'),screens:picked('scr')};
+  if(!o.devices.length||!o.markets.length)return alert('Pick at least one device size and one country');
+  if(o.screens.length<MIN&&!confirm(`Only ${o.screens.length} screens are ready (${MIN} is the minimum for a listing). Export anyway?`))return;
+  $('#gal').innerHTML='';$('#log').textContent='';api('/api/export',o)};
 $('#stop').onclick=()=>api('/api/stop');$('#openOut').onclick=()=>api('/api/open',{});
 function addShot(f){$('#gal').insertAdjacentHTML('afterbegin',`<a href="${R}/api/shot?f=${encodeURIComponent(f)}" target="_blank"><img src="${R}/api/shot?f=${encodeURIComponent(f)}" alt="">${H(f.split('/').slice(-3).join(' / '))}</a>`)}
 
 /* setup */
 async function doctor(){const d=await api('/api/doctor');$('#doctor').innerHTML=d.map(c=>`<li><span>${c.ok?'✅':'❌'}</span><div>${H(c.n)}${c.ok?'':`<small>${H(c.fix)}</small>`}</div></li>`).join('')}
-$('#recheck').onclick=doctor;$('#saveKey').onclick=async()=>{await api('/api/settings',{anthropicKey:$('#apiKey').value.trim()});$('#apiKey').value='';doctor()};
+$('#recheck').onclick=doctor;
 
 connect();
 </script>
