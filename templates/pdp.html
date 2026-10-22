@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
 /* DS page template — PDP. THE MASTER PDP: the Shopping agent PDP (projects/shopping-agent, banked 16 Oct 2026) rebuilt on DS components only.
-   Order — mobile: header · USP banners · gallery (product tags bottom right) · AI tag chip (Shop Similar; desktop: top right of the main image) ·
+   Order — mobile: header · USP banners · gallery (product tags bottom right) · AI tag chip (Virtual Stylist, centred; desktop: under the gallery — Shop Similar is Google, not launched, kept in the DS only) ·
    PDP title · ratings · price · option label + colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always) ·
    Ask Deb / Google PDP prompts (ai-prompts.js) · membership box (Unlimited) · Deliver+ · delivery grid (delivery.js; See more → Delivery
    Options modal; returns line, then Sold & Delivered by — placeholder until a size is picked) · BNPL · Subscribe & Save (subscribe.js; ADD → modal) — that order, Jake 16 Oct · then the accordion set
@@ -29,6 +29,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
   .pdp{display:grid;grid-template-columns:minmax(0,1fr) 446px;gap:var(--gap-16);align-items:start}
   .pdp .gal{margin:0}
   .under{margin-top:var(--gap-6)}
+  .vs{margin-top:var(--gap-6)}
   .buy{gap:var(--gap-5)}
 }
 </style>
@@ -88,8 +89,9 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
   const crumbs=P.crumbs.map((c,i)=>i<P.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('');
   const bnpl=strip(V('bnpl',0)).replace(/£23\.33/,'£'+(num(P.price)/3).toFixed(2));
   const dplus=DPLUS.includes(S.brand)?strip(V('deliver-plus',d?1:0)):'';
-  /* Shop Similar: above the title on mobile, top right of the main image on desktop */
-  const chips=`<div class="pdp-chips" data-slot="ai-chips"><button class="ai-pill ai-pill--soft ai-pill--tag"><i class="ai-icon"></i>Shop Similar</button></div>`;
+  /* Virtual Stylist (hanger), centred: between the gallery and the title on mobile, under the gallery on desktop (Jake 22 Oct 2026, from live KM).
+     Shop Similar is a Google feature not launched yet: it stays in the DS (catalogue AI tag chip) but is off the default PDP. */
+  const chips=`<div class="pdp-chips pdp-chips--center" data-slot="ai-chips"><button class="ai-pill ai-pill--soft ai-pill--tag"><img class="ic" src="${LIB}icons-hanger.svg" alt="">Virtual Stylist</button></div>`;
   const under=`<div class="under" data-slot="below">${accSet(P)}</div>`;
   const buy=`<div class="buy" data-slot="buy">
       ${d?'':chips}
@@ -109,7 +111,7 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
     </div>`;
   return `${header()}<main class="pg">
   ${d?`<nav class="bc" aria-label="Breadcrumb">${crumbs}</nav>`:''}
-  <div class="pdp">${d?`<div><div class="gal">${gallery(P,chips)}</div>${under}</div>${buy}`:`<div class="gal">${gallery(P)}</div>${buy}${under}`}</div>
+  <div class="pdp">${d?`<div><div class="gal">${gallery(P)}</div><div class="vs">${chips}</div>${under}</div>${buy}`:`<div class="gal">${gallery(P)}</div>${buy}${under}`}</div>
   </main><footer data-ftr="${S.brand}"></footer>`}
 function wire(){
   const g=document.querySelector('.pdp-gal');if(!g)return;const sl=g.querySelector('.slides'),th=[...g.querySelectorAll('.thumbs button')],bar=g.querySelector('.pag i');

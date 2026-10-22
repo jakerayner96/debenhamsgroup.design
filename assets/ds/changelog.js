@@ -3,6 +3,20 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-10-22",
+  "v": "2026.10.22",
+  "title": "Virtual Stylist is the default PDP chip",
+  "by": "KM Premier colours (Jake, from live Karen Millen)",
+  "added": [
+   "AI tag chip · Virtual Stylist: hanger glyph (icons/lib/icons-hanger.svg, .ai-pill--tag img.ic 20px) + Virtual Stylist, centred (.pdp-chips--center); catalogue AI pill · by KM Premier colours"
+  ],
+  "changed": [
+   "PDP template (templates/pdp.html): Virtual Stylist replaces Shop Similar, centred between the gallery and the title on mobile and under the gallery on desktop (was top right of the main image). Every next PDP gets it · by KM Premier colours",
+   "Shop Similar is a Google feature that isn't launched yet: kept in the DS (catalogue AI pill · Shop Similar) but taken off the default PDP · by KM Premier colours"
+  ],
+  "fixed": []
+ },
+ {
   "d": "2026-10-21",
   "v": "2026.10.21c",
   "title": "KM black buttons + Membership box / Deliver+ light grounds",
