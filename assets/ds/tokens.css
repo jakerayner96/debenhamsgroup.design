@@ -216,7 +216,7 @@
   --dplus-bg:#FFE0EB;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000; /* boohoo keeps Light-3 pink for Deliver+ */
 }
 [data-brand="boohooman"]{--card-btn-bg:#01FE8A;--new:#01FE8A;--dplus-bg:#101010;--dplus-fg:#FFF;--dplus-link:#FFF;--dplus-check:#01FE8A}
-[data-brand="warehouse"],[data-brand="brandroom"]{--dplus-bg:#F2F2F2;--dplus-check:#000}
+[data-brand="warehouse"]{--dplus-bg:#F2F2F2;--dplus-check:#000} /* The Brand Room has no Deliver+ (rule, Jake 22 Oct 2026 — DG_hasDplus in dplus-logos.js) */
 [data-brand="plt"]{
   --action-buy:#550503;--action-buy-pressed:#450603;--action-buy-disabled:#FAF5E7;
   --action-disabled-bg:#FAF5E7;--action-disabled-fg:#B5B5B5;
