@@ -57,7 +57,7 @@ function pinExport(d,layer){
   const sheet=S.opt==='sheet',wh=win.offsetHeight;
   layer.style.cssText=`position:absolute;left:0;right:0;top:0;height:${vh}px;`+(sheet?'':`align-items:flex-start;padding-top:${Math.max(16,Math.round((vh-wh)/2))}px;`);
   if(sheet&&W().innerWidth<768)layer.style.cssText+=`;align-items:flex-start;padding-top:${vh-wh}px`;
-  if(!sheet){const sc=d.createElement('div');sc.className='mdl-scrim';sc.setAttribute('data-sup-x','');sc.style.cssText=`position:absolute;left:0;right:0;top:0;height:${h}px;z-index:499`;d.body.appendChild(sc);
+  {const sc=d.createElement('div');sc.className='mdl-scrim';sc.setAttribute('data-sup-x','');sc.style.cssText=`position:absolute;left:0;right:0;top:0;height:${h}px;z-index:499`;d.body.appendChild(sc);
     layer.querySelector('.mdl-scrim').style.background='transparent'}
 }
 function load(){

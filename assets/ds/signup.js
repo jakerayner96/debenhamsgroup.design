@@ -5,7 +5,7 @@
      DG_signup.LIVE             → the live copy (Bloomreach Engagement weblayer "A - Email & SMS Signup", scraped 21 Oct 2026)
    o = {layout:'split'|'bleed'|'lockup'|'sheet'|'flat'|'steps', img, lockups:[urls], logo, logoInv, flag,
         eyebrow, title, sub, cta, phone:'required'|'optional'|'off', no:bool, state:'form'|'error'|'done'|'step2', ratio:'45'|'34'|'11',
-        brands:[names], picks:[names], exporting:bool, anim:bool (false = no open motion), imgM (mobile asset, split)}
+        brands:[names], picks:[names], exporting:bool, anim:bool (false = no open motion), imgM (mobile asset, split), scrim:bool (slide-in only; false = no overlay)}
    Every visible piece is DS: .mdl (Modal), .modal-x, .fld / .fld--tel (Input field), .bd.pri / .bd.txt (Button), .chip (Chips). */
 (function(){
 const LIVE={
@@ -76,7 +76,9 @@ function html(o){
     const foot=L==='split'&&o.state!=='done'?`<div class="sup-foot">${legal()}</div>`:'';   /* split: legal under the content column (desktop) / under everything (mobile) */
     win=`<div class="mdl mdl--signup ${cls}${anim}" role="dialog" aria-label="${esc(o.title)}">${x}${media}${body(Object.assign({},o,{logo:''}))}${foot}</div>`;   /* the eyebrow already names the fascia — the logo is for the flat image only */
   }
-  return `<div class="sup-layer${L==='sheet'?' sup-layer--free':''}${instant?' sup-layer--instant':''}" data-sup>${L==='sheet'?'':'<div class="mdl-scrim" data-sup-close></div>'}${win}</div>`;
+  /* the DS Modal overlay (.mdl-scrim, 50% black) sits behind every layout; the slide-in can drop it with o.scrim:false (non-blocking) */
+  const scrim=L==='sheet'&&o.scrim===false?'':'<div class="mdl-scrim" data-sup-close></div>';
+  return `<div class="sup-layer${L==='sheet'?' sup-layer--free':''}${instant?' sup-layer--instant':''}" data-sup>${scrim}${win}</div>`;
 }
 /* the flat creative — one image; html2canvas exports .sup-art as the PNG that goes into the weblayer */
 function art(o){
@@ -89,7 +91,7 @@ const okPhone=v=>/^(?:0|\+?44)?7\d{9}$/.test(v.replace(/[\s()-]/g,''));
 function bind(layer,o,cb){
   cb=cb||{};o=Object.assign({},LIVE,o);
   const win=layer.querySelector('.mdl--signup'),close=()=>{
-    if(o.layout==='sheet'){win.style.display='none';let t=layer.querySelector('.sup-tab');if(!t){layer.insertAdjacentHTML('beforeend',`<button class="sup-tab" type="button">${esc(o.tab||'Get style tips')} <span aria-hidden="true">↑</span></button>`);t=layer.querySelector('.sup-tab');t.onclick=()=>{win.style.display='';t.remove()}}}
+    if(o.layout==='sheet'){win.style.display='none';const sc=layer.querySelector('.mdl-scrim');if(sc)sc.style.display='none';let t=layer.querySelector('.sup-tab');if(!t){layer.insertAdjacentHTML('beforeend',`<button class="sup-tab" type="button">${esc(o.tab||'Get style tips')} <span aria-hidden="true">↑</span></button>`);t=layer.querySelector('.sup-tab');t.onclick=()=>{win.style.display='';const sc=layer.querySelector('.mdl-scrim');if(sc)sc.style.display='';t.remove()}}}
     else{layer.remove()}
     cb.onClose&&cb.onClose()};
   layer.querySelectorAll('[data-sup-close]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();close()}));

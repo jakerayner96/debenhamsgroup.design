@@ -22,7 +22,7 @@ The panel is just the option list (click or ↑ ↓); copy, image and fields are
 | A | Split | Desktop: 50/50 — 4:5 portrait image (448 × 560, `img/<brand>-p.jpg`) beside the form. Mobile: its own 16:9 landscape asset (`img/<brand>-m.jpg`) on top, form underneath, legal last (639px tall at 390). |
 | B | Full bleed | 2:3 portrait on both breakpoints; form on a black gradient, white fields + CTA. |
 | C | Brand lockup | Today's structure on the DS — partner lockup band cross-fading through the 8 partners over a white form. |
-| D | Slide-in | Non-blocking card (bottom-left desktop, bottom of screen mobile), 4:5 thumbnail, no overlay; closes to a "Get style tips" tab. |
+| D | Slide-in | Smaller card bottom-left (desktop) / bottom of screen (mobile), 4:5 thumbnail, over the DS 50% black Modal overlay (22 Oct); tapping the overlay or close minimises it to a "Get style tips" tab. |
 | E | Two-step | Same image column on desktop, 4:5 thumbnail beside the headline on mobile. Email first, then favourite brands (DS chips) + optional SMS, then thank you. |
 
 The flat-image route (old A) was dropped from the review on 22 Oct; `.sup--flat` stays in the DS. Mobile popup heights at 390: 456–612px.
