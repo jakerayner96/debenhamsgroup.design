@@ -421,16 +421,47 @@ function classify(lines) {
   if (has(/^(wishlist|saved items|favoris|liste de souhaits|wunschliste|verlanglijst|önskelista)$/im)) return { page: 'wishlist' };
   if (has(/i have an account|j'ai un compte|ich habe ein konto|ik heb een account|jag har ett konto/i) && has(/password|mot de passe|passwort|wachtwoord|lösenord/i)) return { page: 'signin' };
   if (has(/order history|my details|historique des commandes|bestellverlauf|bestelgeschiedenis|orderhistorik/i)) return { page: 'account' };
-  if (has(/\bfilter\b|filtrer|filtern|filteren|filtrera/i) && has(/\bsort\b|trier|sortieren|sorteren|sortera/i) && has(/items\)|articles\)|artikel\)|producten\)|artiklar\)/i))
-    return /^(<|‹)?\s*(search|recherche|suche|zoeken|sök)\b/i.test(top.join(' ')) ? { page: 'search', term: title } : { page: 'plp', label: title };
-  if (has(/select a size|size guide|add to bag|choisir une taille|größe wählen|kies een maat|välj storlek|notify me/i)) {
-    const i = lines.findIndex(l => /^[£€$]\s?\d|\d[.,]\d{2}\s?(€|kr)/.test(l.t)); const name = i > 0 ? lines[i - 1].t : '';
+  const prices = lines.filter(l => /[£€$]\s?\d+[.,]\d{2}/.test(l.t)).length;
+  const isSearch = /^(<|‹)?\s*(search|recherche|suche|zoeken|sök)\b/i.test(top.join(' '));
+  const listing = (has(/\bfilter\b|filtrer|filtern|filteren|filtrera/i) && has(/\bsort\b|trier|sortieren|sorteren|sortera/i)) || has(/items\)|articles\)|artikel\)|producten\)|artiklar\)/i)
+    || (title && prices >= 2) || (title && lines.filter(l => l.y > 40).map(l => l.t).filter((t, i, a) => a.indexOf(t) !== i).length >= 1 && lines.filter(l => l.y > 40).length >= 6);   // a titled page of product tiles
+  if (listing && !has(/find products/i)) return isSearch ? { page: 'search', term: title } : { page: 'plp', label: title };
+  const pdpLike = has(/select a size|size guide|add to bag|choisir une taille|größe wählen|kies een maat|välj storlek|notify me|^colou?r:|^size:|couleur|farbe|kleur|färg/im)
+    || (!title && !has(/find products/i) && prices <= 1 && lines.some(l => l.y > 55 && l.t.length > 12));   // no page title, one product name low down = a product page (top of page)
+  if (pdpLike) {
+    const i = lines.findIndex(l => /^[£€$]\s?\d|\d[.,]\d{2}\s?(€|kr)/.test(l.t));
+    const low = lines.filter(l => l.y > 55 && l.x < 60 && l.t.length > 2 && !/^[£€$]|colou?r|size|save/i.test(l.t));
+    const name = i > 0 && lines[i - 1].t.length > 6 ? lines[i - 1].t : (low[1] || low[0] || {}).t || '';
     return { page: 'pdp', label: name.length > 6 ? name : '', view: lines.find(l => /size|taille|größe|maat|storlek/i.test(l.t))?.y < 80 ? 'details' : 'top' };
   }
   if (has(/^(sale|new|clothing|shoes|accessories|soldes|nouveautés|neu|nieuw|rea)$/im) && has(/find products|search|rechercher|suchen|zoeken|sök/i) && lines.filter(l => /^[A-Z &]{3,}$/.test(l.t)).length >= 5) return { page: 'menu' };
-  if (has(/find products|rechercher des produits|produkte finden|producten zoeken|sök produkter/i) && lines.findIndex(l => /find products|rechercher|finden|zoeken|sök/i.test(l.t)) < 8 && !title) return { page: 'home' };
-  if (has(/find products/i) && top.some(t => /sign in|hey|hi |good (morning|afternoon|evening)|bonjour|hallo/i.test(t))) return { page: 'home' };
+  if (has(/find products|rechercher des produits|produkte finden|producten zoeken|sök produkter/i) && lines.findIndex(l => /find products|rechercher|finden|zoeken|sök/i.test(l.t)) < 8 && !title) return { page: 'home', ...(lines.some(l => l.y < 10 && /(hey|hi|good (morning|afternoon|evening)|bonjour|hallo)\b.*,\s*\w+/i.test(l.t)) ? { session: 'signed-in' } : {}) };
+  if (has(/find products/i) && top.some(t => /sign in|hey|hi |good (morning|afternoon|evening)|bonjour|hallo/i.test(t))) return { page: 'home', ...(top.some(t => /(hey|hi|good (morning|afternoon|evening)|bonjour|hallo)\b.*,\s*\w+/i.test(t)) ? { session: 'signed-in' } : {}) };
   return { page: 'content', label: title };
+}
+
+/* ---------- the brand's sitemap: turn a page title / product name into its URL ---------- */
+const slugify = t => String(t || '').toLowerCase().replace(/&/g, ' ').replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+async function sitemap(b) {
+  const f = path.join(DATA, 'sitemaps', b.key + '.json'); const c = readJSON(f, null);
+  if (c && Date.now() - c.t < 86400000) return c;
+  const host = (builds().find(x => x.brand === b.key && x.host) || {}).host || b.web; if (!host) return { cats: [], products: [] };
+  const UA = { 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/155 Safari/537.36' };
+  const get = u => fetch(u, { headers: UA }).then(r => r.ok ? r.text() : '').catch(() => '');
+  const maps = ((await get(`https://${host}/robots.txt`)).match(/^sitemap:\s*(\S+)/gim) || []).map(l => l.split(/:\s*/).slice(1).join(':').trim());
+  const urls = []; for (const m of maps) urls.push(...((await get(m)).match(/<loc>[^<]+/g) || []).map(x => x.slice(5)));
+  const out = { t: Date.now(), cats: urls.filter(u => /\/categories\//.test(u)), products: urls.filter(u => /\/product\//.test(u)) };
+  fs.mkdirSync(path.dirname(f), { recursive: true }); writeJSON(f, out); return out;
+}
+async function findUrl(b, guess) {
+  if (!guess.label) return null; const sm = await sitemap(b); const slug = slugify(guess.label);
+  if (guess.page === 'plp') {
+    const last = u => u.split('/categories/')[1].replace(/[/?#].*$/, '');
+    const c = sm.cats.filter(u => { const l = last(u); return l === slug || l === 'brands-' + slug || l.endsWith('-' + slug); }).sort((a, z) => last(a).length - last(z).length);
+    return c[0] || null;
+  }
+  if (guess.page === 'pdp') { const c = sm.products.filter(u => u.includes('/product/') && u.split('/product/')[1].replace(/_[a-z0-9]+$/i, '').endsWith(slug)); return c[0] || null; }
+  return null;
 }
 
 /* ---------- export: every device × country × screen ---------- */
@@ -540,11 +571,15 @@ http.createServer(async (req, res) => {
         const guess = classify(await ocr(f));
         let s = sid && b.screens.find(x => x.id === sid);
         const norm = v => String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
-        if (!s) s = (guess.label && b.screens.find(x => !x.ref && x.page === guess.page && norm(x.label) === norm(guess.label)))   // same page + same name
-          || b.screens.find(x => !x.ref && x.page === guess.page) || b.screens.find(x => !x.ref && !x.page);
-        if (!s) { s = { id: uid() }; b.screens.push(s); }
+        // uploads build the list in the order they're dropped: untouched default slots make way, a slot you prepared for this page (same name) is reused
+        const untouched = x => !x.ref && !['url', 'sku', 'term', 'items', 'skus', 'label', 'cat', 'scroll'].some(k => x[k]);
+        if (!s) { b.screens = b.screens.filter(x => !untouched(x));
+          s = guess.label && b.screens.find(x => !x.ref && x.page === guess.page && norm(x.label) === norm(guess.label));
+          if (!s) { s = { id: uid() }; b.screens.push(s); } }
         if (s.page !== guess.page) { for (const k of ['url', 'sku', 'term', 'items', 'skus', 'view']) delete s[k]; s.page = guess.page; }
         for (const [k, v] of Object.entries(guess)) if (v && !s[k]) s[k] = v;          // fill gaps, never overwrite what was typed
+        if (!s.url && !s.sku) { const u = await findUrl(b, guess).catch(() => null);
+          if (u) { if (guess.page === 'pdp') s.sku = u; else s.url = u; s.found = u; } }
         s.ref = path.basename(f); s.detected = PAGES[guess.page]?.n; saveBrand(b);
         return json(res, { ok: true, screen: s, guess });
       }

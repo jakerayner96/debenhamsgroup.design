@@ -318,7 +318,7 @@ function renderScreens(){if(!B)return;
         ${fld('label',s.label,'Name in the file (optional)')}</div>
       ${inputFor(s)}
       <div class="row">${s.page?`<label class="fld" style="width:120px" title="How far to scroll before the screenshot, as % of the screen height (100 = one full screen)"><input data-k="scroll" type="number" min="0" max="500" step="5" value="${H(scrollVal(s))}" placeholder=" "><span class="lbl">Scroll %</span></label>`:''}
-        <div class="slot-st">${s.page?(s.missing?`<span class="badge">To do: ${H(s.missing)}</span>`:'<span class="tagpill">Ready</span>'):''}${s.signedIn?' <span class="badge">Signs in</span>':''}${s.detected?` <span class="help" style="margin:0">Matched from upload: ${H(s.detected)}</span>`:''}</div></div>
+        <div class="slot-st">${s.page?(s.missing?`<span class="badge">To do: ${H(s.missing)}</span>`:'<span class="tagpill">Ready</span>'):''}${s.page?` <span class="chk-row" data-sess style="display:inline-flex"><button class="chk${s.signedIn?' on':''}" aria-checked="${!!s.signedIn}"></button>Signed in</span>`:''}${s.detected?` <span class="help" style="margin:0">Matched from upload: ${H(s.detected)}</span>`:''}</div></div>
     </div>
     <div class="thumb" data-prev="${s.id}">${s.hasPreview?`<img src="${R}/api/preview?b=${B.key}&s=${s.id}&t=${Date.now()}" alt="" title="Test shot">`:''}</div>
     <div class="slot-acts"><button class="bd sec sm" data-a="test"${s.page&&!s.missing&&tdev?'':' disabled'} title="${tdev?'Test on '+H(tdev.label):'Tick a device above'}">Test</button>
@@ -335,7 +335,9 @@ $('#pageChecks').addEventListener('click',e=>{const r=e.target.closest('[data-pa
 $('#addSlot').onclick=()=>{if(!B)return;B.screens.push(newSlot());save()};
 $('#slotList').addEventListener('change',e=>{const c=e.target.closest('.slot');if(!c)return;const s=B.screens[c.dataset.i],k=e.target.dataset.k;if(!k)return;
   s[k]=e.target.value;if(k==='page')delete s.detected;if(k==='sku')delete s.url;if(k==='scroll')delete s.view;save()});
-$('#slotList').addEventListener('click',async e=>{const c=e.target.closest('.slot');if(!c)return;const i=+c.dataset.i,s=B.screens[i];const a=e.target.closest('[data-a]')?.dataset.a;if(!a)return;
+$('#slotList').addEventListener('click',async e=>{const c=e.target.closest('.slot');if(!c)return;const i=+c.dataset.i,s=B.screens[i];
+  if(e.target.closest('[data-sess]')){s.session=s.signedIn?'guest':'signed-in';return save()}
+  const a=e.target.closest('[data-a]')?.dataset.a;if(!a)return;
   if(a==='up'&&i>0){[B.screens[i-1],B.screens[i]]=[B.screens[i],B.screens[i-1]];save()}
   if(a==='down'&&i<B.screens.length-1){[B.screens[i+1],B.screens[i]]=[B.screens[i],B.screens[i+1]];save()}
   if(a==='del'){B.screens.splice(i,1);save()}
