@@ -63,10 +63,10 @@ const COUNTRIES = SEED._countries || {};
 // The pages an app has. input = what the slot needs; signedIn = taken after signing in with the test account.
 const PAGES = {
   home: { n: 'Home' },
-  menu: { n: 'Menu (categories)' },
+  menu: { n: 'Menu (categories)', input: 'cat', hint: 'Optional: a top-level category to open its second level, e.g. Women' },
   plp: { n: 'Category page (PLP)', input: 'url', hint: 'Category URL from the website, e.g. https://www.boohooman.com/categories/mens-jeans' },
   search: { n: 'Search results', input: 'term', hint: 'Search term' },
-  pdp: { n: 'Product page (PDP)', input: 'sku', hint: 'Product SKU (e.g. CMM33848), or a category URL + which product on it' },
+  pdp: { n: 'Product page (PDP)', input: 'sku', hint: 'SKU (e.g. CMM33848) or product URL from the website' },
   bag: { n: 'Bag', input: 'items', hint: 'Products in the bag, one per line: SKU size, or product name | size' },
   wishlist: { n: 'Wishlist', input: 'skus', hint: 'Products to save, one per line: SKU or product name', signedIn: true },
   signin: { n: 'Sign in' },
@@ -351,7 +351,7 @@ function missing(s) {                      // what a slot still needs before it 
   if (s.page === 'plp' && !s.url) return 'add the category URL';
   if (s.page === 'content' && !s.url) return 'add the page URL';
   if (s.page === 'search' && !s.term) return 'add a search term';
-  if (s.page === 'pdp' && !s.sku && !s.url && !s.label) return 'add the SKU';
+  if (s.page === 'pdp' && !s.sku && !s.url && !s.label) return 'add the SKU or product URL';
   return '';
 }
 const toTabs = (d, APP) => flow(d, 'tabs.yaml', { APP }, 'back to tabs');
@@ -360,16 +360,16 @@ async function goTo(d, ctx, s) {
   await toTabs(d, APP);                       // every screen starts from the tab bar (and link-opened pages get "< Home")
   switch (s.page) {
     case 'home': return flow(d, 'home.yaml', { APP }, 'Home');
-    case 'menu': return flow(d, 'menu.yaml', { APP }, 'Menu');
+    case 'menu': { const ok = await flow(d, 'menu.yaml', { APP }, 'Menu');
+      return s.cat ? flow(d, 'menu-cat.yaml', { APP, CAT: s.cat }, 'Menu › ' + s.cat) : ok; }
     case 'plp': case 'content': return openPath(d, ctx, pathOf(s.url));
     case 'search': return flow(d, 'search.yaml', { APP, TERM: s.term }, 'Search');
-    case 'pdp': { const ok = s.sku ? await openPath(d, ctx, skuPath(s.sku))
-        : s.url ? (await openPath(d, ctx, pathOf(s.url)), await flow(d, 'pick.yaml', { APP, N: Math.max(0, (+s.pick || 1) - 1) }, `product ${s.pick || 1} on the category`))
-        : await flow(d, 'find.yaml', { APP, TERM: s.label }, 'find product');
-      // scroll first, then pick the colour (scrolling back up afterwards would trigger pull-to-refresh and reset the colour)
-      if (s.view === 'details') await flow(d, 'pdp-details.yaml', { APP }, 'scroll to sizes');
-      if (s.colour) { await flow(d, 'colour.yaml', { APP, COLOUR: s.colour }, 'colour ' + s.colour);
-        if (s.view !== 'details') await flow(d, 'scroll-up-once.yaml', { APP }, 'back to the images'); }
+    case 'pdp': { const ref = String(s.sku || s.url || '').trim(); let ok;
+      if (/\/categories\//.test(ref)) { await openPath(d, ctx, pathOf(ref)); ok = await flow(d, 'pick.yaml', { APP, N: Math.max(0, (+s.pick || 1) - 1) }, `product ${s.pick || 1} on the category`); }
+      else if (ref.includes('/')) ok = await openPath(d, ctx, pathOf(ref));          // product URL
+      else if (ref) ok = await openPath(d, ctx, skuPath(ref));                       // SKU
+      else ok = await flow(d, 'find.yaml', { APP, TERM: s.label }, 'find product');  // name (from an uploaded reference)
+      if (s.colour) await flow(d, 'colour.yaml', { APP, COLOUR: s.colour }, 'colour ' + s.colour);
       return ok; }
     case 'bag': return flow(d, 'bag.yaml', { APP }, 'Bag');
     case 'wishlist': return flow(d, 'wishlist.yaml', { APP }, 'Wishlist');
@@ -389,7 +389,7 @@ async function captureSet(d, ctx, code, slots, outDir, onShot) {
   if (ctx.b.markets.length > 1) await switchCountry(d, ctx.APP, code);
   const guest = slots.filter(s => !isSignedIn(s)), signed = slots.filter(isSignedIn);
   const bag = guest.filter(s => s.page === 'bag').flatMap(bagItems); if (bag.length) await fillBag(d, ctx, bag);
-  const shoot = async s => { await goTo(d, ctx, s); await wait(2500); await onShot(s, await shot(d, path.join(outDir, `${String(s.n).padStart(2, '0')} ${safe(s.title)}.png`))); };
+  const shoot = async s => { await goTo(d, ctx, s); await scrollBy(d, ctx.APP, scrollOf(s)); await wait(2500); await onShot(s, await shot(d, path.join(outDir, `${String(s.n).padStart(2, '0')} ${safe(s.title)}.png`))); };
   for (const s of guest) await shoot(s);
   if (!signed.length) return;
   if (!(await signIn(d, ctx.b, ctx.APP))) { for (const s of signed) await onShot(s, null); return; }
@@ -397,6 +397,12 @@ async function captureSet(d, ctx, code, slots, outDir, onShot) {
   for (const s of signed) await shoot(s);
 }
 const titleOf = s => s.label || PAGES[s.page]?.n || 'Screen';
+// Scroll N% of the screen height before the shot: slow drags of at most 50% so the page doesn't fling.
+const scrollOf = s => s.scroll !== undefined && s.scroll !== '' ? Math.max(0, Math.min(500, +s.scroll || 0)) : (s.view === 'details' ? 40 : 0);
+async function scrollBy(d, APP, pct) {
+  for (let left = pct; left > 0; left -= 50) { const step = Math.min(50, left);
+    await flow(d, 'scroll.yaml', { APP, FROM: '75%', TO: `${75 - step}%` }, `scroll ${step}%`); }
+}
 
 /* ---------- reference screenshots: offline text recognition (macOS Vision) ---------- */
 const OCR_BIN = path.join(DATA, 'ocr');
@@ -439,8 +445,8 @@ async function exportRun(o) {
   const progress = cur => emit({ type: 'progress', done, total, cur, eta: done ? Math.round((Date.now() - t0) / done * (total - done) / 60000) : null });
   log(`▶ ${b.name} — ${devs.length} device sizes × ${markets.length} countries × ${slots.length} screens = ${total} screenshots`);
   for (const def of devs) {
-    const bd = builds().find(x => x.brand === b.key && x.platform === def.platform);
-    if (!bd) { log(`⚠︎ No ${def.platform === 'ios' ? 'iOS' : 'Android'} build for ${b.name} — skipping ${def.label}`); done += markets.length * slots.length; continue; }
+    const bd = builds().find(x => x.brand === b.key && x.platform === def.platform && (!o.builds?.length || o.builds.includes(x.file)));
+    if (!bd) { log(`⚠︎ No ${def.platform === 'ios' ? 'iOS' : 'Android'} build ticked for ${b.name} — skipping ${def.label}`); done += markets.length * slots.length; continue; }
     if (def.ipad && bd.ipad === false) { log('This iOS build is iPhone-only — skipping iPad.'); done += markets.length * slots.length; continue; }
     progress(`Booting ${def.label}`);
     const d = await boot({ ...def, id: st.find(x => x.key === def.key)?.id }); await install(d, bd);
@@ -463,7 +469,7 @@ async function testScreen(o) {                // one slot, UK, on one device →
   const b = brand(o.brand), s = b.screens.find(x => x.id === o.screen); if (!s) throw new Error('Unknown screen');
   const m = missing(s); if (m) throw new Error(`"${titleOf(s)}": ${m} first`);
   const def = DEVICES.find(x => x.key === (o.device || 'iphone-69'));
-  const bd = builds().find(x => x.brand === b.key && x.platform === def.platform); if (!bd) throw new Error(`Add a ${def.platform === 'ios' ? 'iOS' : 'Android'} build for ${b.name} first (Builds tab)`);
+  const bd = builds().find(x => x.brand === b.key && x.platform === def.platform && (!o.builds?.length || o.builds.includes(x.file))); if (!bd) throw new Error(`Add a ${def.platform === 'ios' ? 'iOS' : 'Android'} build for ${b.name} first (Builds tab)`);
   const st = await deviceStatus(); const d = await boot({ ...def, id: st.find(x => x.key === def.key)?.id }); await install(d, bd);
   const ctx = { b, bd, APP: bd.appId };
   await captureSet(d, ctx, b.markets[0] || 'UK', [{ ...s, n: 0, title: titleOf(s) }], path.join(DATA, 'previews', b.key, '_tmp'), async (x, f) => {
@@ -551,7 +557,7 @@ http.createServer(async (req, res) => {
     if (P === '/api/brand/save') { const b = brand(o.key); if (o.screens) b.screens = o.screens.map(s => { const { title, missing: _m, signedIn, hasPreview, ...keep } = s; return keep; }); saveBrand(b); return json(res, brandOut(b)); }
     if (P === '/api/account') { await setSecret(o.brand + ':email', o.email); if (o.password) await setSecret(o.brand + ':password', o.password); return json(res, { ok: true }); }
     if (P === '/api/test') return job(res, 'Testing a screen', () => testScreen(o));
-    if (P === '/api/export') return job(res, 'Exporting', () => exportRun(o));
+    if (P === '/api/export') return job(res, 'Exporting', async () => { for (const run of (o.runs || [o])) { if (stop) break; await exportRun({ ...o, ...run }); } });
     if (P === '/api/open') { sh('open', [o.path ? path.join(OUT, o.path) : OUT]); return json(res, { ok: true }); }
     res.writeHead(404); res.end();
   } catch (e) { json(res, { error: e.message }, 500); }

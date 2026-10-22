@@ -1,8 +1,0 @@
-# Scroll a product page from the images to the price, colours and sizes
-appId: ${APP}
----
-- swipe:
-    start: "50%,72%"
-    end: "50%,32%"
-    duration: 1200
-- waitForAnimationToEnd

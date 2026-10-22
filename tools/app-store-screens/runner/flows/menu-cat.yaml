@@ -1,0 +1,7 @@
+# In the Menu: open a top-level category to show its second level
+appId: ${APP}
+---
+- tapOn:
+    text: "(?i)${CAT}"
+    index: 0
+- waitForAnimationToEnd

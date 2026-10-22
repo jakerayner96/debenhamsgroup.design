@@ -12,10 +12,12 @@ flows/home.yaml
 flows/ipad-fullscreen.yaml
 flows/link-ios.yaml
 flows/login.yaml
+flows/menu-cat.yaml
 flows/menu.yaml
-flows/pdp-details.yaml
+flows/pick.yaml
 flows/prep.yaml
 flows/scroll-up-once.yaml
+flows/scroll.yaml
 flows/search.yaml
 flows/settle.yaml
 flows/store.yaml
@@ -24,4 +26,3 @@ flows/tap-point.yaml
 flows/wait.yaml
 flows/wish-here.yaml
 flows/wishlist.yaml
-flows/pick.yaml

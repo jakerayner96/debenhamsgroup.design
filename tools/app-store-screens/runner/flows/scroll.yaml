@@ -1,0 +1,8 @@
+# One slow drag up (no fling), FROM → TO as % of the screen height
+appId: ${APP}
+---
+- swipe:
+    start: "50%,${FROM}"
+    end: "50%,${TO}"
+    duration: 1800
+- waitForAnimationToEnd
