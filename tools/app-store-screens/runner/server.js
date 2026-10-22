@@ -334,7 +334,19 @@ async function addFromFile(file) {
   return addBuild({ brand: b.key, brandName: b.name, ...again, file: to, source: 'upload', added: Date.now() });
 }
 function rememberAppId(b, platform, appId) { const k = platform === 'ios' ? 'ios' : 'android'; if (appId && !(b[k] || []).includes(appId)) { b[k] = [...(b[k] || []), appId]; saveBrand(b); } }
+// Is this exact build already on the device? (apps stay installed across reboots; only an erase removes them)
+async function installedVersion(d, appId) {
+  if (d.platform === 'ios') {
+    const c = await sh('xcrun', ['simctl', 'get_app_container', d.id, appId], { timeout: 30000 }); if (!c.ok) return null;
+    const pl = k => sh('/usr/libexec/PlistBuddy', ['-c', `Print :${k}`, path.join(c.out.trim(), 'Info.plist')]).then(r => r.out.trim());
+    return `${await pl('CFBundleShortVersionString')} (${await pl('CFBundleVersion')})`;
+  }
+  const r = await sh(ADB, ['-s', d.id, 'shell', 'dumpsys', 'package', appId], { timeout: 30000 });
+  const n = (r.out.match(/versionName=(\S+)/) || [])[1], c = (r.out.match(/versionCode=(\d+)/) || [])[1];
+  return n ? `${n} (${c})` : null;
+}
 async function install(d, bd) {
+  if (await installedVersion(d, bd.appId) === `${bd.version} (${bd.build})`) { log(`${bd.brandName} ${bd.version} (${bd.build}) is already on ${d.label} — skipping install.`); return; }
   log(`Installing ${bd.brandName} ${bd.version} on ${d.label}…`);
   if (d.platform === 'ios') { const r = await sh('xcrun', ['simctl', 'install', d.id, bd.app]); if (!r.ok) throw new Error(r.err); return; }
   if (/\.apk$/.test(bd.file)) { const r = await sh(ADB, ['-s', d.id, 'install', '-r', bd.file]); if (!r.ok) throw new Error(r.err); return; }
