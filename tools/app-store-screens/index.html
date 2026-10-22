@@ -78,7 +78,7 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
   <div class="crumb"><a href="../../#tools">Planning and Tools</a> / App Store Screenshot Exporter</div>
   <div class="hd">
     <div><h1>App Store Screenshot Exporter</h1>
-      <p>Paste the dev's Expo links, choose the screens, and export every App Store and Google Play size in every store language, ready to drop into Figma.</p></div>
+      <p>Paste the dev's Expo links, choose the screens, and export the required App Store (iPhone 6.9in, iPad 13in) and Google Play (phone) screenshots in every store language, ready to drop into Figma.</p></div>
     <span class="sp"></span>
     <div class="conn"><span class="dot" id="dot"></span><span id="connTxt">Looking for the runner on this Mac…</span></div>
   </div>
@@ -166,7 +166,7 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
       <div class="row"><div class="fsel grow" style="max-width:320px"><span id="brandLbl2">Brand</span><select id="brand2" aria-label="Brand"></select></div><span class="help" style="margin:0" id="expBuilds"></span></div>
     </div>
     <div class="grid2">
-      <div class="card"><h2>Device sizes</h2><p class="help">Required sizes are ticked. One device runs at a time.</p><div class="stack" id="devList"></div></div>
+      <div class="card"><h2>Device sizes</h2><p class="help">The minimum each store requires. One device runs at a time.</p><div class="stack" id="devList"></div></div>
       <div class="card"><h2>Countries &amp; languages</h2><p class="help">The countries this app trades in. Each one is captured with the app switched to that country and the device in its language.</p><div class="stack" id="ctryList"></div></div>
     </div>
     <div class="card"><h2>Screens</h2><p class="help" id="scrHelp"></p><div class="matrix" id="scrList"></div></div>
@@ -187,8 +187,6 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
         iPad 13in 2064×2752/ …
       Google Play/
         Phone 1080×1920/ …
-        Tablet 7in 1200×1920/ …
-        Tablet 10in 1600×2560/ …
       manifest.json</pre></div>
     </div>
     <div class="card"><h2>Latest screenshots</h2><div class="gal" id="gal"></div></div>

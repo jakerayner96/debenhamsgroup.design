@@ -22,12 +22,11 @@ const ALLOWED_ORIGINS = [/^https:\/\/jakerayner96\.github\.io$/, /^http:\/\/loca
 for (const d of ['brands', 'refs', 'builds', 'previews']) fs.mkdirSync(path.join(DATA, d), { recursive: true });
 
 /* ---------- the device matrix: what each store needs ---------- */
+// The minimum each store requires (22 Oct, Jake): App Store iPhone 6.9in + iPad 13in, Google Play phone.
 const DEVICES = [
   { key: 'iphone-69', store: 'appstore', platform: 'ios', label: 'iPhone 6.9in', name: 'iPhone 17 Pro Max', type: 'iPhone-17-Pro-Max', size: '1320 × 2868', required: true },
   { key: 'ipad-13', store: 'appstore', platform: 'ios', label: 'iPad 13in', name: 'iPad Pro 13-inch (M5)', type: 'iPad-Pro-13-inch-M5-12GB', size: '2064 × 2752', required: true, ipad: true },
   { key: 'play-phone', store: 'play', platform: 'android', label: 'Phone', avd: 'DG_Play_Phone', w: 1080, h: 1920, dpi: 420, size: '1080 × 1920', required: true },
-  { key: 'play-7', store: 'play', platform: 'android', label: 'Tablet 7in', avd: 'DG_Play_Tablet_7', w: 1200, h: 1920, dpi: 320, size: '1200 × 1920' },
-  { key: 'play-10', store: 'play', platform: 'android', label: 'Tablet 10in', avd: 'DG_Play_Tablet_10', w: 1600, h: 2560, dpi: 320, size: '1600 × 2560' },
 ];
 const STORE_NAME = { appstore: 'App Store', play: 'Google Play' };
 /* ---------- helpers ---------- */
