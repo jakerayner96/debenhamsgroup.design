@@ -60,7 +60,7 @@ async function calm() {
     if (!said) { log(`   …Mac is busy (load ${os.loadavg()[0].toFixed(0)}), pausing until it settles`); said = true; }
     await wait(10000);
   }
-  await wait(1500);                            // a breather between steps
+  await wait(300);                             // a short breather between steps
 }
 
 /* ---------- brands (seed + local edits) ---------- */
@@ -109,31 +109,76 @@ const KC = 'DG App Store Screens';
 const getSecret = async a => { const r = await sh('security', ['find-generic-password', '-s', KC, '-a', a, '-w']); return r.ok ? r.out.trim() : ''; };
 const setSecret = (a, v) => v ? sh('security', ['add-generic-password', '-U', '-s', KC, '-a', a, '-w', v]) : sh('security', ['delete-generic-password', '-s', KC, '-a', a]);
 
-/* ---------- Maestro ---------- */
+/* ---------- Maestro: one long-lived session per device (`maestro mcp`) ----------
+   Starting `maestro test` cold costs 20–60 s per step (Java + the simulator's test driver). A session started once
+   keeps the driver connected: each step then takes ~2 s and reading the screen ~0.2 s (22 Oct). The CLI is the fallback. */
+const SESSIONS = {};
+class Session {
+  constructor(dev) {
+    this.dev = dev; this.id = 10; this.pending = {}; this.buf = ''; this.dead = false;
+    this.p = spawn('nice', ['-n', '10', MAESTRO, 'mcp'], { env: ENV, cwd: FLOWS });
+    this.p.stdout.on('data', d => { this.buf += d; let i; while ((i = this.buf.indexOf('\n')) >= 0) { const l = this.buf.slice(0, i); this.buf = this.buf.slice(i + 1);
+      try { const m = JSON.parse(l); const r = this.pending[m.id]; if (r) { delete this.pending[m.id]; r(m); } } catch {} } });
+    this.p.stderr.on('data', () => {});
+    this.p.on('close', () => { this.dead = true; for (const r of Object.values(this.pending)) r({ error: { message: 'session closed' } }); this.pending = {}; });
+    this.ready = (async () => { this.send({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2024-11-05', capabilities: {}, clientInfo: { name: 'dg-app-store-screens', version: '2' } } });
+      await new Promise(r => { this.pending[1] = r; }); this.send({ jsonrpc: '2.0', method: 'notifications/initialized' }); })();
+  }
+  send(o) { if (!this.dead) this.p.stdin.write(JSON.stringify(o) + '\n'); }
+  async call(name, args, ms = STEP_LIMIT) {
+    await this.ready; const i = this.id++;
+    return new Promise(res => { const t = setTimeout(() => { delete this.pending[i]; res({ hung: true }); }, ms);
+      this.pending[i] = m => { clearTimeout(t); res(m); }; this.send({ jsonrpc: '2.0', id: i, method: 'tools/call', params: { name, arguments: args } }); });
+  }
+  kill() { this.dead = true; try { this.p.kill('SIGKILL'); } catch {} }
+}
+const session = d => { let x = SESSIONS[d.id]; if (!x || x.dead) x = SESSIONS[d.id] = new Session(d.id); return x; };
+function endSessions(except) { for (const [k, x] of Object.entries(SESSIONS)) if (k !== except) { x.kill(); delete SESSIONS[k]; } }
+const textOf = m => (m.result?.content || []).map(c => c.text || '').join('\n');
 async function maestro(d, file, env = {}, label) {
   if (stop) throw new Error('Stopped');
   await calm();
-  const args = ['--device', d.id, 'test'];
-  for (const [k, v] of Object.entries(env)) args.push('-e', `${k}=${v}`);
-  args.push(file);
-  return await new Promise(res => {
-    const p = spawn('nice', ['-n', '15', MAESTRO, ...args], { env: ENV, cwd: FLOWS }); child = p; let tail = '', hung = false;   // low priority
-    const on = b => { const t = String(b).replace(/\x1b\[[0-9;]*[A-Za-z]/g, ''); tail = (tail + t).slice(-4000);
-      t.split('\n').filter(l => /FAILED/.test(l)).forEach(l => log(`   ⚠︎ ${label || file}: ${l.trim()}`)); };
-    p.stdout.on('data', on); p.stderr.on('data', on);
-    const limit = setTimeout(() => { hung = true; p.kill('SIGKILL'); }, STEP_LIMIT);   // a step that hangs (Maestro's driver) must not stall the run
-    p.on('close', code => { clearTimeout(limit); child = null; res({ ok: code === 0 && !hung, hung, tail }); });
-  });
+  const strEnv = Object.fromEntries(Object.entries(env).map(([k, v]) => [k, String(v)]));
+  const m = await session(d).call('run', { device_id: d.id, files: [path.join(FLOWS, file)], env: strEnv });
+  if (m.hung) { session(d).kill(); return { ok: false, hung: true, tail: '' }; }
+  const txt = textOf(m); let ok = !m.error && !m.result?.isError;
+  try { const j = JSON.parse(txt.slice(txt.lastIndexOf('{"success"'))); ok = ok && j.success !== false; if (!ok) log(`   ⚠︎ ${label || file}: ${String(j.message || j.error || 'failed').split('\n')[0].slice(0, 200)}`); }
+  catch { if (!ok) log(`   ⚠︎ ${label || file}: ${(m.error?.message || txt).split('\n')[0].slice(0, 200)}`); }
+  return { ok, hung: false, tail: txt };
+}
+const yq = v => JSON.stringify(String(v));
+async function runSteps(d, APP, body, label) {
+  if (stop) throw new Error('Stopped');
+  await calm(); log(`   · ${label}`);
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const m = await session(d).call('run', { device_id: d.id, yaml: `appId: ${APP}\n---\n${body}` });
+    const t = textOf(m); const ok = !m.hung && !m.error && !m.result?.isError;
+    if (ok) return true;
+    if ((m.hung || /unreachable|session closed/i.test(t + (m.error?.message || ''))) && attempt === 0) {   // the iOS driver dropped: fresh session, once
+      log(`   ⚠︎ ${label}: Maestro lost the device — reconnecting`); session(d).kill(); await sh('pkill', ['-f', 'xcodebuild test-without-building']); await wait(3000); continue; }
+    log(`   ⚠︎ ${label}: ${(t.match(/"error":"([^"]+)"/) || [, t.slice(-160)])[1]}`); return false;
+  }
+  return false;
+}
+async function swipeRaw(d, APP, from, to, label) {
+  if (stop) throw new Error('Stopped');
+  await calm(); log(`   · ${label}`);
+  const yaml = `appId: ${APP}\n---\n- swipe:\n    start: "50%,${Math.round(from)}%"\n    end: "50%,${Math.round(to)}%"\n    duration: 1800\n- waitForAnimationToEnd\n`;
+  const m = await session(d).call('run', { device_id: d.id, yaml }); const ok = !m.hung && !m.error && !m.result?.isError;
+  if (!ok) log(`   ⚠︎ ${label}: ${textOf(m).slice(-200)}`); return ok;
 }
 async function flow(d, file, env, label) {
   log(`   · ${label || file.replace('.yaml', '')}`);
   let r = await maestro(d, file, env, label);
-  if (r.hung) { log(`   ⚠︎ ${label || file}: Maestro hung — retrying once`); await sh('pkill', ['-f', 'xcodebuild test-without-building']); await wait(3000); r = await maestro(d, file, env, label); }
+  if (r.hung || /unreachable|session closed/i.test(r.tail || '')) { log(`   ⚠︎ ${label || file}: Maestro lost the device — reconnecting and retrying once`); session(d).kill(); await sh('pkill', ['-f', 'xcodebuild test-without-building']); await wait(3000); r = await maestro(d, file, env, label); }
   return r.ok;
 }
+// inspect_screen's compact JSON → the same shape as `maestro hierarchy`
+function expand(n) { return { attributes: { bounds: n.b || '', text: n.txt || '', accessibilityText: n.a11y || '', 'resource-id': n.rid || '', hintText: n.hint || '' }, children: (n.c || []).map(expand) }; }
 async function hierarchy(d) {
-  const r = await sh(MAESTRO, ['--device', d.id, 'hierarchy'], { timeout: 180000 });
-  const i = r.out.indexOf('{'); try { return JSON.parse(r.out.slice(i)); } catch { return null; }
+  const m = await session(d).call('inspect_screen', { device_id: d.id }, 60000);
+  try { const j = JSON.parse(textOf(m)); return { attributes: {}, children: (j.elements || []).map(expand) }; }
+  catch { const r = await sh(MAESTRO, ['--device', d.id, 'hierarchy'], { timeout: 180000 }); const i = r.out.indexOf('{'); try { return JSON.parse(r.out.slice(i)); } catch { return null; } }
 }
 function elements(h) {
   const out = []; let W = 0, H = 0;
@@ -190,6 +235,7 @@ async function ensureDevice(d) {
   const run = await androidRunning(); return { ...d, id: run[d.avd] };
 }
 async function shutdownAll(except) {
+  endSessions(except);
   for (const s of await iosList()) if (s.state === 'Booted' && s.udid !== except) { log(`Shutting down ${s.name} (one device at a time keeps the Mac responsive)`); await sh('xcrun', ['simctl', 'shutdown', s.udid]); }
   const run = exists(ADB) ? await androidRunning() : {};
   for (const [n, serial] of Object.entries(run)) if (serial !== except) { log(`Shutting down Android ${n}`); await sh(ADB, ['-s', serial, 'emu', 'kill']); }
@@ -355,7 +401,7 @@ const skuList = s => String(s.skus || '').split('\n').map(x => x.trim()).filter(
 const openProduct = (d, ctx, it) => it.sku || isSku(it) ? openPath(d, ctx, skuPath(it.sku || it)) : flow(d, 'find.yaml', { APP: ctx.APP, TERM: it.name || it }, 'find ' + String(it.name || it).slice(0, 30));
 function missing(s) {                      // what a slot still needs before it can be captured
   if (!PAGES[s.page]) return 'choose a page';
-  if (s.page === 'plp' && !s.url) return 'add the category URL';
+  if (s.page === 'plp' && !s.url && !s.menuPath) return 'add the menu path or category URL';
   if (s.page === 'content' && !s.url) return 'add the page URL';
   if (s.page === 'search' && !s.term) return 'add a search term';
   if (s.page === 'pdp' && !s.sku && !s.url && !s.label) return 'add the SKU or product URL';
@@ -369,13 +415,21 @@ async function goTo(d, ctx, s) {
     case 'home': return flow(d, 'home.yaml', { APP }, 'Home');
     case 'menu': { const ok = await flow(d, 'menu.yaml', { APP }, 'Menu');
       return s.cat ? flow(d, 'menu-cat.yaml', { APP, CAT: s.cat }, 'Menu › ' + s.cat) : ok; }
-    case 'plp': case 'content': return openPath(d, ctx, pathOf(s.url));
+    case 'plp': if (s.menuPath) { const parts = String(s.menuPath).split(/\s*[>›]\s*/).filter(Boolean);
+        const taps = parts.map(t => `- scrollUntilVisible:\n    element:\n      text: ${yq('(?i)' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))}\n    direction: DOWN\n    timeout: 15000\n    optional: true\n- tapOn:\n    text: ${yq('(?i)' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))}\n    index: 0\n- waitForAnimationToEnd\n`).join('');
+        const ok = await runSteps(d, APP, `- tapOn:\n    id: navSearch\n- tapOn:\n    id: navSearch\n- waitForAnimationToEnd\n${taps}- extendedWaitUntil:\n    visible:\n      id: plpItem-0\n    timeout: 20000\n`, 'menu ' + parts.join(' › '));
+        if (ok || !s.url) return ok; await toTabs(d, APP); }
+      return openPath(d, ctx, pathOf(s.url));
+    case 'content': return openPath(d, ctx, pathOf(s.url));
     case 'search': return flow(d, 'search.yaml', { APP, TERM: s.term }, 'Search');
     case 'pdp': { const ref = String(s.sku || s.url || '').trim(); let ok;
+      const sku = isSku(ref) ? ref : (ref.match(/\/product\/[^?#]*_([a-z]{2,4}\d{4,8})/i) || [])[1];
       if (/\/categories\//.test(ref)) { await openPath(d, ctx, pathOf(ref)); ok = await flow(d, 'pick.yaml', { APP, N: Math.max(0, (+s.pick || 1) - 1) }, `product ${s.pick || 1} on the category`); }
-      else if (ref.includes('/')) ok = await openPath(d, ctx, pathOf(ref));          // product URL
-      else if (ref) ok = await openPath(d, ctx, skuPath(ref));                       // SKU
-      else ok = await flow(d, 'find.yaml', { APP, TERM: s.label }, 'find product');  // name (from an uploaded reference)
+      else if (sku) {                                  // through the app's search, so it opens inside the tabs like a shopper would
+        ok = await runSteps(d, APP, `- tapOn:\n    id: navSearch\n- tapOn:\n    id: navSearch\n- tapOn:\n    id: fakeSearchInputBar\n- waitForAnimationToEnd\n- inputText: ${yq(sku.toUpperCase())}\n- pressKey: Enter\n- extendedWaitUntil:\n    visible:\n      id: plpItem-0\n    timeout: 20000\n- tapOn:\n    id: plpItem-0\n- extendedWaitUntil:\n    visible:\n      id: productImageCarousel\n    timeout: 20000\n- waitForAnimationToEnd\n`, 'find ' + sku.toUpperCase());
+        if (!ok) { await toTabs(d, APP); ok = await openPath(d, ctx, ref.includes('/') ? pathOf(ref) : skuPath(sku)); } }
+      else if (ref.includes('/')) ok = await openPath(d, ctx, pathOf(ref));
+      else ok = await flow(d, 'find.yaml', { APP, TERM: s.label }, 'find product');
       if (s.colour) await flow(d, 'colour.yaml', { APP, COLOUR: s.colour }, 'colour ' + s.colour);
       return ok; }
     case 'bag': return flow(d, 'bag.yaml', { APP }, 'Bag');
@@ -408,7 +462,7 @@ const titleOf = s => s.label || PAGES[s.page]?.n || 'Screen';
 const scrollOf = s => s.scroll !== undefined && s.scroll !== '' ? Math.max(0, Math.min(500, +s.scroll || 0)) : (s.view === 'details' ? 40 : 0);
 async function scrollBy(d, APP, pct) {
   for (let left = pct; left > 0; left -= 50) { const step = Math.min(50, left);
-    await flow(d, 'scroll.yaml', { APP, FROM: '75%', TO: `${75 - step}%` }, `scroll ${step}%`); }
+    await swipeRaw(d, APP, 75, 75 - step, `scroll ${step}%`); }
 }
 
 /* ---------- precise positioning: PLP row / product at the top, PDP ¼ · ½ · ¾ into the image ---------- */
@@ -422,18 +476,18 @@ async function boxes(d) {
   if (h) walk(h); return { els: out, H };
 }
 async function drag(d, APP, px, H) {                 // move content up by px (negative = down), slow so nothing flings
-  const pct = Math.max(-60, Math.min(60, px / H * 100)); if (Math.abs(pct) < 0.5) return;
+  const pct = Math.max(-60, Math.min(60, px / H * 100)); if (Math.abs(pct) < 0.5) return true;
   const from = pct > 0 ? 80 : 20, to = from - pct;
-  await flow(d, 'scroll.yaml', { APP, FROM: `${Math.round(from)}%`, TO: `${Math.round(to)}%` }, `align ${pct.toFixed(0)}%`);
+  return swipeRaw(d, APP, from, to, `align ${pct.toFixed(0)}%`);
 }
 // target(els) → { y: current top of the thing, want: where its top should be } or null if not on screen yet
 async function align(d, APP, target, label) {
-  for (let i = 0, seek = 0; i < 8; i++) {
+  for (let i = 0, seek = 0, fails = 0; i < 8; i++) {
     const { els, H } = await boxes(d); if (!H) return;
     const t = target(els, H);
     if (!t) { if (++seek > 12) { log(`   ⚠︎ ${label}: not found on the page`); return; } await drag(d, APP, H * 0.5, H); i--; continue; }
     const delta = t.y - t.want; if (Math.abs(delta) <= H * 0.006) return;
-    await drag(d, APP, delta, H);
+    if (!(await drag(d, APP, delta, H)) && ++fails >= 2) { log(`   ⚠︎ ${label}: could not scroll`); return; }
   }
 }
 const topOfList = els => { const l = els.find(e => e.id === 'plpFlatlist'); return l ? l.y1 : null; };

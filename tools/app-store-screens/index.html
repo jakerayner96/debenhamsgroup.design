@@ -302,7 +302,7 @@ $$('#modeChips .chip').forEach(c=>c.onclick=()=>setMode(c.dataset.m));setMode(mo
 const pageOpts=sel=>`<option value="">Choose a page…</option>`+Object.entries(PAGES).map(([k,p])=>`<option value="${k}"${k===sel?' selected':''}>${H(p.n)}</option>`).join('');
 const fld=(k,v,lbl,style='')=>`<label class="fld${style?'':' grow'}"${style?` style="${style}"`:''}><input data-k="${k}" value="${H(v||'')}" placeholder=" "><span class="lbl">${lbl}</span></label>`;
 function inputFor(s){const p=PAGES[s.page];if(!p)return'';
-  if(s.page==='plp')return `<div class="row">${fld('url',s.url,'Category URL — e.g. https://www.thebrandroom.com/categories/womens')}</div>${plpTop(s)}`;
+  if(s.page==='plp')return `<div class="row">${fld('menuPath',s.menuPath,'Menu path — e.g. Brands > Calvin Klein (opens it like a shopper, with the tab bar)')}</div><div class="row">${fld('url',s.url,'Or category URL — e.g. https://www.thebrandroom.com/categories/womens')}</div>${plpTop(s)}`;
   if(s.page==='content')return `<div class="row">${fld('url',s.url,'Page URL — e.g. …/pages/informational/premier-delivery')}</div>`;
   if(s.page==='search')return `<div class="row">${fld('term',s.term,'Search term')}</div>${plpTop(s)}`;
   if(s.page==='menu')return `<div class="row">${fld('cat',s.cat,'Second level of (optional) — e.g. Women; blank = top level')}</div>`;
