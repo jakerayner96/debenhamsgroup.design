@@ -389,7 +389,7 @@ async function captureSet(d, ctx, code, slots, outDir, onShot) {
   if (ctx.b.markets.length > 1) await switchCountry(d, ctx.APP, code);
   const guest = slots.filter(s => !isSignedIn(s)), signed = slots.filter(isSignedIn);
   const bag = guest.filter(s => s.page === 'bag').flatMap(bagItems); if (bag.length) await fillBag(d, ctx, bag);
-  const shoot = async s => { await goTo(d, ctx, s); await scrollBy(d, ctx.APP, scrollOf(s)); await wait(2500); await onShot(s, await shot(d, path.join(outDir, `${String(s.n).padStart(2, '0')} ${safe(s.title)}.png`))); };
+  const shoot = async s => { await goTo(d, ctx, s); await position(d, ctx, s); await wait(2500); await onShot(s, await shot(d, path.join(outDir, `${String(s.n).padStart(2, '0')} ${safe(s.title)}.png`))); };
   for (const s of guest) await shoot(s);
   if (!signed.length) return;
   if (!(await signIn(d, ctx.b, ctx.APP))) { for (const s of signed) await onShot(s, null); return; }
@@ -402,6 +402,56 @@ const scrollOf = s => s.scroll !== undefined && s.scroll !== '' ? Math.max(0, Ma
 async function scrollBy(d, APP, pct) {
   for (let left = pct; left > 0; left -= 50) { const step = Math.min(50, left);
     await flow(d, 'scroll.yaml', { APP, FROM: '75%', TO: `${75 - step}%` }, `scroll ${step}%`); }
+}
+
+/* ---------- precise positioning: PLP row / product at the top, PDP ¼ · ½ · ¾ into the image ---------- */
+// Reads where things really are (Maestro hierarchy, screen units), drags by exactly the difference, checks, corrects.
+async function boxes(d) {
+  const h = await hierarchy(d); const out = []; let H = 0;
+  const walk = n => { const a = n.attributes || {}; const m = (a.bounds || '').match(/\[(-?\d+),(-?\d+)\]\[(-?\d+),(-?\d+)\]/);
+    if (m) { const [x1, y1, x2, y2] = m.slice(1).map(Number); if (!H && y2 > 0) H = y2;
+      out.push({ id: (a['resource-id'] || '').trim(), text: (a.text || a.accessibilityText || '').trim(), x1, y1, x2, y2 }); }
+    (n.children || []).forEach(walk); };
+  if (h) walk(h); return { els: out, H };
+}
+async function drag(d, APP, px, H) {                 // move content up by px (negative = down), slow so nothing flings
+  const pct = Math.max(-60, Math.min(60, px / H * 100)); if (Math.abs(pct) < 0.5) return;
+  const from = pct > 0 ? 80 : 20, to = from - pct;
+  await flow(d, 'scroll.yaml', { APP, FROM: `${Math.round(from)}%`, TO: `${Math.round(to)}%` }, `align ${pct.toFixed(0)}%`);
+}
+// target(els) → { y: current top of the thing, want: where its top should be } or null if not on screen yet
+async function align(d, APP, target, label) {
+  for (let i = 0, seek = 0; i < 8; i++) {
+    const { els, H } = await boxes(d); if (!H) return;
+    const t = target(els, H);
+    if (!t) { if (++seek > 12) { log(`   ⚠︎ ${label}: not found on the page`); return; } await drag(d, APP, H * 0.5, H); i--; continue; }
+    const delta = t.y - t.want; if (Math.abs(delta) <= H * 0.006) return;
+    await drag(d, APP, delta, H);
+  }
+}
+const topOfList = els => { const l = els.find(e => e.id === 'plpFlatlist'); return l ? l.y1 : null; };
+const tileFor = (els, el) => els.find(e => /^plpItem-\d+$/.test(e.id) && el.y1 >= e.y1 - 2 && el.y2 <= e.y2 + 2 && el.x1 >= e.x1 - 2 && el.x2 <= e.x2 + 2);
+async function position(d, ctx, s) {
+  const APP = ctx.APP;
+  if ((s.page === 'plp' || s.page === 'search') && (s.topRow || s.topProduct)) {
+    let listTop = null;
+    if (s.topProduct) {
+      const slug = slugify(String(s.topProduct).replace(/^.*\/product\//, '').replace(/_[a-z0-9]+(\?.*)?$/i, '').replace(/\?.*$/, ''));
+      return align(d, APP, els => { listTop = listTop ?? topOfList(els);
+        const name = els.find(e => e.text.length > 8 && !/^plpItem/.test(e.id) && slug.endsWith(slugify(e.text)));
+        const tile = name && (tileFor(els, name) || name); return tile && listTop != null ? { y: tile.y1, want: listTop } : null; }, 'product ' + s.topProduct);
+    }
+    const n = Math.max(0, (+s.topRow - 1) * 2);       // two products per row on phone and iPad
+    return align(d, APP, els => { listTop = listTop ?? topOfList(els); const t = els.find(e => e.id === `plpItem-${n}`);
+      return t && listTop != null ? { y: t.y1, want: listTop } : null; }, 'row ' + s.topRow);
+  }
+  if (s.page === 'pdp' && +s.imgScroll > 0) {
+    let start = null;
+    return align(d, APP, els => { const c = els.find(e => e.id === 'productImageCarousel'); if (!c) return null;
+      if (start == null) start = { top: c.y1, h: c.y2 - c.y1 };
+      return { y: c.y1, want: start.top - start.h * (+s.imgScroll / 100) }; }, 'image ' + s.imgScroll + '%');
+  }
+  return scrollBy(d, APP, scrollOf(s));
 }
 
 /* ---------- reference screenshots: offline text recognition (macOS Vision) ---------- */

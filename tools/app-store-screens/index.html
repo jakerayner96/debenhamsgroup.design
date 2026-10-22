@@ -293,17 +293,24 @@ $$('#modeChips .chip').forEach(c=>c.onclick=()=>setMode(c.dataset.m));setMode(mo
 const pageOpts=sel=>`<option value="">Choose a page…</option>`+Object.entries(PAGES).map(([k,p])=>`<option value="${k}"${k===sel?' selected':''}>${H(p.n)}</option>`).join('');
 const fld=(k,v,lbl,style='')=>`<label class="fld${style?'':' grow'}"${style?` style="${style}"`:''}><input data-k="${k}" value="${H(v||'')}" placeholder=" "><span class="lbl">${lbl}</span></label>`;
 function inputFor(s){const p=PAGES[s.page];if(!p)return'';
-  if(s.page==='plp')return `<div class="row">${fld('url',s.url,'Category URL — e.g. https://www.thebrandroom.com/categories/womens')}</div>`;
+  if(s.page==='plp')return `<div class="row">${fld('url',s.url,'Category URL — e.g. https://www.thebrandroom.com/categories/womens')}</div>${plpTop(s)}`;
   if(s.page==='content')return `<div class="row">${fld('url',s.url,'Page URL — e.g. …/pages/informational/premier-delivery')}</div>`;
-  if(s.page==='search')return `<div class="row">${fld('term',s.term,'Search term')}</div>`;
+  if(s.page==='search')return `<div class="row">${fld('term',s.term,'Search term')}</div>${plpTop(s)}`;
   if(s.page==='menu')return `<div class="row">${fld('cat',s.cat,'Second level of (optional) — e.g. Women; blank = top level')}</div>`;
   if(s.page==='pdp'){const ref=s.sku||s.url||'',cat=/\/categories\//.test(ref);
     return `<div class="row">${fld('sku',ref,`SKU or product URL${s.label&&!ref?` — or found by name: ${H(s.label)}`:''}`)}
       ${cat?`<div class="fsel" style="width:150px"><span>Product ${+s.pick||1}</span><select data-k="pick">${[1,2,3,4,5,6].map(n=>`<option value="${n}"${(+s.pick||1)===n?' selected':''}>Product ${n}</option>`).join('')}</select></div>`:''}
-      ${fld('colour',s.colour,'Colour (optional)','width:170px')}</div>`;}
+      ${fld('colour',s.colour,'Colour (optional)','width:170px')}${pdpImg(s)}</div>`;}
   if(p.input==='items')return `<textarea class="paste" data-k="items" rows="2" placeholder="One per line: SKU size (CMM33848 L) — or product name | size">${H(s.items||'')}</textarea>`;
   if(p.input==='skus')return `<textarea class="paste" data-k="skus" rows="2" placeholder="One per line: SKU or product name (blank = what is already saved on the test account)">${H(s.skus||'')}</textarea>`;
   return '';}
+function plpTop(s){const mode=s.topProduct!==undefined&&s.topProduct!==null&&s.topProduct!==false?'product':(+s.topRow?'row':'none');
+  return `<div class="row"><div class="fsel" style="width:230px"><span>${mode==='product'?'Top of screen: a product':mode==='row'?`Top of screen: row ${+s.topRow}`:'Top of screen: page top'}</span><select data-k="top">
+    <option value="none"${mode==='none'?' selected':''}>Top of screen: page top</option>${[1,2,3,4,5,6,7,8,9,10].map(n=>`<option value="row${n}"${mode==='row'&&+s.topRow===n?' selected':''}>Top of screen: row ${n}</option>`).join('')}
+    <option value="product"${mode==='product'?' selected':''}>Top of screen: a product</option></select></div>
+    ${mode==='product'?fld('topProduct',s.topProduct||'','Product URL or name — its row sits right under the nav bar'):''}</div>`;}
+function pdpImg(s){const v=+s.imgScroll||0;const L={0:'Image: top',25:'Image: ¼ scrolled',50:'Image: ½ scrolled',75:'Image: ¾ scrolled'};
+  return `<div class="fsel" style="width:200px"><span>${L[v]||L[0]}</span><select data-k="imgScroll">${[0,25,50,75].map(n=>`<option value="${n}"${v===n?' selected':''}>${L[n]}</option>`).join('')}</select></div>`;}
 const scrollVal=s=>s.scroll!==undefined&&s.scroll!==''?s.scroll:(s.view==='details'?40:0);
 function renderScreens(){if(!B)return;
   const used=new Set(B.screens.map(s=>s.page));
@@ -317,7 +324,7 @@ function renderScreens(){if(!B)return;
       <div class="row"><div class="fsel grow"><span>${H(PAGES[s.page]?.n||'Choose a page…')}</span><select data-k="page">${pageOpts(s.page)}</select></div>
         ${fld('label',s.label,'Name in the file (optional)')}</div>
       ${inputFor(s)}
-      <div class="row">${s.page?`<label class="fld" style="width:120px" title="How far to scroll before the screenshot, as % of the screen height (100 = one full screen)"><input data-k="scroll" type="number" min="0" max="500" step="5" value="${H(scrollVal(s))}" placeholder=" "><span class="lbl">Scroll %</span></label>`:''}
+      <div class="row">${s.page&&!['plp','search','pdp'].includes(s.page)?`<label class="fld" style="width:120px" title="How far to scroll before the screenshot, as % of the screen height (100 = one full screen)"><input data-k="scroll" type="number" min="0" max="500" step="5" value="${H(scrollVal(s))}" placeholder=" "><span class="lbl">Scroll %</span></label>`:''}
         <div class="slot-st">${s.page?(s.missing?`<span class="badge">To do: ${H(s.missing)}</span>`:'<span class="tagpill">Ready</span>'):''}${s.page?` <span class="chk-row" data-sess style="display:inline-flex"><button class="chk${s.signedIn?' on':''}" aria-checked="${!!s.signedIn}"></button>Signed in</span>`:''}${s.detected?` <span class="help" style="margin:0">Matched from upload: ${H(s.detected)}</span>`:''}</div></div>
     </div>
     <div class="thumb" data-prev="${s.id}">${s.hasPreview?`<img src="${R}/api/preview?b=${B.key}&s=${s.id}&t=${Date.now()}" alt="" title="Test shot">`:''}</div>
@@ -334,6 +341,8 @@ $('#pageChecks').addEventListener('click',e=>{const r=e.target.closest('[data-pa
   save()});
 $('#addSlot').onclick=()=>{if(!B)return;B.screens.push(newSlot());save()};
 $('#slotList').addEventListener('change',e=>{const c=e.target.closest('.slot');if(!c)return;const s=B.screens[c.dataset.i],k=e.target.dataset.k;if(!k)return;
+  if(k==='top'){const v=e.target.value;delete s.scroll;if(v==='none'){delete s.topRow;delete s.topProduct}else if(v==='product'){delete s.topRow;s.topProduct=s.topProduct||''}else{delete s.topProduct;s.topRow=+v.slice(3)}return save()}
+  if(k==='imgScroll'){delete s.scroll;delete s.view}
   s[k]=e.target.value;if(k==='page')delete s.detected;if(k==='sku')delete s.url;if(k==='scroll')delete s.view;save()});
 $('#slotList').addEventListener('click',async e=>{const c=e.target.closest('.slot');if(!c)return;const i=+c.dataset.i,s=B.screens[i];
   if(e.target.closest('[data-sess]')){s.session=s.signedIn?'guest':'signed-in';return save()}
