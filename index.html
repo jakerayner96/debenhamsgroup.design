@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Debenhams Group Design</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geologica:slnt,wght,CRSV,SHRP@-12..0,100..900,0..1,0..100&family=Archivo:wght@300..800&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;700&family=Jost:wght@400;600&family=Hanken+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geologica:slnt,wght,CRSV,SHRP@-12..0,100..900,0..1,0..100&family=Archivo:wght@300..800&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;700&family=Jost:wght@400;600&family=Hanken+Grotesk:wght@400;500;700&family=Urbanist:wght@400;500;600;700&family=Lato:wght@400;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ds/tokens.css">
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
@@ -218,7 +218,9 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .rchips{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0}
 .rchip{width:88px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
 .rchip i{display:block;height:56px;border:1px solid var(--med);background:var(--surface);margin-bottom:8px}
-.pr5{grid-template-columns:1.1fr .9fr .9fr .9fr .9fr}
+.pr.pr5{grid-template-columns:1.1fr .9fr .9fr .9fr .9fr}
+.pr.pr6{grid-template-columns:1.1fr 1.2fr .9fr .9fr .9fr .8fr}
+#typeFascias .ff{font-size:16px;color:var(--ink)}
 .code{font-family:var(--mono);font-size:13px;line-height:1.7;color:var(--ink);background:var(--surface);border-radius:var(--r);padding:16px 20px;overflow-x:auto;margin:12px 0;white-space:pre}
 .code b{color:var(--info);font-weight:400}
 .specimen{display:flex;flex-direction:column;gap:14px;align-items:flex-start;justify-content:center;text-align:left;padding:36px 44px}
@@ -854,16 +856,11 @@ body.sbm .hdrbtns{display:none}
     </div>
     <h2>Size primitives</h2>
     <p style="font-family:var(--mono);font-size:12px;color:var(--ink-2)">10 · 12 · 14 · 16 · 20 · 24 · 28 · 32 · 36 · 40 · 48</p>
-    <h2>Per-fascia resolution <code>colour alignment, Aug 26</code></h2>
-    <div class="props">
-      <div class="pr5 pr h"><span>Fascia</span><span>Font</span><span>Regular</span><span>Strong</span><span>CTA case</span></div>
-      <div class="pr5 pr"><code>debenhams</code><span>Geologica</span><span>300 Light</span><span>600 SemiBold</span><span>sentence</span></div>
-      <div class="pr5 pr"><code>boohoo</code><span>Montserrat</span><span>500 Medium</span><span>700 Bold</span><span>sentence</span></div>
-      <div class="pr5 pr"><code>boohooman</code><span>Montserrat</span><span>500 Medium</span><span>700 Bold</span><span>sentence</span></div>
-      <div class="pr5 pr"><code>plt</code><span>Roboto</span><span>400 Regular</span><span>700 Bold</span><span>UPPERCASE</span></div>
-      <div class="pr5 pr"><code>karenmillen</code><span>Jost</span><span>400 Regular</span><span>600 SemiBold</span><span>sentence</span></div>
+    <h2>Per-fascia resolution <code>all fascias · live from each mode, as the Button renders</code></h2>
+    <div class="props" id="typeFascias">
+      <div class="pr6 pr h"><span>Fascia</span><span>Font</span><span>Regular</span><span>Strong</span><span>Button</span><span>CTA case</span></div>
     </div>
-    <p>Every brand font is a Google Font with the full weight range available. Fonts for the other 11 fascias are captured as each is audited. If a fascia's font ever demands a size shift, it becomes a brand-mode override at the role layer — the default is consistency.</p>
+    <p>Every row is read live from that fascia's <code>data-brand</code> mode in <code>tokens.css</code> — the font and button weight / case are what the DS Button (<code>.bd</code>) computes, so this table always matches the Button page. Sizes stay the same for every fascia; if a fascia's font ever demands a size shift, it becomes a brand-mode override at the role layer — the default is consistency.</p>
   </section>
 
   <!-- SPACING -->
@@ -1631,6 +1628,19 @@ C.forEach((c,i)=>{
 /* every fascia, per component page — built lazily on first visit */
 const FASCIAS=[["debenhams","Debenhams"],["boohoo","boohoo"],["boohooman","boohooMAN"],["plt","PrettyLittleThing"],["karenmillen","Karen Millen"],["warehouse","Warehouse"],["debenhamsoutlet","Debenhams Outlet"],["wallis","Wallis"],["burton","Burton"],["principles","Principles"],["coast","Coast"],["oasis","Oasis"],["dorothyperkins","Dorothy Perkins"],["misspap","Misspap"],["dsgnstudio","DSGN Studio"],["trainingdept","Training Dept"],["brandroom","The Brand Room"]];
 window.DG_FASCIAS=FASCIAS;
+/* Typography › per-fascia: one row per fascia, read off a probe DS Button in that mode (font, weights, button weight + case) */
+(function(){const host=document.getElementById('typeFascias');if(!host)return;
+  const WN={100:'Thin',200:'ExtraLight',300:'Light',400:'Regular',500:'Medium',600:'SemiBold',700:'Bold',800:'ExtraBold',900:'Black'};
+  const wt=v=>{v=String(v).trim();return v+(WN[v]?' '+WN[v]:'')};
+  const CASE={none:'sentence',uppercase:'UPPERCASE',capitalize:'Title Case',lowercase:'lowercase'};
+  const probe=document.createElement('div');probe.hidden=true;host.after(probe);
+  host.insertAdjacentHTML('beforeend',FASCIAS.map(([sl,nm])=>{
+    probe.innerHTML=`<div data-brand="${sl}"><button class="bd pri">Add to bag</button></div>`;
+    const m=probe.firstChild,cs=getComputedStyle(m),bc=getComputedStyle(m.firstChild);
+    const fam=bc.fontFamily,font=fam.split(',')[0].replace(/['"]/g,'').trim();
+    return `<div class="pr6 pr"><code>${sl}</code><span class="ff" style="font-family:${fam.replace(/"/g,"'")};font-weight:${cs.getPropertyValue('--w-strong').trim()}" title="${nm}">${font}</span><span>${wt(cs.getPropertyValue('--w-regular'))}</span><span>${wt(cs.getPropertyValue('--w-strong'))}</span><span>${wt(bc.fontWeight)}</span><span>${CASE[bc.textTransform]||bc.textTransform}</span></div>`}).join(''));
+  probe.remove();
+})();
 /* a wrapping flex row can't shrink-wrap in CSS, so after layout each playground is sized to its rightmost item (+ canvas padding) */
 /* desktop footer shown at its real 1440 layout, scaled to the full width of its box */
 window.fitFooters=function(root){(root||document).querySelectorAll('.ftr-fit').forEach(w=>{w.style.zoom=''})}; /* no scaling: 1440 renders at 1440 so inspect gives real values */
@@ -1886,7 +1896,7 @@ const REG=[
  {h:'home',t:'Home',k:'overview dashboard',ic:'⌂',s:'Overview'},
  {h:'shipping',t:'Shipping log',k:'changelog merged',ic:'↗',s:'Planning and Tools'},
  {h:'colour',t:'Colour',k:'tokens palette semantic primitives neutrals status aqua pink',ic:'◈',s:'Design system'},
- {h:'type',t:'Typography',k:'text styles fonts scale roles weights geologica montserrat roboto jost',ic:'Aa',s:'Design system'},
+ {h:'type',t:'Typography',k:'text styles fonts scale roles weights geologica montserrat roboto jost archivo helvetica urbanist lato public sans hanken grotesk',ic:'Aa',s:'Design system'},
  {h:'spacing',t:'Spacing',k:'4pt scale gaps margins icon sizes z-index breakpoints',ic:'⇥',s:'Design system'},
  {h:'radius',t:'Radius',k:'corners square plt pill',ic:'◜',s:'Design system'},
  {h:'borders',t:'Borders',k:'dividers widths keyline focus',ic:'▭',s:'Design system'},
