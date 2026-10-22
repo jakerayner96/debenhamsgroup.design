@@ -45,9 +45,13 @@ Body padding gap 10 (40px) top, gap 6 (24px) sides/bottom (gap 4 (16px) under 76
 - Export pins the popup to the first screen (900 desktop / 844 mobile) with the overlay over the full page.
 
 ## Bloomreach weblayer exports (22 Oct)
-Panel → **Bloomreach weblayer**: downloads the selected option (or all five) as weblayer code built on the live template Jake pasted (`weblayer/template-live.html`).
-`weblayer/build.py` generates `weblayer/<option>/` — `weblayer.html` (HTML tab: same structure, ids, classes, `[[ params ]]`), `weblayer.css` (CSS tab: the DS Sign-up modal on the weblayer's classes), `README.md` (script params, image params, copy), `preview.html` (params filled, intl-tel-input 17.0.13 + step logic as live), and `addon.js` for E. Edit the DS / build.py, then re-run `python3 projects/brandroom-signup/weblayer/build.py`.
-- HTML changes vs live: phone label `for="phone"` (was `email`), phone not `required`; A adds an `imageMobile` param in a `<picture>`; E adds the brand-picker block in step two.
-- JS: phone optional needs one line (`… && phoneInput.value.trim() !== ""`), and SMS consent should only be granted when a phone is given. Position params per option (D = Bottom + Left; E = `PARAM_includePhone "no"` + addon.js).
-- The weblayer JS shows step two with an inline `display:block` and hides step one with `display:none` — layout CSS uses `!important` on step two only, never on step one.
-- Checked in the previews at 1440 / 390 (layout, empty phone passes, submit → thank you, E brand step). **Not yet run inside Bloomreach.**
+Live runs **two weblayers**, *A - Email & SMS Signup - Desktop* and *- Mobile* (device-targeted). Their HTML is identical (`weblayer/template-live-desktop.html`
+= `template-live-mobile.html`, both pasted by Jake); they differ only in CSS (and the next-weblayer id in the JS). So every option exports a desktop and a
+mobile weblayer: panel → **Bloomreach weblayer** downloads the selected option (or all five) — `desktop/` + `mobile/` (weblayer.html, weblayer.css with no
+media queries, preview.html), `README.md` (params, images, copy), `addon.js` (E), plus `HOW-TO-BLOOMREACH.md` and the live templates.
+`weblayer/build.py` generates it all; the design lives in one stylesheet per option and is split into the desktop / mobile CSS.
+- HTML changes vs live: phone label `for="phone"` (was `email`), phone not `required`; E adds the brand-picker block in step two. Split's mobile 16:9 asset is just the mobile weblayer's `image` param.
+- Capture keeps working because the live JS is kept and every id / class it uses is unchanged (list in HOW-TO-BLOOMREACH.md).
+- JS: phone optional needs one line (`… && phoneInput.value.trim() !== ""`); only grant SMS consent when a phone is given. D = position Bottom + Left; E = `PARAM_includePhone "no"` + addon.js.
+- The weblayer JS shows step two with inline `display:block` and hides step one with `display:none` — layout CSS uses `!important` on step two only.
+- Checked in the previews (desktop at 1440, mobile at 390): layout, empty phone passes, submit → thank you, E brand step. **Not yet run inside Bloomreach.**

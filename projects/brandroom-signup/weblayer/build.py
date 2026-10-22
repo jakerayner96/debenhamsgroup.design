@@ -2,13 +2,16 @@
 """Brand Room sign-up popup → Bloomreach Engagement weblayer exports (22 Oct 2026).
 
 Run from anywhere:  python3 projects/brandroom-signup/weblayer/build.py
-Source: template-live.html = the live weblayer HTML tab ("A - Email & SMS Signup", pasted by Jake 22 Oct).
-Output: one folder per option (a-split, b-full-bleed, c-brand-lockup, d-slide-in, e-two-step) with
-  weblayer.html  → paste into the weblayer HTML tab   (same structure, ids, classes and [[ params ]] as live)
-  weblayer.css   → paste into the weblayer CSS tab    (the DS Sign-up modal translated to the weblayer's own classes)
-  README.md      → the params to set + the JS changes (phone optional; two-step add-on)
-  addon.js       → (two-step only) append inside the weblayer JS
-  preview.html   → open in a browser: params filled with the live copy, same intl-tel-input 17.0.13 + step logic as live
+Source: the live weblayer HTML tabs, pasted by Jake 22 Oct — "A - Email & SMS Signup - Desktop" (template-live-desktop.html)
+and "- Mobile" (template-live-mobile.html). They are identical; live differs only in the CSS and the device target.
+Output: one folder per option (a-split, b-full-bleed, c-brand-lockup, d-slide-in, e-two-step), each with a desktop/ and a mobile/ weblayer:
+  desktop|mobile/weblayer.html → paste into that weblayer's HTML tab (same structure, ids, classes and [[ params ]] as live)
+  desktop|mobile/weblayer.css  → paste into that weblayer's CSS tab  (the DS Sign-up modal on the weblayer's classes — no media queries:
+                                 the desktop CSS is the desktop layout, the mobile CSS the mobile layout)
+  desktop|mobile/preview.html  → open in a browser: params filled with the live copy, same intl-tel-input 17.0.13 + step logic as live
+  README.md                    → the params to set, the images, the JS changes (phone optional; two-step add-on)
+  addon.js                     → (two-step only) append inside the weblayer JS
+Shared: HOW-TO-BLOOMREACH.md (step by step, and what keeps the capture working).
 The visual spec is the DS Sign-up modal (assets/ds/components.css .mdl--signup) — change it there first, then here.
 """
 import os, re, json, html
@@ -16,7 +19,8 @@ import os, re, json, html
 HERE = os.path.dirname(os.path.abspath(__file__))
 PAGES = 'https://jakerayner96.github.io/debenhamsgroup.design/projects/brandroom-signup/img/'
 LOCKUP_GIF = 'https://brxcdn.com/bho-app-storage/f37de144-1e20-11f1-873f-0adbe2143e4a/media/original/3362fefe-6faa-11f1-8365-b69466d21866'
-TEMPLATE = open(os.path.join(HERE, 'template-live.html')).read()
+DEVICES = ('desktop', 'mobile')
+TEMPLATES = {d: open(os.path.join(HERE, f'template-live-{d}.html')).read() for d in DEVICES}
 
 LIVE = {  # live weblayer copy (scraped 21 Oct) + DS field labels
     'textLineOne': 'Welcome To The Brand Room',
@@ -255,23 +259,16 @@ LAYOUT = {
 TITLES = {'a-split':'A · Split','b-full-bleed':'B · Full bleed','c-brand-lockup':'C · Brand lockup','d-slide-in':'D · Slide-in','e-two-step':'E · Two-step'}
 
 # ---------------------------------------------------------------- HTML: the live template, minimal edits per option
-def base_html():
-    h = TEMPLATE
+def base_html(device):
+    h = TEMPLATES[device]
     # the phone label pointed at the email input (template bug) — point it at the phone input
     h = h.replace('<label for="email" class="input-label">[[ {name: \'PhoneInputPlaceholder\'', '<label for="phone" class="input-label">[[ {name: \'PhoneInputPlaceholder\'')
     # phone optional: drop `required` (pair with the one-line JS change in README)
     h = h.replace('required class="phone">', 'class="phone">')
     return h
 
-def html_for(oid):
-    h = base_html()
-    if oid == 'a-split':
-        # separate mobile asset: <picture> with a second image param (Layout · imageMobile)
-        img = '<img src="[[ {name: \'image\', category: \'Layout\', orderIndex: \'3010\', isJsonParam: true} : image ]]"'
-        pic = ('<picture><source media="(max-width: 767px)" srcset="[[ {name: \'imageMobile\', tooltip: \'Mobile image (16:9 landscape) — shown under 768px\', category: \'Layout\', orderIndex: \'3012\', isJsonParam: true} : image ]]">'
-               + img)
-        h = h.replace(img, pic)
-        h = re.sub(r'(<picture><source[^>]*>\s*<img [^>]*/>)', r'\1</picture>', h)
+def html_for(oid, device):
+    h = base_html(device)
     if oid == 'e-two-step':
         brands = ['Lacoste','BOSS','Calvin Klein','Tommy Hilfiger','Armani Exchange','GUESS','Ted Baker','Valentino','Sweaty Betty','Crew Clothing','Napapijri','Lyle & Scott','HUGO','DKNY','Hunter','Ilse Jacobsen']
         chips = ''.join(f'\n\t                <button type="button" class="brand-chip" data-brand="{html.escape(b)}" aria-pressed="false">{html.escape(b)}</button>' for b in brands)
@@ -321,13 +318,30 @@ PARAMS = {  # script params (weblayer JS → "DEFAULT SETUP / FORM / POSITION" p
     'd-slide-in': {'PARAM_positionVertical':'Bottom','PARAM_positionHorizontal':'Left','PARAM_enterAnimation':'Fade in','PARAM_includePhone':'yes'},
     'e-two-step': {'PARAM_positionVertical':'Center','PARAM_positionHorizontal':'Center','PARAM_enterAnimation':'Fade in','PARAM_includePhone':'no'},
 }
-IMAGES = {
-    'a-split': {'image': PAGES+'lacoste-p.jpg', 'imageMobile': PAGES+'lacoste-m.jpg'},
-    'b-full-bleed': {'image': PAGES+'lacoste-p.jpg'},
-    'c-brand-lockup': {'image': LOCKUP_GIF},
-    'd-slide-in': {'image': PAGES+'lacoste-p.jpg'},
-    'e-two-step': {'image': PAGES+'lacoste-p.jpg'},
+IMAGES = {  # per option, per weblayer — upload to Bloomreach and pick in the editor's `image` param
+    'a-split':        {'desktop': PAGES+'lacoste-p.jpg', 'mobile': PAGES+'lacoste-m.jpg'},   # 4:5 portrait column · 16:9 landscape on top
+    'b-full-bleed':   {'desktop': PAGES+'lacoste-p.jpg', 'mobile': PAGES+'lacoste-p.jpg'},
+    'c-brand-lockup': {'desktop': LOCKUP_GIF,            'mobile': LOCKUP_GIF},              # already in Bloomreach
+    'd-slide-in':     {'desktop': PAGES+'lacoste-p.jpg', 'mobile': PAGES+'lacoste-p.jpg'},   # 4:5 thumbnail
+    'e-two-step':     {'desktop': PAGES+'lacoste-p.jpg', 'mobile': PAGES+'lacoste-p.jpg'},
 }
+
+# split the one stylesheet into the desktop and the mobile weblayer's CSS (no media queries left in either)
+def css_for(oid, device):
+    css = BASE.format(title=TITLES[oid] + ' — ' + device.upper() + ' weblayer') + LAYOUT[oid]
+    out, i = '', 0
+    for m in re.finditer(r'@media[^{]*\{', css):
+        if m.start() < i: continue
+        depth, j = 1, m.end()
+        while depth:
+            depth += {'{': 1, '}': -1}.get(css[j], 0); j += 1
+        q, inner = m.group(0), css[m.end():j - 1]
+        keep = ('max-width: 767px' in q and device == 'mobile') or ('min-width: 768px' in q and device == 'desktop')
+        out += css[i:m.start()] + (re.sub(r'(?m)^  ', '', inner.strip('\n')) + '\n' if keep else '')
+        i = j
+    out += css[i:]
+    assert '@media' not in out.replace('@keyframes', ''), 'media query left in ' + oid + ' ' + device
+    return re.sub(r'\n{3,}', '\n\n', out)
 
 PHONE_FIX = """// was:   if(typeof phoneInput !== "undefined") {            (inside form.onsubmit, "Phone number validation if input exists")
 // now:   if(typeof phoneInput !== "undefined" && phoneInput.value.trim() !== "") {
@@ -335,59 +349,66 @@ PHONE_FIX = """// was:   if(typeof phoneInput !== "undefined") {            (ins
 // SMS consent: only grant thebrandroom_sms when a phone was given — in the consent loop, skip the sms category when !eventProperties.phone."""
 
 def readme(oid):
-    p = PARAMS[oid]; im = IMAGES[oid]
-    rows = '\n'.join(f'| `{k}` | `{v}` |' for k, v in p.items())
-    imgs = '\n'.join(f'| `{k}` | {v} |' for k, v in im.items())
+    p = PARAMS[oid]
+    rows = '\n'.join(f'| `{k}` | `{v}` | `{v}` |' for k, v in p.items())
+    imgs = f"| `image` | {IMAGES[oid]['desktop']} | {IMAGES[oid]['mobile']} |"
     copy = '\n'.join(f'| `{k}` | {v or "(empty)"} |' for k, v in LIVE.items() if k not in ('closeIconSize','closeIconColor','imageWidth','prePopulateEmail','prePopulatePhone'))
     extra = ''
     if oid == 'e-two-step':
-        extra = f"""
-## Two-step add-on (required)
-Append `addon.js` at the very end of the weblayer JS (inside the function). Step 2 opens on the brand picker; **Save my brands** writes
+        extra = """
+## Two-step add-on (required, both weblayers)
+Append `addon.js` at the very end of each weblayer's JS (inside the function). Step 2 opens on the brand picker; **Save my brands** writes
 `favourite_brands` to the customer and tracks a `favourite_brands` event, then shows the thank-you; **Skip for now** goes straight to it.
 Brand chips are plain buttons in the HTML — edit the list there. New copy params: `brandEyebrow`, `brandHeading`, `brandText`, `brandButtonText`, `brandSkipText`.
-`PARAM_includePhone = "no"` removes the phone from step 1 (email only).
+`PARAM_includePhone = "no"` removes the phone from step 1 (email only) — the email capture and consent run exactly as today on step 1.
 """
     if oid == 'a-split':
         extra = """
-## Mobile image
-The HTML adds a second image param, **`imageMobile`** (Layout), in a `<picture>`: desktop shows `image` (4:5 portrait), under 768px the browser swaps to
-`imageMobile` (16:9 landscape). Upload both to Bloomreach and pick them in the editor.
+## Images
+Desktop and mobile are separate weblayers, so each takes its own asset in the normal `image` param: desktop the 4:5 portrait, mobile the 16:9 landscape.
 """
     if oid == 'c-brand-lockup':
         extra = """
-## Image
-Uses the live partner lockup GIF already in Bloomreach (no upload needed).
+## Images
+Uses the live partner lockup GIF already in Bloomreach — nothing to upload.
 """
-    return f"""# {TITLES[oid]} — Bloomreach weblayer
+    return f"""# {TITLES[oid]} — Bloomreach weblayers (Desktop + Mobile)
 
 Built 22 Oct 2026 from the DG design system Sign-up modal (prototype: https://jakerayner96.github.io/debenhamsgroup.design/projects/brandroom-signup/).
-Based on the live weblayer template ("A - Email & SMS Signup", `template-live.html`) — same structure, ids, classes and `[[ params ]]`, so the existing weblayer JS keeps working.
+Based on the live templates ("A - Email & SMS Signup - Desktop" / "- Mobile") — same structure, ids, classes and `[[ params ]]`, so the existing weblayer JS keeps capturing.
+**Read HOW-TO-BLOOMREACH.md first.**
 
-**Status:** checked in `preview.html` (params filled with the live copy, the same intl-tel-input 17.0.13 the weblayer loads, the same step-one → step-two switch). **Not yet run inside Bloomreach** — test in the weblayer editor preview before it goes live.
+**Status:** checked in `desktop/preview.html` (1440) and `mobile/preview.html` (390): layout, empty phone passes, submit → thank you{', brand step' if oid=='e-two-step' else ''}.
+**Not yet run inside Bloomreach** — test in the weblayer editor preview and with a test email before it goes live.
 
-## Paste
-1. **HTML tab** ← `weblayer.html`
-2. **CSS tab** ← `weblayer.css` (replaces the old CSS; the old CSS-tab params are no longer read — values are fixed to the DS)
-3. **JS tab** ← keep the live script; set the params below and make the phone change{' + append addon.js' if oid=='e-two-step' else ''}
+## Files
+| Weblayer | HTML tab | CSS tab | Preview |
+|---|---|---|---|
+| A - Email & SMS Signup - **Desktop** | `desktop/weblayer.html` | `desktop/weblayer.css` | `desktop/preview.html` |
+| A - Email & SMS Signup - **Mobile** | `mobile/weblayer.html` | `mobile/weblayer.css` | `mobile/preview.html` |
 
-## Script params
-| Param | Value |
-|---|---|
+The two HTML files are the same (as live); the CSS is the difference.
+
+## Script params (JS tab, top of the script)
+| Param | Desktop | Mobile |
+|---|---|---|
 {rows}
 
-## Phone optional (JS change, one line)
+Everything else in the JS stays as it is (consent categories, identify, next weblayer id, triggers).
+
+## Phone optional (JS change, one line, both weblayers)
 ```js
 {PHONE_FIX}
 ```
 The HTML already drops `required` from the phone input and fixes its label (`for="phone"`, was `for="email"`).
+Without the JS change the phone stays required (the script validates it) — everything else still works.
 {extra}
-## Images
-| Param | Asset |
-|---|---|
+## Image param
+| Param | Desktop | Mobile |
+|---|---|---|
 {imgs}
 
-## Copy params (live copy)
+## Copy params (live copy, both weblayers)
 | Param | Value |
 |---|---|
 {copy}
@@ -403,8 +424,8 @@ def fill(h, values):
         return (m.group(2) or '').strip()
     return PARAM_RE.sub(sub, h)
 
-def preview(oid, wl_html, css):
-    vals = dict(LIVE); vals.update(IMAGES[oid])
+def preview(oid, device, wl_html, css):
+    vals = dict(LIVE); vals['image'] = IMAGES[oid][device]
     if oid == 'e-two-step': vals['buttonText'] = 'Continue'
     body = fill(wl_html, vals)
     p = PARAMS[oid]
@@ -413,7 +434,7 @@ def preview(oid, wl_html, css):
     addon = ADDON if oid == 'e-two-step' else ''
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{TITLES[oid]} · weblayer preview</title>
+<title>{TITLES[oid]} · {device} weblayer preview</title>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
 <style>
@@ -427,7 +448,7 @@ html,body{{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}}
 </style></head>
 <body>
 <div class="pv-page"><h1>THE BRAND ROOM</h1><div class="pv-grid">{'<i></i>'*12}</div></div>
-<div class="pv-bar">{TITLES[oid]} · weblayer preview · <a href="#" onclick="location.reload();return false">replay</a></div>
+<div class="pv-bar">{TITLES[oid]} · {device.upper()} weblayer preview · <a href="#" onclick="location.reload();return false">replay</a></div>
 {body}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
 <script>
@@ -457,20 +478,24 @@ var self = {{ sdk: {{ update: function (p) {{ console.log('sdk.update', p); }}, 
 """
 
 def main():
+    import shutil
     index = []
     for oid in LAYOUT:
-        d = os.path.join(HERE, oid); os.makedirs(d, exist_ok=True)
-        h = html_for(oid)
-        css = BASE.format(title=TITLES[oid]) + LAYOUT[oid]
-        open(os.path.join(d, 'weblayer.html'), 'w').write(h)
-        open(os.path.join(d, 'weblayer.css'), 'w').write(css)
-        open(os.path.join(d, 'README.md'), 'w').write(readme(oid))
-        open(os.path.join(d, 'preview.html'), 'w').write(preview(oid, h, css))
-        files = ['weblayer.html', 'weblayer.css', 'README.md', 'preview.html']
+        d = os.path.join(HERE, oid)
+        if os.path.isdir(d): shutil.rmtree(d)
+        files = []
+        for dev in DEVICES:
+            dd = os.path.join(d, dev); os.makedirs(dd)
+            h, css = html_for(oid, dev), css_for(oid, dev)
+            open(os.path.join(dd, 'weblayer.html'), 'w').write(h)
+            open(os.path.join(dd, 'weblayer.css'), 'w').write(css)
+            open(os.path.join(dd, 'preview.html'), 'w').write(preview(oid, dev, h, css))
+            files += [f'{dev}/weblayer.html', f'{dev}/weblayer.css', f'{dev}/preview.html']
+        open(os.path.join(d, 'README.md'), 'w').write(readme(oid)); files.append('README.md')
         if oid == 'e-two-step':
             open(os.path.join(d, 'addon.js'), 'w').write(ADDON); files.append('addon.js')
         index.append({'id': oid, 'title': TITLES[oid], 'files': files})
-    open(os.path.join(HERE, 'index.json'), 'w').write(json.dumps(index, indent=1))
+    open(os.path.join(HERE, 'index.json'), 'w').write(json.dumps({'shared': ['HOW-TO-BLOOMREACH.md', 'template-live-desktop.html', 'template-live-mobile.html'], 'options': index}, indent=1))
     print('built', [i['id'] for i in index])
 
 if __name__ == '__main__':

@@ -1,0 +1,70 @@
+<div id="exponea-greyout">
+    <!-- START JINJA VARIABLES -->
+    <div class="banner-item weblayer--box-subscription">
+        <button aria-label="Close" class="close-icon close">
+            <svg width="[[ { name: 'closeIconSize', tooltip: 'Number only - pixel size of the close icon', category: 'Form Styling', orderIndex: '8060', isJsonParam: true } : number | 16 ]]" height="[[ { name: 'closeIconSize', tooltip: 'Number only - pixel size of the close icon', category: 'Form Styling', orderIndex: '8060', isJsonParam: true } : number | 16 ]]" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.99867 13L12.998 3" stroke="[[ {name: 'closeIconColor', category: 'Form Styling', orderIndex: '8020', isJsonParam: true} : color | rgba(255,255,255,0.7) ]]" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12.9987 13L2.998 3" stroke="[[ {name: 'closeIconColor', category: 'Form Styling', orderIndex: '8020', isJsonParam: true} : color | rgba(255,255,255,0.7) ]]" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <!-- Step one -->
+        <div class="inner step-one">
+        	<div class="image-surround">
+            	<img src="[[ {name: 'image', category: 'Layout', orderIndex: '3010', isJsonParam: true} : image ]]" style="width: [[ {name: 'imageWidth', tooltip:'Can be any valid CSS size', category: 'Layout', orderIndex: '3011', isJsonParam: true} : string | 100% ]];"/>
+        	</div>
+            <div class="form-inner">
+                <p class="text line-one">
+                    [[ {name: 'textLineOne', category: 'Copywriting', orderIndex: '6000', isJsonParam: true} : text ]]
+                </p>
+                <h6 class="heading">
+                    [[ {name: 'heading', category: 'Copywriting', orderIndex: '6001', isJsonParam: true} : text ]]
+                </h6>
+                <p class="text line-two">
+                    [[ {name: 'textLineTwo', category: 'Copywriting', orderIndex: '6002', isJsonParam: true} : text ]]
+                </p>
+                <form id="exponea-form">
+                	<div id="exponea-main-fieldsets">
+	                    <fieldset class="email_fieldset">
+	                    	<label for="email" class="input-label">[[ {name: 'EmailInputPlaceholder', category: 'Copywriting', orderIndex: '6010', isJsonParam: true} : text | Enter your email ]]</label>
+	                        <input name="email" id="email" type="email" {% if customer.email and "[[ {name: 'prePopulateEmail', tooltip: 'Would you like to prepopulate email address if available',category: 'Form Contents', orderIndex: '1001', isJsonParam: true} : enum(yes,no) | no ]]" == "yes" %}value="{{ customer.email }}"{% endif %} placeholder="[[ {name: 'EmailInputPlaceholder', category: 'Copywriting', orderIndex: '6010', isJsonParam: true} : text | Enter your email ]]" required class="email">
+	                    </fieldset>
+	                    <fieldset class="phone_fieldset">
+	                    	<label for="phone" class="input-label">[[ {name: 'PhoneInputPlaceholder', category: 'Copywriting', orderIndex: '6011', isJsonParam: true} : text | Enter your phone number ]]</label>
+	                        <input name="phone" id="phone" type="tel" {% if customer.phone and "[[ {name: 'prePopulatePhone', tooltip: 'Would you like to prepopulate phone number if available',category: 'Form Contents', orderIndex: '1004', isJsonParam: true} : enum(yes,no) | no ]]" == "yes" %}value="{{ customer.phone }}"{% endif %} placeholder="[[ {name: 'PhoneInputPlaceholder', category: 'Copywriting', orderIndex: '6011', isJsonParam: true} : text | Enter your phone number ]]" class="phone">
+	                    </fieldset>
+                    </div>
+                    <button type="submit" class="button submit">
+                        [[ {name: 'buttonText', category: 'Copywriting', orderIndex: '6003', isJsonParam: true} : text | Get 15% OFF ]]
+                    </button>
+                </form>
+                <button id="noThanksButton" class="button close">
+                    [[ {name: 'noThanksText', category: 'Copywriting', orderIndex: '6004', isJsonParam: true} : text | No Thanks ]]
+                </button>
+                <p class="conditions">
+                    [[ {name: 'conditionsText', category: 'Copywriting', orderIndex: '6005', isJsonParam: true} : text | Insert your consent text/privacy policy/terms and conditions/other mandatory notices as may be required by applicable laws. For information about personal data processing please see ]]
+                    <a href="[[ {name: 'conditionsLink', category: 'Copywriting', orderIndex: '6006', isJsonParam: true} : string | # ]]" class="link">
+                        [[ {name: 'conditionsLinkText', category: 'Copywriting', orderIndex: '6007', isJsonParam: true} : text | Privacy Policy ]]
+                    </a>
+                </p>
+            </div>
+        </div>
+        <!-- Step two -->
+        <div class="inner step-two" style="display: none;">
+        	<div class="image-surround">
+            	<img src="[[ {name: 'image', category: 'Layout', orderIndex: '3010', isJsonParam: true} : image ]]" style="width: [[ {name: 'imageWidth', tooltip:'Can be any valid CSS size', category: 'Layout', orderIndex: '3011', isJsonParam: true} : string | 100% ]];"/>
+        	</div>
+        	<div class="form-inner">
+	            <p class="heading">
+	                [[ {name: 'thankYouHeading', category: 'Copywriting', orderIndex: '6050', isJsonParam: true} : text ]]
+	            </p>
+	            <p class="text">
+	                [[ {name: 'thankYouMessage', category: 'Copywriting', orderIndex: '6051', isJsonParam: true} : text ]]
+	            </p>
+	            <p id="exponea-voucher">[[ {name: 'voucherCode', tooltip: 'Jinja code for the voucher shown on the thank you page. NOTE: If set, will use a voucher code on load of the weblayer. We recommend using this only on Final Weblayers.', category: 'Advanced', orderIndex: '9002', isJsonParam: true} : string | ]]</p>
+                <button id="thankYouButton" class="button close">
+                    [[ {name: 'ThankYouButtonText', category: 'Copywriting', orderIndex: '6055', isJsonParam: true} : text | Continue Shopping ]]
+                </button>
+	        </div>
+        </div>
+    </div>
+</div>

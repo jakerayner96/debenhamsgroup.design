@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>E · Two-step · weblayer preview</title>
+<title>B · Full bleed · mobile weblayer preview</title>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
 <style>
@@ -11,7 +11,7 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
 </style>
 <style>
 /* ==========================================================================
-   Brand Room sign-up weblayer — E · Two-step
+   Brand Room sign-up weblayer — B · Full bleed — MOBILE weblayer
    Built from the DG design system: Sign-up modal (.mdl--signup) + Input field + Button, 22 Oct 2026.
    Paste into the weblayer CSS tab (replaces the old CSS). HTML structure, ids and classes are the live template's,
    so the weblayer JS keeps working — see README.md for the params to set.
@@ -106,49 +106,31 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
 .weblayer--box-subscription.vertical-center { top: 50%; transform: translateY(-50%); }
 .weblayer--box-subscription.vertical-center.horizontal-center { transform: translate(-50%, -50%); }
 
-@media only screen and (max-width: 767px) {
-  .weblayer--box-subscription .heading { font-size: 24px; line-height: 28px; }
-  .weblayer--box-subscription .form-inner { padding: 32px 16px 16px; }
-}
+.weblayer--box-subscription .heading { font-size: 24px; line-height: 28px; }
+.weblayer--box-subscription .form-inner { padding: 32px 16px 16px; }
 
-/* ---------- E · Two-step — step 1 email only; step 2 pick favourite brands (DS chips), then thank you.
-   Desktop as A (4:5 image | content); mobile the 4:5 image as a thumbnail beside the copy. Needs addon.js (README). ---------- */
-@media only screen and (min-width: 768px) {
-  .weblayer--box-subscription { width: 928px; max-width: calc(100vw - 64px); }
-  .weblayer--box-subscription .inner.step-one { display: grid; grid-template-columns: 448px 1fr; }   /* no !important: the JS hides it inline */
-  .weblayer--box-subscription .inner.step-two[style*="block"] { display: grid !important; grid-template-columns: 448px 1fr; }   /* beats the JS inline display:block */
-  .weblayer--box-subscription .image-surround { min-height: 560px; }
-  .weblayer--box-subscription .form-inner { padding: 48px 40px 32px; justify-content: center; }
-}
-@media only screen and (max-width: 767px) {
-  .weblayer--box-subscription { width: 358px; }
-  .weblayer--box-subscription .inner.step-one { display: grid; grid-template-columns: 104px 1fr; column-gap: 16px; padding: 24px 16px 16px; }
-  .weblayer--box-subscription .inner.step-one .form-inner { display: contents; }
-  .weblayer--box-subscription .inner.step-one .image-surround { grid-column: 1; grid-row: 1 / 4; aspect-ratio: 4 / 5; align-self: center; }
-  .weblayer--box-subscription .inner.step-one .text.line-one,
-  .weblayer--box-subscription .inner.step-one .heading,
-  .weblayer--box-subscription .inner.step-one .text.line-two { grid-column: 2; }
-  .weblayer--box-subscription .inner.step-one .text.line-one { align-self: end; }
-  .weblayer--box-subscription .inner.step-one #exponea-form,
-  .weblayer--box-subscription .inner.step-one .button.close,
-  .weblayer--box-subscription .inner.step-one .conditions { grid-column: 1 / -1; }
-  .weblayer--box-subscription .inner.step-one .heading { font-size: 20px; line-height: 24px; padding-right: 16px; }
-  .weblayer--box-subscription .inner.step-two .image-surround { display: none; }
-}
-/* brand picker (step 2) — DS chips: 36px, Grey keyline, black when picked */
-.weblayer--box-subscription .brand-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
-.weblayer--box-subscription .brand-chip { height: 36px; padding: 0 14px; border: 1px solid #E7E7E7; background: #FFFFFF; color: #000000; border-radius: 0;
-  font-family: inherit; font-size: 13px; font-weight: 400; cursor: pointer; white-space: nowrap; }
-.weblayer--box-subscription .brand-chip.on { background: #000000; border-color: #000000; color: #FFFFFF; }
-.weblayer--box-subscription .step-two .button.skip-brands { background: none; color: #000000; height: auto; margin: 12px auto 0; padding: 2px 16px; width: auto;
-  font-size: 14px; line-height: 20px; font-weight: 700; text-transform: none; }
-.weblayer--box-subscription .step-two .button.skip-brands:hover { background: none; }
-.weblayer--box-subscription .step-two .text.line-one { margin-bottom: 8px; }
+/* ---------- B · Full bleed — 2:3 portrait image behind everything, form on a black gradient, white fields + CTA ---------- */
+.weblayer--box-subscription { width: 480px; background: #000000; color: #FFFFFF; }
+.weblayer--box-subscription .inner.step-one,
+.weblayer--box-subscription .inner.step-two { position: relative; aspect-ratio: 2 / 3; }
+.weblayer--box-subscription .inner.step-two[style*="block"] { display: flex !important; }   /* beats the JS inline display:block; step one keeps its own flex and can still be hidden */
+.weblayer--box-subscription .image-surround { position: absolute; inset: 0; }
+.weblayer--box-subscription .form-inner { position: relative; margin-top: auto; padding-top: 160px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0, rgba(0,0,0,.55) 120px, rgba(0,0,0,.88) 100%); }
+.weblayer--box-subscription #exponea-form input:not([type='checkbox']) { border-color: #FFFFFF; }
+.weblayer--box-subscription .button.submit, .weblayer--box-subscription .step-two .button { background: #FFFFFF; color: #000000; }
+.weblayer--box-subscription .button.submit:hover, .weblayer--box-subscription .step-two .button:hover { background: #E7E7E7; }
+.weblayer--box-subscription .step-one .button.close { color: #FFFFFF; }
+.weblayer--box-subscription .inner.step-one .conditions { color: rgba(255,255,255,.78); }
+.weblayer--box-subscription .close-icon path { stroke: #FFFFFF; }
+.weblayer--box-subscription { width: 358px; }
+.weblayer--box-subscription .form-inner { padding-top: 96px; }
+
 
 </style></head>
 <body>
 <div class="pv-page"><h1>THE BRAND ROOM</h1><div class="pv-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-<div class="pv-bar">E · Two-step · weblayer preview · <a href="#" onclick="location.reload();return false">replay</a></div>
+<div class="pv-bar">B · Full bleed · MOBILE weblayer preview · <a href="#" onclick="location.reload();return false">replay</a></div>
 <div id="exponea-greyout">
     <!-- START JINJA VARIABLES -->
     <div class="banner-item weblayer--box-subscription">
@@ -185,7 +167,7 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
 	                    </fieldset>
                     </div>
                     <button type="submit" class="button submit">
-                        Continue
+                        JOIN
                     </button>
                 </form>
                 <button id="noThanksButton" class="button close">
@@ -205,32 +187,6 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
             	<img src="https://jakerayner96.github.io/debenhamsgroup.design/projects/brandroom-signup/img/lacoste-p.jpg" style="width: 100%;"/>
         	</div>
         	<div class="form-inner">
-	        <div class="brand-step">
-	            <p class="text line-one">You’re in</p>
-	            <p class="heading">Which brands do you love?</p>
-	            <p class="text">Pick a few and we’ll tailor your style tips, new-in drops and offers to them.</p>
-	            <div class="brand-chips">
-	                <button type="button" class="brand-chip" data-brand="Lacoste" aria-pressed="false">Lacoste</button>
-	                <button type="button" class="brand-chip" data-brand="BOSS" aria-pressed="false">BOSS</button>
-	                <button type="button" class="brand-chip" data-brand="Calvin Klein" aria-pressed="false">Calvin Klein</button>
-	                <button type="button" class="brand-chip" data-brand="Tommy Hilfiger" aria-pressed="false">Tommy Hilfiger</button>
-	                <button type="button" class="brand-chip" data-brand="Armani Exchange" aria-pressed="false">Armani Exchange</button>
-	                <button type="button" class="brand-chip" data-brand="GUESS" aria-pressed="false">GUESS</button>
-	                <button type="button" class="brand-chip" data-brand="Ted Baker" aria-pressed="false">Ted Baker</button>
-	                <button type="button" class="brand-chip" data-brand="Valentino" aria-pressed="false">Valentino</button>
-	                <button type="button" class="brand-chip" data-brand="Sweaty Betty" aria-pressed="false">Sweaty Betty</button>
-	                <button type="button" class="brand-chip" data-brand="Crew Clothing" aria-pressed="false">Crew Clothing</button>
-	                <button type="button" class="brand-chip" data-brand="Napapijri" aria-pressed="false">Napapijri</button>
-	                <button type="button" class="brand-chip" data-brand="Lyle &amp; Scott" aria-pressed="false">Lyle &amp; Scott</button>
-	                <button type="button" class="brand-chip" data-brand="HUGO" aria-pressed="false">HUGO</button>
-	                <button type="button" class="brand-chip" data-brand="DKNY" aria-pressed="false">DKNY</button>
-	                <button type="button" class="brand-chip" data-brand="Hunter" aria-pressed="false">Hunter</button>
-	                <button type="button" class="brand-chip" data-brand="Ilse Jacobsen" aria-pressed="false">Ilse Jacobsen</button>
-	            </div>
-	            <button type="button" class="button save-brands">Save my brands</button>
-	            <button type="button" class="button skip-brands">Skip for now</button>
-	        </div>
-	        <div class="thanks" style="display: none;">
 	            <p class="heading">
 	                Thank you!
 	            </p>
@@ -241,7 +197,6 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
                 <button id="thankYouButton" class="button close">
                     Continue Shopping
                 </button>
-	        </div>
 	        </div>
         </div>
     </div>
@@ -258,7 +213,7 @@ var self = { sdk: { update: function (p) { console.log('sdk.update', p); }, trac
   g.querySelectorAll('.close').forEach(function (b) { b.onclick = remove; });
   g.onclick = function (e) { if (e.target === e.currentTarget) remove(); };
   var phone = g.querySelector('.phone'), email = g.querySelector('.email'), iti;
-  if (true) { var pf = g.querySelector('.phone_fieldset'); if (pf) pf.remove(); phone = null; }
+  if (false) { var pf = g.querySelector('.phone_fieldset'); if (pf) pf.remove(); phone = null; }
   if (phone) iti = window.intlTelInput(phone, { initialCountry: 'gb', onlyCountries: ['gb'], preferredCountries: ['gb'] });
   var bad = function (input, msg) { input.setCustomValidity(msg); input.reportValidity(); };
   [phone, email].forEach(function (i) { if (i) i.oninput = function () { i.setCustomValidity(''); }; });
@@ -268,25 +223,6 @@ var self = { sdk: { update: function (p) { console.log('sdk.update', p); }, trac
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.toLowerCase())) return bad(email, 'Enter a valid email');
     g.querySelector('.step-one').style.display = 'none'; g.querySelector('.step-two').style.display = 'block';
   };
-})();
-/* ---- E · Two-step add-on — paste at the very end of the weblayer JS, inside the function (after the last line).
-   Step 2 (.step-two) opens on the brand picker; Save stores the picks and shows the thank-you; Skip goes straight to it.
-   Saves to the customer profile (favourite_brands) and tracks a favourite_brands event. ---- */
-(function () {
-  if (window.__tbrBrandPicker) return; window.__tbrBrandPicker = true;
-  document.addEventListener('click', function (e) {
-    var box = e.target.closest && e.target.closest('.weblayer--box-subscription'); if (!box) return;
-    var chip = e.target.closest('.brand-chip');
-    if (chip) { chip.classList.toggle('on'); chip.setAttribute('aria-pressed', chip.classList.contains('on')); return; }
-    var save = e.target.closest('.save-brands'), skip = e.target.closest('.skip-brands'); if (!save && !skip) return;
-    var picks = [].slice.call(box.querySelectorAll('.brand-chip.on')).map(function (c) { return c.getAttribute('data-brand'); });
-    if (save && picks.length) {
-      try { self.sdk.update({ favourite_brands: picks }); } catch (err) { console.error(err); }
-      try { self.sdk.track('favourite_brands', { brands: picks.join(', '), source: self.data && self.data.banner_name, location: window.location.href }); } catch (err) { console.error(err); }
-    }
-    box.querySelector('.brand-step').style.display = 'none';
-    box.querySelector('.thanks').style.display = 'block';
-  });
 })();
 
 </script>

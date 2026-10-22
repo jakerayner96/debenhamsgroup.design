@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Brand Room sign-up weblayer — B · Full bleed
+   Brand Room sign-up weblayer — A · Split — MOBILE weblayer
    Built from the DG design system: Sign-up modal (.mdl--signup) + Input field + Button, 22 Oct 2026.
    Paste into the weblayer CSS tab (replaces the old CSS). HTML structure, ids and classes are the live template's,
    so the weblayer JS keeps working — see README.md for the params to set.
@@ -94,26 +94,14 @@
 .weblayer--box-subscription.vertical-center { top: 50%; transform: translateY(-50%); }
 .weblayer--box-subscription.vertical-center.horizontal-center { transform: translate(-50%, -50%); }
 
-@media only screen and (max-width: 767px) {
-  .weblayer--box-subscription .heading { font-size: 24px; line-height: 28px; }
-  .weblayer--box-subscription .form-inner { padding: 32px 16px 16px; }
-}
+.weblayer--box-subscription .heading { font-size: 24px; line-height: 28px; }
+.weblayer--box-subscription .form-inner { padding: 32px 16px 16px; }
 
-/* ---------- B · Full bleed — 2:3 portrait image behind everything, form on a black gradient, white fields + CTA ---------- */
-.weblayer--box-subscription { width: 480px; background: #000000; color: #FFFFFF; }
-.weblayer--box-subscription .inner.step-one,
-.weblayer--box-subscription .inner.step-two { position: relative; aspect-ratio: 2 / 3; }
-.weblayer--box-subscription .inner.step-two[style*="block"] { display: flex !important; }   /* beats the JS inline display:block; step one keeps its own flex and can still be hidden */
-.weblayer--box-subscription .image-surround { position: absolute; inset: 0; }
-.weblayer--box-subscription .form-inner { position: relative; margin-top: auto; padding-top: 160px;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0, rgba(0,0,0,.55) 120px, rgba(0,0,0,.88) 100%); }
-.weblayer--box-subscription #exponea-form input:not([type='checkbox']) { border-color: #FFFFFF; }
-.weblayer--box-subscription .button.submit, .weblayer--box-subscription .step-two .button { background: #FFFFFF; color: #000000; }
-.weblayer--box-subscription .button.submit:hover, .weblayer--box-subscription .step-two .button:hover { background: #E7E7E7; }
-.weblayer--box-subscription .step-one .button.close { color: #FFFFFF; }
-.weblayer--box-subscription .inner.step-one .conditions { color: rgba(255,255,255,.78); }
-.weblayer--box-subscription .close-icon path { stroke: #FFFFFF; }
-@media only screen and (max-width: 767px) {
-  .weblayer--box-subscription { width: 358px; }
-  .weblayer--box-subscription .form-inner { padding-top: 96px; }
-}
+/* ---------- A · Split — desktop 50/50: 4:5 image (448 × 560) | content · mobile: 16:9 mobile asset on top, content under ---------- */
+
+.weblayer--box-subscription { width: 358px; }
+.weblayer--box-subscription .image-surround { aspect-ratio: 16 / 9; flex: none; }
+.weblayer--box-subscription .form-inner { padding: 24px 16px 16px; }
+.weblayer--box-subscription .heading { font-size: 22px; line-height: 26px; }
+.weblayer--box-subscription .close-icon path { stroke: #FFFFFF; } /* the close sits on the image */
+

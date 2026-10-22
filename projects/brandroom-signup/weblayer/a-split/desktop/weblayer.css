@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Brand Room sign-up weblayer — A · Split
+   Brand Room sign-up weblayer — A · Split — DESKTOP weblayer
    Built from the DG design system: Sign-up modal (.mdl--signup) + Input field + Button, 22 Oct 2026.
    Paste into the weblayer CSS tab (replaces the old CSS). HTML structure, ids and classes are the live template's,
    so the weblayer JS keeps working — see README.md for the params to set.
@@ -94,23 +94,10 @@
 .weblayer--box-subscription.vertical-center { top: 50%; transform: translateY(-50%); }
 .weblayer--box-subscription.vertical-center.horizontal-center { transform: translate(-50%, -50%); }
 
-@media only screen and (max-width: 767px) {
-  .weblayer--box-subscription .heading { font-size: 24px; line-height: 28px; }
-  .weblayer--box-subscription .form-inner { padding: 32px 16px 16px; }
-}
-
 /* ---------- A · Split — desktop 50/50: 4:5 image (448 × 560) | content · mobile: 16:9 mobile asset on top, content under ---------- */
-@media only screen and (min-width: 768px) {
-  .weblayer--box-subscription { width: 928px; max-width: calc(100vw - 64px); }
-  .weblayer--box-subscription .inner.step-one { display: grid; grid-template-columns: 448px 1fr; }   /* no !important: the JS hides it inline */
-  .weblayer--box-subscription .inner.step-two[style*="block"] { display: grid !important; grid-template-columns: 448px 1fr; }   /* beats the JS inline display:block */
-  .weblayer--box-subscription .image-surround { min-height: 560px; }
-  .weblayer--box-subscription .form-inner { padding: 48px 40px 32px; justify-content: center; }
-}
-@media only screen and (max-width: 767px) {
-  .weblayer--box-subscription { width: 358px; }
-  .weblayer--box-subscription .image-surround { aspect-ratio: 16 / 9; flex: none; }
-  .weblayer--box-subscription .form-inner { padding: 24px 16px 16px; }
-  .weblayer--box-subscription .heading { font-size: 22px; line-height: 26px; }
-  .weblayer--box-subscription .close-icon path { stroke: #FFFFFF; } /* the close sits on the image */
-}
+.weblayer--box-subscription { width: 928px; max-width: calc(100vw - 64px); }
+.weblayer--box-subscription .inner.step-one { display: grid; grid-template-columns: 448px 1fr; }   /* no !important: the JS hides it inline */
+.weblayer--box-subscription .inner.step-two[style*="block"] { display: grid !important; grid-template-columns: 448px 1fr; }   /* beats the JS inline display:block */
+.weblayer--box-subscription .image-surround { min-height: 560px; }
+.weblayer--box-subscription .form-inner { padding: 48px 40px 32px; justify-content: center; }
+

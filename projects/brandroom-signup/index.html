@@ -193,7 +193,7 @@ function renderPanel(host,S,update){
   host.innerHTML=`<h1>Sign-up popup</h1><p class="intro">Five options for the email sign-up that opens on thebrandroom.com. Click through them, or use ↑ ↓.</p>
   <div class="card">${OPTS.map(([v,n,d])=>`<button class="opt${c.opt===v?' on':''}" data-opt="${v}"><span class="r"></span><span class="t"><b>${n}</b><span>${d}</span></span></button>`).join('')}</div>
   <p class="rules">Switch Desktop / Mobile at the top. Try the form: type an email and press the button.</p>
-  <div class="card"><h3>Bloomreach weblayer</h3><p>The selected option as weblayer code, on the live template: HTML + CSS to paste, a preview and the params to set.</p>
+  <div class="card"><h3>Bloomreach weblayer</h3><p>The selected option as the Desktop + Mobile weblayers, on the live templates: HTML + CSS to paste, previews, and how to put it into Bloomreach.</p>
     <button class="export" id="wlone"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 12.5h11"/></svg><span id="wlname"></span></button>
     <button class="lnk" id="wlall" style="display:block">Download all five</button></div>`;
   const nm=()=>(OPTS.find(o=>o[0]===c.opt)||OPTS[0])[1];host.querySelector('#wlname').textContent='Weblayer · '+nm();
@@ -206,9 +206,9 @@ function renderPanel(host,S,update){
 const WL={split:'a-split',bleed:'b-full-bleed',lockup:'c-brand-lockup',sheet:'d-slide-in',steps:'e-two-step'};
 async function weblayerZip(opts){const st=document.querySelector('#status');st.textContent='Packaging weblayer code…';
   try{const idx=await (await fetch('weblayer/index.json')).json(),zip=new JSZip(),multi=opts.length>1;
-    for(const o of opts){const e=idx.find(x=>x.id===WL[o]);const dir=multi?zip.folder(e.id):zip;
+    for(const o of opts){const e=idx.options.find(x=>x.id===WL[o]);const dir=multi?zip.folder(e.id):zip;   /* desktop/ + mobile/ weblayers, README (+ addon.js) */
       for(const f of e.files){const r=await fetch(`weblayer/${e.id}/${f}`);if(!r.ok)throw new Error(f+' '+r.status);dir.file(f,await r.text())}}
-    zip.file('template-live.html',await (await fetch('weblayer/template-live.html')).text());
+    for(const f of idx.shared){const r=await fetch(`weblayer/${f}`);if(!r.ok)throw new Error(f+' '+r.status);zip.file(f,await r.text())}   /* how-to + the live templates */
     const name=multi?'brandroom-signup-weblayers':'brandroom-signup-weblayer-'+WL[opts[0]];
     const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.zip';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
     st.textContent='Weblayer code saved ✓';setTimeout(()=>st.textContent='',6000)}

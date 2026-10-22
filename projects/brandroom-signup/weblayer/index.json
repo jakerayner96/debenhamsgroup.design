@@ -1,53 +1,75 @@
-[
- {
-  "id": "a-split",
-  "title": "A \u00b7 Split",
-  "files": [
-   "weblayer.html",
-   "weblayer.css",
-   "README.md",
-   "preview.html"
-  ]
- },
- {
-  "id": "b-full-bleed",
-  "title": "B \u00b7 Full bleed",
-  "files": [
-   "weblayer.html",
-   "weblayer.css",
-   "README.md",
-   "preview.html"
-  ]
- },
- {
-  "id": "c-brand-lockup",
-  "title": "C \u00b7 Brand lockup",
-  "files": [
-   "weblayer.html",
-   "weblayer.css",
-   "README.md",
-   "preview.html"
-  ]
- },
- {
-  "id": "d-slide-in",
-  "title": "D \u00b7 Slide-in",
-  "files": [
-   "weblayer.html",
-   "weblayer.css",
-   "README.md",
-   "preview.html"
-  ]
- },
- {
-  "id": "e-two-step",
-  "title": "E \u00b7 Two-step",
-  "files": [
-   "weblayer.html",
-   "weblayer.css",
-   "README.md",
-   "preview.html",
-   "addon.js"
-  ]
- }
-]
+{
+ "shared": [
+  "HOW-TO-BLOOMREACH.md",
+  "template-live-desktop.html",
+  "template-live-mobile.html"
+ ],
+ "options": [
+  {
+   "id": "a-split",
+   "title": "A \u00b7 Split",
+   "files": [
+    "desktop/weblayer.html",
+    "desktop/weblayer.css",
+    "desktop/preview.html",
+    "mobile/weblayer.html",
+    "mobile/weblayer.css",
+    "mobile/preview.html",
+    "README.md"
+   ]
+  },
+  {
+   "id": "b-full-bleed",
+   "title": "B \u00b7 Full bleed",
+   "files": [
+    "desktop/weblayer.html",
+    "desktop/weblayer.css",
+    "desktop/preview.html",
+    "mobile/weblayer.html",
+    "mobile/weblayer.css",
+    "mobile/preview.html",
+    "README.md"
+   ]
+  },
+  {
+   "id": "c-brand-lockup",
+   "title": "C \u00b7 Brand lockup",
+   "files": [
+    "desktop/weblayer.html",
+    "desktop/weblayer.css",
+    "desktop/preview.html",
+    "mobile/weblayer.html",
+    "mobile/weblayer.css",
+    "mobile/preview.html",
+    "README.md"
+   ]
+  },
+  {
+   "id": "d-slide-in",
+   "title": "D \u00b7 Slide-in",
+   "files": [
+    "desktop/weblayer.html",
+    "desktop/weblayer.css",
+    "desktop/preview.html",
+    "mobile/weblayer.html",
+    "mobile/weblayer.css",
+    "mobile/preview.html",
+    "README.md"
+   ]
+  },
+  {
+   "id": "e-two-step",
+   "title": "E \u00b7 Two-step",
+   "files": [
+    "desktop/weblayer.html",
+    "desktop/weblayer.css",
+    "desktop/preview.html",
+    "mobile/weblayer.html",
+    "mobile/weblayer.css",
+    "mobile/preview.html",
+    "README.md",
+    "addon.js"
+   ]
+  }
+ ]
+}

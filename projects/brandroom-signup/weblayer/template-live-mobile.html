@@ -10,7 +10,7 @@
         <!-- Step one -->
         <div class="inner step-one">
         	<div class="image-surround">
-            	<picture><source media="(max-width: 767px)" srcset="[[ {name: 'imageMobile', tooltip: 'Mobile image (16:9 landscape) — shown under 768px', category: 'Layout', orderIndex: '3012', isJsonParam: true} : image ]]"><img src="[[ {name: 'image', category: 'Layout', orderIndex: '3010', isJsonParam: true} : image ]]" style="width: [[ {name: 'imageWidth', tooltip:'Can be any valid CSS size', category: 'Layout', orderIndex: '3011', isJsonParam: true} : string | 100% ]];"/></picture>
+            	<img src="[[ {name: 'image', category: 'Layout', orderIndex: '3010', isJsonParam: true} : image ]]" style="width: [[ {name: 'imageWidth', tooltip:'Can be any valid CSS size', category: 'Layout', orderIndex: '3011', isJsonParam: true} : string | 100% ]];"/>
         	</div>
             <div class="form-inner">
                 <p class="text line-one">
@@ -29,8 +29,8 @@
 	                        <input name="email" id="email" type="email" {% if customer.email and "[[ {name: 'prePopulateEmail', tooltip: 'Would you like to prepopulate email address if available',category: 'Form Contents', orderIndex: '1001', isJsonParam: true} : enum(yes,no) | no ]]" == "yes" %}value="{{ customer.email }}"{% endif %} placeholder="[[ {name: 'EmailInputPlaceholder', category: 'Copywriting', orderIndex: '6010', isJsonParam: true} : text | Enter your email ]]" required class="email">
 	                    </fieldset>
 	                    <fieldset class="phone_fieldset">
-	                    	<label for="phone" class="input-label">[[ {name: 'PhoneInputPlaceholder', category: 'Copywriting', orderIndex: '6011', isJsonParam: true} : text | Enter your phone number ]]</label>
-	                        <input name="phone" id="phone" type="tel" {% if customer.phone and "[[ {name: 'prePopulatePhone', tooltip: 'Would you like to prepopulate phone number if available',category: 'Form Contents', orderIndex: '1004', isJsonParam: true} : enum(yes,no) | no ]]" == "yes" %}value="{{ customer.phone }}"{% endif %} placeholder="[[ {name: 'PhoneInputPlaceholder', category: 'Copywriting', orderIndex: '6011', isJsonParam: true} : text | Enter your phone number ]]" class="phone">
+	                    	<label for="email" class="input-label">[[ {name: 'PhoneInputPlaceholder', category: 'Copywriting', orderIndex: '6011', isJsonParam: true} : text | Enter your phone number ]]</label>
+	                        <input name="phone" id="phone" type="tel" {% if customer.phone and "[[ {name: 'prePopulatePhone', tooltip: 'Would you like to prepopulate phone number if available',category: 'Form Contents', orderIndex: '1004', isJsonParam: true} : enum(yes,no) | no ]]" == "yes" %}value="{{ customer.phone }}"{% endif %} placeholder="[[ {name: 'PhoneInputPlaceholder', category: 'Copywriting', orderIndex: '6011', isJsonParam: true} : text | Enter your phone number ]]" required class="phone">
 	                    </fieldset>
                     </div>
                     <button type="submit" class="button submit">
@@ -51,7 +51,7 @@
         <!-- Step two -->
         <div class="inner step-two" style="display: none;">
         	<div class="image-surround">
-            	<picture><source media="(max-width: 767px)" srcset="[[ {name: 'imageMobile', tooltip: 'Mobile image (16:9 landscape) — shown under 768px', category: 'Layout', orderIndex: '3012', isJsonParam: true} : image ]]"><img src="[[ {name: 'image', category: 'Layout', orderIndex: '3010', isJsonParam: true} : image ]]" style="width: [[ {name: 'imageWidth', tooltip:'Can be any valid CSS size', category: 'Layout', orderIndex: '3011', isJsonParam: true} : string | 100% ]];"/></picture>
+            	<img src="[[ {name: 'image', category: 'Layout', orderIndex: '3010', isJsonParam: true} : image ]]" style="width: [[ {name: 'imageWidth', tooltip:'Can be any valid CSS size', category: 'Layout', orderIndex: '3011', isJsonParam: true} : string | 100% ]];"/>
         	</div>
         	<div class="form-inner">
 	            <p class="heading">
