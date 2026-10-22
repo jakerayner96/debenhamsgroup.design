@@ -147,6 +147,8 @@ async function maestro(d, file, env = {}, label) {
   return { ok, hung: false, tail: txt };
 }
 const yq = v => JSON.stringify(String(v));
+// menu / text labels as a regex: '&' turns into '&amp;' on the way to Maestro, so any character stands in for it
+const labelRx = t => '(?i)' + String(t).replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/&/g, '.{1,5}');
 async function runSteps(d, APP, body, label) {
   if (stop) throw new Error('Stopped');
   await calm(); log(`   · ${label}`);
@@ -416,7 +418,7 @@ async function goTo(d, ctx, s) {
     case 'menu': { const ok = await flow(d, 'menu.yaml', { APP }, 'Menu');
       return s.cat ? flow(d, 'menu-cat.yaml', { APP, CAT: s.cat }, 'Menu › ' + s.cat) : ok; }
     case 'plp': if (s.menuPath) { const parts = String(s.menuPath).split(/\s*[>›]\s*/).filter(Boolean);
-        const taps = parts.map(t => `- scrollUntilVisible:\n    element:\n      text: ${yq('(?i)' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))}\n    direction: DOWN\n    timeout: 15000\n    optional: true\n- tapOn:\n    text: ${yq('(?i)' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))}\n    index: 0\n- waitForAnimationToEnd\n`).join('');
+        const taps = parts.map(t => `- scrollUntilVisible:\n    element:\n      text: ${yq(labelRx(t))}\n    direction: DOWN\n    timeout: 15000\n    optional: true\n- tapOn:\n    text: ${yq(labelRx(t))}\n    index: 0\n- waitForAnimationToEnd\n`).join('');
         const ok = await runSteps(d, APP, `- tapOn:\n    id: navSearch\n- tapOn:\n    id: navSearch\n- waitForAnimationToEnd\n${taps}- extendedWaitUntil:\n    visible:\n      id: plpItem-0\n    timeout: 20000\n`, 'menu ' + parts.join(' › '));
         if (ok || !s.url) return ok; await toTabs(d, APP); }
       return openPath(d, ctx, pathOf(s.url));
