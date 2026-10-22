@@ -43,3 +43,11 @@ Body padding gap 10 (40px) top, gap 6 (24px) sides/bottom (gap 4 (16px) under 76
 - Floating labels "Email address" / "Mobile number" replace the live placeholders (DS field; the live phone placeholder truncates at 390).
 - The Brand Room logo only on the flat image — the eyebrow already names the fascia.
 - Export pins the popup to the first screen (900 desktop / 844 mobile) with the overlay over the full page.
+
+## Bloomreach weblayer exports (22 Oct)
+Panel → **Bloomreach weblayer**: downloads the selected option (or all five) as weblayer code built on the live template Jake pasted (`weblayer/template-live.html`).
+`weblayer/build.py` generates `weblayer/<option>/` — `weblayer.html` (HTML tab: same structure, ids, classes, `[[ params ]]`), `weblayer.css` (CSS tab: the DS Sign-up modal on the weblayer's classes), `README.md` (script params, image params, copy), `preview.html` (params filled, intl-tel-input 17.0.13 + step logic as live), and `addon.js` for E. Edit the DS / build.py, then re-run `python3 projects/brandroom-signup/weblayer/build.py`.
+- HTML changes vs live: phone label `for="phone"` (was `email`), phone not `required`; A adds an `imageMobile` param in a `<picture>`; E adds the brand-picker block in step two.
+- JS: phone optional needs one line (`… && phoneInput.value.trim() !== ""`), and SMS consent should only be granted when a phone is given. Position params per option (D = Bottom + Left; E = `PARAM_includePhone "no"` + addon.js).
+- The weblayer JS shows step two with an inline `display:block` and hides step one with `display:none` — layout CSS uses `!important` on step two only, never on step one.
+- Checked in the previews at 1440 / 390 (layout, empty phone passes, submit → thank you, E brand step). **Not yet run inside Bloomreach.**
