@@ -27,7 +27,7 @@ const abs=p=>new URL(p,document.baseURI).href;
 const IMG={lacoste:'lacoste',guess:'guess',sweaty:'sweaty'};
 const LOCKUPS=[1,2,3,4,5,6,7,8].map(i=>abs(`projects/brandroom-signup/img/lockup-${i}.png`));
 /* preload every popup image so flicking between layouts never waits on the network */
-['lacoste','guess','sweaty'].forEach(k=>{new Image().src=abs(`projects/brandroom-signup/img/${k}-p.jpg`)});LOCKUPS.forEach(u=>{new Image().src=u});
+['lacoste','guess','sweaty'].forEach(k=>['p','m'].forEach(v=>{new Image().src=abs(`projects/brandroom-signup/img/${k}-${v}.jpg`)}));LOCKUPS.forEach(u=>{new Image().src=u});
 const SRC={plp:b=>`projects/plp-alignment/plp.html?brand=${b}&mode=new`};
 
 const emb=document.getElementById('emb');
@@ -38,8 +38,9 @@ const VH=()=>{const w=W();return w&&w.innerWidth>=768?900:844};   /* first scree
 
 function opts(){
   const land=S.opt==='steps'||S.opt==='split';
-  const img=abs(`projects/brandroom-signup/img/${IMG[S.img]||'lacoste'}-p.jpg`);   /* one 4:5 asset for every layout and breakpoint */
-  return {layout:S.opt,img:S.opt==='lockup'?'':img,lockups:LOCKUPS,lock:+S.lock||0,rotate:S.rotate!==false,
+  const img=abs(`projects/brandroom-signup/img/${IMG[S.img]||'lacoste'}-p.jpg`);   /* desktop asset (4:5) */
+  const imgM=S.opt==='split'?abs(`projects/brandroom-signup/img/${IMG[S.img]||'lacoste'}-m.jpg`):'';   /* split: separate mobile asset */
+  return {layout:S.opt,img:S.opt==='lockup'?'':img,imgM,lockups:LOCKUPS,lock:+S.lock||0,rotate:S.rotate!==false,
     logo:abs('assets/brands/brandroom.svg'),logoInv:abs('assets/brands/brandroom-white.svg'),flag:abs('assets/ds/icons/flags/united-kingdom.svg'),
     eyebrow:S.eyebrow,title:S.title,sub:S.sub,cta:S.cta,phone:S.phone,no:S.no!==false,state:S.state||'form',ratio:S.ratio,exporting:EXPORTING,tab:S.tab,anim:false};
 }

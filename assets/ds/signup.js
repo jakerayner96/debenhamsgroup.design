@@ -5,7 +5,7 @@
      DG_signup.LIVE             → the live copy (Bloomreach Engagement weblayer "A - Email & SMS Signup", scraped 21 Oct 2026)
    o = {layout:'split'|'bleed'|'lockup'|'sheet'|'flat'|'steps', img, lockups:[urls], logo, logoInv, flag,
         eyebrow, title, sub, cta, phone:'required'|'optional'|'off', no:bool, state:'form'|'error'|'done'|'step2', ratio:'45'|'34'|'11',
-        brands:[names], picks:[names], exporting:bool, anim:bool (false = no open motion)}
+        brands:[names], picks:[names], exporting:bool, anim:bool (false = no open motion), imgM (mobile asset, split)}
    Every visible piece is DS: .mdl (Modal), .modal-x, .fld / .fld--tel (Input field), .bd.pri / .bd.txt (Button), .chip (Chips). */
 (function(){
 const LIVE={
@@ -69,10 +69,11 @@ function html(o){
     win=`<div class="mdl mdl--signup sup--lockup${anim}" role="dialog" aria-label="${esc(o.title)}">${x}<div class="sup-lock">${lk}</div>${body(Object.assign({},o,{logo:''}))}</div>`;
   }else{
     const cls=L==='steps'?'sup--split sup--steps':'sup--'+L;
-    /* one asset, one ratio: the 4:5 campaign crop is the image column (split) or the background (bleed); the slide-in and mobile split show it as a 4:5 thumbnail */
-    const media=o.img&&L!=='sheet'?`<div class="sup-media"><img src="${esc(o.img)}" alt=""></div>`:'';
+    /* o.img = desktop asset (4:5 portrait), o.imgM = mobile asset (16:9 landscape, split: image on top under 768) — art-directed with <picture> */
+    const pic=o.imgM?`<picture><source media="(max-width:767px)" srcset="${esc(o.imgM)}"><img src="${esc(o.img)}" alt=""></picture>`:`<img src="${esc(o.img)}" alt="">`;
+    const media=o.img&&L!=='sheet'?`<div class="sup-media">${pic}</div>`:'';
     if(o.img&&(L==='sheet'||L==='steps'))o=Object.assign({},o,{thumb:o.img});
-    const foot=L==='split'&&o.state!=='done'?`<div class="sup-foot">${legal()}</div>`:'';   /* split: 50/50 image | content at every width, legal full width under both */
+    const foot=L==='split'&&o.state!=='done'?`<div class="sup-foot">${legal()}</div>`:'';   /* split: legal under the content column (desktop) / under everything (mobile) */
     win=`<div class="mdl mdl--signup ${cls}${anim}" role="dialog" aria-label="${esc(o.title)}">${x}${media}${body(Object.assign({},o,{logo:''}))}${foot}</div>`;   /* the eyebrow already names the fascia — the logo is for the flat image only */
   }
   return `<div class="sup-layer${L==='sheet'?' sup-layer--free':''}${instant?' sup-layer--instant':''}" data-sup>${L==='sheet'?'':'<div class="mdl-scrim" data-sup-close></div>'}${win}</div>`;

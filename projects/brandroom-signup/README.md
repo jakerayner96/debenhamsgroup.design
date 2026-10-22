@@ -19,7 +19,7 @@
 The panel is just the option list (click or ↑ ↓); copy, image and fields are fixed at the recommended set (live copy, Lacoste AW26, phone optional). The popup opens with no motion so flicking is instant.
 | | Route | What |
 |---|---|---|
-| A | Split | 50/50 image and content at every width: 4:5 image column (448 × 560) on desktop; on mobile the image takes the left half (portrait) and compact content the right, legal full width underneath (490px tall at 390). |
+| A | Split | Desktop: 50/50 — 4:5 portrait image (448 × 560, `img/<brand>-p.jpg`) beside the form. Mobile: its own 16:9 landscape asset (`img/<brand>-m.jpg`) on top, form underneath, legal last (639px tall at 390). |
 | B | Full bleed | 2:3 portrait on both breakpoints; form on a black gradient, white fields + CTA. |
 | C | Brand lockup | Today's structure on the DS — partner lockup band cross-fading through the 8 partners over a white form. |
 | D | Slide-in | Non-blocking card (bottom-left desktop, bottom of screen mobile), 4:5 thumbnail, no overlay; closes to a "Get style tips" tab. |
