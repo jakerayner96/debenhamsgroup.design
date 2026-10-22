@@ -32,7 +32,13 @@ const STORE_NAME = { appstore: 'App Store', play: 'Google Play' };
 /* ---------- helpers ---------- */
 const clients = new Set();
 let busy = null, child = null, stop = false;
-const emit = o => { for (const c of clients) c.write(`data: ${JSON.stringify(o)}\n\n`); };
+const HISTORY = [], STATE = { progress: null, shots: [] };
+const emit = o => {
+  if (o.type === 'log') { HISTORY.push(o.line); if (HISTORY.length > 400) HISTORY.shift(); }
+  if (o.type === 'progress') STATE.progress = o;
+  if (o.type === 'shot') { STATE.shots.push(o.file); if (STATE.shots.length > 60) STATE.shots.shift(); }
+  if (o.type === 'busy' && o.busy) { HISTORY.length = 0; STATE.progress = null; STATE.shots = []; }
+  for (const c of clients) c.write(`data: ${JSON.stringify(o)}\n\n`); };
 function log(msg) { const line = `[${new Date().toLocaleTimeString('en-GB')}] ${msg}`; console.log(line); emit({ type: 'log', line }); }
 function sh(cmd, args, o = {}) {
   return new Promise(res => execFile(cmd, args, { env: ENV, maxBuffer: 256 << 20, timeout: o.timeout || 900000, encoding: o.encoding || 'utf8', cwd: o.cwd },
@@ -120,6 +126,7 @@ async function maestro(d, file, env = {}, label) {
   });
 }
 async function flow(d, file, env, label) {
+  log(`   · ${label || file.replace('.yaml', '')}`);
   let r = await maestro(d, file, env, label);
   if (r.hung) { log(`   ⚠︎ ${label || file}: Maestro hung — retrying once`); await sh('pkill', ['-f', 'xcodebuild test-without-building']); await wait(3000); r = await maestro(d, file, env, label); }
   return r.ok;
@@ -524,7 +531,7 @@ async function exportRun(o) {
   const slots = used.filter(s => !o.screens?.length || o.screens.includes(s.id));
   const total = devs.length * markets.length * slots.length; let done = 0; const t0 = Date.now(); const manifest = [];
   const progress = cur => emit({ type: 'progress', done, total, cur, eta: done ? Math.round((Date.now() - t0) / done * (total - done) / 60000) : null });
-  log(`▶ ${b.name} — ${devs.length} device sizes × ${markets.length} countries × ${slots.length} screens = ${total} screenshots`);
+  log(`▶ ${b.name} — ${devs.length} device sizes × ${markets.length} countries × ${slots.length} screens = ${total} screenshots`); progress('Starting');
   for (const def of devs) {
     const bd = builds().find(x => x.brand === b.key && x.platform === def.platform && (!o.builds?.length || o.builds.includes(x.file)));
     if (!bd) { log(`⚠︎ No ${def.platform === 'ios' ? 'iOS' : 'Android'} build ticked for ${b.name} — skipping ${def.label}`); done += markets.length * slots.length; continue; }
@@ -597,6 +604,7 @@ http.createServer(async (req, res) => {
       res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' }); return res.end(html.replace('<head>', `<head><base href="${PAGE}">`)); }
     if (P === '/api/events') { res.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-cache' }); res.write(`data: ${JSON.stringify({ type: 'busy', busy })}\n\n`); clients.add(res); req.on('close', () => clients.delete(res)); return; }
     if (P === '/api/hello') return json(res, { ok: true, version: 2, out: OUT, busy });
+    if (P === '/api/status') return json(res, { busy, log: HISTORY, progress: STATE.progress, shots: STATE.shots });
     if (P === '/api/doctor') return json(res, await doctor());
     if (P === '/api/devices') return json(res, await deviceStatus());
     if (P === '/api/builds') return json(res, builds());

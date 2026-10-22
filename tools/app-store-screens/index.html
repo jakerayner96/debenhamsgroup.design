@@ -168,6 +168,7 @@ code.cmd{display:block;font:12px/18px ui-monospace,Menlo,monospace;background:#0
     <div class="card"><h2>This run</h2><p class="help" id="summary" style="margin:0"></p></div>
     <div class="card">
       <div class="row"><button class="bd pri" id="run">Export screenshots</button><button class="bd sec" id="stop">Stop</button><span class="sp grow"></span><button class="bd sec" id="openOut">Open folder</button></div>
+      <p class="help" id="runNote" style="margin:12px 0 0"></p>
       <div class="prog" id="prog" style="margin-top:16px;--p:0%"><div class="prog-hd"><span id="progTxt">Ready</span><span id="progN"></span></div><div class="prog-bar"><i></i></div></div>
     </div>
     <div class="grid2">
@@ -218,22 +219,30 @@ function show(t){pref('tab',t);$$('#tabs button').forEach(b=>b.classList.toggle(
 async function connect(){
   try{const h=await fetch(R+'/api/hello').then(r=>r.json());ONLINE=!!h.ok;}catch(e){ONLINE=false}
   $('#dot').classList.toggle('on',ONLINE);$('#connTxt').textContent=ONLINE?'Runner connected on this Mac':'Can\'t reach the runner on this Mac';
-  if(ONLINE){PAGES=await api('/api/pages');await loadBrands();DEVS=await api('/api/devices');await loadBuilds();events();}
+  if(ONLINE){PAGES=await api('/api/pages');await loadBrands();DEVS=await api('/api/devices');await loadBuilds();await catchUp();events();}
   show(pref('tab')||'builds');
 }
 $('#retry').onclick=connect;
 $('#copyCmd').onclick=()=>{navigator.clipboard.writeText($('#installCmd').textContent);$('#copyCmd').textContent='Copied'};
+
+/* a run that started before this page opened (or from elsewhere) */
+async function catchUp(){try{const st=await api('/api/status');BUSY=st.busy;$('#log').textContent=(st.log||[]).join('\n')+(st.log?.length?'\n':'');$('#log').scrollTop=1e9;
+  $('#gal').innerHTML='';(st.shots||[]).forEach(addShot);if(st.progress)showProgress(st.progress);runState()}catch(e){}}
+function runState(){$('#run').disabled=!!BUSY;$('#prog').classList.toggle('prog--busy',!!BUSY&&!($('#prog').style.getPropertyValue('--p')||'').replace('0%',''));
+  if(BUSY&&$('#progTxt').textContent==='Ready')$('#progTxt').textContent='Running…';if(!BUSY&&/Running/.test($('#progTxt').textContent))$('#progTxt').textContent='Ready';
+  $('#runNote').textContent=BUSY?`Running: ${BUSY}. Live log and screenshots below.`:'';}
+function showProgress(m){const p=m.total?Math.round(m.done/m.total*100):0;$('#prog').style.setProperty('--p',p+'%');$('#prog').classList.toggle('prog--busy',!!BUSY&&!p);
+  if(m.cur)$('#progTxt').textContent=m.cur;$('#progN').textContent=m.total?`${m.done} / ${m.total}${m.eta!=null?` · ${m.eta} min left`:''}`:''}
 
 /* live events from the runner */
 function events(){
   const es=new EventSource(R+'/api/events');
   es.onmessage=e=>{const m=JSON.parse(e.data);
     if(m.type==='log'){const l=$('#log');l.textContent+=m.line+'\n';l.scrollTop=l.scrollHeight;$('#busyTxt').textContent=m.line.replace(/^\[[^\]]+\]\s*/,'');}
-    if(m.type==='busy'){BUSY=m.busy;$('#busyCard').hidden=!BUSY;$('#run').disabled=!!BUSY;if(!BUSY){loadBuilds();if(B)loadBrand(B.key)}}
+    if(m.type==='busy'){BUSY=m.busy;$('#busyCard').hidden=!BUSY;if(BUSY){$('#log').textContent='';$('#gal').innerHTML='';$('#prog').style.setProperty('--p','0%');$('#progTxt').textContent='Running…';$('#progN').textContent=''}runState();if(!BUSY){loadBuilds();if(B)loadBrand(B.key)}}
     if(m.type==='builds')loadBuilds();
     if(m.type==='preview'&&B&&m.brand===B.key){const i=$(`[data-prev="${m.screen}"]`);if(i)i.innerHTML=`<img src="${R}/api/preview?b=${B.key}&s=${m.screen}&t=${Date.now()}" alt="">`}
-    if(m.type==='progress'){const p=m.total?Math.round(m.done/m.total*100):0;$('#prog').style.setProperty('--p',p+'%');
-      if(m.cur)$('#progTxt').textContent=m.cur;$('#progN').textContent=m.total?`${m.done} / ${m.total}${m.eta!=null?` · ${m.eta} min left`:''}`:''}
+    if(m.type==='progress')showProgress(m);
     if(m.type==='shot')addShot(m.file);
   };
   es.onerror=()=>{es.close();setTimeout(connect,4000)};
