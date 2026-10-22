@@ -26,6 +26,8 @@ try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S
 const abs=p=>new URL(p,document.baseURI).href;
 const IMG={lacoste:'lacoste',guess:'guess',sweaty:'sweaty'};
 const LOCKUPS=[1,2,3,4,5,6,7,8].map(i=>abs(`projects/brandroom-signup/img/lockup-${i}.png`));
+/* preload every popup image so flicking between layouts never waits on the network */
+['lacoste','guess','sweaty'].forEach(k=>{new Image().src=abs(`projects/brandroom-signup/img/${k}-p.jpg`)});LOCKUPS.forEach(u=>{new Image().src=u});
 const SRC={plp:b=>`projects/plp-alignment/plp.html?brand=${b}&mode=new`};
 
 const emb=document.getElementById('emb');
@@ -36,10 +38,10 @@ const VH=()=>{const w=W();return w&&w.innerWidth>=768?900:844};   /* first scree
 
 function opts(){
   const land=S.opt==='steps'||S.opt==='split';
-  const img=abs(`projects/brandroom-signup/img/${IMG[S.img]||'lacoste'}-${(S.opt==='sheet'&&W()&&W().innerWidth>=768)?'l':'p'}.jpg`);
+  const img=abs(`projects/brandroom-signup/img/${IMG[S.img]||'lacoste'}-p.jpg`);   /* one 4:5 asset for every layout and breakpoint */
   return {layout:S.opt,img:S.opt==='lockup'?'':img,lockups:LOCKUPS,lock:+S.lock||0,rotate:S.rotate!==false,
     logo:abs('assets/brands/brandroom.svg'),logoInv:abs('assets/brands/brandroom-white.svg'),flag:abs('assets/ds/icons/flags/united-kingdom.svg'),
-    eyebrow:S.eyebrow,title:S.title,sub:S.sub,cta:S.cta,phone:S.phone,no:S.no!==false,state:S.state||'form',ratio:S.ratio,exporting:EXPORTING,tab:S.tab};
+    eyebrow:S.eyebrow,title:S.title,sub:S.sub,cta:S.cta,phone:S.phone,no:S.no!==false,state:S.state||'form',ratio:S.ratio,exporting:EXPORTING,tab:S.tab,anim:false};
 }
 function inject(){const d=D();if(!d||!d.body)return;
   d.querySelectorAll('[data-sup],[data-sup-x]').forEach(n=>n.remove());
@@ -62,9 +64,9 @@ function load(){
   if(key===KEY){inject();return ready}
   KEY=key;
   ready=new Promise(res=>{
-    emb.onload=()=>{const d=D(),t0=Date.now();
+    emb.onload=()=>{inject();const d=D(),t0=Date.now();
       const done=()=>{const imgs=d?[...d.images].filter(i=>i.loading!=='lazy'||i.getBoundingClientRect().top<3000):[];return imgs.every(i=>i.complete)};
-      const iv=setInterval(()=>{if(done()||Date.now()-t0>9000){clearInterval(iv);inject();res()}},150)};
+      const iv=setInterval(()=>{if(done()||Date.now()-t0>9000){clearInterval(iv);const dd=D();if(dd&&!dd.querySelector('[data-sup]'))inject();res()}},150)};
     emb.src=SRC.plp(S.brand);
   });
   return ready;

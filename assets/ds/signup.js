@@ -5,7 +5,7 @@
      DG_signup.LIVE             → the live copy (Bloomreach Engagement weblayer "A - Email & SMS Signup", scraped 21 Oct 2026)
    o = {layout:'split'|'bleed'|'lockup'|'sheet'|'flat'|'steps', img, lockups:[urls], logo, logoInv, flag,
         eyebrow, title, sub, cta, phone:'required'|'optional'|'off', no:bool, state:'form'|'error'|'done'|'step2', ratio:'45'|'34'|'11',
-        brands:[names], picks:[names], exporting:bool}
+        brands:[names], picks:[names], exporting:bool, anim:bool (false = no open motion)}
    Every visible piece is DS: .mdl (Modal), .modal-x, .fld / .fld--tel (Input field), .bd.pri / .bd.txt (Button), .chip (Chips). */
 (function(){
 const LIVE={
@@ -34,7 +34,9 @@ function fields(o){
   return em+tel;
 }
 function legal(){return `<p class="sup-legal">${esc(LIVE.legal)} <a href="${LIVE.privacy}" target="_blank" rel="noopener">Privacy Policy</a></p>`}
-function hd(o,cls){return `<div class="sup-hd">${o.logo?`<img class="sup-logo" src="${esc(o.logo)}" alt="The Brand Room">`:''}${o.eyebrow?`<p class="sup-eyebrow">${esc(o.eyebrow)}</p>`:''}<h2 class="sup-title">${esc(o.title)}</h2>${o.sub?`<p class="sup-sub">${esc(o.sub)}</p>`:''}</div>`}
+/* header; o.thumb = the same 4:5 campaign image as a thumbnail beside the copy (slide-in always, split / two-step under 768 where the image column goes) */
+function hd(o){const tx=`${o.logo?`<img class="sup-logo" src="${esc(o.logo)}" alt="The Brand Room">`:''}${o.eyebrow?`<p class="sup-eyebrow">${esc(o.eyebrow)}</p>`:''}<h2 class="sup-title">${esc(o.title)}</h2>${o.sub?`<p class="sup-sub">${esc(o.sub)}</p>`:''}`;
+  return o.thumb?`<div class="sup-hd sup-hd--thumb"><img class="sup-thumb" src="${esc(o.thumb)}" alt=""><div class="sup-hd-tx">${tx}</div></div>`:`<div class="sup-hd">${tx}</div>`}
 function form(o){return `<form class="sup-form" novalidate>${fields(o)}<button class="bd pri" type="submit"><span class="lbl">${esc(o.cta||LIVE.cta)}</span></button></form>${o.no!==false?`<button class="bd txt sup-no" type="button" data-sup-close>${esc(LIVE.no)}</button>`:''}${legal()}`}
 function done(o){return `<div class="sup-hd">${o.logo?`<img class="sup-logo" src="${esc(o.logo)}" alt="The Brand Room">`:''}<h2 class="sup-title">${esc(LIVE.doneT)}</h2><p class="sup-sub">${esc(LIVE.doneB)}</p></div><button class="bd pri" type="button" data-sup-close style="width:100%;height:50px">${esc(LIVE.doneCta)}</button>`}
 /* two-step: 1 email → 2 brands + SMS → done */
@@ -57,7 +59,8 @@ function html(o){
   o=Object.assign({},LIVE,o);
   const L=o.layout||'split',dark=L==='bleed'||L==='flat'||L==='lockup';
   const x=`<button class="modal-x modal-x--abs${dark?' modal-x--inv':''}" type="button" aria-label="Close" data-sup-close></button>`;
-  const anim=o.exporting?'':(L==='sheet'?' mdl-anim-up':' mdl-anim-fade');
+  const instant=o.exporting||o.anim===false;   /* anim:false = open with no fade / slide (review prototypes flicking between layouts) */
+  const anim=instant?'':(L==='sheet'?' mdl-anim-up':' mdl-anim-fade');
   let win;
   if(L==='flat'){
     win=`<div class="mdl mdl--signup sup--flat${o.ratio==='34'?' sup--r34':o.ratio==='11'?' sup--r11':''}${anim}" role="dialog" aria-label="${esc(o.title)}"><a href="#signup" data-sup-flat>${art(o)}</a>${x}</div>`;
@@ -66,10 +69,12 @@ function html(o){
     win=`<div class="mdl mdl--signup sup--lockup${anim}" role="dialog" aria-label="${esc(o.title)}">${x}<div class="sup-lock">${lk}</div>${body(Object.assign({},o,{logo:''}))}</div>`;
   }else{
     const cls=L==='steps'?'sup--split':'sup--'+L;
-    const media=o.img?`<div class="sup-media"><img src="${esc(o.img)}" alt=""></div>`:'';
+    /* one asset, one ratio: the 4:5 campaign crop is the image column (split) or the background (bleed); the slide-in and mobile split show it as a 4:5 thumbnail */
+    const media=o.img&&L!=='sheet'?`<div class="sup-media"><img src="${esc(o.img)}" alt=""></div>`:'';
+    if(o.img&&(L==='sheet'||L==='split'||L==='steps'))o=Object.assign({},o,{thumb:o.img});
     win=`<div class="mdl mdl--signup ${cls}${anim}" role="dialog" aria-label="${esc(o.title)}">${x}${media}${body(Object.assign({},o,{logo:''}))}</div>`;   /* the eyebrow already names the fascia — the logo is for the flat image only */
   }
-  return `<div class="sup-layer${L==='sheet'?' sup-layer--free':''}" data-sup>${L==='sheet'?'':'<div class="mdl-scrim" data-sup-close></div>'}${win}</div>`;
+  return `<div class="sup-layer${L==='sheet'?' sup-layer--free':''}${instant?' sup-layer--instant':''}" data-sup>${L==='sheet'?'':'<div class="mdl-scrim" data-sup-close></div>'}${win}</div>`;
 }
 /* the flat creative — one image; html2canvas exports .sup-art as the PNG that goes into the weblayer */
 function art(o){

@@ -5,13 +5,16 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-22",
   "v": "2026.10.22",
-  "title": "Virtual Stylist is the default PDP chip + Brand Room filters in Title Case",
+  "title": "Virtual Stylist is the default PDP chip + Brand Room filters in Title Case + Sign-up modal crops",
   "by": "KM Premier colours (Jake, from live Karen Millen) · Brand Room sign-up popup (projects/brandroom-signup)",
   "added": [
    "AI tag chip · Virtual Stylist: hanger glyph (icons/lib/icons-hanger.svg, .ai-pill--tag img.ic 20px) + Virtual Stylist, centred (.pdp-chips--center); catalogue AI pill · by KM Premier colours",
    "Token --filter-case — the letter case of PLP filters (sort / filter dropdowns .sf-dd, Sort & Filter .sf-btn, category pills .catpill, category links .catlinks); falls back to --cta-case, so every other fascia is unchanged · by Brand Room sign-up popup"
   ],
   "changed": [
+   "Sign-up modal: one asset and one ratio across breakpoints — the 4:5 campaign crop is the image column on desktop split (448 × 560) and a 4:5 thumbnail beside the headline (.sup-hd--thumb, .sup-thumb, 104px) on mobile split / two-step and on the slide-in at every width; full bleed is a fixed 2:3 portrait (480 × 720 desktop, 358 × 537 mobile). Mobile popups drop from near full screen to 456–612px · by Brand Room sign-up popup (Jake, 22 Oct)",
+   "Sign-up modal: “No Thanks” hugs the CTA — gap 3 (12px) above, gap 4 (16px) to the legal, 26px tall (was the full gap 6 either side and 34px) · by Brand Room sign-up popup (Jake, 22 Oct)",
+   "Sign-up modal: anim:false / .sup-layer--instant opens it with no fade or slide (exports, and prototypes flicking between layouts) · by Brand Room sign-up popup",
    "PDP template (templates/pdp.html): Virtual Stylist replaces Shop Similar, centred between the gallery and the title on mobile and under the gallery on desktop (was top right of the main image). Every next PDP gets it · by KM Premier colours",
    "Shop Similar is a Google feature that isn't launched yet: kept in the DS (catalogue AI pill · Shop Similar) but taken off the default PDP · by KM Premier colours",
    "Brand Room: PLP filters and category pills are Title Case (--filter-case:none), no longer all caps — buttons keep uppercase (--cta-case) · by Brand Room sign-up popup (Jake, 22 Oct)"
