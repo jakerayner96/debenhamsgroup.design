@@ -1,0 +1,16 @@
+# Clear first-run / system pop-ups — only taps when one is actually showing (an optional tap waits ~10 s when there's nothing)
+appId: ${APP}
+---
+- repeat:
+    while:
+      visible: "(?i)(do not track|ask app not to track|don.t allow|maybe later|not now|peut-être plus tard|pas maintenant|ne pas autoriser|später|nicht jetzt|nicht erlauben|misschien later|niet nu|niet toestaan|kanske senare|inte nu|tillåt inte)"
+    times: 4
+    commands:
+      - tapOn: "(?i)(do not track|ask app not to track|don.t allow|maybe later|not now|peut-être plus tard|pas maintenant|ne pas autoriser|später|nicht jetzt|nicht erlauben|misschien later|niet nu|niet toestaan|kanske senare|inte nu|tillåt inte)"
+      - waitForAnimationToEnd:
+          timeout: 3000
+- runFlow:
+    when:
+      visible: "Wait"
+    commands:
+      - tapOn: "Wait"

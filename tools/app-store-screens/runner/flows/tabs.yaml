@@ -1,10 +1,7 @@
 # Back out of pages opened by a link (they sit above the tab bar) until the tab bar is there again
 appId: ${APP}
 ---
-# late pop-ups (tracking prompt, notifications, Android "isn't responding") — clear before every screen
-- tapOn:
-    text: "(?i)(do not track|ask app not to track|don.t allow|maybe later|not now|peut-être plus tard|pas maintenant|später|nicht jetzt|misschien later|niet nu|kanske senare|inte nu|wait)"
-    optional: true
+- runFlow: popups.yaml   # late pop-ups (tracking prompt, notifications, Android "isn't responding")
 - repeat:
     while:
       notVisible:

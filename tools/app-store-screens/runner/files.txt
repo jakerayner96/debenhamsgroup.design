@@ -15,6 +15,7 @@ flows/login.yaml
 flows/menu-cat.yaml
 flows/menu.yaml
 flows/pick.yaml
+flows/popups.yaml
 flows/prep.yaml
 flows/scroll-up-once.yaml
 flows/scroll.yaml

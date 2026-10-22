@@ -1,22 +1,11 @@
-# App just launched (in its language): clear system + app pop-ups first, then wait for Home
+# App just launched (in its language): wait for Home, clearing pop-ups as they appear
 appId: ${APP}
 ---
-# Android "System UI isn't responding" / "App isn't responding" — choose Wait
-- tapOn:
-    text: "Wait"
-    optional: true
-- repeat:
-    times: 4
-    commands:
-      - waitForAnimationToEnd:
-          timeout: 4000
-      - tapOn:
-          text: "(?i)(don.t allow|ask app not to track|do not track|maybe later|not now|peut-être plus tard|plus tard|pas maintenant|ne pas autoriser|später|nicht jetzt|nicht erlauben|misschien later|niet nu|niet toestaan|kanske senare|inte nu|tillåt inte)"
-          optional: true
+- runFlow: popups.yaml
 - extendedWaitUntil:
     visible:
       id: navHome
     timeout: 60000
-- tapOn:
-    text: "(?i)(do not track|ask app not to track|don.t allow|maybe later|not now|peut-être plus tard|später|misschien later|kanske senare)"
-    optional: true
+- waitForAnimationToEnd:
+    timeout: 4000
+- runFlow: popups.yaml
