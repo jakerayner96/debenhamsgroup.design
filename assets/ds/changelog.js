@@ -6,8 +6,9 @@ window.DG_CHANGELOG=[
   "d": "2026-10-22",
   "v": "2026.10.22",
   "title": "Virtual Stylist is the default PDP chip + Brand Room filters in Title Case + Sign-up modal crops",
-  "by": "KM Premier colours (Jake, from live Karen Millen) · Brand Room sign-up popup (projects/brandroom-signup)",
+  "by": "KM Premier colours (Jake, from live Karen Millen) · Brand Room sign-up popup (projects/brandroom-signup) · Account 2026 (account-2026)",
   "added": [
+   "Membership banner · checkout (.mbanner, .mbanner--plus; tokens --mbanner-bg / --mbanner-fg / --mbanner-grad-plus / --mbanner-st-w): the full-width UNLIMITED · ACTIVE bar above the checkout delivery options (Checkout 2026 3996:171295) — grey gradient, black→teal for Debenhams Unlimited+, PLT sand + diamond Royalty Delivery with regular ACTIVE; replaces the Membership pill on checkout. Antonio now loads on the site · by Account 2026 (Jake, 22 Oct)",
    "AI tag chip · Virtual Stylist: hanger glyph (icons/lib/icons-hanger.svg, .ai-pill--tag img.ic 20px) + Virtual Stylist, centred (.pdp-chips--center); catalogue AI pill · by KM Premier colours",
    "Token --filter-case — the letter case of PLP filters (sort / filter dropdowns .sf-dd, Sort & Filter .sf-btn, category pills .catpill, category links .catlinks); falls back to --cta-case, so every other fascia is unchanged · by Brand Room sign-up popup"
   ],
