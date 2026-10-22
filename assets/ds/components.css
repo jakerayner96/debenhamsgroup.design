@@ -607,7 +607,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 /* Radio — Figma DS 669-2125 (5915-3370 on / 5915-3372 off): 24px, 1px Grey 3 ring on white (it stays Grey 3 when selected);
    selected = a 13.71px dot (r 6.857) in the CTA / action colour — not black. */
 .rad{width:24px;height:24px;flex:none;border-radius:99px;border:1px solid var(--border-control,#B5B5B5);background:var(--surface-raised);display:grid;place-items:center;padding:0;cursor:pointer}
-.rad::after{content:"";width:13.714px;height:13.714px;border-radius:99px;background:var(--icon-action);opacity:0}
+.rad::after{content:"";width:13.714px;height:13.714px;border-radius:99px;background:var(--rad-dot,var(--icon-action));opacity:0}
 .rad.on::after,.rad[aria-checked="true"]::after{opacity:1}
 .rad-row{display:flex;align-items:center;gap:var(--gap-4,16px);padding:var(--gap-3,12px) 0;font-size:16px} /* gap 4 (16px) ring → label, row 44px */
 .tog{width:44px;height:24px;flex:none;border-radius:99px;background:var(--border-default);border:none;position:relative;cursor:pointer;transition:background var(--dur-base)}

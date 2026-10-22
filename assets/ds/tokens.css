@@ -139,6 +139,7 @@
   --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#000;--usp-b-fg:#FFF;
   --brand-primary:#D24508;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424; /* KM buttons black, as production (--color-primary 000) and Jake's Figma, 21 Oct 2026 — orange stays the brand accent */
   --border-action:#000;--border-focus:#892D05;--text-link:#892D05;--text-link-hover:#000;--icon-action:#892D05;
+  --rad-dot:#000; /* KM radio dot black, not orange (Jake 22 Oct 2026) — checkboxes / toggles keep --icon-action */
   --brand-light-3:#F3C1A7;--brand-light-2:#F0B597;--brand-light-1:#E88A5B;--brand-primary-dark:#892D05;
   --nav-bg:#FFF;
 }

@@ -123,11 +123,11 @@ const DG_CATALOGUE = [
   variants:[{name:'On / off', html:'<div style="display:flex;flex-direction:column;gap:12px"><div class="chk-row"><button class="chk on" aria-checked="true"></button>Add Worry-Free Purchase® for £3.18</div><div class="chk-row"><button class="chk" aria-checked="false"></button>Use my delivery address for billing</div></div>'}],
   dev:{title:'—', status:'ours', note:'No checkbox atom in the dev Storybook (checkout forms use native inputs). Adopt ours.'} },
 
-{ slug:'radio', name:'Radio', group:'Forms', tier:'atom', css:'.rad',
+{ slug:'radio', name:'Radio', group:'Forms', tier:'atom', css:'.rad · --rad-dot',
   summary:'24px ring with a 13.7px dot in the CTA colour. One of a set.',
   use:['Delivery options, payment method, sort order in a modal.'],
   avoid:['A single radio on its own.'],
-  anatomy:['24px · 1px --border-control ring (Grey 3 #B5B5B5) on white — stays Grey 3 when selected','Selected dot r 6.86 (13.7px) in --icon-action — the CTA colour (Debenhams #00787D), never black · Figma 669-2125','Ring → label gap 4 (16px) · row 44px'],
+  anatomy:['24px · 1px --border-control ring (Grey 3 #B5B5B5) on white — stays Grey 3 when selected','Selected dot r 6.86 (13.7px) in --rad-dot (falls back to --icon-action, the CTA colour: Debenhams #00787D) · Karen Millen black #000, not orange (Jake 22 Oct 2026) · Figma 669-2125','Ring → label gap 4 (16px) · row 44px'],
   variants:[{name:'Set', html:'<div style="display:flex;flex-direction:column;gap:12px"><div class="rad-row"><button class="rad on" aria-checked="true"></button>Recommended</div><div class="rad-row" style="padding-top:0"><button class="rad" aria-checked="false"></button>Lowest price</div></div>'}],
   dev:{title:'—', status:'ours', note:'Not in the dev Storybook. Adopt ours.'} },
 
