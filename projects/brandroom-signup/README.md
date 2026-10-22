@@ -19,11 +19,11 @@
 The panel is just the option list (click or ↑ ↓); copy, image and fields are fixed at the recommended set (live copy, Lacoste AW26, phone optional). The popup opens with no motion so flicking is instant.
 | | Route | What |
 |---|---|---|
-| A | Split | 4:5 image column (448 × 560) beside the form on desktop; the same 4:5 image as a thumbnail beside the headline on mobile. |
+| A | Split | 50/50 image and content at every width: 4:5 image column (448 × 560) on desktop; on mobile the image takes the left half (portrait) and compact content the right, legal full width underneath (490px tall at 390). |
 | B | Full bleed | 2:3 portrait on both breakpoints; form on a black gradient, white fields + CTA. |
 | C | Brand lockup | Today's structure on the DS — partner lockup band cross-fading through the 8 partners over a white form. |
 | D | Slide-in | Non-blocking card (bottom-left desktop, bottom of screen mobile), 4:5 thumbnail, no overlay; closes to a "Get style tips" tab. |
-| E | Two-step | Email first, then favourite brands (DS chips) + optional SMS, then thank you. |
+| E | Two-step | Same image column on desktop, 4:5 thumbnail beside the headline on mobile. Email first, then favourite brands (DS chips) + optional SMS, then thank you. |
 
 The flat-image route (old A) was dropped from the review on 22 Oct; `.sup--flat` stays in the DS. Mobile popup heights at 390: 456–612px.
 

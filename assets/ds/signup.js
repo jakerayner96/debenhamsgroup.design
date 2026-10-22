@@ -30,14 +30,14 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 function fields(o){
   const err=o.state==='error',ph=o.phone||'optional';
   const em=`<label class="fld${err?' invalid':''}"><input type="email" name="email" placeholder=" " autocomplete="email"${err?' value="jake.rayner@"':''}><span class="lbl">${esc(LIVE.email)}</span></label>${err?`<p class="fld-err">${esc(LIVE.errEmail)}</p>`:''}`;
-  const tel=ph==='off'?'':`<label class="fld fld--tel"><span class="fld-pre"><img src="${esc(o.flag||'')}" alt="">+44</span><input type="tel" name="phone" placeholder=" " autocomplete="tel-national"><span class="lbl">${esc(LIVE.phone)}${ph==='optional'?' (optional)':''}</span></label>`;
+  const tel=ph==='off'?'':`<label class="fld fld--tel"><span class="fld-pre"><img src="${esc(o.flag||'')}" alt=""><span class="fld-cc">+44</span></span><input type="tel" name="phone" placeholder=" " autocomplete="tel-national"><span class="lbl">${esc(LIVE.phone)}${ph==='optional'?'<span class="lbl-opt"> (optional)</span>':''}</span></label>`;
   return em+tel;
 }
 function legal(){return `<p class="sup-legal">${esc(LIVE.legal)} <a href="${LIVE.privacy}" target="_blank" rel="noopener">Privacy Policy</a></p>`}
-/* header; o.thumb = the same 4:5 campaign image as a thumbnail beside the copy (slide-in always, split / two-step under 768 where the image column goes) */
+/* header; o.thumb = the same 4:5 campaign image as a thumbnail beside the copy (slide-in always, two-step under 768 where the image column goes) */
 function hd(o){const tx=`${o.logo?`<img class="sup-logo" src="${esc(o.logo)}" alt="The Brand Room">`:''}${o.eyebrow?`<p class="sup-eyebrow">${esc(o.eyebrow)}</p>`:''}<h2 class="sup-title">${esc(o.title)}</h2>${o.sub?`<p class="sup-sub">${esc(o.sub)}</p>`:''}`;
   return o.thumb?`<div class="sup-hd sup-hd--thumb"><img class="sup-thumb" src="${esc(o.thumb)}" alt=""><div class="sup-hd-tx">${tx}</div></div>`:`<div class="sup-hd">${tx}</div>`}
-function form(o){return `<form class="sup-form" novalidate>${fields(o)}<button class="bd pri" type="submit"><span class="lbl">${esc(o.cta||LIVE.cta)}</span></button></form>${o.no!==false?`<button class="bd txt sup-no" type="button" data-sup-close>${esc(LIVE.no)}</button>`:''}${legal()}`}
+function form(o){return `<form class="sup-form" novalidate>${fields(o)}<button class="bd pri" type="submit"><span class="lbl">${esc(o.cta||LIVE.cta)}</span></button></form>${o.no!==false?`<button class="bd txt sup-no" type="button" data-sup-close>${esc(LIVE.no)}</button>`:''}${o.layout==='split'?'':legal()}`}   /* split: the legal sits in .sup-foot under both columns */
 function done(o){return `<div class="sup-hd">${o.logo?`<img class="sup-logo" src="${esc(o.logo)}" alt="The Brand Room">`:''}<h2 class="sup-title">${esc(LIVE.doneT)}</h2><p class="sup-sub">${esc(LIVE.doneB)}</p></div><button class="bd pri" type="button" data-sup-close style="width:100%;height:50px">${esc(LIVE.doneCta)}</button>`}
 /* two-step: 1 email → 2 brands + SMS → done */
 function steps(o){
@@ -46,7 +46,7 @@ function steps(o){
   const one=`<div class="sup-step" data-step="1" style="display:${s===1?'flex':'none'};flex-direction:column;gap:24px">${dots}${hd(o)}<form class="sup-form" novalidate>${fields(Object.assign({},o,{phone:'off'}))}<button class="bd pri" type="submit"><span class="lbl">${esc(o.cta||'Continue')}</span></button></form>${o.no!==false?`<button class="bd txt sup-no" type="button" data-sup-close>${esc(LIVE.no)}</button>`:''}${legal()}</div>`;
   const two=`<div class="sup-step" data-step="2" style="display:${s===2?'flex':'none'};flex-direction:column;gap:24px">${dots.replace('<i class="">','<i class="on">')}<div class="sup-hd"><p class="sup-eyebrow">You’re in</p><h2 class="sup-title">Which brands do you love?</h2><p class="sup-sub">Pick a few and we’ll tailor your style tips, new-in drops and offers to them.</p></div>
     <div class="sup-brands">${(o.brands||BRANDS).map(b=>`<button type="button" class="chip${picks.includes(b)?' on':''}" data-pick>${esc(b)}</button>`).join('')}</div>
-    <form class="sup-form" novalidate>${o.phone==='off'?'':`<label class="fld fld--tel"><span class="fld-pre"><img src="${esc(o.flag||'')}" alt="">+44</span><input type="tel" name="phone" placeholder=" " autocomplete="tel-national"><span class="lbl">Get texts first (optional)</span></label>`}<button class="bd pri" type="submit"><span class="lbl">Save my brands</span></button></form>
+    <form class="sup-form" novalidate>${o.phone==='off'?'':`<label class="fld fld--tel"><span class="fld-pre"><img src="${esc(o.flag||'')}" alt=""><span class="fld-cc">+44</span></span><input type="tel" name="phone" placeholder=" " autocomplete="tel-national"><span class="lbl">Get texts first<span class="lbl-opt"> (optional)</span></span></label>`}<button class="bd pri" type="submit"><span class="lbl">Save my brands</span></button></form>
     <button class="bd txt sup-no" type="button" data-sup-skip>Skip for now</button></div>`;
   const three=`<div class="sup-step" data-step="3" style="display:${s===3?'flex':'none'};flex-direction:column;gap:24px">${done(o)}</div>`;
   return one+two+three;
@@ -68,11 +68,12 @@ function html(o){
     const lk=(o.lockups||[]).map((u,i)=>`<img src="${esc(u)}" alt=""${i===(o.lock||0)?' class="on"':''}>`).join('');
     win=`<div class="mdl mdl--signup sup--lockup${anim}" role="dialog" aria-label="${esc(o.title)}">${x}<div class="sup-lock">${lk}</div>${body(Object.assign({},o,{logo:''}))}</div>`;
   }else{
-    const cls=L==='steps'?'sup--split':'sup--'+L;
+    const cls=L==='steps'?'sup--split sup--steps':'sup--'+L;
     /* one asset, one ratio: the 4:5 campaign crop is the image column (split) or the background (bleed); the slide-in and mobile split show it as a 4:5 thumbnail */
     const media=o.img&&L!=='sheet'?`<div class="sup-media"><img src="${esc(o.img)}" alt=""></div>`:'';
-    if(o.img&&(L==='sheet'||L==='split'||L==='steps'))o=Object.assign({},o,{thumb:o.img});
-    win=`<div class="mdl mdl--signup ${cls}${anim}" role="dialog" aria-label="${esc(o.title)}">${x}${media}${body(Object.assign({},o,{logo:''}))}</div>`;   /* the eyebrow already names the fascia — the logo is for the flat image only */
+    if(o.img&&(L==='sheet'||L==='steps'))o=Object.assign({},o,{thumb:o.img});
+    const foot=L==='split'&&o.state!=='done'?`<div class="sup-foot">${legal()}</div>`:'';   /* split: 50/50 image | content at every width, legal full width under both */
+    win=`<div class="mdl mdl--signup ${cls}${anim}" role="dialog" aria-label="${esc(o.title)}">${x}${media}${body(Object.assign({},o,{logo:''}))}${foot}</div>`;   /* the eyebrow already names the fascia — the logo is for the flat image only */
   }
   return `<div class="sup-layer${L==='sheet'?' sup-layer--free':''}${instant?' sup-layer--instant':''}" data-sup>${L==='sheet'?'':'<div class="mdl-scrim" data-sup-close></div>'}${win}</div>`;
 }
@@ -104,7 +105,7 @@ function bind(layer,o,cb){
     if(bad)return;
     const step=f.closest('.sup-step');
     if(step){show(+step.dataset.step+1);return}
-    const b=f.closest('.sup-body');b.innerHTML=done(Object.assign({},o,{logo:''}));
+    const b=f.closest('.sup-body');b.innerHTML=done(Object.assign({},o,{logo:''}));const ft=layer.querySelector('.sup-foot');if(ft)ft.remove();
     b.querySelectorAll('[data-sup-close]').forEach(x=>x.addEventListener('click',close));
   }));
   /* co-brand lockup: the live GIF rotates the partner brand every second — here a cross-fade, frozen for exports */

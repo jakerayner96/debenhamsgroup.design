@@ -12,6 +12,7 @@ window.DG_CHANGELOG=[
    "Token --filter-case — the letter case of PLP filters (sort / filter dropdowns .sf-dd, Sort & Filter .sf-btn, category pills .catpill, category links .catlinks); falls back to --cta-case, so every other fascia is unchanged · by Brand Room sign-up popup"
   ],
   "changed": [
+   "Sign-up modal · Split: stays 50/50 image | content on mobile (portrait image half, compact content half: title 18/22, eyebrow 10, fields gap 3 (12px) sides, flag-only phone prefix), legal in a new .sup-foot full width under both halves; on desktop content + legal centre as one block beside the 4:5 image. Two-step (.sup--steps) keeps the 4:5 thumbnail on mobile · by Brand Room sign-up popup (Jake, 22 Oct)",
    "Sign-up modal: one asset and one ratio across breakpoints — the 4:5 campaign crop is the image column on desktop split (448 × 560) and a 4:5 thumbnail beside the headline (.sup-hd--thumb, .sup-thumb, 104px) on mobile split / two-step and on the slide-in at every width; full bleed is a fixed 2:3 portrait (480 × 720 desktop, 358 × 537 mobile). Mobile popups drop from near full screen to 456–612px · by Brand Room sign-up popup (Jake, 22 Oct)",
    "Sign-up modal: “No Thanks” hugs the CTA — gap 3 (12px) above, gap 4 (16px) to the legal, 26px tall (was the full gap 6 either side and 34px) · by Brand Room sign-up popup (Jake, 22 Oct)",
    "Sign-up modal: anim:false / .sup-layer--instant opens it with no fade or slide (exports, and prototypes flicking between layouts) · by Brand Room sign-up popup",
