@@ -160,6 +160,7 @@
   --brand-name:'The Brand Room';
   --font-family-base:'Archivo',ui-sans-serif,-apple-system,system-ui,sans-serif; /* Jake 06 Oct: The Brand Room is set in Archivo, not Helvetica Neue */
   --w-regular:400;--w-mid:400;--w-strong:700;--cta-case:uppercase;
+  --filter-case:none; /* Jake 22 Oct: PLP filters (dropdowns, Sort & Filter, category pills / links) are Title Case, not caps — buttons keep --cta-case */
   --radius-default:0px;--radius-lg:0px;--radius-pill:0px; /* square-radius mode — confirmed */
   --brand-primary:#0A0A0A;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
   --brand-light-3:#E7E7E7;--brand-light-2:#F2F2F2;--brand-light-1:#B5B5B5;--brand-primary-dark:#242424;

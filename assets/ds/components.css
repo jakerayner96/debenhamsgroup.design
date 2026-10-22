@@ -280,7 +280,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .sf-split button+button{border-left:var(--border-w) solid var(--border-subtle)}
 .sf-split i.ch{width:16px;height:16px;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
 .sf-split .fic{width:18px;height:18px;background:url("icons/lib/icons-filter.svg") center/contain no-repeat;display:inline-block}
-.sf-dd{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;width:160px;height:42px;padding:8px;background:var(--surface-page);border:var(--border-w) solid var(--surface-media);border-radius:var(--radius-default);font-family:inherit;font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);cursor:pointer;text-transform:var(--cta-case)} /* 160px dropdowns, grey-2 keyline (Figma 13003-147068) */
+.sf-dd{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;width:160px;height:42px;padding:8px;background:var(--surface-page);border:var(--border-w) solid var(--surface-media);border-radius:var(--radius-default);font-family:inherit;font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);cursor:pointer;text-transform:var(--filter-case,var(--cta-case))} /* 160px dropdowns, grey-2 keyline (Figma 13003-147068) */
 .sf-dd:hover{border-color:var(--border-strong)}
 .sf-dd i{width:16px;height:16px;flex:none;background:url("icons/lib/icons-down.svg") center/contain no-repeat}
 .sf-sort{margin-left:auto;width:220px} /* sort pinned right, 220px */
@@ -294,7 +294,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .sf-ndd .track::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:var(--radius-pill);background:var(--surface-raised);box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform var(--dur-base) var(--ease-standard)}
 .sf-ndd.on .track{background:var(--surface-action)}
 .sf-ndd.on .track::after{transform:translateX(18px)}
-.sf-btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:var(--border-w) solid var(--border-strong);border-radius:var(--radius-pill);background:var(--surface-page);font-family:inherit;font-size:14px;font-weight:var(--w-strong);color:var(--text-primary);cursor:pointer;text-transform:var(--cta-case)}
+.sf-btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:var(--border-w) solid var(--border-strong);border-radius:var(--radius-pill);background:var(--surface-page);font-family:inherit;font-size:14px;font-weight:var(--w-strong);color:var(--text-primary);cursor:pointer;text-transform:var(--filter-case,var(--cta-case))}
 .sf-btn img{width:16px;height:16px;object-fit:contain}
 .sf-chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;background:var(--surface-sunken);border:var(--border-w) solid var(--border-subtle);border-radius:var(--radius-pill);font-size:13px}
 .sf-chip button{background:none;border:none;cursor:pointer;font-size:14px;line-height:1;padding:0;color:var(--icon-secondary)}
@@ -342,12 +342,12 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 @media(min-width:1024px){.cat-row--edge{justify-content:center}} /* desktop: centered */
 .roundel--white i{background:#FFF;border:var(--border-w) solid var(--border-subtle)} /* MAN roundels: white ground, contained imagery (13003-147021) */
 .roundel--white i img{padding:8px}
-.catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;background:var(--surface-media);border:none;border-radius:var(--radius-default);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--cta-case)} /* Grey 1 pills — never fully rounded */
+.catpill{display:inline-flex;align-items:center;height:36px;padding:0 14px;background:var(--surface-media);border:none;border-radius:var(--radius-default);font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:none;white-space:nowrap;flex:none;text-transform:var(--filter-case,var(--cta-case))} /* Grey 1 pills — never fully rounded */
 .catpill:hover{filter:brightness(.97)}
 .cat-row--pills{gap:8px} /* pill nav links sit 8px apart */
 .catpill--solid{} /* alias — pills are badge-format everywhere now */
 .catlinks{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;padding:8px 0;font-family:var(--font-family-base)}
-.catlinks a{font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:underline;text-underline-offset:3px;white-space:nowrap;text-transform:var(--cta-case)}
+.catlinks a{font-size:14px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:underline;text-underline-offset:3px;white-space:nowrap;text-transform:var(--filter-case,var(--cta-case))}
 
 /* Breadcrumb — Figma 12711-4044. 12px w-regular capitalize, slash separators; share icon = PDP mobile only */
 .bc{display:flex;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;gap:8px;row-gap:8px;align-items:center;padding:var(--gap-4,16px) 0;font-family:var(--font-family-base);font-size:12px;font-weight:var(--w-regular);color:var(--text-primary)}

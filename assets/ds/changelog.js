@@ -5,14 +5,16 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-22",
   "v": "2026.10.22",
-  "title": "Virtual Stylist is the default PDP chip",
-  "by": "KM Premier colours (Jake, from live Karen Millen)",
+  "title": "Virtual Stylist is the default PDP chip + Brand Room filters in Title Case",
+  "by": "KM Premier colours (Jake, from live Karen Millen) · Brand Room sign-up popup (projects/brandroom-signup)",
   "added": [
-   "AI tag chip · Virtual Stylist: hanger glyph (icons/lib/icons-hanger.svg, .ai-pill--tag img.ic 20px) + Virtual Stylist, centred (.pdp-chips--center); catalogue AI pill · by KM Premier colours"
+   "AI tag chip · Virtual Stylist: hanger glyph (icons/lib/icons-hanger.svg, .ai-pill--tag img.ic 20px) + Virtual Stylist, centred (.pdp-chips--center); catalogue AI pill · by KM Premier colours",
+   "Token --filter-case — the letter case of PLP filters (sort / filter dropdowns .sf-dd, Sort & Filter .sf-btn, category pills .catpill, category links .catlinks); falls back to --cta-case, so every other fascia is unchanged · by Brand Room sign-up popup"
   ],
   "changed": [
    "PDP template (templates/pdp.html): Virtual Stylist replaces Shop Similar, centred between the gallery and the title on mobile and under the gallery on desktop (was top right of the main image). Every next PDP gets it · by KM Premier colours",
-   "Shop Similar is a Google feature that isn't launched yet: kept in the DS (catalogue AI pill · Shop Similar) but taken off the default PDP · by KM Premier colours"
+   "Shop Similar is a Google feature that isn't launched yet: kept in the DS (catalogue AI pill · Shop Similar) but taken off the default PDP · by KM Premier colours",
+   "Brand Room: PLP filters and category pills are Title Case (--filter-case:none), no longer all caps — buttons keep uppercase (--cta-case) · by Brand Room sign-up popup (Jake, 22 Oct)"
   ],
   "fixed": []
  },
