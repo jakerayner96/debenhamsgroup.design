@@ -5,10 +5,11 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-23",
   "v": "2026.10.23",
-  "title": "Burton buttons + links navy, as live",
+  "title": "One sale + error red #C90000 for every fascia · Burton buttons + links navy, as live",
   "by": "vto-prototype (Virtual Stylist all fascias)",
   "added": [],
   "changed": [
+   "Sale + error red: ONE red for every fascia, #C90000 (was #D33F3F; PLT already #C90000, its overrides removed). --text-error #C90000 drives sale prices, error text, --border-error, --badge-save-fg, countdown digits (--usp-cd) and the Debenhams Sale nav link; component fallbacks + docs swatches updated. WCAG AA: 6.03:1 on white, 5.52:1 on Light Red #FFF2F2 (#D33F3F was 4.23:1 there, failing on the save pill, save chip, Fastest tag and Subscribe & Save tag). Save pill ground = Light Red #FFF2F2 (--surface-error) on every fascia that runs a pill (boohoo was #FDE8E8). Compare: https://claude.ai/artifact/LdwiMrSZf5LcuPPFzryeMg · by vto-prototype (Jake, 23 Oct)",
    "Burton: every button and text link is the live navy #284D7B (burton.co.uk theme --color-primary / --color-cta-primary 40 77 123): --surface-action, --action-buy, --text-link, --border-action, --border-focus, --icon-action, --brand-primary, --vto, --tickc, --dot, --new; hover / pressed #5E7A9C (live hover = 75%); secondary buttons white with a #B5B5B5 keyline (--btn-outline, live --color-button-secondary-border). Was black from 12 Oct (boohoo / MAN buttons); type stays Montserrat 600 · by vto-prototype (Jake, 23 Oct)"
   ],
   "fixed": []
