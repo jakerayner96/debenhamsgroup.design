@@ -3,6 +3,17 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-10-23",
+  "v": "2026.10.23",
+  "title": "Burton buttons + links navy, as live",
+  "by": "vto-prototype (Virtual Stylist all fascias)",
+  "added": [],
+  "changed": [
+   "Burton: every button and text link is the live navy #284D7B (burton.co.uk theme --color-primary / --color-cta-primary 40 77 123): --surface-action, --action-buy, --text-link, --border-action, --border-focus, --icon-action, --brand-primary, --vto, --tickc, --dot, --new; hover / pressed #5E7A9C (live hover = 75%); secondary buttons white with a #B5B5B5 keyline (--btn-outline, live --color-button-secondary-border). Was black from 12 Oct (boohoo / MAN buttons); type stays Montserrat 600 · by vto-prototype (Jake, 23 Oct)"
+  ],
+  "fixed": []
+ },
+ {
   "d": "2026-10-22",
   "v": "2026.10.22",
   "title": "Virtual Stylist is the default PDP chip + Brand Room filters in Title Case + Sign-up modal crops",

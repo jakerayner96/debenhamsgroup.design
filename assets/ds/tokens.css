@@ -280,18 +280,18 @@
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#444444;--dplus-check:#444444;
 }
-[data-brand="burton"]{ /* Jake 12 Oct 2026: type + buttons = boohoo / MAN (Montserrat, 600 buttons) */
+[data-brand="burton"]{ /* type = boohoo / MAN (Montserrat, 600 buttons, Jake 12 Oct 2026); colour = live burton.co.uk navy #284D7B on every button + link (Jake 23 Oct 2026, from the live theme --color-primary / --color-cta-primary 40 77 123; hover = 75%) */
   --brand-name:'Burton';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:500;--w-mid:400;--w-strong:700;--w-btn:600;
-  --brand-primary:#000000;--surface-action:#000000;--surface-action-hover:#242424;--surface-action-pressed:#242424;--text-on-action:#FFFFFF;
-  --text-link:#000000;--text-link-hover:#242424;--border-action:#000000;--border-focus:#000000;--icon-action:#000000;--btn-outline:#000000;
-  --brand-primary-dark:#242424;--brand-dark-3:#000000;--brand-light-1:#B5B5B5;--brand-light-2:#F2F2F2;--brand-light-3:#E7E7E7;
+  --brand-primary:#284D7B;--surface-action:#284D7B;--surface-action-hover:#5E7A9C;--surface-action-pressed:#5E7A9C;--text-on-action:#FFFFFF;
+  --text-link:#284D7B;--text-link-hover:#5E7A9C;--border-action:#284D7B;--border-focus:#284D7B;--icon-action:#284D7B;--btn-outline:#B5B5B5; /* secondary = white, #B5B5B5 keyline, black label (live --color-button-secondary-border 181 181 181) */
+  --brand-primary-dark:#284D7B;--brand-dark-3:#000000;--brand-light-1:#B5B5B5;--brand-light-2:#F2F2F2;--brand-light-3:#E7E7E7;
   --nav-bg:#333333;--nav-fg:#FFFFFF;
   --surface-page:#FFFFFF;--surface-sunken:#FAFAFA;--ft-band:var(--surface-sunken);
   --usp-a-bg:#F8F8F8;--usp-a-bg2:#F8F8F8;--usp-a-fg:#0F0F0F;--usp-b-bg:#000000;--usp-b-fg:#FFFFFF;
-  --action-buy:#000000;--action-buy-pressed:#000000;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
+  --action-buy:#284D7B;--action-buy-pressed:#5E7A9C;--action-buy-disabled:#B5B5B5;--action-disabled-bg:#F2F2F2;--action-disabled-fg:#B5B5B5;
   --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
-  --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#000000;--new:#000000;
+  --text-link-pressed:#284D7B;--text-link-disabled:#B5B5B5;--tickc:#284D7B;--vto:#284D7B;--dot:#284D7B;--new:#284D7B;
   --card-bg:#000000;--card-ink:#FFF;--card-btn-bg:#FFF;--card-btn-ink:#000;
   --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
 }
