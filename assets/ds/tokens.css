@@ -49,7 +49,7 @@
   --nav-bg:var(--brand-light-2);--nav-fg:var(--text-primary);
   /* card overlay chrome (badges, AI banner, sale price) — PLT overrides with its cream/red set */
   --badge-bg:rgba(255,255,255,.9);--badge-fg:var(--text-primary);--badge-border:var(--border-subtle);
-  --ai-bg:var(--badge-bg);--ai-fg:var(--badge-fg);--price-sale:var(--text-error); /* AI banner matches the badge */
+  --ai-strip-bg:var(--badge-bg);--ai-strip-fg:var(--badge-fg);--price-sale:var(--text-error); /* AI Generated strip matches the badge — its own tokens: --ai-fg belongs to the Ask Deb AI pills (26 Oct 2026) */
   /* footer newsletter band */
   --ft-band:var(--surface-sunken);
   --radius-default:4px;--radius-lg:8px;--radius-pill:9999px;

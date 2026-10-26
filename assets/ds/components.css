@@ -48,7 +48,7 @@
 .pc-badges.has-ai{bottom:32px}
 .badge{display:inline-flex;align-items:center;height:28px;padding:4px 8px;background:var(--badge-bg);backdrop-filter:blur(3.5px);border:var(--border-w) solid var(--badge-border);border-radius:var(--radius-default);font-family:var(--font-family-base);font-size:12px;font-weight:var(--w-regular);color:var(--badge-fg);white-space:nowrap;text-transform:var(--cta-case)}
 .badge--sale{color:var(--price-sale)}
-.badge-ai{position:absolute;left:0;right:0;bottom:0;background:var(--ai-bg);color:var(--ai-fg);backdrop-filter:blur(3.5px);font-family:var(--font-family-base);font-size:10px;font-weight:var(--w-regular);letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:4px 8px}
+.badge-ai{position:absolute;left:0;right:0;bottom:0;background:var(--ai-strip-bg);color:var(--ai-strip-fg);backdrop-filter:blur(3.5px);font-family:var(--font-family-base);font-size:10px;font-weight:var(--w-regular);letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:4px 8px}
 .badge-ai b{font-weight:var(--w-mid)}
 /* quick add — full-width button variant */
 .pc-add{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:40px;padding:8px 24px;background:var(--surface-raised);border:var(--border-w) solid var(--border-subtle);border-radius:var(--radius-default);font-family:var(--font-family-base);font-size:16px;font-weight:var(--w-mid);color:var(--text-primary);cursor:pointer;text-transform:var(--cta-case)}
@@ -985,6 +985,15 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 /* ---- C-17 AI Generated strip — proposal rules (EU AI Act Art. 50(4)) ---- */
 .badge-ai{height:var(--ai-h);display:flex;align-items:center;justify-content:center;gap:.35em;padding:0 8px;font-size:max(10px,var(--ai-fs,10px))} /* live text, never raster; 10px is the legal floor; fixed strip height */
 .pc-badges.has-ai{bottom:calc(var(--ai-h) + 8px)} /* every other badge shifts up by exactly the strip height */
+/* AI image host (.ai-wrap, 26 Oct 2026, AI generated badge prototype) — makes any image a host for the strip: home rail cards, editorial tiles,
+   search rails, PDP gallery slides. <span class="ai-wrap"><img alt="… · AI generated image"><span class="badge-ai"><b>AI</b> Generated</span></span>.
+   Alt text appends "AI generated image". Never on thumbnails, bag, mini bag or checkout: the strip would fall under the 10px legal floor (legal sign-off). */
+.ai-wrap{position:relative;display:block;margin:0;min-width:0;line-height:0}
+.ai-wrap>img{display:block;width:100%}
+.ai-wrap>.badge-ai{line-height:normal}
+.pdp-gal .slides .ai-wrap{scroll-snap-align:start}
+.pdp-gal .main.has-ai .ptags{bottom:calc(var(--ai-h) + var(--gap-3,12px))} /* PDP product tags lift by exactly the strip height */
+@media(min-width:1024px){.pdp-gal .main.has-ai .ptags{bottom:calc(var(--ai-h) + var(--gap-4,16px))}}
 
 /* ---- C-18 Square tile rail (Brand Room brand/category rail) ---- */
 .tile-rail{display:flex;gap:1px;overflow-x:auto;scrollbar-width:none;padding:0}
@@ -1444,6 +1453,17 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .srch-sugg .ss-terms{list-style:none;margin:0;padding:6px 0 4px}.srch-sugg .ss-term b{font-weight:var(--w-strong,600)}   /* only the typed part is bold */
 .srch-sugg .ss-term{display:block;width:100%;height:40px;padding:0;border:0;background:none;text-align:left;font:var(--w-regular,300) 14px/40px var(--font-family-base);color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
 .srch-sugg .ss-row.ss-ask{padding-top:6px;padding-bottom:8px;margin-top:-6px;margin-bottom:-8px}.srch-sugg .ss-row .ai-pill{flex:none;white-space:nowrap}
+
+/* Search bar · open (.srch-bar, 26 Oct 2026, AI generated badge prototype) — the field the search overlay opens on, over .srch-sugg.
+   Field (grey Grey 1 pill, 48 tall, 16px value) · clear (cross-circle, while there is a value) · search glyph · close ✕ outside the field.
+   .srch-bar--underline: PLT / underline fascias — no fill, 1px ink rule under the field (matches .hd-search--underline). */
+.srch-bar{display:flex;align-items:center;gap:var(--gap-3,12px);font-family:var(--font-family-base)}
+.srch-bar .sb-field{flex:1;min-width:0;display:flex;align-items:center;gap:var(--gap-2,8px);height:48px;padding:0 var(--gap-3,12px) 0 var(--gap-5,20px);border-radius:var(--radius-pill);background:var(--surface-media,#F2F2F2)}
+.srch-bar input{flex:1;min-width:0;border:0;outline:0;background:none;padding:0;font:var(--w-regular,400) 16px/24px var(--font-family-base);color:var(--text-primary);caret-color:#2797FF}
+.srch-bar button{display:grid;place-items:center;flex:none;padding:0;border:0;background:none;cursor:pointer}
+.srch-bar .sb-clr{width:20px;height:20px;border-radius:50%;background:#B5B5B5}.srch-bar .sb-clr img{width:16px;height:16px}
+.srch-bar .sb-go img,.srch-bar .sb-x img{width:24px;height:24px;display:block}
+.srch-bar--underline .sb-field{background:none;border-radius:0;border-bottom:1px solid var(--text-primary);padding:0}
 
 /* Agent chat (Ask Deb): start screen, bubbles, reply parts, input. PA Deck Figma OUmnWDam0w0czh9VZnaqx0 · 6:167. Text is Geologica; colours from --ai-*. */
 .agent-chat{display:flex;flex-direction:column;gap:16px;font-family:var(--font-family-base);color:#222;font-size:14px;line-height:1.4}

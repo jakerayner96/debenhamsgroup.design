@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Inside debenhamsgroup.design/projects/ai-generated-badge/: resolve every asset from the repo root -->
+<base href="../../">
+<title>AI Generated badge · in situ</title>
+<style>
+/* No page of its own: the DS pages are embedded as they are — Home (projects/usp-banner home, live content), Search (this project's search.html),
+   PLP (projects/plp-alignment/plp.html), PDP (templates/pdp.html, S.ai), Bag (templates/bag.html) — and the DS AI Generated strip (.badge-ai, .ai-wrap)
+   goes on every image the shell flags as AI. */
+html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
+.emb{display:block;width:100%;height:100vh;border:0}
+</style>
+</head>
+<body>
+<iframe class="emb" id="emb" title="Page"></iframe>
+<script src="assets/ds/usp-live.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script>
+/* ---- page contract with the shell (review-prototype) ----
+   in:  ?s=<json state>  ·  {protoSet:state, exporting?}  ·  {protoPing:1}
+   out: {protoReady:1} once loaded  ·  {protoPong:1,h} in reply to a ping (h = the embedded page's full height)
+   state: {brand, page:'home'|'search'|'plp'|'pdp'|'bag', which:'some'|'all'|'none', lang, badges, view:'2'|'3', tiles} */
+let S={brand:'debenhams',page:'plp',which:'some',lang:'en',badges:true,view:'2',tiles:false},EXPORTING=false;
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}  // URLSearchParams already decodes
+
+/* one translatable string, never an image asset (deck slide 03) — the strip text and the alt-text suffix */
+const COPY={en:['<b>AI</b> Generated','AI generated image'],fr:['Généré par <b>IA</b>','Image générée par IA'],de:['<b>KI-generiert</b>','KI-generiertes Bild'],es:['Generado por <b>IA</b>','Imagen generada por IA']};
+const cp=()=>COPY[S.lang]||COPY.en;
+/* the image-level AI flag: every image / some (a fixed scatter, so the same images stay flagged) / none */
+const isAI=i=>S.which==='all'||(S.which==='some'&&(i*7)%5<2);
+const PDP_AI=()=>S.which==='all'?[0,1,2,3]:S.which==='some'?[0,2]:[];
+
+const SRC={
+  home:b=>`projects/usp-banner/page.html?s=${encodeURIComponent(JSON.stringify({brand:b,page:'home',auto:5,banners:(window.DG_USP_LIVE||{})[b]||[]}))}`,
+  search:b=>`projects/ai-generated-badge/search.html?s=${encodeURIComponent(JSON.stringify({brand:b}))}`,
+  plp:b=>`projects/plp-alignment/plp.html?brand=${b}&mode=new`,
+  pdp:b=>`templates/pdp.html?s=${encodeURIComponent(JSON.stringify(pdpState()))}`,
+  bag:b=>`templates/bag.html?brand=${b}`
+};
+const pdpState=()=>({brand:S.brand,ai:PDP_AI(),aiCopy:cp()[0],aiAlt:cp()[1]});
+
+const emb=document.getElementById('emb');
+let KEY='',ready=Promise.resolve(),obs=null;
+const D=()=>{try{return emb.contentDocument}catch(e){return null}};
+const W=()=>emb.contentWindow;
+const strip=()=>`<span class="badge-ai" data-ai>${cp()[0]}</span>`;
+const alt=img=>{const a=(img.dataset.alt0??=img.getAttribute('alt')||'');img.setAttribute('alt',(a?a+' · ':'')+cp()[1])};
+const unalt=img=>{if(img.dataset.alt0!==undefined){img.setAttribute('alt',img.dataset.alt0);delete img.dataset.alt0}};
+
+/* DS product cards (PLP, search, home recommendations): strip pinned to the image foot, badges lift by --ai-h (.pc-badges.has-ai) */
+function cards(d){
+  [...d.querySelectorAll('article.pc')].forEach((c,i)=>{
+    const im=c.querySelector('.pc-img');if(!im)return;
+    im.querySelectorAll('.badge-ai').forEach(x=>x.remove());           // the PLP's own scatter — the shell's flag decides
+    if(S.badges&&!im.querySelector('.pc-badges')&&i%2===0)im.insertAdjacentHTML('beforeend','<div class="pc-badges" data-ai-b><span class="badge">'+(S.brand==='boohooman'?'Plus Sizes Available':'Plus')+'</span></div>');
+    if(!S.badges)im.querySelectorAll('[data-ai-b]').forEach(x=>x.remove());
+    const on=isAI(i),bd=im.querySelector('.pc-badges'),img=im.querySelector('img.ph');
+    if(bd)bd.classList.toggle('has-ai',on);
+    if(on){im.insertAdjacentHTML('beforeend',strip());if(img)alt(img)}else if(img)unalt(img);
+    c.dataset.aiDone=S.which+S.lang+S.badges;
+  });
+}
+/* any other image (home rails, editorial tiles): wrap it in the DS AI image host (.ai-wrap) */
+function wrap(img){if(img.parentElement.classList.contains('ai-wrap'))return;
+  const w=img.ownerDocument.createElement('span');w.className='ai-wrap';w.dataset.ai='';
+  if(img.style.width){w.style.width=img.style.width;img.style.width='100%'}
+  img.replaceWith(w);w.appendChild(img);w.insertAdjacentHTML('beforeend',strip());alt(img)}
+function unwrapAll(d){d.querySelectorAll('.ai-wrap[data-ai]').forEach(w=>{const img=w.querySelector('img');if(img){if(w.style.width)img.style.width=w.style.width;unalt(img);w.replaceWith(img)}else w.remove()})}
+
+/* Home: the fascia's live homepage. Fascias with no product rail on the homepage get a DS recommendations rail (.sec-head + .prail of .pc) after the second module */
+function reccs(d){const hm=d.querySelector('.hm');if(!hm||hm.querySelector('.hm-p')||d.getElementById('ai-reccs'))return;
+  const b=S.brand,ps=((window.PRODUCTS_ALL||{})[b]||[]).slice(0,8),FAV={plt:'plt-heart',boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark'}[b]||'heart-16';
+  const c=(p,i)=>`<article class="pc"><div class="pc-img"><img class="ph" src="projects/plp-alignment/img/${b}/p${p.img??i}.jpg" alt="${(p.brand?p.brand+' ':'')+p.name}"><div class="pc-actions"><button class="pc-iconbtn${FAV==='bookmark'?' pc-iconbtn--sq':''}" aria-label="Add to wishlist"><img src="assets/ds/icons/${FAV}.svg" alt=""></button></div>${p.tag&&p.tag.length<14?`<div class="pc-badges"><span class="badge">${p.tag}</span></div>`:''}</div><div class="pc-info"><div class="pc-titles">${p.brand&&!['plt','warehouse'].includes(b)?`<div class="pc-brand">${p.brand}</div>`:''}<div class="pc-name">${p.name}</div></div><div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div></div></article>`;
+  const html=`<div id="ai-reccs" style="display:flex;flex-direction:column;gap:var(--gap-3);padding:var(--gap-6) var(--gap-4)"><div class="sec-head"><h3>Recommended For You</h3><a href="#">View all</a></div><div class="prail">${ps.map(c).join('')}</div></div>`;
+  const mods=hm.querySelectorAll(':scope > .hm-m');(mods[1]||mods[0]||hm).insertAdjacentHTML(mods.length?'afterend':'beforeend',html)}
+function injectHome(d){
+  reccs(d);
+  cards(d);
+  [...d.querySelectorAll('.hm-pc > img')].forEach((img,i)=>{if(isAI(i))wrap(img)});
+  if(S.tiles)[...d.querySelectorAll('.hm-t > img')].filter(i=>!i.classList.contains('rd')).forEach((img,i)=>{if(isAI(i))wrap(img)});
+}
+function inject(){const d=D();if(!d||!d.body)return;
+  if(obs)obs.disconnect();
+  if(!d.getElementById('ai-x')){const st=d.createElement('style');st.id='ai-x';d.head.appendChild(st)}
+  d.getElementById('ai-x').textContent=EXPORTING?'html,body{overflow:visible!important}':'';
+  d.querySelectorAll('.badge-ai[data-ai],[data-ai-b]').forEach(n=>{if(!n.classList.contains('ai-wrap'))n.remove()});unwrapAll(d);
+  d.querySelectorAll('img[data-alt0]').forEach(unalt);
+  if(S.page==='plp'||S.page==='search')cards(d);
+  else if(S.page==='home')injectHome(d);
+  /* PDP: the template draws it (S.ai) · Bag: never — after add to bag the strip would be ~7px (not in scope, legal sign-off) */
+  watch(d);
+}
+/* the embedded pages re-render themselves (resize, their own state) — put the strip back when they do */
+function watch(d){if(S.page==='pdp'||S.page==='bag')return;let t;obs=new MutationObserver(()=>{clearTimeout(t);t=setTimeout(()=>{
+    const sig=S.which+S.lang+S.badges,cs=[...d.querySelectorAll('article.pc')];
+    if(cs.some(c=>c.dataset.aiDone!==sig)||(S.page==='home'&&d.querySelector('.hm')&&!d.querySelector('.hm-p')&&!d.getElementById('ai-reccs')))inject();
+  },120)});
+  obs.observe(d.body,{childList:true,subtree:true})}
+
+function load(){
+  const key=S.page+'|'+S.brand+'|'+(S.page==='plp'?S.view:'');
+  if(key===KEY){if(S.page==='pdp')try{W().postMessage({protoSet:pdpState(),exporting:EXPORTING},'*')}catch(e){}inject();return ready}
+  KEY=key;
+  if(S.page==='plp')try{localStorage.setItem('plpMcols',S.view==='3'?'3':'2')}catch(e){}   /* the PLP's own grid toggle (same origin) */
+  ready=new Promise(res=>{
+    emb.onload=()=>{inject();
+      const d=D(),t0=Date.now();
+      const done=()=>{const imgs=d?[...d.images].filter(i=>i.loading!=='lazy'||i.getBoundingClientRect().top<3000):[];return imgs.every(i=>i.complete)};
+      const iv=setInterval(()=>{if(done()||Date.now()-t0>9000){clearInterval(iv);inject();res()}},150)};
+    emb.src=(SRC[S.page]||SRC.plp)(S.brand);
+  });
+  return ready;
+}
+/* export: let the embedded page run to its full height so the shell can capture it in one pass */
+async function full(){await ready;const d=D();if(!d)return 900;
+  try{W().postMessage({protoSet:S.page==='pdp'?pdpState():{brand:S.brand},exporting:true},'*')}catch(e){}await new Promise(r=>setTimeout(r,600));inject();
+  d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
+  let h=0;for(let i=0;i<6;i++){const nh=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight);emb.style.height=nh+'px';await new Promise(r=>setTimeout(r,350));if(Math.abs(nh-h)<2)break;h=nh}
+  inject();await new Promise(r=>setTimeout(r,500));
+  const t0=Date.now();
+  while(Date.now()-t0<10000){d.querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');
+    if([...d.images].every(i=>i.complete&&(i.naturalWidth||!i.currentSrc)))break;await new Promise(r=>setTimeout(r,200))}
+  return Math.max(d.documentElement.scrollHeight,d.body.scrollHeight)}
+window.EXPORT_DOC=()=>D();
+
+load().then(()=>parent.postMessage({protoReady:1},'*'));
+addEventListener('message',e=>{const m=e.data||{};
+  if(m.protoSet){S=Object.assign({},S,m.protoSet);EXPORTING=!!m.exporting;load()}
+  if(m.protoPing)(EXPORTING?full():ready.then(()=>{const d=D();return d?d.documentElement.scrollHeight:900})).then(h=>parent.postMessage({protoPong:1,h},'*'));
+});
+</script>
+</body>
+</html>

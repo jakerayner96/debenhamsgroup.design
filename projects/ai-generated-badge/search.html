@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../../">
+<title>Search · in situ</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* Search open — the deck's search screen, DS components only: header drop-in (header.js) · Search bar · open (.srch-bar) · Search suggestions (.srch-sugg)
+   · Section header + rail (.sec-head .prail) of DS product cards (.pc) · products matching the term (.pc grid). Only the page scaffolding lives here. */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+.pg{padding:var(--gap-4) var(--gap-4) var(--gap-10)}
+.pg>section{margin-top:var(--gap-6);display:flex;flex-direction:column;gap:var(--gap-3)}
+.res{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-6) var(--gap-1)}
+.prail>.pc{flex:0 0 165px}
+@media(min-width:1024px){.pg{max-width:1440px;margin:0 auto;padding:var(--gap-6) var(--gap-12) var(--gap-16)}.pg .srch-bar,.pg .srch-sugg{max-width:640px}.res{grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap-8) var(--gap-4)}.prail>.pc{flex:0 0 220px}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/ds/header.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script>
+/* in: ?s={brand, term} · {protoSet} · {protoPing}. out: {protoReady}, {protoPong,h}. The AI strip is injected by page.html, like every other page. */
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+let S={brand:'debenhams',term:'watch'},EXPORTING=false;
+try{const s=new URLSearchParams(location.search).get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
+const desk=()=>innerWidth>=1024;
+const FAV={plt:'plt-heart',boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark'};
+const RAIL={plt:'Top Sellers',boohoo:'Top Sellers',boohooman:'Top Sellers'};     /* the deck: PLT / boohoo / MAN Top Sellers, Debenhams / KM Recently Viewed */
+const TERMS=t=>[t,'mens '+t+'es','ladies '+t+'es',t+'es','womens '+t+'es'];
+function card(p,b,i){const tag=p.tag&&p.tag.length<14?p.tag:'';
+  return `<article class="pc"><div class="pc-img"><img class="ph" src="projects/plp-alignment/img/${b}/p${p.img??i}.jpg" alt="${esc((p.brand?p.brand+' ':'')+p.name)}" loading="lazy">
+    <div class="pc-actions"><button class="pc-iconbtn${FAV[b]==='bookmark'?' pc-iconbtn--sq':''}" aria-label="Add to wishlist"><img src="assets/ds/icons/${FAV[b]==='plt-heart'?'plt-heart':FAV[b]||'heart-16'}.svg" alt=""></button></div>
+    ${tag?`<div class="pc-badges"><span class="badge">${esc(tag)}</span></div>`:''}</div>
+    <div class="pc-info"><div class="pc-titles">${p.brand&&!['plt','warehouse'].includes(b)?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div>
+    <div class="pc-price${p.was?' sale':''}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${p.pct?`<span class="pct">${esc(p.pct)}</span>`:''}</div></div></article>`}
+function page(){const b=S.brand,ps=((window.PRODUCTS_ALL||{})[b]||[]),t=S.term||'watch',dev=desk()?'desktop':'mobile',ul=b==='plt';
+  return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${b}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(b,'main',dev):''}</header>
+  <main class="pg">
+    <div class="srch-bar${ul?' srch-bar--underline':''}"><div class="sb-field"><input value="${esc(t)}" aria-label="Search"><button class="sb-clr" aria-label="Clear"><img src="assets/ds/icons/lib/icons-clear.svg" alt=""></button><button class="sb-go" aria-label="Search"><img src="assets/ds/icons/${ul?'plt-search':'search'}.svg" alt=""></button></div><button class="sb-x" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt=""></button></div>
+    <div class="srch-sugg"><ul class="ss-terms">${TERMS(t).map(x=>`<li><button class="ss-term">${esc(x).replace(esc(t),`<b>${esc(t)}</b>`)}</button></li>`).join('')}</ul></div>
+    <section><div class="sec-head"><h3>${RAIL[b]||'Recently Viewed'}</h3><a href="#">View all</a></div><div class="prail">${ps.slice(0,8).map((p,i)=>card(p,b,i)).join('')}</div></section>
+    <section><div class="sec-head"><h3>Products matching “${esc(t)}”</h3></div><div class="res">${ps.slice(8,16).map((p,i)=>card(p,b,i+8)).join('')}</div></section>
+  </main>`}
+function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);document.getElementById('app').innerHTML=page()}
+render();
+let lw=innerWidth,rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if((lw>=1024)!==desk()){lw=innerWidth;render()}},150)});
+document.addEventListener('click',e=>{if(e.target.closest('a[href="#"],button'))e.preventDefault()});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+</script>
+</body>
+</html>

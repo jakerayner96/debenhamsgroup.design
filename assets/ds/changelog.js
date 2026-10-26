@@ -3,6 +3,23 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-10-26",
+  "v": "2026.10.26",
+  "title": "AI Generated strip on any image + in the PDP template · Search bar · open · strip back to badge colours",
+  "by": "AI Generated badge prototype (projects/ai-generated-badge)",
+  "added": [
+   "AI image host (.ai-wrap): makes any image that is not a product card a host for the AI Generated strip: home rail cards, editorial tiles, PDP gallery slides. Alt text appends \"AI generated image\". Never on thumbnails, bag or checkout. Catalogue AI Generated strip: Any image + Localised variants",
+   "Search bar · open (.srch-bar, .sb-field, .sb-clr, .sb-go, .sb-x, .srch-bar--underline for PLT): the field the search overlay opens on, above Search suggestions. New catalogue entry search-bar",
+   "PDP template (templates/pdp.html): AI flag S.ai (the indexes of the AI images) + S.aiCopy / S.aiAlt (localised strip text and alt suffix). Flagged slides get the strip and the gallery product tags lift by --ai-h (.pdp-gal .main.has-ai .ptags)"
+  ],
+  "changed": [
+   "AI Generated strip (.badge-ai) has its own tokens --ai-strip-bg / --ai-strip-fg (= the badge), replacing --ai-bg / --ai-fg"
+  ],
+  "fixed": [
+   "AI Generated strip text took --ai-fg, the Ask Deb AI pill colour since 19 Oct (teal on Debenhams, burgundy on PLT, each fascia's CTA colour elsewhere). It now matches the badge again, as in the deck"
+  ]
+ },
+ {
   "d": "2026-10-23",
   "v": "2026.10.23",
   "title": "One sale + error red #C90000 for every fascia · Burton buttons + links navy, as live",
