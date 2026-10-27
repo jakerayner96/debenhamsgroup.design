@@ -29,12 +29,11 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&g
 let S={brand:'debenhams',term:'watch'},EXPORTING=false;
 try{const s=new URLSearchParams(location.search).get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
 const desk=()=>innerWidth>=1024;
-const FAV={plt:'plt-heart',boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark'};
+/* no wishlist on these cards: the wishlist button is on PLP cards only (DS rule, 27 Oct 2026) */
 const RAIL={plt:'Top Sellers',boohoo:'Top Sellers',boohooman:'Top Sellers'};     /* the deck: PLT / boohoo / MAN Top Sellers, Debenhams / KM Recently Viewed */
 const TERMS=t=>[t,'mens '+t+'es','ladies '+t+'es',t+'es','womens '+t+'es'];
 function card(p,b,i){const tag=p.tag&&p.tag.length<14?p.tag:'';
   return `<article class="pc"><div class="pc-img"><img class="ph" src="projects/plp-alignment/img/${b}/p${p.img??i}.jpg" alt="${esc((p.brand?p.brand+' ':'')+p.name)}" loading="lazy">
-    <div class="pc-actions"><button class="pc-iconbtn${FAV[b]==='bookmark'?' pc-iconbtn--sq':''}" aria-label="Add to wishlist"><img src="assets/ds/icons/${FAV[b]==='plt-heart'?'plt-heart':FAV[b]||'heart-16'}.svg" alt=""></button></div>
     ${tag?`<div class="pc-badges"><span class="badge">${esc(tag)}</span></div>`:''}</div>
     <div class="pc-info"><div class="pc-titles">${p.brand&&!['plt','warehouse'].includes(b)?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div>
     <div class="pc-price${p.was?' sale':''}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${p.pct?`<span class="pct">${esc(p.pct)}</span>`:''}</div></div></article>`}

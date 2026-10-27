@@ -17,12 +17,32 @@ Standard review shell (review-prototype skill): fascia chips · Desktop/Mobile �
 ## Rules (from the deck)
 - Shown at first exposure, wherever a shopper first sees an AI image **before add to bag**: home, search, PLP, PDP and carousels. It is driven by an image-level AI flag, so only flagged images get the strip.
 - Hidden **after** add to bag (bag, mini bag, checkout). At about 7px the strip can't be read. Never on PDP thumbnails, for the same reason.
-- **Live text, never baked into the image**: screen readers read it, 10px stays the minimum size, and there is one translatable string (panel: EN / FR / DE / ES). Alt text adds "AI generated image".
+- **Live text, never baked into the image**: screen readers read it, 10px stays the minimum size, and there is one translatable string in EN, FR, NL, PL, DE, SV (copy in the DS: `assets/ds/ai-strip.js`). Alt text adds "AI generated image".
 - The strip owns the bottom edge of the image at every size, at height `--ai-h` (24px). Every other badge (Plus, Petite, Tall, New…) moves up by exactly that height, with no overlap. Wishlist and quick add stay top right. In the PLP grid view no other badges show; the strip stays.
 - The strip colours match the badge on each fascia (`--ai-strip-bg` / `--ai-strip-fg`).
 
+## Wording (checked 27 Oct 2026)
+No law sets the words. The EU AI Act Art. 50(4) requires a clear disclosure at first exposure ("artificially generated or manipulated"). The EU Code of Practice on transparency of AI-generated content (final, 10 Jun 2026) wants the capitalised acronym "AI" in English. The national acronym is allowed only where language law requires it (France, Loi Toubon: "IA"). Adding "generated" is encouraged. A UI overlay with no overlap is an accepted placement, and alt text is encouraged.
+
+| | Strip | Alt text |
+|---|---|---|
+| EN | **AI** Generated | AI generated image |
+| FR | Généré par l'**IA** | Image générée par l'IA |
+| NL | **AI**-gegenereerd | Door AI gegenereerde afbeelding |
+| PL | Wygenerowane przez **AI** | Obraz wygenerowany przez AI |
+| DE | **KI**-generiert | KI-generiertes Bild |
+| SV | **AI**-genererad | AI-genererad bild |
+
+For legal: German "KI" follows the Act's German text and common usage, but the strict Code reading is "AI-generiert". France: check whether "Photographie retouchée" (Code de la santé publique R.2133-4) also applies to AI-altered model bodies. UK (ASA / CAP): no wording set.
+
+Rail cards (Top Sellers, Recently Viewed, Recommended For You) have no wishlist button. Wishlist is on PLP cards only.
+
 ## Panel
 Page · which images are AI (some, a fixed scatter / all / none) · language · fit badges on every 2nd card (to show the stacking) · PLP view · home editorial tiles.
+
+## DS changes (27 Oct 2026)
+- PLT Virtual Stylist chip from the DS (`--ai-tag-*` tokens, masked hanger), as the VTO prototype.
+- `assets/ds/ai-strip.js` copy table · rail cards without wishlist · strip fits Polish on 3-col tiles.
 
 ## DS changes (26 Oct 2026)
 - Added **AI image host** `.ai-wrap`: adds the strip to any image that isn't a product card (home rails, editorial tiles, PDP slides).

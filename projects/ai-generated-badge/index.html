@@ -6,6 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="../../assets/ds/ai-strip.js"></script>
 <style>
 /* ============================================================
    Review shell — Jake's standard prototype format (model: Core PDP 2026, jakerayner96.github.io/core-pdp-2026).
@@ -165,14 +166,14 @@ body.fold .device iframe{box-shadow:none}
 /* ======================= PROJECT CONFIG — the only part a new prototype edits ======================= */
 const PAGES=[['home','Home / recommendations'],['search','Search'],['plp','PLP'],['pdp','PDP'],['bag','Bag']];
 const SOURCE={home:'Live homepage (projects/usp-banner home) + DS recommendations rail',search:'Search open: DS header · Search bar · Search suggestions · rail + results',plp:'DS PLP · projects/plp-alignment/plp.html (new format)',pdp:'DS PDP template · templates/pdp.html (S.ai)',bag:'DS Bag template · templates/bag.html — not in scope'};
-const LANGS=[['en','English','<b>AI</b> Generated'],['fr','French','Généré par <b>IA</b>'],['de','German','<b>KI-generiert</b>'],['es','Spanish','Generado por <b>IA</b>']];
+const LANGS=['en','fr','nl','pl','de','sv'].map(k=>[k,DG_AI_COPY[k].name,DG_AI_COPY[k].strip]);   /* DS copy: assets/ds/ai-strip.js */
 const P={
   name:'ai-generated-badge',
   title:'AI Generated badge',
   page:'page.html',
   brands:[['plt','PLT'],['boohoo','boohoo'],['boohooman','boohooMAN'],['karenmillen','Karen Millen'],['debenhams','Debenhams'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
-  files:['page.html','search.html','README.md'],
+  files:['page.html','search.html','README.md','../../assets/ds/ai-strip.js'],
   store:'proto-ai-badge',
   initial:b=>({which:'some',lang:'en',badges:true,view:'2',tiles:false}),
 };
@@ -189,8 +190,9 @@ function renderPanel(host,S,update){
     <div class="f"><span>Which images are AI</span>${seg('which',c.which,[['some','Some'],['all','All'],['none','None']])}<small>${c.which==='some'?'A fixed scatter of flagged images. Only flagged images carry the strip.':c.which==='all'?'Every image is flagged.':'No image is flagged: no strip anywhere.'}</small></div>
     ${bag?'<p class="warn">Bag, mini bag and checkout never show the strip: after add to bag it would be about 7px and illegible. Not in scope, legal sign-off required.</p>':''}</div>
   <div class="card"><h3>Copy <small>one translatable string</small></h3>
-    <div class="f"><span>Language</span>${seg('lang',c.lang,LANGS.map(([v,l])=>[v,l]))}</div>
-    <p style="margin-top:8px">Strip: <b style="color:var(--ink)">${(LANGS.find(x=>x[0]===c.lang)||LANGS[0])[2]}</b> · 10px, the smallest legible size, live text for screen readers. Alt text adds “AI generated image”.</p></div>
+    <div class="f"><span>Language</span><select id="lang" style="width:100%">${LANGS.map(([v,l,s])=>`<option value="${v}"${c.lang===v?' selected':''}>${l} · ${s.replace(/<\/?b>/g,'')}</option>`).join('')}</select></div>
+    <p style="margin-top:8px">Strip: <b style="color:var(--ink)">${(LANGS.find(x=>x[0]===c.lang)||LANGS[0])[2]}</b> · alt text: “${esc(DG_aiAlt(c.lang))}”. 10px minimum, live text for screen readers.</p>
+    <p class="rules" style="margin-top:8px">No law sets the words. EU AI Act Art. 50(4) asks for a clear disclosure at first exposure. The EU Code of Practice (Jun 2026) wants the capital acronym “AI” in English, with the national acronym only where language law requires it (France: “IA”), and adding “generated” is encouraged. German “KI” follows the Act’s German text; the strict Code reading is “AI-generiert”, so legal to confirm.${c.lang==='fr'?' France: also ask legal whether “Photographie retouchée” applies to AI-altered model bodies.':''}</p></div>
   ${k==='plp'||k==='search'||k==='home'?`<div class="card"><h3>Badges <small>stacking</small></h3>
     ${sw('badges',c.badges,'Fit badges on every 2nd card (Plus, Petite…)')}
     <p class="rules" style="margin-top:8px">The strip owns the bottom edge of the image. Badges lift by exactly its height (--ai-h 24px), no overlap. Wishlist and quick add stay top right.</p>
@@ -201,6 +203,7 @@ function renderPanel(host,S,update){
   const re=()=>{update();renderPanel(host,S,update)};
   host.querySelectorAll('[data-page]').forEach(x=>x.onclick=()=>{S.page=x.dataset.page;re()});
   host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(x=>x.onclick=()=>{c[g.dataset.seg]=x.dataset.v;re()}));
+  host.querySelector('#lang').onchange=e=>{c.lang=e.target.value;re()};
   ['badges','tiles'].forEach(id=>{const el=host.querySelector('#'+id);if(el)el.onchange=e=>{c[id]=e.target.checked;re()}});
 }
 /* ==================================================================================================== */

@@ -983,8 +983,11 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .acct-page{background:var(--page-bg)}
 
 /* ---- C-17 AI Generated strip — proposal rules (EU AI Act Art. 50(4)) ---- */
-.badge-ai{height:var(--ai-h);display:flex;align-items:center;justify-content:center;gap:.35em;padding:0 8px;font-size:max(10px,var(--ai-fs,10px))} /* live text, never raster; 10px is the legal floor; fixed strip height */
+.badge-ai{height:var(--ai-h);display:flex;align-items:center;justify-content:center;gap:0;white-space:pre;padding:0 8px;font-size:max(10px,var(--ai-fs,10px))} /* white-space:pre keeps the copy's own spaces (no flex gap), so "KI-generiert" never splits; copy: assets/ds/ai-strip.js */ /* live text, never raster; 10px is the legal floor; fixed strip height */
 .pc-badges.has-ai{bottom:calc(var(--ai-h) + 8px)} /* every other badge shifts up by exactly the strip height */
+/* narrow images (3-col PLP tiles, ~130px): the longest copy (Polish "WYGENEROWANE PRZEZ AI") still fits on one line — tracking and side padding tighten, size stays 10px */
+.pc-img,.ai-wrap{container-type:inline-size}
+@container (max-width:150px){.badge-ai{letter-spacing:0;padding:0 4px}}
 /* AI image host (.ai-wrap, 26 Oct 2026, AI generated badge prototype) — makes any image a host for the strip: home rail cards, editorial tiles,
    search rails, PDP gallery slides. <span class="ai-wrap"><img alt="… · AI generated image"><span class="badge-ai"><b>AI</b> Generated</span></span>.
    Alt text appends "AI generated image". Never on thumbnails, bag, mini bag or checkout: the strip would fall under the 10px legal floor (legal sign-off). */
@@ -1388,10 +1391,12 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .pdp-gal .ptags span{background:rgba(255,255,255,.9);color:#000;font:var(--w-regular,300) 13px/1 var(--font-family-base);padding:7px 10px;border-radius:var(--radius-default)}
 @media(min-width:1024px){.pdp-gal .ptags{bottom:var(--gap-4,16px)}.pdp-gal .ptags span{font-size:14px;padding:8px 12px}}
 /* AI tag chip (.ai-pill--tag): the Shop Similar / Virtual Stylist chip in the row above the PDP title — 13px light, 9 / 14 padding, 16px icon */
-.ai-pill--tag{height:auto;padding:9px 14px;gap:6px;font-size:13px;font-weight:var(--w-regular,300)}.ai-pill--tag .ai-icon{width:16px;height:16px}.ai-pill--tag img{width:16px;height:12px}
+.ai-pill--tag{height:auto;padding:9px 14px;gap:6px;font-size:var(--ai-tag-size);line-height:18px;font-weight:var(--ai-tag-weight);text-transform:var(--ai-tag-case);background:var(--ai-tag-bg);color:var(--ai-tag-fg);border-radius:var(--ai-tag-radius);box-shadow:var(--ai-tag-shadow)} /* per-fascia via --ai-tag-* (tokens.css) */.ai-pill--tag .ai-icon{width:16px;height:16px}.ai-pill--tag img{width:16px;height:12px}
 .pdp-chips{display:flex;gap:10px;flex-wrap:wrap}
-.pdp-chips--center{justify-content:center}   /* the default PDP: Virtual Stylist centred under the gallery (22 Oct 2026) */
+.pdp-chips--center{justify-content:var(--ai-tag-align,center)}   /* the default PDP: Virtual Stylist centred under the gallery (22 Oct 2026) */
 .ai-pill--tag img.ic{width:20px;height:20px;margin:-2px 0}   /* a 24px library glyph (icons-hanger) in the tag chip */
+.ai-pill--tag i.ic{display:block;flex:none;width:20px;height:20px;margin:-1px 0;background:var(--ai-tag-icon);-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat} /* masked glyph: takes the fascia's icon colour (PLT white) */
+.ai-pill--tag i.ic--hanger{--ic:url("icons/lib/icons-hanger.svg")}
 .pdp-gal .main>.pdp-chips{position:absolute;z-index:3;top:var(--gap-4,16px);right:var(--gap-4,16px)}  /* Shop Similar (Google, not launched): top right of the main image on desktop */
 /* Accordion set (.acc-set): the PDP info rows — At a Glance (open) · Description · Product Details & Care · Delivery · Returns · Manufacturer.
    Keyline only between rows, gap 4 (16px) row padding, 15px semibold head, 16px chevron (icons-down) that flips open. */

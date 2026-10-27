@@ -16,6 +16,7 @@ html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
 <body>
 <iframe class="emb" id="emb" title="Page"></iframe>
 <script src="assets/ds/usp-live.js"></script>
+<script src="assets/ds/ai-strip.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
 <script>
 /* ---- page contract with the shell (review-prototype) ----
@@ -25,9 +26,7 @@ html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
 let S={brand:'debenhams',page:'plp',which:'some',lang:'en',badges:true,view:'2',tiles:false},EXPORTING=false;
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}  // URLSearchParams already decodes
 
-/* one translatable string, never an image asset (deck slide 03) — the strip text and the alt-text suffix */
-const COPY={en:['<b>AI</b> Generated','AI generated image'],fr:['Généré par <b>IA</b>','Image générée par IA'],de:['<b>KI-generiert</b>','KI-generiertes Bild'],es:['Generado por <b>IA</b>','Imagen generada por IA']};
-const cp=()=>COPY[S.lang]||COPY.en;
+/* one translatable string, never an image asset (deck slide 03) — the DS copy table, assets/ds/ai-strip.js */
 /* the image-level AI flag: every image / some (a fixed scatter, so the same images stay flagged) / none */
 const isAI=i=>S.which==='all'||(S.which==='some'&&(i*7)%5<2);
 const PDP_AI=()=>S.which==='all'?[0,1,2,3]:S.which==='some'?[0,2]:[];
@@ -39,14 +38,14 @@ const SRC={
   pdp:b=>`templates/pdp.html?s=${encodeURIComponent(JSON.stringify(pdpState()))}`,
   bag:b=>`templates/bag.html?brand=${b}`
 };
-const pdpState=()=>({brand:S.brand,ai:PDP_AI(),aiCopy:cp()[0],aiAlt:cp()[1]});
+const pdpState=()=>({brand:S.brand,ai:PDP_AI(),aiLang:S.lang});
 
 const emb=document.getElementById('emb');
 let KEY='',ready=Promise.resolve(),obs=null;
 const D=()=>{try{return emb.contentDocument}catch(e){return null}};
 const W=()=>emb.contentWindow;
-const strip=()=>`<span class="badge-ai" data-ai>${cp()[0]}</span>`;
-const alt=img=>{const a=(img.dataset.alt0??=img.getAttribute('alt')||'');img.setAttribute('alt',(a?a+' · ':'')+cp()[1])};
+const strip=()=>DG_aiStrip(S.lang).replace('class="badge-ai"','class="badge-ai" data-ai');
+const alt=img=>{const a=(img.dataset.alt0??=img.getAttribute('alt')||'');img.setAttribute('alt',(a?a+' · ':'')+DG_aiAlt(S.lang))};
 const unalt=img=>{if(img.dataset.alt0!==undefined){img.setAttribute('alt',img.dataset.alt0);delete img.dataset.alt0}};
 
 /* DS product cards (PLP, search, home recommendations): strip pinned to the image foot, badges lift by --ai-h (.pc-badges.has-ai) */
@@ -71,8 +70,8 @@ function unwrapAll(d){d.querySelectorAll('.ai-wrap[data-ai]').forEach(w=>{const 
 
 /* Home: the fascia's live homepage. Fascias with no product rail on the homepage get a DS recommendations rail (.sec-head + .prail of .pc) after the second module */
 function reccs(d){const hm=d.querySelector('.hm');if(!hm||hm.querySelector('.hm-p')||d.getElementById('ai-reccs'))return;
-  const b=S.brand,ps=((window.PRODUCTS_ALL||{})[b]||[]).slice(0,8),FAV={plt:'plt-heart',boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark'}[b]||'heart-16';
-  const c=(p,i)=>`<article class="pc"><div class="pc-img"><img class="ph" src="projects/plp-alignment/img/${b}/p${p.img??i}.jpg" alt="${(p.brand?p.brand+' ':'')+p.name}"><div class="pc-actions"><button class="pc-iconbtn${FAV==='bookmark'?' pc-iconbtn--sq':''}" aria-label="Add to wishlist"><img src="assets/ds/icons/${FAV}.svg" alt=""></button></div>${p.tag&&p.tag.length<14?`<div class="pc-badges"><span class="badge">${p.tag}</span></div>`:''}</div><div class="pc-info"><div class="pc-titles">${p.brand&&!['plt','warehouse'].includes(b)?`<div class="pc-brand">${p.brand}</div>`:''}<div class="pc-name">${p.name}</div></div><div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div></div></article>`;
+  const b=S.brand,ps=((window.PRODUCTS_ALL||{})[b]||[]).slice(0,8);   /* no wishlist on rail cards: PLP only (DS rule) */
+  const c=(p,i)=>`<article class="pc"><div class="pc-img"><img class="ph" src="projects/plp-alignment/img/${b}/p${p.img??i}.jpg" alt="${(p.brand?p.brand+' ':'')+p.name}">${p.tag&&p.tag.length<14?`<div class="pc-badges"><span class="badge">${p.tag}</span></div>`:''}</div><div class="pc-info"><div class="pc-titles">${p.brand&&!['plt','warehouse'].includes(b)?`<div class="pc-brand">${p.brand}</div>`:''}<div class="pc-name">${p.name}</div></div><div class="pc-price${p.was?' sale':''}"><span class="now">${p.price}</span>${p.was?`<span class="was">${p.was}</span>`:''}${p.pct?`<span class="pct">${p.pct}</span>`:''}</div></div></article>`;
   const html=`<div id="ai-reccs" style="display:flex;flex-direction:column;gap:var(--gap-3);padding:var(--gap-6) var(--gap-4)"><div class="sec-head"><h3>Recommended For You</h3><a href="#">View all</a></div><div class="prail">${ps.map(c).join('')}</div></div>`;
   const mods=hm.querySelectorAll(':scope > .hm-m');(mods[1]||mods[0]||hm).insertAdjacentHTML(mods.length?'afterend':'beforeend',html)}
 function injectHome(d){

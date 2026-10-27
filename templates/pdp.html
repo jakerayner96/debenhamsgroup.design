@@ -44,6 +44,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/membership.js"></script>
 <script src="assets/ds/delivery.js"></script>
 <script src="assets/ds/ai-prompts.js"></script>
+<script src="assets/ds/ai-strip.js"></script>
 <script src="assets/ds/subscribe.js"></script>
 <script src="assets/ds/dplus-logos.js"></script>
 <script src="assets/ds/catalogue.js"></script>
@@ -69,10 +70,11 @@ const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse']; 
 function header(){const dev=desk()?'desktop':'mobile';
   return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header><div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`}
 /* AI generated imagery (EU AI Act Art. 50(4), 26 Oct 2026): S.ai (or a product's own p.ai) = indexes of the AI images. Each gets the DS strip on its slide
-   (.ai-wrap + .badge-ai, live text S.aiCopy, default "AI Generated"), its alt text appends S.aiAlt (default "AI generated image") and the product tags lift (.main.has-ai). Never on thumbnails. */
+   (.ai-wrap + .badge-ai, copy from assets/ds/ai-strip.js in language S.aiLang, default en), its alt text appends the same language's "AI generated image" and the product tags lift (.main.has-ai). Never on thumbnails. */
 const AIS=p=>S.ai||p.ai||[];
 function slide(p,s,i){const alt=`${esc(p.name)}, view ${i+1}`;
-  return AIS(p).includes(i)?`<span class="ai-wrap"><img src="${s}" alt="${alt} · ${S.aiAlt||'AI generated image'}"><span class="badge-ai">${S.aiCopy||'<b>AI</b> Generated'}</span></span>`:`<img src="${s}" alt="${alt}">`}
+  const L=S.aiLang||'en';   /* copy from the DS (assets/ds/ai-strip.js): en fr nl pl de sv */
+  return AIS(p).includes(i)?`<span class="ai-wrap"><img src="${s}" alt="${alt} · ${window.DG_aiAlt?DG_aiAlt(L):'AI generated image'}">${window.DG_aiStrip?DG_aiStrip(L):'<span class="badge-ai"><b>AI</b> Generated</span>'}</span>`:`<img src="${s}" alt="${alt}">`}
 function gallery(p,top=''){
   return `<div class="pdp-gal" data-slot="gallery">
     <div class="thumbs">${p.imgs.map((s,i)=>`<button class="${i?'':'on'}" data-i="${i}" aria-label="Image ${i+1}"><img src="${s}" alt=""></button>`).join('')}</div>
@@ -95,9 +97,10 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
   const crumbs=P.crumbs.map((c,i)=>i<P.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('');
   const bnpl=strip(V('bnpl',0)).replace(/£23\.33/,'£'+(num(P.price)/3).toFixed(2));
   const dplus=DPLUS.includes(S.brand)?strip(V('deliver-plus',d?1:0)):'';
-  /* Virtual Stylist (hanger), centred: between the gallery and the title on mobile, under the gallery on desktop (Jake 22 Oct 2026, from live KM).
+  /* chip treatment per fascia from tokens --ai-tag-* (PLT: garnet square, 12 uppercase white, left-aligned — vto-prototype, 27 Oct 2026).
+     Virtual Stylist (hanger), centred: between the gallery and the title on mobile, under the gallery on desktop (Jake 22 Oct 2026, from live KM).
      Shop Similar is a Google feature not launched yet: it stays in the DS (catalogue AI tag chip) but is off the default PDP. */
-  const chips=`<div class="pdp-chips pdp-chips--center" data-slot="ai-chips"><button class="ai-pill ai-pill--soft ai-pill--tag"><img class="ic" src="${LIB}icons-hanger.svg" alt="">Virtual Stylist</button></div>`;
+  const chips=`<div class="pdp-chips pdp-chips--center" data-slot="ai-chips"><button class="ai-pill ai-pill--soft ai-pill--tag"><i class="ic ic--hanger" aria-hidden="true"></i>Virtual Stylist</button></div>`;
   const under=`<div class="under" data-slot="below">${accSet(P)}</div>`;
   const buy=`<div class="buy" data-slot="buy">
       ${d?'':chips}
