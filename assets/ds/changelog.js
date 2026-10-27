@@ -6,8 +6,9 @@ window.DG_CHANGELOG=[
   "d": "2026-10-27",
   "v": "2026.10.27",
   "title": "PLT Virtual Stylist chip in the DS · AI strip copy in six languages · whole-page translation drop-in · no wishlist on rail cards · brand tabs on component pages",
-  "by": "AI Generated badge prototype (projects/ai-generated-badge) · vto-prototype (PLT chip) · DS site brand tabs (Jake, 27 Oct)",
+  "by": "AI Generated badge prototype (projects/ai-generated-badge) · vto-prototype (PLT chip) · DS site brand tabs · Membership landing (projects/membership-landing, Jake 27 Oct)",
   "added": [
+   "Membership band (.member-band, .member-band--lg, membership.js DG_memberBandHTML(brand,{plus,status,size})): each programme's live wordmark on its art, full width — promoted from the Account 2026 membership page band, logo heights as live (Unlimited 40 · Premier Club 12 · Premier 22 · Royalty 28 · KM 22), Unlimited+ wordmark on plus. New catalogue entry member-band · by Membership landing",
    "Tabs · Wrap (.tabs--wrap): more tabs than fit wrap onto another row instead of scrolling out of sight. Catalogue Tabs entry has the variant · by DS site brand tabs",
    "AI tag chip tokens --ai-tag-bg / -fg / -icon / -radius / -size / -weight / -case / -shadow / -align (tokens.css). They drive .ai-pill--tag and .pdp-chips--center. PLT = the Virtual Stylist prototype's chip: garnet #550503, square, Roboto 12 regular uppercase, white hanger, left-aligned, 36 tall, shadow-pill. Every other fascia is unchanged (white pill, centred)",
    "Masked chip glyph .ai-pill--tag i.ic.ic--hanger: the hanger takes the fascia's icon colour (img.ic still works for black glyphs)",
@@ -15,6 +16,7 @@ window.DG_CHANGELOG=[
    "assets/ds/ai-strip.js: the AI Generated strip copy and alt text in EN, FR, NL, PL, DE, SV (DG_AI_COPY, DG_aiStrip(lang), DG_aiAlt(lang)). Wording checked against EU AI Act Art. 50 language versions and the EU Code of Practice (10 Jun 2026); notes in the file. The PDP template reads S.aiLang"
   ],
   "changed": [
+   "Membership landing (projects/membership-landing): programme branding as Account 2026 — DS Membership band (--lg) above the headline and the programme art behind the closing band, all five fascias · by Membership landing",
    "templates/pdp.html: Virtual Stylist chip markup uses i.ic.ic--hanger, so PLT renders as the VTO prototype; the AI strip copy comes from ai-strip.js (S.aiCopy / S.aiAlt replaced by S.aiLang)",
    "DS site component pages: brand tabs (DS Tabs, wrap) across the top. Debenhams by default, one tab per fascia, All last = every fascia stacked as before; the pick carries to the next component page and the brand button picks the tab · by DS site brand tabs",
    "Section header + rail: rail cards have no wishlist button; the wishlist button is on PLP cards only (Jake, 27 Oct). Catalogue CARD takes fav:false",

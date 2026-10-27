@@ -4,16 +4,20 @@
    CSS: components.css .member-box (--mb-bg / --mb-fg / --mb-img / --mb-cta-bg / --mb-cta-fg / --mb-cta-line / --mb-line / --mb-lg-h).
    Use:  DG_memberBoxHTML(brand[,o]) → html ('' when the fascia has no programme) · window.DG_MEMBERSHIP (data).
    o (21 Oct 2026, KM Premier colours): override the ground — {bg, fg, ctaBg, ctaFg, ctaLine (outlined ADD), line (1px keyline colour), img:true to keep the art};
-   a dark fg swaps in the fascia's dark-ink logo (logoInk) where it has one. */
+   a dark fg swaps in the fascia's dark-ink logo (logoInk) where it has one.
+   Membership band (C-member-band, 27 Oct 2026 — promoted from Account 2026's membership page band, used by projects/membership-landing):
+   DG_memberBandHTML(brand[,o]) → the programme logo on its art, full width; o = {plus:true (Debenhams Unlimited+ wordmark), status:'Active' (right-hand label), size:'lg' (landing pages)}.
+   CSS: components.css .member-band (--mb-bg / --mb-fg / --mb-img / --mb-band-h). */
 (function(root){
   /* absolute: a relative url() inside a custom property resolves against the stylesheet that uses it, not the page */
+  const R=(typeof document!=='undefined'?new URL((root.DG_ASSET_BASE||'')+'assets/',document.baseURI).href:'assets/');
   const A=(typeof document!=='undefined'?new URL((root.DG_ASSET_BASE||'')+'assets/ds/membership/',document.baseURI).href:'assets/ds/membership/');
   const M={
-    debenhams:  {name:'Debenhams Unlimited',logo:'prem-logo-deb.png',lgH:43,img:'prem-bg-deb.jpg',copy:'Enjoy unlimited delivery for an entire year from just £14.99',bg:'#DCDCDC',fg:'#000',ctaBg:'#000',ctaFg:'#FFF'},
-    boohoo:     {name:'Premier Club',logo:'prem-logo-bh.png',lgH:15,img:'prem-bg-bh.jpg',copy:'Enjoy unlimited delivery for an entire year from just £9.99',bg:'#E1D8CF',fg:'#000',ctaBg:'#8D113A',ctaFg:'#FFF'},
-    boohooman:  {name:'Premier',logo:'prem-logo-bm.png',lgH:24,img:'prem-bg-bm.jpg',copy:'Enjoy unlimited delivery for an entire year from just £9.99',bg:'#CECECE',fg:'#000',ctaBg:'#000',ctaFg:'#FFF'},
-    plt:        {name:'Royalty',logo:'prem-logo-plt.png',lgH:26,img:'prem-bg-plt.jpg',copy:'Enjoy unlimited delivery for an entire year from just £9.99',bg:'#20090C',fg:'#FFF',ctaBg:'#FFF',ctaFg:'#000'},
-    karenmillen:{name:'Premier',logo:'prem-logo-km.png',logoInk:'prem-logo-km-ink.png',lgH:22,copy:'Enjoy unlimited delivery for an entire year from just £14.99',bg:'#000',fg:'#FFF',ctaBg:'#FFF',ctaFg:'#000'}
+    debenhams:  {band:{logo:'brands/memberships/unlimited-logo.svg',h:40},bandPlus:{name:'Debenhams Unlimited+',logo:'brands/memberships/unlimited-plus-logo.svg',h:40},name:'Debenhams Unlimited',logo:'prem-logo-deb.png',lgH:43,img:'prem-bg-deb.jpg',copy:'Enjoy unlimited delivery for an entire year from just £14.99',bg:'#DCDCDC',fg:'#000',ctaBg:'#000',ctaFg:'#FFF'},
+    boohoo:     {band:{logo:'ds/membership/prem-logo-bh.png',h:12},name:'Premier Club',logo:'prem-logo-bh.png',lgH:15,img:'prem-bg-bh.jpg',copy:'Enjoy unlimited delivery for an entire year from just £9.99',bg:'#E1D8CF',fg:'#000',ctaBg:'#8D113A',ctaFg:'#FFF'},
+    boohooman:  {band:{logo:'ds/membership/prem-logo-bm.png',h:22},name:'Premier',logo:'prem-logo-bm.png',lgH:24,img:'prem-bg-bm.jpg',copy:'Enjoy unlimited delivery for an entire year from just £9.99',bg:'#CECECE',fg:'#000',ctaBg:'#000',ctaFg:'#FFF'},
+    plt:        {band:{logo:'ds/membership/prem-logo-plt.png',h:28},name:'Royalty',logo:'prem-logo-plt.png',lgH:26,img:'prem-bg-plt.jpg',copy:'Enjoy unlimited delivery for an entire year from just £9.99',bg:'#20090C',fg:'#FFF',ctaBg:'#FFF',ctaFg:'#000'},
+    karenmillen:{band:{logo:'ds/membership/prem-logo-km.png',h:22},name:'Premier',logo:'prem-logo-km.png',logoInk:'prem-logo-km-ink.png',lgH:22,copy:'Enjoy unlimited delivery for an entire year from just £14.99',bg:'#000',fg:'#FFF',ctaBg:'#FFF',ctaFg:'#000'}
   };
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   root.DG_MEMBERSHIP=M;
@@ -23,4 +27,7 @@
     const logo=b.logoInk&&dark(m.fg)?b.logoInk:b.logo;
     const v=`--mb-bg:${m.bg};--mb-fg:${m.fg};--mb-cta-bg:${m.ctaBg};--mb-cta-fg:${m.ctaFg};--mb-lg-h:${m.lgH}px${m.line?`;--mb-line:${m.line}`:''}${m.ctaLine?`;--mb-cta-line:${m.ctaLine}`:''}${img?`;--mb-img:url(${A}${img})`:''}`;
     return `<div class="member-box" style="${v}"><div class="t"><span class="lg"><img src="${A}${logo}" alt="${esc(m.name)}"></span>${esc(m.copy)}</div><button class="add" type="button">Add</button></div>`};
+  root.DG_memberBandHTML=function(brand,o){const b=M[brand];if(!b||!b.band)return '';o=o||{};const bd=(o.plus&&b.bandPlus)||b.band;
+    const v=`--mb-bg:${b.bg};--mb-fg:${b.fg};--mb-band-h:${bd.h}px${b.img?`;--mb-img:url(${A}${b.img})`:''}`;
+    return `<div class="member-band${o.size==='lg'?' member-band--lg':''}" style="${v}"><span class="lg"><img src="${R}${bd.logo}" alt="${esc(bd.name||b.name)}"></span>${o.status?`<span class="st">${esc(o.status)}</span>`:''}</div>`};
 })(typeof window!=='undefined'?window:globalThis);

@@ -1218,6 +1218,14 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .member-box .lg{display:block;margin-bottom:12px}
 .member-box .lg img{height:var(--mb-lg-h,24px);width:auto;display:block}
 .member-box .add{flex:none;height:32px;box-sizing:border-box;padding:0 15px;border:1px solid var(--mb-cta-line,transparent);border-radius:var(--radius-default);background:var(--mb-cta-bg,#000);color:var(--mb-cta-fg,#FFF);font:var(--w-strong) 14px/1 var(--font-family-base);text-transform:uppercase;cursor:pointer}
+/* Membership band (C-member-band) — the programme logo on its live art, full width (Account 2026 membership page band, promoted 27 Oct 2026 for the membership landing page).
+   Rendered by assets/ds/membership.js DG_memberBandHTML(brand,{plus,status,size}). Padding gap 3 / 4 (12px 16px), min 50 tall; --lg (landing pages) gap 6 (24px), logo ×1.5. */
+.member-band{display:flex;align-items:center;justify-content:space-between;gap:var(--gap-3,12px);padding:12px 16px;min-height:50px;box-sizing:border-box;width:100%;background:var(--mb-bg,#DCDCDC) var(--mb-img,none) center/cover no-repeat;color:var(--mb-fg,#000);font-family:var(--font-family-base)}
+.member-band .lg{display:flex;min-width:0;flex:0 1 auto} /* the logo gives way, the status never moves off-screen */
+.member-band .lg img{display:block;height:var(--mb-band-h,24px);width:auto;max-width:100%;object-fit:contain;object-position:left center}
+.member-band .st{flex:none;font-size:14px;font-weight:var(--w-strong);text-transform:uppercase;white-space:nowrap}
+.member-band--lg{padding:24px;min-height:96px}
+.member-band--lg .lg img{height:calc(var(--mb-band-h,24px) * 1.5)}
 /* Bag payment summary (order-summary v2, promoted 16 Oct from projects/usp-banner/bag.js — the live /basket rebuild of 06 Oct).
    Rendered by assets/ds/bag-summary.js (DG_bagSummaryHTML / DG_bagTopHTML). */
 .bs{font-family:var(--font-family-base);color:#000;background:var(--surface-sunken,#FAFAFA);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;text-align:left;line-height:normal;box-sizing:border-box}

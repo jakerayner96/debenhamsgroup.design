@@ -190,11 +190,11 @@ function renderPanel(host,S,update){
     <label class="f"><span>Headline</span><input data-k="headline" value="${q(C.headline)}" placeholder="Free delivery on every order for a year."></label>
     <label class="f"><span>Stores it works at</span><input data-k="stores" value="${q(C.stores===null?(pr.stores||''):C.stores)}" placeholder="comma separated"><small>${(C.stores===null?(pr.stores||''):C.stores).split(',').filter(s=>s.trim()).length>1?'Shows the "Works at …" line, the Across our brands perk and the stores FAQ.':'One store: those three pieces are hidden.'}</small></label></div>
   <div class="card"><h3>Sections</h3>
-    ${sw('band','Programme lockup','The live wordmark on the closing band')}
+    ${sw('band','Programme band','The live wordmark on its art: band above the headline + closing band (as Account 2026)')}
     ${sw('included',"What's included")}
     ${sw('join','How to join')}
     ${sw('faq','Questions')}
-    ${sw('closing','Closing band','Programme box colour + CTA colours')}
+    ${sw('closing','Closing band','Programme art, box colour + CTA colours')}
     ${sw('chrome','Site chrome','DS header with the fascia\'s live USP banners, breadcrumb and footer — the page as a content page on the site')}</div>
   <div class="card"><h3>Rules</h3><div class="rules"><b>Programme styling comes from the DS</b> — lockup, art, box and CTA colours are the live membership box set (Brand Centre › Memberships), never restyled per page. <b>Buttons, accordion, header and footer are DS components</b> on the fascia mode; the receipt is the page's one bespoke module (mono, paper = the fascia's raised surface, accent = its link colour). <b>Unlimited+ is Debenhams only.</b> <b>Dark mode dropped</b> — fascia modes are light; the source page's dark theme has no DS counterpart.</div></div>
   <div class="card"><h3>Reset</h3><button class="chip" id="reset">Back to the defaults for this fascia</button></div>`;

@@ -25,11 +25,13 @@ a{color:inherit}
 .mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
 b,strong{font-weight:var(--w-strong)}
 
-/* programme lockup — the live wordmark at its live height, on the closing band (its box colour keeps the white PLT / KM marks legible) */
+/* programme branding (Account 2026, 27 Oct): the DS Membership band (.member-band--lg, membership.js) above the headline, and the live wordmark on the closing band, both on the programme's art */
+.hero-band{padding-top:16px}
 .closing .mlogo{display:block;height:var(--mb-h,40px);width:auto;max-width:70%;object-fit:contain;object-position:left center;margin:0 0 20px}
 
 /* hero */
 .hero{padding:24px 0 64px}
+.hero-band + .hero{padding-top:32px}
 .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
 .hero h1{font-size:40px;line-height:1;font-weight:var(--w-strong);letter-spacing:-.03em;margin:0 0 24px;text-transform:var(--cta-case)} /* hero H1: 40 mobile → 72 desktop (Jake, 12 Oct: bigger than display-lg) */
 @media(min-width:1024px){.hero h1{font-size:clamp(56px,5vw,72px);line-height:.98;margin-bottom:28px}}
@@ -103,7 +105,7 @@ h2{font-size:28px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.0
 .faq .acc-b{font-size:17px;line-height:1.55;color:var(--text-secondary);max-width:60ch;padding-bottom:22px}
 
 /* closing — the programme's box colour + ink, CTA in its live CTA colours */
-.closing{background:var(--mb-box);color:var(--mb-boxink);padding:48px 0}
+.closing{background:var(--mb-box) var(--mb-art,none) center/cover no-repeat;color:var(--mb-boxink);padding:48px 0}
 @media(min-width:1024px){.closing{padding:64px 0}}
 .closing .wrap{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap}
 .closing h2{margin:0;max-width:16ch}
@@ -139,6 +141,7 @@ h2{font-size:28px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.0
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/usp-live.js"></script>
 <script src="assets/ds/usp.js"></script>
+<script src="assets/ds/membership.js"></script>
 <script>
 /* ---- page contract with the shell (index.html) ----
    in:  ?s=<json state>  ·  postMessage {protoSet:state, exporting?:bool}  ·  postMessage {protoPing:1}
@@ -184,7 +187,7 @@ function header(){
 function page(){
   const p=prog(),st=stores(p),fee=+S.fee||5.99,n0=need(p.price,fee),multi=st.length>1;
   const vars={
-    '--mb-bg':p.bg?`url(${p.bg})`:p.box,'--mb-ink':p.ink,'--mb-h':p.logoH+'px','--mb-box':p.box,'--mb-boxink':p.ink,'--mb-cta':p.cta,'--mb-ctaink':p.ctaInk
+    '--mb-art':p.bg?`url(${p.bg})`:'none','--mb-ink':p.ink,'--mb-h':p.logoH+'px','--mb-box':p.box,'--mb-boxink':p.ink,'--mb-cta':p.cta,'--mb-ctaink':p.ctaInk
   };
   const style=Object.entries(vars).map(([k,v])=>`${k}:${v}`).join(';');
   const headline=S.headline||'Free delivery on every order for a year.';
@@ -204,7 +207,8 @@ function page(){
         </div>
         <p class="calc-note">Based on UK next day delivery at ${gbp(fee)} per order.</p>
       </div>`:'';
-  const hero=`<section class="hero" aria-labelledby="hero-title"><div class="wrap">
+  const band=S.band&&window.DG_memberBandHTML?`<div class="wrap hero-band">${DG_memberBandHTML(S.brand,{plus:p.plusTier,size:'lg'})}</div>`:'';
+  const hero=`${band}<section class="hero" aria-labelledby="hero-title"><div class="wrap">
       <div>
         <h1 id="hero-title">${esc(headline)}</h1>
         <p class="lede">${esc(p.full)} is <strong>${gbp(p.price)} a year</strong>. Next day and standard delivery are included on everything you order, starting with the order you join on.</p>
