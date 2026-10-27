@@ -536,6 +536,12 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .bd.txt:active{color:var(--text-link-pressed)}
 .bd.txt[disabled]{color:var(--text-link-disabled);cursor:not-allowed}
 .bd.pay{background:var(--navy);border-color:var(--navy);color:#FFF;border-radius:var(--radius-lg);gap:12px;text-transform:none;font-weight:600} /* checkout Pay CTA — fixed navy on every fascia */
+/* Membership CTA (.bd.mbr filled · .bd.mbr-out outlined), 27 Oct 2026 — buttons that sit on a programme's art (membership landing hero / closing band).
+   Colours are the programme's, from membership.js DG_memberVars(brand): --mb-cta-bg / --mb-cta-fg (as the Membership box ADD), outline + label = --mb-fg. */
+.bd.mbr{background:var(--mb-cta-bg,#000);color:var(--mb-cta-fg,#FFF);border-color:var(--mb-cta-bg,#000);text-transform:var(--case-btn1,uppercase)}
+.bd.mbr:hover{filter:brightness(1.15)}
+.bd.mbr-out{background:transparent;color:var(--mb-fg,#000);border-color:currentColor;text-transform:var(--case-btn2,none)}
+.bd.mbr-out:hover{background:color-mix(in srgb,currentColor 10%,transparent)}
 .bd.sm{height:auto;padding:6px 12px;font-size:12px;line-height:16px}
 .bd.md{height:40px;padding:8px 16px;font-size:14px;line-height:24px}
 .bd.full{width:100%}

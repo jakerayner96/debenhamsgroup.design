@@ -168,7 +168,7 @@ const P={
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com'},
   files:['page.html','README.md'],
   store:'proto-membership-landing-v2', // v2: site chrome (header + USP banners + breadcrumb + footer) on by default
-  initial:b=>({tier:'std',price:null,fee:5.99,orders:6,max:30,headline:'',stores:null,band:true,calc:true,included:true,join:true,faq:true,closing:true,chrome:true}),
+  initial:b=>({tier:'std',price:null,fee:5.99,orders:6,max:30,headline:'',stores:null,band:true,stats:true,sticky:true,calc:true,included:true,join:true,faq:true,closing:true,chrome:true}),
 };
 const q=v=>String(v??'').replace(/"/g,'&quot;');
 const need=(price,fee)=>Math.floor(price/fee)+1;
@@ -190,7 +190,9 @@ function renderPanel(host,S,update){
     <label class="f"><span>Headline</span><input data-k="headline" value="${q(C.headline)}" placeholder="Free delivery on every order for a year."></label>
     <label class="f"><span>Stores it works at</span><input data-k="stores" value="${q(C.stores===null?(pr.stores||''):C.stores)}" placeholder="comma separated"><small>${(C.stores===null?(pr.stores||''):C.stores).split(',').filter(s=>s.trim()).length>1?'Shows the "Works at …" line, the Across our brands perk and the stores FAQ.':'One store: those three pieces are hidden.'}</small></label></div>
   <div class="card"><h3>Sections</h3>
-    ${sw('band','Programme band','The live wordmark on its art: band above the headline + closing band (as Account 2026)')}
+    ${sw('band','Programme wordmark','The live wordmark on the programme art: hero + closing band (as Account 2026)')}
+    ${sw('stats','Stat strip','Four big facts on the programme ground under the hero')}
+    ${sw('sticky','Sticky join bar','Mobile: slides up once the hero CTA scrolls away (off in exports)')}
     ${sw('included',"What's included")}
     ${sw('join','How to join')}
     ${sw('faq','Questions')}

@@ -7,7 +7,8 @@
    a dark fg swaps in the fascia's dark-ink logo (logoInk) where it has one.
    Membership band (C-member-band, 27 Oct 2026 — promoted from Account 2026's membership page band, used by projects/membership-landing):
    DG_memberBandHTML(brand[,o]) → the programme logo on its art, full width; o = {plus:true (Debenhams Unlimited+ wordmark), status:'Active' (right-hand label), size:'lg' (landing pages)}.
-   CSS: components.css .member-band (--mb-bg / --mb-fg / --mb-img / --mb-band-h). */
+   CSS: components.css .member-band (--mb-bg / --mb-fg / --mb-img / --mb-band-h).
+   DG_memberVars(brand[,o]) → the programme colours + art as custom properties · DG_memberLogo(brand[,o]) → the band wordmark url (27 Oct 2026). */
 (function(root){
   /* absolute: a relative url() inside a custom property resolves against the stylesheet that uses it, not the page */
   const R=(typeof document!=='undefined'?new URL((root.DG_ASSET_BASE||'')+'assets/',document.baseURI).href:'assets/');
@@ -27,6 +28,12 @@
     const logo=b.logoInk&&dark(m.fg)?b.logoInk:b.logo;
     const v=`--mb-bg:${m.bg};--mb-fg:${m.fg};--mb-cta-bg:${m.ctaBg};--mb-cta-fg:${m.ctaFg};--mb-lg-h:${m.lgH}px${m.line?`;--mb-line:${m.line}`:''}${m.ctaLine?`;--mb-cta-line:${m.ctaLine}`:''}${img?`;--mb-img:url(${A}${img})`:''}`;
     return `<div class="member-box" style="${v}"><div class="t"><span class="lg"><img src="${A}${logo}" alt="${esc(m.name)}"></span>${esc(m.copy)}</div><button class="add" type="button">Add</button></div>`};
+  /* DG_memberVars(brand) → the programme's colours + art as custom properties, for a page section on the programme's ground (27 Oct 2026, membership landing):
+     --mb-bg / --mb-fg / --mb-img / --mb-cta-bg / --mb-cta-fg / --mb-band-h (band logo height). '' when the fascia has no programme. */
+  root.DG_memberVars=function(brand,o){const b=M[brand];if(!b)return '';const bd=(o&&o.plus&&b.bandPlus)||b.band||{};
+    return `--mb-bg:${b.bg};--mb-fg:${b.fg};--mb-cta-bg:${b.ctaBg};--mb-cta-fg:${b.ctaFg};--mb-band-h:${bd.h||24}px;--mb-img:${b.img?`url(${A}${b.img})`:'none'}`};
+  /* DG_memberLogo(brand[,o]) → the band wordmark url (Unlimited+ with o.plus) */
+  root.DG_memberLogo=function(brand,o){const b=M[brand];if(!b||!b.band)return '';return R+((o&&o.plus&&b.bandPlus)||b.band).logo};
   root.DG_memberBandHTML=function(brand,o){const b=M[brand];if(!b||!b.band)return '';o=o||{};const bd=(o.plus&&b.bandPlus)||b.band;
     const v=`--mb-bg:${b.bg};--mb-fg:${b.fg};--mb-band-h:${bd.h}px${b.img?`;--mb-img:url(${A}${b.img})`:''}`;
     return `<div class="member-band${o.size==='lg'?' member-band--lg':''}" style="${v}"><span class="lg"><img src="${R}${bd.logo}" alt="${esc(bd.name||b.name)}"></span>${o.status?`<span class="st">${esc(o.status)}</span>`:''}</div>`};

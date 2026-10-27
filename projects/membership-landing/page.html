@@ -9,55 +9,64 @@
 <link rel="stylesheet" href="assets/ds/tokens.css">
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
-/* Membership landing page — the Debenhams Unlimited "free delivery for a year" page (debenhams-unlimited_3.html) rebuilt on the DS.
-   Layout and behaviour are the source page's; colour, type, weights, radius and case come from the fascia mode (tokens.css),
-   buttons + accordion + header + footer are DS components, the programme band / closing band take each fascia's live
-   membership art and colours (assets/brands/memberships — the same set the PDP module, Account 2026 and the Brand Centre use).
-   Spacing in gaps: 1 gap = 4px. */
+/* Membership landing — the page that explains and sells the programme (Debenhams Unlimited "free delivery for a year", debenhams-unlimited_3.html, rebuilt 27 Oct 2026 as a promo page).
+   Programme ground (colours, art, wordmark, CTA colours) from the DS: membership.js DG_memberVars / DG_memberLogo, buttons .bd.pri / .bd.sec / .bd.mbr / .bd.mbr-out,
+   accordion .acc, header + footer + USP banners. Type, weights, radius and case from the fascia mode (tokens.css). Spacing in gaps: 1 gap = 4px. */
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--surface-page)}
-body{font-family:var(--font-family-base);color:var(--text-primary);font-size:17px;line-height:1.55;font-weight:var(--w-regular);-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-family-base);color:var(--text-primary);font-size:16px;line-height:1.55;font-weight:var(--w-regular);-webkit-font-smoothing:antialiased}
 img{max-width:100%}
 a{color:inherit}
 :focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:3px}
 .wrap{padding:0 16px}@media(min-width:1024px){.wrap{padding:0 40px;max-width:1440px;margin:0 auto}}
-.crumbs .bc{padding:16px 0 0}
+.crumbs .bc{padding:16px 0}
 .mono{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
 b,strong{font-weight:var(--w-strong)}
+h1,h2,h3{text-transform:var(--cta-case)}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.ctas .bd{min-height:52px;text-decoration:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;line-height:1;font-weight:var(--w-strong);text-transform:uppercase;letter-spacing:.08em;margin:0 0 16px}
+.eyebrow i{width:8px;height:8px;border-radius:9999px;background:currentColor}
 
-/* programme branding (Account 2026, 27 Oct): the DS Membership band (.member-band--lg, membership.js) above the headline, and the live wordmark on the closing band, both on the programme's art */
-.hero-band{padding-top:16px}
-.closing .mlogo{display:block;height:var(--mb-h,40px);width:auto;max-width:70%;object-fit:contain;object-position:left center;margin:0 0 20px}
+/* programme ground: the programme's box colour + art, its ink — hero, stat strip and closing band */
+.prog{background:var(--mb-bg) var(--mb-img) center/cover no-repeat;color:var(--mb-fg);position:relative;isolation:isolate}
+.prog::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60% 80% at 85% 20%,color-mix(in srgb,var(--mb-fg) 9%,transparent),transparent 70%)} /* soft light over the art */
+.prog .mlogo{display:block;height:calc(var(--mb-band-h) * 1.75);width:auto;max-width:80%;margin:0 0 28px}
 
 /* hero */
-.hero{padding:24px 0 64px}
-.hero-band + .hero{padding-top:32px}
-.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
-.hero h1{font-size:40px;line-height:1;font-weight:var(--w-strong);letter-spacing:-.03em;margin:0 0 24px;text-transform:var(--cta-case)} /* hero H1: 40 mobile → 72 desktop (Jake, 12 Oct: bigger than display-lg) */
-@media(min-width:1024px){.hero h1{font-size:clamp(56px,5vw,72px);line-height:.98;margin-bottom:28px}}
-.lede{font-size:16px;max-width:40ch;margin:0 0 24px} /* body-lg */
-@media(min-width:1024px){.lede{font-size:18px}}
-.ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.ctas .bd,.closing .bd{min-height:52px;text-decoration:none}
-.fine{font-size:14px;color:var(--text-secondary);margin-top:20px;max-width:46ch}
-.brands-line{margin-top:48px;padding-top:20px;border-top:1px solid var(--border-default);font-size:15px;color:var(--text-secondary)}
-.brands-line b{color:var(--text-primary);font-weight:var(--w-strong)}
+.hero{padding:40px 0 48px;overflow:hidden}
+@media(min-width:1024px){.hero{padding:72px 0 80px}}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:72px;align-items:center}
+.hero h1{font-size:44px;line-height:.98;font-weight:var(--w-strong);letter-spacing:-.035em;margin:0 0 20px}
+@media(min-width:1024px){.hero h1{font-size:clamp(60px,5.4vw,84px);margin-bottom:24px}}
+.lede{font-size:17px;max-width:42ch;margin:0 0 28px;opacity:.85}
+@media(min-width:1024px){.lede{font-size:19px}}
+.price{display:flex;align-items:flex-end;gap:14px;margin:0 0 28px}
+.price b{font-size:64px;line-height:.85;letter-spacing:-.04em}
+@media(min-width:1024px){.price b{font-size:80px}}
+.price span{font-size:15px;line-height:1.3;padding-bottom:4px;opacity:.85}
+.price span em{display:block;font-style:normal;font-weight:var(--w-strong);opacity:1}
+.payback{display:inline-flex;align-items:center;gap:8px;margin:24px 0 0;padding:8px 14px;border-radius:var(--radius-pill,9999px);background:color-mix(in srgb,var(--mb-fg) 10%,transparent);font-size:14px;font-weight:var(--w-strong)}
+.payback img{width:18px;height:18px}
+.prog[data-ink="light"] .payback img,.prog[data-ink="light"] .perk-ic img{filter:invert(1)}
 
-/* receipt calculator — the page's one bespoke module; paper = the fascia's raised surface (PLT cream), accent = the fascia link colour */
-.calc-q{font-weight:var(--w-strong);font-size:17px;margin:0 0 10px;display:block}
-.slider-row{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+/* receipt calculator — white paper floating on the art, the page's one bespoke module */
+.calc{background:var(--surface-raised,#FFF);color:var(--text-primary);border-radius:calc(var(--radius-default) + 8px);padding:28px;box-shadow:0 30px 60px -20px rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.08)}
+@media(min-width:1024px){.calc{padding:36px;transform:rotate(1.2deg)}}
+.calc-q{font-weight:var(--w-strong);font-size:18px;margin:0 0 10px;display:block}
+.slider-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
 input[type=range]{flex:1;accent-color:var(--text-primary);height:28px;margin:0}
-.count{font-weight:var(--w-strong);font-size:28px;line-height:1;min-width:2.2ch;text-align:right}
-.receipt{background:var(--surface-raised);color:#000;font-size:14px;line-height:1.7;padding:26px 26px 40px;border:1px solid var(--border-default);
+.count{font-weight:var(--w-strong);font-size:36px;line-height:1;min-width:2.2ch;text-align:right}
+.receipt{background:var(--surface-sunken);color:#000;font-size:14px;line-height:1.7;padding:22px 22px 36px;
   --z:10px;
   -webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/calc(2*var(--z)) 100%;
           mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/calc(2*var(--z)) 100%}
 .r-head{text-align:center;border-bottom:1px dashed #9A9A96;padding-bottom:12px;margin-bottom:12px}
 .r-head b{display:block;font-weight:600;font-size:15px}
-.r-head span{color:#6B6B68;font-size:12.5px}
+.r-head span{color:var(--text-secondary);font-size:12.5px}
 .r-lines{list-style:none;margin:0;padding:0;min-height:34px}
 .r-lines li{display:flex;justify-content:space-between;gap:12px}
-.r-lines li.more{color:#6B6B68}
+.r-lines li.more{color:var(--text-secondary)}
 .r-lines li.new{animation:print .25s ease-out}
 @keyframes print{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .r-row{display:flex;justify-content:space-between;gap:12px}
@@ -65,74 +74,93 @@ input[type=range]{flex:1;accent-color:var(--text-primary);height:28px;margin:0}
 .r-sub .struck{text-decoration:line-through;text-decoration-thickness:1.5px}
 .r-total{border-top:2px solid #000;margin-top:12px;padding-top:12px;font-weight:600;font-size:16px}
 .r-keep{margin-top:18px;padding:14px 0 0;border-top:1px dashed #9A9A96;font-family:var(--font-family-base);font-size:16px;line-height:1.35}
-.r-keep strong{display:block;font-size:30px;font-weight:var(--w-strong);letter-spacing:-.02em;color:var(--text-link)}
+.r-keep strong{display:block;font-size:40px;font-weight:var(--w-strong);letter-spacing:-.03em;color:var(--text-link);line-height:1.05}
 .r-keep.neutral strong{color:#000}
-.calc-note{font-size:14px;color:var(--text-secondary);margin:14px 0 0}
+.calc-note{font-size:13px;color:var(--text-secondary);margin:14px 0 0}
+
+/* stat strip — four big facts on the programme ground, under the hero */
+.stats{border-top:1px solid color-mix(in srgb,var(--mb-fg) 18%,transparent)}
+.stats ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr)}
+.stats li{padding:28px 24px 32px 0}
+.stats li+li{padding-left:24px;border-left:1px solid color-mix(in srgb,var(--mb-fg) 18%,transparent)}
+.stats b{display:block;font-size:36px;line-height:1;letter-spacing:-.03em;margin-bottom:8px}
+@media(min-width:1024px){.stats b{font-size:44px}}
+.stats span{font-size:14px;opacity:.8}
 
 /* sections */
-section.band{padding:48px 0;border-top:1px solid var(--border-default)}
-@media(min-width:1024px){section.band{padding:64px 0}}
-section.band.mist{background:var(--surface-sunken);border-top:0}
-h2{font-size:28px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.02em;margin:0 0 12px;text-transform:var(--cta-case)} /* display-md: 28 mobile / 40 desktop */
-@media(min-width:1024px){h2{font-size:40px;line-height:1.05}}
-.intro{max-width:52ch;color:var(--text-secondary);margin:0 0 32px;font-size:16px}
+section.band{padding:56px 0}
+@media(min-width:1024px){section.band{padding:96px 0}}
+section.band.mist{background:var(--surface-sunken)}
+h2{font-size:32px;line-height:1.05;font-weight:var(--w-strong);letter-spacing:-.03em;margin:0 0 12px}
+@media(min-width:1024px){h2{font-size:52px}}
+.intro{max-width:52ch;color:var(--text-secondary);margin:0 0 40px;font-size:17px}
 .intro a{color:var(--text-link);font-weight:var(--link-w,var(--w-strong))}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap}
 
-/* perks */
-.perks{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:2px solid var(--text-primary)}
-.perk-main{padding:32px 32px 36px 0}
-.perk-main + .perk-main{padding-left:32px;padding-right:0;border-left:1px solid var(--border-default)}
-.perk-main h3{font-size:24px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.02em;margin:0 0 10px}
-.perk-main p{margin:0;max-width:40ch}
-.perk-list{grid-column:1/-1;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border-default)}
-.perk-list li{padding:24px 24px 8px 0}
-.perk-list li + li{padding-left:24px;border-left:1px solid var(--border-default)}
-.perk-list h3{font-size:18px;font-weight:var(--w-strong);margin:0 0 6px}
-.perk-list p{margin:0;color:var(--text-secondary);font-size:16px}
+/* perks — two hero cards on the programme ground + three cards on the page */
+.perks{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.perk{grid-column:span 2;background:var(--surface-sunken);border-radius:calc(var(--radius-default) + 8px);padding:28px;display:flex;flex-direction:column;gap:12px;min-height:220px}
+.perk.lead{grid-column:span 3;min-height:300px;padding:36px}
+.perk h3{font-size:22px;line-height:1.1;font-weight:var(--w-strong);letter-spacing:-.02em;margin:auto 0 0}
+.perk.lead h3{font-size:32px}
+.perk p{margin:0;color:var(--text-secondary);max-width:40ch}
+.perk.prog{background:var(--mb-bg) var(--mb-img) center/cover no-repeat;color:var(--mb-fg)}
+.perk.prog p{color:inherit;opacity:.85}
+.perk-ic{width:56px;height:56px;border-radius:9999px;display:grid;place-items:center;background:var(--surface-raised,#FFF)}
+.perk.prog .perk-ic{background:color-mix(in srgb,var(--mb-fg) 12%,transparent)}
+.perk-ic img{width:28px;height:28px}
+.perk .big{font-size:64px;line-height:.9;font-weight:var(--w-strong);letter-spacing:-.04em}
 
 /* steps */
-.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;counter-reset:s}
-.steps li{counter-increment:s;padding-top:20px;border-top:2px solid var(--text-primary)}
-.steps li::before{content:counter(s);display:block;font-size:32px;line-height:1;font-weight:var(--w-strong);margin-bottom:18px}
-.steps h3{font-size:20px;font-weight:var(--w-strong);margin:0 0 6px}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:s}
+.steps li{counter-increment:s;background:var(--surface-raised,#FFF);border-radius:calc(var(--radius-default) + 8px);padding:28px}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:48px;height:48px;border-radius:9999px;margin-bottom:28px;font-size:20px;font-weight:var(--w-strong);background:var(--mb-bg) var(--mb-img) center/cover;color:var(--mb-fg)}
+.steps h3{font-size:22px;line-height:1.15;font-weight:var(--w-strong);margin:0 0 8px;letter-spacing:-.02em}
 .steps p{margin:0;color:var(--text-secondary)}
 
-/* FAQ — DS accordion (.acc) laid out in the source's two-column grid */
+/* FAQ — DS accordion (.acc) in the source's two-column grid */
 .faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
 .faq .acc{gap:0;border-top:1px solid var(--border-default)}
 .faq .acc:last-child{border-bottom:1px solid var(--border-default)}
-.faq .acc-h{padding:20px 0;font-size:18px;font-weight:var(--w-strong)}
-.faq .acc-b{font-size:17px;line-height:1.55;color:var(--text-secondary);max-width:60ch;padding-bottom:22px}
+.faq .acc-h{padding:22px 0;font-size:18px;font-weight:var(--w-strong)}
+.faq .acc-b{font-size:16px;line-height:1.55;color:var(--text-secondary);max-width:60ch;padding-bottom:22px}
 
-/* closing — the programme's box colour + ink, CTA in its live CTA colours */
-.closing{background:var(--mb-box) var(--mb-art,none) center/cover no-repeat;color:var(--mb-boxink);padding:48px 0}
-@media(min-width:1024px){.closing{padding:64px 0}}
-.closing .wrap{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap}
-.closing h2{margin:0;max-width:16ch}
-.closing .bd{background:var(--mb-cta);color:var(--mb-ctaink);border-color:var(--mb-cta);min-height:52px}
-.closing p{margin:10px 0 0;opacity:.75}
+/* closing — the programme ground again, centred */
+.closing{padding:72px 0;text-align:center}
+@media(min-width:1024px){.closing{padding:112px 0}}
+.closing .mlogo{margin:0 auto 28px}
+.closing h2{max-width:18ch;margin:0 auto 12px}
+.closing p{margin:0 auto 32px;opacity:.8;font-size:18px}
+.closing .ctas{justify-content:center}
 
 .legal{padding:32px 0 48px;font-size:13px;color:var(--text-secondary)}
 .legal p{max-width:80ch;margin:0 0 6px}
 .pgfoot .ft{margin-top:0}
 
-/* responsive — the source breaks at 900 / 480 */
-@media (max-width:900px){
-  .hero{padding:16px 0 48px}
+/* sticky join bar (mobile) — slides up once the hero CTA has scrolled away */
+.stick{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;box-shadow:0 -8px 24px rgba(0,0,0,.12);transform:translateY(110%);transition:transform .25s ease}
+.stick.on{transform:none}
+.stick img{height:calc(var(--mb-band-h) * .8);width:auto;max-width:40%}
+.stick .bd{flex:1;min-height:48px;text-decoration:none}
+@media(min-width:1024px){.stick{display:none}}
+
+/* responsive */
+@media (max-width:1023px){
   .hero .wrap,.faq-grid{grid-template-columns:1fr;gap:40px}
+  .stats ul{grid-template-columns:1fr 1fr}
+  .stats li:nth-child(3){padding-left:0;border-left:0}
+  .stats li:nth-child(n+3){border-top:1px solid color-mix(in srgb,var(--mb-fg) 18%,transparent)}
   .perks{grid-template-columns:1fr}
-  .perk-main,.perk-main + .perk-main{padding:28px 0;border-left:0}
-  .perk-main + .perk-main{border-top:1px solid var(--border-default)}
-  .perk-list{grid-template-columns:1fr}
-  .perk-list li,.perk-list li + li{padding:20px 0;border-left:0}
-  .perk-list li + li{border-top:1px solid var(--border-default)}
+  .perk,.perk.lead{grid-column:auto;min-height:0}
+  .perk h3{margin-top:12px}
   .steps{grid-template-columns:1fr}
 }
 @media (max-width:480px){
-  body{font-size:16px}
-  .lede{font-size:18px}
   .ctas .bd{width:100%}
-  .receipt{padding:22px 18px 36px;font-size:13px}
+  .calc{padding:20px}
+  .receipt{padding:20px 16px 34px;font-size:13px}
+  .stats li{padding:22px 12px 24px 0}.stats li+li{padding-left:12px}.stats li:nth-child(3){padding-left:0}
+  .stats b{font-size:28px}
 }
 </style>
 </head>
@@ -153,19 +181,18 @@ const gbp=n=>'£'+(+n).toFixed(2);
 const ORD=['','first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth'];
 const WORDS=['','one','two','three','four','five','six','seven','eight','nine','ten'];
 
-/* each fascia's programme — name, live price (account/unlimited pages 08 Oct 2026), lockup + art + colours from the live PDP membership box
-   (DG_MEMBERSHIPS in index.html · account-2026 MB · core-pdp-2026 brands-live.js). Debenhams also has the Unlimited+ tier (wordmark 08 Oct, benefits to confirm). */
-const M='assets/brands/memberships/';
+/* each fascia's programme — name, live price (account/unlimited pages 08 Oct 2026). Wordmark, art and colours come from the DS (membership.js DG_memberVars / DG_memberLogo).
+   Debenhams also has the Unlimited+ tier (wordmark 08 Oct, benefits to confirm). */
 const PROG={
-  debenhams:{name:'Unlimited',full:'Debenhams Unlimited',price:14.99,logo:M+'unlimited-logo.svg',logoH:40,bg:M+'prem-bg-deb.jpg',box:'#DCDCDC',ink:'#000',cta:'#000',ctaInk:'#FFF',stores:['Debenhams','Coast','Burton','Wallis'],plus:{name:'Unlimited+',full:'Debenhams Unlimited+',logo:M+'unlimited-plus-logo.svg'}},
-  boohoo:{name:'Premier Club',full:'boohoo Premier Club',price:9.99,logo:M+'prem-logo-bh.png',logoH:15,bg:M+'prem-bg-bh.jpg',box:'#E1D8CF',ink:'#000',cta:'#8D113A',ctaInk:'#FFF'},
-  boohooman:{name:'Premier',full:'boohooMAN Premier',price:9.99,logo:M+'prem-logo-bm.png',logoH:24,bg:M+'prem-bg-bm.jpg',box:'#CECECE',ink:'#000',cta:'#000',ctaInk:'#FFF'},
-  plt:{name:'Royalty',full:'PLT Royalty',price:9.99,logo:M+'prem-logo-plt.png',logoH:26,bg:M+'prem-bg-plt.jpg',box:'#20090C',ink:'#FFF',cta:'#FFF',ctaInk:'#000'},
-  karenmillen:{name:'Premier',full:'Karen Millen Premier',price:14.99,logo:M+'prem-logo-km.png',logoH:22,bg:null,box:'#000',ink:'#FFF',cta:'#FFF',ctaInk:'#000'}
+  debenhams:{name:'Unlimited',full:'Debenhams Unlimited',price:14.99,stores:['Debenhams','Coast','Burton','Wallis'],plus:{name:'Unlimited+',full:'Debenhams Unlimited+'}},
+  boohoo:{name:'Premier Club',full:'boohoo Premier Club',price:9.99},
+  boohooman:{name:'Premier',full:'boohooMAN Premier',price:9.99},
+  plt:{name:'Royalty',full:'PLT Royalty',price:9.99},
+  karenmillen:{name:'Premier',full:'Karen Millen Premier',price:14.99}
 };
 window.DG_PROG=PROG;
 
-let S={brand:'debenhams',tier:'std',price:null,fee:5.99,orders:6,max:30,headline:'',stores:null,band:true,calc:true,included:true,join:true,faq:true,closing:true,chrome:true},EXPORTING=false;
+let S={brand:'debenhams',tier:'std',price:null,fee:5.99,orders:6,max:30,headline:'',stores:null,band:true,stats:true,sticky:true,calc:true,included:true,join:true,faq:true,closing:true,chrome:true},EXPORTING=false;
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}  // URLSearchParams already decodes — never decode twice
 let cur=null; // slider position the customer has moved to (reset when the panel changes the default)
 
@@ -186,11 +213,13 @@ function header(){
 
 function page(){
   const p=prog(),st=stores(p),fee=+S.fee||5.99,n0=need(p.price,fee),multi=st.length>1;
-  const vars={
-    '--mb-art':p.bg?`url(${p.bg})`:'none','--mb-ink':p.ink,'--mb-h':p.logoH+'px','--mb-box':p.box,'--mb-boxink':p.ink,'--mb-cta':p.cta,'--mb-ctaink':p.ctaInk
-  };
-  const style=Object.entries(vars).map(([k,v])=>`${k}:${v}`).join(';');
+  const vars=window.DG_memberVars?DG_memberVars(S.brand,{plus:p.plusTier}):'';
+  const ink=/--mb-fg:#FFF/i.test(vars)?'light':'dark';
+  const logo=window.DG_memberLogo?DG_memberLogo(S.brand,{plus:p.plusTier}):'';
+  const mlogo=S.band&&logo?`<img class="mlogo" src="${logo}" alt="${esc(p.full)}">`:'';
+  const week=Math.round(p.price/52*100), perWeek=week<100?week+'p':gbp(week/100);
   const headline=S.headline||'Free delivery on every order for a year.';
+  const IC='assets/ds/icons/lib/';
   const calc=S.calc?`
       <div class="calc" aria-labelledby="calc-label">
         <label class="calc-q" id="calc-label" for="orders">How many orders do you place a year?</label>
@@ -207,39 +236,42 @@ function page(){
         </div>
         <p class="calc-note">Based on UK next day delivery at ${gbp(fee)} per order.</p>
       </div>`:'';
-  const band=S.band&&window.DG_memberBandHTML?`<div class="wrap hero-band">${DG_memberBandHTML(S.brand,{plus:p.plusTier,size:'lg'})}</div>`:'';
-  const hero=`${band}<section class="hero" aria-labelledby="hero-title"><div class="wrap">
+  const hero=`<section class="hero prog" data-ink="${ink}" aria-labelledby="hero-title"><div class="wrap">
       <div>
+        ${mlogo}
         <h1 id="hero-title">${esc(headline)}</h1>
-        <p class="lede">${esc(p.full)} is <strong>${gbp(p.price)} a year</strong>. Next day and standard delivery are included on everything you order, starting with the order you join on.</p>
-        <div class="ctas"><a class="bd pri" href="#join">Join ${esc(p.name)} for ${gbp(p.price)}</a><a class="bd sec" href="#included">See what's included</a></div>
-        <p class="fine">Pays for itself by your ${ORD[n0]||n0+'th'} next day order.${multi?` One membership covers ${WORDS[st.length]||st.length} stores.`:''}</p>
-        ${multi?`<p class="brands-line">Works at ${st.map(s=>`<b>${esc(s)}</b>`).join(', ').replace(/, ([^,]*)$/,' and $1')}.</p>`:''}
+        <p class="lede">Next day and standard delivery on everything you order for 12 months, starting with the order you join on.${multi?` One membership, ${WORDS[st.length]||st.length} stores.`:''}</p>
+        <div class="price"><b>${gbp(p.price)}</b><span><em>a year</em>That's ${perWeek} a week</span></div>
+        <div class="ctas" id="hero-ctas"><a class="bd mbr" href="#join">Join ${esc(p.name)}</a><a class="bd mbr-out" href="#included">See what's included</a></div>
+        <p class="payback"><img src="${IC}icons-tick-circle-outline.svg" alt="">Pays for itself by your ${ORD[n0]||n0+'th'} next day order</p>
       </div>
       ${calc}
     </div></section>`;
-  const others=st.filter(s=>s.toLowerCase()!==(PROG[S.brand]||{}).full?.split(' ')[0].toLowerCase()&&s.toLowerCase()!=='debenhams');
+  const stats=S.stats?`<div class="prog stats" data-ink="${ink}"><div class="wrap"><ul>
+      <li><b>Free</b><span>next day delivery</span></li>
+      <li><b>Free</b><span>standard delivery</span></li>
+      <li><b>12</b><span>months, from the day you join</span></li>
+      <li><b>${multi?st.length:gbp(fee)}</b><span>${multi?'stores, one membership':'saved on every next day order'}</span></li>
+    </ul></div></div>`:'';
+  const others=st.filter(s=>s.toLowerCase()!=='debenhams');
   const included=S.included?`<section class="band" id="included" aria-labelledby="inc-title"><div class="wrap">
       <h2 id="inc-title">What's included</h2>
       <p class="intro">Everything below applies from the moment you join until your membership ends 12 months later.</p>
       <div class="perks">
-        <div class="perk-main"><h3>Free next day delivery</h3><p>Order today and it's at your door tomorrow, on every order, at no extra cost. Order before the cut-off shown at checkout.</p></div>
-        <div class="perk-main"><h3>Free standard delivery</h3><p>Send it to your door, an InPost locker or a local shop, whichever suits you.</p></div>
-        <ul class="perk-list">
-          <li><h3>VIP member days</h3><p>Early access and member-only promotions throughout the year.</p></li>
-          <li><h3>Exclusive offers</h3><p>Member prices from some of our biggest brands.</p></li>
-          ${multi?`<li><h3>Across our brands</h3><p>Your membership works at ${esc(list(others))} too.</p></li>`:`<li><h3>App and web</h3><p>Your membership follows your account, so it works in the app and on the website.</p></li>`}
-        </ul>
+        <div class="perk lead prog" data-ink="${ink}"><span class="perk-ic"><img src="${IC}icons-delivery-fast.svg" alt=""></span><h3>Free next day delivery</h3><p>Order today and it's at your door tomorrow, on every order, at no extra cost. Order before the cut-off shown at checkout.</p></div>
+        <div class="perk lead"><span class="big">${gbp(fee)}</span><h3>Saved on every next day order</h3><p>That's what next day delivery costs without ${esc(p.name)}. ${WORDS[n0]?WORDS[n0][0].toUpperCase()+WORDS[n0].slice(1):n0} orders and the year has paid for itself.</p></div>
+        <div class="perk"><span class="perk-ic"><img src="${IC}icons-delivery.svg" alt=""></span><h3>Free standard delivery</h3><p>To your door, an InPost locker or a local shop, whichever suits you.</p></div>
+        <div class="perk"><span class="perk-ic"><img src="${IC}icons-calendar.svg" alt=""></span><h3>VIP member days</h3><p>Early access and member-only promotions throughout the year.</p></div>
+        ${multi?`<div class="perk"><span class="perk-ic"><img src="${IC}shop.svg" alt=""></span><h3>Across our brands</h3><p>Your membership works at ${esc(list(others))} too.</p></div>`:`<div class="perk"><span class="perk-ic"><img src="${IC}icons-app.svg" alt=""></span><h3>App and web</h3><p>Your membership follows your account, so it works in the app and on the website.</p></div>`}
       </div></div></section>`:'';
   const join=S.join?`<section class="band mist" id="join" aria-labelledby="join-title"><div class="wrap">
-      <h2 id="join-title">How to join</h2>
-      <p class="intro">It takes less than a minute, and your first order ships free.</p>
+      <div class="sec-head"><div><h2 id="join-title">Join in under a minute</h2><p class="intro">Three steps, and the order you join with ships free.</p></div></div>
       <ol class="steps">
         <li><h3>Sign in or create an account</h3><p>${esc(p.name)} is linked to your account, so it follows you on the app and the website.</p></li>
         <li><h3>Add ${esc(p.name)} to your bag</h3><p>Add it from this page, or choose ${esc(p.name)} as your delivery option at checkout.</p></li>
         <li><h3>Start saving on that order</h3><p>Delivery on the order you join with is free, and so is every order for the next 12 months.</p></li>
       </ol>
-      <div class="ctas" style="margin-top:48px"><a class="bd pri" href="#">Add ${esc(p.name)} to bag</a></div>
+      <div class="ctas" style="margin-top:40px"><a class="bd pri" href="#">Add ${esc(p.name)} to bag · ${gbp(p.price)}</a></div>
     </div></section>`:'';
   const acc=(q,a,open)=>`<div class="acc${open?' open':''}"><button class="acc-h">${q}<img src="assets/ds/icons/lib/icons-down-arrow.svg" alt=""></button><div class="acc-b">${a}</div></div>`;
   const faq=S.faq?`<section class="band faq" aria-labelledby="faq-title"><div class="wrap faq-grid">
@@ -250,16 +282,17 @@ function page(){
         ${acc('Which delivery options are free?','UK next day delivery and UK standard delivery, including delivery to InPost lockers and shops.')}
         ${acc("I'm already a member. Can I buy it again?","Not until your current membership ends. You'll be able to join again once your 12 months are up.")}
       </div></div></section>`:'';
-  const closing=S.closing?`<section class="closing" aria-labelledby="close-title"><div class="wrap">
-      <div>${S.band?`<img class="mlogo" src="${p.logo}" alt="${esc(p.full)}">`:''}<h2 id="close-title">A year of free delivery for ${gbp(p.price)}.</h2><p>That's less than ${WORDS[n0]||n0} next day deliveries.</p></div>
-      <a class="bd pri" href="#">Join ${esc(p.name)}</a>
+  const closing=S.closing?`<section class="closing prog" data-ink="${ink}" aria-labelledby="close-title"><div class="wrap">
+      ${mlogo}<h2 id="close-title">A year of free delivery for ${gbp(p.price)}.</h2><p>That's less than ${WORDS[n0]||n0} next day deliveries.</p>
+      <div class="ctas"><a class="bd mbr" href="#">Join ${esc(p.name)} for ${gbp(p.price)}</a></div>
     </div></section>`:'';
   const legal=`<div class="legal"><div class="wrap">
       <p>Savings based on UK next day delivery at ${gbp(fee)} per order and ${esc(p.full)} at ${gbp(p.price)} for 12 months. Next day delivery is subject to order cut-off times.</p>
       <p>Existing members can't buy ${esc(p.name)} again until their current membership has ended.</p>
     </div></div>`;
   const crumbs=`<div class="wrap crumbs"><nav class="bc" aria-label="Breadcrumb"><a href="#">Delivery</a><span class="sep">/</span><span class="cur">${esc(p.full)}</span></nav></div>`;
-  return `<div style="${style}">${S.chrome?`<div class="pghead">${header()}<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>${crumbs}`:''}<main>${hero}${included}${join}${faq}${closing}</main>${legal}${S.chrome?`<div class="pgfoot">${strip(V('footer',0))}</div>`:''}</div>`;
+  const stick=S.sticky&&!EXPORTING?`<div class="stick prog" data-ink="${ink}" id="stick">${logo?`<img src="${logo}" alt="">`:''}<a class="bd mbr" href="#join">Join for ${gbp(p.price)}</a></div>`:'';
+  return `<div style="${vars}">${S.chrome?`<div class="pghead">${header()}<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div></div>${crumbs}`:''}<main>${hero}${stats}${included}${join}${faq}${closing}</main>${legal}${S.chrome?`<div class="pgfoot">${strip(V('footer',0))}</div>`:''}${stick}</div>`;
 }
 
 let prev=0;
@@ -280,10 +313,11 @@ function calc(){
 function render(){
   document.documentElement.setAttribute('data-brand',S.brand);
   document.getElementById('app').innerHTML=page();
-  document.querySelectorAll('.brandlogo').forEach(i=>i.src=`assets/brands/${S.brand}.svg`);
   document.querySelectorAll('[data-usp-banners]').forEach(el=>{if(!window.DG_uspHTML)return;el.innerHTML=DG_uspHTML(S.brand,{brand:S.brand,auto:+el.dataset.uspAuto})['below'];el.classList.add('usps');DG_usp(el)});
   const slider=document.getElementById('orders');if(slider){prev=0;slider.addEventListener('input',calc);calc()}
   document.querySelectorAll('.acc-h').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
+  const stk=document.getElementById('stick'),hc=document.getElementById('hero-ctas');
+  if(stk&&hc&&'IntersectionObserver' in window){if(window._io)_io.disconnect();window._io=new IntersectionObserver(([e])=>stk.classList.toggle('on',!e.isIntersecting&&e.boundingClientRect.top<0));_io.observe(hc)}
   document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1),t=id&&document.getElementById(id);if(!t){e.preventDefault();return}e.preventDefault();t.scrollIntoView({behavior:EXPORTING?'auto':'smooth'})}));
 }
 render();
