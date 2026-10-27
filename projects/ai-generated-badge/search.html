@@ -24,24 +24,28 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/header.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
 <script>
-/* in: ?s={brand, term} · {protoSet} · {protoPing}. out: {protoReady}, {protoPong,h}. The AI strip is injected by page.html, like every other page. */
+/* in: ?s={brand, lang} · {protoSet} · {protoPing}. out: {protoReady}, {protoPong,h}. The AI strip is injected by page.html, like every other page. */
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-let S={brand:'debenhams',term:'watch'},EXPORTING=false;
+let S={brand:'debenhams',lang:'en'},EXPORTING=false;
 try{const s=new URLSearchParams(location.search).get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
 const desk=()=>innerWidth>=1024;
 /* no wishlist on these cards: the wishlist button is on PLP cards only (DS rule, 27 Oct 2026) */
 const RAIL={plt:'Top Sellers',boohoo:'Top Sellers',boohooman:'Top Sellers'};     /* the deck: PLT / boohoo / MAN Top Sellers, Debenhams / KM Recently Viewed */
-const TERMS=t=>[t,'mens '+t+'es','ladies '+t+'es',t+'es','womens '+t+'es'];
+/* the typed term and its suggestions, per language (the rest of the page is translated by DS i18n.js in page.html) */
+const SEARCH={en:['watch','mens watches','ladies watches','watches','womens watches'],fr:['montre','montres homme','montres femme','montres','montres pour femme'],
+  nl:['horloge','herenhorloges','dameshorloges','horloges','horloges voor dames'],pl:['zegarek','zegarki męskie','zegarki damskie','zegarki','zegarek damski'],
+  de:['uhr','herrenuhren','damenuhren','uhren','armbanduhr damen'],sv:['klocka','herrklockor','damklockor','klockor','klocka dam']};
+const TERMS=()=>SEARCH[S.lang]||SEARCH.en;
 function card(p,b,i){const tag=p.tag&&p.tag.length<14?p.tag:'';
   return `<article class="pc"><div class="pc-img"><img class="ph" src="projects/plp-alignment/img/${b}/p${p.img??i}.jpg" alt="${esc((p.brand?p.brand+' ':'')+p.name)}" loading="lazy">
     ${tag?`<div class="pc-badges"><span class="badge">${esc(tag)}</span></div>`:''}</div>
     <div class="pc-info"><div class="pc-titles">${p.brand&&!['plt','warehouse'].includes(b)?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div>
     <div class="pc-price${p.was?' sale':''}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${p.pct?`<span class="pct">${esc(p.pct)}</span>`:''}</div></div></article>`}
-function page(){const b=S.brand,ps=((window.PRODUCTS_ALL||{})[b]||[]),t=S.term||'watch',dev=desk()?'desktop':'mobile',ul=b==='plt';
+function page(){const b=S.brand,ps=((window.PRODUCTS_ALL||{})[b]||[]),t=TERMS()[0],dev=desk()?'desktop':'mobile',ul=b==='plt';
   return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${b}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(b,'main',dev):''}</header>
   <main class="pg">
     <div class="srch-bar${ul?' srch-bar--underline':''}"><div class="sb-field"><input value="${esc(t)}" aria-label="Search"><button class="sb-clr" aria-label="Clear"><img src="assets/ds/icons/lib/icons-clear.svg" alt=""></button><button class="sb-go" aria-label="Search"><img src="assets/ds/icons/${ul?'plt-search':'search'}.svg" alt=""></button></div><button class="sb-x" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt=""></button></div>
-    <div class="srch-sugg"><ul class="ss-terms">${TERMS(t).map(x=>`<li><button class="ss-term">${esc(x).replace(esc(t),`<b>${esc(t)}</b>`)}</button></li>`).join('')}</ul></div>
+    <div class="srch-sugg"><ul class="ss-terms">${TERMS().map(x=>`<li><button class="ss-term">${esc(x).replace(esc(t),`<b>${esc(t)}</b>`)}</button></li>`).join('')}</ul></div>
     <section><div class="sec-head"><h3>${RAIL[b]||'Recently Viewed'}</h3><a href="#">View all</a></div><div class="prail">${ps.slice(0,8).map((p,i)=>card(p,b,i)).join('')}</div></section>
     <section><div class="sec-head"><h3>Products matching “${esc(t)}”</h3></div><div class="res">${ps.slice(8,16).map((p,i)=>card(p,b,i+8)).join('')}</div></section>
   </main>`}

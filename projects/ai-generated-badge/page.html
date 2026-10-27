@@ -8,7 +8,7 @@
 <style>
 /* No page of its own: the DS pages are embedded as they are — Home (projects/usp-banner home, live content), Search (this project's search.html),
    PLP (projects/plp-alignment/plp.html), PDP (templates/pdp.html, S.ai), Bag (templates/bag.html) — and the DS AI Generated strip (.badge-ai, .ai-wrap)
-   goes on every image the shell flags as AI. */
+   goes on every image the shell flags as AI. The language setting translates the whole page (DS i18n.js), not only the strip. */
 html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
 .emb{display:block;width:100%;height:100vh;border:0}
 </style>
@@ -17,6 +17,8 @@ html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
 <iframe class="emb" id="emb" title="Page"></iframe>
 <script src="assets/ds/usp-live.js"></script>
 <script src="assets/ds/ai-strip.js"></script>
+<script src="assets/ds/i18n-copy.js"></script>
+<script src="assets/ds/i18n.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
 <script>
 /* ---- page contract with the shell (review-prototype) ----
@@ -33,7 +35,7 @@ const PDP_AI=()=>S.which==='all'?[0,1,2,3]:S.which==='some'?[0,2]:[];
 
 const SRC={
   home:b=>`projects/usp-banner/page.html?s=${encodeURIComponent(JSON.stringify({brand:b,page:'home',auto:5,banners:(window.DG_USP_LIVE||{})[b]||[]}))}`,
-  search:b=>`projects/ai-generated-badge/search.html?s=${encodeURIComponent(JSON.stringify({brand:b}))}`,
+  search:b=>`projects/ai-generated-badge/search.html?s=${encodeURIComponent(JSON.stringify({brand:b,lang:S.lang}))}`,
   plp:b=>`projects/plp-alignment/plp.html?brand=${b}&mode=new`,
   pdp:b=>`templates/pdp.html?s=${encodeURIComponent(JSON.stringify(pdpState()))}`,
   bag:b=>`templates/bag.html?brand=${b}`
@@ -41,7 +43,7 @@ const SRC={
 const pdpState=()=>({brand:S.brand,ai:PDP_AI(),aiLang:S.lang});
 
 const emb=document.getElementById('emb');
-let KEY='',ready=Promise.resolve(),obs=null;
+let KEY='',ready=Promise.resolve(),obs=null,stopI18n=null;
 const D=()=>{try{return emb.contentDocument}catch(e){return null}};
 const W=()=>emb.contentWindow;
 const strip=()=>DG_aiStrip(S.lang).replace('class="badge-ai"','class="badge-ai" data-ai');
@@ -89,6 +91,7 @@ function inject(){const d=D();if(!d||!d.body)return;
   if(S.page==='plp'||S.page==='search')cards(d);
   else if(S.page==='home')injectHome(d);
   /* PDP: the template draws it (S.ai) · Bag: never — after add to bag the strip would be ~7px (not in scope, legal sign-off) */
+  DG_i18n(d,S.lang);   /* every other word on the page, in the chosen language (DS i18n.js) */
   watch(d);
 }
 /* the embedded pages re-render themselves (resize, their own state) — put the strip back when they do */
@@ -99,12 +102,12 @@ function watch(d){if(S.page==='pdp'||S.page==='bag')return;let t;obs=new Mutatio
   obs.observe(d.body,{childList:true,subtree:true})}
 
 function load(){
-  const key=S.page+'|'+S.brand+'|'+(S.page==='plp'?S.view:'');
+  const key=S.page+'|'+S.brand+'|'+(S.page==='plp'?S.view:S.page==='search'?S.lang:'');
   if(key===KEY){if(S.page==='pdp')try{W().postMessage({protoSet:pdpState(),exporting:EXPORTING},'*')}catch(e){}inject();return ready}
   KEY=key;
   if(S.page==='plp')try{localStorage.setItem('plpMcols',S.view==='3'?'3':'2')}catch(e){}   /* the PLP's own grid toggle (same origin) */
   ready=new Promise(res=>{
-    emb.onload=()=>{inject();
+    emb.onload=()=>{inject();if(stopI18n)stopI18n();stopI18n=D()&&DG_i18nWatch(D(),()=>S.lang);   /* the pages re-render themselves: keep them translated */
       const d=D(),t0=Date.now();
       const done=()=>{const imgs=d?[...d.images].filter(i=>i.loading!=='lazy'||i.getBoundingClientRect().top<3000):[];return imgs.every(i=>i.complete)};
       const iv=setInterval(()=>{if(done()||Date.now()-t0>9000){clearInterval(iv);inject();res()}},150)};

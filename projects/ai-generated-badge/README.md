@@ -43,6 +43,7 @@ Page · which images are AI (some, a fixed scatter / all / none) · language · 
 ## DS changes (27 Oct 2026)
 - PLT Virtual Stylist chip from the DS (`--ai-tag-*` tokens, masked hanger), as the VTO prototype.
 - `assets/ds/ai-strip.js` copy table · rail cards without wishlist · strip fits Polish on 3-col tiles.
+- `assets/ds/i18n.js` + `i18n-copy.js`: the Language setting translates the whole page (header, menus, banners, search, PLP, PDP, bag, footer, product names) into FR / NL / PL / DE / SV, not just the strip. Prices stay in £.
 
 ## DS changes (26 Oct 2026)
 - Added **AI image host** `.ai-wrap`: adds the strip to any image that isn't a product card (home rails, editorial tiles, PDP slides).

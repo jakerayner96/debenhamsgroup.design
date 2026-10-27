@@ -5,11 +5,12 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-27",
   "v": "2026.10.27",
-  "title": "PLT Virtual Stylist chip in the DS · AI strip copy in six languages · no wishlist on rail cards",
+  "title": "PLT Virtual Stylist chip in the DS · AI strip copy in six languages · whole-page translation drop-in · no wishlist on rail cards",
   "by": "AI Generated badge prototype (projects/ai-generated-badge) · vto-prototype (PLT chip)",
   "added": [
    "AI tag chip tokens --ai-tag-bg / -fg / -icon / -radius / -size / -weight / -case / -shadow / -align (tokens.css). They drive .ai-pill--tag and .pdp-chips--center. PLT = the Virtual Stylist prototype's chip: garnet #550503, square, Roboto 12 regular uppercase, white hanger, left-aligned, 36 tall, shadow-pill. Every other fascia is unchanged (white pill, centred)",
    "Masked chip glyph .ai-pill--tag i.ic.ic--hanger: the hanger takes the fascia's icon colour (img.ic still works for black glyphs)",
+   "assets/ds/i18n.js + i18n-copy.js: page copy drop-in. DG_i18n(doc, lang) translates a whole DS page in place into FR, NL, PL, DE or SV (text, aria-label, placeholder, title) and back to English; DG_i18nWatch keeps a re-rendering page translated. The copy tables cover the header and menus, footers, USP banners, search, PLP, the PDP template, the bag template and the product names in plp-alignment/data.js (about 720 strings per language); patterns cover prices, dates, counts, codes and brand names. Brand names, promo codes and sizes stay as they are, and prices stay in £. The AI strip keeps its own copy (ai-strip.js)",
    "assets/ds/ai-strip.js: the AI Generated strip copy and alt text in EN, FR, NL, PL, DE, SV (DG_AI_COPY, DG_aiStrip(lang), DG_aiAlt(lang)). Wording checked against EU AI Act Art. 50 language versions and the EU Code of Practice (10 Jun 2026); notes in the file. The PDP template reads S.aiLang"
   ],
   "changed": [
