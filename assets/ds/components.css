@@ -1583,6 +1583,8 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .tabs button:hover{color:var(--text-primary)}
 .tabs button.on{color:var(--text-primary);font-weight:var(--w-strong,600);border-bottom-color:var(--text-primary)}
 .tabs button .tagpill{margin-left:6px}
+/* .tabs--wrap (27 Oct 2026, DS site brand tabs): more tabs than fit wrap onto another row instead of scrolling out of sight; one baseline under the last row */
+.tabs--wrap{flex-wrap:wrap;overflow:visible;row-gap:0}
 
 /* ===== Sign-up modal (.mdl--signup) — 21 Oct 2026, Brand Room sign-up popup (projects/brandroom-signup) =====
    The marketing email / SMS capture that opens over the page on entry. On live it is a Bloomreach Engagement weblayer ("A - Email & SMS Signup",

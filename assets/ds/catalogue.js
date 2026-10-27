@@ -162,8 +162,9 @@ const DG_CATALOGUE = [
   summary:'Underlined text tabs that switch panels inside one page.',
   use:['Splitting a tool or settings page into steps or panels.'],
   avoid:['Moving between pages (use links / the header nav).','Two-option toggles (use chips).'],
-  anatomy:['Row gap 6 (24px) · 1px --border-subtle baseline','Tab 14/20 --text-secondary, padding gap 3 (12px) vertical','On: --text-primary, bold, 2px underline','Optional count: .tagpill--n after the label'],
-  variants:[{name:'Default', html:'<div class="tabs" style="width:420px"><button class="on">Builds</button><button>Screens <span class="tagpill tagpill--n">6</span></button><button>Export</button><button>Setup</button></div>'}],
+  anatomy:['Row gap 6 (24px) · 1px --border-subtle baseline','Tab 14/20 --text-secondary, padding gap 3 (12px) vertical','On: --text-primary, bold, 2px underline','Optional count: .tagpill--n after the label','More tabs than fit: .tabs--wrap wraps them onto another row (no hidden scroll), e.g. the DS site brand tabs'],
+  variants:[{name:'Default', html:'<div class="tabs" style="width:420px"><button class="on">Builds</button><button>Screens <span class="tagpill tagpill--n">6</span></button><button>Export</button><button>Setup</button></div>'},
+   {name:'Wrap (.tabs--wrap)', html:'<div class="tabs tabs--wrap" style="width:420px"><button class="on">Debenhams</button><button>boohoo</button><button>boohooMAN</button><button>PrettyLittleThing</button><button>Karen Millen</button><button>Warehouse</button><button>All</button></div>'}],
   dev:{title:'—', status:'ours', note:'Internal tools. Not in the dev Storybook.'} },
 
 { slug:'promo-field', name:'Promo / gift card field', group:'Forms', tier:'molecule', css:'.promo', figma:'WChEtDPH0LcErdYFS9SESn · 3990:58406',
