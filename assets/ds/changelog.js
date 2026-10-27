@@ -5,12 +5,15 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-27",
   "v": "2026.10.27",
-  "title": "PLT Virtual Stylist chip in the DS · AI strip copy in six languages · whole-page translation drop-in · no wishlist on rail cards · brand tabs on component pages",
-  "by": "AI Generated badge prototype (projects/ai-generated-badge) · vto-prototype (PLT chip) · DS site brand tabs · Membership landing (projects/membership-landing, Jake 27 Oct)",
+  "title": "PLT Virtual Stylist chip in the DS · AI strip copy in six languages · whole-page translation drop-in · no wishlist on rail cards · brand tabs on component pages · Figma library",
+  "by": "AI Generated badge prototype (projects/ai-generated-badge) · vto-prototype (PLT chip) · DS site brand tabs · Membership landing (projects/membership-landing, Jake 27 Oct) · Figma library (Jake, 27 Oct)",
   "added": [
    "Button · Membership CTA (.bd.mbr filled, .bd.mbr-out outlined): buttons that sit on a programme's art, in the programme's own CTA colours (--mb-cta-bg / --mb-cta-fg, outline + label --mb-fg), so PLT Royalty and Karen Millen Premier get white buttons on their dark grounds. New variant on the Button entry · by Membership landing",
    "membership.js DG_memberVars(brand,{plus}) (the programme's colours + art as custom properties for a whole section) and DG_memberLogo(brand,{plus}) (band wordmark url) · by Membership landing",
    "Membership band (.member-band, .member-band--lg, membership.js DG_memberBandHTML(brand,{plus,status,size})): each programme's live wordmark on its art, full width — promoted from the Account 2026 membership page band, logo heights as live (Unlimited 40 · Premier Club 12 · Premier 22 · Royalty 28 · KM 22), Unlimited+ wordmark on plus. New catalogue entry member-band · by Membership landing",
+   "Figma library Debenhams Group DS (figma.com/design/mkimeRGTWN8UDHq55Cbk9D), built from this code: Core + Brand variables (Brand = 10 modes: Debenhams, Karen Millen, PLT, boohooMAN, boohoo, Warehouse, The Brand Room, Burton, Principles, Coast), 28 text styles, shadow + gradient styles, all 79 catalogue components as variant sets bound to the variables · by Figma library",
+   "assets/ds/figma-lib.js: catalogue slug → Figma node; every component page (and Foundations) shows a Figma link under its title · by Figma library",
+   "tools/figma-sync/: the code → Figma pipeline (sentinel render, html_to_figma capture, variable binder) to rebuild a component in Figma after a code change · by Figma library",
    "Tabs · Wrap (.tabs--wrap): more tabs than fit wrap onto another row instead of scrolling out of sight. Catalogue Tabs entry has the variant · by DS site brand tabs",
    "AI tag chip tokens --ai-tag-bg / -fg / -icon / -radius / -size / -weight / -case / -shadow / -align (tokens.css). They drive .ai-pill--tag and .pdp-chips--center. PLT = the Virtual Stylist prototype's chip: garnet #550503, square, Roboto 12 regular uppercase, white hanger, left-aligned, 36 tall, shadow-pill. Every other fascia is unchanged (white pill, centred)",
    "Masked chip glyph .ai-pill--tag i.ic.ic--hanger: the hanger takes the fascia's icon colour (img.ic still works for black glyphs)",

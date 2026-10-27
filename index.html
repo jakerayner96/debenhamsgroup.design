@@ -460,6 +460,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 @media(max-width:920px){.wiki{grid-template-columns:1fr}.omx .tr,.tmx .tr{grid-template-columns:1fr}.vgrid{grid-template-columns:1fr}}
 
 /* design-system IA: foundations merge · per-fascia component playgrounds · sidebar sub-heads */
+.figlink{margin:4px 0 20px;text-decoration:none}
 .fxtabs{--text-primary:var(--ink);--text-secondary:var(--ink-3);--border-subtle:var(--low);--font-family-base:var(--sans);margin:24px 0 16px} /* the DS Tabs (.tabs), fed the site shell's colours */
 .fxstack>[hidden]{display:none!important}
 .fxstack{display:flex;flex-direction:column;gap:16px;margin:8px 0 32px}
@@ -1581,6 +1582,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 <script src="assets/ds/ai-prompts.js"></script>
 <script src="assets/ds/subscribe.js"></script>
 <script src="assets/ds/catalogue.js"></script>
+<script src="assets/ds/figma-lib.js"></script>
 <script src="assets/ds/usp.js"></script>
 <script>
 /* ---- component library: gallery + wiki pages + dev overlay, rendered from assets/ds/catalogue.js ---- */
@@ -1945,6 +1947,10 @@ if(window.DG_IA_REG)REG.push(...window.DG_IA_REG);
   });
 })();
 window.DG_LEGACY={colour:'foundations',type:'foundations',spacing:'foundations',radius:'foundations',borders:'foundations',motion:'foundations',a11y:'foundations',install:'foundations',components:'gallery',library:'gallery',prototypes:'projects',requests:'tools',footer:'c-footer',header:'c-header'}; /* old hand-written PLP header page folded into the one Header page (12 Oct) */ /* the old hand-written Footer page folded into the catalogue page (12 Oct) */
+/* Figma library link under each design-system page title: component pages open their Figma component set, foundation pages the variables (assets/ds/figma-lib.js) */
+window.figLink=function(pg){const L=window.DG_FIGMA_LIB;if(!L||pg.querySelector(':scope>.figlink'))return;
+  const node=pg.id.startsWith('c-')?L.components[pg.id.slice(2)]:L.pages[pg.id];if(!node)return;const h1=pg.querySelector(':scope>h1');if(!h1)return;
+  h1.insertAdjacentHTML('afterend',`<a class="kbtn figlink" href="https://www.figma.com/design/${L.fileKey}?node-id=${node.replace(':','-')}" target="_blank" rel="noopener"><svg width="10" height="15" viewBox="0 0 38 57" aria-hidden="true"><path fill="#1ABCFE" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0ACF83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path fill="#FF7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path fill="#F24E1E" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#A259FF" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>${pg.id.startsWith('c-')?'Figma component':'Figma library'} ↗</a>`)};
 window.setBrand=function(slug){const b=document.querySelector('#fabMenu button[data-b="'+slug+'"]');if(b)b.click();};
 const pages=[...document.querySelectorAll('.page')];
 function route(){
@@ -1955,6 +1961,7 @@ function route(){
   const pg=document.getElementById(h);
   if(pg&&!pg.classList.contains('page')){const host=pg.closest('.page');if(host&&!host.classList.contains('on')){pages.forEach(p=>p.classList.toggle('on',p===host));document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+host.id));document.body.classList.remove('sbm')}requestAnimationFrame(()=>pg.scrollIntoView({block:'start'}));return} // in-page anchor — show its page, then scroll
   pages.forEach(p=>p.classList.toggle('on',p.id===h));
+  if(pg&&window.figLink)window.figLink(pg);
   document.querySelectorAll('.side .items a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));
   const _c=document.getElementById('crumbs'); if(_c)_c.innerHTML=(pg?.dataset.crumb||'Home').split(' / ').map((c,i,a)=>i===a.length-1?`<b>${c}</b>`:c).join(' <span style="opacity:.4">/</span> ');
   document.getElementById('main').scrollTop=0;document.body.classList.remove('sbm');document.body.classList.toggle('on-home',h==='home');document.querySelectorAll('.homebtn').forEach(b=>b.classList.toggle('on',h==='home'));
