@@ -341,11 +341,14 @@ def start_here(oid):
 
 3. TO BUILD IT IN BLOOMREACH (per weblayer, Desktop then Mobile):
    - Duplicate the live weblayer (don't edit live).
-   - HTML tab: select all, paste the contents of paste-into-HTML-tab.txt
-   - CSS tab:  select all, paste the contents of paste-into-CSS-tab.txt
-     (its first line loads the Archivo font - keep it as the first line)
+   - HTML tab: select all, paste ALL of paste-into-HTML-tab.txt
+     This one file is the whole design: the CSS is inside it (<style> block, Archivo font included)
+     and the image + copy are already filled in as the defaults. Nothing else to set to see it working.
+   - CSS tab (if your weblayer has one): delete the old CSS, or paste paste-into-CSS-tab.txt (the same CSS).
+     Old CSS left in there will fight the new design.
    - JS tab: keep the live script. One line changes - see README.md "Phone optional".
-   - Params: set the image and copy from README.md.{imgs}
+   - Image: it shows straight away from the default. For go-live, upload the image from the images folder
+     to Bloomreach and pick it in the image param, so it is served from Bloomreach.{imgs}
 
 The paste-into files are .txt on purpose: they are not web pages. Opened in a browser they show an empty grey box.
 Full steps: HOW-TO-BLOOMREACH.md
@@ -407,14 +410,14 @@ Based on the live templates ("A - Email & SMS Signup - Desktop" / "- Mobile") �
 **Not yet run inside Bloomreach** — test in the weblayer editor preview and with a test email before it goes live.
 
 ## Files
-| Weblayer | HTML tab | CSS tab | Preview |
+| Weblayer | HTML tab (everything — CSS + image included) | CSS tab (optional, same CSS) | Preview |
 |---|---|---|---|
 | A - Email & SMS Signup - **Desktop** | `desktop/paste-into-HTML-tab.txt` | `desktop/paste-into-CSS-tab.txt` | `desktop/OPEN-ME-preview.html` |
 | A - Email & SMS Signup - **Mobile** | `mobile/paste-into-HTML-tab.txt` | `mobile/paste-into-CSS-tab.txt` | `mobile/OPEN-ME-preview.html` |
 
 **Unzip first** (right-click → Extract All). Only the `OPEN-ME-preview.html` files open in a browser — the `paste-into-…` files are the text you paste into Bloomreach.
 
-The two HTML files are the same (as live); the CSS is the difference. The images to upload are in `images/` (see Image param).
+The HTML file is self-contained: the CSS sits in a `<style>` block at the top and every param defaults to the copy and image below, so pasting just the HTML gives the finished popup. The CSS tab file is the same CSS, for a weblayer that has a CSS tab (replace the old CSS — don't leave it in). The images are in `images/` — upload them to Bloomreach for go-live (see Image param).
 
 ## Script params (JS tab, top of the script)
 | Param | Desktop | Mobile |
@@ -450,6 +453,22 @@ def fill(h, values):
         if name in values: return html.escape(values[name], quote=True)
         return (m.group(2) or '').strip()
     return PARAM_RE.sub(sub, h)
+
+# the HTML tab file stands on its own (28 Oct, Erin's build had no CSS and no image): the CSS rides along in a <style> block,
+# and every param defaults to the live copy + this option's image, so pasting only the HTML still gives the finished popup
+DEF_RE = re.compile(r"\[\[(\s*\{.*?\}\s*:\s*[a-z]+(?:\([^)]*\))?)\s*(?:\|\s*(.*?))?\s*\]\]", re.S)
+def with_defaults(h, values):
+    def sub(m):
+        name = re.search(r"name:\s*'([^']+)'", m.group(1)).group(1)
+        v = values.get(name, (m.group(2) or '').strip())
+        return '[[' + m.group(1).rstrip() + (' | ' + v if v else '') + ' ]]'
+    return DEF_RE.sub(sub, h)
+
+def paste_html(oid, device, wl_html, css):
+    vals = dict(LIVE); vals['image'] = IMAGES[oid][device]
+    return ('<!-- Brand Room sign-up weblayer · ' + TITLES[oid] + ' · ' + device.upper() + '. Paste ALL of this into the HTML tab.\n'
+            '     The design CSS is included in the <style> block below, and the image + copy are set as the param defaults. -->\n'
+            '<style>\n' + css + '\n</style>\n' + with_defaults(wl_html, vals))
 
 def preview(oid, device, wl_html, css):
     vals = dict(LIVE); vals['image'] = IMAGES[oid][device]
@@ -514,7 +533,7 @@ def main():
         for dev in DEVICES:
             dd = os.path.join(d, dev); os.makedirs(dd)
             h, css = html_for(oid, dev), css_for(oid, dev)
-            for k, body in (('html', h), ('css', css), ('preview', preview(oid, dev, h, css))):
+            for k, body in (('html', paste_html(oid, dev, h, css)), ('css', css), ('preview', preview(oid, dev, h, css))):
                 open(os.path.join(dd, FILES[k]), 'w').write(body); files.append(f'{dev}/{FILES[k]}')
         open(os.path.join(d, 'README.md'), 'w').write(readme(oid)); files.append('README.md')
         if oid == 'e-two-step':

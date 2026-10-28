@@ -1,23 +1,133 @@
+<!-- Brand Room sign-up weblayer · C · Brand lockup · DESKTOP. Paste ALL of this into the HTML tab.
+     The design CSS is included in the <style> block below, and the image + copy are set as the param defaults. -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap');   /* Archivo for the Bloomreach editor preview (thebrandroom.com already loads it; its own font files can't be shared cross-site) — keep this the first line */
+
+/* ==========================================================================
+   Brand Room sign-up weblayer — C · Brand lockup — DESKTOP weblayer
+   Built from the DG design system: Sign-up modal (.mdl--signup) + Input field + Button, 22 Oct 2026.
+   Paste into the weblayer CSS tab (replaces the old CSS). HTML structure, ids and classes are the live template's,
+   so the weblayer JS keeps working — see README.md for the params to set.
+   Brand Room tokens: Archivo · black #000 / hover #242424 · Grey 3 #B5B5B5 keylines · Grey 4 #767676 secondary text · square corners.
+   Spacing in gaps (1 gap = 4px): body gap 10 (40px) top, gap 6 (24px) sides; fields gap 3 (12px); close inset gap 4 (16px).
+   ========================================================================== */
+
+/* overlay — DS Modal overlay, 50% black. Click outside the box closes (weblayer JS). */
+#exponea-greyout { position: fixed; inset: 0; z-index: 2147482999; background-color: rgba(0,0,0,0.5); }
+#exponea-greyout.no-greyout { pointer-events: none; }
+
+/* window */
+.weblayer--box-subscription {
+  position: fixed; display: flex; flex-direction: column; box-sizing: border-box; z-index: 2147483000; pointer-events: auto; cursor: default;
+  width: 480px; max-width: calc(100vw - 32px); max-height: calc(100vh - 32px); overflow-y: auto; scrollbar-width: none; margin: 0;
+  background: #FFFFFF; color: #000000; border-radius: 0; box-shadow: none; text-align: left;
+  font-family: Archivo, ui-sans-serif, -apple-system, system-ui, sans-serif; font-size: 16px; line-height: normal; text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+}
+.weblayer--box-subscription::-webkit-scrollbar { display: none; }
+.weblayer--box-subscription * { box-sizing: border-box; outline: none; }
+.weblayer--box-subscription .inner { display: flex; flex-direction: column; width: 100%; margin: 0; padding: 0; }
+.weblayer--box-subscription .image-surround { position: relative; overflow: hidden; background: #F2F2F2; }
+.weblayer--box-subscription .image-surround img,
+.weblayer--box-subscription .image-surround picture img { position: absolute; inset: 0; display: block; width: 100% !important; height: 100%; object-fit: cover; }
+.weblayer--box-subscription .form-inner { display: flex; flex-direction: column; padding: 40px 24px 24px; }
+
+/* type */
+.weblayer--box-subscription p, .weblayer--box-subscription h6 { text-align: left; }
+.weblayer--box-subscription .text.line-one { margin: 0 0 8px; padding: 0 24px 0 0; font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: inherit; }
+.weblayer--box-subscription .heading { margin: 0; padding: 0 24px 0 0; font-size: 28px; line-height: 32px; font-weight: 700; letter-spacing: -.01em; color: inherit; text-wrap: balance; }
+.weblayer--box-subscription .text.line-two { margin: 0; padding: 0; font-size: 14px; line-height: 20px; color: inherit; }
+
+/* form — DS Input field: 50px, Grey 3 keyline (black while focused), 14px */
+.weblayer--box-subscription #exponea-form { width: 100%; margin: 24px 0 0; }
+.weblayer--box-subscription #exponea-form > * { width: 100%; }
+.weblayer--box-subscription #exponea-form fieldset { border: 0; padding: 0; margin: 0 0 12px; min-width: 0; }
+.weblayer--box-subscription .input-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* kept for screen readers */
+.weblayer--box-subscription #exponea-form input:not([type='checkbox']) {
+  display: block; width: 100%; max-width: 100%; height: 50px; min-height: 0; margin: 0; padding: 0 16px; resize: none;
+  background: #FFFFFF; border: 1px solid #B5B5B5; border-radius: 0; box-shadow: none; -webkit-appearance: none; appearance: none;
+  font-family: inherit; font-size: 14px; line-height: 18px; font-weight: 400; color: #000000; caret-color: #2797FF; cursor: text; text-align: left;
+}
+.weblayer--box-subscription #exponea-form input::placeholder { color: #767676; opacity: 1; }
+.weblayer--box-subscription #exponea-form input:focus { border-color: #000000; }
+.weblayer--box-subscription #exponea-form .iti { display: block; width: 100%; }
+.weblayer--box-subscription #exponea-form .iti__flag-container { z-index: 10; }
+.weblayer--box-subscription #exponea-form .iti__selected-flag { padding: 0 8px 0 16px; background: none; }
+.weblayer--box-subscription #exponea-form input.phone { padding-left: 60px; }
+.weblayer--box-subscription #exponea-form .iti--allow-dropdown ul { width: 100%; }
+.weblayer--box-subscription #exponea-form .iti__country-name { white-space: break-spaces; }
+.iti--container { z-index: 2147483002 !important; }
+
+/* buttons — DS primary CTA (50px, black, white 600 16 caps) · "No Thanks" DS text button hugging the CTA */
+.weblayer--box-subscription .button { font-family: inherit; border: 0; margin: 0; user-select: none; outline: none; text-decoration: none; cursor: pointer; }
+.weblayer--box-subscription .button.submit,
+.weblayer--box-subscription .step-two .button {
+  display: flex; align-items: center; justify-content: center; width: 100%; height: 50px; margin-top: 4px; padding: 0 24px;
+  background: #000000; color: #FFFFFF; border-radius: 0; font-size: 16px; line-height: 24px; font-weight: 600; text-transform: uppercase; letter-spacing: 0;
+}
+.weblayer--box-subscription .button.submit:hover, .weblayer--box-subscription .step-two .button:hover { background: #242424; }
+.weblayer--box-subscription .step-one .button.close {
+  display: block; width: auto; height: auto; align-self: center; margin: 12px auto 0; padding: 2px 16px;
+  background: none; color: #000000; font-size: 14px; line-height: 20px; font-weight: 700; text-transform: none;
+}
+.weblayer--box-subscription .button:focus-visible { outline: 2px solid #2797FF; outline-offset: 2px; }
+
+/* legal */
+.weblayer--box-subscription .inner.step-one .conditions { width: 100%; margin: 16px 0 0; font-size: 11px; line-height: 15px; font-weight: 400; color: #767676; }
+.weblayer--box-subscription .inner.step-one .conditions > .link { color: inherit; text-decoration: underline; }
+
+/* thank you */
+.weblayer--box-subscription .inner.step-two .heading { padding-bottom: 8px; }
+.weblayer--box-subscription .inner.step-two .text { margin: 0 0 24px; font-size: 14px; line-height: 20px; color: inherit; }
+.weblayer--box-subscription #exponea-voucher { margin: 0; font-size: 24px; font-weight: 700; text-align: center; display: flex; align-items: center; justify-content: center; }
+.weblayer--box-subscription #exponea-voucher:not(:empty) { margin: 0 0 16px; }
+
+/* close — DS 16px close, inset gap 4 (16px) */
+.weblayer--box-subscription .close-icon { position: absolute; top: 12px; right: 12px; z-index: 2147483001; width: 40px; height: 40px; padding: 12px; margin: 0;
+  border: 0; background: transparent; line-height: 0; cursor: pointer; color: transparent; }
+.weblayer--box-subscription .close-icon svg { width: 16px; height: 16px; display: block; }
+.weblayer--box-subscription .close-icon path { stroke: #000000; stroke-width: 1.25; }
+
+/* position + entrance — the weblayer JS adds these from the position / animation params */
+.weblayer--box-subscription.enter-fade { animation: wlFade .3s ease-in-out; }
+@keyframes wlFade { from { opacity: 0; } to { opacity: 1; } }
+.weblayer--box-subscription.horizontal-left { left: 0; }
+.weblayer--box-subscription.horizontal-right { right: 0; }
+.weblayer--box-subscription.horizontal-center { left: 50%; transform: translateX(-50%); }
+.weblayer--box-subscription.vertical-top { top: 0; }
+.weblayer--box-subscription.vertical-bottom { bottom: 0; }
+.weblayer--box-subscription.vertical-center { top: 50%; transform: translateY(-50%); }
+.weblayer--box-subscription.vertical-center.horizontal-center { transform: translate(-50%, -50%); }
+
+/* ---------- C · Brand lockup — the live partner lockup GIF (brand | The Brand Room, 600 × 234) on black over a white form ---------- */
+.weblayer--box-subscription { width: 480px; }
+.weblayer--box-subscription .image-surround { background: #000000; aspect-ratio: 600 / 234; flex: none; }
+.weblayer--box-subscription .image-surround img { object-fit: contain; }
+.weblayer--box-subscription .form-inner { padding-top: 32px; }
+.weblayer--box-subscription .close-icon path { stroke: #FFFFFF; }
+
+
+</style>
 <div id="exponea-greyout">
     <!-- START JINJA VARIABLES -->
     <div class="banner-item weblayer--box-subscription">
         <button aria-label="Close" class="close-icon close">
             <svg width="[[ { name: 'closeIconSize', tooltip: 'Number only - pixel size of the close icon', category: 'Form Styling', orderIndex: '8060', isJsonParam: true } : number | 16 ]]" height="[[ { name: 'closeIconSize', tooltip: 'Number only - pixel size of the close icon', category: 'Form Styling', orderIndex: '8060', isJsonParam: true } : number | 16 ]]" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2.99867 13L12.998 3" stroke="[[ {name: 'closeIconColor', category: 'Form Styling', orderIndex: '8020', isJsonParam: true} : color | rgba(255,255,255,0.7) ]]" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12.9987 13L2.998 3" stroke="[[ {name: 'closeIconColor', category: 'Form Styling', orderIndex: '8020', isJsonParam: true} : color | rgba(255,255,255,0.7) ]]" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2.99867 13L12.998 3" stroke="[[ {name: 'closeIconColor', category: 'Form Styling', orderIndex: '8020', isJsonParam: true} : color | #000000 ]]" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12.9987 13L2.998 3" stroke="[[ {name: 'closeIconColor', category: 'Form Styling', orderIndex: '8020', isJsonParam: true} : color | #000000 ]]" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </button>
         <!-- Step one -->
         <div class="inner step-one">
         	<div class="image-surround">
-            	<img src="[[ {name: 'image', category: 'Layout', orderIndex: '3010', isJsonParam: true} : image ]]" style="width: [[ {name: 'imageWidth', tooltip:'Can be any valid CSS size', category: 'Layout', orderIndex: '3011', isJsonParam: true} : string | 100% ]];"/>
+            	<img src="[[ {name: 'image', category: 'Layout', orderIndex: '3010', isJsonParam: true} : image | https://brxcdn.com/bho-app-storage/f37de144-1e20-11f1-873f-0adbe2143e4a/media/original/3362fefe-6faa-11f1-8365-b69466d21866 ]]" style="width: [[ {name: 'imageWidth', tooltip:'Can be any valid CSS size', category: 'Layout', orderIndex: '3011', isJsonParam: true} : string | 100% ]];"/>
         	</div>
             <div class="form-inner">
                 <p class="text line-one">
-                    [[ {name: 'textLineOne', category: 'Copywriting', orderIndex: '6000', isJsonParam: true} : text ]]
+                    [[ {name: 'textLineOne', category: 'Copywriting', orderIndex: '6000', isJsonParam: true} : text | Welcome To The Brand Room ]]
                 </p>
                 <h6 class="heading">
-                    [[ {name: 'heading', category: 'Copywriting', orderIndex: '6001', isJsonParam: true} : text ]]
+                    [[ {name: 'heading', category: 'Copywriting', orderIndex: '6001', isJsonParam: true} : text | Sign up today for personalised style tips, exclusive offers & more ]]
                 </h6>
                 <p class="text line-two">
                     [[ {name: 'textLineTwo', category: 'Copywriting', orderIndex: '6002', isJsonParam: true} : text ]]
@@ -25,24 +135,24 @@
                 <form id="exponea-form">
                 	<div id="exponea-main-fieldsets">
 	                    <fieldset class="email_fieldset">
-	                    	<label for="email" class="input-label">[[ {name: 'EmailInputPlaceholder', category: 'Copywriting', orderIndex: '6010', isJsonParam: true} : text | Enter your email ]]</label>
-	                        <input name="email" id="email" type="email" {% if customer.email and "[[ {name: 'prePopulateEmail', tooltip: 'Would you like to prepopulate email address if available',category: 'Form Contents', orderIndex: '1001', isJsonParam: true} : enum(yes,no) | no ]]" == "yes" %}value="{{ customer.email }}"{% endif %} placeholder="[[ {name: 'EmailInputPlaceholder', category: 'Copywriting', orderIndex: '6010', isJsonParam: true} : text | Enter your email ]]" required class="email">
+	                    	<label for="email" class="input-label">[[ {name: 'EmailInputPlaceholder', category: 'Copywriting', orderIndex: '6010', isJsonParam: true} : text | Email address ]]</label>
+	                        <input name="email" id="email" type="email" {% if customer.email and "[[ {name: 'prePopulateEmail', tooltip: 'Would you like to prepopulate email address if available',category: 'Form Contents', orderIndex: '1001', isJsonParam: true} : enum(yes,no) | no ]]" == "yes" %}value="{{ customer.email }}"{% endif %} placeholder="[[ {name: 'EmailInputPlaceholder', category: 'Copywriting', orderIndex: '6010', isJsonParam: true} : text | Email address ]]" required class="email">
 	                    </fieldset>
 	                    <fieldset class="phone_fieldset">
-	                    	<label for="phone" class="input-label">[[ {name: 'PhoneInputPlaceholder', category: 'Copywriting', orderIndex: '6011', isJsonParam: true} : text | Enter your phone number ]]</label>
-	                        <input name="phone" id="phone" type="tel" {% if customer.phone and "[[ {name: 'prePopulatePhone', tooltip: 'Would you like to prepopulate phone number if available',category: 'Form Contents', orderIndex: '1004', isJsonParam: true} : enum(yes,no) | no ]]" == "yes" %}value="{{ customer.phone }}"{% endif %} placeholder="[[ {name: 'PhoneInputPlaceholder', category: 'Copywriting', orderIndex: '6011', isJsonParam: true} : text | Enter your phone number ]]" class="phone">
+	                    	<label for="phone" class="input-label">[[ {name: 'PhoneInputPlaceholder', category: 'Copywriting', orderIndex: '6011', isJsonParam: true} : text | Mobile number (optional) ]]</label>
+	                        <input name="phone" id="phone" type="tel" {% if customer.phone and "[[ {name: 'prePopulatePhone', tooltip: 'Would you like to prepopulate phone number if available',category: 'Form Contents', orderIndex: '1004', isJsonParam: true} : enum(yes,no) | no ]]" == "yes" %}value="{{ customer.phone }}"{% endif %} placeholder="[[ {name: 'PhoneInputPlaceholder', category: 'Copywriting', orderIndex: '6011', isJsonParam: true} : text | Mobile number (optional) ]]" class="phone">
 	                    </fieldset>
                     </div>
                     <button type="submit" class="button submit">
-                        [[ {name: 'buttonText', category: 'Copywriting', orderIndex: '6003', isJsonParam: true} : text | Get 15% OFF ]]
+                        [[ {name: 'buttonText', category: 'Copywriting', orderIndex: '6003', isJsonParam: true} : text | JOIN ]]
                     </button>
                 </form>
                 <button id="noThanksButton" class="button close">
                     [[ {name: 'noThanksText', category: 'Copywriting', orderIndex: '6004', isJsonParam: true} : text | No Thanks ]]
                 </button>
                 <p class="conditions">
-                    [[ {name: 'conditionsText', category: 'Copywriting', orderIndex: '6005', isJsonParam: true} : text | Insert your consent text/privacy policy/terms and conditions/other mandatory notices as may be required by applicable laws. For information about personal data processing please see ]]
-                    <a href="[[ {name: 'conditionsLink', category: 'Copywriting', orderIndex: '6006', isJsonParam: true} : string | # ]]" class="link">
+                    [[ {name: 'conditionsText', category: 'Copywriting', orderIndex: '6005', isJsonParam: true} : text | By submitting your details, you agree to receive marketing communications from The Brand Room & our family of brands by email. You can unsubscribe at any point. You also consent to the use of your details in accordance with our ]]
+                    <a href="[[ {name: 'conditionsLink', category: 'Copywriting', orderIndex: '6006', isJsonParam: true} : string | https://www.thebrandroom.com/pages/informational/privacy ]]" class="link">
                         [[ {name: 'conditionsLinkText', category: 'Copywriting', orderIndex: '6007', isJsonParam: true} : text | Privacy Policy ]]
                     </a>
                 </p>
@@ -51,16 +161,16 @@
         <!-- Step two -->
         <div class="inner step-two" style="display: none;">
         	<div class="image-surround">
-            	<img src="[[ {name: 'image', category: 'Layout', orderIndex: '3010', isJsonParam: true} : image ]]" style="width: [[ {name: 'imageWidth', tooltip:'Can be any valid CSS size', category: 'Layout', orderIndex: '3011', isJsonParam: true} : string | 100% ]];"/>
+            	<img src="[[ {name: 'image', category: 'Layout', orderIndex: '3010', isJsonParam: true} : image | https://brxcdn.com/bho-app-storage/f37de144-1e20-11f1-873f-0adbe2143e4a/media/original/3362fefe-6faa-11f1-8365-b69466d21866 ]]" style="width: [[ {name: 'imageWidth', tooltip:'Can be any valid CSS size', category: 'Layout', orderIndex: '3011', isJsonParam: true} : string | 100% ]];"/>
         	</div>
         	<div class="form-inner">
 	            <p class="heading">
-	                [[ {name: 'thankYouHeading', category: 'Copywriting', orderIndex: '6050', isJsonParam: true} : text ]]
+	                [[ {name: 'thankYouHeading', category: 'Copywriting', orderIndex: '6050', isJsonParam: true} : text | Thank you! ]]
 	            </p>
 	            <p class="text">
-	                [[ {name: 'thankYouMessage', category: 'Copywriting', orderIndex: '6051', isJsonParam: true} : text ]]
+	                [[ {name: 'thankYouMessage', category: 'Copywriting', orderIndex: '6051', isJsonParam: true} : text | Keep an eye on your inbox for exclusive offers! ]]
 	            </p>
-	            <p id="exponea-voucher">[[ {name: 'voucherCode', tooltip: 'Jinja code for the voucher shown on the thank you page. NOTE: If set, will use a voucher code on load of the weblayer. We recommend using this only on Final Weblayers.', category: 'Advanced', orderIndex: '9002', isJsonParam: true} : string | ]]</p>
+	            <p id="exponea-voucher">[[ {name: 'voucherCode', tooltip: 'Jinja code for the voucher shown on the thank you page. NOTE: If set, will use a voucher code on load of the weblayer. We recommend using this only on Final Weblayers.', category: 'Advanced', orderIndex: '9002', isJsonParam: true} : string ]]</p>
                 <button id="thankYouButton" class="button close">
                     [[ {name: 'ThankYouButtonText', category: 'Copywriting', orderIndex: '6055', isJsonParam: true} : text | Continue Shopping ]]
                 </button>

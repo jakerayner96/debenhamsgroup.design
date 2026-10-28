@@ -8,14 +8,14 @@ Based on the live templates ("A - Email & SMS Signup - Desktop" / "- Mobile") �
 **Not yet run inside Bloomreach** — test in the weblayer editor preview and with a test email before it goes live.
 
 ## Files
-| Weblayer | HTML tab | CSS tab | Preview |
+| Weblayer | HTML tab (everything — CSS + image included) | CSS tab (optional, same CSS) | Preview |
 |---|---|---|---|
 | A - Email & SMS Signup - **Desktop** | `desktop/paste-into-HTML-tab.txt` | `desktop/paste-into-CSS-tab.txt` | `desktop/OPEN-ME-preview.html` |
 | A - Email & SMS Signup - **Mobile** | `mobile/paste-into-HTML-tab.txt` | `mobile/paste-into-CSS-tab.txt` | `mobile/OPEN-ME-preview.html` |
 
 **Unzip first** (right-click → Extract All). Only the `OPEN-ME-preview.html` files open in a browser — the `paste-into-…` files are the text you paste into Bloomreach.
 
-The two HTML files are the same (as live); the CSS is the difference. The images to upload are in `images/` (see Image param).
+The HTML file is self-contained: the CSS sits in a `<style>` block at the top and every param defaults to the copy and image below, so pasting just the HTML gives the finished popup. The CSS tab file is the same CSS, for a weblayer that has a CSS tab (replace the old CSS — don't leave it in). The images are in `images/` — upload them to Bloomreach for go-live (see Image param).
 
 ## Script params (JS tab, top of the script)
 | Param | Desktop | Mobile |

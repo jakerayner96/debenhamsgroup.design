@@ -6,11 +6,14 @@ D · Slide-in - Brand Room sign-up weblayer (Desktop + Mobile)
 
 3. TO BUILD IT IN BLOOMREACH (per weblayer, Desktop then Mobile):
    - Duplicate the live weblayer (don't edit live).
-   - HTML tab: select all, paste the contents of paste-into-HTML-tab.txt
-   - CSS tab:  select all, paste the contents of paste-into-CSS-tab.txt
-     (its first line loads the Archivo font - keep it as the first line)
+   - HTML tab: select all, paste ALL of paste-into-HTML-tab.txt
+     This one file is the whole design: the CSS is inside it (<style> block, Archivo font included)
+     and the image + copy are already filled in as the defaults. Nothing else to set to see it working.
+   - CSS tab (if your weblayer has one): delete the old CSS, or paste paste-into-CSS-tab.txt (the same CSS).
+     Old CSS left in there will fight the new design.
    - JS tab: keep the live script. One line changes - see README.md "Phone optional".
-   - Params: set the image and copy from README.md.
+   - Image: it shows straight away from the default. For go-live, upload the image from the images folder
+     to Bloomreach and pick it in the image param, so it is served from Bloomreach.
      Images to upload are in the images folder (desktop-4x5.jpg, mobile-4x5.jpg).
 
 The paste-into files are .txt on purpose: they are not web pages. Opened in a browser they show an empty grey box.

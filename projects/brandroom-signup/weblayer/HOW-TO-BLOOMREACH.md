@@ -7,12 +7,13 @@ For whoever builds the weblayers in Bloomreach Engagement. Applies to every opti
 they are the text you paste into Bloomreach, not pages (opened in a browser they show an empty grey box).
 
 ## Is it just pasting the HTML?
-Almost — it's **HTML + CSS**, plus one small JS change:
+Yes — the HTML file is self-contained (28 Oct): the **CSS is inside it** in a `<style>` block, and the **image and copy are the param defaults**,
+so pasting just the HTML gives the finished popup. Plus one small JS change:
 
 | Tab | What to do | Why |
 |---|---|---|
-| **HTML** | Replace with `desktop/paste-into-HTML-tab.txt` (desktop weblayer) or `mobile/paste-into-HTML-tab.txt` (mobile weblayer) | Same template as live with tiny fixes (see below). The two files are identical, as live. |
-| **CSS** | Replace with `desktop/paste-into-CSS-tab.txt` / `mobile/paste-into-CSS-tab.txt` | **This is where the new design lives.** Pasting only the HTML keeps the old look. |
+| **HTML** | Replace with `desktop/paste-into-HTML-tab.txt` (desktop weblayer) or `mobile/paste-into-HTML-tab.txt` (mobile weblayer) — paste **all** of it | Live template with tiny fixes (see below), the design CSS in a `<style>` block at the top, the image + copy as defaults. |
+| **CSS** | If the weblayer has a CSS tab: **clear the old CSS** (or paste `…/paste-into-CSS-tab.txt`, the same CSS) | Old CSS left in the tab fights the new design. |
 | **JS** | **Keep the live script.** Set the params in the option's README, and make the one-line phone change. Option E: also append `addon.js`. | The script does the capture — don't replace it. |
 
 ## Will the email still be captured?
@@ -35,12 +36,12 @@ CSS params go away. Copy, images and the close icon are still params in the HTML
 ## Step by step (per weblayer — do Desktop, then Mobile)
 1. **Don't edit the live weblayer.** Duplicate *A - Email & SMS Signup - Desktop* (or add the option as a new variant in its A/B test) so live is untouched.
 2. Open the copy → **HTML** tab → select all → paste the contents of `desktop/paste-into-HTML-tab.txt`.
-3. **CSS** tab → select all → paste `desktop/paste-into-CSS-tab.txt`.
+3. **CSS** tab (if there is one) → select all → delete, or paste `desktop/paste-into-CSS-tab.txt` (same CSS as in the HTML).
 4. **JS** tab → keep it. At the top, set the params from the option's README (position, `PARAM_includePhone`).
    Find `if(typeof phoneInput !== "undefined") {` inside `form.onsubmit` and change it to
    `if(typeof phoneInput !== "undefined" && phoneInput.value.trim() !== "") {` — phone becomes optional (a typed number is still checked).
    Option E: paste `addon.js` at the very end of the script, before the final closing brace of the function.
-5. **Params / visual editor** → set the image (upload the asset from the README, or keep the lockup GIF for C) and check the copy matches the README table.
+5. **Params / visual editor** → the image and copy are already filled in. For go-live, upload the image from `images/` to Bloomreach and pick it in the `image` param (the default points at the prototype site).
 6. **Preview** in the editor — check the layout, the close, No Thanks, a click outside.
 7. **Test it end to end**: on a test page (or the preview) submit a test email you can look up → check the customer profile has the email, the
    `thebrandroom_email` consent and a `banner` event with action `subscribe`. Then submit with a phone too and check the phone + SMS consent.
@@ -49,7 +50,7 @@ CSS params go away. Copy, images and the close icon are still params in the HTML
 10. Start the variant.
 
 ## The font (Archivo)
-The first line of the CSS loads Archivo from Google Fonts — keep it as the first line (an `@import` further down is ignored).
+The first line of the CSS (the top of the `<style>` block in the HTML file) loads Archivo from Google Fonts — keep it as the first line (an `@import` further down is ignored).
 On thebrandroom.com the weblayer sits in the page, so it already gets the site's own Archivo. The Bloomreach editor preview isn't the site, so
 without this line it falls back to a system font, which is why Archivo has looked unreliable before. The site's own font files can't be borrowed
 (they don't allow other sites to load them), so Google Fonts is the source. If it still shows a fallback anywhere, the stack is
