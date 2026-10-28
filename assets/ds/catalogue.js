@@ -822,6 +822,17 @@ const DG_CATALOGUE = [
   dev:{title:', ', status:'partial', note:'Live play build (12 Oct) has the link + “Or use your password” stacked as two full forms and a separate Create account block; this is the target.'} },
 
 /* ───────────── LAYOUT ───────────── */
+{ slug:'file-cover', name:'File cover', group:'Layout', tier:'organism', css:'.fcover · .fcover-in · .fcover-hd · .fcover-logo · .fcover-t · .fcover-tag', universal:true, figma:'vebOMPnswl12a9JehBSt1m · 79-82',
+  summary:'The cover for every Debenhams Group Figma file: 1920 × 1080, black with a soft glow from the top, the DG Group logo, the file name in big Antonio caps and a tag for the platform or area. Group branding, so it is the same on every fascia.',
+  use:['First page of every Figma file (Cover), set as the file thumbnail.','Title = what the file is (APP STORE ASSETS, PDP, CHECKOUT). Tag = platform or area (iOS / ANDROID, WEB / MOBILE WEB).'],
+  avoid:['Fascia logos or colours on the cover — fascia work still uses the Group cover.','Titles over one line at 1920: keep it to about 16 characters.','Screenshots or artwork on the cover.'],
+  anatomy:['Frame 1920 × 1080, fill #000 · glow: white ellipse 1930 × 1206 centred on the top edge, 30% opacity, layer blur 912','Content 157 from the left, centred vertically · logo → title gap 32 · title → tag gap 54','Logo DG Group left aligned, 230 wide, white (assets/brands/debenhamsgroup-left.svg)','Title Antonio Bold 200, caps, letter spacing −4%, white','Tag padding 24 · radius 8 · fill white 4% · Geologica Light 32, letter spacing −2%','Sizes are container units off 1920, so .fcover keeps its proportions at any width'],
+  variants:[
+    {name:'App Store assets', html:'<div class="fcover" style="width:960px"><div class="fcover-in"><div class="fcover-hd"><i class="fcover-logo" role="img" aria-label="Debenhams Group"></i><h1 class="fcover-t">App store assets</h1></div><span class="fcover-tag">iOS / ANDROID</span></div></div>'},
+    {name:'Web file', html:'<div class="fcover" style="width:960px"><div class="fcover-in"><div class="fcover-hd"><i class="fcover-logo" role="img" aria-label="Debenhams Group"></i><h1 class="fcover-t">Core PDP</h1></div><span class="fcover-tag">WEB / MOBILE WEB</span></div></div>'},
+    {name:'No tag', html:'<div class="fcover" style="width:960px"><div class="fcover-in"><div class="fcover-hd"><i class="fcover-logo" role="img" aria-label="Debenhams Group"></i><h1 class="fcover-t">Design system</h1></div></div></div>'}
+  ],
+  dev:{title:'—', status:'ours', note:'Design-team asset: the cover page of every Figma file. No web build counterpart.'} },
 { slug:'tile-rail', name:'Square tile rail', group:'Layout', tier:'molecule', css:'.tile-rail',
   summary:'Edge-to-edge square tiles with 1px gutters — the Brand Room brand and category rail.',
   use:['Brand walls, category entry on content pages.'],

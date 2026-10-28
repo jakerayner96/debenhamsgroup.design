@@ -3,6 +3,18 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-10-28",
+  "v": "2026.10.28",
+  "title": "File cover",
+  "by": "Figma file cover template (App Store / Play Store screenshot template MASTER, Jake 28 Oct)",
+  "added": [
+   "File cover (.fcover · .fcover-in · .fcover-hd · .fcover-logo · .fcover-t · .fcover-tag), Layout group: the 1920 × 1080 cover for every Debenhams Group Figma file — black, a 30% white glow from the top, DG Group logo (left aligned, white), title Antonio Bold 200 caps, tag Geologica Light 32 on a 4% white chip. Sized in container units off 1920, so it keeps the Figma proportions at any width · by Figma file cover template",
+   "Figma library: File cover component (Layout page) with Title, Tag and Show tag properties, linked from the site page · by Figma file cover template"
+  ],
+  "changed": [],
+  "fixed": []
+ },
+ {
   "d": "2026-10-27",
   "v": "2026.10.27",
   "title": "PLT Virtual Stylist chip in the DS · AI strip copy in six languages · whole-page translation drop-in · no wishlist on rail cards · brand tabs on component pages · Figma library",

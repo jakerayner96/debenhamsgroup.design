@@ -78,7 +78,7 @@ window.DG_FIGMA_LIB={
   "bag-item": "391:70",
   "order-summary": "391:81",
   "pg-title": "363:5",
-  "tile-rail": "363:7",
+  "tile-rail": "363:7",'file-cover':'418:2',
   "chip": "363:12",
   "filter-pill": "363:16",
   "tag-pill": "363:18",

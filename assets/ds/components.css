@@ -1712,3 +1712,15 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .mdl--signup.mdl-anim-fade{animation:mdlfade .3s ease-in-out both}
 @media(max-width:767px){.sup--sheet.mdl-anim-up{animation:mdlup .3s ease-in-out both}}
 @media(max-width:767px){.sup-title{font-size:24px;line-height:28px}.mdl--signup:not(.sup--split) .sup-body{padding:32px 16px 16px}.sup--bleed .sup-body{padding-top:96px}}
+
+/* ===== File cover (.fcover) — 28 Oct 2026, Figma file cover template (App Store / Play Store screenshot template MASTER, node 79:82) =====
+   1920 × 1080 Figma file thumbnail / first-page cover. Group branding, the same on every fascia: black with a soft white glow from the top,
+   DG Group logo (left aligned), title Antonio Bold caps, tag Geologica Light on a 4% white chip. Sizes are in container units off the 1920 frame,
+   so any width keeps the Figma proportions (1cqw = 19.2px at 1920). */
+.fcover{--fcover-bg:#000;--fcover-fg:#FFF;container-type:inline-size;position:relative;width:1920px;max-width:100%;aspect-ratio:16/9;overflow:hidden;display:flex;align-items:center;
+  background:radial-gradient(70% 95% at 50% 0,rgba(255,255,255,.26) 0,rgba(255,255,255,.12) 38%,rgba(255,255,255,0) 100%),var(--fcover-bg);color:var(--fcover-fg)}
+.fcover-in{display:flex;flex-direction:column;align-items:flex-start;gap:2.8125cqw;padding:0 8.177cqw;min-width:0}
+.fcover-hd{display:flex;flex-direction:column;align-items:flex-start;gap:1.667cqw}
+.fcover-logo{display:block;width:11.98cqw;aspect-ratio:500/114;background:currentColor;-webkit-mask:url(../brands/debenhamsgroup-left.svg) left center/contain no-repeat;mask:url(../brands/debenhamsgroup-left.svg) left center/contain no-repeat}
+.fcover-t{margin:0;font-family:'Antonio',var(--font-family-base);font-weight:700;font-size:10.417cqw;line-height:.86;letter-spacing:-.04em;text-transform:uppercase;color:inherit}
+.fcover-tag{display:inline-flex;align-items:center;padding:1.25cqw;border-radius:.417cqw;background:rgba(255,255,255,.04);font-family:'Geologica',var(--font-family-base);font-weight:300;font-size:1.667cqw;line-height:.6875;letter-spacing:-.02em}
