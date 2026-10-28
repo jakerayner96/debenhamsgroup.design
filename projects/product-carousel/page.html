@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../../">
+<title>Product carousel · page</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* Page scaffolding only — every visible piece of the design is a DS component: header (header.js), Product carousel (.pcar + carousel.js),
+   product card (.pc), price (.price-blk--rail), search bar (.srch-bar), bag line item (.bag-item), modal (.mdl), empty state (.empty), buttons (.bd).
+   .spec bands are review annotations, not part of the design. */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+.wrap{padding:0 var(--gap-4)}@media(min-width:1024px){.wrap{padding:0 var(--gap-10);max-width:1440px;margin:0 auto}}
+.place{padding:var(--gap-8) 0;display:flex;flex-direction:column;gap:var(--gap-6)}
+.place+.place{border-top:1px solid var(--border-subtle)}
+.spec{font:500 12px/16px 'Geologica',system-ui,sans-serif;color:#0D99FF;background:rgba(13,153,255,.08);border-left:3px solid #0D99FF;padding:var(--gap-2) var(--gap-3);display:flex;flex-wrap:wrap;gap:4px 16px}
+.spec b{color:#0A0A0A;font-weight:600}
+.ctx{display:flex;flex-direction:column;gap:var(--gap-6);min-width:0}
+/* search overlay: the search panel width on desktop */
+.srch-panel{display:flex;flex-direction:column;gap:var(--gap-6);min-width:0}
+@media(min-width:1024px){.srch-panel{max-width:640px}}
+/* bag: line items + rail in the main column on desktop */
+.bag-col{display:flex;flex-direction:column;gap:var(--gap-4);min-width:0}
+@media(min-width:1024px){.bag-col{max-width:920px}}
+.bag-col .bag-item{width:100%!important}
+/* added to bag: the modal on a backdrop (static, so the page can be screenshotted) */
+.backdrop{background:rgba(0,0,0,.45);padding:var(--gap-10) var(--gap-4);display:flex;justify-content:center;margin-inline:calc(-1*var(--gap-4))}
+@media(min-width:1024px){.backdrop{margin-inline:0}}
+.backdrop .mdl{position:relative;width:100%;max-width:720px;margin:0}
+.atb-btns{display:flex;flex-direction:column;gap:var(--gap-2)}
+@media(min-width:1024px){.atb-btns{flex-direction:row}.atb-btns .bd{flex:1}}
+.empty-wrap{display:flex;justify-content:center;padding:var(--gap-6) 0}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/ds/catalogue.js"></script>
+<script src="assets/ds/header.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script src="projects/product-carousel/placements.js"></script>
+<script src="assets/ds/carousel.js"></script>
+<script>
+const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C&&C.find(x=>x.slug===slug);return c?c.variants[i].html:''};
+let S={brand:'debenhams',view:'all',fmt:'spec',labels:true},EXPORTING=false,TAB={};
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const desk=()=>innerWidth>=1024;
+const NOBRAND=['plt','warehouse'];   /* fascias with no brand line on cards (DS product card) */
+const prods=()=>(window.PRODUCTS_ALL||{})[S.brand]||[];
+/* DS product card for a rail: image · brand · name · rail price (now + was). No wishlist on rail cards. */
+function card(p,i,look){const b=S.brand;
+  const img=`<div class="pc-img"><img class="ph" src="projects/plp-alignment/img/${b}/p${p.img??i}.jpg" alt="${esc((p.brand?p.brand+' ':'')+p.name)}" loading="${EXPORTING?'eager':'lazy'}"></div>`;
+  if(look)return `<article class="pc">${img}</article>`;
+  return `<article class="pc">${img}<div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${p.brand&&!NOBRAND.includes(b)?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div>
+    <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}</div></div></div></article>`}
+function feed(pl,n){const ps=prods();if(!ps.length)return[];const off=({home:0,home2:6,pdp:3,look:9,search:12,results:1,atb:5,bag:8,empty:2}[pl.id]||0)+(TAB[pl.id]||0)*4;
+  return Array.from({length:n},(_,k)=>{const i=(off+k)%ps.length;return [ps[i],ps[i].img??i]})}
+const fmtOf=pl=>S.fmt==='spec'?pl.fmt:S.fmt;
+/* the component — markup per the DS catalogue entry 'product-carousel' */
+function pcar(pl,o={}){const grid=fmtOf(pl)==='grid',n=grid?(desk()?pl.per*2:4):10,tabs=pl.tabs?(window.PCAR_TABS[S.brand]||['Women','Men','Home']):null;
+  return `<section class="pcar pcar--${pl.size}${grid?' pcar--grid':''}${pl.look?' pcar--look':''}${o.bleed===false?'':' pcar--bleed'}" style="--pcar-per:${pl.per}" data-pl="${pl.id}">
+  <header class="pcar-hd"><div class="pcar-tt"><h2 class="pcar-t">${esc(pl.title)}</h2>${pl.sub?`<p class="pcar-sub">${esc(pl.sub)}</p>`:''}</div>
+    ${tabs?`<div class="pcar-tabs">${tabs.map((t,i)=>`<button class="chip${i===(TAB[pl.id]||0)?' on':''}">${esc(t)}</button>`).join('')}</div>`:''}${pl.all?'<a class="pcar-all" href="#">View all</a>':''}</header>
+  <div class="pcar-body">${grid?'':'<button class="pcar-arr pcar-arr--prev" disabled></button>'}<div class="pcar-track">${feed(pl,n).map(([p,i])=>card(p,i,pl.look)).join('')}</div>${grid?'':'<button class="pcar-arr pcar-arr--next"></button>'}</div></section>`}
+function label(pl){if(!S.labels)return'';const grid=fmtOf(pl)==='grid';
+  return `<div class="spec"><b>${esc(pl.name)}</b><span>${esc(pl.where)}</span><span>Header ${pl.size.toUpperCase()}${pl.tabs?' + tabs':''}${pl.all?' + View all':''}</span>
+  <span>${grid?'Grid · 2 cols mobile · '+pl.per+' cols desktop':(pl.look?'Carousel · image only':'Carousel')+' · 165px cards mobile · '+pl.per+' + peek desktop'}</span><span>.pcar.pcar--${pl.size}${grid?'.pcar--grid':''}${pl.look?'.pcar--look':''} · --pcar-per:${pl.per}</span></div>`}
+/* each placement, with just enough of its page around it to read where it sits */
+const BAG=(p,i)=>`<div class="bag-item"><img src="projects/plp-alignment/img/${S.brand}/p${i}.jpg" alt="" style="width:99px;height:148px;object-fit:cover;flex:none;background:var(--surface-media)"><div class="info">${p.brand&&!NOBRAND.includes(S.brand)?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
+function ctx(pl){const ps=prods(),p0=ps[4]||ps[0]||{},p1=ps[7]||ps[1]||{};
+  switch(pl.id){
+  case 'search':return `<div class="srch-panel"><div class="srch-bar${S.brand==='plt'?' srch-bar--underline':''}"><div class="sb-field"><input value="" placeholder="Search" aria-label="Search"><button class="sb-go" aria-label="Search"><img src="assets/ds/icons/${S.brand==='plt'?'plt-search':'search'}.svg" alt=""></button></div><button class="sb-x" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt=""></button></div>${pcar(pl)}</div>`;
+  case 'atb':return `<div class="backdrop"><div class="mdl mdl--md"><div class="modal-hd"><div class="mt"><span>Added to bag</span></div><button class="modal-x" aria-label="Close"></button></div>
+    <div class="mdl-bd" style="display:flex;flex-direction:column;gap:var(--gap-6)">${BAG(p0,p0.img??4)}<div class="atb-btns"><button class="bd sec">View bag</button><button class="bd pri">Checkout</button></div>${pcar(pl,{bleed:false})}</div></div></div>`;
+  case 'bag':return `<div class="bag-col">${BAG(p0,p0.img??4)}${BAG(p1,p1.img??7)}${pcar(pl)}</div>`;
+  case 'empty':return `<div class="empty-wrap">${V('empty-state')}</div>${pcar(pl)}`;
+  default:return pcar(pl)}}
+function render(){
+  document.documentElement.setAttribute('data-brand',S.brand);
+  const dev=desk()?'desktop':'mobile',list=S.view==='all'?window.PCAR_PLACES:window.PCAR_PLACES.filter(p=>p.id===S.view);
+  document.getElementById('app').innerHTML=`<header class="hd${desk()?' hd--desktop':''}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header>
+  <main class="wrap">${list.map(pl=>`<div class="place">${label(pl)}<div class="ctx">${ctx(pl)}</div></div>`).join('')}</main>`;
+}
+document.addEventListener('pcar:tab',e=>{const pl=e.target.dataset.pl;TAB[pl]=e.detail.index;const el=e.target,P=window.PCAR_PLACES.find(x=>x.id===pl);
+  el.querySelector('.pcar-track').innerHTML=feed(P,10).map(([p,i])=>card(p,i,P.look)).join('')});
+render();
+let rz,lw=innerWidth;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if((lw>=1024)!==(innerWidth>=1024))render();lw=innerWidth},150)});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+</script>
+</body>
+</html>

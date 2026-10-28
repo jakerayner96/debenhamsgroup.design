@@ -31,6 +31,12 @@ const CARD = (opts={}) => `<article class="pc${opts.compact?' pc--compact':''}" 
     ${opts.stars?'<div class="pc-stars"><span class="set"><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-half.svg" alt=""><img src="assets/ds/icons/star-outline.svg" alt=""></span><span>(9)</span></div>':''}
   </div></article>`;
 
+/* Product carousel (.pcar) markup — one builder for every placement. o: {size:'lg'|'md'|'sm', title, sub, tabs:[…], all:'View all', grid, look, per, n, w, card:{…}} */
+const RAILPRICE='<div class="price-blk price-blk--rail"><div class="price"><span class="now sale">£26.03</span><span class="was">£34.70</span></div></div>';
+const PCAR = (o={}) => `<section class="pcar pcar--${o.size||'md'}${o.grid?' pcar--grid':''}${o.look?' pcar--look':''}" style="${o.w?'width:'+o.w+'px;':''}${o.per?'--pcar-per:'+o.per+';':''}">
+  <header class="pcar-hd"><div class="pcar-tt"><h2 class="pcar-t">${o.title||'You may also like'}</h2>${o.sub?`<p class="pcar-sub">${o.sub}</p>`:''}</div>${o.tabs?`<div class="pcar-tabs">${o.tabs.map((t,i)=>`<button class="chip${i?'':' on'}">${t}</button>`).join('')}</div>`:''}${o.all?`<a class="pcar-all" href="#">${o.all}</a>`:''}</header>
+  <div class="pcar-body">${o.grid?'':'<button class="pcar-arr pcar-arr--prev" disabled></button>'}<div class="pcar-track">${Array.from({length:o.n||6},()=>CARD(Object.assign({fav:false,price:RAILPRICE},o.card||{}))).join('')}</div>${o.grid?'':'<button class="pcar-arr pcar-arr--next"></button>'}</div></section>`;
+
 const DG_CATALOGUE = [
 
 /* ───────────── ACTIONS ───────────── */
@@ -350,8 +356,32 @@ const DG_CATALOGUE = [
   variants:[{name:'Set · PDP info rows (master PDP)', html:'<div class="acc-set" style="width:358px">'+[['At a Glance','<ul class="glance"><li><i>✓</i>Delicate lace bodice</li><li><i>✓</i>Regular fit</li></ul>',1],['Description','',0],['Product Details &amp; Care','',0],['Delivery','',0],['Returns','',0],['Manufacturer','',0]].map(r=>'<div class="acc'+(r[2]?' open':'')+'"><button class="acc-h">'+r[0]+'<img src="assets/ds/icons/lib/icons-down.svg" alt=""></button><div class="acc-b">'+r[1]+'</div></div>').join('')+'</div>'},{name:'Open + closed', html:'<div style="width:340px"><div class="acc open"><button class="acc-h">Description'+ICON('down-arrow','onerror="this.remove()"')+'</button><div class="acc-b">Long sleeve lace and pleated midi shirt dress in pink. Regular fit, concealed zip.</div></div><div class="hr"></div><div class="acc"><button class="acc-h">Delivery &amp; returns'+ICON('down-arrow','onerror="this.remove()"')+'</button><div class="acc-b">Free returns within 28 days.</div></div></div>'}],
   dev:{title:'Molecules/Accordion', status:'match', note:'Dev: expandOnDesktop · defaultExpandState · isFacetFilter · collapseAll. Organisms/Product Accordion is the PDP flavour.'} },
 
+{ slug:'product-carousel', name:'Product carousel', group:'Product', tier:'organism', css:'.pcar · .pcar--lg / --md / --sm · .pcar--grid · .pcar--look · --pcar-per (+ assets/ds/carousel.js)', figma:'aIHmkCaTy9c5EWOxAGw0So · 13566:3764 (Product carousel set, board 13566:3771)',
+  summary:'THE product rail and product grid — one component for every placement on every fascia: home, PDP, search, bag, added to bag, empty states. A placement only picks the header size, the format (carousel or grid) and how many cards are in view; the cards, spacing, arrows and behaviour never change.',
+  use:['Carousel: any feed of products that is not the main content of the page (recommendations, recently viewed, top sellers, complete the look, added to bag).','Grid: when the products are the content (search results, empty bag / wishlist suggestions) or when there are fewer cards than fit in view.','Large header (+ tabs): home page only. Medium: PDP / bag recommendations. Small: search overlay, added to bag, any rail inside a modal or panel.'],
+  avoid:['Building a rail per page — every product rail on site is this component (the Figma Product Carousel / v2 / Card Header sets collapse into it).','A wishlist button on rail cards — wishlist is on PLP cards only (rail cards hide .pc-actions).','Arrows on mobile or touch screens (swipe), or a scroll bar anywhere.','Carousel with fewer cards than fit in view — switch to the grid format.','Tabs outside the home page; more than 4 tabs.'],
+  anatomy:[
+    'Header (.pcar-hd): title (.pcar-t) · optional subtitle (.pcar-sub) · optional tabs (.pcar-tabs of .chip, 32px) · optional View all link (.pcar-all, 14px underlined, right)',
+    'Header sizes — lg (home): title 40/44 desktop · 24/28 mobile, subtitle 20/28 · 14/20, tabs right of the title on desktop, under it on mobile, header → cards gap 12 (48px) desktop · gap 6 (24px) mobile',
+    'md (default, recommendations): title 20/24 desktop · 18/22 mobile, header → cards gap 6 (24px) desktop · gap 4 (16px) mobile · sm (search, added to bag, modals): title 16/20, same gaps as md',
+    'Title weight --w-strong, colour --text-primary; fonts and weights come from the fascia tokens',
+    'Cards: the DS product card (.pc) — brand · name (2 lines) · rail price (.price-blk--rail: now + was, one line), no wishlist, image 2:3 · Create the Look (.pcar--look): image-only cards',
+    'Card gap 2 (8px) · mobile cards 165px fixed (2.2 in view at 390), first card on the page margin (--pcar-pad = gap 4 / 16px), rail bleeds off the right edge',
+    'Desktop (≥1024): cards per view = --pcar-per plus a 0.4 card peek. Home + PDP 5 · bag 4 · search overlay 3 · added to bag 2',
+    'Arrows (desktop + mouse only): 32px white circle, shadow 0 2 8 14%, 14px chevron, gap 3 (12px) in from the edge, centred on the card image; prev hidden at the start, next at the end; each click pages by the whole cards in view',
+    'Grid (.pcar--grid): same header and cards, 2 columns on mobile, --pcar-per columns on desktop, column gap 2 (8px), row gap 6 (24px), no arrows',
+    'Behaviour: assets/ds/carousel.js — arrows, end states, tab select (fires pcar:tab {index,label} for the feed swap). Scroll snaps to card starts; no autoplay, no loop, no dots'],
+  variants:[
+    {name:'Home · large header + tabs', html:PCAR({size:'lg',w:1100,per:5,title:'Transition Between Seasons',sub:'Get ready for cosier days with our easy autumn upgrades',tabs:['Fashion','Home','Beauty'],n:7})},
+    {name:'PDP / bag recommendations · medium', html:PCAR({w:1100,per:5,title:'Why Not Treat Yourself?',all:'View all',n:7})},
+    {name:'Search · added to bag · small', html:PCAR({size:'sm',w:560,per:3,title:'Recently viewed',n:5})},
+    {name:'Create the Look · image only', html:PCAR({look:true,w:1100,per:5,title:'Create The Look',n:7})},
+    {name:'Grid format', html:PCAR({grid:true,w:1100,per:4,title:'Products matching “dress”',n:8})},
+  ],
+  dev:{title:'Molecules/PersonalisedCarousel', status:'partial', note:'Dev has one carousel with controls + brand / category / search-term feeds and variant. Align it to this: header size (lg/md/sm) + tabs as props, cardsPerView per placement, the grid format, no wishlist on rail cards, arrows desktop-only centred on the image. Spec + every placement: projects/product-carousel.'} },
+
 { slug:'section-rail', name:'Section header + rail', group:'PDP modules', tier:'organism', css:'.sec-head · .prail', figma:'core-pdp C19',
-  summary:'A 20px title with a View all link, then a horizontal rail of product cards.',
+  summary:'Superseded by Product carousel (.pcar, 28 Oct 2026) — use that for every new rail. Kept so older prototypes keep rendering: a 20px title with a View all link, then a horizontal rail of product cards.',
   use:['Recommendations, recently viewed, complete the look.'],
   avoid:['A rail with fewer than three items — use a grid.','A wishlist button on rail cards (top sellers, recently viewed, recommendations) — the wishlist button is on PLP cards only (Jake, 27 Oct 2026).'],
   anatomy:['Title 20/22 --w-mid · link 14px right · rail gap 4, cards 165px'],

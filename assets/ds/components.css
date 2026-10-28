@@ -733,6 +733,64 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .prail::-webkit-scrollbar{display:none}
 .prail>*{flex:0 0 165px}
 @media(min-width:1024px){.prail>*{flex:0 0 220px}}
+/* ---- Product carousel (.pcar, 28 Oct 2026, projects/product-carousel) — THE product rail + product grid. One component for every placement:
+   home (large header + tabs), PDP recommendations + Create the Look, search, bag, added to bag, empty states. Figma: Debenhams Design System
+   ✅ Product Carousel · Carousel Types (new) 13556:5276. Header size, format (carousel / grid) and cards per view are the only things a placement changes.
+   Markup: <section class="pcar pcar--md" style="--pcar-per:5"><header class="pcar-hd"><div class="pcar-tt"><h2 class="pcar-t">…</h2><p class="pcar-sub">…</p></div>
+   <div class="pcar-tabs"><button class="chip on">…</button></div><a class="pcar-all">View all</a></header>
+   <div class="pcar-body"><button class="pcar-arr pcar-arr--prev"></button><div class="pcar-track">.pc …</div><button class="pcar-arr pcar-arr--next"></button></div></section>
+   Behaviour (arrows, end states, tabs): assets/ds/carousel.js. */
+.pcar{--pcar-gap:8px;--pcar-per:5;--pcar-peek:.4;--pcar-card:165px;--pcar-pad:0px;--pcar-hd-gap:16px;
+  display:flex;flex-direction:column;gap:var(--pcar-hd-gap);font-family:var(--font-family-base);color:var(--text-primary);min-width:0;position:relative}
+.pcar-hd{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--gap-4,16px);padding:0 var(--pcar-pad);min-width:0}
+.pcar-tt{display:flex;flex-direction:column;gap:var(--gap-2,8px);min-width:0;flex:1}
+.pcar-t{margin:0;font-size:18px;line-height:22px;font-weight:var(--w-strong)}
+.pcar-sub{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
+.pcar-all{flex:none;font-size:14px;line-height:20px;color:var(--text-primary);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.pcar-tabs{display:flex;gap:var(--gap-2,8px);overflow-x:auto;scrollbar-width:none;flex:none;max-width:100%}
+.pcar-tabs::-webkit-scrollbar{display:none}
+.pcar-tabs .chip{height:32px;padding:0 12px;font-size:14px}
+/* header sizes — lg: home (title + subtitle + tabs) · md: recommendations (default) · sm: search, added to bag */
+.pcar--lg{--pcar-hd-gap:24px}
+.pcar--lg .pcar-hd{flex-direction:column;align-items:stretch}
+.pcar--lg .pcar-t{font-size:24px;line-height:28px}
+.pcar--sm .pcar-t{font-size:16px;line-height:20px}
+/* track */
+.pcar-body{position:relative;min-width:0}
+.pcar-track{display:flex;gap:var(--pcar-gap);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:0 var(--pcar-pad);scroll-padding-inline:var(--pcar-pad)}
+.pcar-track::-webkit-scrollbar{display:none}
+.pcar-track>*{flex:0 0 var(--pcar-card);width:auto!important;scroll-snap-align:start;min-width:0}
+.pcar-track>.pc .pc-actions{display:none} /* no wishlist on rail cards (DS rule, 27 Oct) */
+/* arrows — desktop only, centred on the image, hidden at each end */
+.pcar-arr{position:absolute;top:var(--pcar-arr-y,38%);transform:translateY(-50%);z-index:2;width:32px;height:32px;border-radius:var(--radius-pill);border:none;padding:0;
+  background:var(--surface-raised);box-shadow:0 2px 8px rgba(15,15,15,.14);display:none;place-items:center;cursor:pointer;transition:opacity .15s}
+.pcar-arr::before{content:"";width:14px;height:14px;background:var(--text-primary);-webkit-mask:url(icons/lib/icons-left.svg) center/contain no-repeat;mask:url(icons/lib/icons-left.svg) center/contain no-repeat}
+.pcar-arr--prev{left:calc(var(--pcar-pad) + 12px)}
+.pcar-arr--next{right:12px}
+.pcar-arr--next::before{transform:scaleX(-1)}
+.pcar-arr[disabled]{opacity:0;pointer-events:none}
+/* grid format — same header, same cards, wrapped: 2 across on mobile, --pcar-per across on desktop */
+.pcar--grid .pcar-track{display:grid;grid-template-columns:repeat(var(--pcar-cols,2),minmax(0,1fr));gap:var(--gap-6,24px) var(--pcar-gap);overflow:visible;scroll-snap-type:none}
+.pcar--grid .pcar-track>*{flex:none}
+.pcar--grid .pcar-arr{display:none!important}
+/* image-only cards (Create the Look): .pc with no .pc-info */
+.pcar--look .pc-info{display:none}
+@media(min-width:1024px){
+  .pcar{--pcar-hd-gap:24px}
+  .pcar--lg{--pcar-hd-gap:48px}
+  .pcar--lg .pcar-hd{flex-direction:row;align-items:flex-end}
+  .pcar--lg .pcar-t{font-size:40px;line-height:44px}
+  .pcar--lg .pcar-sub{font-size:20px;line-height:28px}
+  .pcar-t{font-size:20px;line-height:24px}
+  .pcar--sm .pcar-t{font-size:16px;line-height:20px}
+  .pcar-arr{display:grid}
+  .pcar-track>*{flex-basis:calc((100% - var(--pcar-gap) * var(--pcar-per)) / (var(--pcar-per) + var(--pcar-peek)))}
+  .pcar--grid .pcar-track{grid-template-columns:repeat(var(--pcar-per),minmax(0,1fr))}
+}
+/* .pcar--bleed: on a page with a gap 4 (16px) margin, the rail runs to the screen edges on mobile while the header and first card stay on the margin */
+@media(max-width:1023px){.pcar--bleed{--pcar-pad:var(--gap-4,16px);margin-inline:calc(-1 * var(--pcar-pad))}}
+/* touch-only desktops (iPad landscape) swipe, no arrows */
+@media(min-width:1024px) and (hover:none){.pcar-arr{display:none}}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 4px}
 @media(min-width:1024px){.grid3{grid-template-columns:repeat(6,1fr);gap:24px 16px}}
 .usp-box{background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:var(--radius-default);padding:16px;display:flex;flex-direction:column;gap:16px}
