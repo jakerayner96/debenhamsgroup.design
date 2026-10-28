@@ -3,13 +3,16 @@
 For whoever builds the weblayers in Bloomreach Engagement. Applies to every option (A–E). Each option is **two weblayers**, as live today:
 **A - Email & SMS Signup - Desktop** and **A - Email & SMS Signup - Mobile**.
 
+**Unzip first** (right-click → Extract All). Only `OPEN-ME-preview.html` opens in a browser; the `paste-into-…` files are .txt on purpose —
+they are the text you paste into Bloomreach, not pages (opened in a browser they show an empty grey box).
+
 ## Is it just pasting the HTML?
 Almost — it's **HTML + CSS**, plus one small JS change:
 
 | Tab | What to do | Why |
 |---|---|---|
-| **HTML** | Replace with `desktop/weblayer.html` (desktop weblayer) or `mobile/weblayer.html` (mobile weblayer) | Same template as live with tiny fixes (see below). The two files are identical, as live. |
-| **CSS** | Replace with `desktop/weblayer.css` / `mobile/weblayer.css` | **This is where the new design lives.** Pasting only the HTML keeps the old look. |
+| **HTML** | Replace with `desktop/paste-into-HTML-tab.txt` (desktop weblayer) or `mobile/paste-into-HTML-tab.txt` (mobile weblayer) | Same template as live with tiny fixes (see below). The two files are identical, as live. |
+| **CSS** | Replace with `desktop/paste-into-CSS-tab.txt` / `mobile/paste-into-CSS-tab.txt` | **This is where the new design lives.** Pasting only the HTML keeps the old look. |
 | **JS** | **Keep the live script.** Set the params in the option's README, and make the one-line phone change. Option E: also append `addon.js`. | The script does the capture — don't replace it. |
 
 ## Will the email still be captured?
@@ -31,8 +34,8 @@ CSS params go away. Copy, images and the close icon are still params in the HTML
 
 ## Step by step (per weblayer — do Desktop, then Mobile)
 1. **Don't edit the live weblayer.** Duplicate *A - Email & SMS Signup - Desktop* (or add the option as a new variant in its A/B test) so live is untouched.
-2. Open the copy → **HTML** tab → select all → paste `desktop/weblayer.html`.
-3. **CSS** tab → select all → paste `desktop/weblayer.css`.
+2. Open the copy → **HTML** tab → select all → paste the contents of `desktop/paste-into-HTML-tab.txt`.
+3. **CSS** tab → select all → paste `desktop/paste-into-CSS-tab.txt`.
 4. **JS** tab → keep it. At the top, set the params from the option's README (position, `PARAM_includePhone`).
    Find `if(typeof phoneInput !== "undefined") {` inside `form.onsubmit` and change it to
    `if(typeof phoneInput !== "undefined" && phoneInput.value.trim() !== "") {` — phone becomes optional (a typed number is still checked).
@@ -45,10 +48,17 @@ CSS params go away. Copy, images and the close icon are still params in the HTML
 9. Repeat 1–8 for **Mobile** with the `mobile/` files.
 10. Start the variant.
 
+## The font (Archivo)
+The first line of the CSS loads Archivo from Google Fonts — keep it as the first line (an `@import` further down is ignored).
+On thebrandroom.com the weblayer sits in the page, so it already gets the site's own Archivo. The Bloomreach editor preview isn't the site, so
+without this line it falls back to a system font, which is why Archivo has looked unreliable before. The site's own font files can't be borrowed
+(they don't allow other sites to load them), so Google Fonts is the source. If it still shows a fallback anywhere, the stack is
+`Archivo → system sans`, so nothing breaks; tell Jake where it happened.
+
 ## SMS consent when the phone is empty
 The live script grants both consent categories on submit. With phone optional, only grant `thebrandroom_sms` when a phone was given — in the
 consent loop, skip the sms category when `!eventProperties.phone`. Worth checking with CRM / legal.
 
 ## Previews
-`desktop/preview.html` and `mobile/preview.html` open in a browser with the live copy filled in and the same phone plugin (intl-tel-input 17.0.13)
+`desktop/OPEN-ME-preview.html` and `mobile/OPEN-ME-preview.html` open in a browser with the live copy filled in and the same phone plugin (intl-tel-input 17.0.13)
 and step logic as the weblayer. They are for review only — they are not what you paste.

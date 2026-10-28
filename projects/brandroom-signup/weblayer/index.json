@@ -1,74 +1,129 @@
 {
  "shared": [
-  "HOW-TO-BLOOMREACH.md",
-  "template-live-desktop.html",
-  "template-live-mobile.html"
+  {
+   "src": "HOW-TO-BLOOMREACH.md",
+   "as": "HOW-TO-BLOOMREACH.md"
+  },
+  {
+   "src": "template-live-desktop.html",
+   "as": "reference/live-template-desktop.txt"
+  },
+  {
+   "src": "template-live-mobile.html",
+   "as": "reference/live-template-mobile.txt"
+  }
  ],
  "options": [
   {
    "id": "a-split",
    "title": "A \u00b7 Split",
    "files": [
-    "desktop/weblayer.html",
-    "desktop/weblayer.css",
-    "desktop/preview.html",
-    "mobile/weblayer.html",
-    "mobile/weblayer.css",
-    "mobile/preview.html",
+    "START-HERE.txt",
+    "desktop/paste-into-HTML-tab.txt",
+    "desktop/paste-into-CSS-tab.txt",
+    "desktop/OPEN-ME-preview.html",
+    "mobile/paste-into-HTML-tab.txt",
+    "mobile/paste-into-CSS-tab.txt",
+    "mobile/OPEN-ME-preview.html",
     "README.md"
+   ],
+   "images": [
+    {
+     "src": "img/lacoste-p.jpg",
+     "as": "images/desktop-4x5.jpg"
+    },
+    {
+     "src": "img/lacoste-m.jpg",
+     "as": "images/mobile-16x9.jpg"
+    }
    ]
   },
   {
    "id": "b-full-bleed",
    "title": "B \u00b7 Full bleed",
    "files": [
-    "desktop/weblayer.html",
-    "desktop/weblayer.css",
-    "desktop/preview.html",
-    "mobile/weblayer.html",
-    "mobile/weblayer.css",
-    "mobile/preview.html",
+    "START-HERE.txt",
+    "desktop/paste-into-HTML-tab.txt",
+    "desktop/paste-into-CSS-tab.txt",
+    "desktop/OPEN-ME-preview.html",
+    "mobile/paste-into-HTML-tab.txt",
+    "mobile/paste-into-CSS-tab.txt",
+    "mobile/OPEN-ME-preview.html",
     "README.md"
+   ],
+   "images": [
+    {
+     "src": "img/lacoste-p.jpg",
+     "as": "images/desktop-4x5.jpg"
+    },
+    {
+     "src": "img/lacoste-p.jpg",
+     "as": "images/mobile-4x5.jpg"
+    }
    ]
   },
   {
    "id": "c-brand-lockup",
    "title": "C \u00b7 Brand lockup",
    "files": [
-    "desktop/weblayer.html",
-    "desktop/weblayer.css",
-    "desktop/preview.html",
-    "mobile/weblayer.html",
-    "mobile/weblayer.css",
-    "mobile/preview.html",
+    "START-HERE.txt",
+    "desktop/paste-into-HTML-tab.txt",
+    "desktop/paste-into-CSS-tab.txt",
+    "desktop/OPEN-ME-preview.html",
+    "mobile/paste-into-HTML-tab.txt",
+    "mobile/paste-into-CSS-tab.txt",
+    "mobile/OPEN-ME-preview.html",
     "README.md"
-   ]
+   ],
+   "images": []
   },
   {
    "id": "d-slide-in",
    "title": "D \u00b7 Slide-in",
    "files": [
-    "desktop/weblayer.html",
-    "desktop/weblayer.css",
-    "desktop/preview.html",
-    "mobile/weblayer.html",
-    "mobile/weblayer.css",
-    "mobile/preview.html",
+    "START-HERE.txt",
+    "desktop/paste-into-HTML-tab.txt",
+    "desktop/paste-into-CSS-tab.txt",
+    "desktop/OPEN-ME-preview.html",
+    "mobile/paste-into-HTML-tab.txt",
+    "mobile/paste-into-CSS-tab.txt",
+    "mobile/OPEN-ME-preview.html",
     "README.md"
+   ],
+   "images": [
+    {
+     "src": "img/lacoste-p.jpg",
+     "as": "images/desktop-4x5.jpg"
+    },
+    {
+     "src": "img/lacoste-p.jpg",
+     "as": "images/mobile-4x5.jpg"
+    }
    ]
   },
   {
    "id": "e-two-step",
    "title": "E \u00b7 Two-step",
    "files": [
-    "desktop/weblayer.html",
-    "desktop/weblayer.css",
-    "desktop/preview.html",
-    "mobile/weblayer.html",
-    "mobile/weblayer.css",
-    "mobile/preview.html",
+    "START-HERE.txt",
+    "desktop/paste-into-HTML-tab.txt",
+    "desktop/paste-into-CSS-tab.txt",
+    "desktop/OPEN-ME-preview.html",
+    "mobile/paste-into-HTML-tab.txt",
+    "mobile/paste-into-CSS-tab.txt",
+    "mobile/OPEN-ME-preview.html",
     "README.md",
     "addon.js"
+   ],
+   "images": [
+    {
+     "src": "img/lacoste-p.jpg",
+     "as": "images/desktop-4x5.jpg"
+    },
+    {
+     "src": "img/lacoste-p.jpg",
+     "as": "images/mobile-4x5.jpg"
+    }
    ]
   }
  ]

@@ -4,16 +4,18 @@ Built 22 Oct 2026 from the DG design system Sign-up modal (prototype: https://ja
 Based on the live templates ("A - Email & SMS Signup - Desktop" / "- Mobile") — same structure, ids, classes and `[[ params ]]`, so the existing weblayer JS keeps capturing.
 **Read HOW-TO-BLOOMREACH.md first.**
 
-**Status:** checked in `desktop/preview.html` (1440) and `mobile/preview.html` (390): layout, empty phone passes, submit → thank you, brand step.
+**Status:** checked in `desktop/OPEN-ME-preview.html` (1440) and `mobile/OPEN-ME-preview.html` (390): layout, empty phone passes, submit → thank you, brand step.
 **Not yet run inside Bloomreach** — test in the weblayer editor preview and with a test email before it goes live.
 
 ## Files
 | Weblayer | HTML tab | CSS tab | Preview |
 |---|---|---|---|
-| A - Email & SMS Signup - **Desktop** | `desktop/weblayer.html` | `desktop/weblayer.css` | `desktop/preview.html` |
-| A - Email & SMS Signup - **Mobile** | `mobile/weblayer.html` | `mobile/weblayer.css` | `mobile/preview.html` |
+| A - Email & SMS Signup - **Desktop** | `desktop/paste-into-HTML-tab.txt` | `desktop/paste-into-CSS-tab.txt` | `desktop/OPEN-ME-preview.html` |
+| A - Email & SMS Signup - **Mobile** | `mobile/paste-into-HTML-tab.txt` | `mobile/paste-into-CSS-tab.txt` | `mobile/OPEN-ME-preview.html` |
 
-The two HTML files are the same (as live); the CSS is the difference.
+**Unzip first** (right-click → Extract All). Only the `OPEN-ME-preview.html` files open in a browser — the `paste-into-…` files are the text you paste into Bloomreach.
+
+The two HTML files are the same (as live); the CSS is the difference. The images to upload are in `images/` (see Image param).
 
 ## Script params (JS tab, top of the script)
 | Param | Desktop | Mobile |

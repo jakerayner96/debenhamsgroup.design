@@ -20,6 +20,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PAGES = 'https://jakerayner96.github.io/debenhamsgroup.design/projects/brandroom-signup/img/'
 LOCKUP_GIF = 'https://brxcdn.com/bho-app-storage/f37de144-1e20-11f1-873f-0adbe2143e4a/media/original/3362fefe-6faa-11f1-8365-b69466d21866'
 DEVICES = ('desktop', 'mobile')
+FILES = {'html': 'paste-into-HTML-tab.txt', 'css': 'paste-into-CSS-tab.txt', 'preview': 'OPEN-ME-preview.html'}   # .txt: the paste files are not pages — opened in a browser they show a grey box
 TEMPLATES = {d: open(os.path.join(HERE, f'template-live-{d}.html')).read() for d in DEVICES}
 
 LIVE = {  # live weblayer copy (scraped 21 Oct) + DS field labels
@@ -42,7 +43,9 @@ LIVE = {  # live weblayer copy (scraped 21 Oct) + DS field labels
 }
 
 # ---------------------------------------------------------------- CSS: the DS Sign-up modal on the weblayer's classes
-BASE = r"""/* ==========================================================================
+BASE = r"""@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap');   /* Archivo for the Bloomreach editor preview (thebrandroom.com already loads it; its own font files can't be shared cross-site) — keep this the first line */
+
+/* ==========================================================================
    Brand Room sign-up weblayer — {title}
    Built from the DG design system: Sign-up modal (.mdl--signup) + Input field + Button, 22 Oct 2026.
    Paste into the weblayer CSS tab (replaces the old CSS). HTML structure, ids and classes are the live template's,
@@ -326,6 +329,28 @@ IMAGES = {  # per option, per weblayer — upload to Bloomreach and pick in the 
     'e-two-step':     {'desktop': PAGES+'lacoste-p.jpg', 'mobile': PAGES+'lacoste-p.jpg'},
 }
 
+IMAGE_RATIO = {oid: {'desktop': '4x5', 'mobile': '16x9' if oid == 'a-split' else '4x5'} for oid in IMAGES}
+
+def start_here(oid):
+    imgs = '' if oid == 'c-brand-lockup' else '\n     Images to upload are in the images folder (desktop-4x5.jpg, mobile-' + IMAGE_RATIO[oid]['mobile'] + '.jpg).'
+    return f"""{TITLES[oid]} - Brand Room sign-up weblayer (Desktop + Mobile)
+
+1. UNZIP FIRST: right-click the zip > Extract All. Files opened from inside the zip lose their neighbours.
+
+2. TO SEE IT: open desktop\\OPEN-ME-preview.html (and mobile\\OPEN-ME-preview.html) in Chrome.
+
+3. TO BUILD IT IN BLOOMREACH (per weblayer, Desktop then Mobile):
+   - Duplicate the live weblayer (don't edit live).
+   - HTML tab: select all, paste the contents of paste-into-HTML-tab.txt
+   - CSS tab:  select all, paste the contents of paste-into-CSS-tab.txt
+     (its first line loads the Archivo font - keep it as the first line)
+   - JS tab: keep the live script. One line changes - see README.md "Phone optional".
+   - Params: set the image and copy from README.md.{imgs}
+
+The paste-into files are .txt on purpose: they are not web pages. Opened in a browser they show an empty grey box.
+Full steps: HOW-TO-BLOOMREACH.md
+"""
+
 # split the one stylesheet into the desktop and the mobile weblayer's CSS (no media queries left in either)
 def css_for(oid, device):
     css = BASE.format(title=TITLES[oid] + ' — ' + device.upper() + ' weblayer') + LAYOUT[oid]
@@ -378,16 +403,18 @@ Built 22 Oct 2026 from the DG design system Sign-up modal (prototype: https://ja
 Based on the live templates ("A - Email & SMS Signup - Desktop" / "- Mobile") — same structure, ids, classes and `[[ params ]]`, so the existing weblayer JS keeps capturing.
 **Read HOW-TO-BLOOMREACH.md first.**
 
-**Status:** checked in `desktop/preview.html` (1440) and `mobile/preview.html` (390): layout, empty phone passes, submit → thank you{', brand step' if oid=='e-two-step' else ''}.
+**Status:** checked in `desktop/OPEN-ME-preview.html` (1440) and `mobile/OPEN-ME-preview.html` (390): layout, empty phone passes, submit → thank you{', brand step' if oid=='e-two-step' else ''}.
 **Not yet run inside Bloomreach** — test in the weblayer editor preview and with a test email before it goes live.
 
 ## Files
 | Weblayer | HTML tab | CSS tab | Preview |
 |---|---|---|---|
-| A - Email & SMS Signup - **Desktop** | `desktop/weblayer.html` | `desktop/weblayer.css` | `desktop/preview.html` |
-| A - Email & SMS Signup - **Mobile** | `mobile/weblayer.html` | `mobile/weblayer.css` | `mobile/preview.html` |
+| A - Email & SMS Signup - **Desktop** | `desktop/paste-into-HTML-tab.txt` | `desktop/paste-into-CSS-tab.txt` | `desktop/OPEN-ME-preview.html` |
+| A - Email & SMS Signup - **Mobile** | `mobile/paste-into-HTML-tab.txt` | `mobile/paste-into-CSS-tab.txt` | `mobile/OPEN-ME-preview.html` |
 
-The two HTML files are the same (as live); the CSS is the difference.
+**Unzip first** (right-click → Extract All). Only the `OPEN-ME-preview.html` files open in a browser — the `paste-into-…` files are the text you paste into Bloomreach.
+
+The two HTML files are the same (as live); the CSS is the difference. The images to upload are in `images/` (see Image param).
 
 ## Script params (JS tab, top of the script)
 | Param | Desktop | Mobile |
@@ -487,15 +514,18 @@ def main():
         for dev in DEVICES:
             dd = os.path.join(d, dev); os.makedirs(dd)
             h, css = html_for(oid, dev), css_for(oid, dev)
-            open(os.path.join(dd, 'weblayer.html'), 'w').write(h)
-            open(os.path.join(dd, 'weblayer.css'), 'w').write(css)
-            open(os.path.join(dd, 'preview.html'), 'w').write(preview(oid, dev, h, css))
-            files += [f'{dev}/weblayer.html', f'{dev}/weblayer.css', f'{dev}/preview.html']
+            for k, body in (('html', h), ('css', css), ('preview', preview(oid, dev, h, css))):
+                open(os.path.join(dd, FILES[k]), 'w').write(body); files.append(f'{dev}/{FILES[k]}')
         open(os.path.join(d, 'README.md'), 'w').write(readme(oid)); files.append('README.md')
         if oid == 'e-two-step':
             open(os.path.join(d, 'addon.js'), 'w').write(ADDON); files.append('addon.js')
-        index.append({'id': oid, 'title': TITLES[oid], 'files': files})
-    open(os.path.join(HERE, 'index.json'), 'w').write(json.dumps({'shared': ['HOW-TO-BLOOMREACH.md', 'template-live-desktop.html', 'template-live-mobile.html'], 'options': index}, indent=1))
+        open(os.path.join(d, 'START-HERE.txt'), 'w').write(start_here(oid)); files.insert(0, 'START-HERE.txt')
+        images = [{'src': 'img/' + IMAGES[oid][dev].rsplit('/', 1)[1], 'as': f'images/{dev}-{IMAGE_RATIO[oid][dev]}.jpg'}
+                  for dev in DEVICES if IMAGES[oid][dev].startswith(PAGES)]
+        index.append({'id': oid, 'title': TITLES[oid], 'files': files, 'images': images})
+    open(os.path.join(HERE, 'index.json'), 'w').write(json.dumps({'shared': [{'src': 'HOW-TO-BLOOMREACH.md', 'as': 'HOW-TO-BLOOMREACH.md'},
+        {'src': 'template-live-desktop.html', 'as': 'reference/live-template-desktop.txt'},
+        {'src': 'template-live-mobile.html', 'as': 'reference/live-template-mobile.txt'}], 'options': index}, indent=1))
     print('built', [i['id'] for i in index])
 
 if __name__ == '__main__':

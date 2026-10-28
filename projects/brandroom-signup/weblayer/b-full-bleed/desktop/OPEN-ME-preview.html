@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>C · Brand lockup · mobile weblayer preview</title>
+<title>B · Full bleed · desktop weblayer preview</title>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
 <style>
@@ -10,8 +10,10 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
 .pv-bar{position:fixed;left:8px;bottom:8px;z-index:2147483003;font:12px system-ui;background:#000;color:#FFF;padding:6px 10px;border-radius:6px}.pv-bar a{color:#7CC4FF}
 </style>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap');   /* Archivo for the Bloomreach editor preview (thebrandroom.com already loads it; its own font files can't be shared cross-site) — keep this the first line */
+
 /* ==========================================================================
-   Brand Room sign-up weblayer — C · Brand lockup — MOBILE weblayer
+   Brand Room sign-up weblayer — B · Full bleed — DESKTOP weblayer
    Built from the DG design system: Sign-up modal (.mdl--signup) + Input field + Button, 22 Oct 2026.
    Paste into the weblayer CSS tab (replaces the old CSS). HTML structure, ids and classes are the live template's,
    so the weblayer JS keeps working — see README.md for the params to set.
@@ -106,22 +108,26 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
 .weblayer--box-subscription.vertical-center { top: 50%; transform: translateY(-50%); }
 .weblayer--box-subscription.vertical-center.horizontal-center { transform: translate(-50%, -50%); }
 
-.weblayer--box-subscription .heading { font-size: 24px; line-height: 28px; }
-.weblayer--box-subscription .form-inner { padding: 32px 16px 16px; }
-
-/* ---------- C · Brand lockup — the live partner lockup GIF (brand | The Brand Room, 600 × 234) on black over a white form ---------- */
-.weblayer--box-subscription { width: 480px; }
-.weblayer--box-subscription .image-surround { background: #000000; aspect-ratio: 600 / 234; flex: none; }
-.weblayer--box-subscription .image-surround img { object-fit: contain; }
-.weblayer--box-subscription .form-inner { padding-top: 32px; }
+/* ---------- B · Full bleed — 2:3 portrait image behind everything, form on a black gradient, white fields + CTA ---------- */
+.weblayer--box-subscription { width: 480px; background: #000000; color: #FFFFFF; }
+.weblayer--box-subscription .inner.step-one,
+.weblayer--box-subscription .inner.step-two { position: relative; aspect-ratio: 2 / 3; }
+.weblayer--box-subscription .inner.step-two[style*="block"] { display: flex !important; }   /* beats the JS inline display:block; step one keeps its own flex and can still be hidden */
+.weblayer--box-subscription .image-surround { position: absolute; inset: 0; }
+.weblayer--box-subscription .form-inner { position: relative; margin-top: auto; padding-top: 160px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0, rgba(0,0,0,.55) 120px, rgba(0,0,0,.88) 100%); }
+.weblayer--box-subscription #exponea-form input:not([type='checkbox']) { border-color: #FFFFFF; }
+.weblayer--box-subscription .button.submit, .weblayer--box-subscription .step-two .button { background: #FFFFFF; color: #000000; }
+.weblayer--box-subscription .button.submit:hover, .weblayer--box-subscription .step-two .button:hover { background: #E7E7E7; }
+.weblayer--box-subscription .step-one .button.close { color: #FFFFFF; }
+.weblayer--box-subscription .inner.step-one .conditions { color: rgba(255,255,255,.78); }
 .weblayer--box-subscription .close-icon path { stroke: #FFFFFF; }
- .weblayer--box-subscription { width: 358px; } 
 
 
 </style></head>
 <body>
 <div class="pv-page"><h1>THE BRAND ROOM</h1><div class="pv-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-<div class="pv-bar">C · Brand lockup · MOBILE weblayer preview · <a href="#" onclick="location.reload();return false">replay</a></div>
+<div class="pv-bar">B · Full bleed · DESKTOP weblayer preview · <a href="#" onclick="location.reload();return false">replay</a></div>
 <div id="exponea-greyout">
     <!-- START JINJA VARIABLES -->
     <div class="banner-item weblayer--box-subscription">
@@ -134,7 +140,7 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
         <!-- Step one -->
         <div class="inner step-one">
         	<div class="image-surround">
-            	<img src="https://brxcdn.com/bho-app-storage/f37de144-1e20-11f1-873f-0adbe2143e4a/media/original/3362fefe-6faa-11f1-8365-b69466d21866" style="width: 100%;"/>
+            	<img src="https://jakerayner96.github.io/debenhamsgroup.design/projects/brandroom-signup/img/lacoste-p.jpg" style="width: 100%;"/>
         	</div>
             <div class="form-inner">
                 <p class="text line-one">
@@ -175,7 +181,7 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
         <!-- Step two -->
         <div class="inner step-two" style="display: none;">
         	<div class="image-surround">
-            	<img src="https://brxcdn.com/bho-app-storage/f37de144-1e20-11f1-873f-0adbe2143e4a/media/original/3362fefe-6faa-11f1-8365-b69466d21866" style="width: 100%;"/>
+            	<img src="https://jakerayner96.github.io/debenhamsgroup.design/projects/brandroom-signup/img/lacoste-p.jpg" style="width: 100%;"/>
         	</div>
         	<div class="form-inner">
 	            <p class="heading">

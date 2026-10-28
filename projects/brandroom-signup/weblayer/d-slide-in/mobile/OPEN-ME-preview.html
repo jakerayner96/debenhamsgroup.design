@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>A · Split · desktop weblayer preview</title>
+<title>D · Slide-in · mobile weblayer preview</title>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
 <style>
@@ -10,8 +10,10 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
 .pv-bar{position:fixed;left:8px;bottom:8px;z-index:2147483003;font:12px system-ui;background:#000;color:#FFF;padding:6px 10px;border-radius:6px}.pv-bar a{color:#7CC4FF}
 </style>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap');   /* Archivo for the Bloomreach editor preview (thebrandroom.com already loads it; its own font files can't be shared cross-site) — keep this the first line */
+
 /* ==========================================================================
-   Brand Room sign-up weblayer — A · Split — DESKTOP weblayer
+   Brand Room sign-up weblayer — D · Slide-in — MOBILE weblayer
    Built from the DG design system: Sign-up modal (.mdl--signup) + Input field + Button, 22 Oct 2026.
    Paste into the weblayer CSS tab (replaces the old CSS). HTML structure, ids and classes are the live template's,
    so the weblayer JS keeps working — see README.md for the params to set.
@@ -106,18 +108,37 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
 .weblayer--box-subscription.vertical-center { top: 50%; transform: translateY(-50%); }
 .weblayer--box-subscription.vertical-center.horizontal-center { transform: translate(-50%, -50%); }
 
-/* ---------- A · Split — desktop 50/50: 4:5 image (448 × 560) | content · mobile: 16:9 mobile asset on top, content under ---------- */
-.weblayer--box-subscription { width: 928px; max-width: calc(100vw - 64px); }
-.weblayer--box-subscription .inner.step-one { display: grid; grid-template-columns: 448px 1fr; }   /* no !important: the JS hides it inline */
-.weblayer--box-subscription .inner.step-two[style*="block"] { display: grid !important; grid-template-columns: 448px 1fr; }   /* beats the JS inline display:block */
-.weblayer--box-subscription .image-surround { min-height: 560px; }
-.weblayer--box-subscription .form-inner { padding: 48px 40px 32px; justify-content: center; }
+.weblayer--box-subscription .heading { font-size: 24px; line-height: 28px; }
+.weblayer--box-subscription .form-inner { padding: 32px 16px 16px; }
+
+/* ---------- D · Slide-in — 400 card bottom-left (desktop) / bottom of the screen (mobile) over the 50% overlay;
+   the 4:5 image as a 104px thumbnail beside the copy. Set position params Bottom + Left (README). ---------- */
+.weblayer--box-subscription { width: 400px; box-shadow: 0 8px 18px rgba(22,19,20,.14); }
+.weblayer--box-subscription.horizontal-left { left: 24px; }
+.weblayer--box-subscription.vertical-bottom { bottom: 24px; }
+.weblayer--box-subscription .inner.step-one { display: grid; grid-template-columns: 104px 1fr; column-gap: 16px; align-items: start; padding: 24px; }
+.weblayer--box-subscription .inner.step-one .form-inner { display: contents; }
+.weblayer--box-subscription .inner.step-one .image-surround { grid-column: 1; grid-row: 1 / 4; aspect-ratio: 4 / 5; align-self: center; }
+.weblayer--box-subscription .inner.step-one .text.line-one,
+.weblayer--box-subscription .inner.step-one .heading,
+.weblayer--box-subscription .inner.step-one .text.line-two { grid-column: 2; }
+.weblayer--box-subscription .inner.step-one .text.line-one { align-self: end; }
+.weblayer--box-subscription .inner.step-one #exponea-form,
+.weblayer--box-subscription .inner.step-one .button.close,
+.weblayer--box-subscription .inner.step-one .conditions { grid-column: 1 / -1; }
+.weblayer--box-subscription .inner.step-one .heading { font-size: 20px; line-height: 24px; padding-right: 16px; }
+.weblayer--box-subscription .inner.step-two .image-surround { display: none; }
+.weblayer--box-subscription .inner.step-two .form-inner { padding: 32px 24px 24px; }
+.weblayer--box-subscription, .weblayer--box-subscription.horizontal-left { left: 0; width: 100%; max-width: 100%; }
+.weblayer--box-subscription.vertical-bottom { bottom: 0; }
+.weblayer--box-subscription .inner.step-one { padding: 24px 16px 16px; }
+.weblayer--box-subscription .inner.step-one .heading { font-size: 20px; line-height: 24px; }
 
 
 </style></head>
 <body>
 <div class="pv-page"><h1>THE BRAND ROOM</h1><div class="pv-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-<div class="pv-bar">A · Split · DESKTOP weblayer preview · <a href="#" onclick="location.reload();return false">replay</a></div>
+<div class="pv-bar">D · Slide-in · MOBILE weblayer preview · <a href="#" onclick="location.reload();return false">replay</a></div>
 <div id="exponea-greyout">
     <!-- START JINJA VARIABLES -->
     <div class="banner-item weblayer--box-subscription">
@@ -195,7 +216,7 @@ html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
 var self = { sdk: { update: function (p) { console.log('sdk.update', p); }, track: function (e, p) { console.log('sdk.track', e, p); } }, data: { banner_name: 'preview' } };
 (function () {
   var g = document.getElementById('exponea-greyout'), box = g.querySelector('.weblayer--box-subscription');
-  box.className += ' vertical-center horizontal-center enter-fade';
+  box.className += ' vertical-bottom horizontal-left enter-fade';
   var remove = function (e) { if (e) e.preventDefault(); g.remove(); };
   g.querySelectorAll('.close').forEach(function (b) { b.onclick = remove; });
   g.onclick = function (e) { if (e.target === e.currentTarget) remove(); };

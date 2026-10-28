@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap');   /* Archivo for the Bloomreach editor preview (thebrandroom.com already loads it; its own font files can't be shared cross-site) — keep this the first line */
+
 /* ==========================================================================
-   Brand Room sign-up weblayer — A · Split — MOBILE weblayer
+   Brand Room sign-up weblayer — E · Two-step — DESKTOP weblayer
    Built from the DG design system: Sign-up modal (.mdl--signup) + Input field + Button, 22 Oct 2026.
    Paste into the weblayer CSS tab (replaces the old CSS). HTML structure, ids and classes are the live template's,
    so the weblayer JS keeps working — see README.md for the params to set.
@@ -94,14 +96,20 @@
 .weblayer--box-subscription.vertical-center { top: 50%; transform: translateY(-50%); }
 .weblayer--box-subscription.vertical-center.horizontal-center { transform: translate(-50%, -50%); }
 
-.weblayer--box-subscription .heading { font-size: 24px; line-height: 28px; }
-.weblayer--box-subscription .form-inner { padding: 32px 16px 16px; }
+/* ---------- E · Two-step — step 1 email only; step 2 pick favourite brands (DS chips), then thank you.
+   Desktop as A (4:5 image | content); mobile the 4:5 image as a thumbnail beside the copy. Needs addon.js (README). ---------- */
+.weblayer--box-subscription { width: 928px; max-width: calc(100vw - 64px); }
+.weblayer--box-subscription .inner.step-one { display: grid; grid-template-columns: 448px 1fr; }   /* no !important: the JS hides it inline */
+.weblayer--box-subscription .inner.step-two[style*="block"] { display: grid !important; grid-template-columns: 448px 1fr; }   /* beats the JS inline display:block */
+.weblayer--box-subscription .image-surround { min-height: 560px; }
+.weblayer--box-subscription .form-inner { padding: 48px 40px 32px; justify-content: center; }
 
-/* ---------- A · Split — desktop 50/50: 4:5 image (448 × 560) | content · mobile: 16:9 mobile asset on top, content under ---------- */
-
-.weblayer--box-subscription { width: 358px; }
-.weblayer--box-subscription .image-surround { aspect-ratio: 16 / 9; flex: none; }
-.weblayer--box-subscription .form-inner { padding: 24px 16px 16px; }
-.weblayer--box-subscription .heading { font-size: 22px; line-height: 26px; }
-.weblayer--box-subscription .close-icon path { stroke: #FFFFFF; } /* the close sits on the image */
-
+/* brand picker (step 2) — DS chips: 36px, Grey keyline, black when picked */
+.weblayer--box-subscription .brand-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+.weblayer--box-subscription .brand-chip { height: 36px; padding: 0 14px; border: 1px solid #E7E7E7; background: #FFFFFF; color: #000000; border-radius: 0;
+  font-family: inherit; font-size: 13px; font-weight: 400; cursor: pointer; white-space: nowrap; }
+.weblayer--box-subscription .brand-chip.on { background: #000000; border-color: #000000; color: #FFFFFF; }
+.weblayer--box-subscription .step-two .button.skip-brands { background: none; color: #000000; height: auto; margin: 12px auto 0; padding: 2px 16px; width: auto;
+  font-size: 14px; line-height: 20px; font-weight: 700; text-transform: none; }
+.weblayer--box-subscription .step-two .button.skip-brands:hover { background: none; }
+.weblayer--box-subscription .step-two .text.line-one { margin-bottom: 8px; }

@@ -1,5 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C · Brand lockup · desktop weblayer preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+<style>
+/* preview page only — a plain Brand Room-ish page behind the weblayer */
+html,body{margin:0;font-family:Archivo,system-ui,sans-serif;background:#FFF}
+.pv-page{padding:24px;color:#000}.pv-page h1{font-size:28px;margin:0 0 16px}.pv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:2px}.pv-grid i{display:block;aspect-ratio:3/4;background:#F2F2F2}
+.pv-bar{position:fixed;left:8px;bottom:8px;z-index:2147483003;font:12px system-ui;background:#000;color:#FFF;padding:6px 10px;border-radius:6px}.pv-bar a{color:#7CC4FF}
+</style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap');   /* Archivo for the Bloomreach editor preview (thebrandroom.com already loads it; its own font files can't be shared cross-site) — keep this the first line */
+
 /* ==========================================================================
-   Brand Room sign-up weblayer — C · Brand lockup — MOBILE weblayer
+   Brand Room sign-up weblayer — C · Brand lockup — DESKTOP weblayer
    Built from the DG design system: Sign-up modal (.mdl--signup) + Input field + Button, 22 Oct 2026.
    Paste into the weblayer CSS tab (replaces the old CSS). HTML structure, ids and classes are the live template's,
    so the weblayer JS keeps working — see README.md for the params to set.
@@ -94,14 +108,111 @@
 .weblayer--box-subscription.vertical-center { top: 50%; transform: translateY(-50%); }
 .weblayer--box-subscription.vertical-center.horizontal-center { transform: translate(-50%, -50%); }
 
-.weblayer--box-subscription .heading { font-size: 24px; line-height: 28px; }
-.weblayer--box-subscription .form-inner { padding: 32px 16px 16px; }
-
 /* ---------- C · Brand lockup — the live partner lockup GIF (brand | The Brand Room, 600 × 234) on black over a white form ---------- */
 .weblayer--box-subscription { width: 480px; }
 .weblayer--box-subscription .image-surround { background: #000000; aspect-ratio: 600 / 234; flex: none; }
 .weblayer--box-subscription .image-surround img { object-fit: contain; }
 .weblayer--box-subscription .form-inner { padding-top: 32px; }
 .weblayer--box-subscription .close-icon path { stroke: #FFFFFF; }
- .weblayer--box-subscription { width: 358px; } 
 
+
+</style></head>
+<body>
+<div class="pv-page"><h1>THE BRAND ROOM</h1><div class="pv-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+<div class="pv-bar">C · Brand lockup · DESKTOP weblayer preview · <a href="#" onclick="location.reload();return false">replay</a></div>
+<div id="exponea-greyout">
+    <!-- START JINJA VARIABLES -->
+    <div class="banner-item weblayer--box-subscription">
+        <button aria-label="Close" class="close-icon close">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.99867 13L12.998 3" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12.9987 13L2.998 3" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <!-- Step one -->
+        <div class="inner step-one">
+        	<div class="image-surround">
+            	<img src="https://brxcdn.com/bho-app-storage/f37de144-1e20-11f1-873f-0adbe2143e4a/media/original/3362fefe-6faa-11f1-8365-b69466d21866" style="width: 100%;"/>
+        	</div>
+            <div class="form-inner">
+                <p class="text line-one">
+                    Welcome To The Brand Room
+                </p>
+                <h6 class="heading">
+                    Sign up today for personalised style tips, exclusive offers &amp; more
+                </h6>
+                <p class="text line-two">
+                    
+                </p>
+                <form id="exponea-form">
+                	<div id="exponea-main-fieldsets">
+	                    <fieldset class="email_fieldset">
+	                    	<label for="email" class="input-label">Email address</label>
+	                        <input name="email" id="email" type="email"  placeholder="Email address" required class="email">
+	                    </fieldset>
+	                    <fieldset class="phone_fieldset">
+	                    	<label for="phone" class="input-label">Mobile number (optional)</label>
+	                        <input name="phone" id="phone" type="tel"  placeholder="Mobile number (optional)" class="phone">
+	                    </fieldset>
+                    </div>
+                    <button type="submit" class="button submit">
+                        JOIN
+                    </button>
+                </form>
+                <button id="noThanksButton" class="button close">
+                    No Thanks
+                </button>
+                <p class="conditions">
+                    By submitting your details, you agree to receive marketing communications from The Brand Room &amp; our family of brands by email. You can unsubscribe at any point. You also consent to the use of your details in accordance with our
+                    <a href="https://www.thebrandroom.com/pages/informational/privacy" class="link">
+                        Privacy Policy
+                    </a>
+                </p>
+            </div>
+        </div>
+        <!-- Step two -->
+        <div class="inner step-two" style="display: none;">
+        	<div class="image-surround">
+            	<img src="https://brxcdn.com/bho-app-storage/f37de144-1e20-11f1-873f-0adbe2143e4a/media/original/3362fefe-6faa-11f1-8365-b69466d21866" style="width: 100%;"/>
+        	</div>
+        	<div class="form-inner">
+	            <p class="heading">
+	                Thank you!
+	            </p>
+	            <p class="text">
+	                Keep an eye on your inbox for exclusive offers!
+	            </p>
+	            <p id="exponea-voucher"></p>
+                <button id="thankYouButton" class="button close">
+                    Continue Shopping
+                </button>
+	        </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
+<script>
+/* mimics the weblayer JS for the preview: position classes, close, background click, phone (intl-tel-input, GB only), validation, step-one → step-two */
+var self = { sdk: { update: function (p) { console.log('sdk.update', p); }, track: function (e, p) { console.log('sdk.track', e, p); } }, data: { banner_name: 'preview' } };
+(function () {
+  var g = document.getElementById('exponea-greyout'), box = g.querySelector('.weblayer--box-subscription');
+  box.className += ' vertical-center horizontal-center enter-fade';
+  var remove = function (e) { if (e) e.preventDefault(); g.remove(); };
+  g.querySelectorAll('.close').forEach(function (b) { b.onclick = remove; });
+  g.onclick = function (e) { if (e.target === e.currentTarget) remove(); };
+  var phone = g.querySelector('.phone'), email = g.querySelector('.email'), iti;
+  if (false) { var pf = g.querySelector('.phone_fieldset'); if (pf) pf.remove(); phone = null; }
+  if (phone) iti = window.intlTelInput(phone, { initialCountry: 'gb', onlyCountries: ['gb'], preferredCountries: ['gb'] });
+  var bad = function (input, msg) { input.setCustomValidity(msg); input.reportValidity(); };
+  [phone, email].forEach(function (i) { if (i) i.oninput = function () { i.setCustomValidity(''); }; });
+  g.querySelector('#exponea-form').onsubmit = function (e) {
+    e.preventDefault();
+    if (phone && phone.value.trim() !== '' && !(iti && iti.isValidNumber())) return bad(phone, 'Enter a valid phone number');   /* phone optional */
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.toLowerCase())) return bad(email, 'Enter a valid email');
+    g.querySelector('.step-one').style.display = 'none'; g.querySelector('.step-two').style.display = 'block';
+  };
+})();
+
+</script>
+</body></html>

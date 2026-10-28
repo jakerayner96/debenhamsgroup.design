@@ -207,8 +207,9 @@ const WL={split:'a-split',bleed:'b-full-bleed',lockup:'c-brand-lockup',sheet:'d-
 async function weblayerZip(opts){const st=document.querySelector('#status');st.textContent='Packaging weblayer code…';
   try{const idx=await (await fetch('weblayer/index.json')).json(),zip=new JSZip(),multi=opts.length>1;
     for(const o of opts){const e=idx.options.find(x=>x.id===WL[o]);const dir=multi?zip.folder(e.id):zip;   /* desktop/ + mobile/ weblayers, README (+ addon.js) */
-      for(const f of e.files){const r=await fetch(`weblayer/${e.id}/${f}`);if(!r.ok)throw new Error(f+' '+r.status);dir.file(f,await r.text())}}
-    for(const f of idx.shared){const r=await fetch(`weblayer/${f}`);if(!r.ok)throw new Error(f+' '+r.status);zip.file(f,await r.text())}   /* how-to + the live templates */
+      for(const f of e.files){const r=await fetch(`weblayer/${e.id}/${f}`);if(!r.ok)throw new Error(f+' '+r.status);dir.file(f,await r.text())}
+      for(const im of e.images||[]){const r=await fetch(im.src);if(!r.ok)throw new Error(im.src+' '+r.status);dir.file(im.as,await r.blob())}}   /* the image assets to upload */
+    for(const f of idx.shared){const r=await fetch(`weblayer/${f.src}`);if(!r.ok)throw new Error(f.src+' '+r.status);zip.file(f.as,await r.text())}   /* how-to + the live templates (as .txt) */
     const name=multi?'brandroom-signup-weblayers':'brandroom-signup-weblayer-'+WL[opts[0]];
     const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.zip';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
     st.textContent='Weblayer code saved ✓';setTimeout(()=>st.textContent='',6000)}
