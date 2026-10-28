@@ -8,6 +8,8 @@ window.DG_CHANGELOG=[
   "title": "File cover · colour palette in the DG Group Design System format",
   "by": "Figma file cover template (App Store / Play Store screenshot template MASTER, Jake 28 Oct) · Figma merge into the Debenhams Design System (Jake 28 Oct) · Brand Room newsletter pop-up, Option A in Figma (projects/brandroom-signup, Jake 28 Oct)",
   "added": [
+   "Debenhams Design System (Figma aIHmkCaTy9c5EWOxAGw0So), Modal Windows page: Sign-up modal (The Brand Room) component set, Layout = Split (928 × 560, 4:5 image 448 × 560 beside the form) and Split · mobile (358 wide, 16:9 image on top, white close on the image); built from Input field, Button (new) and Icons / Close; Eyebrow + Title text properties. Mirrors .mdl--signup .sup--split and the Bloomreach weblayer A · Split · by Brand Room newsletter pop-up",
+   "Debenhams Design System, DG Group Design System collection: Text on Action colour variable (code --text-on-action, WEB syntax var(--text-on-action)) — black on Debenhams, white on the other 9 brands · by Brand Room newsletter pop-up",
    "File cover (.fcover · .fcover-in · .fcover-hd · .fcover-logo · .fcover-t · .fcover-tag), Layout group: the 1920 × 1080 cover for every Debenhams Group Figma file — black, a 30% white glow from the top, DG Group logo (left aligned, white), title Antonio Bold 200 caps, tag Geologica Light 32 on a 4% white chip. Sized in container units off 1920, so it keeps the Figma proportions at any width · by Figma file cover template",
    "Figma library: File cover component (Layout page) with Title, Tag and Show tag properties, linked from the site page · by Figma file cover template",
    "Colour palette, tokens.css Layer 0: the Figma DG Group Design System collection in code, same names, one block per brand — --primary, --cta, Shades (--neutral, --neutral-pressed, --light-4 … --light-1, --dark-1 … --dark-3, --primary-dark), accents (--aggressive-green, --warm-peach, --light-cream), Extended (--red, --red-light, --yellow, --yellow-light, --green, --green-light, --system-cursor, --pay-plus-primary), Mono (--white, --background-white, --grey-05, --grey-1, --grey-2, --grey-25, --grey-3 … --grey-6, --soft-black, --black). Primitives only — semantic tokens are not re-pointed, so nothing renders differently · by Figma merge",
@@ -18,8 +20,7 @@ window.DG_CHANGELOG=[
    "Colour page: the Neutrals / Status / Aqua family / Pink family blocks are replaced by the Colour Palette boards in the Figma format (Primary · Action · brand accents · Shades · Extended · Mono), one tab per brand + All · by Figma merge"
   ],
   "fixed": [
-   "Figma library: Sign-up modal · Split was captured at 720 × 485 with a 300px image — now the code size, 928 × 560 with the 448 × 560 (4:5) image and 48 / 40 / 32 body padding · by Brand Room newsletter pop-up",
-   "Figma library: Sign-up modal gets the Split · mobile variant it was missing (code: .sup--split under 768w) — 358 wide, 16:9 image on top, 24 / 16 / 16 body padding, 22 / 26 title, white close on the image · by Brand Room newsletter pop-up",
+   "Debenhams Design System (Figma aIHmkCaTy9c5EWOxAGw0So), Button (new) · Primary: the label was bound to Black, so it vanished on every brand but Debenhams (black on black for The Brand Room, boohoo, MAN, Warehouse, Coast…). Now bound to the new Text on Action variable; Primary · Disabled label → Grey 3 (code --action-disabled-fg) · by Brand Room newsletter pop-up",
    "Brand Room sign-up weblayer exports: paste files are .txt (paste-into-HTML-tab / paste-into-CSS-tab), preview is OPEN-ME-preview.html, START-HERE.txt + the images in the zip, and the CSS loads Archivo on its first line so it shows in the Bloomreach editor · by Brand Room newsletter pop-up"
   ]
  },
