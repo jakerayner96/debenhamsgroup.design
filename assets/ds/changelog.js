@@ -6,7 +6,7 @@ window.DG_CHANGELOG=[
   "d": "2026-10-28",
   "v": "2026.10.28",
   "title": "File cover · colour palette in the DG Group Design System format",
-  "by": "Figma file cover template (App Store / Play Store screenshot template MASTER, Jake 28 Oct) · Figma merge into the Debenhams Design System (Jake 28 Oct)",
+  "by": "Figma file cover template (App Store / Play Store screenshot template MASTER, Jake 28 Oct) · Figma merge into the Debenhams Design System (Jake 28 Oct) · Brand Room newsletter pop-up, Option A in Figma (projects/brandroom-signup, Jake 28 Oct)",
   "added": [
    "File cover (.fcover · .fcover-in · .fcover-hd · .fcover-logo · .fcover-t · .fcover-tag), Layout group: the 1920 × 1080 cover for every Debenhams Group Figma file — black, a 30% white glow from the top, DG Group logo (left aligned, white), title Antonio Bold 200 caps, tag Geologica Light 32 on a 4% white chip. Sized in container units off 1920, so it keeps the Figma proportions at any width · by Figma file cover template",
    "Figma library: File cover component (Layout page) with Title, Tag and Show tag properties, linked from the site page · by Figma file cover template",
@@ -17,7 +17,11 @@ window.DG_CHANGELOG=[
    "Debenhams Design System (Figma aIHmkCaTy9c5EWOxAGw0So), DG Group Design System collection — additive merge: 5 modes added (Warehouse, The Brand Room, Burton, Principles, Coast → 10), every palette variable gets WEB code syntax var(--…), values moved to the latest sign-off: Red #C90000 on every mode, boohoo mono (pink removed, Aug 2026), Karen Millen ramp re-derived from #D24508 with CTA black. Nothing renamed or deleted; old values in tools/palette/figma-merge-2026-10-28.json. Publish the library to send it to files · by Figma merge",
    "Colour page: the Neutrals / Status / Aqua family / Pink family blocks are replaced by the Colour Palette boards in the Figma format (Primary · Action · brand accents · Shades · Extended · Mono), one tab per brand + All · by Figma merge"
   ],
-  "fixed": []
+  "fixed": [
+   "Figma library: Sign-up modal · Split was captured at 720 × 485 with a 300px image — now the code size, 928 × 560 with the 448 × 560 (4:5) image and 48 / 40 / 32 body padding · by Brand Room newsletter pop-up",
+   "Figma library: Sign-up modal gets the Split · mobile variant it was missing (code: .sup--split under 768w) — 358 wide, 16:9 image on top, 24 / 16 / 16 body padding, 22 / 26 title, white close on the image · by Brand Room newsletter pop-up",
+   "Brand Room sign-up weblayer exports: paste files are .txt (paste-into-HTML-tab / paste-into-CSS-tab), preview is OPEN-ME-preview.html, START-HERE.txt + the images in the zip, and the CSS loads Archivo on its first line so it shows in the Bloomreach editor · by Brand Room newsletter pop-up"
+  ]
  },
  {
   "d": "2026-10-27",
