@@ -402,6 +402,15 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 
 /* project launcher */
 .launchgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:20px 0 32px}
+/* The Brand Room › Brand list: one card per brand, logo tile follows the site theme (white logo on black in dark, black on white in light) */
+.brbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 24px}.brbar .icosearch input{width:220px;opacity:1;padding:0 12px;border-color:var(--med)}.brbar .kbtn{margin-left:auto}
+.brgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin:16px 0 40px}
+.brcard{border-radius:var(--r);background:var(--surface);border:1px solid color-mix(in srgb,var(--ink) 6%,transparent);overflow:hidden;display:flex;flex-direction:column}
+.brlogo{aspect-ratio:1;display:block;background:#000}.brlogo img{width:100%;height:100%;display:block}
+[data-theme="light"] .brlogo{background:#fff}[data-theme="light"] .brlogo .bl-d,:root:not([data-theme="light"]) .brlogo .bl-l{display:none}
+.brlogo.none{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;font:600 15px var(--sans);color:#fff}[data-theme="light"] .brlogo.none{color:#0F0F0F}
+.brbody{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}.brbody b{font:600 14px var(--sans);color:var(--ink)}.brbody small{font-size:12px;line-height:1.4;color:var(--ink-3)}.brbody .pill{align-self:flex-start;margin:auto 0 0}
+.brcard[hidden],#br-brands [data-sec][hidden]{display:none}
 .launch{background:var(--surface);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:8px;transition:background .15s}
 .launch:hover{background:var(--surface-2)}
 .launch b{font-size:16px;color:var(--ink);font-weight:600}
@@ -660,6 +669,10 @@ body.sbm .hdrbtns{display:none}
   <div class="grp">
     <button onclick="tg(this)"><span class="car">▾</span>Brand Centre</button>
     <div class="items" id="sbBrands"><!-- one page per fascia, built from DG_FASCIAS --></div>
+  </div>
+  <div class="grp">
+    <button onclick="tg(this)"><span class="car">▾</span>The Brand Room</button>
+    <div class="items"><a href="#br-brands">Brand list</a><a href="#b-brandroom">Brand page</a></div>
   </div>
   <div class="grp">
     <button onclick="tg(this)"><span class="car">▾</span>Projects</button>
@@ -1535,6 +1548,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 <script src="assets/ds/dplus-logos.js"></script>
 <script src="assets/ds/footer.js"></script>
 <script src="assets/ds/changelog.js"></script>
+<script src="assets/ds/brandroom-brands.js"></script>
 <script src="assets/ds/header.js"></script>
 <script src="assets/ds/delivery.js"></script>
 <script src="assets/ds/ai-prompts.js"></script>
@@ -1796,6 +1810,35 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
     <p class="lede">Each fascia's loyalty and delivery programme: Debenhams Unlimited (and the new Unlimited+), boohoo Premier Club, boohooMAN Premier, PLT Royalty and Karen Millen Premier. The box is shown as it renders on the PDP, with its colours, icon and artwork to download.</p>
     <div class="kits">${MS.map(msCard).join('')}</div>
   </section>`);
+  /* The Brand Room › Brand list — the master list of brands we sell now and the ones coming (assets/ds/brandroom-brands.js) */
+  const BR=window.DG_BR_BRANDS;
+  if(BR){
+    const BF=window.DG_BR_FASCIAS||{},BD=window.DG_BR_DEALS||{},esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const live=BR.brands.filter(b=>b.st==='live'),soon=BR.brands.filter(b=>b.st==='soon');
+    const also=b=>b.on.length?'Also on '+b.on.map(c=>BF[c]||c).join(' · '):b.st==='soon'?'':'Brand Room only';
+    const lg=b=>b.s?`<span class="brlogo"><img class="bl-d" src="assets/brands/brandroom-portfolio/${b.s}-white.png" alt="${esc(b.n)}" loading="lazy"><img class="bl-l" src="assets/brands/brandroom-portfolio/${b.s}-black.png" alt="${esc(b.n)}" loading="lazy"></span>`:`<span class="brlogo none">${esc(b.n)}<br><small style="font-weight:400;opacity:.6">logo to come</small></span>`;
+    const pill=b=>{const d=BD[b.deal];return b.st==='soon'?`<span class="pill ${d?d[1]:''}">${BR.season} · ${d?d[0]:'to confirm'}</span>`:b.deal?`<span class="pill ok">${BR.season} · ${d[0]}</span>`:''};
+    const brCard=b=>`<div class="brcard" data-st="${b.st}" data-q="${esc((b.n+' '+b.on.map(c=>BF[c]||c).join(' ')+' '+(b.note||'')).toLowerCase())}">${lg(b)}<div class="brbody"><b>${esc(b.n)}</b>${b.note||also(b)?`<small>${b.note?esc(b.note)+(also(b)?'<br>':''):''}${also(b)}</small>`:''}${pill(b)}</div></div>`;
+    add(`<section class="page" id="br-brands" data-crumb="The Brand Room / Brand list">
+      <div class="kick"><a href="#b-brandroom" style="color:inherit">the brand room</a> <b>· assets/ds/brandroom-brands.js</b></div>
+      <h1>Brand list</h1>
+      <p class="lede">Every brand The Brand Room sells today, and the brands launching in ${BR.season}. Use it as the source for brand rails, A–Z pages, nav and logo walls. Logos are the Brand Room Figma set, black on white or white on black.</p>
+      <div class="meta"><span>live <b>${live.length} brands</b></span><span>coming ${BR.season} <b>${soon.length} new · ${BR.brands.filter(b=>b.deal).length} launching in all</b></span><span>updated <b>${fd(BR.updated)}</b></span><span>logos <b><a href="${BR.figma}" target="_blank" rel="noopener" style="color:inherit">Figma ↗</a></b></span></div>
+      <div class="brbar"><button class="cf on" data-f="*">All <span style="opacity:.6">${BR.brands.length}</span></button><button class="cf" data-f="live">Live now <span style="opacity:.6">${live.length}</span></button><button class="cf" data-f="soon">Coming ${BR.season} <span style="opacity:.6">${soon.length}</span></button>
+        <div class="icosearch open"><input type="search" placeholder="Search brands or fascias" aria-label="Search brands"></div><button class="kbtn" id="brCsv">Download list <small>CSV</small></button></div>
+      <h2 data-sec="live">Live now <code>${live.length} brands</code></h2><div class="brgrid" data-sec="live">${live.map(brCard).join('')}</div>
+      <h2 data-sec="soon">Coming ${BR.season} <code>new to The Brand Room</code></h2><div class="brgrid" data-sec="soon">${soon.map(brCard).join('')}</div>
+    </section>`);
+    const sec=document.getElementById('br-brands'),inp=sec.querySelector('.icosearch input');let f='*';
+    const apply=()=>{const q=inp.value.trim().toLowerCase();
+      sec.querySelectorAll('.brcard').forEach(c=>c.hidden=!((f==='*'||c.dataset.st===f)&&(!q||c.dataset.q.includes(q))));
+      sec.querySelectorAll('[data-sec]').forEach(el=>el.hidden=f!=='*'&&el.dataset.sec!==f)};
+    sec.querySelectorAll('.cf').forEach(b=>b.onclick=()=>{f=b.dataset.f;sec.querySelectorAll('.cf').forEach(x=>x.classList.toggle('on',x===b));apply()});
+    inp.oninput=apply;
+    sec.querySelector('#brCsv').onclick=()=>{const q=v=>`"${String(v||'').replace(/"/g,'""')}"`;
+      const rows=[['Brand','Status',BR.season+' status','Also on','Note'],...BR.brands.map(b=>[b.n,b.st==='live'?'Live':'Coming '+BR.season,b.deal?(BD[b.deal]||[b.deal])[0]:'',b.on.map(c=>BF[c]||c).join(', '),b.note])];
+      const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download=`brand-room-brands-${BR.updated}.csv`;a.click()};
+  }
   /* one page per fascia: logo kit, guidelines, live colour + type from its data-brand mode */
   /* the full role set from Foundations › Typography (mobile / desktop px, weight) — rendered at desktop size in the fascia's own font + weights */
   const ROLES=[['display-lg',32,48,'s','Hero, marketing pages','Wardrobe icons'],['display-md',28,40,'s','Section openers','The new season edit'],['display-sm',24,32,'s','Editorial leads','Dressed for the weekend'],
