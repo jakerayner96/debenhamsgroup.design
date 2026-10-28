@@ -14,6 +14,7 @@ window.DG_CHANGELOG=[
    "tools/palette/ (palette.json → tokens.css Layer 0 + assets/ds/palette.js): one source for the palette in code, the site and the Figma variables. Debenhams, boohoo, boohooMAN, PLT, Karen Millen = the Aug 2026 sign-off; Warehouse, The Brand Room, Burton, Principles, Coast = from code with ramps derived by the KM mix ratios (to sign off) · by Figma merge"
   ],
   "changed": [
+   "Debenhams Design System (Figma aIHmkCaTy9c5EWOxAGw0So), DG Group Design System collection — additive merge: 5 modes added (Warehouse, The Brand Room, Burton, Principles, Coast → 10), every palette variable gets WEB code syntax var(--…), values moved to the latest sign-off: Red #C90000 on every mode, boohoo mono (pink removed, Aug 2026), Karen Millen ramp re-derived from #D24508 with CTA black. Nothing renamed or deleted; old values in tools/palette/figma-merge-2026-10-28.json. Publish the library to send it to files · by Figma merge",
    "Colour page: the Neutrals / Status / Aqua family / Pink family blocks are replaced by the Colour Palette boards in the Figma format (Primary · Action · brand accents · Shades · Extended · Mono), one tab per brand + All · by Figma merge"
   ],
   "fixed": []

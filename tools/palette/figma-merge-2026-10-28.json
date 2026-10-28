@@ -1,0 +1,10 @@
+{"file":"aIHmkCaTy9c5EWOxAGw0So (Debenhams Design System)","collection":"VariableCollectionId:1:686 DG Group Design System","date":"2026-10-28",
+ "note":"Additive merge. Modes added: Warehouse, The Brand Room, Burton, Principles, Coast (brand accents there = #FF0000 placeholder, as the file's convention). WEB code syntax var(--…) added to every palette variable. No variable renamed or deleted. 'before' = the value replaced, to revert.",
+ "changedExistingModes":[
+  ["Red","Debenhams","#D33F3F","#C90000"],["Red","Boohoo","#D33F3F","#C90000"],["Red","KM","#D33F3F","#C90000"],["Red","MAN","#D33F3F","#C90000"],
+  ["CTA","Boohoo","#BB305F","#000000"],["Primary","Boohoo","#F8B5CC","#000000"],["Neutral","Boohoo","#F1DCE3","#F2F2F2"],["Neutral Pressed","Boohoo","#E4C9D2","#E7E7E7"],
+  ["Light 1","Boohoo","#FFC2D7","#4D4D4D"],["Light 2","Boohoo","#FCD3E1","#808080"],["Light 3","Boohoo","#FFE0EB","#B5B5B5"],["Light 4","Boohoo","#FFE9F0","#D6D6D6"],
+  ["Dark 1","Boohoo","#EEA5BE","#000000"],["Dark 2","Boohoo","#EA92B0","#000000"],["Dark 3","Boohoo","#DD789B","#000000"],["Primary Dark","Boohoo","#CB4870","#000000"],
+  ["CTA","KM","#8E330B","#000000"],["Primary","KM","#DB4E11","#D24508"],["Neutral","KM","#FBEAE2","#FAE9E1"],["Neutral Pressed","KM","#F8DCCF","#F6DACE"],
+  ["Light 1","KM","#E47A4D","#DD7446"],["Light 2","KM","#EB9E7C","#E69977"],["Light 3","KM","#F1B8A0","#EDB59C"],["Light 4","KM","#F6D3C3","#F4D1C1"],
+  ["Dark 1","KM","#AF3E0E","#A83706"],["Dark 2","KM","#832F0A","#7E2905"],["Dark 3","KM","#581F07","#541C03"],["Primary Dark","KM","#2C1003","#2A0E02"]]}
