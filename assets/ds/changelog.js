@@ -5,13 +5,17 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-28",
   "v": "2026.10.28",
-  "title": "File cover",
-  "by": "Figma file cover template (App Store / Play Store screenshot template MASTER, Jake 28 Oct)",
+  "title": "File cover · colour palette in the DG Group Design System format",
+  "by": "Figma file cover template (App Store / Play Store screenshot template MASTER, Jake 28 Oct) · Figma merge into the Debenhams Design System (Jake 28 Oct)",
   "added": [
    "File cover (.fcover · .fcover-in · .fcover-hd · .fcover-logo · .fcover-t · .fcover-tag), Layout group: the 1920 × 1080 cover for every Debenhams Group Figma file — black, a 30% white glow from the top, DG Group logo (left aligned, white), title Antonio Bold 200 caps, tag Geologica Light 32 on a 4% white chip. Sized in container units off 1920, so it keeps the Figma proportions at any width · by Figma file cover template",
-   "Figma library: File cover component (Layout page) with Title, Tag and Show tag properties, linked from the site page · by Figma file cover template"
+   "Figma library: File cover component (Layout page) with Title, Tag and Show tag properties, linked from the site page · by Figma file cover template",
+   "Colour palette, tokens.css Layer 0: the Figma DG Group Design System collection in code, same names, one block per brand — --primary, --cta, Shades (--neutral, --neutral-pressed, --light-4 … --light-1, --dark-1 … --dark-3, --primary-dark), accents (--aggressive-green, --warm-peach, --light-cream), Extended (--red, --red-light, --yellow, --yellow-light, --green, --green-light, --system-cursor, --pay-plus-primary), Mono (--white, --background-white, --grey-05, --grey-1, --grey-2, --grey-25, --grey-3 … --grey-6, --soft-black, --black). Primitives only — semantic tokens are not re-pointed, so nothing renders differently · by Figma merge",
+   "tools/palette/ (palette.json → tokens.css Layer 0 + assets/ds/palette.js): one source for the palette in code, the site and the Figma variables. Debenhams, boohoo, boohooMAN, PLT, Karen Millen = the Aug 2026 sign-off; Warehouse, The Brand Room, Burton, Principles, Coast = from code with ramps derived by the KM mix ratios (to sign off) · by Figma merge"
   ],
-  "changed": [],
+  "changed": [
+   "Colour page: the Neutrals / Status / Aqua family / Pink family blocks are replaced by the Colour Palette boards in the Figma format (Primary · Action · brand accents · Shades · Extended · Mono), one tab per brand + All · by Figma merge"
+  ],
   "fixed": []
  },
  {

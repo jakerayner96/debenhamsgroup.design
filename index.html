@@ -461,6 +461,17 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 
 /* design-system IA: foundations merge · per-fascia component playgrounds · sidebar sub-heads */
 .figlink{margin:4px 0 20px;text-decoration:none}
+.pal{background:#FFF;color:#000;border-radius:var(--r);padding:32px;margin:0 0 24px;font-family:var(--sans)}
+.pal-hd{display:flex;justify-content:space-between;gap:16px;align-items:baseline;flex-wrap:wrap;border-bottom:1px solid #E7E7E7;padding-bottom:16px;margin-bottom:24px}
+.pal-hd b{font-size:24px}.pal-hd span{font-size:13px;color:#767676}
+.pal h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin:24px 0 10px;color:#000}
+.pal-row{display:flex;flex-wrap:wrap;gap:24px}.pal-row>div{display:flex;flex-direction:column}
+.pal-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+.pal-sw{min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8px;font-size:11px;line-height:15px;text-transform:uppercase;gap:1px}
+.pal-row .pal-sw{width:120px;height:120px}
+.pal-sw b{font-weight:600}.pal-sw code{font-family:var(--mono);font-size:10px;text-transform:none;opacity:.75}.pal-sw em{font-style:italic;font-weight:600;font-size:10px}
+.pal-sw--line{box-shadow:inset 0 0 0 1px #E7E7E7}
+@media(max-width:767px){.pal{padding:16px}.pal-row{gap:12px}.pal-row .pal-sw{width:calc(50vw - 40px);height:96px}}
 .fxtabs{--text-primary:var(--ink);--text-secondary:var(--ink-3);--border-subtle:var(--low);--font-family-base:var(--sans);margin:24px 0 16px} /* the DS Tabs (.tabs), fed the site shell's colours */
 .fxstack>[hidden]{display:none!important}
 .fxstack{display:flex;flex-direction:column;gap:16px;margin:8px 0 32px}
@@ -714,7 +725,7 @@ body.sbm .hdrbtns{display:none}
   <section class="page" id="colour" data-crumb="System / Foundations / Colour">
     <div class="kick">system / foundations <b>· rendering <span class="bn">Debenhams</span></b></div>
     <h1>Colour</h1>
-    <p class="lede">Two layers: primitives named by what they are, semantic tokens named by role. Components consume only semantic tokens; the brand mode swaps what they resolve to. Brand values are the Colour Alignment set (post-KM review, Aug 26).</p>
+    <p class="lede">Two layers: the colour palette (primitives, named as in the Figma DG Group Design System) and semantic tokens named by role. Components consume only semantic tokens; the brand mode swaps what they resolve to. Brand values are the Colour Alignment set (post-KM review, Aug 26).</p>
 
     <h2>Brand-resolved roles <code>live — switch brand in the sidebar</code></h2>
     <div class="tok">
@@ -765,63 +776,10 @@ body.sbm .hdrbtns{display:none}
       <div class="sw"><i style="background:var(--icon-secondary)"></i><div><b>icon/secondary</b><code>#767676 · grey 4 ok</code></div></div>
     </div>
 
-    <h2>Neutrals <code>shared by every fascia</code></h2>
-    <div class="swg">
-      <div class="sw"><i style="background:#FFFFFF;border-bottom:1px solid var(--line)"></i><div><b>White</b><code>#FFFFFF</code></div></div>
-      <div class="sw"><i style="background:#FAFAFA"></i><div><b>Grey 05</b><code>#FAFAFA</code></div></div>
-      <div class="sw"><i style="background:#F2F2F2"></i><div><b>Grey 1</b><code>#F2F2F2</code></div></div>
-      <div class="sw"><i style="background:#E7E7E7"></i><div><b>Grey 2</b><code>#E7E7E7</code></div></div>
-      <div class="sw"><i style="background:#D6D6D6"></i><div><b>Grey 25</b><code>#D6D6D6</code></div></div>
-      <div class="sw"><i style="background:#B5B5B5"></i><div><b>Grey 3</b><code>#B5B5B5</code></div></div>
-      <div class="sw"><i style="background:#767676"></i><div><b>Grey 4</b><code>#767676</code></div></div>
-      <div class="sw"><i style="background:#6B6B6B"></i><div><b>Grey 5</b><code>#6B6B6B</code></div></div>
-      <div class="sw"><i style="background:#323232"></i><div><b>Grey 6</b><code>#323232</code></div></div>
-      <div class="sw"><i style="background:#0F0F0F"></i><div><b>Soft Black</b><code>#0F0F0F</code></div></div>
-      <div class="sw"><i style="background:#000000"></i><div><b>Black</b><code>#000000</code></div></div>
-    </div>
-
-    <h2>Status <code>never colour alone — always paired with icon or text</code></h2>
-    <div class="swg">
-      <div class="sw"><i style="background:#C90000"></i><div><b>Red</b><code>#C90000</code></div></div>
-      <div class="sw"><i style="background:#FFF2F2"></i><div><b>Red Light</b><code>#FFF2F2</code></div></div>
-      <div class="sw"><i style="background:#FFD600"></i><div><b>Yellow</b><code>#FFD600</code></div></div>
-      <div class="sw"><i style="background:#FFFBE6"></i><div><b>Yellow Light</b><code>#FFFBE6</code></div></div>
-      <div class="sw"><i style="background:#70C474"></i><div><b>Green</b><code>#70C474</code></div></div>
-      <div class="sw"><i style="background:#EAF6EA"></i><div><b>Green Light</b><code>#EAF6EA</code></div></div>
-    </div>
-
-    <h2>Primitives — Debenhams Aqua family <code>locked · names preserved from the DS file</code></h2>
-    <div class="swg">
-      <div class="sw"><i style="background:#E6FFFC"></i><div><b>Aqua Light 4</b><code>#E6FFFC</code></div></div>
-      <div class="sw"><i style="background:#D6FFF9"></i><div><b>Aqua Light 3</b><code>#D6FFF9</code></div></div>
-      <div class="sw"><i style="background:#E8F4F2"></i><div><b>Aqua Neutral</b><code>#E8F4F2</code></div></div>
-      <div class="sw"><i style="background:#B8FDF4"></i><div><b>Aqua Light 2</b><code>#B8FDF4</code></div></div>
-      <div class="sw"><i style="background:#9DEDE2"></i><div><b>Aqua Light 1</b><code>#9DEDE2</code></div></div>
-      <div class="sw"><i style="background:#7BE7D8"></i><div><b>Primary Aqua</b><code>#7BE7D8</code></div></div>
-      <div class="sw"><i style="background:#76DECF"></i><div><b>Aqua Dark 1</b><code>#76DECF</code></div></div>
-      <div class="sw"><i style="background:#70BEB3"></i><div><b>Aqua Dark 2</b><code>#70BEB3</code></div></div>
-      <div class="sw"><i style="background:#529C92"></i><div><b>Aqua Dark 3</b><code>#529C92</code></div></div>
-      <div class="sw"><i style="background:#00787D"></i><div><b>CTA Aqua</b><code>#00787D</code></div></div>
-      <div class="sw"><i style="background:#00565A"></i><div><b>CTA Touch Down</b><code>#00565A</code></div></div>
-      <div class="sw"><i style="background:#1E6F63"></i><div><b>Primary Dark</b><code>#1E6F63</code></div></div>
-    </div>
-
-    <h2>Primitives — boohoo Pink family <code>12 slots · same structure every fascia</code></h2>
-    <div class="swg">
-      <div class="sw"><i style="background:#FFE9F0"></i><div><b>Pink Light 4</b><code>#FFE9F0</code></div></div>
-      <div class="sw"><i style="background:#FEE0EA"></i><div><b>Pink Light 3</b><code>#FEE0EA</code></div></div>
-      <div class="sw"><i style="background:#F1DCE3"></i><div><b>Pink Neutral</b><code>#F1DCE3</code></div></div>
-      <div class="sw"><i style="background:#FCD3E1"></i><div><b>Pink Light 2</b><code>#FCD3E1</code></div></div>
-      <div class="sw"><i style="background:#FBC7D8"></i><div><b>Pink Light 1</b><code>#FBC7D8</code></div></div>
-      <div class="sw"><i style="background:#F8B5CC"></i><div><b>Primary Pink</b><code>#F8B5CC</code></div></div>
-      <div class="sw"><i style="background:#EEA5BE"></i><div><b>Pink Dark 1</b><code>#EEA5BE</code></div></div>
-      <div class="sw"><i style="background:#EA92B0"></i><div><b>Pink Dark 2</b><code>#EA92B0</code></div></div>
-      <div class="sw"><i style="background:#DD789B"></i><div><b>Pink Dark 3</b><code>#DD789B</code></div></div>
-      <div class="sw"><i style="background:#BB305F"></i><div><b>CTA Pink</b><code>#BB305F</code></div></div>
-      <div class="sw"><i style="background:#A82A55"></i><div><b>CTA Touch Down</b><code>#A82A55</code></div></div>
-      <div class="sw"><i style="background:#CB4870"></i><div><b>Primary Dark</b><code>#CB4870</code></div></div>
-    </div>
-    <p>boohooMAN, PLT and Karen Millen carry their colour-alignment CTA set (rendered above when switched); their remaining primitive slots land as each fascia is audited. Removed from the primitive layer: KM mode overrides (re-mapped fresh via semantic layer) and Rewards colours (project dead).</p>
+    <h2>Colour palette <code>same names as the Figma DG Group Design System collection · one mode per brand</code></h2>
+    <p>Primary and Action (CTA), the Shades ramp (Neutral → Light 4–1 → Primary → Dark 1–3 → Primary Dark), brand accents, Extended and Mono (White, Grey 05 / 1 / 2 / 25 / 3 / 4 / 5 / 6, Soft Black, Black). In code each one is a custom property in <code>tokens.css</code> Layer 0 (<code>--primary</code>, <code>--cta</code>, <code>--light-1</code>, <code>--grey-05</code> …) and resolves per brand. These are primitives: components use the semantic tokens above.</p>
+    <div class="tabs tabs--wrap fxtabs" id="palTabs" role="tablist" aria-label="Brand palette"></div>
+    <div id="palBoards"></div>
   </section>
 
   <!-- TYPE -->
@@ -1583,6 +1541,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 <script src="assets/ds/subscribe.js"></script>
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/figma-lib.js"></script>
+<script src="assets/ds/palette.js"></script>
 <script src="assets/ds/usp.js"></script>
 <script>
 /* ---- component library: gallery + wiki pages + dev overlay, rendered from assets/ds/catalogue.js ---- */
@@ -2048,6 +2007,26 @@ route();paint();
   const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
   const list=(k,a)=>a&&a.length?'<span class="cl-k">'+k+' · '+a.length+'</span><ul>'+a.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'';
   el.innerHTML=DG_CHANGELOG.map(e=>'<div class="cl-e"><h2>'+fmt(e.d)+' <code>'+esc(e.v)+'</code> <span style="font-weight:400;opacity:.75">'+esc(e.title||'')+'</span></h2>'+(e.by?'<p class="cl-by">Driven by '+esc(e.by)+'</p>':'')+list('Added',e.added)+list('Changed',e.changed)+list('Fixed',e.fixed)+(e.rule?'<p class="cl-rule">'+esc(e.rule)+'</p>':'')+'</div>').join('');
+})();
+
+/* Colour page — the brand palettes in the Figma format (assets/ds/palette.js, generated from tools/palette/palette.json) */
+(function(){const P=window.DG_PALETTE;if(!P)return;const T=document.getElementById('palTabs'),H=document.getElementById('palBoards');if(!T||!H)return;
+ const lum=h=>{const c=[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+ const ink=h=>lum(h)>.36?'#000':'#FFF';
+ const sw=(label,hex,key,extra)=>`<div class="pal-sw${lum(hex)>.93?' pal-sw--line':''}" style="background:${hex};color:${ink(hex)}">${extra||''}<b>${label}</b><span>${hex}</span><code>${window.DG_PALETTE_CSS(key)}</code></div>`;
+ const board=(k)=>{const b=P[k],sh=b.shades;const shades=[['Neutral',b.neutralName],['Neutral Pressed'],['Light 4'],['Light 3'],['Light 2'],['Light 1'],['@'],['Dark 1'],['Dark 2'],['Dark 3'],['Primary Dark']];
+  const mono=Object.entries(b.mono).filter(([n,v])=>n!=='Background White'||v!==b.mono.White);
+  return `<div class="pal" data-pal="${k}"><div class="pal-hd"><b>Colour Palette · ${b.name}</b><span>${b.src}</span></div>
+  <div class="pal-row"><div><h4>Primary</h4>${sw(b.primaryName,b.primary.Primary,'Primary')}</div><div><h4>Action</h4>${sw(b.ctaName,b.primary.CTA,'CTA')}</div>${Object.keys(b.accents).length?`<div><h4>Brand accents</h4><div class="pal-row" style="gap:0">${Object.entries(b.accents).map(([n,v])=>sw(n.replace(/ \((MAN|PLT)\)/,''),v,n)).join('')}</div></div>`:''}</div>
+  <h4>Shades palette</h4><div class="pal-strip">${shades.map(([n,l])=>n==='@'?sw(b.primaryName,b.primary.Primary,'Primary','<em>Primary</em>'):sw(l||n,sh[n],n)).join('')}</div>
+  <h4>Extended</h4><div class="pal-strip">${Object.entries(b.extended).map(([n,v])=>sw(n,v,n)).join('')}</div>
+  <h4>Mono palette</h4><div class="pal-strip">${mono.map(([n,v])=>sw(n,v,n)).join('')}</div></div>`};
+ const keys=Object.keys(P);let sel=null;
+ T.innerHTML=keys.map(k=>`<button type="button" role="tab" data-pal="${k}">${P[k].name}</button>`).join('')+'<button type="button" role="tab" data-pal="all">All</button>';
+ const show=k=>{sel=k;T.querySelectorAll('button').forEach(b=>{const on=b.dataset.pal===k;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});H.innerHTML=(k==='all'?keys:[k]).map(board).join('')};
+ T.addEventListener('click',e=>{const b=e.target.closest('button');if(b)show(b.dataset.pal)});
+ const cur=()=>{const d=document.documentElement.getAttribute('data-brand');return P[d]?d:'debenhams'};
+ show(cur());new MutationObserver(()=>{if(sel!=='all')show(cur())}).observe(document.documentElement,{attributes:true,attributeFilter:['data-brand']});
 })();
 </script>
 </body>
