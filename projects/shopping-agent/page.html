@@ -361,7 +361,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .ac.typing .ac-sec{padding:12px 0}
 .ac-ac{list-style:none;margin:0;padding:6px 0 4px}.ac-term b{font-weight:var(--w-strong,600)}
 .ac-term{display:block;width:100%;text-align:left;background:none;border:0;padding:0;height:40px;line-height:40px;font:var(--w-regular,300) 14px/40px var(--font-family-base);color:var(--text-primary);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ac-prompts-row{padding-top:6px;padding-bottom:8px;margin-top:-6px;margin-bottom:-8px}.ac-prompts-row .ai-pill{flex:none;font-size:var(--s-txt,16px);white-space:nowrap}   /* room for the pill shadow inside the scrolling row */
+.ac-prompts-row{padding-top:6px;padding-bottom:8px;margin-top:-6px;margin-bottom:-8px}.ac-prompts-row .ai-pill{flex:none;white-space:nowrap}   /* DS .ai-pill--suggest: 14 Light, light shadow (29 Oct) */   /* room for the pill shadow inside the scrolling row */
 /* keep the panel above the keyboard: the mock (review aid) or the real one on a phone */
 .ac{bottom:max(var(--kbv,0px),var(--kbm,0px))}
 /* floating visual search: a 56px white circle, bottom right, 16px above the keyboard (the mock or the real one) */
@@ -516,7 +516,8 @@ function header(){
   const q=`<span class="sf-wrap"><input class="srch-field" type="search" placeholder="${ph}" aria-label="Search" autocomplete="off" enterkeyhint="search" value="${esc(S.q||'')}"></span>`;
   /* visual search (panel): the camera in the field, or (phones) a floating button above the keyboard while search is open — then the field has no camera */
   const camIn=d||S.vs!=='float';
-  const ics=`<span class="ics">${camIn?'<img src="assets/ds/icons/camera.svg" alt="">':''}<img src="${sico}" alt=""></span>`;
+  const fsico=/plt-/.test(sico)?sico:'assets/ds/icons/lib/icons-search.svg';   /* field icons = the library Icons / Camera + Icons / Search (icons/lib), as the DS header */
+  const ics=`<span class="ics">${camIn?'<img src="assets/ds/icons/lib/icons-camera.svg" alt="">':''}<img src="${fsico}" alt=""></span>`;
   const circle=`<button class="ai-circle" ${F('launcher','AI icon beside search')} data-q="" aria-label="${ask()}"><i class="ai-icon"></i></button>`;
   const askPill=`<button class="ai-pill ai-pill--outline ag-ask" ${F('launcher','Ask beside search')} data-q="">${spk(18)}<span class="ag-lbl">Ask</span></button>`;
   const btn=askPill;   /* 19 Oct: Ask on every option (the AI-icon-only option is gone) */
@@ -572,7 +573,7 @@ function acTyping(q){const ts=terms(q),ps=ctxPrompts(q),ms=matches(q),qq=esc(q.t
   /* the typed part bold, the rest regular (Jake, 21 Oct) */
   const hl=x=>{const k=q.trim().toLowerCase(),i=x.toLowerCase().indexOf(k);return i<0||!k?esc(x):esc(x.slice(0,i))+'<b>'+esc(x.slice(i,i+k.length))+'</b>'+esc(x.slice(i+k.length))};
   const AC=ts.length?`<ul class="ac-ac">${ts.map(x=>`<li><button class="ac-term" data-term="${esc(x)}">${hl(x)}</button></li>`).join('')}</ul>`:'';
-  const AI=ON('autocomplete')?`<div class="ac-sec ac-ask" ${F('autocomplete','Need some help? · for “'+q.trim()+'”')}><h4>Need some help?</h4><div class="ac-chips ac-hs ac-prompts-row">${ps.map(c=>`<button class="ai-pill ai-pill--soft" data-q="${esc(c)}">${spk(14)}${esc(c)}</button>`).join('')}<button class="ai-pill ai-pill--outline" data-q="${qq}">${spk(14)}${esc(ask())} about “${qq}”</button></div></div>`:'';
+  const AI=ON('autocomplete')?`<div class="ac-sec ac-ask" ${F('autocomplete','Need some help? · for “'+q.trim()+'”')}><h4>Need some help?</h4><div class="ac-chips ac-hs ac-prompts-row">${ps.map(c=>`<button class="ai-pill ai-pill--soft ai-pill--suggest" data-q="${esc(c)}">${spk(14)}${esc(c)}</button>`).join('')}<button class="ai-pill ai-pill--outline ai-pill--suggest" data-q="${qq}">${spk(14)}${esc(ask())} about “${qq}”</button></div></div>`:'';
   const PM=`<div class="ac-sec"><h4>Products matching “${qq}”</h4><div class="ac-rv">${ms.map(([p,i])=>card(p,i,true)).join('')}</div></div>`;
   return AC+AI+PM}
 function acInner(){return (S.q||'').trim()?acTyping(S.q):acLanding()}
@@ -712,7 +713,7 @@ function chat(){
   const msgs=CHAT.msgs.map((m,i)=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b" data-mi="${i}">${m.cut!=null?words(m.b,m.cut):m.b}</div>${S.labels&&m.cut==null?cfgTags(m.b):''}`).join('');
   const txt=CHAT.draft||'';
   return `${mob?'':'<div class="cm-scrim" data-close="1"></div>'}<div class="cm${mob?' mob':''}" id="cm" role="dialog" aria-label="${esc(st['chat-title'])}">
-    <div class="cm-tb modal-hd">${CHAT.msgs.length?`<span class="mt">${esc(st['chat-title'])}</span>`:''}<button class="modal-x" data-close="1" aria-label="Close"></button></div>
+    <div class="cm-tb modal-hd">${CHAT.msgs.length?`<span class="mt">${esc(st['chat-title'])}</span><button class="mdl-refresh" data-reset="1" aria-label="Start a new chat"></button>`:''}<button class="modal-x" data-close="1" aria-label="Close"></button></div>
     <div class="cm-body" id="cmbody">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
     <form class="cm-in" id="cmform"><div class="cm-box"><span class="plus">+</span><input class="cm-input" id="cminput" type="text" autocomplete="off" placeholder="${esc(st['placeholder-text'])}" value="${esc(txt)}" aria-label="Message ${name}"><button type="submit" class="send${txt?' on':''}" id="cmsend" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></form>
     <div class="cm-disc">${esc(st['disclosure-text'])}</div>
@@ -879,6 +880,7 @@ document.addEventListener('click',e=>{
     if(hw.classList.contains('closing'))return;hw.classList.remove('srch-in');hw.classList.add('closing');document.body.classList.add('closing-search');setTimeout(done,240);return}
   {const ah=e.target.closest('.acc-set .acc-h');if(ah){e.preventDefault();ah.parentNode.classList.toggle('open');return}}
   if(e.target.closest('.cm-cart')){CHAT.toast=true;const t=document.getElementById('cmtoast');if(t)t.classList.add('on');clearTimeout(CHAT.toastT);CHAT.toastT=setTimeout(()=>{CHAT.toast=false;const x=document.getElementById('cmtoast');if(x)x.classList.remove('on')},6000);return}   /* production: our front end on the custom-cart add, Google’s own toast hidden */
+  if(e.target.closest('[data-reset]')){CHAT.msgs=[];CHAT.toast=false;CHAT.draft='';CHAT.focus=true;drawChat();return}   /* refresh = Google’s clear chat (restart): back to the start screen */
   if(e.target.closest('[data-viewbag]')){CHAT.toast=false;CHAT.open=false;CHAT.user=false;S.chat=false;S.page='bag';parent.postMessage({protoChat:false},'*');render();scrollTo(0,0);return}
   if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
