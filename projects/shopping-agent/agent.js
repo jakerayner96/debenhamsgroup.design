@@ -7,7 +7,7 @@ const DEF={
   name:'Deb',
   title:'Ask Deb',
   intro:"Hi there – I’m Deb, your Debenhams Personal Assistant! Whatever you’re looking for, I’ll help you find it. I can guide you based on budget, occasion, colour, style, size & more. Let me know what you’re shopping for today and we can get started…",
-  ask:'You can ask me things like:',
+  ask:'',   /* Jake 29 Oct: the intro stands on its own, prompts follow */
   prompts:["Women's Dresses","Beauty & Skincare","Men's Shirts & Suits","Home & Bedding"],
   placeholder:'Ask Deb anything...',
   disclosure:'Our AI is learning and may make mistakes.',
@@ -64,7 +64,7 @@ function build(base,e,brand){
   sy['--chat-messenger-internal-chat-window-width']=e.width+'px';
   /* DS modal rules (29 Oct): 24px in on every side (title bar, messages, input, disclosure), title SemiBold 20 on both breakpoints, 24px from the title to the first message */
   const mo=sy.mobile=sy.mobile||{};
-  for(const o of [sy,mo]){o['--chat-messenger-internal-titlebar-padding']='24px 24px 0 24px';o['--chat-messenger-internal-titlebar-title-font-size']='20px';o['--chat-messenger-internal-chat-padding']='0 24px';o['--chat-messenger-internal-input-box-padding']='16px 24px';o['--chat-messenger-internal-disclosure-text-padding']='0 24px 24px 24px'}
+  for(const o of [sy,mo]){o['--chat-messenger-internal-titlebar-padding']='24px 24px 0 24px';o['--chat-messenger-internal-titlebar-title-font-size']='20px';o['--chat-messenger-internal-chat-padding']='0 24px';o['--chat-messenger-internal-input-box-padding']='16px 24px';o['--chat-messenger-internal-disclosure-text-padding']='0 24px 24px 24px';o['--chat-messenger-internal-input-box-border-radius']='999px'}
   sy['--chat-messenger-internal-titlebar-title-font-weight']='600';sy['--chat-messenger-internal-first-message-margin-top']='24px';
   /* send button = the DS primary: aqua + black when there is text, the disabled primary (light aqua + grey) when empty */
   sy['--chat-messenger-internal-send-icon-active-background']=e.sendBg;sy['--chat-messenger-internal-send-icon-active-color']=e.sendFg;
@@ -84,7 +84,7 @@ function build(base,e,brand){
   zst['--df-messenger-prompt-background-color']=e.chipBg;
   zst['--df-messenger-prompt-border-color']=e.chipBorder;
   zst['--df-messenger-prompt-border-radius']=e.chipRadius+'px';
-  zs.text=e.intro+' <br/><br/>'+e.ask+'<br/>';
+  zs.text=e.intro+(e.ask?' <br/><br/>'+e.ask+'<br/>':'');
   zs.prompts=e.prompts.filter(Boolean);
   p.components.text.payload.text=`By using ${e.title}, you agree to ${/s$/.test(e.brandName)?e.brandName+"'":e.brandName+"'s"} [Privacy Notice](https://www.${e.domain}/content/privacy-notice) and [Terms & Conditions](https://www.${e.domain}/content/terms-conditions)`;
   if(!e.hero)delete p.components.hero;

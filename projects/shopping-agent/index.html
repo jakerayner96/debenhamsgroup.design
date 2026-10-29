@@ -315,6 +315,7 @@ function renderPanel(host,S,update){
   <div class="card"><h3>Chat window</h3>
     <div style="display:flex;flex-direction:column;gap:8px"><label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Open</label>
       <label class="sw"><input type="checkbox" id="t-labels"${c.labels?' checked':''}><i></i>Label replies with their config key</label></div>
+    <div class="f" style="margin-top:10px"><span>Start screen</span><span class="seg" id="startseg"><button data-v="agent" class="${c.start!=='google'?'on':''}">Agent</button><button data-v="google" class="${c.start==='google'?'on':''}">Google default</button></span><small>${c.start==='google'?'Google’s default: T&amp;Cs line, hero image, intro copy and the zero-state prompts — straight from the config, no custom_template.':'Sparkle, greeting, tagline and four starter prompts.'}</small></div>
     <p style="margin:8px 0 0">Type to the agent: replies alternate between text (written in word by word, <code>dynamic-bot-writing</code>) and a shopping component. With labels on, each reply shows what styles it in <code>salesAgentConfig.json</code>; amber = not in Google’s widget (custom_template or FDE build).</p>
 </div>
   <div class="card card--fold${c.cfgOpen?' open':''}" id="cfgcard"><h3 class="fold-h" id="cfgtoggle" role="button" aria-expanded="${!!c.cfgOpen}">Agent config <small>salesAgentConfig.json · ${changed.length} changed</small><i class="chev"></i></h3><div class="fold-b">
@@ -351,6 +352,7 @@ function renderPanel(host,S,update){
     host.querySelector('#phnote').innerHTML=(n>PHMAX?`<b style="color:#FF8A80">Over ${PHMAX}: clips below ~${from}px</b>`:`Fits from ~${from}px`)+` on every fascia (${ni?'not exposed, search open: field + Ask + X':'exposed: field + Ask'}). ${PHMAX} characters = no clipping from 360px (${NV?'NEW: 14px text':'LIVE: 16px text'}).`};
   if(phin){phUpd();phin.oninput=()=>{c.phM=phin.value;phUpd();update()}}
   const phd=host.querySelector('#phd');if(phd)phd.oninput=()=>{c.phD=phd.value;update()};
+  host.querySelectorAll('#startseg button').forEach(b=>b.onclick=()=>{c.start=b.dataset.v;c.chat=true;go()});
   host.querySelectorAll('#vsseg button').forEach(b=>b.onclick=()=>{c.vs=b.dataset.v;c.search=true;c.page=c.page||'home';go()});
   host.querySelectorAll('#vertog button').forEach(b=>b.onclick=()=>{S.ver=b.dataset.v;go()});
   host.querySelectorAll('#sqseg button').forEach(b=>b.onclick=()=>{c.sq=b.dataset.v;c.sqn=Date.now();c.page=c.page||'plp';c.search=true;c.chat=false;go()});

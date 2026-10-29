@@ -42,10 +42,9 @@ article.pc{width:auto!important}   /* product cards only — .bnpl badges also u
 .ag-sw>.hd-search{height:var(--ag-h);cursor:text;flex:1 1 0;min-width:0}
 .ag-sw .hd-search .ics img{object-fit:contain}
 .ag-mrow .ag-sw{gap:10px}
-.ag-sw .hd-search .ics{margin-left:auto}.ag-mrow .ag-sw .hd-search .ics{gap:14px}.ag-mrow .ag-sw .hd-search .ics img{width:20px;height:20px}
-.ai-circle{display:grid;place-items:center;width:var(--ag-h);height:var(--ag-h);flex:none;padding:0;border-radius:50%;cursor:pointer;border:0;background:#FFF;box-shadow:var(--shadow-puck);transition:box-shadow .15s,transform .15s}
-.ai-circle:hover,.ag-ask:hover{box-shadow:var(--shadow-pill)}.ai-circle:active,.ag-ask:active{transform:scale(.96)}
-.ag-ask{border:0!important;background:#FFF!important;box-shadow:var(--shadow-puck);transition:box-shadow .15s,transform .15s}   /* same soft shadow as the prompt pills, no gradient outline */
+.ag-sw .hd-search .ics{margin-left:auto}.ag-mrow .ag-sw .hd-search .ics{gap:20px}.ag-mrow .ag-sw .hd-search .ics img{width:20px;height:20px}
+.ai-circle{display:grid;place-items:center;width:var(--ag-h);height:var(--ag-h);flex:none;padding:0;border-radius:50%;cursor:pointer;border:0;background:#FFF;box-shadow:var(--shadow-ask);transition:box-shadow .15s,transform .15s}
+.ai-circle:hover{box-shadow:var(--shadow-puck)}.ai-circle:active,.ag-ask:active{transform:scale(.96)}
 body.exporting .ai-circle,body.exporting .ag-ask{box-shadow:none;border:1px solid var(--border-subtle)!important}
 .ai-circle .ai-icon{width:22px;height:22px}
 .ag-ask{padding:0 18px 0 14px!important}
@@ -248,8 +247,8 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 @media (prefers-reduced-motion:reduce){.cm.in,.cm.out,.cm-scrim.in,.cm-scrim.out,.cm.in *{animation:none!important}}
 
 .cm{position:fixed;top:0;right:var(--chat-messenger-internal-chat-window-offset,0);z-index:91;width:min(var(--chat-messenger-internal-chat-window-width,606px),100vw);height:var(--chat-messenger-internal-chat-window-height,100dvh);
-  background:var(--chat-messenger-internal-titlebar-background,#fff);border-radius:var(--chat-messenger-internal-chat-border-radius,24px) 0 0 var(--chat-messenger-internal-chat-border-radius,24px);
-  display:flex;flex-direction:column;font-family:var(--chat-messenger-font-family);color:var(--chat-messenger-color--on-surface,#222);box-shadow:-8px 0 40px rgba(0,0,0,.2);overflow:hidden}
+  background:var(--chat-messenger-internal-titlebar-background,#fff);border-radius:var(--chat-messenger-internal-chat-border-radius,0) 0 0 var(--chat-messenger-internal-chat-border-radius,0);
+  display:flex;flex-direction:column;font-family:var(--chat-messenger-font-family);color:var(--chat-messenger-color--on-surface,#222);overflow:hidden}
 .cm.mob{border-radius:0}
 .cm-tb{display:flex;align-items:flex-start;gap:12px;padding:var(--chat-messenger-internal-titlebar-padding,24px 24px 0 24px);flex:none;min-height:25px}
 /* title bar = the DS modal header (.modal-hd · .mt · .modal-x, 29 Oct): “Ask Deb” SemiBold 20/25 once chatting, no icon; 16px close on the title line, 24px in from the top and right */
@@ -260,7 +259,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cm-body>*{max-width:var(--chat-messenger-internal-message-list-max-width,1230px)}
 .cm-text{font-family:var(--chat-messenger-text-block-font-family);font-size:var(--chat-messenger-text-block-font-size);font-weight:var(--chat-messenger-text-block-font-weight);color:var(--chat-messenger-text-block-color);text-align:var(--chat-messenger-text-block-text-align);padding:var(--chat-messenger-text-block-padding);margin:var(--chat-messenger-text-block-margin);line-height:1.45}
 .cm-text a{color:var(--chat-messenger-text-block-link-color);text-decoration:underline}
-.cm-hero img{display:block;width:100%;height:auto;border:var(--chat-messenger-hero-image-border,none)}
+.cm-hero img{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:cover;border:var(--chat-messenger-hero-image-border,none)}
 .cm-zero{padding:var(--chat-messenger-zero-state-padding);font-size:var(--chat-messenger-typescale--body-large-font-size,16px);font-weight:var(--chat-messenger-typescale--body-large-font-weight,300);line-height:1.6}
 .cm-zero .pr{display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;gap:var(--chat-messenger-zero-state-gap,8px);margin-top:16px}
 .cm-zero .pr button{display:inline-flex;align-items:center;justify-content:var(--df-messenger-prompt-justify-content,flex-start);gap:8px;padding:var(--df-messenger-prompt-padding);font-size:var(--df-messenger-prompt-font-size);color:var(--df-messenger-prompt-color);background:var(--df-messenger-prompt-background-color);
@@ -275,7 +274,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cm-dots i:nth-child(2){animation-delay:.15s}.cm-dots i:nth-child(3){animation-delay:.3s}
 @keyframes dot{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
 .cm-car{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin-top:12px}
-.cm-tile{flex:none;width:var(--chat-messenger-product-carousel-tile-width,138px);display:flex;flex-direction:column;gap:6px;font-size:14px}
+.cm-tile{flex:none;width:var(--chat-messenger-product-carousel-tile-width,138px);display:flex;flex-direction:column;gap:8px}   /* the DS product card (compact: brand · name · price) + ADD TO BAG */
 .cm-tile img{width:100%;aspect-ratio:2/3;object-fit:cover;background:#F2F2F2}
 .cm-tile .n{font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3}
 .cm-tile .p{display:flex;gap:6px;flex-wrap:wrap;align-items:baseline}.cm-tile .p b{font-weight:700}.cm-tile .p b.sale{color:#9E2A2B}.cm-tile .p s{color:#777;font-size:12px}.cm-tile .p em{font-style:normal;color:#9E2A2B;font-size:12px}
@@ -519,7 +518,7 @@ function header(){
   const fsico=/plt-/.test(sico)?sico:'assets/ds/icons/lib/icons-search.svg';   /* field icons = the library Icons / Camera + Icons / Search (icons/lib), as the DS header */
   const ics=`<span class="ics">${camIn?'<img src="assets/ds/icons/lib/icons-camera.svg" alt="">':''}<img src="${fsico}" alt=""></span>`;
   const circle=`<button class="ai-circle" ${F('launcher','AI icon beside search')} data-q="" aria-label="${ask()}"><i class="ai-icon"></i></button>`;
-  const askPill=`<button class="ai-pill ai-pill--outline ag-ask" ${F('launcher','Ask beside search')} data-q="">${spk(18)}<span class="ag-lbl">Ask</span></button>`;
+  const askPill=`<button class="ai-pill ai-pill--ask ag-ask" ${F('launcher','Ask beside search')} data-q="">${spk(18)}<span class="ag-lbl">Ask</span></button>`;
   const btn=askPill;   /* 19 Oct: Ask on every option (the AI-icon-only option is gone) */
   const X=`<button class="ag-x" data-closesearch="1" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt="" onerror="this.replaceWith('✕')"></button>`;
   const sIcon=(h.match(/<button aria-label="Search"><img src="[^"]*" alt=""><\/button>/)||[''])[0];
@@ -707,7 +706,10 @@ function chat(){
   let head;
   /* start screen (Gemini-style): sparkle + "Hi there, I'm Deb" · one line · four one-line starter prompts. Fits inside the fold. */
   const sts=(E().starters||[]).filter(Boolean).slice(0,4);
-  head=`<div class="cm-start"><h2>${spk(24)}<span>${DEB()?`Hi there – I’m <b>${name}</b>, your Debenhams Personal Assistant!`:`Hi there – I’m your <b>${esc(BN())}</b> Personal Assistant!`}</span></h2><p>${esc(E().tagline)}</p>
+  if(S.start==='google')head=[c.text&&{o:c.text.order,h:tc},
+      c.hero&&{o:c.hero.order,h:`<div class="cm-hero"><img src="${A}img/${mob?'start-gifts-mobile':'start-gifts'}.jpg" alt=""></div>`},
+      {o:c.zeroState.order,h:`<div class="cm-zero" data-c="zero">${zs.text.replace(/<(?!br\s*\/?>)/g,'&lt;')}<div class="pr">${zs.prompts.map(t=>`<button data-q="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>`}].filter(Boolean).sort((a,b)=>a.o-b.o).map(x=>x.h).join('');
+  else head=`<div class="cm-start"><h2>${spk(24)}<span>${DEB()?`Hi there – I’m <b>${name}</b>, your Debenhams Personal Assistant!`:`Hi there – I’m your <b>${esc(BN())}</b> Personal Assistant!`}</span></h2><p>${esc(E().tagline)}</p>
     <div class="cm-starters">${sts.map(q=>`<button class="cm-starter" data-q="${esc(q)}">${spk(16)}<span>${esc(q)}</span></button>`).join('')}</div>${tc}</div>`;
   if(CHAT.msgs.length)head='';   /* once the conversation starts the start screen scrolls away, as in the Figma */
   const msgs=CHAT.msgs.map((m,i)=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b" data-mi="${i}">${m.cut!=null?words(m.b,m.cut):m.b}</div>${S.labels&&m.cut==null?cfgTags(m.b):''}`).join('');
@@ -728,7 +730,7 @@ function styleChat(){const el=document.getElementById('cm');if(!el)return;const 
 /* DS price block, small: one size for price, strikethrough and Save; the code line under it when there is one */
 /* DS price block (.price-blk, rebuilt 15 Oct): price row + code line; --sm = 13px for the chat, --pdp for the PDP */
 function prc(p,kind='sm'){const pct=p.pct?p.pct.replace(/[-%]/g,''):'';return `<div class="price-blk price-blk--${kind}"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${pct?`<span class="save" data-pct="${esc(pct)}"></span>`:''}</div>${p.off?`<div class="price-code">${esc(p.off)}</div>`:''}</div>`}
-function tile(i){const p=PR()[i];return `<div class="cm-tile"><img src="${IMG(i)}" alt=""><div class="n">${esc(p.name)}</div>${prc(p)}<button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div>`}
+function tile(i){const p=PR()[i];return `<div class="cm-tile"><article class="pc pc--compact"><div class="pc-img"><img class="ph" src="${IMG(i)}" alt=""></div><div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${p.brand?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div><div class="pc-price${p.was?' sale':''}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}</div></div></article><button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div>`}
 const ctx=(...c)=>`<div class="cm-ctx"><span class="lbl">${spk(14)}Using</span>${c.map(x=>`<span class="c">${esc(x)}</span>`).join('')}</div>`;
 const qr=(...c)=>`<div class="cm-qr">${c.map(x=>`<button class="ai-pill ai-pill--outline" data-q="${esc(x)}">${spk(14)}${esc(x)}</button>`).join('')}</div>`;
 const car=ids=>`<div class="cm-car">${ids.map(tile).join('')}</div>`;

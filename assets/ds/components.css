@@ -244,7 +244,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .hd--desktop .hd-bar--desktop{padding:var(--gap-4,16px) 52px} /* live 1440: logo and icons sit 52px in (gap 13) */
 .hd-bar--desktop .hd-logo{width:141px;max-height:40px;flex:none} /* live: 141 wide on desktop for every fascia */
 .hd-search{flex:1;max-width:800px;margin:0 auto;height:56px;/* production: h-14 */background:var(--surface-media);border:none;border-radius:var(--radius-pill);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;font-family:var(--font-family-base);font-size:16px;font-weight:var(--w-regular);color:var(--text-secondary);cursor:text}
-.hd-search .ics{display:flex;gap:16px;align-items:center}
+.hd-search .ics{display:flex;gap:20px;align-items:center}
 .hd-search img{width:20px;height:20px;display:block;object-fit:contain}   /* the Figma library Icons / Camera + Icons / Search at 20 (icons/lib, glyph inset in the frame), 29 Oct */
 .hd-search--underline{background:transparent;border-radius:0;border-bottom:var(--border-w) solid var(--icon-primary);padding:0 4px} /* PLT pattern */
 .hd-nav{display:flex;gap:var(--gap-4,16px);align-items:center;justify-content:center;height:40px;background:var(--nav-bg);color:var(--nav-fg);font-size:16px;font-weight:var(--w-regular);overflow-x:auto;padding:0 var(--gap-4,16px)} /* live case is in the data (header.js) — no forced transform */
@@ -1545,7 +1545,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
    Static DS versions; the prototype's chat window still renders from salesAgentConfig.json. Every AI colour reads --ai-* (per fascia, above). */
 
 /* AI search button — beside the search field (exposed search) or left of the X when search is active. 44px white circle on the puck shadow. */
-.ai-circle{display:grid;place-items:center;width:44px;height:44px;flex:none;padding:0;border:0;border-radius:50%;background:var(--surface-raised,#FFF);box-shadow:var(--shadow-puck);cursor:pointer;transition:box-shadow .15s,transform .15s}
+.ai-circle{display:grid;place-items:center;width:44px;height:44px;flex:none;padding:0;border:0;border-radius:50%;background:var(--surface-raised,#FFF);box-shadow:var(--shadow-ask);cursor:pointer;transition:box-shadow .15s,transform .15s}
 .ai-circle:hover{box-shadow:var(--shadow-pill)}.ai-circle:active{transform:scale(.96)}.ai-circle .ai-icon{width:22px;height:22px}
 
 /* Search suggestions (search active, Search Figma gKuKG9M8kSM2BCL6dy0G30 · 1012:2295 re-ordered): Recent · Popular (one scrolling row each) ·
@@ -1565,6 +1565,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 /* .ai-pill--suggest: the search suggestion prompts (Need some help?) — 14 regular (Debenhams Light), a lighter shadow than the puck (29 Oct, Figma Zi4qRcAFTELiCvFIl29mJC 75:467) */
 .ai-pill.ai-pill--suggest{font-size:14px;font-weight:var(--w-regular,300);color:var(--text-primary);box-shadow:0 0 14px -4px rgba(0,0,0,.06)}
 .ai-pill.ai-pill--suggest:hover{box-shadow:var(--shadow-puck)}
+.ai-pill.ai-pill--ask{border:0;background:var(--surface-raised,#FFF);box-shadow:var(--shadow-ask);transition:box-shadow .15s,transform .15s}.ai-pill.ai-pill--ask:hover{box-shadow:var(--shadow-puck)}   /* Ask launcher beside search: soft 8% shadow, no outline */
 .ai-pill--outline.ai-pill--suggest,.ai-pill--outline.ai-pill--suggest:hover{box-shadow:none}
 
 /* Search bar · open (.srch-bar, 26 Oct 2026, AI generated badge prototype) — the field the search overlay opens on, over .srch-sugg.
