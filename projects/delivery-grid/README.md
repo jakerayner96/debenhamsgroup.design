@@ -4,6 +4,8 @@
 
 **Live:** https://jakerayner96.github.io/debenhamsgroup.design/projects/delivery-grid/
 
+**Figma:** "Debenhams · PDP Delivery Grid" `kgwbvFUR9kMyoLls1kpks9` (Debenhams Group team), board `24:2`: mobile box states, the Delivery Options modal, desktop, the Delivery method component. Plain layers captured from the DS code (29 Oct).
+
 ## Sources
 - Modal: Figma Gifting `PIh1ikzvYNH1FR4arKJbe4` · `209-294935` (Home Delivery) · `209-295333` (Collect Nearby) — Paul Dossis
 - Tabbed box + Premier view: Demi Adesanya's Claude artifact (claude.ai/artifact/4f6vqa1g6yAcXvCoS7oWkC)
