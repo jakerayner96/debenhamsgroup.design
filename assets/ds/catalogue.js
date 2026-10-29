@@ -369,7 +369,7 @@ const DG_CATALOGUE = [
     'Card gap 2 (8px) · mobile cards 165px fixed (2.2 in view at 390), first card on the page margin (--pcar-pad = gap 4 / 16px), rail bleeds off the right edge',
     'Desktop (≥1024): cards per view = --pcar-per plus a 0.4 card peek. Home + PDP 5 · bag 4 · search overlay 3 · added to bag 2',
     'Arrows (desktop + mouse only): 32px white circle, shadow 0 2 8 14%, 14px chevron, gap 3 (12px) in from the edge, centred on the card image; prev hidden at the start, next at the end; each click pages by the whole cards in view',
-    'Grid (.pcar--grid): same header and cards, 2 columns on mobile, --pcar-per columns on desktop, column gap 2 (8px), row gap 6 (24px), no arrows',
+    'Arrows under the rail (.rail-nav): for narrow rails where arrows can’t sit on the images (agent chat) — a left-aligned pair under the cards, every device, 28px circles + 12px chevron, 8px apart, 12px below the cards; prev/next dim to 35% at the ends','Grid (.pcar--grid): same header and cards, 2 columns on mobile, --pcar-per columns on desktop, column gap 2 (8px), row gap 6 (24px), no arrows',
     'Behaviour: assets/ds/carousel.js — arrows, end states, tab select (fires pcar:tab {index,label} for the feed swap). Scroll snaps to card starts; no autoplay, no loop, no dots'],
   variants:[
     {name:'Home · large header + tabs', html:PCAR({size:'lg',w:1100,per:5,title:'Transition Between Seasons',sub:'Get ready for cosier days with our easy autumn upgrades',tabs:['Fashion','Home','Beauty'],n:7})},
@@ -377,6 +377,7 @@ const DG_CATALOGUE = [
     {name:'Search · added to bag · small', html:PCAR({size:'sm',w:560,per:3,title:'Recently viewed',n:5})},
     {name:'Create the Look · image only', html:PCAR({look:true,w:1100,per:5,title:'Create The Look',n:7})},
     {name:'Grid format', html:PCAR({grid:true,w:1100,per:4,title:'Products matching “dress”',n:8})},
+    {name:'Arrows under the rail (chat)', html:'<div style="width:400px">'+PCAR({size:'sm',w:400,per:2,title:'Wedding guest dresses',n:5})+'<div class="rail-nav"><button class="pcar-arr pcar-arr--prev" disabled aria-label="Previous"></button><button class="pcar-arr pcar-arr--next" aria-label="Next"></button></div></div>'},
   ],
   dev:{title:'Molecules/PersonalisedCarousel', status:'partial', note:'Dev has one carousel with controls + brand / category / search-term feeds and variant. Align it to this: header size (lg/md/sm) + tabs as props, cardsPerView per placement, the grid format, no wishlist on rail cards, arrows desktop-only centred on the image. Spec + every placement: projects/product-carousel.'} },
 

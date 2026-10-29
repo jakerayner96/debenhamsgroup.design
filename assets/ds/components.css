@@ -769,6 +769,11 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pcar-arr--next{right:12px}
 .pcar-arr--next::before{transform:scaleX(-1)}
 .pcar-arr[disabled]{opacity:0;pointer-events:none}
+/* arrows under the rail (.rail-nav) — narrow rails where the arrows can't sit on the images (the agent chat): a left-aligned pair under the cards, on every device; 28px circles, 12px lib chevron (1pt), prev/next dim at the ends */
+.rail-nav{display:flex;gap:8px;margin-top:12px}
+.rail-nav .pcar-arr{position:static;transform:none;display:grid;width:28px;height:28px}
+.rail-nav .pcar-arr::before{width:12px;height:12px}
+.rail-nav .pcar-arr[disabled]{opacity:.35}
 /* grid format — same header, same cards, wrapped: 2 across on mobile, --pcar-per across on desktop */
 .pcar--grid .pcar-track{display:grid;grid-template-columns:repeat(var(--pcar-cols,2),minmax(0,1fr));gap:var(--gap-6,24px) var(--pcar-gap);overflow:visible;scroll-snap-type:none}
 .pcar--grid .pcar-track>*{flex:none}

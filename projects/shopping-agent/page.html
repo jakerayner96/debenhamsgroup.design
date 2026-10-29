@@ -734,7 +734,8 @@ function prc(p,kind='sm'){const pct=p.pct?p.pct.replace(/[-%]/g,''):'';return `<
 function tile(i){const p=PR()[i];return `<div class="cm-tile"><article class="pc pc--compact"><div class="pc-img"><img class="ph" src="${IMG(i)}" alt=""></div><div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${p.brand?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div><div class="pc-price${p.was?' sale':''}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}</div></div></article><button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div>`}
 const ctx=(...c)=>`<div class="cm-ctx"><span class="lbl">${spk(14)}Using</span>${c.map(x=>`<span class="c">${esc(x)}</span>`).join('')}</div>`;
 const qr=(...c)=>`<div class="cm-qr">${c.map(x=>`<button class="ai-pill ai-pill--outline" data-q="${esc(x)}">${spk(14)}${esc(x)}</button>`).join('')}</div>`;
-const car=ids=>`<div class="cm-car">${ids.map(tile).join('')}</div>`;
+const car=ids=>`<div class="cm-car">${ids.map(tile).join('')}</div><div class="rail-nav"><button type="button" class="pcar-arr pcar-arr--prev" data-rail="-1" disabled aria-label="Previous products"></button><button type="button" class="pcar-arr pcar-arr--next" data-rail="1" aria-label="Next products"></button></div>`;   /* DS .rail-nav: arrows under the chat rail */
+function railState(c){const n=c.nextElementSibling;if(!n||!n.classList.contains('rail-nav'))return;const [p,x]=n.querySelectorAll('.pcar-arr');p.disabled=c.scrollLeft<4;x.disabled=c.scrollLeft+c.clientWidth>=c.scrollWidth-4}
 /* one product as the agent's product detail card (rich-content-config.productDetailConfig: title 14/500 · price 14/700 · sale #9E2A2B · % off) */
 function pd(i,sizes){const p=PR()[i];return `<div class="cm-pd"><img src="${IMG(i)}" alt=""><div class="pd"><div class="pdt">${p.brand?`<span class="pbd">${esc(p.brand)}</span>`:''}<span class="n">${esc(p.name)}</span></div><div class="pc-price${p.was?' sale':''}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}</div>${sizes?`<div class="psz">${['8','10','12','14'].map(z=>`<span class="${z==='10'?'on':''}">${z}</span>`).join('')}</div>`:''}<button class="cm-cart">${esc(CFG.payload.settings['cart-button-text'])}</button></div></div>`}
 /* every reply component, in turn — typed messages cycle through these so each one shows */
@@ -804,7 +805,7 @@ function closeChat(){const cm=document.getElementById('cm');
   if(!cm||EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches)return done();
   if(CHAT.closing)return;CHAT.closing=true;
   document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>{el.classList.remove('in');el.classList.add('out')});setTimeout(done,260)}
-function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();
+function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();document.querySelectorAll('#chat .cm-car').forEach(c=>{railState(c);c.addEventListener('scroll',()=>railState(c),{passive:true})});
   const open=!!document.getElementById('cm');
   if(open&&!DRAWN&&!EXPORTING)document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>el.classList.add('in'));
   DRAWN=open;
@@ -874,6 +875,7 @@ document.addEventListener('submit',e=>{if(e.target.id==='cmform'){e.preventDefau
 document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.target.value;const b=document.getElementById('cmsend');if(b)b.classList.toggle('on',!!e.target.value.trim())}});
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
+  {const r=e.target.closest('[data-rail]');if(r){const c=r.closest('.rail-nav').previousElementSibling,t=c.querySelector('.cm-tile');c.scrollBy({left:+r.dataset.rail*((t?t.offsetWidth:120)+10)*2,behavior:'smooth'});return}}
   if(e.target.closest('.hd-burger')){parent.postMessage({protoMenu:1},'*');return}   /* prototype: the hamburger opens the shell's settings panel (phones) */
   const tm=e.target.closest('[data-term]');if(tm){S.q=tm.dataset.term;const i=document.querySelector('#hdrwrap .srch-field');if(i)i.value=S.q;acRedraw();focusSearch();return}   /* autocomplete row → fills the field */
   if(!S.search&&e.target.closest('[data-opensearch]')){scrollTo(0,0);S.search=true;S.q='';parent.postMessage({protoSearch:true},'*');render();focusSearch();return}
