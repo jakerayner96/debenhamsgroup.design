@@ -6,7 +6,7 @@
 **Format:** the AI Generated Badge deck's fixed 1920×1080 stage, scaled to the window. Arrow keys, click or space to move; `#n` deep links; print to PDF gives one slide per page. **G** opens the overview of all 14 layouts. The HUD switches partner.
 
 ## One template, one content set per partner
-Every slide is the same template. Partner content lives in `PARTNERS` at the top of the script (name, logo, cover / divider / close images, budgets, sell-through, categories, opportunities, moodboard). To make a new partner deck, copy a block, change its content and open `?p=<key>`. A figure set to `null` shows as "to confirm" (grey £— / —%, dashed bars), so a deck can go out before trading has the numbers.
+Every slide is the same template. Partner content lives in `PARTNERS` at the top of the script (name, logo, cover / divider / close images, budgets, sell-through, categories, opportunities). The content-day slide (`MOOD`) is shared. To make a new partner deck, copy a block, change its content and open `?p=<key>`. A figure set to `null` shows as "to confirm" (grey £— / —%, dashed bars), so a deck can go out before trading has the numbers.
 
 - **adidas**: everything from the PDF.
 - **Vans**: Brand Room slides as adidas. **The Vans budgets and sell-through are not agreed yet, so they show as "to confirm".** The Vans categories, bullets and opportunities are draft copy for the team to edit.
@@ -18,11 +18,11 @@ Every slide is the same template. Partner content lives in `PARTNERS` at the top
 - Image panels keep the Brand Room's 30° cut from the PDF. It's a `clip-path`, so the photo is never skewed or zoomed.
 
 ## Images: no stretching, no upscaling
-Every `<img>` is `object-fit: cover` in a slot no bigger than its source at 1920 wide. The check (Playwright, every slide, both partners) measures rendered size against natural size: worst case 0.99 (no upscaling) and nothing stretched. The PDF moodboard images are small, so the T13 grid slots are fixed in px to fit them; don't enlarge those slots without bigger images.
-- `img/br/`: Brand Room campaign images (Figma Content page).
+Every `<img>` is `object-fit: cover` in a slot no bigger than its source at 1920 wide. The check (Playwright, every slide, both partners) measures rendered size against natural size: worst case 0.99 (no upscaling) and nothing stretched. 
+- `img/content/`: the Brand Room content-day shoot (Calvin Klein, Hunter, Juicy, Tommy; masters on Jake's laptop in `~/Desktop/TheBrandRoom/Imagery`, never `JUICY/do not use`), resized to 2400px. Used on T02 and T13, the same in every partner deck.
 - `img/screens/`: the new site's Home, Brand PLP, Bags PLP and PDP, exported from Figma at 3× (1170 × 2532).
 - Phones are the App Store screenshot template's device (Figma `vebOMPnswl12a9JehBSt1m` 15:863 · Device): bezel #111111 with a #4A4A4A edge, and its iOS status bar + home indicator as a vector overlay (`img/phone-chrome.svg`). Set a phone's size with `--w`.
-- `img/adidas/`: from the PDF (court, run, samba, moodboard) + the adidas concrete tile from the Figma home page.
+- `img/adidas/`: from the PDF (court) + the adidas concrete tile from the Figma home page.
 - `img/vans/`: **placeholders** from Wikimedia Commons (CC BY / CC BY-SA / CC0; attribution needed if the deck goes external). Swap for Vans campaign assets when the team has them.
 
 ## Templates (bank these into Figma Slides)
@@ -33,7 +33,7 @@ Every `<img>` is `object-fit: cover` in a slot no bigger than its source at 1920
 | T03 | Numbered points | T10 | Timeline (partner budgets) |
 | T04 | Chart + split (`AGES`) | T11 | Two column (partner sell-through + mark) |
 | T05 | KPI grid | T12 | Three column (partner vision) |
-| T06 | Stat list + phones | T13 | Image grid (partner moodboard + Brand Room palette) |
+| T06 | Stat list + phones | T13 | Image grid (Brand Room content day + palette) |
 | T07 | Phone row (the new site) | T14 | Close (partner) |
 
 ## Notes

@@ -210,7 +210,7 @@ img{display:block;max-width:none}
 .cats-big li{list-style:none;font:600 40px/1.15 var(--font);font-stretch:125%;letter-spacing:-.01em;text-transform:uppercase;padding:16px 0;border-bottom:1px solid var(--line)}
 .cats-big li:first-child{padding-top:0}
 
-/* T13 image grid: slot sizes fixed so the PDF moodboard images never upscale */
+/* T13 image grid: Brand Room content day (the shoot in ~/Desktop/TheBrandRoom/Imagery, 2400px masters) */
 .mood{position:absolute;left:var(--m);top:300px;display:grid;grid-template-columns:560px 330px 330px 430px;grid-template-rows:335px 335px;gap:10px}
 .mood figure{overflow:hidden;background:#1a1a1a}
 .mood img{width:100%;height:100%}
@@ -267,7 +267,7 @@ body.idle .hud,body.idle .progress{opacity:0}
 
 <!-- ============ T02 STATEMENT + IMAGE ============ -->
 <section class="slide light" data-layout="T02 · Statement + image" data-section="01 · The Brand Room">
-  <div class="split-img reveal-img"><img src="img/br/napapijri.jpg" alt="" style="object-position:20% center"></div>
+  <div class="split-img reveal-img"><img src="img/content/ck-portrait.jpg" alt="" style="object-position:center 30%"></div>
   <div class="head">
     <div class="eyebrow reveal">01 &nbsp;—&nbsp; The Brand Room</div>
     <h2 class="h2 reveal d1">A destination<br>of its own</h2>
@@ -426,6 +426,10 @@ const SOON=[['Reebok','reebok'],['Sweaty Betty','sweaty-betty'],['Berghaus','ber
 const TALK_ALL=['Converse','New Balance','ASICS','Nike','Saucony','The North Face','adidas','Vans','Ralph Lauren','Levi’s','Barbour','Fred Perry','EA7'];
 const AGES=[['18–24',12],['25–34',23],['35–44',21],['45–54',19],['55–64',13],['65+',9]]; /* read off the source chart */
 
+/* T13 content day: the same Brand Room shoot in every partner deck (studio set, grey backdrop, brands shot side by side) */
+const MOOD={title:'Content day',imgs:[['img/content/hunter-pair.jpg','center 35%'],['img/content/ck-man.jpg','center 20%'],['img/content/juicy-still.jpg','center 45%'],
+  ['img/content/hunter-boots.jpg','center 60%'],['img/content/hunter-quilt.jpg','center 30%'],['img/content/tommy-cap.jpg','center 25%']],
+  brief:'One studio set and one grey backdrop, with natural props. Brands are shot side by side, so the edit reads as one store.'};
 /* moodboard swatches = the Brand Room palette in the DS (tokens.css [data-brand=brandroom]): black, white and greys only */
 const SW=[['--primary','#0A0A0A','Black','#fff'],['--light-1','#4D4D4D','Grey 1','#fff'],['--light-3','#B5B5B5','Grey 3','#0A0A0A'],['--neutral','#F2F2F2','Neutral','#0A0A0A']];
 
@@ -444,9 +448,7 @@ const PARTNERS={
       {h:'Performance',v:'70–75%',ul:['Dual gender across every category, including childrenswear.','Marketing collaborations using talent.','Historical knowledge of adidas brand highlights and best sellers (JD) supports a high rate of sale.','Core offer built on NOS lines.']},
       {h:'Originals / Lifestyle',v:'65–70%',ul:['Higher markdown risk, mitigated by trend forecasting.','Dual gender across every category, including childrenswear.','Social commerce and influencer partnerships for incremental gains.']}],
     cats:['Footwear','Premium outerwear','Active lifestyle','Accessories &amp; gifting'],
-    future:['Brand-led campaigns, seasonal hero moments and joint digital content.','Exclusive product colourways and early access, where feasible.','Multi-season planning aligned with brand ambitions, alongside short-term trading.','Quarterly business reviews (QBR).'],
-    mood:{title:'Content day',imgs:[['img/adidas/mood-boots.jpg','center'],['img/adidas/mood-pair.jpg','center 30%'],['img/adidas/mood-cream.jpg','center 25%'],['img/adidas/mood-knit.jpg','center'],['img/adidas/mood-quilt.jpg','center 30%'],['img/adidas/samba.jpg','center 60%']],
-      brief:'A warm studio set with natural props. Performance and Originals styled together, on men and women.'}
+    future:['Brand-led campaigns, seasonal hero moments and joint digital content.','Exclusive product colourways and early access, where feasible.','Multi-season planning aligned with brand ambitions, alongside short-term trading.','Quarterly business reviews (QBR).']
   },
   vans:{
     name:'Vans', logo:'logos/vans.svg', ar:'791/320', date:'October 2026',
@@ -461,9 +463,7 @@ const PARTNERS={
       {h:'Classics',v:null,ul:['Old Skool, Authentic, Sk8-Hi and Era as a never-out-of-stock core.','Dual gender, plus kids, across footwear.','Proven full-price sellers, so markdown risk stays low.']},
       {h:'Seasonal / Collaborations',v:null,ul:['Seasonal colourways and collaborations, bought tight to protect full price.','Apparel, fleece and accessories to build basket size.','Social and creator content from skate, music and art.']}],
     cats:['Footwear','Apparel &amp; fleece','Accessories','Kidswear'],
-    future:['Brand-led campaigns built on Vans’ skate, music and art heritage.','Exclusive colourways and early access, where feasible.','Multi-season planning aligned with brand ambitions, alongside short-term trading.','Quarterly business reviews (QBR).'],
-    mood:{title:'Off The Wall',imgs:[['img/vans/authentic.jpg','center 65%'],['img/vans/flame.jpg','center'],['img/vans/toe.jpg','center 40%'],['img/vans/sk8.jpg','center 60%'],['img/vans/halfcab.jpg','center 55%'],['img/vans/knuskool.jpg','center']],
-      brief:'Classics shot on concrete and in the street. Close-ups of canvas, suede, the side stripe and the waffle sole.'}
+    future:['Brand-led campaigns built on Vans’ skate, music and art heritage.','Exclusive colourways and early access, where feasible.','Multi-season planning aligned with brand ambitions, alongside short-term trading.','Quarterly business reviews (QBR).']
   }
 };
 
@@ -501,8 +501,8 @@ const R={
         <p class="body"><b>Shared data insights.</b> Consumer trends and heat maps.</p></div>
       <div class="col reveal d3"><div class="h3">Key categories to unlock</div><ul class="cats-big">${P.cats.map(c=>`<li>${c}</li>`).join('')}</ul></div>
       <div class="col reveal d4"><div class="h3">Future opportunities</div>${P.future.map(f=>`<p class="body">${f}</p>`).join('')}</div></div>`,
-  mood:()=>{const m=P.mood,fig=(k,d)=>`<figure class="reveal-img d${d}"><img src="${m.imgs[k][0]}" alt="" style="object-position:${m.imgs[k][1]}"></figure>`;
-    return `<div class="head"><div class="eyebrow reveal">Moodboard</div><h2 class="h2 reveal d1">${m.title}</h2></div><div class="mood">
+  mood:()=>{const m=MOOD,fig=(k,d)=>`<figure class="reveal-img d${d}"><img src="${m.imgs[k][0]}" alt="" style="object-position:${m.imgs[k][1]}"></figure>`;
+    return `<div class="head"><div class="eyebrow reveal">How we shoot</div><h2 class="h2 reveal d1">${m.title}</h2></div><div class="mood">
       ${fig(0,1)}${fig(1,2)}${fig(2,3)}
       <div class="side reveal d4"><div class="swatches">${SW.map(([v,hex,l,ink])=>`<div style="background:var(${v},${hex});color:${ink};outline:1px solid var(--line-d)"><span>${l}<br>${hex}</span></div>`).join('')}</div>
         <div class="brief"><div class="eyebrow">Shoot direction</div><p class="body">${m.brief}</p></div></div>
