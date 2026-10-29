@@ -249,6 +249,7 @@ function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search i
     '| User bubble | Native | --chat-messenger-internal-message-user-* |',
     '| Product carousel | Native | rich-content-config.tileConfig · --chat-messenger-product-carousel-* |',
     '| Product detail card | Native | rich-content-config.productDetailConfig (size picker: confirm) |',
+    '| Added to bag toast | Custom | the DS toast, Top · actionable (.toast--top): “Item added to bag” + View (to the bag), 6s, over the top of the chat window. Our front end shows it on the custom-cart add; Google’s own “Your cart was updated” toast is hidden |',
     `| ADD TO BAG | Native | settings.custom-cart + cart-button-text · --cart-button-background-color ${(c.agent.cartBg||AG.def(S.brand).cartBg)} · --cart-button-font-color ${(c.agent.cartFg||AG.def(S.brand).cartFg)} · corner radii ${(c.agent.cartRadius??AG.def(S.brand).cartRadius)}px |`,
     '| Quick-reply chips | Native | --chat-messenger-internal-chips-* |',
     '| Bullet list | Native (markdown text) | bot message styles |',

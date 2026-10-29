@@ -430,6 +430,10 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cm.in .cm-start>*{animation:cmItem .4s cubic-bezier(.22,.9,.24,1) both}
 .cm.in .cm-start>:nth-child(2){animation-delay:.2s}.cm.in .cm-start>:nth-child(3){animation-delay:.26s}.cm.in .cm-start>:nth-child(4){animation-delay:.32s}.cm.in .cm-start>:nth-child(5){animation-delay:.38s}
 
+/* added to bag in the chat = the DS toast, Top · actionable (.toast--top): over the top of the window, 16px in, 6s (29 Oct, replaces Google’s “Your cart was updated” toast) */
+.cm .cm-toast{position:absolute;z-index:5;opacity:0;transform:translateY(-8px);transition:opacity .25s,transform .25s;pointer-events:none}
+.cm .cm-toast.on{opacity:1;transform:none;pointer-events:auto}
+.cm .cm-toast span{flex:1}
 /* toast — where a link would go */
 .ct{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;transition:.25s;background:#111;color:#fff;font:500 13px var(--font-family-base);padding:10px 16px;border-radius:8px;z-index:999;pointer-events:none;max-width:90vw;text-align:center}
 .ct.on{opacity:1;transform:translate(-50%,0)}
@@ -711,7 +715,8 @@ function chat(){
     <div class="cm-tb modal-hd">${CHAT.msgs.length?`<span class="mt">${esc(st['chat-title'])}</span>`:''}<button class="modal-x" data-close="1" aria-label="Close"></button></div>
     <div class="cm-body" id="cmbody">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
     <form class="cm-in" id="cmform"><div class="cm-box"><span class="plus">+</span><input class="cm-input" id="cminput" type="text" autocomplete="off" placeholder="${esc(st['placeholder-text'])}" value="${esc(txt)}" aria-label="Message ${name}"><button type="submit" class="send${txt?' on':''}" id="cmsend" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></form>
-    <div class="cm-disc">${esc(st['disclosure-text'])}</div></div>`;
+    <div class="cm-disc">${esc(st['disclosure-text'])}</div>
+    <div class="toast toast--top cm-toast${CHAT.toast?' on':''}" id="cmtoast" role="status"><span>Item added to bag</span><button class="act" data-viewbag>View</button></div></div>`;
 }
 function styleChat(){const el=document.getElementById('cm');if(!el)return;const sy=CFG.payload.style,mob=innerWidth<768;applyVars(el,sy);if(mob)applyVars(el,sy.mobile||{});
   const pad=(mob?sy.mobile['--chat-messenger-internal-chat-padding']:sy['--chat-messenger-internal-chat-padding'])||'0 48px';el.style.setProperty('--chat-messenger-internal-chat-padding-x',pad.split(' ')[1]||'48px');
@@ -735,6 +740,7 @@ const CFGMAP=[
   [h=>/class="cm-car"/.test(h),'Product carousel','native','rich-content-config.tileConfig · --chat-messenger-product-carousel-*'],
   [h=>/cm-pd/.test(h),'Product detail','native','rich-content-config.productDetailConfig (size picker: confirm with Google)'],
   [h=>/cm-cart/.test(h),'ADD TO BAG','native','settings.custom-cart + cart-button-text · --cart-button-* · cart-button corner radii'],
+  [h=>/cm-cart/.test(h),'Added to bag toast','custom','DS toast (Top · actionable) from our front end on the custom-cart add; hide Google’s “Your cart was updated” toast'],
   [h=>/cm-qr/.test(h),'Quick replies','native','chips: --chat-messenger-internal-chips-*'],
   [h=>/cm-list/.test(h),'Bullet list','native','text (markdown list in a bot message)'],
   [h=>/cm-ctx/.test(h),'“Using” context chips','custom','not in the widget: custom_template or FDE build'],
@@ -872,6 +878,8 @@ document.addEventListener('click',e=>{
     if(EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches||!hw)return done();
     if(hw.classList.contains('closing'))return;hw.classList.remove('srch-in');hw.classList.add('closing');document.body.classList.add('closing-search');setTimeout(done,240);return}
   {const ah=e.target.closest('.acc-set .acc-h');if(ah){e.preventDefault();ah.parentNode.classList.toggle('open');return}}
+  if(e.target.closest('.cm-cart')){CHAT.toast=true;const t=document.getElementById('cmtoast');if(t)t.classList.add('on');clearTimeout(CHAT.toastT);CHAT.toastT=setTimeout(()=>{CHAT.toast=false;const x=document.getElementById('cmtoast');if(x)x.classList.remove('on')},6000);return}   /* production: our front end on the custom-cart add, Google’s own toast hidden */
+  if(e.target.closest('[data-viewbag]')){CHAT.toast=false;CHAT.open=false;CHAT.user=false;S.chat=false;S.page='bag';parent.postMessage({protoChat:false},'*');render();scrollTo(0,0);return}
   if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
   if(qb&&qb.dataset.vto&&S.vtoMode==='own'){e.preventDefault();const t=document.getElementById('ct');t.textContent='Opens the '+BN()+' Virtual Stylist (our own VTO)';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200);return}
