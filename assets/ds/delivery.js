@@ -73,7 +73,9 @@
     if(o.pr&&rows.length===2&&rows.every(r=>r.m.c)){const h=fastest(pdpPool(M.home));if(h)rows.push({m:h,b:o.prBadge==='home'?'Fastest home delivery':'Fastest',third:1})}
     return rows}
 
-  const badge=(o,b)=>o.badges===false||!b?'':`<span class="dgrid-badge${/^Fastest/.test(b)?' dgrid-badge--fast':/^Cheapest/.test(b)?' dgrid-badge--cheap':' dgrid-badge--member'}">${esc(b)}</span>`;
+  /* Fastest / Cheapest = .dgrid-badge · the member method = the mini membership pill (.mpill--sm, Checkout 2026 3996:173993) */
+  const badge=(o,b)=>o.badges===false||!b?'':/^(Fastest|Cheapest)/.test(b)?`<span class="dgrid-badge dgrid-badge--${/^F/.test(b)?'fast':'cheap'}">${esc(b)}</span>`
+    :`<span class="mpill mpill--sm${/\+$/.test(b)?' mpill--plus':''}"><i></i><b>${esc(b)}</b></span>`;
   const when=(o,m,lead)=>m.nom?'On a day of your choice':m.d===1?'Tomorrow':(lead?'By ':'')+day(o,m.d);
   const total=o=>{const M=methods(o);return M.home.length+M.collect.length};
   const moreLink=(o,tab,label)=>(total(o)<=2&&o.more2!=='show')?'':`<button class="dgrid-more" data-dg-more="${tab}">${label}</button>`;

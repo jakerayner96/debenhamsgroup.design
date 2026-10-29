@@ -1025,6 +1025,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mpill i{width:8px;height:8px;border-radius:9999px;background:var(--mpill-dot);flex:none}
 .mpill b{font-weight:var(--w-strong)}.mpill span{font-weight:var(--w-regular,300)}
 .mpill--plus{background:var(--mpill-grad-plus);color:#FFF}.mpill--plus i{background:var(--mpill-dot-plus)} /* Debenhams Unlimited+ only */
+/* --sm = the mini pill: 16px tall, 6px dot, 4px gap, programme name only (no "Active"). The member method badge on the PDP delivery grid + modal (29 Oct 2026) */
+.mpill--sm{height:16px;gap:4px;padding:0 6px 0 5px;vertical-align:1px}.mpill--sm i{width:6px;height:6px}
 /* Membership banner on checkout (.mbanner) — the full-width "UNLIMITED · ACTIVE" bar above the delivery options, for an active member
    (Checkout 2026 WChEtDPH0LcErdYFS9SESn 3996:171295 "Unlimited Delivery Banner"). 22 Oct 2026, account-2026.
    14/16 padding · radius --radius-default · name Antonio Bold 24, caps, hug height (text box trimmed to cap height / baseline, as Figma) · status 13 caps on the right · no icon on any fascia.
@@ -1355,7 +1357,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dmeth>.rad{margin-right:var(--gap-2,8px)}
 .dmeth-l{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--gap-1,4px)}
 .dmeth-n{font-size:16px;line-height:20px;font-weight:var(--w-strong,600)}
-.dmeth-n .dgrid-badge,.dmeth-n .badge{margin-left:var(--gap-2,8px);vertical-align:1px}  /* inline: the badge wraps with the last word of the name */
+.dmeth-n .dgrid-badge,.dmeth-n .mpill,.dmeth-n .badge{margin-left:var(--gap-2,8px);vertical-align:1px}  /* inline: the badge wraps with the last word of the name */
 .dmeth .nw{white-space:nowrap}
 .dmeth-d{margin-top:-2px;font-size:12px;line-height:15px;font-weight:var(--w-regular,300)}
 .dmeth-a{font-size:14px;line-height:18px;font-weight:var(--w-regular,300)}
@@ -1388,9 +1390,9 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dgrid-hd{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--gap-2,8px) var(--gap-4,16px)}
 .dgrid-hd h2{margin:0;font-size:16px;font-weight:var(--w-strong,600);line-height:20px}  /* = the other PDP box titles (.sns-hd b, Subscribe & Save), 29 Oct */
 /* tag beside the arrival line (James's PR, Home Delivery Top Up): 4px radius, 12px semibold · Fastest = error red on --error-bg · Cheapest = secondary on --surface-sunken */
-.dgrid-badge{display:inline-flex;align-items:center;height:18px;padding:0 6px;border-radius:var(--radius-default);background:var(--surface-sunken);color:var(--text-secondary);font-size:11px;font-weight:var(--w-mid,500);line-height:16px;white-space:nowrap;vertical-align:middle;flex:none}
-.dgrid-badge--fast{background:var(--error-bg,#FFF2F2);color:var(--text-error,#C90000)}
-.dgrid-badge--cheap{background:var(--surface-sunken);color:var(--text-secondary)}
+.dgrid-badge{display:inline-flex;align-items:center;height:16px;padding:0 6px;border-radius:var(--radius-pill);background:var(--mpill-bg);color:var(--mpill-fg);font-size:10px;font-weight:var(--w-strong,600);line-height:1;text-transform:uppercase;white-space:nowrap;vertical-align:middle;flex:none}
+/* Fastest / Cheapest = the mini membership pill without the dot (black on --mpill-bg), 29 Oct: the red / grey pair was hard to see */
+.dgrid-badge--fast,.dgrid-badge--cheap{background:var(--mpill-bg);color:var(--mpill-fg)}
 .dgrid-badge--member{background:var(--text-primary);color:var(--text-inverse,#FFF)}
 .dgrid-more{align-self:flex-start;padding:0;border:0;background:none;font:inherit;font-size:12px;line-height:16px;color:var(--text-primary);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
 .dgrid-more:hover{text-decoration:none}
