@@ -1,0 +1,1 @@
+__d(function(g,r,i,a,m,_e,d){"use strict";Object.defineProperty(_e,'__esModule',{value:!0}),Object.defineProperty(_e,"default",{enumerable:!0,get:function(){return c}}),r(d[0]);var e,t=r(d[1]),u=r(d[2]),n=(e=u)&&e.__esModule?e:{default:e},o=r(d[3]);function c(){const e=(0,t.useRouter)();return(0,o.jsx)(n.default,{onBack:()=>e.back()})}},763,[12,806,846,6]);
