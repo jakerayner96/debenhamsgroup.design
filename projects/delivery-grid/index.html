@@ -175,7 +175,7 @@ const P={
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','README.md','../../assets/ds/delivery.js','../../assets/ds/subscribe.js'],
   store:'proto-delivery-grid',
-  initial:()=>({layout:'list',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
+  initial:()=>({layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
 };
 const PROG={debenhams:'Unlimited',boohoo:'Premier Club',boohooman:'Premier',plt:'Royalty',karenmillen:'Premier'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -186,28 +186,25 @@ function renderPanel(host,S,update){
   const sw=(k,l,dis)=>`<label class="sw"${dis?' style="opacity:.4;pointer-events:none"':''}><input type="checkbox" data-sw="${k}"${c[k]?' checked':''}><i></i>${l}</label>`;
   const noProg=!PROG[b];if(noProg&&c.premier)c.premier=false;
   const two=c.scen==='market'||c.scen==='bulky';
-  /* modal fixed (Jake, 16 Oct): Home Delivery / Collect Nearby toggle only, NI always its own section, priced low → high, slides up on mobile */
-  Object.assign(c,{modal:'toggle',open:'',ni:'split',sort:'price',sheet:'up'});
-  host.innerHTML=`<h1>PDP delivery grid</h1><p class="intro">The PDP <b>Delivery Methods</b> box in three options, with Paul's <b>Delivery Options</b> modal behind See more — on the DS PDP template, web (mobile + desktop) and app. Brief: Delivery Grid UX catch up, 16 Oct 2026.</p>
-  <div class="card"><h3>PDP option</h3>
-    ${radio('layout','list','A · Live + James’s PR','James’s PR (Home Delivery Top Up): fastest on top, cheapest at the bottom — “Arrives Tomorrow” + a Fastest / Cheapest tag beside it, the method under, price on the right; a third home-delivery row when both come back as click &amp; collect.')}
-    ${radio('layout','tabs','B · Delivery / Click &amp; Collect tabs','Demi’s mockup: two tabs, checkout-style rows with the price on the right, Fastest / Cheapest badges, Premier view. See more opens the modal on the tab you’re in.')}
-    ${radio('layout','line','C · One-liner + modal','“Get it Tomorrow to M4 7BB” (Amazon style) and a small link — every method lives in the modal.')}</div>
+  /* modal fixed (Jake, 16 Oct): Home Delivery / Collect Nearby toggle only, NI always its own section, priced low → high, slides up on mobile.
+     PDP option fixed to B · tabs (Jake, 29 Oct): A (live + James's PR) and C (one-liner) dropped, so their PR / postcode rules go too */
+  Object.assign(c,{layout:'tabs',modal:'toggle',open:'',ni:'split',sort:'price',sheet:'up'});
+  host.innerHTML=`<h1>PDP delivery grid</h1><p class="intro">The PDP <b>Delivery Methods</b> box, <b>option B</b> (Delivery / Click &amp; Collect tabs), with Paul's <b>Delivery Options</b> modal behind See more — on the DS PDP template, web (mobile + desktop) and app. Brief: Delivery Grid UX catch up, 16 Oct 2026; B chosen 29 Oct.</p>
+  <div class="card"><h3>PDP option <small>B · tabs</small></h3>
+    <p>Demi’s mockup: two tabs, checkout-style rows with the price on the right, Fastest / Cheapest badges, Premier view. See more opens the modal on the tab you’re in.</p>
+    <div class="f"><span>First tab</span>${seg('tab',[['home','Delivery'],['collect','Click &amp; Collect']])}</div></div>
   <div class="card"><h3>Product &amp; response</h3>
     ${radio('scen','std','Standard product','Full Debenhams method list; home delivery comes back first.')}
-    ${radio('scen','cc','Click &amp; collect comes back first','The live bug: the response leads with collect, so fastest + cheapest are both C&amp;C (Charlotte’s KPI vs not putting home shoppers off).')}
+    ${radio('scen','cc','Click &amp; collect comes back first','The live bug: the response leads with collect. With tabs each tab picks its own fastest + cheapest, so home delivery still shows.')}
     ${radio('scen','market','Marketplace item · two methods','Only two methods, so live shows no See more.')}
     ${radio('scen','bulky','Bulky item','Surcharge caveat upfront under the price, in the box and repeated in the modal.')}
     <div class="f"><span>See more with only two methods</span>${seg('more2',[['hide','Hide (live)'],['show','Show']],!two)}<small>${two?'Show it so the modal can repeat the bulky caveat.':'Applies to marketplace / bulky.'}</small></div></div>
   <div class="card"><h3>Customer <small>${bn}</small></h3>
     ${seg('premier',[['false','Standard'],['true',noProg?'No programme':PROG[b]]],noProg)}
     <p style="margin-top:8px">${noProg?`${bn} runs no delivery programme.`:`${PROG[b]}: next day (home + collect) shows Free with the was price; the badge becomes ${PROG[b]}. Only when logged in or cookied.`}</p>
-    <div class="f"><span>Postcode <small>option C</small></span><div class="row2"><input id="pc" value="${esc(c.pc)}" ${c.layout!=='line'?'disabled':''}>${sw('known','Known (logged in)',c.layout!=='line')}</div></div></div>
+</div>
   <div class="card"><h3>Rules</h3>
     ${sw('badges','Fastest / Cheapest badges')}
-    <div class="f">${sw('pr','James’s PR: two C&amp;C → add fastest home delivery',c.layout!=='list')}<small>${c.layout!=='list'?'Option A only (B splits by tab, C leads with home).':c.scen!=='cc'?'Kicks in when both rows are C&amp;C — pick “Click &amp; collect comes back first”.':'Third row added.'}</small></div>
-    <div class="f"><span>Third row badge</span>${seg('prBadge',[['fastest','Fastest (PR)'],['home','Fastest home delivery']],c.layout!=='list'||!c.pr)}<small>Paul: two “Fastest” badges could confuse.</small></div>
-    <div class="f"><span>First tab <small>option B</small></span>${seg('tab',[['home','Delivery'],['collect','Click &amp; Collect']],c.layout!=='tabs')}</div>
     <div class="f"><span>Next-day cut-off copy</span>${seg('cut',[['midnight','Order by midnight'],['12am','Order by 12AM (live)']])}<small>Cut-offs vary 11pm / midnight by item; “12AM” reads as lunchtime to some.</small></div>
     <div class="f"><span>Returns line</span><div class="row2">${sw('ret','Show')}<input id="rd" type="number" min="1" value="${esc(c.retDays)}" ${c.ret?'':'disabled'}></div><small>Demi: returns are called out three times (14, 21, 35 days).</small></div></div>
   <div class="card"><h3>Seller <small>Sold &amp; Delivered by</small></h3>
@@ -215,11 +212,10 @@ function renderPanel(host,S,update){
     <div class="f"><span>Sold by</span>${seg('seller',[['site',bn+' (the site)'],['amass','Marketplace seller']],!c.sized)}<small>${c.seller==='amass'?'AMASS ECOMMERCE — the name is a link that opens the seller modal (owner, address, VAT, company number).':'The site itself is never a link.'}</small></div></div>
   <div class="card"><h3>Page</h3>
     <div class="f"><small>The page is the master PDP (DS template), shown in full, in Jake’s order (16 Oct): Add to bag → PayPal → Apple Pay → Ask Deb → Unlimited / Premier → Deliver+ → <b>delivery grid</b> → BNPL → Subscribe &amp; Save. Shop Similar sits top right of the image on desktop. Warehouse has no programme; The Brand Room no Deliver+.</small></div></div>
-  <div class="card"><h3>Agreed 16 Oct</h3><p class="rules"><b>Phase 1</b> static logic for everyone: fastest, cheapest, fastest home if both are C&amp;C; modal priced low → high like checkout.<br><b>Web + app</b> stay the same.<br><b>Bulky</b> surcharge upfront by the price and repeated in the modal.<br><b>Open</b> NI split (JB) · tabs vs one-liner · combined vs single-tab modal · placement vs Deliver+ — test, don’t opine (Demi).</p></div>`;
+  <div class="card"><h3>Agreed 16 Oct</h3><p class="rules"><b>Phase 1</b> static logic for everyone: fastest, cheapest, fastest home if both are C&amp;C; modal priced low → high like checkout.<br><b>Web + app</b> stay the same.<br><b>Bulky</b> surcharge upfront by the price and repeated in the modal.<br><b>Open</b> NI split (JB) · combined vs single-tab modal · placement vs Deliver+ — test, don’t opine (Demi).</p></div>`;
   host.querySelectorAll('.opt[data-k]').forEach(x=>x.onclick=()=>{if(x.disabled)return;c[x.dataset.k]=x.dataset.v;re()});
   host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(x=>x.onclick=()=>{const k=g.dataset.seg,v=x.dataset.v;c[k]=v==='true'?true:v==='false'?false:v;re()}));
   host.querySelectorAll('[data-sw]').forEach(x=>x.onchange=()=>{c[x.dataset.sw]=x.checked;re()});
-  host.querySelector('#pc').oninput=e=>{c.pc=e.target.value;update()};
   host.querySelector('#rd').oninput=e=>{c.retDays=e.target.value;update()};
 }
 /* ==================================================================================================== */

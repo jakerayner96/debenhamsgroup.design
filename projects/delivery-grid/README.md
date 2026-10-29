@@ -15,14 +15,14 @@
 - `page.html` — embeds `templates/pdp.html?brand=` and injects the DS delivery grid + modal; App adds `.app-top` + `.app-tabbar` and drops the web header, USP bars, breadcrumb and footer. The static USP box (old Strappy copy) is always hidden.
 - DS: `assets/ds/delivery.js` (data, rules, markup) + components.css "Delivery grid" block + catalogue entries `delivery-grid`, `app-top`.
 
+**Decision (Jake, 29 Oct 2026): option B · tabs.** The prototype shows B only; A (live + James's PR) and C (one-liner) are dropped from the panel (still in `delivery.js` as `layout:'list'` / `'line'`). B is now the delivery grid on the master PDP (`templates/pdp.html`). Refinements to follow.
+
 ## Options (left panel)
 | | |
 |---|---|
-| **A · Live + James's PR** | sentences, fastest top / cheapest bottom; badges; if both are C&C add the fastest home delivery (badge "Fastest" as the PR, or "Fastest home delivery") |
-| **B · Tabs** | Delivery / Click & Collect, checkout-style rows, price right; See more opens the modal on that tab |
-| **C · One-liner** | "Get it Tomorrow to M4 7BB" + "or collect from £2.49" + one link into the modal |
+| **PDP option** | fixed: **B · Tabs** — Delivery / Click & Collect, checkout-style rows, price right, Fastest / Cheapest per tab; See more opens the modal on that tab. First tab: Delivery / Click & Collect |
 | Modal | fixed (Jake, 16 Oct): Home Delivery / Collect Nearby toggle (Paul) only, page grid type · NI always its own section · price low → high · slides up on mobile web + app, DS small modal on desktop |
-| Rules | cut-off "midnight" / "12AM" · See more with two methods · returns line + days |
+| Rules | badges · cut-off "midnight" / "12AM" · See more with two methods · returns line + days |
 | Product | standard · C&C comes back first (the live bug) · marketplace (two methods) · bulky (caveat under the price, in the box and in the modal) |
 | Customer | Standard / the fascia's programme (Unlimited, Premier Club, Premier, Royalty — next day free) |
 | Placement | fixed: Jake's order — Apple Pay → Ask Deb → Unlimited → Deliver+ → delivery grid → BNPL → Subscribe & Save |
@@ -31,7 +31,7 @@
 Phase 1 static logic for everyone; modal sorted price low → high like checkout; web and app the same; bulky surcharge upfront and repeated in the modal.
 
 ## Open
-NI split needs string matching on method names ("NI" / "Northern") — Jake to take to JB. Tabs vs one-liner, combined vs single-tab modal, and grid above vs below Deliver+ — Demi: test, don't opine. Dynamic sorting = phase 3.
+NI split needs string matching on method names ("NI" / "Northern") — Jake to take to JB. Combined vs single-tab modal, and grid above vs below Deliver+ — Demi: test, don't opine. Dynamic sorting = phase 3.
 
 ## Notes
 Method names / prices are the Figma's (Debenhams) on every fascia; dates count from today.

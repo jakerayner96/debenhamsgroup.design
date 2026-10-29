@@ -3,6 +3,18 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-10-29",
+  "v": "2026.10.29",
+  "title": "Delivery grid: option B (tabs) chosen",
+  "by": "PDP delivery grid (projects/delivery-grid, Jake 29 Oct)",
+  "added": [],
+  "changed": [
+   "PDP template (templates/pdp.html): the delivery grid is now option B, Delivery / Click & Collect tabs (DG_delivery.grid layout 'tabs', Delivery tab first), replacing A (live sentences + James's PR). Every PDP built from the template gets it · by PDP delivery grid",
+   "Delivery grid prototype (projects/delivery-grid): option B only; A and C and their controls (James's PR third row, third-row badge, postcode) removed from the panel. delivery.js keeps 'list' and 'line' so older prototypes still render · by PDP delivery grid"
+  ],
+  "fixed": []
+ },
+ {
   "d": "2026-10-28",
   "v": "2026.10.28",
   "title": "File cover · colour palette in the DG Group Design System format",

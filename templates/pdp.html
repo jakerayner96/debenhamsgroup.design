@@ -11,7 +11,7 @@
 /* DS page template — PDP. THE MASTER PDP: the Shopping agent PDP (projects/shopping-agent, banked 16 Oct 2026) rebuilt on DS components only.
    Order — mobile: header · USP banners · gallery (product tags bottom right) · AI tag chip (Virtual Stylist, centred; desktop: under the gallery — Shop Similar is Google, not launched, kept in the DS only) ·
    PDP title · ratings · price · option label + colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always) ·
-   Ask Deb / Google PDP prompts (ai-prompts.js) · membership box (Unlimited) · Deliver+ · delivery grid (delivery.js; See more → Delivery
+   Ask Deb / Google PDP prompts (ai-prompts.js) · membership box (Unlimited) · Deliver+ · delivery grid (delivery.js, option B tabs; See more → Delivery
    Options modal; returns line, then Sold & Delivered by — placeholder until a size is picked) · BNPL · Subscribe & Save (subscribe.js; ADD → modal) — that order, Jake 16 Oct · then the accordion set
    (At a Glance open · Description · Product Details & Care · Delivery · Returns · Manufacturer) · footer.
    Desktop: breadcrumb, then gallery + accordions on the left, the buy column on the right.
@@ -59,10 +59,10 @@ const desk=()=>innerWidth>=1024;
 const IC='assets/ds/icons/',LIB=IC+'lib/';
 const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt:'plt-heart'};
 const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
-/* delivery grid as live (DS delivery.js): fastest first, cheapest last, James's two-click-&-collect rule, badges, returns line */
+/* delivery grid (DS delivery.js) = option B, Delivery / Click & Collect tabs (projects/delivery-grid, Jake 29 Oct): fastest + cheapest per tab, badges, returns line */
 /* seller line: grey placeholder until a size is picked, then sold by the fascia ('site'; a marketplace key, e.g. 'amass', makes it a link → seller modal) */
 let SELLER=null;
-const DG_OPTS=()=>({layout:'list',scen:'std',pr:true,prBadge:'fastest',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
+const DG_OPTS=()=>({layout:'tabs',tab:'home',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
 /* Subscribe & Save: the product at 5% off, size = the first size until one is picked; centred modal from 600px, bottom sheet on phones */
 const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(document.querySelector('.sz.on')||{}).textContent||P.sizes[0],colour:P.colour,pct:5});
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
