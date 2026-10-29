@@ -137,14 +137,15 @@ img{display:block;max-width:none}
 .kpi .v{font-size:128px;line-height:.9}
 .kpi .eyebrow{margin-top:22px}
 
-/* phone mockup (T06, T07): flat device, Figma screen at 3x under a drawn status bar */
-.phone{position:absolute;padding:9px;background:#161616;border-radius:50px;box-shadow:0 40px 80px -30px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.08)}
-.phone .scr{position:relative;border-radius:41px;overflow:hidden;background:#fff;aspect-ratio:390/844;display:flex;flex-direction:column}
-.phone .sb{flex:0 0 auto;height:40px;display:flex;align-items:center;justify-content:space-between;padding:2px 22px 0 30px;font:600 12px/1 -apple-system,'SF Pro Text',var(--font);color:#000}
-.phone .sb svg{width:auto;height:11px}
-.phone .island{position:absolute;top:10px;left:50%;width:76px;height:22px;margin-left:-38px;background:#000;border-radius:14px;z-index:2}
-.phone img{flex:1;min-height:0;width:100%;object-fit:cover;object-position:top}
-.dark .phone{background:#1E1E1E;box-shadow:0 40px 90px -20px rgba(0,0,0,.8),inset 0 0 0 1px rgba(255,255,255,.14)}
+/* phone mockup (T06, T07): the App Store screenshot template device (Figma vebOMPnswl12a9JehBSt1m 15:863 · Device):
+   bezel #111111 with a #4A4A4A edge, screen inset 3.45%, iOS status bar + home indicator (img/phone-chrome.svg) over a Figma site screen at 3x.
+   Size it with --w (phone width); everything else scales from it. */
+.phone{position:absolute;--w:300px;width:var(--w);aspect-ratio:960.64/2009.82;background:#111;border-radius:calc(var(--w)*.1553);
+  box-shadow:inset 0 0 0 calc(var(--w)*.0056) #4A4A4A,0 40px 80px -30px rgba(0,0,0,.4)}
+.phone .scr{position:absolute;inset:calc(var(--w)*.03446);border-radius:calc(var(--w)*.1209);overflow:hidden;background:#fff}
+.phone .scr img{position:absolute;left:0;right:0;top:calc(var(--w)*.1438);bottom:calc(var(--w)*.0786);width:100%;height:auto;object-fit:cover;object-position:top}
+.phone .scr .chrome-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.dark .phone{box-shadow:inset 0 0 0 calc(var(--w)*.0056) #4A4A4A,0 40px 90px -20px rgba(0,0,0,.8)}
 
 /* T06 stat list + phones */
 .stats{position:absolute;left:var(--m);top:380px;width:860px}
@@ -155,7 +156,7 @@ img{display:block;max-width:none}
 
 /* T07 phone row */
 .prow .cap{position:absolute;top:330px}
-.prow .phone{top:372px;width:258px}
+.prow .phone{top:372px;--w:258px}
 
 /* T08 section */
 .section .slant{width:960px}
@@ -218,8 +219,6 @@ img{display:block;max-width:none}
 .swatches div{display:flex;align-items:flex-end;padding:12px 10px;font:500 11px/1.3 var(--font);letter-spacing:.12em;text-transform:uppercase}
 .mood .brief{flex:1;border-top:1px solid var(--line-d);padding-top:22px}
 .mood .brief .body{font-size:20px;margin-top:14px;color:rgba(255,255,255,.85)}
-.checker span{background:#0A0A0A;padding:5px 6px;margin:-5px -6px}
-.checker{background:conic-gradient(#0A0A0A 25%,#F2EFE6 0 50%,#0A0A0A 0 75%,#F2EFE6 0) 0 0/40px 40px}
 
 /* ---- HUD (outside the stage, as the AI deck) ---- */
 .progress{position:fixed;left:0;top:0;height:2px;background:#fff;z-index:1001;transition:width .5s,opacity .4s;mix-blend-mode:difference}
@@ -351,8 +350,8 @@ body.idle .hud,body.idle .progress{opacity:0}
     <div class="stat reveal d5"><div class="v num">+48%</div><p class="body">Footwear, YoY</p></div>
     <div class="stat reveal d6"><div class="v num">+39%</div><p class="body">Brand mix growth in 2026</p></div>
   </div>
-  <div data-phone="home" class="reveal d3" style="left:1130px;top:150px;width:310px"></div>
-  <div data-phone="pdp" class="reveal d5" style="left:1490px;top:250px;width:310px"></div>
+  <div data-phone="home" class="reveal d3" style="left:1130px;top:150px;--w:310px"></div>
+  <div data-phone="pdp" class="reveal d5" style="left:1490px;top:250px;--w:310px"></div>
 </section>
 
 <!-- ============ T07 PHONE ROW ============ -->
@@ -427,6 +426,9 @@ const SOON=[['Reebok','reebok'],['Sweaty Betty','sweaty-betty'],['Berghaus','ber
 const TALK_ALL=['Converse','New Balance','ASICS','Nike','Saucony','The North Face','adidas','Vans','Ralph Lauren','Levi’s','Barbour','Fred Perry','EA7'];
 const AGES=[['18–24',12],['25–34',23],['35–44',21],['45–54',19],['55–64',13],['65+',9]]; /* read off the source chart */
 
+/* moodboard swatches = the Brand Room palette in the DS (tokens.css [data-brand=brandroom]): black, white and greys only */
+const SW=[['--primary','#0A0A0A','Black','#fff'],['--light-1','#4D4D4D','Grey 1','#fff'],['--light-3','#B5B5B5','Grey 3','#0A0A0A'],['--neutral','#F2F2F2','Neutral','#0A0A0A']];
+
 /* One content set per partner. v:null = figure not agreed yet: the slide shows it as "to confirm". */
 const PARTNERS={
   adidas:{
@@ -444,7 +446,6 @@ const PARTNERS={
     cats:['Footwear','Premium outerwear','Active lifestyle','Accessories &amp; gifting'],
     future:['Brand-led campaigns, seasonal hero moments and joint digital content.','Exclusive product colourways and early access, where feasible.','Multi-season planning aligned with brand ambitions, alongside short-term trading.','Quarterly business reviews (QBR).'],
     mood:{title:'Content day',imgs:[['img/adidas/mood-boots.jpg','center'],['img/adidas/mood-pair.jpg','center 30%'],['img/adidas/mood-cream.jpg','center 25%'],['img/adidas/mood-knit.jpg','center'],['img/adidas/mood-quilt.jpg','center 30%'],['img/adidas/samba.jpg','center 60%']],
-      sw:[['#2A2A2A','Ink'],['#7A2E2C','Oxblood'],['#2F6E69','Pine'],['#EAE3DA','Stone']],
       brief:'A warm studio set with natural props. Performance and Originals styled together, on men and women.'}
   },
   vans:{
@@ -462,7 +463,6 @@ const PARTNERS={
     cats:['Footwear','Apparel &amp; fleece','Accessories','Kidswear'],
     future:['Brand-led campaigns built on Vans’ skate, music and art heritage.','Exclusive colourways and early access, where feasible.','Multi-season planning aligned with brand ambitions, alongside short-term trading.','Quarterly business reviews (QBR).'],
     mood:{title:'Off The Wall',imgs:[['img/vans/authentic.jpg','center 65%'],['img/vans/flame.jpg','center'],['img/vans/toe.jpg','center 40%'],['img/vans/sk8.jpg','center 60%'],['img/vans/halfcab.jpg','center 55%'],['img/vans/knuskool.jpg','center']],
-      sw:[['#0A0A0A','Black'],['#F2EFE6','Off white'],['checker','Checkerboard'],['#A32A23','Racing red']],
       brief:'Classics shot on concrete and in the street. Close-ups of canvas, suede, the side stripe and the waffle sole.'}
   }
 };
@@ -504,7 +504,7 @@ const R={
   mood:()=>{const m=P.mood,fig=(k,d)=>`<figure class="reveal-img d${d}"><img src="${m.imgs[k][0]}" alt="" style="object-position:${m.imgs[k][1]}"></figure>`;
     return `<div class="head"><div class="eyebrow reveal">Moodboard</div><h2 class="h2 reveal d1">${m.title}</h2></div><div class="mood">
       ${fig(0,1)}${fig(1,2)}${fig(2,3)}
-      <div class="side reveal d4"><div class="swatches">${m.sw.map(([c,l])=>`<div class="${c==='checker'?'checker':''}" style="${c==='checker'?'color:#fff':`background:${c};color:${/^#(0|2|7|A3|1)/i.test(c)?'#fff':'#0A0A0A'}`};outline:1px solid var(--line-d)"><span>${l}<br>${c==='checker'?'Pattern':c}</span></div>`).join('')}</div>
+      <div class="side reveal d4"><div class="swatches">${SW.map(([v,hex,l,ink])=>`<div style="background:var(${v},${hex});color:${ink};outline:1px solid var(--line-d)"><span>${l}<br>${hex}</span></div>`).join('')}</div>
         <div class="brief"><div class="eyebrow">Shoot direction</div><p class="body">${m.brief}</p></div></div>
       ${fig(3,4)}${fig(4,5)}${fig(5,6)}</div>`},
   close:()=>`${slant(P.close)}<div class="lock"><div class="display reveal d2">Thank<br>you.</div></div>
@@ -513,7 +513,7 @@ const R={
 document.querySelectorAll('[data-p]').forEach(s=>s.innerHTML=R[s.dataset.p]());
 /* phones: Figma screens (The Brand Room file, NEW SITE - Designs) at 3x */
 document.querySelectorAll('[data-phone]').forEach(el=>{el.classList.add('phone');
-  el.innerHTML=`<div class="scr"><div class="island"></div><div class="sb"><span>9:41</span><svg viewBox="0 0 66 12" width="66" height="12" aria-hidden="true"><g fill="#000"><rect x="0" y="8" width="3" height="4" rx=".7"/><rect x="4.5" y="6" width="3" height="6" rx=".7"/><rect x="9" y="3.5" width="3" height="8.5" rx=".7"/><rect x="13.5" y="1" width="3" height="11" rx=".7"/><path d="M29 2.2c2.3 0 4.4.9 6 2.4l1.1-1.2A10 10 0 0 0 29 .6a10 10 0 0 0-7.1 2.8L23 4.6a8.4 8.4 0 0 1 6-2.4zm0 3.3c1.4 0 2.7.5 3.7 1.4l1.1-1.2A7 7 0 0 0 29 3.9a7 7 0 0 0-4.8 1.8l1.1 1.2c1-.9 2.3-1.4 3.7-1.4zm0 3.3c.6 0 1.1.2 1.5.6L29 11.1l-1.5-1.7c.4-.4.9-.6 1.5-.6z"/><rect x="41.5" y=".5" width="21" height="11" rx="3" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="43" y="2" width="18" height="8" rx="1.8"/><path d="M63.8 4v4c.7-.3 1.2-1 1.2-2s-.5-1.7-1.2-2z" fill-opacity=".4"/></g></svg></div><img src="img/screens/${el.dataset.phone}.jpg" alt=""></div>`});
+  el.innerHTML=`<div class="scr"><img src="img/screens/${el.dataset.phone}.jpg" alt=""><img class="chrome-svg" src="img/phone-chrome.svg" alt=""></div>`});
 
 const TALK=TALK_ALL.filter(n=>n.toLowerCase()!==P.name.toLowerCase());
 const tile=([n,s])=>`<div class="tile"><img src="${LOGO}${s}-white.png" alt="${n}"></div>`;
