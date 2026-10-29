@@ -94,3 +94,10 @@ Intro, as briefed: "Hi there – I'm Deb, your Debenhams Personal Assistant! Wha
 - **Search field = the DS header search (29 Oct)**: camera + search are the library Icons / Camera + Icons / Search (`icons/lib`) at 20, 16px apart, on both breakpoints (Figma 73:24).
 - **Search suggestion prompts** use the DS `.ai-pill--suggest`: 14 Light, shadow 0 0 14px -4px 6% (Figma 75:467). They no longer follow the LIVE / NEW text size; the field text still does.
 - **Refresh in the chat header**: DS `.mdl-refresh` (16px, `icons/lib/icons-refresh.svg`) left of the close once the chat has started; it clears the conversation back to the start screen (Google’s clear chat / restart action, `refresh` icon).
+
+### 29 Oct (pm)
+- Ask launcher: DS `.ai-pill--ask` + token `--shadow-ask` (0 0 14px -4px rgba(0,0,0,.08)); the AI circle uses the same shadow.
+- Chat drawer: no shadow, flat white, edge to edge top/right/bottom (the scrim is the only left edge). Input box radius 999px (full pill) in the config.
+- Start screen option (Chat window → Start screen): **Agent** (sparkle, greeting, starters) or **Google default** (T&Cs line, hero `img/start-gifts.jpg` 2:1, intro copy, zero-state prompts — config only, no custom_template).
+- Chat product carousel tiles are the DS product card (`.pc.pc--compact`): brand · name · price (now + was), no % or code line; ADD TO BAG under.
+- Search field: camera ↔ search 20px apart.
