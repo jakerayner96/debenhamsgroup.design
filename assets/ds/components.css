@@ -1391,8 +1391,9 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dgrid-hd h2{margin:0;font-size:16px;font-weight:var(--w-strong,600);line-height:20px}  /* = the other PDP box titles (.sns-hd b, Subscribe & Save), 29 Oct */
 /* tag beside the arrival line (James's PR, Home Delivery Top Up): 4px radius, 12px semibold · Fastest = error red on --error-bg · Cheapest = secondary on --surface-sunken */
 .dgrid-badge{display:inline-flex;align-items:center;height:16px;padding:0 6px;border-radius:var(--radius-pill);background:var(--mpill-bg);color:var(--mpill-fg);font-size:10px;font-weight:var(--w-strong,600);line-height:1;text-transform:uppercase;white-space:nowrap;vertical-align:middle;flex:none}
-/* Fastest / Cheapest = the mini membership pill without the dot (black on --mpill-bg), 29 Oct: the red / grey pair was hard to see */
-.dgrid-badge--fast,.dgrid-badge--cheap{background:var(--mpill-bg);color:var(--mpill-fg)}
+/* Fastest / Cheapest = the mini membership pill without the dot, 29 Oct (the red / grey pair was hard to see): Fastest green (--text-success on --surface-success) · Cheapest grey (black on --mpill-bg) */
+.dgrid-badge--fast{background:var(--surface-success,#EAF6EA);color:var(--text-success,#1F7A25)}
+.dgrid-badge--cheap{background:var(--mpill-bg);color:var(--mpill-fg)}
 .dgrid-badge--member{background:var(--text-primary);color:var(--text-inverse,#FFF)}
 .dgrid-more{align-self:flex-start;padding:0;border:0;background:none;font:inherit;font-size:12px;line-height:16px;color:var(--text-primary);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
 .dgrid-more:hover{text-decoration:none}
