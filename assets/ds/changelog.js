@@ -17,6 +17,7 @@ window.DG_CHANGELOG=[
    "Delivery grid: returns and seller info can leave the box (o.retIn / o.sellerIn 'acc'), so the Delivery Methods box is delivery only. DG_delivery.acc(o,'ret'|'seller') gives the Returns and Seller Information rows for the PDP accordion set (.dgrid-retacc, .dgrid-seller--acc: accordion body type, no icon); the seller placeholder, site name and marketplace seller link work the same in the accordion. Template: S.dgRet / S.dgSeller (default 'box', so nothing moves unless asked) · by PDP delivery grid"
   ],
   "changed": [
+   "Figma Toast (DS library 5671:7604): the dark version is retired — Device=Web and Device=App are now the white Top, actionable toast (90% white, 7 blur, 0 0 20 10%, 16 padding, 14 Light + aqua SemiBold action, no tick), matching .toast--top · by Shopping agent (Jake 29 Oct)",
    "Header search field: camera ↔ search icon gap 16 → 20px · by Shopping agent (Jake 29 Oct)",
    ".ai-circle (AI icon launcher) shadow --shadow-puck → --shadow-ask (8%), hover --shadow-puck · Agent chat drawer: no shadow, flat white edge to edge top/right/bottom (the overlay is the only edge on the left) · by Shopping agent (Jake 29 Oct, Figma 131:451)",
    "Header search field (.hd-search, header.js): camera + search are the Figma library Icons / Camera + Icons / Search (icons/lib) at 20 × 20, 16px apart (were camera.svg / search.svg at native size in a 24 box, 20px apart); PLT keeps its own search glyph · by Shopping agent (Jake 29 Oct, Figma Zi4qRcAFTELiCvFIl29mJC 73:24)",
