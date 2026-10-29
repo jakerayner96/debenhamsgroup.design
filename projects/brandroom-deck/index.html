@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Brand Room × adidas</title>
+<title>The Brand Room · Partner Deck</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Archivo with its width axis: 100% for copy, 125% (expanded) for display, matching the wordmark -->
@@ -12,10 +12,12 @@
 <link rel="stylesheet" href="../../assets/ds/tokens.css">
 <style>
 /* ===========================================
-   THE BRAND ROOM — DECK TEMPLATE
+   THE BRAND ROOM — PARTNER DECK TEMPLATE
    Same fixed 16:9 stage as the AI Generated Badge deck (1920×1080, scaled whole).
+   One template, one content set per partner (PARTNERS below): ?p=adidas · ?p=vans.
    Brand: mono, square, Archivo. Slide themes: .dark (ink) · .light (white) · .stone (DS neutral #F2F2F2).
-   Every slide carries data-layout (T01…T13): the template name it banks into in Figma. Press G for the overview.
+   Images: every <img> is object-fit:cover in a slot no bigger than the source (nothing stretches or upscales).
+   Every slide carries data-layout (T01…T14): the template it banks into in Figma. Press G for the overview.
    =========================================== */
 :root{
   --ink:var(--primary,#0A0A0A); --paper:#FFFFFF; --stone:#F2F2F2;
@@ -23,6 +25,7 @@
   --font:var(--font-family-base,'Archivo'),ui-sans-serif,system-ui,sans-serif;
   --ease:cubic-bezier(.16,1,.3,1);
   --m:120px; /* outer margin */
+  --cut:623px; /* the Brand Room 30° slant: 1080 × tan 30° */
 }
 *{margin:0;padding:0;box-sizing:border-box}
 
@@ -34,6 +37,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000}
   font-family:var(--font);font-stretch:100%;-webkit-font-smoothing:antialiased}
 .slide.active,.slide.visible{visibility:visible;opacity:1;pointer-events:auto;z-index:1}
 img{display:block;max-width:none}
+.slide img{object-fit:cover} /* never stretch */
 
 .dark{background:var(--ink);color:#fff}
 .light{background:var(--paper);color:var(--ink)}
@@ -45,21 +49,26 @@ img{display:block;max-width:none}
 .display{font:700 150px/.9 var(--font);font-stretch:125%;letter-spacing:-.02em;text-transform:uppercase}
 .h2{font:700 72px/.98 var(--font);font-stretch:125%;letter-spacing:-.015em;text-transform:uppercase}
 .h3{font:700 22px/1.25 var(--font);font-stretch:112%;letter-spacing:.06em;text-transform:uppercase}
-.lead{font:300 38px/1.3 var(--font);letter-spacing:-.01em}
+.lead{font:300 34px/1.3 var(--font);letter-spacing:-.01em}
 .body{font:400 22px/1.55 var(--font)}
 .body+.body{margin-top:18px}
 .mute{color:var(--mute)} .dark .mute{color:rgba(255,255,255,.6)}
 .num{font-weight:600;font-stretch:125%;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.tbc{color:#B5B5B5}
+.chip{display:inline-block;font:500 12px/1 var(--font);letter-spacing:.2em;text-transform:uppercase;padding:8px 10px;border:1px dashed currentColor;color:var(--mute);vertical-align:middle}
+
+/* ---- marks: wordmark + partner logo as masks, so they take the slide colour ---- */
+.wm,.pmark{display:block;background:currentColor;-webkit-mask:var(--src) no-repeat center/contain;mask:var(--src) no-repeat center/contain}
+.wm{--src:url(../../assets/brands/brandroom.svg);aspect-ratio:257/20}
+.pmark{aspect-ratio:var(--ar)}
 
 /* ---- slide chrome: wordmark bottom left, section + folio bottom right ---- */
-.wm{display:block;aspect-ratio:257/20;background:currentColor;
-  -webkit-mask:url(../../assets/brands/brandroom.svg) no-repeat center/contain;mask:url(../../assets/brands/brandroom.svg) no-repeat center/contain}
 .chrome{position:absolute;left:var(--m);right:var(--m);bottom:64px;display:flex;align-items:center;justify-content:space-between;z-index:5}
 .chrome .wm{width:180px}
 .chrome .meta{display:flex;gap:40px;font:500 13px/1 var(--font);letter-spacing:.24em;text-transform:uppercase;color:var(--mute)}
 .dark .chrome .meta{color:rgba(255,255,255,.55)}
-.chrome .folio{color:inherit}
 .chrome .folio b{font-weight:600;color:var(--ink)} .dark .chrome .folio b{color:#fff}
+.slide:has(.split-img) .chrome{right:940px}
 .head{position:absolute;left:var(--m);top:110px;z-index:3}
 .head .h2{margin-top:22px}
 .rule{height:1px;background:currentColor;opacity:.9;width:96px;margin-top:36px;transform:scaleX(0);transform-origin:left}
@@ -68,35 +77,34 @@ img{display:block;max-width:none}
 
 /* ---- motion ---- */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-.reveal-img{opacity:0;transform:scale(1.04);transition:opacity 1.2s var(--ease),transform 1.6s var(--ease)}
+.reveal-img{opacity:0;transition:opacity 1.2s var(--ease)}
 .slide.visible .reveal,.slide.visible .reveal-img{opacity:1;transform:none}
 .slide.visible .d1{transition-delay:.1s}.slide.visible .d2{transition-delay:.2s}.slide.visible .d3{transition-delay:.3s}
 .slide.visible .d4{transition-delay:.4s}.slide.visible .d5{transition-delay:.5s}.slide.visible .d6{transition-delay:.6s}
 .slide.visible .d7{transition-delay:.7s}.slide.visible .d8{transition-delay:.8s}
 
-/* ---- slant: the Brand Room's 30° cut, kept from the original deck ---- */
-.slant{position:absolute;overflow:hidden;transform:skewX(-30deg)}
-.slant img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:skewX(30deg) scale(1.45)}
+/* ---- slanted image panel: one photo, the 30° cut on its left edge (clip, no skew, no zoom) ---- */
+.slant{position:absolute;top:0;right:0;height:1080px;clip-path:polygon(var(--cut) 0,100% 0,100% 100%,0 100%)}
+.slant img{width:100%;height:100%}
 
-/* T01 cover · T13 close */
-.cover .slant{top:0;height:600px;width:380px}
-.cover .lock{position:absolute;left:var(--m);bottom:170px;z-index:3}
-.cover .lock .wm{width:820px;color:#fff}
-.cover .lock{mix-blend-mode:lighten}
-.cover .lock .x{display:flex;align-items:center;gap:36px;margin-top:44px}
-.cover .lock .x span{font:200 64px/1 var(--font);font-stretch:125%}
-.cover .lock .x img{width:150px;height:150px;mix-blend-mode:lighten;margin:-40px 0}
-.cover .foot{position:absolute;left:var(--m);right:var(--m);bottom:72px;display:flex;justify-content:space-between;z-index:3}
-.cover .eyebrow.top{position:absolute;left:var(--m);top:110px;color:#fff;z-index:3}
+/* T01 cover · T14 close */
+.cover .slant{width:1180px}
+.cover .top{position:absolute;left:var(--m);top:110px;color:#fff;z-index:3}
+.cover .lock{position:absolute;left:var(--m);bottom:200px;z-index:3;color:#fff}
+.cover .lock .wm{width:640px}
+.cover .lock .x{display:flex;align-items:center;gap:40px;margin-top:56px}
+.cover .lock .x span{font:200 48px/1 var(--font);font-stretch:125%}
+.cover .lock .pmark{height:120px}
+.cover .foot{position:absolute;left:var(--m);bottom:72px;display:flex;gap:48px;z-index:3}
+.close .lock{bottom:250px}
+.close .foot .wm{width:220px;color:#fff;align-self:center}
 
 /* T02 statement + image */
 .split-img{position:absolute;top:0;right:0;width:820px;height:1080px;overflow:hidden}
-.split-img img{width:100%;height:100%;object-fit:cover}
+.split-img img{width:100%;height:100%}
 .statement{position:absolute;left:var(--m);top:400px;width:860px}
-.statement .lead{font-size:34px}
-.slide:has(.split-img) .chrome{right:940px}
-.statement .lead{margin-bottom:44px}
-.tags{display:flex;gap:12px;margin-top:48px}
+.statement .lead{margin-bottom:40px}
+.tags{display:flex;gap:12px;margin-top:44px}
 .tag{font:500 14px/1 var(--font);letter-spacing:.2em;text-transform:uppercase;padding:14px 18px;border:1px solid currentColor}
 .note{position:absolute;left:var(--m);top:850px;width:860px;display:flex;gap:28px;align-items:baseline;padding-top:24px;border-top:1px solid var(--line)}
 .note .eyebrow{flex:0 0 auto}
@@ -121,7 +129,6 @@ img{display:block;max-width:none}
 .side .big{font-size:120px;line-height:.85}
 .split{display:flex;height:14px;margin:28px 0 18px}
 .split span{display:block;height:100%}
-.legend{display:flex;justify-content:space-between}
 .side .callout{margin-top:76px;padding-top:28px;border-top:1px solid var(--line)}
 
 /* T05 KPI grid */
@@ -130,39 +137,51 @@ img{display:block;max-width:none}
 .kpi .v{font-size:128px;line-height:.9}
 .kpi .eyebrow{margin-top:22px}
 
-/* T06 stat list + image */
-.stats{position:absolute;left:var(--m);top:380px;width:980px}
-.stat{display:grid;grid-template-columns:300px 1fr;align-items:baseline;padding:22px 0;border-top:1px solid var(--line-d)}
+/* phone mockup (T06, T07): flat device, Figma screen at 3x under a drawn status bar */
+.phone{position:absolute;padding:9px;background:#161616;border-radius:50px;box-shadow:0 40px 80px -30px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.08)}
+.phone .scr{position:relative;border-radius:41px;overflow:hidden;background:#fff;aspect-ratio:390/844;display:flex;flex-direction:column}
+.phone .sb{flex:0 0 auto;height:40px;display:flex;align-items:center;justify-content:space-between;padding:2px 22px 0 30px;font:600 12px/1 -apple-system,'SF Pro Text',var(--font);color:#000}
+.phone .sb svg{width:auto;height:11px}
+.phone .island{position:absolute;top:10px;left:50%;width:76px;height:22px;margin-left:-38px;background:#000;border-radius:14px;z-index:2}
+.phone img{flex:1;min-height:0;width:100%;object-fit:cover;object-position:top}
+.dark .phone{background:#1E1E1E;box-shadow:0 40px 90px -20px rgba(0,0,0,.8),inset 0 0 0 1px rgba(255,255,255,.14)}
+
+/* T06 stat list + phones */
+.stats{position:absolute;left:var(--m);top:380px;width:860px}
+.stat{display:grid;grid-template-columns:280px 1fr;align-items:baseline;padding:22px 0;border-top:1px solid var(--line-d)}
 .stat:last-child{border-bottom:1px solid var(--line-d)}
 .stat .v{font-size:64px;line-height:1}
 .stat .body{font-size:24px}
-.device{position:absolute;right:30px;top:60px;width:640px;mix-blend-mode:lighten}
-.device img{width:100%;height:auto}
 
-/* T07 section */
+/* T07 phone row */
+.prow .cap{position:absolute;top:330px}
+.prow .phone{top:372px;width:258px}
+
+/* T08 section */
+.section .slant{width:960px}
 .section .idx{position:absolute;left:var(--m);top:180px;font:200 300px/.8 var(--font);font-stretch:125%;letter-spacing:-.04em}
-.section .h2{position:absolute;left:var(--m);top:560px;font-size:110px}
+.section .h2{position:absolute;left:var(--m);top:580px;font-size:92px}
 .section .eyebrow.sub{position:absolute;left:var(--m);top:830px}
-.section .slant{top:0;height:1080px;width:520px}
 
-/* T08 logo wall */
+/* T09 logo wall */
 .wall{position:absolute;left:var(--m);right:var(--m);top:380px;display:grid;grid-template-columns:600px 470px 1fr;column-gap:64px}
 .wall > div{mix-blend-mode:lighten}
 .wall .col-h{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid currentColor}
 .wall .col-h .num{font-size:22px}
 .tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 #tSoon{grid-template-columns:repeat(4,1fr)}
-.tile{aspect-ratio:1/1;border:1px solid var(--line-d);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.tile img{width:100%;height:100%;mix-blend-mode:lighten}
-.tile span{font:700 13px/1 var(--font);font-stretch:125%;letter-spacing:.08em;text-transform:uppercase}
+.tile{aspect-ratio:1/1;border:1px solid var(--line-d);overflow:hidden}
+.tile img{width:100%;height:100%}
 .names{columns:2;column-gap:32px}
 .names li{list-style:none;font:400 22px/1 var(--font);padding:15px 0;border-bottom:1px solid var(--line-d);break-inside:avoid}
 
-/* T09 timeline */
-.years{position:absolute;left:var(--m);right:var(--m);top:380px;height:580px;display:grid;grid-template-columns:repeat(3,1fr) 420px;column-gap:40px;align-items:end}
-.yr{display:flex;flex-direction:column;justify-content:flex-start;height:100%}
+/* T10 timeline */
+.years{position:absolute;left:var(--m);right:var(--m);top:380px;height:580px;display:grid;grid-template-columns:repeat(3,1fr) 420px;column-gap:40px}
+.yr .chartbox{display:flex;align-items:flex-end;height:300px}
+.yr .pair{display:flex;gap:6px;align-items:flex-end;width:100%}
 .yr .blk{background:var(--ink);height:0;align-self:flex-end;transition:height 1.2s var(--ease)}
 .yr .blk.cost{background:var(--line)}
+.yr .blk.ghost{background:none;border:1px dashed #B5B5B5}
 .yr .cap{padding:24px 0 0}
 .yr .v{font-size:72px;line-height:1;margin:14px 0 8px}
 .yr .body{font-size:19px;max-width:330px;margin-top:14px}
@@ -172,16 +191,16 @@ img{display:block;max-width:none}
 .key span{display:flex;gap:10px;align-items:center;font:500 14px/1 var(--font);letter-spacing:.14em;text-transform:uppercase}
 .key i{width:16px;height:16px;background:var(--ink)} .key i.c{background:var(--line)}
 
-/* T10 two column */
+/* T11 two column */
 .two{position:absolute;left:var(--m);right:var(--m);top:380px;display:grid;grid-template-columns:1fr 1fr;column-gap:120px}
 .two .col{border-top:1px solid var(--ink);padding-top:30px}
 .two .v{font-size:150px;line-height:.85;margin:30px 0 10px}
 .two ul{margin-top:44px;list-style:none}
 .two li{font:400 22px/1.45 var(--font);padding:16px 0 16px 40px;position:relative;border-top:1px solid var(--line)}
 .two li::before{content:'';position:absolute;left:0;top:30px;width:20px;height:1px;background:var(--ink)}
-.brandmark{position:absolute;right:var(--m);top:96px;width:150px;height:150px;mix-blend-mode:multiply}
+.brandmark{position:absolute;right:var(--m);top:120px;height:96px;color:var(--ink)}
 
-/* T11 three column */
+/* T12 three column */
 .three{position:absolute;left:var(--m);right:var(--m);top:380px;display:grid;grid-template-columns:1.25fr 1fr 1.25fr;column-gap:72px}
 .three .col{border-top:1px solid var(--ink);padding-top:28px}
 .three .h3{margin-bottom:28px}
@@ -190,23 +209,27 @@ img{display:block;max-width:none}
 .cats-big li{list-style:none;font:600 40px/1.15 var(--font);font-stretch:125%;letter-spacing:-.01em;text-transform:uppercase;padding:16px 0;border-bottom:1px solid var(--line)}
 .cats-big li:first-child{padding-top:0}
 
-/* T12 image grid */
-.mood{position:absolute;left:var(--m);right:var(--m);top:330px;height:620px;display:grid;
-  grid-template-columns:1.9fr 1fr 1fr 1.3fr 120px;grid-template-rows:1fr 1fr;gap:10px}
+/* T13 image grid: slot sizes fixed so the PDF moodboard images never upscale */
+.mood{position:absolute;left:var(--m);top:300px;display:grid;grid-template-columns:560px 330px 330px 430px;grid-template-rows:335px 335px;gap:10px}
 .mood figure{overflow:hidden;background:#1a1a1a}
-.mood img{width:100%;height:100%;object-fit:cover}
-.swatches{grid-column:5;grid-row:1/3;display:grid;grid-template-rows:repeat(4,1fr);gap:10px}
-.swatches div{display:flex;align-items:flex-end;padding:10px;font:500 11px/1 var(--font);letter-spacing:.12em}
+.mood img{width:100%;height:100%}
+.mood .side{position:static;width:auto;grid-column:4;grid-row:1/3;display:flex;flex-direction:column;gap:10px}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;height:335px}
+.swatches div{display:flex;align-items:flex-end;padding:12px 10px;font:500 11px/1.3 var(--font);letter-spacing:.12em;text-transform:uppercase}
+.mood .brief{flex:1;border-top:1px solid var(--line-d);padding-top:22px}
+.mood .brief .body{font-size:20px;margin-top:14px;color:rgba(255,255,255,.85)}
+.checker span{background:#0A0A0A;padding:5px 6px;margin:-5px -6px}
+.checker{background:conic-gradient(#0A0A0A 25%,#F2EFE6 0 50%,#0A0A0A 0 75%,#F2EFE6 0) 0 0/40px 40px}
 
 /* ---- HUD (outside the stage, as the AI deck) ---- */
-.progress{position:fixed;left:0;top:0;height:2px;background:#fff;z-index:1001;transition:width .5s var(--ease);mix-blend-mode:difference}
-.hud{transition:opacity .4s;position:fixed;right:28px;bottom:18px;display:flex;align-items:center;gap:16px;z-index:1001;mix-blend-mode:difference;color:#fff}
-.counter{font:500 12px/1 'Archivo',sans-serif;letter-spacing:.3em}
-.nav-btn{width:34px;height:34px;border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;font:300 16px/1 'Archivo',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.nav-btn:hover{background:rgba(255,255,255,.15)}
+.progress{position:fixed;left:0;top:0;height:2px;background:#fff;z-index:1001;transition:width .5s,opacity .4s;mix-blend-mode:difference}
+.hud{position:fixed;right:28px;bottom:18px;display:flex;align-items:center;gap:16px;z-index:1001;mix-blend-mode:difference;color:#fff;transition:opacity .4s}
 body.idle .hud,body.idle .progress{opacity:0}
-.progress{transition:width .5s,opacity .4s}
-.nav-btn.txt{width:auto;padding:0 12px;font-size:11px;letter-spacing:.2em}
+.counter{font:500 12px/1 'Archivo',sans-serif;letter-spacing:.3em}
+.nav-btn{height:34px;min-width:34px;border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;font:300 16px/1 'Archivo',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.nav-btn:hover,.nav-btn.on{background:rgba(255,255,255,.18)}
+.nav-btn.txt{padding:0 12px;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase}
+.seg{display:flex}.seg .nav-btn+.nav-btn{border-left:0}
 
 /* ---- G: template overview ---- */
 .overview{position:fixed;inset:0;z-index:2000;background:#0A0A0A;overflow:auto;padding:56px 48px;display:none}
@@ -240,25 +263,12 @@ body.idle .hud,body.idle .progress{opacity:0}
 <body>
 <div class="deck-viewport"><div class="deck-stage" id="stage">
 
-<!-- ============ T01 COVER ============ -->
-<section class="slide dark cover active visible" data-layout="T01 · Cover" data-section="">
-  <div class="slant reveal-img" style="left:640px;width:340px"><img src="img/run.jpg" alt=""></div>
-  <div class="slant reveal-img d2" style="left:1060px;width:340px"><img src="img/court.jpg" alt="" style="object-position:30% 40%"></div>
-  <div class="slant reveal-img d4" style="left:1480px;width:340px"><img src="img/samba.jpg" alt=""></div>
-  <div class="eyebrow top reveal">Partnership proposal</div>
-  <div class="lock">
-    <span class="wm reveal d2"></span>
-    <div class="x reveal d4"><span>×</span><img src="../../assets/brands/brandroom-portfolio/adidas-white.png" alt="adidas"></div>
-  </div>
-  <div class="foot reveal d5">
-    <div class="eyebrow">brandroom.com</div>
-    <div class="eyebrow">October 2026 &nbsp;·&nbsp; Confidential</div>
-  </div>
-</section>
+<!-- ============ T01 COVER (partner) ============ -->
+<section class="slide dark cover active visible" data-layout="T01 · Cover" data-section="" data-p="cover"></section>
 
 <!-- ============ T02 STATEMENT + IMAGE ============ -->
 <section class="slide light" data-layout="T02 · Statement + image" data-section="01 · The Brand Room">
-  <div class="split-img reveal-img"><img src="img/court.jpg" alt="" style="object-position:28% center"></div>
+  <div class="split-img reveal-img"><img src="img/br/napapijri.jpg" alt="" style="object-position:20% center"></div>
   <div class="head">
     <div class="eyebrow reveal">01 &nbsp;—&nbsp; The Brand Room</div>
     <h2 class="h2 reveal d1">A destination<br>of its own</h2>
@@ -303,7 +313,7 @@ body.idle .hud,body.idle .progress{opacity:0}
     <div class="eyebrow reveal d3">Gender split</div>
     <div class="reveal d3" style="display:flex;gap:56px;margin-top:22px">
       <div><div class="num big">60<span style="font-size:.45em">%</span></div><div class="eyebrow" style="margin-top:14px">Female</div></div>
-      <div><div class="num big mute" style="color:#B5B5B5">40<span style="font-size:.45em">%</span></div><div class="eyebrow" style="margin-top:14px">Male</div></div>
+      <div><div class="num big" style="color:#B5B5B5">40<span style="font-size:.45em">%</span></div><div class="eyebrow" style="margin-top:14px">Male</div></div>
     </div>
     <div class="split reveal d4"><span style="width:60%;background:var(--ink)"></span><span style="width:40%;background:var(--line)"></span></div>
     <div class="callout reveal d5"><div class="eyebrow">Core shopper</div><p class="lead" style="font-size:30px;margin-top:14px">25 to 44, the two largest age bands: 44% of customers.</p></div>
@@ -327,9 +337,8 @@ body.idle .hud,body.idle .progress{opacity:0}
   </div>
 </section>
 
-<!-- ============ T06 STAT LIST + IMAGE ============ -->
-<section class="slide dark" data-layout="T06 · Stat list + image" data-section="01 · The Brand Room">
-  <div class="device reveal-img d3"><img src="img/tablet.png" alt="The Brand Room on tablet"></div>
+<!-- ============ T06 STAT LIST + PHONES ============ -->
+<section class="slide dark" data-layout="T06 · Stat list + phones" data-section="01 · The Brand Room">
   <div class="head">
     <div class="eyebrow reveal">Performance</div>
     <h2 class="h2 reveal d1">Premium<br>is growing</h2>
@@ -342,19 +351,31 @@ body.idle .hud,body.idle .progress{opacity:0}
     <div class="stat reveal d5"><div class="v num">+48%</div><p class="body">Footwear, YoY</p></div>
     <div class="stat reveal d6"><div class="v num">+39%</div><p class="body">Brand mix growth in 2026</p></div>
   </div>
+  <div data-phone="home" class="reveal d3" style="left:1130px;top:150px;width:310px"></div>
+  <div data-phone="pdp" class="reveal d5" style="left:1490px;top:250px;width:310px"></div>
 </section>
 
-<!-- ============ T07 SECTION ============ -->
-<section class="slide dark section" data-layout="T07 · Section divider" data-section="">
-  <div class="slant reveal-img" style="left:1140px"><img src="img/samba.jpg" alt=""></div>
-  <div class="slant reveal-img d2" style="left:1700px"><img src="img/run.jpg" alt=""></div>
-  <div class="idx reveal">02</div>
-  <h2 class="h2 reveal d2">The<br>partnership</h2>
-  <div class="eyebrow sub reveal d3">The Brand Room × adidas</div>
+<!-- ============ T07 PHONE ROW ============ -->
+<section class="slide stone prow" data-layout="T07 · Phone row" data-section="01 · The Brand Room">
+  <div class="head">
+    <div class="eyebrow reveal">brandroom.com</div>
+    <h2 class="h2 reveal d1">The new site</h2>
+  </div>
+  <div class="eyebrow cap reveal d2" style="left:120px">Home</div>
+  <div class="eyebrow cap reveal d3" style="left:594px">Brand page</div>
+  <div class="eyebrow cap reveal d4" style="left:1068px">Category</div>
+  <div class="eyebrow cap reveal d5" style="left:1542px">Product</div>
+  <div data-phone="home" class="reveal d2" style="left:120px"></div>
+  <div data-phone="plp" class="reveal d3" style="left:594px"></div>
+  <div data-phone="plp-bags" class="reveal d4" style="left:1068px"></div>
+  <div data-phone="pdp" class="reveal d5" style="left:1542px"></div>
 </section>
 
-<!-- ============ T08 LOGO WALL ============ -->
-<section class="slide dark" data-layout="T08 · Logo wall" data-section="02 · The Partnership">
+<!-- ============ T08 SECTION (partner) ============ -->
+<section class="slide dark section" data-layout="T08 · Section divider" data-section="" data-p="divider"></section>
+
+<!-- ============ T09 LOGO WALL ============ -->
+<section class="slide dark" data-layout="T09 · Logo wall" data-section="02 · The Partnership">
   <div class="head">
     <div class="eyebrow reveal">Adjacent brands</div>
     <h2 class="h2 reveal d1">In good<br>company</h2>
@@ -367,164 +388,154 @@ body.idle .hud,body.idle .progress{opacity:0}
   </div>
 </section>
 
-<!-- ============ T09 TIMELINE ============ -->
-<section class="slide light" data-layout="T09 · Timeline" data-section="02 · The Partnership">
-  <div class="head">
-    <div class="eyebrow reveal">Brand budgets</div>
-    <h2 class="h2 reveal d1">Three years<br>of growth</h2>
-    <div class="rule"></div>
-  </div>
-  <div class="years" id="years"></div>
-</section>
+<!-- ============ T10 TIMELINE (partner) ============ -->
+<section class="slide light" data-layout="T10 · Timeline" data-section="02 · The Partnership" data-p="timeline"></section>
 
-<!-- ============ T10 TWO COLUMN ============ -->
-<section class="slide stone" data-layout="T10 · Two column" data-section="02 · The Partnership">
-  <img class="brandmark reveal d2" src="../../assets/brands/brandroom-portfolio/adidas-black.png" alt="adidas">
-  <div class="head">
-    <div class="eyebrow reveal">Sell-through expectations</div>
-    <h2 class="h2 reveal d1">Built to<br>sell through</h2>
-    <div class="rule"></div>
-  </div>
-  <div class="two">
-    <div class="col reveal d2">
-      <div class="h3">Performance</div>
-      <div class="v num">70–75%</div><div class="eyebrow">Expected sell-through</div>
-      <ul>
-        <li>Dual gender across every category, including childrenswear.</li>
-        <li>Marketing collaborations using talent.</li>
-        <li>Historical knowledge of adidas brand highlights and best sellers (JD) supports a high rate of sale.</li>
-        <li>Core offer built on NOS lines.</li>
-      </ul>
-    </div>
-    <div class="col reveal d3">
-      <div class="h3">Originals / Lifestyle</div>
-      <div class="v num">65–70%</div><div class="eyebrow">Expected sell-through</div>
-      <ul>
-        <li>Higher markdown risk, mitigated by trend forecasting.</li>
-        <li>Dual gender across every category, including childrenswear.</li>
-        <li>Social commerce and influencer partnerships for incremental gains.</li>
-      </ul>
-    </div>
-  </div>
-</section>
+<!-- ============ T11 TWO COLUMN (partner) ============ -->
+<section class="slide stone" data-layout="T11 · Two column" data-section="02 · The Partnership" data-p="two"></section>
 
-<!-- ============ T11 THREE COLUMN ============ -->
-<section class="slide light" data-layout="T11 · Three column" data-section="02 · The Partnership">
-  <div class="head">
-    <div class="eyebrow reveal">Partnership vision</div>
-    <h2 class="h2 reveal d1">Where we<br>win together</h2>
-    <div class="rule"></div>
-  </div>
-  <div class="three">
-    <div class="col reveal d2">
-      <div class="h3">How we win</div>
-      <p class="body"><b>Brand elevation.</b> Tailored storytelling and curated landing pages.</p>
-      <p class="body"><b>Sustainable growth.</b> Balanced intake, controlled markdown and a strong full-price focus.</p>
-      <p class="body"><b>Shared data insights.</b> Consumer trends and heat maps.</p>
-    </div>
-    <div class="col reveal d3">
-      <div class="h3">Key categories to unlock</div>
-      <ul class="cats-big"><li>Footwear</li><li>Premium outerwear</li><li>Active lifestyle</li><li>Accessories &amp; gifting</li></ul>
-    </div>
-    <div class="col reveal d4">
-      <div class="h3">Future opportunities</div>
-      <p class="body">Brand-led campaigns, seasonal hero moments and joint digital content.</p>
-      <p class="body">Exclusive product colourways and early access, where feasible.</p>
-      <p class="body">Multi-season planning aligned with brand ambitions, alongside short-term trading.</p>
-      <p class="body">Quarterly business reviews (QBR).</p>
-    </div>
-  </div>
-</section>
+<!-- ============ T12 THREE COLUMN (partner) ============ -->
+<section class="slide light" data-layout="T12 · Three column" data-section="02 · The Partnership" data-p="three"></section>
 
-<!-- ============ T12 IMAGE GRID ============ -->
-<section class="slide dark" data-layout="T12 · Image grid" data-section="02 · The Partnership">
-  <div class="head" style="top:110px">
-    <div class="eyebrow reveal">Moodboard</div>
-    <h2 class="h2 reveal d1">Content day</h2>
-  </div>
-  <div class="mood">
-    <figure class="reveal-img d1"><img src="img/mood-boots.jpg" alt=""></figure>
-    <figure class="reveal-img d2"><img src="img/mood-tee.jpg" alt=""></figure>
-    <figure class="reveal-img d3"><img src="img/mood-denim.jpg" alt=""></figure>
-    <figure class="reveal-img d4"><img src="img/mood-quilt.jpg" alt="" style="object-position:center 30%"></figure>
-    <div class="swatches reveal d5">
-      <div style="background:#2A2A2A;color:#fff;outline:1px solid var(--line-d)">#2A2A2A</div>
-      <div style="background:#7A2E2C;color:#fff">#7A2E2C</div>
-      <div style="background:#2F6E69;color:#fff">#2F6E69</div>
-      <div style="background:#EAE3DA;color:#0A0A0A">#EAE3DA</div>
-    </div>
-    <figure class="reveal-img d3"><img src="img/mood-knit.jpg" alt=""></figure>
-    <figure class="reveal-img d4"><img src="img/mood-cream.jpg" alt="" style="object-position:center 25%"></figure>
-    <figure class="reveal-img d5"><img src="img/mood-coat.jpg" alt=""></figure>
-    <figure class="reveal-img d6"><img src="img/mood-pair.jpg" alt="" style="object-position:center 30%"></figure>
-  </div>
-</section>
+<!-- ============ T13 IMAGE GRID (partner) ============ -->
+<section class="slide dark" data-layout="T13 · Image grid" data-section="02 · The Partnership" data-p="mood"></section>
 
-<!-- ============ T13 CLOSE ============ -->
-<section class="slide dark cover" data-layout="T13 · Close" data-section="">
-  <div class="slant reveal-img" style="left:640px;width:340px"><img src="img/run.jpg" alt=""></div>
-  <div class="slant reveal-img d2" style="left:1060px;width:340px"><img src="img/court.jpg" alt="" style="object-position:30% 40%"></div>
-  <div class="slant reveal-img d4" style="left:1480px;width:340px"><img src="img/samba.jpg" alt=""></div>
-  <div class="lock">
-    <div class="display reveal d2">Thank you.</div>
-  </div>
-  <div class="foot reveal d4">
-    <span class="wm" style="width:220px;color:#fff;align-self:center"></span>
-    <div class="eyebrow">brandroom.com</div>
-  </div>
-</section>
+<!-- ============ T14 CLOSE (partner) ============ -->
+<section class="slide dark cover close" data-layout="T14 · Close" data-section="" data-p="close"></section>
 
 </div></div>
 
 <div class="progress" id="prog"></div>
 <div class="hud">
-  <button class="nav-btn txt" id="ovBtn" aria-label="Template overview">G · TEMPLATES</button>
+  <div class="seg" id="pSeg"></div>
+  <button class="nav-btn txt" id="ovBtn" aria-label="Template overview">G · Templates</button>
   <button class="nav-btn" id="prev" aria-label="Previous slide">&#8249;</button>
   <div class="counter" id="ctr"></div>
   <button class="nav-btn" id="next" aria-label="Next slide">&#8250;</button>
 </div>
-<div class="overview" id="ov"><h1>The Brand Room · deck templates</h1><p>13 layouts, each named for its Figma template. Click one to open it. G or Esc closes.</p><div class="ov-grid" id="ovGrid"></div></div>
+<div class="overview" id="ov"><h1>The Brand Room · deck templates</h1><p>14 layouts, each named for its Figma template. Click one to open it. G or Esc closes.</p><div class="ov-grid" id="ovGrid"></div></div>
 
 <script>
-/* ---- content data (edit here) ---- */
+/* ================= CONTENT (edit here) ================= */
 const LOGO='../../assets/brands/brandroom-portfolio/';
-/* adjacent brands: slug = DS logo (assets/brands/brandroom-portfolio/<slug>-white.png); no slug = name only (no DS logo yet) */
-const LIVE=[['Puma'],['Napapijri','napapijri'],['Lacoste','lacoste'],['Fila','fila'],['Tommy Hilfiger','tommy-hilfiger'],['Calvin Klein','calvin-klein'],
+/* adjacent brands: DS logo tiles, assets/brands/brandroom-portfolio/<slug>-white.png */
+const LIVE=[['Puma','puma'],['Napapijri','napapijri'],['Lacoste','lacoste'],['Fila','fila'],['Tommy Hilfiger','tommy-hilfiger'],['Calvin Klein','calvin-klein'],
   ['Crocs','crocs'],['Lyle & Scott','lyle-scott'],['DKNY','dkny'],['Hunter','hunter'],['Emporio Armani','emporio-armani'],['Juicy Couture','juicy-couture'],
   ['Havaianas','havaianas'],['Lee','lee'],['Armani Exchange','armani-exchange'],['Skechers','skechers'],['Ted Baker','ted-baker'],['Valentino','valentino'],
   ['TOMS','toms'],['Wrangler','wrangler']];
-const SOON=[['Reebok','reebok'],['Sweaty Betty','sweaty-betty'],['Berghaus'],['Diadora','diadora'],['Love Moschino','love-moschino'],['Timberland','timberland'],['BOSS','boss']];
-const TALK=['Converse','New Balance','ASICS','Nike','Saucony','The North Face','adidas','Ralph Lauren','Levi’s','Barbour','Fred Perry','EA7'];
+const SOON=[['Reebok','reebok'],['Sweaty Betty','sweaty-betty'],['Berghaus','berghaus'],['Diadora','diadora'],['Love Moschino','love-moschino'],['Timberland','timberland'],['BOSS','boss']];
+const TALK_ALL=['Converse','New Balance','ASICS','Nike','Saucony','The North Face','adidas','Vans','Ralph Lauren','Levi’s','Barbour','Fred Perry','EA7'];
 const AGES=[['18–24',12],['25–34',23],['35–44',21],['45–54',19],['55–64',13],['65+',9]]; /* read off the source chart */
-const YEARS=[ /* revenue + at cost, £ */
-  {y:'Year 1',v:1,c:.5,t:'Category rollout: Sport, plus accessories such as luggage.'},
-  {y:'Year 2',v:1.5,c:.75,t:'Driven by an expanded assortment and marketing activations.'},
-  {y:'Year 3',v:2.5,c:1.25,t:'Expanded assortment, marketing and organic growth across ranges in the adidas portfolio.'}];
 
+/* One content set per partner. v:null = figure not agreed yet: the slide shows it as "to confirm". */
+const PARTNERS={
+  adidas:{
+    name:'adidas', logo:'logos/adidas.svg', ar:'450/309', date:'October 2026',
+    cover:{img:'img/adidas/court.jpg',pos:'38% 45%'},
+    divider:{img:'img/adidas/concrete.jpg',pos:'center'},
+    close:{img:'img/adidas/court.jpg',pos:'70% 40%'},
+    years:[
+      {y:'Year 1',v:1,c:.5,t:'Category rollout: Sport, plus accessories such as luggage.'},
+      {y:'Year 2',v:1.5,c:.75,t:'Driven by an expanded assortment and marketing activations.'},
+      {y:'Year 3',v:2.5,c:1.25,t:'Expanded assortment, marketing and organic growth across ranges in the adidas portfolio.'}],
+    sell:[
+      {h:'Performance',v:'70–75%',ul:['Dual gender across every category, including childrenswear.','Marketing collaborations using talent.','Historical knowledge of adidas brand highlights and best sellers (JD) supports a high rate of sale.','Core offer built on NOS lines.']},
+      {h:'Originals / Lifestyle',v:'65–70%',ul:['Higher markdown risk, mitigated by trend forecasting.','Dual gender across every category, including childrenswear.','Social commerce and influencer partnerships for incremental gains.']}],
+    cats:['Footwear','Premium outerwear','Active lifestyle','Accessories &amp; gifting'],
+    future:['Brand-led campaigns, seasonal hero moments and joint digital content.','Exclusive product colourways and early access, where feasible.','Multi-season planning aligned with brand ambitions, alongside short-term trading.','Quarterly business reviews (QBR).'],
+    mood:{title:'Content day',imgs:[['img/adidas/mood-boots.jpg','center'],['img/adidas/mood-pair.jpg','center 30%'],['img/adidas/mood-cream.jpg','center 25%'],['img/adidas/mood-knit.jpg','center'],['img/adidas/mood-quilt.jpg','center 30%'],['img/adidas/samba.jpg','center 60%']],
+      sw:[['#2A2A2A','Ink'],['#7A2E2C','Oxblood'],['#2F6E69','Pine'],['#EAE3DA','Stone']],
+      brief:'A warm studio set with natural props. Performance and Originals styled together, on men and women.'}
+  },
+  vans:{
+    name:'Vans', logo:'logos/vans.svg', ar:'791/320', date:'October 2026',
+    cover:{img:'img/vans/authentic.jpg',pos:'40% 60%'},
+    divider:{img:'img/vans/tongue.jpg',pos:'55% 30%'},
+    close:{img:'img/vans/sk8.jpg',pos:'50% 60%'},
+    years:[ /* budgets not agreed yet */
+      {y:'Year 1',v:null,t:'Category rollout: Classics footwear first, then apparel and accessories.'},
+      {y:'Year 2',v:null,t:'An expanded assortment and the first joint marketing activations.'},
+      {y:'Year 3',v:null,t:'Organic growth across the Vans portfolio, including kids.'}],
+    sell:[
+      {h:'Classics',v:null,ul:['Old Skool, Authentic, Sk8-Hi and Era as a never-out-of-stock core.','Dual gender, plus kids, across footwear.','Proven full-price sellers, so markdown risk stays low.']},
+      {h:'Seasonal / Collaborations',v:null,ul:['Seasonal colourways and collaborations, bought tight to protect full price.','Apparel, fleece and accessories to build basket size.','Social and creator content from skate, music and art.']}],
+    cats:['Footwear','Apparel &amp; fleece','Accessories','Kidswear'],
+    future:['Brand-led campaigns built on Vans’ skate, music and art heritage.','Exclusive colourways and early access, where feasible.','Multi-season planning aligned with brand ambitions, alongside short-term trading.','Quarterly business reviews (QBR).'],
+    mood:{title:'Off The Wall',imgs:[['img/vans/authentic.jpg','center 65%'],['img/vans/flame.jpg','center'],['img/vans/toe.jpg','center 40%'],['img/vans/sk8.jpg','center 60%'],['img/vans/halfcab.jpg','center 55%'],['img/vans/knuskool.jpg','center']],
+      sw:[['#0A0A0A','Black'],['#F2EFE6','Off white'],['checker','Checkerboard'],['#A32A23','Racing red']],
+      brief:'Classics shot on concrete and in the street. Close-ups of canvas, suede, the side stripe and the waffle sole.'}
+  }
+};
+
+/* ================= RENDER ================= */
+const qs=new URLSearchParams(location.search);
+const PK=PARTNERS[qs.get('p')]?qs.get('p'):'adidas', P=PARTNERS[PK];
+document.title='The Brand Room × '+P.name;
 const gbp=n=>n>=1?'£'+(+n.toFixed(2))+'M':'£'+Math.round(n*1000)+'K';
-const tile=([n,s])=>`<div class="tile">${s?`<img src="${LOGO}${s}-white.png" alt="${n}">`:`<span>${n}</span>`}</div>`;
+const pmark=(cls,style='')=>`<span class="pmark ${cls}" role="img" aria-label="${P.name}" style="--src:url(${P.logo});--ar:${P.ar};${style}"></span>`;
+const slant=(o,d='')=>`<div class="slant reveal-img ${d}"><img src="${o.img}" alt="" style="object-position:${o.pos}"></div>`;
+const head=(eb,h,rule=true)=>`<div class="head"><div class="eyebrow reveal">${eb}</div><h2 class="h2 reveal d1">${h}</h2>${rule?'<div class="rule"></div>':''}</div>`;
+const R={
+  cover:()=>`${slant(P.cover)}<div class="eyebrow top reveal">Partnership proposal</div>
+    <div class="lock"><span class="wm reveal d2"></span><div class="x reveal d4"><span>×</span>${pmark('')}</div></div>
+    <div class="foot reveal d5"><div class="eyebrow">brandroom.com</div><div class="eyebrow">${P.date} &nbsp;·&nbsp; Confidential</div></div>`,
+  divider:()=>`${slant(P.divider)}<div class="idx reveal">02</div><h2 class="h2 reveal d2">The<br>partnership</h2><div class="eyebrow sub reveal d3">The Brand Room × ${P.name}</div>`,
+  timeline:()=>{
+    const known=P.years.every(r=>r.v!=null), maxV=known?Math.max(...P.years.map(r=>r.v)):1, ghost=[.4,.6,1];
+    return head('Brand budgets','Three years<br>of growth')+`<div class="years">`+P.years.map((r,n)=>`<div class="yr reveal d${n+2}">
+      <div class="chartbox"><div class="pair" style="height:${known?r.v/maxV*100:ghost[n]*100}%">
+        <div class="blk${known?'':' ghost'}" style="flex:2" data-h="100%"></div><div class="blk cost${known?'':' ghost'}" style="flex:1" data-h="50%"></div></div></div>
+      <div class="cap"><div class="eyebrow">${r.y}</div><div class="v num${known?'':' tbc'}">${known?gbp(r.v):'£—'}</div>
+      <div class="eyebrow" style="letter-spacing:.14em">${known?gbp(r.c)+' at cost':'To confirm'}</div><p class="body">${r.t}</p></div></div>`).join('')+
+      `<div class="tot reveal d5"><div class="eyebrow">Three-year total</div>${known
+        ?`<div class="v num">${gbp(P.years.reduce((a,r)=>a+r.v,0))}</div><div class="eyebrow" style="letter-spacing:.14em">${gbp(P.years.reduce((a,r)=>a+r.c,0))} at cost</div>`
+        :`<div class="v num tbc">£—</div><span class="chip">Budgets to be agreed with ${P.name}</span>`}
+       <div class="key"><span><i></i>Revenue</span><span><i class="c"></i>At cost</span></div></div></div>`},
+  two:()=>pmark('brandmark reveal d2')+head('Sell-through expectations','Built to<br>sell through')+`<div class="two">`+P.sell.map((c,n)=>`<div class="col reveal d${n+2}">
+      <div class="h3">${c.h}</div><div class="v num${c.v?'':' tbc'}">${c.v||'—%'}</div><div class="eyebrow">${c.v?'Expected sell-through':'Expected sell-through · to confirm'}</div>
+      <ul>${c.ul.map(l=>`<li>${l}</li>`).join('')}</ul></div>`).join('')+`</div>`,
+  three:()=>head('Partnership vision','Where we<br>win together')+`<div class="three">
+      <div class="col reveal d2"><div class="h3">How we win</div>
+        <p class="body"><b>Brand elevation.</b> Tailored storytelling and curated landing pages.</p>
+        <p class="body"><b>Sustainable growth.</b> Balanced intake, controlled markdown and a strong full-price focus.</p>
+        <p class="body"><b>Shared data insights.</b> Consumer trends and heat maps.</p></div>
+      <div class="col reveal d3"><div class="h3">Key categories to unlock</div><ul class="cats-big">${P.cats.map(c=>`<li>${c}</li>`).join('')}</ul></div>
+      <div class="col reveal d4"><div class="h3">Future opportunities</div>${P.future.map(f=>`<p class="body">${f}</p>`).join('')}</div></div>`,
+  mood:()=>{const m=P.mood,fig=(k,d)=>`<figure class="reveal-img d${d}"><img src="${m.imgs[k][0]}" alt="" style="object-position:${m.imgs[k][1]}"></figure>`;
+    return `<div class="head"><div class="eyebrow reveal">Moodboard</div><h2 class="h2 reveal d1">${m.title}</h2></div><div class="mood">
+      ${fig(0,1)}${fig(1,2)}${fig(2,3)}
+      <div class="side reveal d4"><div class="swatches">${m.sw.map(([c,l])=>`<div class="${c==='checker'?'checker':''}" style="${c==='checker'?'color:#fff':`background:${c};color:${/^#(0|2|7|A3|1)/i.test(c)?'#fff':'#0A0A0A'}`};outline:1px solid var(--line-d)"><span>${l}<br>${c==='checker'?'Pattern':c}</span></div>`).join('')}</div>
+        <div class="brief"><div class="eyebrow">Shoot direction</div><p class="body">${m.brief}</p></div></div>
+      ${fig(3,4)}${fig(4,5)}${fig(5,6)}</div>`},
+  close:()=>`${slant(P.close)}<div class="lock"><div class="display reveal d2">Thank<br>you.</div></div>
+    <div class="foot reveal d4"><span class="wm"></span><div class="eyebrow">brandroom.com</div></div>`
+};
+document.querySelectorAll('[data-p]').forEach(s=>s.innerHTML=R[s.dataset.p]());
+/* phones: Figma screens (The Brand Room file, NEW SITE - Designs) at 3x */
+document.querySelectorAll('[data-phone]').forEach(el=>{el.classList.add('phone');
+  el.innerHTML=`<div class="scr"><div class="island"></div><div class="sb"><span>9:41</span><svg viewBox="0 0 66 12" width="66" height="12" aria-hidden="true"><g fill="#000"><rect x="0" y="8" width="3" height="4" rx=".7"/><rect x="4.5" y="6" width="3" height="6" rx=".7"/><rect x="9" y="3.5" width="3" height="8.5" rx=".7"/><rect x="13.5" y="1" width="3" height="11" rx=".7"/><path d="M29 2.2c2.3 0 4.4.9 6 2.4l1.1-1.2A10 10 0 0 0 29 .6a10 10 0 0 0-7.1 2.8L23 4.6a8.4 8.4 0 0 1 6-2.4zm0 3.3c1.4 0 2.7.5 3.7 1.4l1.1-1.2A7 7 0 0 0 29 3.9a7 7 0 0 0-4.8 1.8l1.1 1.2c1-.9 2.3-1.4 3.7-1.4zm0 3.3c.6 0 1.1.2 1.5.6L29 11.1l-1.5-1.7c.4-.4.9-.6 1.5-.6z"/><rect x="41.5" y=".5" width="21" height="11" rx="3" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="43" y="2" width="18" height="8" rx="1.8"/><path d="M63.8 4v4c.7-.3 1.2-1 1.2-2s-.5-1.7-1.2-2z" fill-opacity=".4"/></g></svg></div><img src="img/screens/${el.dataset.phone}.jpg" alt=""></div>`});
+
+const TALK=TALK_ALL.filter(n=>n.toLowerCase()!==P.name.toLowerCase());
+const tile=([n,s])=>`<div class="tile"><img src="${LOGO}${s}-white.png" alt="${n}"></div>`;
 tLive.innerHTML=LIVE.map(tile).join('');nLive.textContent=LIVE.length;
 tSoon.innerHTML=SOON.map(tile).join('');nSoon.textContent=SOON.length;
 tTalk.innerHTML=TALK.map(n=>`<li>${n}</li>`).join('');nTalk.textContent=TALK.length;
 ageBars.innerHTML=AGES.map(([k,v])=>`<div class="bar${v>=21?' hi':''}" data-h="${v/25*100}%"><i>${v}%</i></div>`).join('');
 ageCats.innerHTML=AGES.map(([k])=>`<span>${k}</span>`).join('');
-const maxV=YEARS[YEARS.length-1].v;
-years.innerHTML=YEARS.map((r,n)=>`<div class="yr reveal d${n+2}">
-  <div style="display:flex;align-items:flex-end;height:300px"><div style="display:flex;gap:6px;align-items:flex-end;width:100%;height:${r.v/maxV*100}%"><div class="blk" style="flex:2" data-h="100%"></div><div class="blk cost" style="flex:1" data-h="50%"></div></div></div>
-  <div class="cap"><div class="eyebrow">${r.y}</div><div class="v num">${gbp(r.v)}</div><div class="eyebrow" style="letter-spacing:.14em">${gbp(r.c)} at cost</div><p class="body">${r.t}</p></div></div>`).join('')+
-  `<div class="tot reveal d5"><div class="eyebrow">Three-year total</div><div class="v num">${gbp(YEARS.reduce((a,r)=>a+r.v,0))}</div>
-   <div class="eyebrow" style="letter-spacing:.14em">${gbp(YEARS.reduce((a,r)=>a+r.c,0))} at cost</div>
-   <div class="key"><span><i></i>Revenue</span><span><i class="c"></i>At cost</span></div></div>`;
 
-/* ---- deck engine (AI deck pattern) ---- */
+/* partner switch */
+pSeg.innerHTML=Object.entries(PARTNERS).map(([k,v])=>`<a class="nav-btn txt${k===PK?' on':''}" href="?p=${k}${location.hash}" onclick="event.stopPropagation()">${v.name}</a>`).join('');
+
+/* ================= DECK ENGINE (AI deck pattern) ================= */
 const slides=[...document.querySelectorAll('#stage > .slide')];let i=0;
 const pad=n=>String(n).padStart(2,'0');
 slides.forEach((s,n)=>{ /* chrome on every content slide: wordmark · section · folio */
-  if(s.dataset.section===''||s.classList.contains('cover'))return;
-  s.insertAdjacentHTML('beforeend',`<div class="chrome"><span class="wm"></span><div class="meta">${s.dataset.section?`<span>${s.dataset.section}</span>`:''}<span class="folio"><b>${pad(n+1)}</b> / ${pad(slides.length)}</span></div></div>`);
+  if(!s.dataset.section)return;
+  s.insertAdjacentHTML('beforeend',`<div class="chrome"><span class="wm"></span><div class="meta"><span>${s.dataset.section}</span><span class="folio"><b>${pad(n+1)}</b> / ${pad(slides.length)}</span></div></div>`);
 });
 function grow(s,on){s.querySelectorAll('[data-h]').forEach(b=>b.style.height=on?b.dataset.h:'0')}
-function paint(){prog.style.width=((i+1)/slides.length*100)+'%';ctr.innerHTML=pad(i+1)+' / '+pad(slides.length);history.replaceState(null,'','#'+(i+1))}
+function paint(){prog.style.width=((i+1)/slides.length*100)+'%';ctr.innerHTML=pad(i+1)+' / '+pad(slides.length);history.replaceState(null,'','?p='+PK+'#'+(i+1));
+  pSeg.querySelectorAll('a').forEach(a=>a.href=a.href.split('#')[0]+'#'+(i+1))}
 function show(n){
   slides[i].classList.remove('active','visible');grow(slides[i],false);
   i=(n+slides.length)%slides.length;
@@ -534,10 +545,9 @@ function show(n){
 prev.onclick=e=>{e.stopPropagation();show(i-1)};
 next.onclick=e=>{e.stopPropagation();show(i+1)};
 /* overview: live clones of every slide, scaled 0.2 */
-ovGrid.innerHTML='';
 slides.forEach((s,n)=>{const it=document.createElement('div');it.className='ov-item';
-  const th=document.createElement('div');th.className='ov-thumb';const c=s.cloneNode(true);c.classList.add('visible');c.removeAttribute('id');
-  c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));grow(c,true);th.appendChild(c);
+  const th=document.createElement('div');th.className='ov-thumb';const c=s.cloneNode(true);c.classList.add('visible');
+  c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));c.querySelectorAll('img').forEach(im=>im.loading='lazy');grow(c,true);th.appendChild(c);
   it.appendChild(th);it.insertAdjacentHTML('beforeend',`<div class="ov-cap">${pad(n+1)} <span>${s.dataset.layout}</span></div>`);
   it.onclick=e=>{e.stopPropagation();ov.classList.remove('on');show(n)};ovGrid.appendChild(it)});
 const toggleOv=()=>ov.classList.toggle('on');

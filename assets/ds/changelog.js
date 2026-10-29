@@ -8,6 +8,7 @@ window.DG_CHANGELOG=[
   "title": "Delivery grid: option B (tabs) chosen · box can be delivery only · slimmer badges · full-width modal tabs · Delivery method (checkout row)",
   "by": "PDP delivery grid (projects/delivery-grid, Jake 29 Oct)",
   "added": [
+   "Brand Room portfolio logos: Puma, Berghaus, Converse (assets/brands/brandroom-portfolio/<slug>-black.png + -white.png, 320px tiles from The Brand Room Figma, Content / Logos NRsu568JGzwCDq4egvkUbn: puma-white 546:18764, berghaus-white 550:16378, converse-white 546:18701) · by Brand Room deck template (projects/brandroom-deck, Jake 29 Oct)",
    "Token --shadow-ask (0 0 14px -4px rgba(0,0,0,.08)) + AI pill variant .ai-pill--ask — the Ask launcher beside search (no outline, white, 8% shadow) · by Shopping agent (Jake 29 Oct, Figma Zi4qRcAFTELiCvFIl29mJC 126:45)",
    "Icon: refresh (icons/lib/icons-refresh.svg, 24 frame, 1pt round stroke like icons-close) + modal header action .mdl-refresh (16px, left of the close on the title line) and a Modal catalogue variant Header · title + refresh + close — the Ask Deb chat’s start again · by Shopping agent (Jake 29 Oct)",
    "AI pill variant .ai-pill--suggest — search suggestion prompts (Need some help?): 14 regular (Debenhams Light), shadow 0 0 14px -4px rgba(0,0,0,.06); Search suggestions catalogue uses it · by Shopping agent (Jake 29 Oct, Figma Zi4qRcAFTELiCvFIl29mJC 75:467)",

@@ -1,37 +1,41 @@
-# The Brand Room deck template
+# The Brand Room partner deck template
 
-**Live:** jakerayner96.github.io/debenhamsgroup.design/projects/brandroom-deck/
-**Source:** "THE BRAND ROOM x ADI.pdf" (Ellie Cartwright, Google Drive 1jbSiXU-HDGDLx_eYKkwq4IXAAx_xoASE, 29 Oct 2026). Every word and figure in the slides comes from that PDF. Photography was taken from the PDF into `img/`.
-**Format:** the same as the AI Generated Badge deck (jakerayner96.github.io/ai-generated-badge): a fixed 1920×1080 stage scaled to the window, arrow keys / click / space to move, `#n` deep links, print to PDF gives one slide per page.
+**Live:** jakerayner96.github.io/debenhamsgroup.design/projects/brandroom-deck/ · adidas `?p=adidas` (default) · Vans `?p=vans`
+**Source:** "THE BRAND ROOM x ADI.pdf" (Ellie Cartwright, Google Drive 1jbSiXU-HDGDLx_eYKkwq4IXAAx_xoASE, 29 Oct 2026). The Brand Room words and figures come from that PDF.
+**Figma:** The Brand Room `NRsu568JGzwCDq4egvkUbn`: logos Content / Logos (546:18029 adidas), campaign imagery Content (2:77 Napapijri), site screens NEW SITE - Designs (947:14702 Home, 725:76318 Brand PLP, 725:6961 Bags PLP, 695:21921 PDP).
+**Format:** the AI Generated Badge deck's fixed 1920×1080 stage, scaled to the window. Arrow keys, click or space to move; `#n` deep links; print to PDF gives one slide per page. **G** opens the overview of all 14 layouts. The HUD switches partner.
+
+## One template, one content set per partner
+Every slide is the same template. Partner content lives in `PARTNERS` at the top of the script (name, logo, cover / divider / close images, budgets, sell-through, categories, opportunities, moodboard). To make a new partner deck, copy a block, change its content and open `?p=<key>`. A figure set to `null` shows as "to confirm" (grey £— / —%, dashed bars), so a deck can go out before trading has the numbers.
+
+- **adidas**: everything from the PDF.
+- **Vans**: Brand Room slides as adidas. **The Vans budgets and sell-through are not agreed yet, so they show as "to confirm".** The Vans categories, bullets and opportunities are draft copy for the team to edit.
 
 ## Brand
-- `data-brand="brandroom"` + `assets/ds/tokens.css`: Archivo (`--font-family-base`), ink `#0A0A0A` (`--primary`), grey `#767676` (`--text-secondary`). Square corners, mono only, no accent colour.
-- Display type is Archivo at width 125% (expanded) and weight 700, uppercase, matching the wordmark. Copy is Archivo at 100%, weight 300/400. Eyebrows are 16px, weight 500, letter-spaced .24em, uppercase.
-- The wordmark is `assets/brands/brandroom.svg`, used as a CSS mask so it takes the slide colour. Partner and adjacent-brand logos come from `assets/brands/brandroom-portfolio/` (Puma and Berghaus have no DS logo yet, so their tiles show the name).
-- The 30° slanted photo panels come from the original PDF.
-- Three slide themes: `.dark` (ink), `.light` (white), `.stone` (#F2F2F2, the DS neutral).
+- `data-brand="brandroom"` + `assets/ds/tokens.css`: Archivo, ink `#0A0A0A`, grey `#767676`. Square, mono.
+- Display type is Archivo Expanded Bold (width 125%) in caps, to echo the wordmark. Copy is Archivo 300/400.
+- The wordmark (`assets/brands/brandroom.svg`) and partner logos (`logos/adidas.svg`, from Figma, and `logos/vans.svg`, the public-domain wordmark from Wikimedia Commons) are CSS masks, so they take the slide colour.
+- Image panels keep the Brand Room's 30° cut from the PDF. It's a `clip-path`, so the photo is never skewed or zoomed.
+
+## Images: no stretching, no upscaling
+Every `<img>` is `object-fit: cover` in a slot no bigger than its source at 1920 wide. The check (Playwright, every slide, both partners) measures rendered size against natural size: worst case 0.99 (no upscaling) and nothing stretched. The PDF moodboard images are small, so the T13 grid slots are fixed in px to fit them; don't enlarge those slots without bigger images.
+- `img/br/`: Brand Room campaign images (Figma Content page).
+- `img/screens/`: the new site's Home, Brand PLP, Bags PLP and PDP, exported from Figma at 3× (1170 × 2532), shown in a flat phone frame with a drawn status bar.
+- `img/adidas/`: from the PDF (court, run, samba, moodboard) + the adidas concrete tile from the Figma home page.
+- `img/vans/`: **placeholders** from Wikimedia Commons (CC BY / CC BY-SA / CC0; attribution needed if the deck goes external). Swap for Vans campaign assets when the team has them.
 
 ## Templates (bank these into Figma Slides)
-Each `<section>` carries `data-layout`. Press **G** for the overview of every layout.
-
-| | Layout | Use |
-|---|---|---|
-| T01 | Cover | Wordmark × partner logo, three slanted images, date / confidential |
-| T02 | Statement + image | Lead paragraph, body copy, tags, a note row; full-height image on the right |
-| T03 | Numbered points | Four numbered columns |
-| T04 | Chart + split | Bar chart (data in `AGES`) and a split stat with a callout |
-| T05 | KPI grid | Six big numbers, 3 × 2 |
-| T06 | Stat list + image | Five stat rows with a device or cut-out image |
-| T07 | Section divider | Big index number, section title, slanted images |
-| T08 | Logo wall | Launched / Launching tiles + In conversation names (data in `LIVE` / `SOON` / `TALK`) |
-| T09 | Timeline | Three years of revenue vs at-cost bars + a total (data in `YEARS`) |
-| T10 | Two column | Two big ranges with bullet lists; partner mark top right |
-| T11 | Three column | Text column, large category list, text column |
-| T12 | Image grid | Moodboard of 8 images + 4 swatches |
-| T13 | Close | Thank you |
-
-Content slides get the footer automatically: wordmark left, `data-section` + folio right. The cover, divider and close have no footer.
+| | Layout | | Layout |
+|---|---|---|---|
+| T01 | Cover (partner) | T08 | Section divider (partner) |
+| T02 | Statement + image | T09 | Logo wall (`LIVE` / `SOON` / `TALK_ALL`) |
+| T03 | Numbered points | T10 | Timeline (partner budgets) |
+| T04 | Chart + split (`AGES`) | T11 | Two column (partner sell-through + mark) |
+| T05 | KPI grid | T12 | Three column (partner vision) |
+| T06 | Stat list + phones | T13 | Image grid (partner moodboard + swatches) |
+| T07 | Phone row (the new site) | T14 | Close (partner) |
 
 ## Notes
-- The age chart values were read from the PDF chart (12 / 23 / 21 / 19 / 13 / 9%). Check them against the source data before the deck is shared.
-- No DS components were added or changed. The deck uses DS tokens and brand assets only; its slide layouts are deck-only and live in this file until they move to Figma Slides.
+- The age chart values were read off the PDF chart (12 / 23 / 21 / 19 / 13 / 9%). Check them against the source data.
+- "In conversation" drops the partner's own name.
+- DS change: Puma, Berghaus and Converse logo tiles added to `assets/brands/brandroom-portfolio/` (changelog 29 Oct). No components added or changed.
