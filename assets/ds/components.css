@@ -1337,6 +1337,26 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 /* Export (html2canvas can't paint CSS masks): pages set html.exporting while capturing — DS fix 16 Oct, was a sign-in page override */
 html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/icons-down.svg) center/contain no-repeat}
 
+/* ---- Delivery method (.dmeth) — the checkout Delivery Method row (Checkout 2026 WChEtDPH0LcErdYFS9SESn · 3996:171709 Default / Unlimited User / Unlimited+ User). 29 Oct 2026.
+   One row per method: [optional DS .rad, 16px to the label] · name 16/20 semibold (+ an optional badge beside it) · optional descriptor 12/15 light (2px under the name)
+   · "Arrives …" 14/18 light, 4px under · price on the right, centred, 16/20 semibold, a was price inline after it 16 light struck, 8px between · Free = "FREE".
+   .dmeth-list stacks rows 24px apart, no keylines. Checkout uses it with the radio; the PDP delivery grid and its modal without (delivery.js). */
+.dmeth-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-6,24px)}
+.dmeth{display:flex;align-items:center;gap:var(--gap-2,8px);font-family:var(--font-family-base);color:var(--text-primary);text-align:left}
+.dmeth>.rad{margin-right:var(--gap-2,8px)}
+.dmeth-l{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--gap-1,4px)}
+.dmeth-n{font-size:16px;line-height:20px;font-weight:var(--w-strong,600)}
+.dmeth-n .dgrid-badge,.dmeth-n .badge{margin-left:var(--gap-2,8px);vertical-align:1px}  /* inline: the badge wraps with the last word of the name */
+.dmeth .nw{white-space:nowrap}
+.dmeth-d{margin-top:-2px;font-size:12px;line-height:15px;font-weight:var(--w-regular,300)}
+.dmeth-a{font-size:14px;line-height:18px;font-weight:var(--w-regular,300)}
+/* parts (arrival · cut-off): each part pulls a 12px "·" in front of itself; the one that starts a line has it clipped, so a wrap never starts with a dot */
+.dmeth-a:has(>span+span){display:flex;flex-wrap:wrap;overflow:hidden}
+.dmeth-a:has(>span+span)>span+span{margin-left:-12px;margin-right:12px}.dmeth-a:has(>span+span)>span+span::before{content:"·";display:inline-block;width:12px;text-align:center}
+.dmeth-a:has(>span+span)>span:first-child{margin-right:12px}
+.dmeth-p{display:flex;align-items:center;gap:var(--gap-2,8px);flex:none;white-space:nowrap;font-size:16px;line-height:20px}
+.dmeth-p b{font-weight:var(--w-strong,600)}.dmeth-p s{font-weight:var(--w-regular,300)}
+
 /* ---- Delivery grid (PDP "Delivery Methods" box) + Delivery options modal — 16 Oct 2026 · assets/ds/delivery.js ----
    Live PDP box (Dynamo = what checkout serves) · Demi Adesanya's tabbed mockup · Paul Dossis's modal (Gifting PIh1ikzvYNH1FR4arKJbe4 · 209-294935 / 209-295333).
    Box: 1px --border-subtle, radius --radius-default, padding gap 4 (16px), gap 4 (16px) between parts; title 16/20 semibold like the other PDP boxes. Three layouts:
@@ -1345,6 +1365,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
      .dgrid--line one line ("Get it Tomorrow to M4 7BB"), no box title; everything else in the modal
    Badges .dgrid-badge beside the arrival line: 18px high, 11/16 medium, 6px sides, --radius-default (slimmed 29 Oct) · --fast red (--text-error on --error-bg) · --cheap grey · --member = the programme (Premier, Unlimited, Royalty).
    Tabs (.dgrid-tabs) sit top right on the title line (.dgrid-hd).
+   Methods (29 Oct): option B rows and the modal rows are the checkout row, .dmeth in a .dmeth-list, no radio — the box and the modal match checkout.
    Box = delivery only (29 Oct): returns / seller can leave the box for the accordion set — DG_delivery.acc(o,'ret'|'seller') → .acc rows, .dgrid-retacc · .dgrid-seller--acc.
    Bulky: .dgrid-bulky under the price (upfront) + .dgrid-note in the box + a neutral .msg in the modal.
    Modal = the DS .mdl (desktop .mdl--sm · mobile web .mdl--alert as the Figma 358 · app .mdl--up) inside .dopts-layer; body = .dopts-seg toggle
@@ -1418,9 +1439,9 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dopts-panes>*,.dgrid-panes>*{grid-area:1/1;align-self:start}
 .dopts .mdl-bd .dopts-panes>[hidden]{display:flex;visibility:hidden}
 .dgrid-panes>[hidden]{display:flex;visibility:hidden}
-/* modal tabs: full width, half each, on a 1px keyline, 14/20 = never smaller than the methods (29 Oct) · rows = the page grid's own type: 14/20, price 14 semibold, was 12 light grey */
+/* modal tabs: full width, half each, on a 1px keyline, 16/20 = never smaller than the method names (29 Oct) · rows = the page grid's own type: 14/20, price 14 semibold, was 12 light grey */
 .dopts-seg{display:flex;flex:none;border-bottom:var(--border-w,1px) solid var(--border-subtle)}
-.dopts-seg button{flex:1;margin-bottom:calc(-1 * var(--border-w,1px));padding:var(--gap-3,12px) 0 10px;border:0;border-bottom:2px solid transparent;background:none;font:inherit;font-size:14px;line-height:20px;font-weight:var(--w-regular,300);color:var(--text-primary);text-align:center;cursor:pointer}
+.dopts-seg button{flex:1;margin-bottom:calc(-1 * var(--border-w,1px));padding:var(--gap-3,12px) 0 10px;border:0;border-bottom:2px solid transparent;background:none;font:inherit;font-size:16px;line-height:20px;font-weight:var(--w-regular,300);color:var(--text-primary);text-align:center;cursor:pointer}
 .dopts-seg button.on{border-bottom-color:var(--text-primary);font-weight:var(--w-mid,500)}
 .dopts-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-4,16px)}
 .dopts-row{display:flex;justify-content:space-between;align-items:center;gap:var(--gap-4,16px);font-size:14px;line-height:20px}

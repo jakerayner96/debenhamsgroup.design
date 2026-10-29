@@ -20,7 +20,7 @@
 ## Options (left panel)
 | | |
 |---|---|
-| **PDP option** | fixed: **B · Tabs** — Delivery / Click & Collect, checkout-style rows, price right, Fastest / Cheapest per tab; See more opens the modal on that tab. First tab: Delivery / Click & Collect |
+| **PDP option** | fixed: **B · Tabs** — Delivery / Click & Collect; rows (box + modal) = the DS Delivery method row from checkout (Checkout 2026 `3996:171709`), no radio, Fastest / Cheapest per tab; See more opens the modal on that tab. First tab: Delivery / Click & Collect |
 | Modal | fixed (Jake, 16 Oct): Home Delivery / Collect Nearby toggle (Paul) only, page grid type · NI always its own section · price low → high · slides up on mobile web + app, DS small modal on desktop |
 | In the box | Returns info and Seller info each "In the box" or "Accordion" (Returns row / a Seller Information row under it), so the box can be delivery only (Jake, 29 Oct) |
 | Rules | badges · cut-off "midnight" / "12AM" · See more with two methods · returns line + days |

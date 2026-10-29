@@ -5,15 +5,17 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-29",
   "v": "2026.10.29",
-  "title": "Delivery grid: option B (tabs) chosen · box can be delivery only · slimmer badges · full-width modal tabs",
+  "title": "Delivery grid: option B (tabs) chosen · box can be delivery only · slimmer badges · full-width modal tabs · Delivery method (checkout row)",
   "by": "PDP delivery grid (projects/delivery-grid, Jake 29 Oct)",
   "added": [
+   "Delivery method (.dmeth · .dmeth-list), Checkout group: the checkout Delivery Method row from Checkout 2026 (WChEtDPH0LcErdYFS9SESn · 3996:171709, Default / Unlimited User / Unlimited+ User) — optional DS radio, name 16/20 semibold (+ badge), optional 12 light descriptor, “Arrives …” 14 light, price 16 semibold centred on the right with the was price inline (16 light struck), FREE, rows 24px apart with no keylines · by PDP delivery grid (Jake 29 Oct: method styling on the PDP and modal to match checkout)",
    "Delivery grid: returns and seller info can leave the box (o.retIn / o.sellerIn 'acc'), so the Delivery Methods box is delivery only. DG_delivery.acc(o,'ret'|'seller') gives the Returns and Seller Information rows for the PDP accordion set (.dgrid-retacc, .dgrid-seller--acc: accordion body type, no icon); the seller placeholder, site name and marketplace seller link work the same in the accordion. Template: S.dgRet / S.dgSeller (default 'box', so nothing moves unless asked) · by PDP delivery grid"
   ],
   "changed": [
    "PDP template (templates/pdp.html): the delivery grid is now option B, Delivery / Click & Collect tabs (DG_delivery.grid layout 'tabs', Delivery tab first), replacing A (live sentences + James's PR). Every PDP built from the template gets it · by PDP delivery grid",
    "Delivery grid badges (.dgrid-badge, Fastest / Cheapest / programme): slimmer, 22px → 18px high, 12 semibold → 11/16 medium, 8px → 6px sides · by PDP delivery grid",
-   "Delivery Options modal tabs (.dopts-seg, Home Delivery / Collect Nearby): full width, half each on a 1px keyline, 12px → 14/20 so they're never smaller than the methods · by PDP delivery grid",
+   "Delivery Options modal tabs (.dopts-seg, Home Delivery / Collect Nearby): full width, half each on a 1px keyline, 12px → 16/20 so they're never smaller than the method names · by PDP delivery grid",
+   "Delivery grid option B rows and the Delivery Options modal rows: now the Delivery method row without the radio (was .dgrid-row / .dopts-row: when on top, method under, 14px, keylines, was price under the price), so the PDP and modal match checkout. Free reads FREE everywhere · by PDP delivery grid",
    "Delivery grid title (.dgrid-hd h2, Delivery Methods): 14 medium → 16/20 semibold, the same as the other PDP box titles (Subscribe & Save) · by PDP delivery grid",
    "Delivery grid prototype (projects/delivery-grid): an In the box card (Returns info / Seller info: In the box · Accordion); option B only; A and C and their controls (James's PR third row, third-row badge, postcode) removed from the panel. delivery.js keeps 'list' and 'line' so older prototypes still render · by PDP delivery grid"
   ],

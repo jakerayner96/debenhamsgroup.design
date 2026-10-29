@@ -47,7 +47,7 @@
   const ord=n=>n+(n%10===1&&n!==11?'st':n%10===2&&n!==12?'nd':n%10===3&&n!==13?'rd':'th');
   const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const day=(o,d)=>{const t=new Date(o.today||Date.now());t.setDate(t.getDate()+d);return ord(t.getDate())+' '+MON[t.getMonth()]};
-  const money=p=>p===0?'Free':p<1?Math.round(p*100)+'p':'£'+p.toFixed(2);
+  const money=p=>p===0?'FREE':p<1?Math.round(p*100)+'p':'£'+p.toFixed(2);
   const cutoff=(o,m)=>m.cut===2?(o.cut==='12am'?'Order by 11PM':'Order by 11pm'):m.cut?(o.cut==='12am'?'Order by 12AM':'Order by midnight'):'';
 
   /* the response for a scenario, in the order the API returns it. 'cc' = the live bug: collect comes back first and Super Saver isn't on */
@@ -102,13 +102,20 @@
   /* A · live + James's PR (Home Delivery Top Up): "Arrives Tomorrow [Fastest]" / method name | price, fastest first, cheapest last */
   function list(o){const rows=rowsList(o);
     return `<ul class="dgrid-rows dgrid-rows--pr">${rows.map(({m,b})=>`<li class="dgrid-row"><div class="l"><div class="w"><b>${m.d===1?'Arrives Tomorrow':'Arrives by '+day(o,m.d)}</b>${badge(o,b)}</div><span class="n">${esc(m.n)}</span></div>
-      <div class="r"><b>${m.prem?'Free':money(m.p)}</b>${m.prem?`<s>${money(m.was)}</s>`:''}</div></li>`).join('')}</ul>${bulkyNote(o)}${moreLink(o,'home','See more')}`}
+      <div class="r"><b>${m.prem?'FREE':money(m.p)}</b>${m.prem?`<s>${money(m.was)}</s>`:''}</div></li>`).join('')}</ul>${bulkyNote(o)}${moreLink(o,'home','See more')}`}
 
-  /* B · Demi: Delivery / Click & Collect tabs, checkout-style rows with the price on the right */
-  function row(o,{m,b}){return `<li class="dgrid-row"><div class="l"><div class="w"><b>${when(o,m,1)}</b>${badge(o,b)}</div><span class="n">${esc(m.s)}</span>${cutoff(o,m)?`<span class="c">${cutoff(o,m)}</span>`:''}</div>
-      <div class="r"><b>${m.prem?'Free':(m.from?'From ':'')+money(m.p)}</b>${m.was?`<s>${money(m.was)}</s>`:''}</div></li>`}
+  /* the checkout Delivery Method row (DS .dmeth, no radio) — the box and the modal both use it, so they match checkout.
+     name (+ badge) / "Arrives …" (· cut-off) | price, was inline after it */
+  /* arrival + cut-off as two parts: .dmeth-a draws the · between them, and drops it when the cut-off wraps to its own line */
+  const arrives=(o,m)=>`<span>${m.nom?'Arrives on a day and time of your choice':m.d===1?'Arrives Tomorrow':'Arrives by '+day(o,m.d)}</span>${cutoff(o,m)?` <span>${cutoff(o,m)}</span>`:''}`;
+  /* a badge rides on the name's last word, so a long name wraps with it and it never sits on a line of its own */
+  const named=(o,name,b)=>{if(!b||o.badges===false)return esc(name);const i=name.lastIndexOf(' ');return `${esc(name.slice(0,i+1))}<span class="nw">${esc(name.slice(i+1))}${badge(o,b)}</span>`};
+  const dmeth=(o,m,name,b)=>`<li class="dmeth"><div class="dmeth-l"><div class="dmeth-n">${named(o,name,b)}</div><span class="dmeth-a">${arrives(o,m)}</span></div>
+      <div class="dmeth-p"><b>${m.prem?'FREE':(m.from?'From ':'')+money(m.p)}</b>${m.was?`<s>${money(m.was)}</s>`:''}</div></li>`;
+  /* B · Demi: Delivery / Click & Collect tabs, the fastest + cheapest of each as checkout rows */
+  function row(o,{m,b}){return dmeth(o,m,m.s,b)}
   function tabs(o){const M=methods(o),hasC=M.collect.length>0,first=o.tab==='collect'&&hasC?'collect':'home';
-    const panel=(k,l,more)=>`<div class="dgrid-panel" data-dg-panel="${k}"${k===first?'':' hidden'}><ul class="dgrid-rows">${picks(o,M[k]).map(r=>row(o,r)).join('')}</ul>${k==='home'?bulkyNote(o):''}${moreLink(o,k,more)}</div>`;
+    const panel=(k,l,more)=>`<div class="dgrid-panel" data-dg-panel="${k}"${k===first?'':' hidden'}><ul class="dmeth-list">${picks(o,M[k]).map(r=>row(o,r)).join('')}</ul>${k==='home'?bulkyNote(o):''}${moreLink(o,k,more)}</div>`;
     const order=first==='collect'?['collect','home']:['home','collect'];
     const T={home:'Delivery',collect:'Click &amp; Collect'};
     return {hd:hasC?`<div class="dgrid-tabs" role="tablist">${order.map(k=>`<button role="tab" data-dg-tab="${k}" class="${k===first?'on':''}" aria-selected="${k===first}">${T[k]}</button>`).join('')}</div>`:'',body:`
@@ -126,9 +133,7 @@
 
   /* ---- modal ---- */
   function sortL(o,l){const s=l.slice();s.sort(o.sort==='speed'?(a,b)=>(a.nom?99:a.d)-(b.nom?99:b.d)||a.p-b.p:(a,b)=>a.p-b.p||(a.nom?99:a.d)-(b.nom?99:b.d));return s}
-  const mrow=(o,m)=>`<li class="dopts-row"><div class="l"><b>${esc(m.n)}</b><span>${m.nom?'Arrives on a day and time of your choice':m.d===1?'Arrives Tomorrow':'Arrives by '+day(o,m.d)}${cutoff(o,m)?` · ${cutoff(o,m)}`:''}</span></div>
-      <div class="r">${m.was?`<s>${money(m.was)}</s>`:''}<b>${m.prem?'Free':(m.from?'From ':'')+money(m.p)}</b></div></li>`;
-  const ul=(o,l)=>`<ul class="dopts-list">${l.map(m=>mrow(o,m)).join('')}</ul>`;
+  const ul=(o,l)=>`<ul class="dmeth-list">${l.map(m=>dmeth(o,m,m.n)).join('')}</ul>`;
   function homeBlock(o,M,head){const uk=M.home.filter(m=>!m.ni),ni=M.home.filter(m=>m.ni);
     if(o.ni==='mixed'||!ni.length)return (head?`<h3 class="dopts-grp">Home delivery</h3>`:'')+ul(o,sortL(o,M.home));
     return (head?`<h3 class="dopts-grp">Home delivery</h3>`:'')+ul(o,sortL(o,uk))+`<hr class="dopts-hr">`+(head?`<h3 class="dopts-grp">Northern Ireland</h3>`:'')+ul(o,sortL(o,ni))}
