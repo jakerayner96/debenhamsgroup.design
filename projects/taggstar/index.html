@@ -196,7 +196,7 @@ function renderPanel(host,S,update){
   const seg=(id,cur,opts)=>`<span class="seg" data-seg="${id}">${opts.map(([v,l])=>`<button data-v="${v}" class="${String(cur)===String(v)?'on':''}">${l}</button>`).join('')}</span>`;
   const place=k==='plp'?`<div class="f"><span>Which cards</span>${seg('cover',p.cover,[['all','Every card'],['2','Every 2nd'],['3','Every 3rd']])}</div>
       <label class="sw" style="margin-top:10px"><input type="checkbox" id="mix"${p.mix?' checked':''}><i></i>Mix the PLP messages across cards</label>`
-    :k==='pdp'?['figma','img','live'].map(v=>`<button class="opt${p.pos===v?' on':''}" data-pos="${v}"><span class="r"></span><span class="t"><b>${{figma:'Figma',img:'On the image',live:'Live'}[v]}</b><span>${{figma:'Mobile: on the main image, 12px from its left and bottom · desktop: pinned 24px above the bottom of the window, centred on the image',img:'On the main image, 12px from its left and bottom, at every width',live:'Centred on the main image — where Debenhams, boohoo and PLT run it today'}[v]}</span></span></button>`).join('')
+    :k==='pdp'?['figma','img','banner','live'].map(v=>`<button class="opt${p.pos===v?' on':''}" data-pos="${v}"><span class="r"></span><span class="t"><b>${{figma:'Figma',img:'On the image',banner:'Banner across the image',live:'Live'}[v]}</b><span>${{figma:'Mobile: on the main image, 12px from its left and bottom · desktop: pinned 24px above the bottom of the window, centred on the image',img:'On the main image, 12px from its left and bottom, at every width',banner:'ASOS-style: the full width of the main image, flush to its bottom edge, square',live:'Centred on the main image — where Debenhams, boohoo and PLT run it today'}[v]}</span></span></button>`).join('')
     :`<div class="f"><span>Which items</span>${seg('cover',p.cover,[['first','First item'],['all','Every item']])}</div>`;
   const rows=P.brands.map(([v,n])=>{const cc=S.by[v]||P.initial(v);return `<tr class="${v===b?'cur':''}" data-b="${v}"><td>${n}</td>${PLACES.map(([pk])=>`<td><i class="dot" style="background:${T.hex(cc[pk].bg)};opacity:${cc[pk].alpha==null?1:Math.max(.25,cc[pk].alpha)}"></i></td>`).join('')}<td>${cc.icon?'On':'<span class="dim">Off</span>'}</td></tr>`}).join('');
   host.innerHTML=`<h1>Taggstar</h1><p class="intro">The Taggstar message dropped into the design system’s PLP, PDP and Bag templates (DS component <b>assets/ds/taggstar.js</b>). Background, icon and message are set per fascia; pick the page to set that placement.</p>
@@ -205,7 +205,8 @@ function renderPanel(host,S,update){
   <div class="card"><h3>Icon <small>${bn} · all placements</small><label class="sw"><input type="checkbox" id="icon"${c.icon?' checked':''}><i></i>${c.icon?'On':'Off'}</label></h3>
     <p>One icon per message type, before the text: ${Object.entries(T.TYPES).map(([t,i])=>`<span class="ic"><img src="../../assets/ds/icons/lib/${ICON_OF[i]}.svg" alt="">${T.TYPE_NAMES[t]}</span>`).join('')}</p>
     <div class="f"><span>Icon set</span>${seg('set',c.set,[['line','DS line icons'],['boohoo','boohoo animated']])}<small>${c.set==='boohoo'?'boohoo’s live set: animated eyes for views, a heart for everything else.':'The V2 Figma glyphs (DS icons/lib, cart added 16 Oct). They take the text colour.'}</small></div></div>
-  <div class="card"><h3>Background <small>${bn} · ${kn}</small></h3>
+  <div class="card"><h3>Background <small>${bn} · ${kn}</small>${k==='pdp'?`<label class="sw"><input type="checkbox" id="glass"${p.glass?' checked':''}><i></i>Glass (app)</label>`:''}</h3>
+    ${k==='pdp'&&p.glass?'<p>Liquid Glass, as the app runs it: white 90% over a 20px blur, black text, icon and close (DS .sp-pdp--glass). Colour and opacity below are ignored.</p>':''}
     <div class="sws">${sw.map(([n,h])=>`<button class="swc${T.hex(h)===bg?' on':''}" data-bg="${h}" title="${n} ${h}" style="background:${h}"></button>`).join('')}</div>
     <div class="row2" style="margin-top:10px"><label class="f" style="margin:0"><span>Colour</span><input type="color" id="bgc" value="${bg.toLowerCase()}"></label><label class="f" style="margin:0"><span>Hex</span><input type="text" id="bgh" value="${bg}" maxlength="7"></label></div>
     <div class="f"><span>Opacity <b id="aval">${Math.round((p.alpha==null?1:p.alpha)*100)}%</b></span><input type="range" id="alpha" min="20" max="100" step="5" value="${Math.round((p.alpha==null?1:p.alpha)*100)}"></div>
@@ -223,6 +224,7 @@ function renderPanel(host,S,update){
   const re=()=>{update();renderPanel(host,S,update)};
   host.querySelectorAll('[data-page]').forEach(x=>x.onclick=()=>{S.page=x.dataset.page;re()});
   host.querySelector('#icon').onchange=e=>{c.icon=e.target.checked;re()};
+  const gl=host.querySelector('#glass');if(gl)gl.onchange=e=>{p.glass=e.target.checked;re()};
   host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(x=>x.onclick=()=>{const id=g.dataset.seg;if(id==='set')c.set=x.dataset.v;else p[id]=x.dataset.v;re()}));
   host.querySelectorAll('[data-bg]').forEach(x=>x.onclick=()=>{p.bg=x.dataset.bg;re()});
   host.querySelector('#bgc').oninput=e=>{p.bg=e.target.value.toUpperCase();host.querySelector('#bgh').value=p.bg;update()};

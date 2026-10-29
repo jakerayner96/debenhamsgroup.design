@@ -8,7 +8,8 @@
      DG_taggstar.css(doc)            injects the component CSS into doc once
      DG_taggstar.plp(o) .pdp(o) .bag(o) → html for one message
      DG_taggstar.LIB / TYPES / LIVE  message library · type → icon · per-fascia live defaults
-   o = { msg:{t,c,d} | id, bg:'#hex', alpha:0–1, icon:bool, set:'line'|'boohoo', upper:bool, radius:'4px', lg:bool, pos:'img'|'pin'|'centre' }
+   o = { msg:{t,c,d} | id, bg:'#hex', alpha:0–1, icon:bool, set:'line'|'boohoo', upper:bool, radius:'4px', lg:bool, pos:'img'|'pin'|'centre'|'banner', glass:bool }
+   glass (PDP, 29 Oct): .sp-pdp--glass — the app's Liquid Glass fill, dark text; bg / alpha are ignored. pos 'banner' = ASOS-style, full width along the image's bottom edge.
    Copy: c = the claim (strong), d = the detail (regular, **bold** marks strong runs). PLP runs it on one line, PDP on two, Bag on one.
    Icon: one per message type, from the DS line set (icons/lib: cart · bag · show · flame · time · trophy — the V2 Figma glyphs);
    boohoo runs its own animated set live (eyes for views, heart for purchases). Glyphs are recoloured data URIs, not CSS masks,
@@ -59,18 +60,19 @@
   const CLOSE='<svg width="12" height="12" viewBox="0 0 11.75 11.75" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.375 0.375L0.375 11.375M0.375 0.375L11.375 11.375" stroke="black" stroke-width="0.75" stroke-linecap="round"/></svg>';
   const base=()=>BASE||new URL('assets/ds/',document.baseURI).href;
   const msgOf=o=>typeof o.msg==='string'?(LIB.find(m=>m.id===o.msg)||LIB[0]):(o.msg||LIB[0]);
-  function vars(o){const col=fg(hex(o.bg)||'#F2F2F2');return `--sp-bg:${fill(o)};--sp-fg:${col};--sp-case:${o.upper?'uppercase':'none'}${o.radius!=null?`;--sp-r:${o.radius}`:''}`}
+  const ink=o=>o.glass?'#000':fg(hex(o.bg)||'#F2F2F2');
+  function vars(o){if(o.glass)return `--sp-case:${o.upper?'uppercase':'none'}${o.radius!=null?`;--sp-r:${o.radius}`:''}`;const col=fg(hex(o.bg)||'#F2F2F2');return `--sp-bg:${fill(o)};--sp-fg:${col};--sp-case:${o.upper?'uppercase':'none'}${o.radius!=null?`;--sp-r:${o.radius}`:''}`}
   function ico(o,m){if(!o.icon)return '';
     if(o.set==='boohoo')return `<img class="sp-ico" src="${base()}icons/taggstar/boohoo-${m.t==='viewed'?'eyes':'heart'}.webp" alt="">`;
-    const k=TYPES[m.t]||'flame';return SVG[k]?`<img class="sp-ico" src="${uri(SVG[k],fg(hex(o.bg)||'#F2F2F2'))}" alt="">`:''}
+    const k=TYPES[m.t]||'flame';return SVG[k]?`<img class="sp-ico" src="${uri(SVG[k],ink(o))}" alt="">`:''}
   const T={
     TYPES,TYPE_NAMES,LIB,LIVE,fg,hex,contrast,
     load(b){if(b)BASE=new URL(b,document.baseURI).href;return Promise.all(Object.values(TYPES).map(k=>SVG[k]?0:fetch(base()+'icons/lib/icons-'+k+'.svg').then(r=>r.ok?r.text():'').then(t=>{if(t)SVG[k]=t}).catch(()=>{})))},
     /* the component CSS lives in components.css only (16 Oct 2026). DS pages already load it; this links it into a page that doesn't. */
     css(doc){doc=doc||document;if([...doc.styleSheets].some(s=>/assets\/ds\/components\.css/.test(s.href||''))||doc.getElementById('dg-components-css'))return;const l=doc.createElement('link');l.id='dg-components-css';l.rel='stylesheet';l.href=base()+'components.css';(doc.head||doc.documentElement).appendChild(l)},
     plp(o){const m=msgOf(o);return `<div class="pc-taggstar ts" data-ts style="${vars(o)}">${ico(o,m)}<span class="t">${m.c?`<b>${esc(m.c)}</b> `:''}<span>${md(m.d)}</span></span></div>`},
-    pdp(o){const m=msgOf(o),x=uri(CLOSE,fg(hex(o.bg)||'#F2F2F2')),pos=o.pos==='pin'?' sp-pin':o.pos==='centre'?' sp-centre':' sp-on-img';
-      return `<div class="sp-pdp ts${o.lg?' sp-pdp--lg':''}${pos}" data-ts style="${vars(o)}"><div class="in">${ico(o,m)}<div class="tx">${m.c?`<b>${esc(m.c)}</b>`:''}<span>${md(m.d)}</span></div></div><button class="sp-x" type="button" aria-label="Dismiss"><img src="${x}" alt=""></button></div>`},
+    pdp(o){const m=msgOf(o),x=uri(CLOSE,ink(o)),pos=o.pos==='pin'?' sp-pin':o.pos==='centre'?' sp-centre':o.pos==='banner'?' sp-banner':' sp-on-img';
+      return `<div class="sp-pdp ts${o.glass?' sp-pdp--glass':''}${o.lg?' sp-pdp--lg':''}${pos}" data-ts style="${vars(o)}"><div class="in">${ico(o,m)}<div class="tx">${m.c?`<b>${esc(m.c)}</b>`:''}<span>${md(m.d)}</span></div></div><button class="sp-x" type="button" aria-label="Dismiss"><img src="${x}" alt=""></button></div>`},
     bag(o){const m=msgOf(o);return `<div class="sp-bag ts" data-ts style="${vars(o)}">${ico(o,m)}<span class="t">${m.c?`<b>${esc(m.c)}</b> `:''}<span>${md(m.d)}</span></span></div>`}
   };
   root.DG_taggstar=T;

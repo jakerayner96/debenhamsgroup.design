@@ -58,7 +58,7 @@ function injectPDP(d){
   const o=opt('pdp'),g=gallery(d);if(!g)return;
   if(getComputedStyle(g).position==='static')g.style.position='relative';
   const dk=desk(),pos=o.pos||'figma';
-  const mode=pos==='live'?'centre':pos==='img'?'img':(dk?'pin':'img');      /* Figma: on the image on mobile, pinned to the window on desktop */
+  const mode=pos==='live'?'centre':pos==='img'?'img':pos==='banner'?'banner':(dk?'pin':'img');      /* Figma: on the image on mobile, pinned to the window on desktop · banner: ASOS-style along the image's bottom edge */
   const html=T.pdp(Object.assign({},o,{lg:dk,pos:mode==='pin'&&EXPORTING?'img':mode}));
   if(mode==='pin'&&!EXPORTING){d.body.insertAdjacentHTML('beforeend',html);pin(d,g)}
   else{g.insertAdjacentHTML('beforeend',html);
