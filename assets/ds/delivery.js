@@ -115,11 +115,11 @@
   /* B · Demi: Delivery / Click & Collect tabs, the fastest + cheapest of each as checkout rows */
   function row(o,{m,b}){return dmeth(o,m,m.s,b)}
   function tabs(o){const M=methods(o),hasC=M.collect.length>0,first=o.tab==='collect'&&hasC?'collect':'home';
-    const panel=(k,l,more)=>`<div class="dgrid-panel" data-dg-panel="${k}"${k===first?'':' hidden'}><ul class="dmeth-list">${picks(o,M[k]).map(r=>row(o,r)).join('')}</ul>${k==='home'?bulkyNote(o):''}${moreLink(o,k,more)}</div>`;
+    const panel=(k,l,more)=>`<div class="dgrid-panel" data-dg-panel="${k}"${k===first?'':' hidden'}><ul class="dmeth-list dmeth-list--sm">${picks(o,M[k]).map(r=>row(o,r)).join('')}</ul>${k==='home'?bulkyNote(o):''}${moreLink(o,k,more)}</div>`;
     const order=first==='collect'?['collect','home']:['home','collect'];
     const T={home:'Delivery',collect:'Click &amp; Collect'};
     return {hd:hasC?`<div class="dgrid-tabs" role="tablist">${order.map(k=>`<button role="tab" data-dg-tab="${k}" class="${k===first?'on':''}" aria-selected="${k===first}">${T[k]}</button>`).join('')}</div>`:'',body:`
-      <div class="dgrid-panes">${panel('home','Delivery','See more delivery options')}${hasC?panel('collect','Click & Collect','See more collection options'):''}</div>`}}
+      <div class="dgrid-panes">${panel('home','Delivery','See more')}${hasC?panel('collect','Click & Collect','See more'):''}</div>`}}
 
   /* C · one-liner (Amazon style) — everything else lives in the modal. Icon: DS fast (slanted) truck when it arrives tomorrow, the upright truck otherwise */
   function line(o){const M=methods(o),f=fastest(pdpPool(M.home)),cc=cheapest(M.collect);if(!f)return '';
@@ -133,7 +133,7 @@
 
   /* ---- modal ---- */
   function sortL(o,l){const s=l.slice();s.sort(o.sort==='speed'?(a,b)=>(a.nom?99:a.d)-(b.nom?99:b.d)||a.p-b.p:(a,b)=>a.p-b.p||(a.nom?99:a.d)-(b.nom?99:b.d));return s}
-  const ul=(o,l)=>`<ul class="dmeth-list">${l.map(m=>dmeth(o,m,m.n)).join('')}</ul>`;
+  const ul=(o,l)=>`<ul class="dmeth-list dmeth-list--sm">${l.map(m=>dmeth(o,m,m.n)).join('')}</ul>`;
   function homeBlock(o,M,head){const uk=M.home.filter(m=>!m.ni),ni=M.home.filter(m=>m.ni);
     if(o.ni==='mixed'||!ni.length)return (head?`<h3 class="dopts-grp">Home delivery</h3>`:'')+ul(o,sortL(o,M.home));
     return (head?`<h3 class="dopts-grp">Home delivery</h3>`:'')+ul(o,sortL(o,uk))+`<hr class="dopts-hr">`+(head?`<h3 class="dopts-grp">Northern Ireland</h3>`:'')+ul(o,sortL(o,ni))}
@@ -144,7 +144,7 @@
     let body,title='Delivery Options';
     if(o.modal==='list'){body=homeBlock(o,M,1)+(M.collect.length?`<hr class="dopts-hr">`+collectBlock(o,M,1):'')}
     else if(o.modal==='tab'){title=tab==='collect'?'Collection Options':'Delivery Options';body=tab==='collect'?collectBlock(o,M,0):homeBlock(o,M,0)}
-    else{body=`<div class="dopts-seg" role="tablist"><button data-dg-seg="home" class="${tab==='home'?'on':''}">Home Delivery</button><button data-dg-seg="collect" class="${tab==='collect'?'on':''}">Collect Nearby</button></div>
+    else{body=`<div class="dopts-seg" role="tablist"><button data-dg-seg="home" class="${tab==='home'?'on':''}">Delivery</button><button data-dg-seg="collect" class="${tab==='collect'?'on':''}">Click &amp; Collect</button></div>
       <div class="dopts-panes"><div data-dg-mpanel="home"${tab==='home'?'':' hidden'}>${homeBlock(o,M,0)}</div><div data-dg-mpanel="collect"${tab==='collect'?'':' hidden'}>${collectBlock(o,M,0)}</div></div>`}
     return `<div class="dopts-layer${lay==='mdl--up'?' dopts-layer--up':''}" data-dg-modal><div class="mdl-scrim" data-dg-close></div>
       <div class="mdl ${lay} dopts" role="dialog" aria-modal="true" aria-label="${title}"><div class="modal-hd"><span class="mt">${title}</span><button class="modal-x" data-dg-close aria-label="Close"></button></div>
