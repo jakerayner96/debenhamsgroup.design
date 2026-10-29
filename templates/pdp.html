@@ -62,7 +62,7 @@ const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
 /* delivery grid (DS delivery.js) = option B, Delivery / Click & Collect tabs (projects/delivery-grid, Jake 29 Oct): fastest + cheapest per tab, badges, returns line */
 /* seller line: grey placeholder until a size is picked, then sold by the fascia ('site'; a marketplace key, e.g. 'amass', makes it a link → seller modal) */
 let SELLER=null;
-const DG_OPTS=()=>({layout:'tabs',tab:'home',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
+const DG_OPTS=()=>({layout:'tabs',tab:'home',retIn:S.dgRet||'box',sellerIn:S.dgSeller||'box',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
 /* Subscribe & Save: the product at 5% off, size = the first size until one is picked; centred modal from 600px, bottom sheet on phones */
 const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(document.querySelector('.sz.on')||{}).textContent||P.sizes[0],colour:P.colour,pct:5});
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
@@ -90,9 +90,11 @@ function accSet(P){const rows=[['At a Glance',P.glance?`<ul class="glance glance
     ['Description',`${esc(P.name)}.${P.glance?' '+esc(P.glance.join('. '))+'.':''}`],
     ['Product Details &amp; Care','Fabric and care from the product feed.'],
     ['Delivery','Every way to get this item, and its price, is in Delivery Methods above.'],
-    ['Returns','Eligible for return within 21 days. Exclusions apply.'],
+    ['Returns','Eligible for return within 21 days. Exclusions apply.',0,'ret'],
+    ['Seller Information',DG_OPTS().sellerIn==='acc'?'-':'',0,'seller'],
     ['Manufacturer',`${esc(P.brand)}, Debenhams Group, Manchester M1 2DU.`]].filter(r=>r[1]);
-  return `<div class="acc-set" data-slot="info">${rows.map(([h,b,o])=>`<div class="acc${o?' open':''}"><button class="acc-h">${h}<img src="${LIB}icons-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${b}</div></div>`).join('')}</div>`}
+  /* Returns + Seller Information rows come from delivery.js (S.dgRet / S.dgSeller 'acc' = out of the delivery grid, in here) */
+  return `<div class="acc-set" data-slot="info">${rows.map(([h,b,o,k])=>k&&window.DG_delivery?DG_delivery.acc(DG_OPTS(),k):`<div class="acc${o?' open':''}"><button class="acc-h">${h}<img src="${LIB}icons-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${b}</div></div>`).join('')}</div>`}
 function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams,d=desk();
   const crumbs=P.crumbs.map((c,i)=>i<P.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('');
   const bnpl=strip(V('bnpl',0)).replace(/£23\.33/,'£'+(num(P.price)/3).toFixed(2));

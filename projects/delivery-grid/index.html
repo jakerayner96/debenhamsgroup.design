@@ -175,7 +175,7 @@ const P={
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','README.md','../../assets/ds/delivery.js','../../assets/ds/subscribe.js'],
   store:'proto-delivery-grid',
-  initial:()=>({layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
+  initial:()=>({layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',retIn:'box',sellerIn:'box',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
 };
 const PROG={debenhams:'Unlimited',boohoo:'Premier Club',boohooman:'Premier',plt:'Royalty',karenmillen:'Premier'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -188,11 +188,16 @@ function renderPanel(host,S,update){
   const two=c.scen==='market'||c.scen==='bulky';
   /* modal fixed (Jake, 16 Oct): Home Delivery / Collect Nearby toggle only, NI always its own section, priced low → high, slides up on mobile.
      PDP option fixed to B · tabs (Jake, 29 Oct): A (live + James's PR) and C (one-liner) dropped, so their PR / postcode rules go too */
-  Object.assign(c,{layout:'tabs',modal:'toggle',open:'',ni:'split',sort:'price',sheet:'up'});
+  Object.assign(c,{layout:'tabs',ret:true,modal:'toggle',open:'',ni:'split',sort:'price',sheet:'up'});
   host.innerHTML=`<h1>PDP delivery grid</h1><p class="intro">The PDP <b>Delivery Methods</b> box, <b>option B</b> (Delivery / Click &amp; Collect tabs), with Paul's <b>Delivery Options</b> modal behind See more — on the DS PDP template, web (mobile + desktop) and app. Brief: Delivery Grid UX catch up, 16 Oct 2026; B chosen 29 Oct.</p>
   <div class="card"><h3>PDP option <small>B · tabs</small></h3>
     <p>Demi’s mockup: two tabs, checkout-style rows with the price on the right, Fastest / Cheapest badges, Premier view. See more opens the modal on the tab you’re in.</p>
     <div class="f"><span>First tab</span>${seg('tab',[['home','Delivery'],['collect','Click &amp; Collect']])}</div></div>
+  <div class="card"><h3>In the box</h3>
+    <p>${c.retIn==='acc'&&c.sellerIn==='acc'?'The box is <b>delivery only</b>: returns and seller info sit in the accordions under the product.':'Push returns and seller info out of the box into the accordion set, so the box is delivery only.'}</p>
+    <div class="f"><span>Returns info</span>${seg('retIn',[['box','In the box'],['acc','Accordion']])}<small>${c.retIn==='acc'?'In the Returns accordion (already on the PDP), off the box.':'Calendar line under the methods. The Returns accordion stays too.'}</small></div>
+    <div class="f"><span>Seller info</span>${seg('sellerIn',[['box','In the box'],['acc','Accordion']])}<small>${c.sellerIn==='acc'?'A Seller Information accordion under Returns. Same placeholder / link rules.':'Sold &amp; Delivered by line at the bottom of the box.'}</small></div>
+    <div class="f"><span>Return window (days)</span><input id="rd" type="number" min="1" value="${esc(c.retDays)}"></div></div>
   <div class="card"><h3>Product &amp; response</h3>
     ${radio('scen','std','Standard product','Full Debenhams method list; home delivery comes back first.')}
     ${radio('scen','cc','Click &amp; collect comes back first','The live bug: the response leads with collect. With tabs each tab picks its own fastest + cheapest, so home delivery still shows.')}
@@ -206,7 +211,7 @@ function renderPanel(host,S,update){
   <div class="card"><h3>Rules</h3>
     ${sw('badges','Fastest / Cheapest badges')}
     <div class="f"><span>Next-day cut-off copy</span>${seg('cut',[['midnight','Order by midnight'],['12am','Order by 12AM (live)']])}<small>Cut-offs vary 11pm / midnight by item; “12AM” reads as lunchtime to some.</small></div>
-    <div class="f"><span>Returns line</span><div class="row2">${sw('ret','Show')}<input id="rd" type="number" min="1" value="${esc(c.retDays)}" ${c.ret?'':'disabled'}></div><small>Demi: returns are called out three times (14, 21, 35 days).</small></div></div>
+</div>
   <div class="card"><h3>Seller <small>Sold &amp; Delivered by</small></h3>
     <div class="f"><span>Size</span>${seg('sized',[['false','Not picked yet'],['true','Picked']])}<small>${c.sized?'Seller shows once a size is picked. Tapping a size in the preview does the same.':'Placeholder: “Select a size to see seller info” in grey, the box icon faded.'}</small></div>
     <div class="f"><span>Sold by</span>${seg('seller',[['site',bn+' (the site)'],['amass','Marketplace seller']],!c.sized)}<small>${c.seller==='amass'?'AMASS ECOMMERCE — the name is a link that opens the seller modal (owner, address, VAT, company number).':'The site itself is never a link.'}</small></div></div>

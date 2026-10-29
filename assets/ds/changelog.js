@@ -5,12 +5,17 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-29",
   "v": "2026.10.29",
-  "title": "Delivery grid: option B (tabs) chosen",
+  "title": "Delivery grid: option B (tabs) chosen · box can be delivery only · slimmer badges · full-width modal tabs",
   "by": "PDP delivery grid (projects/delivery-grid, Jake 29 Oct)",
-  "added": [],
+  "added": [
+   "Delivery grid: returns and seller info can leave the box (o.retIn / o.sellerIn 'acc'), so the Delivery Methods box is delivery only. DG_delivery.acc(o,'ret'|'seller') gives the Returns and Seller Information rows for the PDP accordion set (.dgrid-retacc, .dgrid-seller--acc: accordion body type, no icon); the seller placeholder, site name and marketplace seller link work the same in the accordion. Template: S.dgRet / S.dgSeller (default 'box', so nothing moves unless asked) · by PDP delivery grid"
+  ],
   "changed": [
    "PDP template (templates/pdp.html): the delivery grid is now option B, Delivery / Click & Collect tabs (DG_delivery.grid layout 'tabs', Delivery tab first), replacing A (live sentences + James's PR). Every PDP built from the template gets it · by PDP delivery grid",
-   "Delivery grid prototype (projects/delivery-grid): option B only; A and C and their controls (James's PR third row, third-row badge, postcode) removed from the panel. delivery.js keeps 'list' and 'line' so older prototypes still render · by PDP delivery grid"
+   "Delivery grid badges (.dgrid-badge, Fastest / Cheapest / programme): slimmer, 22px → 18px high, 12 semibold → 11/16 medium, 8px → 6px sides · by PDP delivery grid",
+   "Delivery Options modal tabs (.dopts-seg, Home Delivery / Collect Nearby): full width, half each on a 1px keyline, 12px → 14/20 so they're never smaller than the methods · by PDP delivery grid",
+   "Delivery grid title (.dgrid-hd h2, Delivery Methods): 14 medium → 16/20 semibold, the same as the other PDP box titles (Subscribe & Save) · by PDP delivery grid",
+   "Delivery grid prototype (projects/delivery-grid): an In the box card (Returns info / Seller info: In the box · Accordion); option B only; A and C and their controls (James's PR third row, third-row badge, postcode) removed from the panel. delivery.js keeps 'list' and 'line' so older prototypes still render · by PDP delivery grid"
   ],
   "fixed": []
  },

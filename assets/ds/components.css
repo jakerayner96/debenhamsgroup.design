@@ -1339,12 +1339,13 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 
 /* ---- Delivery grid (PDP "Delivery Methods" box) + Delivery options modal — 16 Oct 2026 · assets/ds/delivery.js ----
    Live PDP box (Dynamo = what checkout serves) · Demi Adesanya's tabbed mockup · Paul Dossis's modal (Gifting PIh1ikzvYNH1FR4arKJbe4 · 209-294935 / 209-295333).
-   Box: 1px --border-subtle, radius --radius-default, padding gap 4 (16px), gap 4 (16px) between parts. Three layouts:
+   Box: 1px --border-subtle, radius --radius-default, padding gap 4 (16px), gap 4 (16px) between parts; title 16/20 semibold like the other PDP boxes. Three layouts:
      .dgrid-rows--pr  James's PR rows ("Arrives Tomorrow [Fastest]" / method | price), fastest first, cheapest last, + a third home row when both are click & collect
      .dgrid-tabs  Delivery / Click & Collect underline tabs, checkout-style .dgrid-row (when + badge · method · cut-off | price, was struck under)
      .dgrid--line one line ("Get it Tomorrow to M4 7BB"), no box title; everything else in the modal
-   Badges .dgrid-badge beside the arrival line: 12px semibold, --radius-default · --fast red (--text-error on --error-bg) · --cheap grey · --member = the programme (Premier, Unlimited, Royalty).
+   Badges .dgrid-badge beside the arrival line: 18px high, 11/16 medium, 6px sides, --radius-default (slimmed 29 Oct) · --fast red (--text-error on --error-bg) · --cheap grey · --member = the programme (Premier, Unlimited, Royalty).
    Tabs (.dgrid-tabs) sit top right on the title line (.dgrid-hd).
+   Box = delivery only (29 Oct): returns / seller can leave the box for the accordion set — DG_delivery.acc(o,'ret'|'seller') → .acc rows, .dgrid-retacc · .dgrid-seller--acc.
    Bulky: .dgrid-bulky under the price (upfront) + .dgrid-note in the box + a neutral .msg in the modal.
    Modal = the DS .mdl (desktop .mdl--sm · mobile web .mdl--alert as the Figma 358 · app .mdl--up) inside .dopts-layer; body = .dopts-seg toggle
    (Home Delivery / Collect Nearby — the page's 12px underline tabs), .dopts-list rows in the page row type (14/20: name semibold · "Arrives by …" regular | price semibold, was 12 light grey under it),
@@ -1352,9 +1353,9 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dgrid{display:flex;flex-direction:column;gap:var(--gap-4,16px);padding:var(--gap-4,16px);border:var(--border-w,1px) solid var(--border-subtle);border-radius:var(--radius-default);font-family:var(--font-family-base);color:var(--text-primary);text-align:left;background:var(--surface-page)}
 .dgrid--line{gap:var(--gap-3,12px)}
 .dgrid-hd{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--gap-2,8px) var(--gap-4,16px)}
-.dgrid-hd h2{margin:0;font-size:14px;font-weight:var(--w-mid,500);line-height:20px}
+.dgrid-hd h2{margin:0;font-size:16px;font-weight:var(--w-strong,600);line-height:20px}  /* = the other PDP box titles (.sns-hd b, Subscribe & Save), 29 Oct */
 /* tag beside the arrival line (James's PR, Home Delivery Top Up): 4px radius, 12px semibold · Fastest = error red on --error-bg · Cheapest = secondary on --surface-sunken */
-.dgrid-badge{display:inline-flex;align-items:center;height:22px;padding:0 var(--gap-2,8px);border-radius:var(--radius-default);background:var(--surface-sunken);color:var(--text-secondary);font-size:12px;font-weight:var(--w-strong,600);line-height:1;white-space:nowrap;vertical-align:middle;flex:none}
+.dgrid-badge{display:inline-flex;align-items:center;height:18px;padding:0 6px;border-radius:var(--radius-default);background:var(--surface-sunken);color:var(--text-secondary);font-size:11px;font-weight:var(--w-mid,500);line-height:16px;white-space:nowrap;vertical-align:middle;flex:none}
 .dgrid-badge--fast{background:var(--error-bg,#FFF2F2);color:var(--text-error,#C90000)}
 .dgrid-badge--cheap{background:var(--surface-sunken);color:var(--text-secondary)}
 .dgrid-badge--member{background:var(--text-primary);color:var(--text-inverse,#FFF)}
@@ -1393,6 +1394,9 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dgrid-seller img{width:24px;height:24px;flex:none}
 .dgrid-seller .lnk{padding:0;border:0;background:none;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
 .dgrid-seller.is-empty{color:var(--text-secondary)}.dgrid-seller.is-empty img{opacity:.4}
+/* in the accordion set (box = delivery only): the accordion body's own type, no icon */
+.dgrid-seller--acc{display:block;font-size:inherit;line-height:inherit}
+.dgrid-retacc{margin:0}.dgrid-retacc a{color:inherit}
 /* Seller modal (.dseller on the DS .mdl): seller name title · label 16 semibold / value 16 regular, gap 4 (16px) between · returns copy */
 .dseller dl{margin:0;display:flex;flex-direction:column;gap:var(--gap-4,16px)}
 .dseller dt{font-size:16px;line-height:22px;font-weight:var(--w-strong,600)}
@@ -1414,9 +1418,9 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dopts-panes>*,.dgrid-panes>*{grid-area:1/1;align-self:start}
 .dopts .mdl-bd .dopts-panes>[hidden]{display:flex;visibility:hidden}
 .dgrid-panes>[hidden]{display:flex;visibility:hidden}
-/* modal tabs + rows = the page grid's own type (.dgrid-tabs, .dgrid-rows--pr): 12px underline tabs, 14/20 rows, price 14 semibold, was 12 light grey */
-.dopts-seg{display:flex;gap:var(--gap-4,16px);flex:none}
-.dopts-seg button{padding:var(--gap-1,4px) 0;border:0;border-bottom:2px solid transparent;background:none;font:inherit;font-size:12px;font-weight:var(--w-regular,300);color:var(--text-primary);cursor:pointer}
+/* modal tabs: full width, half each, on a 1px keyline, 14/20 = never smaller than the methods (29 Oct) · rows = the page grid's own type: 14/20, price 14 semibold, was 12 light grey */
+.dopts-seg{display:flex;flex:none;border-bottom:var(--border-w,1px) solid var(--border-subtle)}
+.dopts-seg button{flex:1;margin-bottom:calc(-1 * var(--border-w,1px));padding:var(--gap-3,12px) 0 10px;border:0;border-bottom:2px solid transparent;background:none;font:inherit;font-size:14px;line-height:20px;font-weight:var(--w-regular,300);color:var(--text-primary);text-align:center;cursor:pointer}
 .dopts-seg button.on{border-bottom-color:var(--text-primary);font-weight:var(--w-mid,500)}
 .dopts-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-4,16px)}
 .dopts-row{display:flex;justify-content:space-between;align-items:center;gap:var(--gap-4,16px);font-size:14px;line-height:20px}

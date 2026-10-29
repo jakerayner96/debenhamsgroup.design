@@ -35,7 +35,9 @@ const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt
 const prog=b=>{const m=(window.DG_MEMBERSHIP||{})[b];return m?m.name.replace(/^Debenhams /,''):''};
 /* seller: placeholder until a size is picked (panel or a tap on a size in the preview) */
 let PICK=false;
-const opts=()=>Object.assign({},S,{prog:prog(S.brand),desk:desk()&&!app(),sheet:'up',brand:S.brand,seller:(S.sized===true||S.sized==='true'||PICK)?(S.seller||'site'):null});
+/* accordion rows the reviewer opened stay open across panel changes */
+const ACC_OPEN={};
+const opts=()=>Object.assign({},S,{accOpen:ACC_OPEN,prog:prog(S.brand),desk:desk()&&!app(),sheet:'up',brand:S.brand,seller:(S.sized===true||S.sized==='true'||PICK)?(S.seller||'site'):null});
 
 /* app chrome: DS .app-top (status + nav) and .app-tabbar; the web header, USP bars, breadcrumb and footer go */
 const APP_HIDE='.hd,[data-usp-banners],.hd-usp,.bc,footer,[data-ftr]{display:none!important}';
@@ -66,6 +68,12 @@ function inject(){const d=D();if(!d||!d.body||!d.querySelector('.buy'))return;
   /* the configured grid goes where the template's own one sits (Jake's order): after Unlimited + Deliver+, before BNPL and Subscribe & Save */
   const after=[...buy.querySelectorAll(':scope>.member-box,:scope>.dplus')].pop()||buy.querySelector(':scope>.ai-prompts')||buy.querySelector(':scope>.pdp-ctas');
   if(after){after.insertAdjacentHTML('afterend',DG.grid(o));after.nextElementSibling.setAttribute('data-dgp','')}
+  /* returns / seller: in the box, or out of it into the template's accordion set (Returns row · a Seller Information row under it) */
+  const set=d.querySelector('.acc-set');
+  if(set){set.querySelectorAll('[data-dg-acc]').forEach(n=>{if(n.classList.contains('open'))ACC_OPEN[n.dataset.dgAcc]=1;else delete ACC_OPEN[n.dataset.dgAcc]});
+    const r=set.querySelector('[data-dg-acc="ret"]');if(r)r.outerHTML=DG.acc(o,'ret');
+    set.querySelectorAll('[data-dg-acc="seller"]').forEach(n=>n.remove());
+    if(o.sellerIn==='acc'){const rr=set.querySelector('[data-dg-acc="ret"]');if(rr)rr.insertAdjacentHTML('afterend',DG.acc(o,'seller'));else set.insertAdjacentHTML('beforeend',DG.acc(o,'seller'))}}
   if(S.scen==='bulky'){const pr=buy.querySelector(':scope>.price-blk');if(pr)pr.insertAdjacentHTML('afterend',DG.bulky())}
   DG.wire(d,o,openModal);
   d.querySelectorAll('.sz').forEach(z=>z.addEventListener('click',()=>{if(!PICK){PICK=true;DG.setSeller(d,opts())}}));

@@ -10,10 +10,13 @@
          DG_delivery.wire(root, o, open) → tabs, See more (calls open(tab)), modal toggle (root = the document or element holding them)
          DG_delivery.mount(document, o) → wire + See more opens the modal over the page, X / scrim closes it (what templates/pdp.html uses)
          DG_delivery.setSeller(document, o) → re-draw the "Sold & Delivered by" line (call when a size is picked) and wire its seller link
+         DG_delivery.acc(o, 'ret'|'seller') → that info as a row for the PDP accordion set (.acc-set): Returns · Seller Information
+   Box = delivery only (29 Oct): o.retIn / o.sellerIn 'box' (default, in the box under the methods) · 'acc' (out of the box, into the accordion set).
    Seller line (under the returns line): o.seller null → placeholder "Select a size to see seller info" (grey) · 'site' → sold by the fascia
    itself (o.brand, plain text) · a SELLERS key / object → a marketplace seller, the name is a link that opens the seller modal.
    o: {layout, scen:'std'|'cc'|'market'|'bulky', premier, prog, pr, prBadge:'fastest'|'home', badges, tab, modal, ni:'split'|'mixed',
-       sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date, brand, seller} */
+       sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date, brand, seller,
+       retIn:'box'|'acc', sellerIn:'box'|'acc'} */
 (function(root){
   const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
   const IC='assets/ds/icons/lib/';
@@ -77,10 +80,15 @@
   const ret=o=>o.ret===false?'':`<div class="dgrid-ret"><img src="${IC}icons-calendar.svg" alt=""><div>${retCopy(o)}</div></div>`;
   const retCopy=o=>`<div class="t">Eligible for return within ${esc(o.retDays||21)} days</div><div class="s">Exclusions apply. Please see our <a href="#">returns policy</a></div>`;
   const sellerOf=o=>!o.seller?null:o.seller==='site'?{name:SITE[o.brand]||SITE.debenhams,site:1}:typeof o.seller==='string'?(SELLERS[o.seller]||null):o.seller;
-  /* Sold & Delivered by — box icon (icons-order); grey placeholder until a size is picked */
-  function seller(o){if(o.seller===false)return '';const x=sellerOf(o);
-    if(!x)return `<div class="dgrid-seller is-empty" data-dg-seller><img src="${IC}icons-order.svg" alt=""><span>Select a size to see seller info</span></div>`;
-    return `<div class="dgrid-seller" data-dg-seller><img src="${IC}icons-order.svg" alt=""><span>Sold &amp; Delivered by ${x.site?esc(x.name):`<button type="button" class="lnk" data-dg-sellerinfo>${esc(x.name)}</button>`}</span></div>`}
+  /* Sold & Delivered by — box icon (icons-order); grey placeholder until a size is picked. acc = the accordion-row version: text only, no icon */
+  function seller(o,acc){if(o.seller===false)return '';const x=sellerOf(o),cls='dgrid-seller'+(acc?' dgrid-seller--acc':''),ic=acc?'':`<img src="${IC}icons-order.svg" alt="">`;
+    if(!x)return `<div class="${cls} is-empty" data-dg-seller>${ic}<span>Select a size to see seller info</span></div>`;
+    return `<div class="${cls}" data-dg-seller>${ic}<span>Sold &amp; Delivered by ${x.site?esc(x.name):`<button type="button" class="lnk" data-dg-sellerinfo>${esc(x.name)}</button>`}</span></div>`}
+  /* returns / seller pushed out of the box: one .acc row each, for the PDP accordion set */
+  function acc(o,k){const h=k==='seller'?'Seller Information':'Returns';
+    const b=k==='seller'?seller(Object.assign({},o,{seller:o.seller===false?null:o.seller}),1)
+      :`<p class="dgrid-retacc">Eligible for return within ${esc(o.retDays||21)} days. Exclusions apply. Please see our <a href="#">returns policy</a>.</p>`;
+    return `<div class="acc${o.accOpen&&o.accOpen[k]?' open':''}" data-dg-acc="${k}"><button class="acc-h">${h}<img src="${IC}icons-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${b}</div></div>`}
   function sellerModal(o){const x=sellerOf(o)||{},lay=o.desk?'mdl--sm':'mdl--up';
     const sec=(h,b)=>b?`<div><dt>${h}</dt><dd>${b}</dd></div>`:'';
     return `<div class="dopts-layer${lay==='mdl--up'?' dopts-layer--up':''}" data-dg-smodal><div class="mdl-scrim" data-dg-close></div>
@@ -114,7 +122,7 @@
       <button class="dgrid-more" data-dg-more="home">${M.collect.length?'Delivery &amp; collection options':'Delivery options'}</button>`}
 
   function grid(o){const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
-    return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>Delivery Methods</h2>${x.hd}</div>`}${x.body}${ret(o)}${seller(o)}</section>`}
+    return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>Delivery Methods</h2>${x.hd}</div>`}${x.body}${o.retIn==='acc'?'':ret(o)}${o.sellerIn==='acc'?'':seller(o)}</section>`}
 
   /* ---- modal ---- */
   function sortL(o,l){const s=l.slice();s.sort(o.sort==='speed'?(a,b)=>(a.nom?99:a.d)-(b.nom?99:b.d)||a.p-b.p:(a,b)=>a.p-b.p||(a.nom?99:a.d)-(b.nom?99:b.d));return s}
@@ -141,6 +149,7 @@
     q('[data-dg-tab]').forEach(t=>t.onclick=()=>{const k=t.dataset.dgTab;q('[data-dg-tab]').forEach(x=>{x.classList.toggle('on',x===t);x.setAttribute('aria-selected',x===t)});q('[data-dg-panel]').forEach(p=>p.hidden=p.dataset.dgPanel!==k)});
     q('[data-dg-more]').forEach(b=>b.onclick=e=>{e.preventDefault();open&&open(b.dataset.dgMore)});
     q('[data-dg-seg]').forEach(b=>b.onclick=()=>{const k=b.dataset.dgSeg;q('[data-dg-seg]').forEach(x=>x.classList.toggle('on',x===b));q('[data-dg-mpanel]').forEach(p=>p.hidden=p.dataset.dgMpanel!==k)});
+    q('[data-dg-acc]>.acc-h').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
     const doc=r.ownerDocument||r;q('[data-dg-sellerinfo]').forEach(b=>b.onclick=()=>openSeller(doc,o));
   }
   /* page drop-in: grid already in the page → See more opens the modal over doc.body; X or the scrim closes it */
@@ -149,6 +158,6 @@
     wire(doc,o,open);return open}
   const bulky=()=>`<p class="dgrid-bulky"><img src="${IC}icons-info.svg" alt="">${BULKY_COPY}</p>`;
   /* only the seller line is re-drawn and re-wired — See more / tabs keep their handlers */
-  function setSeller(doc,o){doc.querySelectorAll('[data-dg-seller]').forEach(n=>{n.outerHTML=seller(o)});doc.querySelectorAll('[data-dg-sellerinfo]').forEach(b=>b.onclick=()=>openSeller(doc,o))}
-  root.DG_delivery={grid,modal,wire,mount,bulky,methods,rows:rowsList,seller,sellerModal,setSeller,SITE,SELLERS,HOME,COLLECT};
+  function setSeller(doc,o){doc.querySelectorAll('[data-dg-seller]').forEach(n=>{n.outerHTML=seller(o,n.classList.contains('dgrid-seller--acc'))});doc.querySelectorAll('[data-dg-sellerinfo]').forEach(b=>b.onclick=()=>openSeller(doc,o))}
+  root.DG_delivery={grid,modal,wire,mount,bulky,acc,methods,rows:rowsList,seller,sellerModal,setSeller,SITE,SELLERS,HOME,COLLECT};
 })(typeof window!=='undefined'?window:globalThis);
