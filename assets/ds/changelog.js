@@ -12,6 +12,8 @@ window.DG_CHANGELOG=[
    "Delivery grid: returns and seller info can leave the box (o.retIn / o.sellerIn 'acc'), so the Delivery Methods box is delivery only. DG_delivery.acc(o,'ret'|'seller') gives the Returns and Seller Information rows for the PDP accordion set (.dgrid-retacc, .dgrid-seller--acc: accordion body type, no icon); the seller placeholder, site name and marketplace seller link work the same in the accordion. Template: S.dgRet / S.dgSeller (default 'box', so nothing moves unless asked) · by PDP delivery grid"
   ],
   "changed": [
+   "AI modules · Content prompts (.ai-cp): desktop is now prompt panel | image 50/50 (was 1 : 1.6), full width with no outer margin; the image can be an <img> as well as the .im slot · by Shopping agent (Jake 29 Oct)",
+   "Agent chat: the slide-out follows the DS modal rules — DS modal header (.modal-hd · .mt · .modal-x), “Ask Deb” SemiBold 20 with no icon, 16px close on the title line 24px from the top and right, 24px in on every side, square corners · by Shopping agent (Jake 29 Oct)",
    "PDP template (templates/pdp.html): the delivery grid is now option B, Delivery / Click & Collect tabs (DG_delivery.grid layout 'tabs', Delivery tab first), replacing A (live sentences + James's PR). Every PDP built from the template gets it · by PDP delivery grid",
    "Delivery grid badges (.dgrid-badge, Fastest / Cheapest / programme): slimmer, 22px → 18px high, 12 semibold → 11/16 medium, 8px → 6px sides · by PDP delivery grid",
    "Delivery Options modal tabs (.dopts-seg, Home Delivery / Collect Nearby): full width, half each on a 1px keyline, 12px → 16/20 so they're never smaller than the method names · by PDP delivery grid",

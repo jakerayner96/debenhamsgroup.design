@@ -68,7 +68,6 @@ body.exporting #hdrwrap.lifting .hd-bar{display:none;animation:none}
 .ai-cta{height:44px;justify-content:center;flex:1}
 .prompts-container[data-dir="column"] .prompt-link{width:100%}
 .pc-img .ai-pill{height:30px;font-size:12px;padding:0 10px 0 8px}
-.cp-hero .ov{position:absolute!important}
 /* html2canvas drops the puck shadow (negative spread): exports draw the lightest DS grey border instead */
 body.exporting .ai-pill--soft{box-shadow:none;border:1px solid var(--border-subtle)}
 body.exporting .cm-start h2 b{background:none;-webkit-background-clip:initial;background-clip:initial;color:var(--ai-fg)}   /* html2canvas cannot clip a gradient to text */
@@ -223,20 +222,6 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 [data-brand="debenhams"] .hm>.hm-m:first-child .hm-t{flex:0 0 80px!important;width:80px!important;margin-left:0!important}
 @media(min-width:1024px){[data-brand="debenhams"] .hm>.hm-m:first-child>.hm-row{padding:24px 40px;gap:20px!important;justify-content:safe center}[data-brand="debenhams"] .hm>.hm-m:first-child .hm-t{flex:0 0 100px!important;width:100px!important}}
 /* ---------- Home: custom prompts ---------- */
-.cp-strip{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:10px 16px;background:var(--ai-gradient);color:var(--text-primary);font-size:14px;text-align:center}
-.cp-strip button{display:inline-flex;align-items:center;gap:6px;color:var(--text-primary);font:600 14px var(--font-family-base);text-decoration:underline;background:none;border:0;cursor:pointer}
-.cp-mod{display:grid;grid-template-columns:1fr;margin:16px 0}
-@media(min-width:1024px){.cp-mod{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);margin:24px 40px}}
-.cp-mod .pan{background:#F4F4F2;padding:24px 16px;display:flex;flex-direction:column;gap:16px;justify-content:center}
-.cp-mod .grp{display:flex;flex-direction:column;gap:4px}
-@media(min-width:1024px){.cp-mod .pan{padding:40px}}
-.cp-mod h3{margin:0;font-size:26px;font-weight:var(--w-regular,300)}.cp-mod .sub{font-size:16px;font-weight:var(--w-regular,300);line-height:1.4;color:inherit}
-.cp-mod h3{line-height:1.1!important;color:inherit}   /* tighter leading so the top padding reads the same as the bottom */
-.cp-mod .set{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-.cp-mod img{display:block;width:100%;height:100%;object-fit:cover;min-height:220px}
-.cp-hero{position:relative}
-.cp-hero .ov{position:absolute;left:16px;top:16px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;z-index:3}
-@media(min-width:1024px){.cp-hero .ov{left:48px;top:48px}}
 
 /* ---------- jump-to highlight (panel navigation) ---------- */
 .flash{animation:flash 1.6s ease 1}
@@ -266,9 +251,9 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
   background:var(--chat-messenger-internal-titlebar-background,#fff);border-radius:var(--chat-messenger-internal-chat-border-radius,24px) 0 0 var(--chat-messenger-internal-chat-border-radius,24px);
   display:flex;flex-direction:column;font-family:var(--chat-messenger-font-family);color:var(--chat-messenger-color--on-surface,#222);box-shadow:-8px 0 40px rgba(0,0,0,.2);overflow:hidden}
 .cm.mob{border-radius:0}
-.cm-tb{display:flex;align-items:center;padding:var(--chat-messenger-internal-titlebar-padding);flex:none}
-.cm-tb .ic{width:var(--chat-messenger-internal-titlebar-icon-width,32px);height:var(--chat-messenger-internal-titlebar-icon-height,32px);margin:var(--chat-messenger-internal-titlebar-icon-padding);object-fit:cover;flex:none;display:grid;place-items:center}
-.cm-tb .t{flex:1;font-family:var(--chat-messenger-internal-titlebar-title-font-family);font-size:var(--chat-messenger-internal-titlebar-title-font-size,20px);font-weight:var(--chat-messenger-internal-titlebar-title-font-weight,600)}
+.cm-tb{display:flex;align-items:flex-start;gap:12px;padding:var(--chat-messenger-internal-titlebar-padding,24px 24px 0 24px);flex:none;min-height:25px}
+/* title bar = the DS modal header (.modal-hd · .mt · .modal-x, 29 Oct): “Ask Deb” SemiBold 20/25 once chatting, no icon; 16px close on the title line, 24px in from the top and right */
+.cm-tb .mt{flex:1;min-width:0;font-family:var(--chat-messenger-internal-titlebar-title-font-family);font-size:var(--chat-messenger-internal-titlebar-title-font-size,20px);font-weight:var(--chat-messenger-internal-titlebar-title-font-weight,600);line-height:25px;color:var(--text-primary)}
 .cm-tb .acts{display:flex;gap:var(--chat-messenger-internal-titlebar-actions-gap,0)}
 .cm-tb .acts button{width:40px;height:40px;display:grid;place-items:center;background:none;border:0;color:var(--chat-messenger-internal-titlebar-button-color,#444746);cursor:pointer}
 .cm-body{flex:1;min-height:0;overflow-y:auto;padding:var(--chat-messenger-internal-chat-padding)}
@@ -298,8 +283,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
   border-radius:var(--chat-messenger-cart-button--start-start-corner-radius) var(--chat-messenger-cart-button--start-end-corner-radius) var(--chat-messenger-cart-button--end-end-corner-radius) var(--chat-messenger-cart-button--end-start-corner-radius)}
 .cm-up{margin-top:12px;border:1.5px dashed #BDBDBD;border-radius:16px;padding:20px;display:flex;align-items:center;gap:12px;font-size:13px}
 .cm-up b{display:block;font-size:14px}
-.cm-in{flex:none;padding:var(--chat-messenger-internal-input-box-padding);padding-left:calc(var(--chat-messenger-internal-chat-padding-x,48px) - 8px);padding-right:calc(var(--chat-messenger-internal-chat-padding-x,48px) - 8px)}
-.cm.mob .cm-in{padding-left:12px;padding-right:12px}
+.cm-in{flex:none;padding:var(--chat-messenger-internal-input-box-padding);padding-left:var(--chat-messenger-internal-chat-padding-x,24px);padding-right:var(--chat-messenger-internal-chat-padding-x,24px)}   /* the same 24px in as the title and the messages */
 .cm-box{display:flex;align-items:center;gap:12px;height:60px;padding:var(--chat-messenger-internal-input-content-wrapper-padding-top) 8px var(--chat-messenger-internal-input-content-wrapper-padding-bottom) 20px;border:var(--chat-messenger-internal-input-box-border);border-radius:var(--chat-messenger-internal-input-box-border-radius);
   background-image:var(--chat-messenger-internal-input-box-background-image);background-origin:var(--chat-messenger-internal-input-box-background-origin);background-clip:var(--chat-messenger-internal-input-box-background-clip)}
 .cm-box .plus{font-size:22px;font-weight:var(--w-regular,300);color:#444;width:20px;text-align:center}
@@ -388,10 +372,6 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .kbm i,.kbm b{flex:1;max-width:32px;height:42px;display:grid;place-items:center;background:#FFF;border-radius:5px;box-shadow:0 1px 0 #898A8D;font-style:normal;font-size:22px;font-weight:300}
 .kbm .r2{padding:0 18px}.kbm .r3 b{max-width:44px;flex:1.4;background:#ABB0BA;font-size:18px}.kbm .r4 b{max-width:none;flex:1.2;background:#ABB0BA;font-size:15px}.kbm .r4 .sp{max-width:none;flex:4.6;font-size:15px}.kbm .r4 .go{flex:2;background:#007AFF;color:#FFF}
 /* ---------- chat window, as the PA Deck Figma (OUmnWDam0w0czh9VZnaqx0 · 6:167) ---------- */
-.cm .cm-tb{padding:24px 24px 0;justify-content:flex-end;min-height:40px;gap:10px;align-items:center}
-.cm .cm-tb .t{flex:1;font-size:16px;font-weight:600}.cm .cm-tb .ic{display:grid;place-items:center;width:auto;height:auto;margin:0}
-.cm .cm-tb{gap:8px}   /* intro: just the close · once chatting: AI icon + Ask Deb */   /* no title or icon: just the DS modal close, 16×16 at 24px in */
-.cm-tb .ic .ai-icon{width:28px!important;height:28px!important}
 .cm-ctx{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}
 .cm-ctx .lbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary,#767676)}
 .cm-ctx .c{display:inline-flex;align-items:center;height:27px;padding:0 10px;border-radius:99px;background:var(--ai-tint);color:var(--ai-ink);font-size:12px;white-space:nowrap}
@@ -508,7 +488,7 @@ const ask=()=>'Ask '+E().name;
 /* data-feat = the feature (panel navigation + jump-to highlight); data-q = the query sent to the agent (window.googleAgent.sendQuery) */
 const F=(f,opt)=>`data-feat="${f}" data-tag="${esc(TAG[f]+(opt?' · '+opt:''))}"`;
 const TAG={launcher:'Entry point',pdpPrompts:'PDP prompts',shopSimilar:'Shop similar',vto:'Virtual try-on',nba:'Next best action',autocomplete:'Autocomplete',custom:'Custom prompts'};
-const L=(k,v)=>({launcher:{outIcon:'icon beside',outAsk:'Ask beside',icon:'header icon'},pdpPrompts:{belowCta:'A',aboveGlance:'B'},shopSimilar:{image:'A',cta:'B',card:'C'},vto:{image:'A',cta:'B'},autocomplete:{replace:'A',above:'B',below:'C'},custom:{module:'A',strip:'B',hero:'C'}}[k]||{})[v]||'';
+const L=(k,v)=>({launcher:{outIcon:'icon beside',outAsk:'Ask beside',icon:'header icon'},pdpPrompts:{belowCta:'A',aboveGlance:'B'},shopSimilar:{image:'A',cta:'B',card:'C'},vto:{image:'A',cta:'B'},autocomplete:{replace:'A',above:'B',below:'C'},custom:{module:'A'}}[k]||{})[v]||'';
 
 /* ================= HEADER (DS header + USP drop-in) with the entry point per option =================
    outIcon = exposed search, the AI icon in a gradient-outline circle beside the field
@@ -614,9 +594,7 @@ function home(){
   if(ON('custom')){
     const chips=(S.cpChips||['Gifts for her under £50','Stocking fillers she’ll love','What do I get my dad?']).filter(Boolean);
     const set=chips.map(c=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(c)}">${spk(14,false)}${esc(c)}</button>`).join('')+`<button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me find the perfect gift">${spk(14)}Help me choose</button>`;
-    if(S.cpPos==='module'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-mod" ${F('custom','A · module')}><div class="pan" style="background:${esc(S.cpBg||'#F4F4F2')};color:${esc(S.cpFg||'#000000')}"><div class="grp"><h3>${esc(S.cpTitle||'Gifting, sorted')}</h3><div class="sub">${esc(S.cpSub||('Ask '+E().name+' for ideas'))}</div></div><div class="set">${set}</div></div><img src="${S.cpImg||(DEB()?`projects/usp-banner/img/home/debenhams/wk38-debs-gifting-hp-homepage-aw-gifting-${d?'dt':'mb'}.webp`:((PDPP()||{imgs:[IMG(1)]}).imgs[0]))}" alt=""></div>`;mods[1]&&mods[1].after(m.firstChild)}
-    if(S.cpPos==='strip'){const m=doc.createElement('div');m.innerHTML=`<div class="cp-strip" ${F('custom','B · strip')}><span>Gift shopping for someone special?</span><button data-q="Help me find the perfect gift">${spk(15)}Ask ${esc(E().name)} for ideas</button></div>`;hm.prepend(m.firstChild)}
-    if(S.cpPos==='hero'&&mods[1]){mods[1].classList.add('cp-hero');const o=doc.createElement('div');o.className='ov';o.setAttribute('data-feat','custom');o.setAttribute('data-tag','Custom prompts · C · on hero');o.innerHTML=set;mods[1].prepend(o)}
+    {const m=doc.createElement('div');   /* DS .ai-cp, full width, prompt panel | image 50/50 on desktop (29 Oct: promo strip + hero chips options removed) */m.innerHTML=`<div class="ai-cp" ${F('custom','module')} style="--ai-cp-bg:${esc(S.cpBg||'#F4F4F2')};--ai-cp-fg:${esc(S.cpFg||'#000000')}"><div class="pan"><div class="grp"><h3>${esc(S.cpTitle||'Gifting, sorted')}</h3><div class="sub">${esc(S.cpSub||('Ask '+E().name+' for ideas'))}</div></div><div class="set">${set}</div></div><img src="${S.cpImg||(DEB()?`projects/usp-banner/img/home/debenhams/wk38-debs-gifting-hp-homepage-aw-gifting-${d?'dt':'mb'}.webp`:((PDPP()||{imgs:[IMG(1)]}).imgs[0]))}" alt=""></div>`;mods[1]&&mods[1].after(m.firstChild)}
   }
   return hm.outerHTML;
 }
@@ -730,7 +708,7 @@ function chat(){
   const msgs=CHAT.msgs.map((m,i)=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b" data-mi="${i}">${m.cut!=null?words(m.b,m.cut):m.b}</div>${S.labels&&m.cut==null?cfgTags(m.b):''}`).join('');
   const txt=CHAT.draft||'';
   return `${mob?'':'<div class="cm-scrim" data-close="1"></div>'}<div class="cm${mob?' mob':''}" id="cm" role="dialog" aria-label="${esc(st['chat-title'])}">
-    <div class="cm-tb">${CHAT.msgs.length?`<span class="ic">${spk(24)}</span><span class="t">${esc(st['chat-title'])}</span>`:''}<button class="modal-x" data-close="1" aria-label="Close"></button></div>
+    <div class="cm-tb modal-hd">${CHAT.msgs.length?`<span class="mt">${esc(st['chat-title'])}</span>`:''}<button class="modal-x" data-close="1" aria-label="Close"></button></div>
     <div class="cm-body" id="cmbody">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
     <form class="cm-in" id="cmform"><div class="cm-box"><span class="plus">+</span><input class="cm-input" id="cminput" type="text" autocomplete="off" placeholder="${esc(st['placeholder-text'])}" value="${esc(txt)}" aria-label="Message ${name}"><button type="submit" class="send${txt?' on':''}" id="cmsend" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></form>
     <div class="cm-disc">${esc(st['disclosure-text'])}</div></div>`;

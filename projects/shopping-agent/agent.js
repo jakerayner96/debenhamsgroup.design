@@ -17,7 +17,7 @@ const DEF={
   chipBorder:'#959499',
   chipRadius:24,
   width:606,
-  radius:24,
+  radius:0,                 // slide-out = DS modal: square corners (29 Oct)
   hero:true,
   icon:'config',            // config = the teal tile in the dev config · spark = the Ask Deb sparkle
   cart:'ADD TO BAG',
@@ -56,11 +56,16 @@ function build(base,e,brand){
   st['placeholder-text']=e.placeholder;
   st['disclosure-text']=e.disclosure;
   st['cart-button-text']=e.cart;
-  if(e.icon==='spark'){st['chat-icon']=st['chat-title-icon']='https://jakerayner96.github.io/debenhamsgroup.design/projects/shopping-agent/img/ask-deb-spark.png'}
+  if(e.icon==='spark'){st['chat-icon']='https://jakerayner96.github.io/debenhamsgroup.design/projects/shopping-agent/img/ask-deb-spark.png'}
+  delete st['chat-title-icon'];   /* title bar = the DS modal header: “Ask Deb” only, no icon (29 Oct) */
   /* colour: every key carrying the teal / the mint gets the new value (primary, send, cart button, bot-writing dots, input gradient) */
   const swap=(o)=>{for(const k in o){if(typeof o[k]==='string')o[k]=o[k].replace(rx('#00787d'),e.primary).replace(rx('#7be7d8'),e.accent)}};
   swap(sy);
   sy['--chat-messenger-internal-chat-window-width']=e.width+'px';
+  /* DS modal rules (29 Oct): 24px in on every side (title bar, messages, input, disclosure), title SemiBold 20 on both breakpoints, 24px from the title to the first message */
+  const mo=sy.mobile=sy.mobile||{};
+  for(const o of [sy,mo]){o['--chat-messenger-internal-titlebar-padding']='24px 24px 0 24px';o['--chat-messenger-internal-titlebar-title-font-size']='20px';o['--chat-messenger-internal-chat-padding']='0 24px';o['--chat-messenger-internal-input-box-padding']='16px 24px';o['--chat-messenger-internal-disclosure-text-padding']='0 24px 24px 24px'}
+  sy['--chat-messenger-internal-titlebar-title-font-weight']='600';sy['--chat-messenger-internal-first-message-margin-top']='24px';
   /* send button = the DS primary: aqua + black when there is text, the disabled primary (light aqua + grey) when empty */
   sy['--chat-messenger-internal-send-icon-active-background']=e.sendBg;sy['--chat-messenger-internal-send-icon-active-color']=e.sendFg;
   sy['--chat-messenger-internal-send-icon-background']=e.sendOffBg;sy['--chat-messenger-internal-send-icon-color']=e.sendOffFg;
