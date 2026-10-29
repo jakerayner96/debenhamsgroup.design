@@ -708,14 +708,14 @@ function chat(){
   const sts=(E().starters||[]).filter(Boolean).slice(0,4);
   if(S.start==='google')head=[c.text&&{o:c.text.order,h:tc},
       c.hero&&{o:c.hero.order,h:`<div class="cm-hero"><img src="${A}img/${mob?'start-gifts-mobile':'start-gifts'}.jpg" alt=""></div>`},
-      {o:c.zeroState.order,h:`<div class="cm-zero" data-c="zero">${zs.text.replace(/<(?!br\s*\/?>)/g,'&lt;')}<div class="pr">${zs.prompts.map(t=>`<button data-q="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>`}].filter(Boolean).sort((a,b)=>a.o-b.o).map(x=>x.h).join('');
+      {o:c.zeroState.order,h:`<div class="cm-zero" data-c="zero">${zs.text.replace(/<(?!br\s*\/?>)/g,'&lt;')}${qr(...zs.prompts)}</div>`}].filter(Boolean).sort((a,b)=>a.o-b.o).map(x=>x.h).join('');
   else head=`<div class="cm-start"><h2>${spk(24)}<span>${DEB()?`Hi there – I’m <b>${name}</b>, your Debenhams Personal Assistant!`:`Hi there – I’m your <b>${esc(BN())}</b> Personal Assistant!`}</span></h2><p>${esc(E().tagline)}</p>
     <div class="cm-starters">${sts.map(q=>`<button class="cm-starter" data-q="${esc(q)}">${spk(16)}<span>${esc(q)}</span></button>`).join('')}</div>${tc}</div>`;
   if(CHAT.msgs.length)head='';   /* once the conversation starts the start screen scrolls away, as in the Figma */
   const msgs=CHAT.msgs.map((m,i)=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b" data-mi="${i}">${m.cut!=null?words(m.b,m.cut):m.b}</div>${S.labels&&m.cut==null?cfgTags(m.b):''}`).join('');
   const txt=CHAT.draft||'';
   return `${mob?'':'<div class="cm-scrim" data-close="1"></div>'}<div class="cm${mob?' mob':''}" id="cm" role="dialog" aria-label="${esc(st['chat-title'])}">
-    <div class="cm-tb modal-hd">${CHAT.msgs.length?`<span class="mt">${esc(st['chat-title'])}</span><button class="mdl-refresh" data-reset="1" aria-label="Start a new chat"></button>`:''}<button class="modal-x" data-close="1" aria-label="Close"></button></div>
+    <div class="cm-tb modal-hd">${CHAT.msgs.length||S.start==='google'?`<span class="mt">${esc(st['chat-title'])}</span>`:''}${CHAT.msgs.length?`<button class="mdl-refresh" data-reset="1" aria-label="Start a new chat"></button>`:''}<button class="modal-x" data-close="1" aria-label="Close"></button></div>
     <div class="cm-body" id="cmbody">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
     <form class="cm-in" id="cmform"><div class="cm-box"><span class="plus">+</span><input class="cm-input" id="cminput" type="text" autocomplete="off" placeholder="${esc(st['placeholder-text'])}" value="${esc(txt)}" aria-label="Message ${name}"><button type="submit" class="send${txt?' on':''}" id="cmsend" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></form>
     <div class="cm-disc">${esc(st['disclosure-text'])}</div>
