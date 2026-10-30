@@ -5,20 +5,10 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-10-30",
   "v": "2026.10.30",
-  "title": "Wishlist collections",
-  "by": "App Prototype — new wishlist (Jake 30 Oct, Best App Ever 1128:222949)",
+  "title": "Delivery grid: four row formats (Delivery Methods · Get It By · Get It By date only · Arrives By) · Wishlist collections",
+  "by": "PDP delivery grid (projects/delivery-grid, Jake's Figma explorations 30 Oct) · App Prototype new wishlist (Best App Ever 1128:222949)",
   "added": [
-   "Wishlist collections (.coll-list · .coll-new · .coll-row · .coll-thumb · .coll-promo, in the slide-up .mdl--up): Add to Collections (Create New, collections most recently added to first, Tick Circle Fill / Expand, SAVE), the first-wishlist onboarding panel (NEW + Organise your wishlist + collage), Create New Collection on .fld with the two errors; catalogue entry with three variants · by App Prototype (Jake 30 Oct)"
-  ],
-  "changed": [],
-  "fixed": []
- },
- {
-  "d": "2026-10-30",
-  "v": "2026.10.30",
-  "title": "Delivery grid: four row formats (Delivery Methods · Get It By · Get It By date only · Arrives By)",
-  "by": "PDP delivery grid (projects/delivery-grid, Jake's Figma explorations 30 Oct)",
-  "added": [
+   "Wishlist collections (.coll-list · .coll-new · .coll-row · .coll-thumb · .coll-promo, in the slide-up .mdl--up): Add to Collections (Create New, collections most recently added to first, Tick Circle Fill / Expand, SAVE), the first-wishlist onboarding panel (NEW + Organise your wishlist + collage), Create New Collection on .fld with the two errors; catalogue entry with three variants · by App Prototype (Jake 30 Oct)",
    "Delivery grid row format, DG_delivery o.fmt 1–4: 1 Delivery Methods (method / Arrives …, default) · 2 Get It By (Arrives Tomorrow / method · cut-off) · 3 Get It By (Tomorrow / method · cut-off) · 4 Arrives By (Tomorrow / method · cut-off). The box title and the modal rows follow it. PDP template takes S.dgFmt; prototype panel has a Row format card · by PDP delivery grid"
   ],
   "changed": [],
