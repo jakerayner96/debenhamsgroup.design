@@ -4,7 +4,10 @@
 
 **Live:** https://jakerayner96.github.io/debenhamsgroup.design/projects/delivery-grid/
 
-**Figma:** "Debenhams · PDP Delivery Grid" `kgwbvFUR9kMyoLls1kpks9` (Debenhams Group team), board `24:2`: mobile box states, the Delivery Options modal, desktop, the Delivery method component. Plain layers captured from the DS code (29 Oct).
+**Figma:** "Debenhams · PDP Delivery Grid" `kgwbvFUR9kMyoLls1kpks9` (Debenhams Group team), page Delivery grid: **Components** `74:2` (Badge set · PDP box set, Format 1–4 × State · Delivery Options modal set, Format × Tab) and **Screens** `74:44` (per format: PDP → Click & Collect tab → See more → modal Click & Collect · Unlimited · delivery only, built from PDP backdrop + component instances). Captured from the DS code (30 Oct). Jake's 29 Oct explorations are on the Archive page.
+
+## Row formats (30 Oct)
+Four options from Jake's Figma explorations, `o.fmt` in delivery.js (panel: Row format): 1 Delivery Methods · method / Arrives … (default) · 2 Get It By · Arrives Tomorrow / method · 3 Get It By · Tomorrow / method · 4 Arrives By · Tomorrow / method. The modal rows follow the format.
 
 ## Sources
 - Modal: Figma Gifting `PIh1ikzvYNH1FR4arKJbe4` · `209-294935` (Home Delivery) · `209-295333` (Collect Nearby) — Paul Dossis
