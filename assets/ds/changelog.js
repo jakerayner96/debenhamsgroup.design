@@ -3,6 +3,17 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-10-30",
+  "v": "2026.10.30",
+  "title": "Delivery grid: four row formats (Delivery Methods · Get It By · Get It By date only · Arrives By)",
+  "by": "PDP delivery grid (projects/delivery-grid, Jake's Figma explorations 30 Oct)",
+  "added": [
+   "Delivery grid row format, DG_delivery o.fmt 1–4: 1 Delivery Methods (method / Arrives …, default) · 2 Get It By (Arrives Tomorrow / method · cut-off) · 3 Get It By (Tomorrow / method · cut-off) · 4 Arrives By (Tomorrow / method · cut-off). The box title and the modal rows follow it. PDP template takes S.dgFmt; prototype panel has a Row format card · by PDP delivery grid"
+  ],
+  "changed": [],
+  "fixed": []
+ },
+ {
   "d": "2026-10-29",
   "v": "2026.10.29",
   "title": "Delivery grid: option B (tabs) chosen · box can be delivery only · slimmer badges · full-width modal tabs · Delivery method (checkout row)",

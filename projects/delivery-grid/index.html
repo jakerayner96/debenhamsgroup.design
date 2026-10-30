@@ -175,7 +175,7 @@ const P={
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','README.md','../../assets/ds/delivery.js','../../assets/ds/subscribe.js'],
   store:'proto-delivery-grid',
-  initial:()=>({layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',retIn:'box',sellerIn:'box',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
+  initial:()=>({fmt:'1',layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',retIn:'box',sellerIn:'box',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
 };
 const PROG={debenhams:'Unlimited',boohoo:'Premier Club',boohooman:'Premier',plt:'Royalty',karenmillen:'Premier'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -193,6 +193,11 @@ function renderPanel(host,S,update){
   <div class="card"><h3>PDP option <small>B · tabs</small></h3>
     <p>Demi’s mockup: two tabs, checkout-style rows with the price on the right, Fastest / Cheapest badges, Premier view. See more opens the modal on the tab you’re in.</p>
     <div class="f"><span>First tab</span>${seg('tab',[['home','Delivery'],['collect','Click &amp; Collect']])}</div></div>
+  <div class="card"><h3>Row format <small>30 Oct</small></h3>
+    ${radio('fmt','1','1 · Delivery Methods','Method name first, then Arrives Tomorrow / Arrives by 4th Nov.')}
+    ${radio('fmt','2','2 · Get It By','Arrives Tomorrow / Arrives by 4th Nov first, then the method name.')}
+    ${radio('fmt','3','3 · Get It By, date only','Tomorrow / 4th Nov first, then the method name.')}
+    ${radio('fmt','4','4 · Arrives By, date only','Tomorrow / 4th Nov first, then the method name.')}</div>
   <div class="card"><h3>In the box</h3>
     <p>${c.retIn==='acc'&&c.sellerIn==='acc'?'The box is <b>delivery only</b>: returns and seller info sit in the accordions under the product.':'Push returns and seller info out of the box into the accordion set, so the box is delivery only.'}</p>
     <div class="f"><span>Returns info</span>${seg('retIn',[['box','In the box'],['acc','Accordion']])}<small>${c.retIn==='acc'?'In the Returns accordion (already on the PDP), off the box.':'Calendar line under the methods. The Returns accordion stays too.'}</small></div>

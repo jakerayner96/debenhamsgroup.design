@@ -62,7 +62,7 @@ const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
 /* delivery grid (DS delivery.js) = option B, Delivery / Click & Collect tabs (projects/delivery-grid, Jake 29 Oct): fastest + cheapest per tab, badges, returns line */
 /* seller line: grey placeholder until a size is picked, then sold by the fascia ('site'; a marketplace key, e.g. 'amass', makes it a link → seller modal) */
 let SELLER=null;
-const DG_OPTS=()=>({layout:'tabs',tab:'home',retIn:S.dgRet||'box',sellerIn:S.dgSeller||'box',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
+const DG_OPTS=()=>({fmt:S.dgFmt||1,layout:'tabs',tab:'home',retIn:S.dgRet||'box',sellerIn:S.dgSeller||'box',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
 /* Subscribe & Save: the product at 5% off, size = the first size until one is picked; centred modal from 600px, bottom sheet on phones */
 const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(document.querySelector('.sz.on')||{}).textContent||P.sizes[0],colour:P.colour,pct:5});
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */

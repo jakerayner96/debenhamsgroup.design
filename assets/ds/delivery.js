@@ -16,7 +16,10 @@
    itself (o.brand, plain text) · a SELLERS key / object → a marketplace seller, the name is a link that opens the seller modal.
    o: {layout, scen:'std'|'cc'|'market'|'bulky', premier, prog, pr, prBadge:'fastest'|'home', badges, tab, modal, ni:'split'|'mixed',
        sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date, brand, seller,
-       retIn:'box'|'acc', sellerIn:'box'|'acc'} */
+       retIn:'box'|'acc', sellerIn:'box'|'acc', fmt:1|2|3|4}
+   Row format o.fmt (30 Oct, Jake's Figma explorations): 1 "Delivery Methods" · method (+ badge) / Arrives … · cut-off (default)
+     2 "Get It By" · Arrives Tomorrow (+ badge) / method · cut-off · 3 "Get It By" · Tomorrow / method · cut-off · 4 "Arrives By" · Tomorrow / method · cut-off.
+     The modal rows follow the same format; its title stays Delivery Options. */
 (function(root){
   const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
   const IC='assets/ds/icons/lib/';
@@ -112,7 +115,12 @@
   const arrives=(o,m)=>`<span>${m.nom?'Arrives on a day and time of your choice':m.d===1?'Arrives Tomorrow':'Arrives by '+day(o,m.d)}</span>${cutoff(o,m)?` <span>${cutoff(o,m)}</span>`:''}`;
   /* a badge rides on the name's last word, so a long name wraps with it and it never sits on a line of its own */
   const named=(o,name,b)=>{if(!b||o.badges===false)return esc(name);const i=name.lastIndexOf(' ');return `${esc(name.slice(0,i+1))}<span class="nw">${esc(name.slice(i+1))}${badge(o,b)}</span>`};
-  const dmeth=(o,m,name,b)=>`<li class="dmeth"><div class="dmeth-l"><div class="dmeth-n">${named(o,name,b)}</div><span class="dmeth-a">${arrives(o,m)}</span></div>
+  /* formats 2–4 lead with the date (strong, + badge) and put the method name (· cut-off) under it */
+  const FMT_T={1:'Delivery Methods',2:'Get It By',3:'Get It By',4:'Arrives By'};
+  const fmt=o=>FMT_T[o.fmt]?+o.fmt:1;
+  const lead=(o,m)=>{const bare=fmt(o)>2;return m.nom?(bare?'Day of your choice':'Arrives on a day of your choice'):m.d===1?(bare?'Tomorrow':'Arrives Tomorrow'):(bare?'':'Arrives by ')+day(o,m.d)};
+  const dmeth=(o,m,name,b)=>`<li class="dmeth"><div class="dmeth-l">${fmt(o)===1?`<div class="dmeth-n">${named(o,name,b)}</div><span class="dmeth-a">${arrives(o,m)}</span>`
+        :`<div class="dmeth-n">${named(o,lead(o,m),b)}</div><span class="dmeth-a"><span>${esc(name)}</span>${cutoff(o,m)?` <span>${cutoff(o,m)}</span>`:''}</span>`}</div>
       <div class="dmeth-p"><b>${m.prem?'FREE':(m.from?'From ':'')+money(m.p)}</b>${m.was?`<s>${money(m.was)}</s>`:''}</div></li>`;
   /* B · Demi: Delivery / Click & Collect tabs, the fastest + cheapest of each as checkout rows */
   function row(o,{m,b}){return dmeth(o,m,m.s,b)}
@@ -131,7 +139,7 @@
       <button class="dgrid-more" data-dg-more="home">${M.collect.length?'Delivery &amp; collection options':'Delivery options'}</button>`}
 
   function grid(o){const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
-    return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>Delivery Methods</h2>${x.hd}</div>`}${x.body}${o.retIn==='acc'?'':ret(o)}${o.sellerIn==='acc'?'':seller(o)}</section>`}
+    return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>${FMT_T[fmt(o)]}</h2>${x.hd}</div>`}${x.body}${o.retIn==='acc'?'':ret(o)}${o.sellerIn==='acc'?'':seller(o)}</section>`}
 
   /* ---- modal ---- */
   function sortL(o,l){const s=l.slice();s.sort(o.sort==='speed'?(a,b)=>(a.nom?99:a.d)-(b.nom?99:b.d)||a.p-b.p:(a,b)=>a.p-b.p||(a.nom?99:a.d)-(b.nom?99:b.d));return s}
