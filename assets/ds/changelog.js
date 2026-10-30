@@ -11,7 +11,10 @@ window.DG_CHANGELOG=[
    "Wishlist collections (.coll-list · .coll-new · .coll-row · .coll-thumb · .coll-promo, in the slide-up .mdl--up): Add to Collections (Create New, collections most recently added to first, Tick Circle Fill / Expand, SAVE), the first-wishlist onboarding panel (NEW + Organise your wishlist + collage), Create New Collection on .fld with the two errors; catalogue entry with three variants · by App Prototype (Jake 30 Oct)",
    "Delivery grid row format, DG_delivery o.fmt 1–4: 1 Delivery Methods (method / Arrives …, default) · 2 Get It By (Arrives Tomorrow / method · cut-off) · 3 Get It By (Tomorrow / method · cut-off) · 4 Arrives By (Tomorrow / method · cut-off). The box title and the modal rows follow it. PDP template takes S.dgFmt; prototype panel has a Row format card · by PDP delivery grid"
   ],
-  "changed": [],
+  "changed": [
+   "Toast in the app: pinned above the tab bar (its width, 16px screen margins, 16px above it — above a docked CTA when one shows), not the top of the screen; iOS 26 the system Liquid Glass capsule, iOS 18 / Android the new .toast--app white card (0 4px 16px 12% shadow); action in the fascia CTA colour · by App Prototype (Jake + dev route, 30 Oct)",
+   "Social proof (Taggstar) PDP in the app: in 1s after the page opens, out after 5s; a toast takes the moment (they never stack); iOS 26 system glass, iOS 18 / Android white 90% flat fill · by App Prototype (Jake 30 Oct)"
+  ],
   "fixed": []
  },
  {
