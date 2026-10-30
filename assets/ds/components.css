@@ -1838,3 +1838,30 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .fcover-logo{display:block;width:11.98cqw;aspect-ratio:500/114;background:currentColor;-webkit-mask:url(../brands/debenhamsgroup-left.svg) left center/contain no-repeat;mask:url(../brands/debenhamsgroup-left.svg) left center/contain no-repeat}
 .fcover-t{margin:0;font-family:'Antonio',var(--font-family-base);font-weight:700;font-size:10.417cqw;line-height:.86;letter-spacing:-.04em;text-transform:uppercase;color:inherit}
 .fcover-tag{display:inline-flex;align-items:center;padding:1.25cqw;border-radius:.417cqw;background:rgba(255,255,255,.04);font-family:'Geologica',var(--font-family-base);font-weight:300;font-size:1.667cqw;line-height:.6875;letter-spacing:-.02em}
+/* Wishlist collections (30 Oct 2026, App Prototype) — Best App Ever HoBuVNEhf1qpL61XFipy0f · 1128:222949 (Wishlisting + Creating Collections).
+   Lives in the slide-up modal (.mdl.mdl--up): header "Add to Collections" / back + "Create New Collection", 18 SemiBold title, 16 close.
+   .coll-list   Create New, then the collections, most recently added to first · rows 50 tall, gap 3 (12px); many → the modal stops 93 from the top and the list ends on half a row
+   .coll-new    50 dashed --border-control square with Icons / Add 24 · "Create New" 16 regular
+   .coll-row    50 thumb · name 16 regular / "N items" 12 --text-secondary (gap 1) · gap 6 (24px) · Icons / Tick Circle Fill (in it) or Icons / Expand (not) 24
+   .coll-thumb  empty: --brand-light-2 → --brand-light-1 swatch · 1–3 items: the latest · 4+: a 2×2 of the latest (.q)
+   .coll-promo  first wishlist ever: white panel, 16 16 0 · NEW chip (brand light, 12 SemiBold, 4px 8px) + "Organise your wishlist" 16 SemiBold, body 14, collage under
+   Create: one .fld ("Name of collection") + CREATE; errors in --text-error under the field: "Please enter a collection name" · "A collection with this name already exists". Copy + imagery from Strapi. */
+.coll-list{display:flex;flex-direction:column;gap:12px;overflow-y:auto}
+.coll-new,.coll-row{display:flex;align-items:center;height:50px;padding:0;border:0;background:none;font:inherit;color:var(--text-primary);text-align:left;cursor:pointer;width:100%}
+.coll-new{gap:12px;font-size:16px;font-weight:var(--w-regular)}
+.coll-new i{width:50px;height:50px;flex:none;box-sizing:border-box;border:1px dashed var(--border-control,#B5B5B5);background:url("icons/lib/icons-add.svg") center/24px 24px no-repeat}
+.coll-row{gap:24px}
+.coll-row .m{flex:1;min-width:0;display:flex;align-items:center;gap:12px}
+.coll-row .t{display:flex;flex-direction:column;gap:4px;min-width:0}
+.coll-row .t b{font-size:16px;font-weight:var(--w-regular);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.coll-row .t span{font-size:12px;color:var(--text-secondary,#767676)}
+.coll-row::after{content:"";width:24px;height:24px;flex:none;background:url("icons/lib/icons-expand.svg") center/24px 24px no-repeat}
+.coll-row[aria-checked="true"]::after{background-image:url("icons/lib/icons-tick-circle-fill.svg")}
+.coll-thumb{width:50px;height:50px;flex:none;object-fit:cover;background:linear-gradient(-45deg,var(--brand-light-2,#FFE4D2),var(--brand-light-1,#F1C59E))}
+.coll-thumb.q{display:grid;grid-template-columns:1fr 1fr;background:none}.coll-thumb.q img{width:25px;height:25px;object-fit:cover;display:block}
+.coll-promo{background:#FFF;padding:16px 16px 0;display:flex;flex-direction:column;gap:8px}
+.coll-promo .h{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:var(--w-strong)}
+.coll-promo .h em{font-style:normal;font-size:12px;font-weight:var(--w-strong);padding:4px 8px;background:var(--brand-light-1,#F1C59E);color:#000}
+.coll-promo p{margin:0;font-size:14px}
+.coll-promo .art{align-self:center;padding:24px 19.5px}
+
