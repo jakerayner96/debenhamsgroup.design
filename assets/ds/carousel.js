@@ -1,6 +1,7 @@
 /* DG Group Design System — Product carousel behaviour (.pcar, 28 Oct 2026, projects/product-carousel).
    Load after components.css. Every .pcar on the page is wired on load, and any .pcar injected later is wired automatically (DG_pcar(root) to force it).
-   - Arrows (desktop): page by the whole cards in view, hidden (disabled) at each end, centred on the card image.
+   - Arrows (desktop): page by the cards in view minus one (2 Nov 2026, Jake: the last card stays on screen so nobody loses their place), hidden (disabled) at each end, centred on the card image.
+   - Mobile / touch: free scroll, no snap (Spotify-style), set in the CSS.
    - Tabs (.pcar-tabs .chip): single select; fires a 'pcar:tab' event on the .pcar with detail {index, label} so the page swaps the feed.
    - Grid format (.pcar--grid) has no arrows. */
 (function(){
@@ -14,7 +15,7 @@
     }));
     if(!track||c.classList.contains('pcar--grid'))return;
     const step=()=>{const k=track.children[0];if(!k)return track.clientWidth;const gap=parseFloat(getComputedStyle(track).columnGap)||0,w=k.getBoundingClientRect().width+gap;
-      return Math.max(1,Math.floor((track.clientWidth+gap)/w))*w};
+      return Math.max(1,Math.floor((track.clientWidth+gap)/w)-1)*w};
     const sync=()=>{const max=track.scrollWidth-track.clientWidth-2;
       if(prev)prev.disabled=track.scrollLeft<=2;if(next)next.disabled=track.scrollLeft>=max;
       const img=track.querySelector('.pc-img');if(img)c.style.setProperty('--pcar-arr-y',(img.offsetTop+img.offsetHeight/2)+'px')};
