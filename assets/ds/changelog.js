@@ -33,6 +33,7 @@ window.DG_CHANGELOG=[
    "Message banner warning tone .msg--warning matched to the Order Emails Figma banner (745:3513): bold lead line dropped, black info icon centred, copy 14 regular black at 18 · by Order + dispatch emails (Jake 2 Nov)"
   ],
   "fixed": [
+   "Site: ⌘K spotlight search back to the centred dark panel — it shared .pal with the colour palette boards (white, padded, left), .ft with the DS footer and .sel with the select wrapper (chevron on the highlighted row); now .spot / .spot-ft / .ri.on. Sidebar icon row (navigation · home · search · theme · brand) is sticky; menu groups clip under it · by Jake, 2 Nov",
    "Product card round swatches (.pc-swatches--round, PLT): circles again — they used --radius-pill, which PLT's square-radius mode sets to 0, so they rendered square; now 50% · by Product carousel prototype, 2 Nov",
    "Grid view toggle (.gt mobile, .viewtoggle desktop): the view icons drew at ~11px. They are 24px library frames with a 16px glyph, and were squashed to 16. Now the frame shows at 24, so the glyph is 16 as Figma PLP-Grid-View 157:2718 / 157:2622 / 157:2674, with its right edge on the page margin, centred on the title. PLP tile view (3-col) keeps wishlist + bag on the image (157:2674); bag was hidden · by Jake, 2 Nov (PLP grid view)"
   ]

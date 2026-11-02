@@ -89,7 +89,8 @@ body.nosb .side{display:none}
 body.nosb .sbopen{display:grid}
 /* ---------- sidebar (PDS: surface panel, plain text accordion, no icons) ---------- */
 .side{background:color-mix(in srgb,var(--bg) 62%,transparent);backdrop-filter:blur(28px) saturate(1.1);-webkit-backdrop-filter:blur(28px) saturate(1.1);overflow-y:auto;overflow-x:hidden;padding:12px 24px 40px;display:flex;flex-direction:column}
-.shead{padding:0 0 22px;margin:0}
+.shead{padding:12px 0 22px;margin:-12px 0 0;position:sticky;top:-12px;z-index:4} /* sticky: the icon row never scrolls off (Jake, 2 Nov 2026) */
+.grp.gcut{-webkit-mask-image:linear-gradient(to bottom,transparent var(--gcut),#000 var(--gcut));mask-image:linear-gradient(to bottom,transparent var(--gcut),#000 var(--gcut))} /* a group passing under the sticky head is clipped at its bottom */
 .shead .rowa{display:flex;align-items:center;gap:8px;margin:0}
 .shead .wm{display:flex;align-items:center;gap:0;font-family:var(--sans);font-weight:600;font-size:15px;letter-spacing:-.005em;text-transform:none;color:var(--ink);min-width:0;white-space:nowrap}
 .shead .wm i{display:none}
@@ -386,15 +387,16 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 /* ================= SEARCH OVERLAY ================= */
 .ovl{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;z-index:100;padding-top:14vh}
 .ovl.on{display:block}
-.pal{width:min(640px,92vw);margin:0 auto;background:var(--solid);border:1px solid var(--low);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);animation:fabin .2s var(--ease-standard)}
-.pal input{width:100%;background:transparent;border:none;outline:none;color:var(--ink);font:400 18px var(--sans);padding:18px 20px;border-bottom:1px solid var(--low)}
-.pal input::placeholder{color:var(--ink-3)}
-.pal .res{max-height:360px;overflow-y:auto;padding:8px}
+/* spotlight search (⌘K) — .spot, not .pal: the colour palette boards use .pal (white, padded), which turned this into a white box on the left (fixed 2 Nov 2026) */
+.spot{width:min(640px,92vw);margin:0 auto;background:var(--solid);border:1px solid var(--low);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);animation:fabin .2s var(--ease-standard)}
+.spot input{width:100%;background:transparent;border:none;outline:none;color:var(--ink);font:400 18px var(--sans);padding:18px 20px;border-bottom:1px solid var(--low)}
+.spot input::placeholder{color:var(--ink-3)}
+.spot .res{max-height:360px;overflow-y:auto;padding:8px}
 .ri{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-sm);font-size:16px;cursor:pointer}
-.ri:hover,.ri.sel{background:var(--wash)}
+.ri:hover,.ri.on{background:var(--wash)} /* .on, not .sel: .sel is the site's select wrapper and drew its chevron on the row */
 .ri .ic{display:none}
 .ri small{margin-left:auto;font-size:13px;color:var(--ink-3)}
-.pal .ft{display:flex;gap:16px;padding:10px 16px;border-top:1px solid var(--low);font-size:12px;color:var(--ink-3)}
+.spot .spot-ft{display:flex;gap:16px;padding:10px 16px;border-top:1px solid var(--low);font-size:12px;color:var(--ink-3)}
 
 @media(max-width:920px){.shell{grid-template-columns:1fr}.side{display:none}.sbopen{display:grid}.hdr{display:none}body.sbm .side{display:flex;position:fixed;inset:0;z-index:90;width:100%}body.sbm .sbopen{display:none}.page{padding:32px 20px 100px}.page.rail.on{display:block}.toc{display:none}.stats,.opts,.board{grid-template-columns:1fr 1fr}.wall{grid-template-columns:repeat(2,1fr)}.tr{grid-template-columns:1fr 96px}.tr .id,.tr .d,.tr .dots{display:none}
   #home>*:not(.phero):not(.ltiles){margin-left:20px;margin-right:20px}.ltiles.four,.ltiles.two{grid-template-columns:1fr}.ltile.wide{margin:0 20px}.btiles{grid-template-columns:repeat(3,1fr);margin:0 20px}.ptiles{grid-template-columns:1fr;margin:0 20px}.logocloud.row{grid-template-columns:repeat(3,1fr)}.hsec{margin-left:20px!important;margin-right:20px!important}.phero{margin-top:0;padding:84px 20px 8px}.ltiles{grid-template-columns:1fr;margin:20px 20px 0}.ltile.span2{grid-column:auto}.hdrbtns{top:10px;right:10px}.fab-name{display:none}.fab-btn{padding:0 8px 0 4px}}
@@ -556,7 +558,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .flaggrid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}.flaggrid .icotile img{width:32px;height:23px;filter:none;opacity:1;border-radius:2px;box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 10%,transparent)}.flaggrid .icotile code{font-family:var(--sans);font-size:11px;word-break:normal}
 .kd img[src$="debenhamsgroup-stacked.svg"],.kl img[src$="debenhamsgroup-stacked.svg"]{height:64px}
 /* sidebar: each group heading sticks to the top while its items scroll under it */
-.grp>button{position:sticky;top:-12px;z-index:2;margin:0 -24px;padding:10px 24px;width:calc(100% + 48px);background:none}
+.grp>button{position:sticky;top:calc(var(--shead,12px) - 12px);z-index:2;margin:0 -24px;padding:10px 24px;width:calc(100% + 48px);background:none}
 /* items fade out as they reach the stuck heading: --cut is set on scroll (where the heading's bottom falls inside the list) */
 .grp .items.cut{--cut:0px;-webkit-mask-image:linear-gradient(to bottom,transparent var(--cut),#000 calc(var(--cut) + 28px));mask-image:linear-gradient(to bottom,transparent var(--cut),#000 calc(var(--cut) + 28px))}
 
@@ -1539,10 +1541,10 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 
 <!-- ============ SEARCH ============ -->
 <div class="ovl" id="ovl" onclick="if(event.target===this)closePal()">
-  <div class="pal">
+  <div class="spot">
     <input id="q" placeholder="Search components, brands, projects, tools…" autocomplete="off">
     <div class="res" id="res"></div>
-    <div class="ft"><span>↑↓ navigate</span><span>↵ open</span><span>esc close</span></div>
+    <div class="spot-ft"><span>↑↓ navigate</span><span>↵ open</span><span>esc close</span></div>
   </div>
 </div>
 
@@ -1690,7 +1692,10 @@ window.dlLogo=async function(slug,colour,fmt){
 };
 /* sidebar: clip each group's items under its sticky heading */
 (function(){const sd=document.querySelector('.side');if(!sd)return;let raf=0;
-  const cut=()=>{raf=0;sd.querySelectorAll('.grp').forEach(g=>{const b=g.querySelector(':scope>button'),it=g.querySelector(':scope>.items');if(!b||!it)return;
+  const hd=sd.querySelector('.shead');
+  const cut=()=>{raf=0;if(hd){sd.style.setProperty('--shead',hd.offsetHeight+'px');const hb=hd.getBoundingClientRect().bottom;
+      sd.querySelectorAll('.grp').forEach(g=>{const c=Math.max(0,hb-g.getBoundingClientRect().top);g.style.setProperty('--gcut',c+'px');g.classList.toggle('gcut',c>0)})}
+    sd.querySelectorAll('.grp').forEach(g=>{const b=g.querySelector(':scope>button'),it=g.querySelector(':scope>.items');if(!b||!it)return;
     const c=Math.max(0,b.getBoundingClientRect().bottom-it.getBoundingClientRect().top);it.style.setProperty('--cut',c+'px');it.classList.toggle('cut',c>0)})};
   const q=()=>{if(!raf)raf=requestAnimationFrame(cut)};
   sd.addEventListener('scroll',q,{passive:true});addEventListener('resize',q);sd.addEventListener('click',()=>setTimeout(q,0));q()})();
@@ -2025,7 +2030,7 @@ function go(r){if(r.u)window.open(r.u,'_blank','noopener');else location.hash=r.
 function draw(v){
   hits=REG.filter(r=>(r.t+' '+r.k).toLowerCase().includes(v.toLowerCase()));
   sel=0;
-  res.innerHTML=hits.map((r,i)=>`<div class="ri${i===0?' sel':''}" data-h="${r.h||''}" data-u="${r.u||''}"><span class="ic">${r.ic}</span>${r.t}<small>${r.s}</small></div>`).join('')||'<div class="ri" style="color:var(--ink-3)">No results</div>';
+  res.innerHTML=hits.map((r,i)=>`<div class="ri${i===0?' on':''}" data-h="${r.h||''}" data-u="${r.u||''}"><span class="ic">${r.ic}</span>${r.t}<small>${r.s}</small></div>`).join('')||'<div class="ri" style="color:var(--ink-3)">No results</div>';
   res.querySelectorAll('.ri[data-h]').forEach(el=>el.onclick=()=>{go(hits[[...res.children].indexOf(el)]);closePal()});
 }
 q.addEventListener('input',()=>draw(q.value));
@@ -2038,7 +2043,7 @@ addEventListener('keydown',e=>{
   if(e.key==='ArrowUp'){sel=Math.max(sel-1,0);mark()}
   if(e.key==='Enter'&&hits[sel]){go(hits[sel]);closePal()}
 });
-function mark(){res.querySelectorAll('.ri').forEach((el,i)=>el.classList.toggle('sel',i===sel))}
+function mark(){res.querySelectorAll('.ri').forEach((el,i)=>el.classList.toggle('on',i===sel))}
 
 route();paint();
 </script>
