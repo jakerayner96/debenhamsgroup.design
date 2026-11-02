@@ -207,7 +207,7 @@ button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--bor
 /* USP mount (usp.js, 2 Nov 2026 — as live): layout-transparent, so a sticky row (.usp-row1--sticky: the black bar by default) stays pinned to the top
    while the header and the other USP rows scroll off; on desktop the message cells sit in the page container (--page-max), not stretched edge to edge */
 .usps{display:contents}
-.usp-row1--sticky{position:sticky;top:0;z-index:var(--z-sticky)}
+.usp-row1--sticky{position:sticky;top:0;z-index:var(--z-raised,10)} /* above the page, under the header, the search overlay and every modal */
 .hd-usp[hidden]{display:none}
 /* USP banner content — Figma 11982-37171. Separator is a 4px dash (never a mid-dot);
    'Code:' label regular, code value strong; countdown digits strong (Black/Red variant sets --usp-cd red);
@@ -814,9 +814,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pcar-t{margin:0;font-size:18px;line-height:22px;font-weight:var(--w-strong)}
 .pcar-sub{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
 .pcar-all{flex:none;font-size:14px;line-height:20px;color:var(--text-primary);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
-.pcar-tabs{display:flex;gap:var(--gap-1,4px);overflow-x:auto;scrollbar-width:none;flex:none;max-width:100%}
+.pcar-tabs{display:flex;gap:var(--gap-2,8px);overflow-x:auto;scrollbar-width:none;flex:none;max-width:100%}
 .pcar-tabs::-webkit-scrollbar{display:none}
-/* tabs (DS Figma 1676-10372): 36px, 14 sentence case, gap 1 (4px), the fascia button radius; selected = the primary CTA, the rest white + Grey 25 keyline */
+/* tabs (DS Figma 1676-10372): 36px, 14 sentence case, gap 2 (8px), the fascia button radius; selected = the primary CTA, the rest white + Grey 25 keyline */
 .pcar-tabs .chip{height:36px;padding:0 var(--gap-3,12px);border-radius:var(--radius-default);background:var(--surface-raised);border:1px solid var(--border-default);
   color:var(--text-primary);font-family:var(--font-family-base);font-size:14px;line-height:18px;font-weight:var(--w-regular);text-transform:none;transition:background var(--dur-fast) var(--ease-standard),border-color var(--dur-fast) var(--ease-standard)}
 .pcar-tabs .chip:hover:not(.on){border-color:var(--border-strong)}

@@ -427,7 +427,7 @@ const DG_CATALOGUE = [
   anatomy:[
     'Header (.pcar-hd): title (.pcar-t) · optional subtitle (.pcar-sub) · optional tabs (.pcar-tabs .chip) — no View all',
     'Header sizes — lg (home): title 40/44 desktop · 24/28 mobile, subtitle 20/28 · 14/20, tabs right of the title block and vertically centred on it on desktop, under it on mobile · md: title 20/24 · 18/22 · sm: 16/20',
-    'Tabs (Figma 1676-10372): 36px, 14 sentence case, padding 0 12, gap 1 (4px), the fascia button radius (4px, 0 on square fascias); selected = the primary CTA (--surface-action / --text-on-action), the rest white + 1px Grey 25 keyline',
+    'Tabs (Figma 1676-10372): 36px, 14 sentence case, padding 0 12, gap 2 (8px), the fascia button radius (4px, 0 on square fascias); selected = the primary CTA (--surface-action / --text-on-action), the rest white + 1px Grey 25 keyline',
     'Cards: the DS product card (.pc), always — (Sponsored, Grey 4) · brand (strong; never blank) · name 2 lines · rail price now · was · -X% (.save), wrapping when narrow · colour swatches (button.pc-swatch: a tap selects the colour and swaps the image to its shot, data-img) · image 2:3 locked · no wishlist',
     'Gap: one everywhere — gap 1 (4px) between cards, gap 4 (16px) between grid rows; PLT + The Brand Room 0 between cards (tokens --pcar-gap-x 0, card text inset 4px)',
     'Mobile: cards 165px (Create the Look 150px), first card on the margin, the rail scrolls edge to edge of its container — never clipped by the margin (.pcar--bleed; --pcar-bleed = the container padding: page 16 · modal / sheet 24) · free scroll, no snap',
