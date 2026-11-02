@@ -39,6 +39,7 @@ window.DG_CHANGELOG=[
   ],
   "changed": [
    "Quick add on rail cards: top right of the image (the wishlist slot, was bottom right); the tap that adds pops the button into a tick (.pc-iconbtn.pop) · PDP template: Subscribe & Save now sits above Handpicked For You · by Product carousel prototype (mini bag), Jake 2 Nov",
+   "Virtual Stylist intro: Camera / Upload side by side at every width, both .bd pri with their 20px glyphs (.ic20, library icons-camera / icons-upload), equal halves, gap 2 (8px), as the v1 Add a Photo sheet (were Take a photo / Upload a photo stacked, primary + secondary) · by Virtual Stylist v2 (Jake review, 2 Nov)",
    "Virtual Stylist intro: consent checkbox centred on its copy, as the DS Checkbox (.chk-row, was the top-aligned .chk-row--lg); How it works glyphs 32 → 24px, copy 13/17 → 12/16 (14/20 → 13/18 from 600px) · by Virtual Stylist v2 (Jake review, 2 Nov)",
    "Modal layer: .vs-layer / .vs-layer--up join the delivery and Subscribe & Save layer rules (.dopts-layer, .sns-layer): fixed, scrim, centred or slide up · by Virtual Stylist v2",
    "Quantity stepper (.qty) to its Figma (Bag 2026 Quantity Selector 1234:76756): Grey 3 border (was #767676), 12px library icons (were text glyphs), delete at 1, plus disabled at max, remove-only state, pressed --surface-neutral, 44px tap zones; catalogue variants · by Bag 2026",

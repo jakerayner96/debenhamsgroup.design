@@ -2083,7 +2083,7 @@ select.rf-input:invalid{color:var(--rf-dim)}
 
 /* ---- Virtual Stylist intro (2 Nov 2026, vto-prototype v2; assets/ds/vs-intro.js): the launch modal on the DS .mdl in a .vs-layer (the delivery / S&S layer rules).
    How it works (.howto: three numbered steps on sunken cards, the number in the fascia action colour) · For the best result (.ptips: 2 × 2 tips) ·
-   consent (.chk-row, box centred on the copy + .vs-legal 12/16 grey, links --text-link) · Take a photo .bd pri over Upload a photo .bd sec (one primary per view) · .vs-note.
+   consent (.chk-row, box centred on the copy + .vs-legal 12/16 grey, links --text-link) · Camera / Upload: two .bd pri .ic20 side by side with their glyphs (as v1; Jake 2 Nov) · .vs-note.
    Centred .mdl--md from 600px, .mdl--up slide up on phones. Glyphs are DS library icons, masked so they take --icon-primary. */
 .vs-intro .mdl-bd{gap:var(--gap-6,24px)}
 .vs-sec{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
@@ -2101,7 +2101,7 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .vs-consent{cursor:pointer;-webkit-tap-highlight-color:transparent}   /* the whole row toggles; only the links are exempt */
 .vs-legal{margin:0;flex:1;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary)}
 .vs-legal a{color:var(--text-link);text-decoration:underline}
-.vs-ctas{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.vs-ctas .bd{width:100%}
+.vs-ctas{display:flex;gap:var(--gap-2,8px)}.vs-ctas .bd{flex:1 1 0;width:auto;min-width:0;padding-left:var(--gap-3,12px);padding-right:var(--gap-3,12px);white-space:nowrap}   /* side by side at every width (Jake, 2 Nov) */
 .vs-note{margin:0;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary);text-align:center}
 .vs-intro.mdl--up .mdl-bd{overflow-y:auto}
 @media(min-width:600px){
@@ -2109,7 +2109,6 @@ select.rf-input:invalid{color:var(--rf-dim)}
   .howto{gap:var(--gap-4,16px)}
   .howto li{font-size:13px;line-height:18px;padding:var(--gap-6,24px) var(--gap-4,16px) var(--gap-5,20px)}
   .ptips{gap:var(--gap-3,12px)}.ptips li{font-size:14px;line-height:20px}
-  .vs-ctas{flex-direction:row}
 }
 /* ---- Bag product card + bag sections (2 Nov 2026, Bag 2026 Figma CYyGeUDy4w02enV7uFxZ6W · mobile 1337:250006 / desktop 1337:256981). Markup + behaviour:
    assets/ds/bag.js (DG_bag). Card: 1px --border-subtle, radius 4, gap 3 (12px) in, image 68 × 102 (2:3) → info gap 4 (16px), text 12 (14 from 1024),
