@@ -4,7 +4,8 @@
    (DS modal .mdl--up / .mdl--side). Nothing here restyles a DS class; the .pi-* rules are page scaffolding.
    Views (PC.view): home (feature carousel with title + subtitle + tabs, Top Sellers) · pdp (Handpicked For You grid under the BNPL box, PC.hpRows rows ·
    Create the Look → opens the Create the Look picker · We Think You'll Like carousel; each on / off) ·
-   search (search open: Recently Viewed / Products matching as rails, the overlay width on desktop) · bag (PDP + the mini bag after Add to Bag). */
+   search (search open: Recently Viewed / Products matching as rails, the overlay width on desktop) · minibag (PDP + the mini bag after Add to Bag) ·
+   bag (the bag page + You Might Also Like). */
 (function(){
 const PC=window.PC_STATE;
 const st=document.createElement('style');st.textContent=`
@@ -77,14 +78,15 @@ window.acInner=function(){const doc=new DOMParser().parseFromString('<div id="x"
     const d=doc.createElement('div');d.className='ac-sec';d.innerHTML=pcar({id:'ac'+k,size:'sm',title:t,per:6,list});sec.replaceWith(d)});
   return doc.getElementById('x').innerHTML};
 
-/* ---- MINI BAG (after Add to Bag) — four versions (PC.mbType), every one from DS parts:
+/* ---- MINI BAG (after Add to Bag) — versions (PC.mbType), every one from DS parts:
+        live  · DS modal (slide up mobile .mdl--up, drawer desktop .mdl--side) — the added item, Continue Shopping / View Bag; no recommendations (as live)
         look  · DS modal (slide up mobile .mdl--up, drawer desktop .mdl--side) — the added item(s) (bag line items), Continue Shopping / View Bag, then
                 Complete The Look as the carousel with the mini quick add (.pc-qa): first two Sponsored on Debenhams; Add puts the product in the bag and its
                 line item into the modal
         save  · the same modal, then a divider and Save your bag (DS text field + checkbox row + secondary button) — no box
         toast · no modal: the DS product toast (.toast--top .toast--prod), 6s
         Free delivery banner (PC.thresh): the DS threshold (.thresh) under the line items, in the modal versions — fills as items are added ---- */
-const MBT=()=>PC.mbType||'look',THRESH=100,ADDED=[];let SAVED=null;
+const MBT=()=>PC.mbType||'live',THRESH=100,ADDED=[];let SAVED=null;
 const num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
 function mainItem(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,colour:DP.colour}:PR()[1]||{};
   const sz=(document.querySelector('.sz.on')||{}).textContent,cm=((document.querySelector('.buy')||{}).innerText||'').match(/Colou?r:\s*([^\n]+)/);
@@ -109,7 +111,7 @@ function miniBag(){const d=desk(),t=MBT();
     <div class="modal-hd"><div class="mt"><span class="mdl-tick" aria-hidden="true"></span><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
     <div class="mdl-bd"><div class="pi-items">${bagItems().map(lineItem).join('')}</div>${thresh()}
       <div class="pi-btns"><button class="bd sec" data-mbx>Continue Shopping</button><button class="bd pri">View Bag</button></div>
-      ${t==='save'?'<div class="hr"></div>'+saveBag():rail}</div></div></div>`}
+      ${t==='save'?'<div class="hr"></div>'+saveBag():t==='look'?rail:''}</div></div></div>`}
 function toast(){const p=mainItem();return `<div class="toast toast--top toast--prod pi-toast" id="pitoast" role="status"><img class="toast-img" src="${p.img}" alt=""><span class="toast-tx"><b>Added to Bag</b><span>${esc([p.size,p.colour].filter(Boolean).join(' / '))}, ${esc(p.price)}</span></span><button class="act" type="button">View Bag</button>${EXPORTING?'':'<i class="toast-timer"></i>'}</div>`}
 let TT=0;
 function mountBag(open){const old=document.getElementById('pimb'),ot=document.getElementById('pitoast');if(old)old.remove();if(ot)ot.remove();clearTimeout(TT);
@@ -129,8 +131,12 @@ document.addEventListener('click',e=>{
   if(S.page==='pdp'&&e.target.closest('.ctas .bd.pri')){e.preventDefault();PC.bagOpen=true;mountBag(true)}
   if(e.target.closest('.pcar a[href="#"]'))e.preventDefault()});
 
+/* ---- BAG page: You Might Also Like under the line items (as templates/bag.html) ---- */
+const oBag=PAGES.bag;
+PAGES.bag=function(){const h=oBag();return h.replace(/<\/main>/,`<div class="pi-full pi-recs">${pcar({id:'bagrec',size:'md',full:1,title:'You Might Also Like',start:5})}</div></main>`)};
+
 /* ---- after every render: the mini bag ---- */
 const oRender=window.render;
 window.render=function(){oRender.apply(this,arguments);
-  mountBag(PC.view==='bag'&&PC.bagOpen!==false)};
+  mountBag(PC.view==='minibag'&&PC.bagOpen!==false)};
 })();
