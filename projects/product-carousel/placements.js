@@ -5,7 +5,7 @@ window.PCAR_PLACES=[
  {id:'home2', name:'Home · top sellers',         where:'Home page module (CMS)',              size:'md', fmt:'carousel', per:5, all:true,  title:'Top Sellers'},
  {id:'pdp',   name:'PDP · recommendations',      where:'PDP, under the buy column + accordions', size:'md', fmt:'carousel', per:5, all:true,  title:'Why Not Treat Yourself?'},
  {id:'look',  name:'PDP · Create the Look',      where:'PDP, under recommendations',          size:'md', fmt:'carousel', per:5, look:true, title:'Create The Look'},
- {id:'search',name:'Search overlay',             where:'Search open, under suggestions',      size:'sm', fmt:'carousel', per:3, title:'Recently Viewed'},
+ {id:'search',name:'Search overlay',             where:'Search open, under suggestions · wider than the suggestions on desktop', size:'sm', fmt:'carousel', per:6, title:'Recently Viewed'},
  {id:'results',name:'Search results',            where:'Search results page',                 size:'md', fmt:'grid',     per:4, title:'Products matching “new in”'},
  {id:'atb',   name:'Added to bag modal',         where:'Modal after Add to bag (Medium modal on desktop, slide-up on mobile)', size:'sm', fmt:'carousel', per:3, title:'Complete Your Look'},
  {id:'bag',   name:'Bag · recommendations',      where:'Bag, under the line items',           size:'md', fmt:'carousel', per:4, all:true,  title:'You Might Also Like'},

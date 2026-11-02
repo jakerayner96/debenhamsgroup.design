@@ -167,33 +167,48 @@ const P={
   page:'page.html',
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
-  files:['page.html','placements.js','README.md'],
-  store:'proto-product-carousel',
-  initial:()=>({view:'all',fmt:'spec',labels:true}),
+  files:['page.html','pcar-next.css','placements.js','README.md'],
+  store:'proto-product-carousel-v2',
+  initial:()=>({view:'types',size:'md',title:true,sub:false,tabs:false,all:true,arrows:true,gap:'fascia',per:5,fmt:'spec',labels:true}),
 };
-const PL=window.PCAR_PLACES,SZ=window.PCAR_SIZES;
+const PL=window.PCAR_PLACES,SZ=window.PCAR_SIZES,GAP0=['plt','brandroom'];
 function renderPanel(host,S,update){
   const c=S.cfg,bn=(P.brands.find(x=>x[0]===S.brand)||[0,S.brand])[1];
   const seg=(id,cur,opts)=>`<span class="seg" data-seg="${id}">${opts.map(([v,l])=>`<button data-v="${v}" class="${String(cur)===String(v)?'on':''}">${l}</button>`).join('')}</span>`;
+  const sw=(id,on,l)=>`<label class="sw"><input type="checkbox" data-sw="${id}"${on?' checked':''}><i></i>${l}</label>`;
   const opt=(v,b,t)=>`<button class="opt${c.view===v?' on':''}" data-view="${v}"><span class="r"></span><span class="t"><b>${b}</b><span>${t}</span></span></button>`;
+  const isPl=c.view==='all'||PL.some(p=>p.id===c.view);
   host.innerHTML=`<h1>Product carousel</h1>
-  <p class="intro">One component for every product rail and grid on site: the DS <b>Product carousel</b> (<code>.pcar</code> + <code>assets/ds/carousel.js</code>). A placement only changes the <b>header size</b>, the <b>format</b> and the <b>cards in view</b>. Everything else is fixed.</p>
-  <div class="card"><h3>Placement <small>${bn}</small></h3>
-    ${opt('all','All placements','The spec sheet: every placement on one page, labelled')}
-    ${PL.map(p=>opt(p.id,p.name,p.where)).join('')}</div>
-  <div class="card"><h3>Format</h3>${seg('fmt',c.fmt,[['spec','As spec'],['carousel','All carousel'],['grid','All grid']])}
-    <p style="margin-top:8px">Compare the two formats anywhere. Spec: grid only where products are the page content (search results, empty bag).</p></div>
-  <div class="card"><h3>Spec labels <label class="sw"><input type="checkbox" id="labels"${c.labels?' checked':''}><i></i>${c.labels?'On':'Off'}</label></h3>
-    <p>The band above each placement: header size, format, cards in view. Turn off for clean screenshots.</p></div>
+  <p class="intro">Three types, one component (<code>.pcar</code> + <code>assets/ds/carousel.js</code>): <b>Carousel</b>, <b>Grid</b> and <b>Create the Look</b> (grey panel, no product details). Images are always 2:3 and ratio-locked, and the gap is the same everywhere: 4px, or <b>none on PLT and The Brand Room</b>. Proposed changes are staged in <code>pcar-next.css</code> until we bank them in the DS.</p>
+  <div class="card"><h3>View <small>${bn}</small></h3>
+    ${opt('types','The three types','Carousel · Grid · Create the Look, header from the toggles below')}
+    ${opt('home','Home page','Feature carousel with title, subtitle and tabs · Shop the look · Top sellers · grid with tabs')}
+    ${opt('search','Search suggestions','Suggestions in the 640 column; the rails use the wider overlay on desktop')}
+    ${opt('all','Every placement','The dev spec sheet: every placement on site, labelled')}
+    ${isPl?PL.map(p=>opt(p.id,'↳ '+p.name,p.where)).join(''):''}</div>
+  ${c.view==='types'?`<div class="card"><h3>Header</h3>
+    ${seg('size',c.size,[['sm','Small'],['md','Medium'],['lg','Large']])}
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">${sw('title',c.title,'Title')}${sw('sub',c.sub,'Subtitle')}${sw('tabs',c.tabs,'Tabs')}${sw('all',c.all,'View all')}</div>
+    <p style="margin-top:8px">${SZ[c.size]}. Tabs sit beside the title on desktop and under it on mobile.</p></div>`:''}
+  <div class="card"><h3>Chevrons <small>desktop + mouse only</small> ${sw('arrows',c.arrows,c.arrows?'On':'Off')}</h3>
+    <p>Off = <code>.pcar--no-arr</code>: trackpad / swipe only. Never on mobile or touch screens either way.</p></div>
+  <div class="card"><h3>Gap</h3>${seg('gap',c.gap,[['fascia','Fascia default'],['4','4px'],['0','None']])}
+    <p style="margin-top:8px">Fascia default: 4px columns · 16px grid rows; PLT + Brand Room 0 columns (PLT live). ${bn}: <b>${c.gap==='fascia'?(GAP0.includes(S.brand)?'0':'4px'):c.gap==='0'?'0':'4px'}</b>.</p></div>
+  ${c.view==='types'?`<div class="card"><h3>In view on desktop</h3>${seg('per',c.per,[[4,'4'],[5,'5'],[6,'6']])}
+    <p style="margin-top:8px">Carousel: this many + a 0.4 peek. Grid: this many columns. Mobile is fixed: 165px cards (150px Create the Look tiles), 3-column grid.</p></div>`:''}
+  ${isPl?`<div class="card"><h3>Format</h3>${seg('fmt',c.fmt,[['spec','As spec'],['carousel','All carousel'],['grid','All grid']])}
+    <p style="margin-top:8px">Compare the two formats anywhere. Spec: grid only where products are the page content (search results, empty bag).</p></div>`:''}
+  <div class="card"><h3>Spec labels ${sw('labels',c.labels,c.labels?'On':'Off')}</h3>
+    <p>The blue band above each module: type, header, gap, cards in view. Turn off for clean screenshots.</p></div>
   <div class="card"><h3>Placements <small>the dev table</small></h3>
     <table class="spec"><tr><th>Placement</th><th>Header</th><th>Format</th><th>In view (desktop)</th></tr>
-    ${PL.map(p=>`<tr><td>${p.name}</td><td>${p.size.toUpperCase()}${p.tabs?' + tabs':''}</td><td>${p.look?'Carousel · image only':p.fmt==='grid'?'Grid':'Carousel'}</td><td>${p.fmt==='grid'?p.per+' columns':p.per+' + peek'}</td></tr>`).join('')}</table>
-    <p style="margin-top:8px">Mobile is the same everywhere: 165px cards (2.2 in view at 390), swipe, no arrows; grids are 2 columns.</p></div>
-  <div class="card"><h3>Links</h3>
-    <p><a class="lnk" href="../../#c-product-carousel" target="_blank">DS component page</a> · <a class="lnk" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=669-1762" target="_blank">Figma</a> · <a class="lnk" href="https://github.com/jakerayner96/debenhamsgroup.design/tree/main/projects/product-carousel" target="_blank">Spec (README)</a></p></div>`;
+    ${PL.map(p=>`<tr><td>${p.name}</td><td>${p.size.toUpperCase()}${p.tabs?' + tabs':''}</td><td>${p.look?'Create the Look':p.fmt==='grid'?'Grid':'Carousel'}</td><td>${p.fmt==='grid'?p.per+' columns':p.per+' + peek'}</td></tr>`).join('')}</table></div>
+  <div class="card"><h3>Figma</h3>
+    <p><a class="lnk" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=1342-6415" target="_blank">Carousel</a> · <a class="lnk" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=11092-19864" target="_blank">Grid</a> · <a class="lnk" href="https://www.figma.com/design/vVJJ1bgaTGCbGd68bsNiVT/Core-PDP-2026?node-id=638-56822" target="_blank">Create the Look</a> · <a class="lnk" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=1676-10371" target="_blank">Home</a> · <a class="lnk" href="https://www.figma.com/design/vVJJ1bgaTGCbGd68bsNiVT/Core-PDP-2026?node-id=638-57804" target="_blank">MAN carousel</a> · <a class="lnk" href="https://www.figma.com/design/vVJJ1bgaTGCbGd68bsNiVT/Core-PDP-2026?node-id=638-57872" target="_blank">MAN grid</a></p>
+    <p style="margin-top:6px"><a class="lnk" href="../../#c-product-carousel" target="_blank">DS component page</a> · <a class="lnk" href="https://github.com/jakerayner96/debenhamsgroup.design/tree/main/projects/product-carousel" target="_blank">Spec (README)</a></p></div>`
   host.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{c.view=b.dataset.view;panel();update()});
-  host.querySelectorAll('[data-seg=fmt] button').forEach(b=>b.onclick=()=>{c.fmt=b.dataset.v;panel();update()});
-  host.querySelector('#labels').onchange=e=>{c.labels=e.target.checked;panel();update()};
+  host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=g.dataset.seg;c[k]=k==='per'?+b.dataset.v:b.dataset.v;panel();update()}));
+  host.querySelectorAll('[data-sw]').forEach(i=>i.onchange=()=>{c[i.dataset.sw]=i.checked;panel();update()});
 }
 /* ==================================================================================================== */
 

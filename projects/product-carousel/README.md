@@ -8,6 +8,12 @@
   https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=13566-3771
 - **Code:** `assets/ds/components.css` (`.pcar`), `assets/ds/carousel.js` (behaviour), markup in `assets/ds/catalogue.js` (`product-carousel`)
 
+
+> **In review (2 Nov 2026) — not banked yet.** Proposed changes are staged in `projects/product-carousel/pcar-next.css` and fold into `.pcar` in `components.css` on sign-off:
+> one gap everywhere (4px columns, 16px grid rows; **0 on PLT and The Brand Room**, card text inset 4px) · images locked 2:3 · grid 3 across on mobile ·
+> **Create the Look** = the carousel on a grey `--grey-05` panel, image-only 150px tiles · chevrons optional (`.pcar--no-arr`) ·
+> search suggestions: the rails use the wider overlay on desktop (6 in view) while the suggestions stay in the 640 column.
+
 ## The ask
 Every product rail on site (home, PDP, search, bag, added to bag, empty states) should be **one component**. Today the placements have drifted: different header sizes, card widths, gaps and arrow behaviour. The dev component that maps to this is `Molecules/PersonalisedCarousel`. Please align it to this spec and use it everywhere.
 

@@ -1,0 +1,28 @@
+/* Product carousel — PROPOSED changes (2 Nov 2026), loaded after components.css by this prototype only.
+   Not banked yet: once signed off, these fold into the .pcar block in assets/ds/components.css (+ the fascia gap into tokens.css),
+   the catalogue entry 'product-carousel' and the changelog — and this file is deleted.
+   Figma: DS Grid 11092-19864 · DS Carousel 1342-6415 · Home 1676-10371 · Core PDP 2026 Create The Look 638-56822, MAN 638-57804 / 638-57872.
+
+   1. One gap everywhere: column gap 1 (4px) on every device and format (was 8px) — the PLP grid's own gap. Grid rows gap 4 (16px).
+      PLT + The Brand Room: column gap 0 (images touch, as PLT live), rows stay 16px; the card text then takes a 4px inset (as .pc--flush) so neighbours never touch.
+   2. Images locked 2:3 — the image never stretches or crops to the card's text; tiles and cards share the ratio.
+   3. Grid: 3 across on mobile (was 2), --pcar-per across on desktop.
+   4. Create the Look (.pcar--look): the carousel on a grey panel (--grey-05), padding gap 4 (16px), image-only 150px tiles, View all right.
+   5. Chevrons optional: .pcar--no-arr drops the desktop arrows (trackpad / shift-scroll + swipe only). */
+.pcar{--pcar-gap:var(--pcar-gap-x,4px);--pcar-row-gap:16px}
+[data-brand="plt"],[data-brand="brandroom"]{--pcar-gap-x:0px;--pcar-info-x:4px}
+.pcar .pc-info{padding-inline:var(--pcar-info-x,0px)}
+.pcar .pc-img{aspect-ratio:2/3;flex:none;height:auto}
+.pcar .pc-img img.ph{object-fit:cover}
+
+.pcar--grid{--pcar-cols:3}
+.pcar--grid .pcar-track{gap:var(--pcar-row-gap) var(--pcar-gap)}
+
+.pcar--look{--pcar-card:150px;--pcar-pad:var(--gap-4,16px);--pcar-hd-gap:16px;background:var(--grey-05,#FAFAFA);padding-block:var(--gap-4,16px)}
+.pcar--look .pcar-hd{align-items:center}
+.pcar--look .pc{gap:0}
+@media(max-width:1023px){.pcar--look.pcar--bleed{margin-inline:calc(-1 * var(--gap-4,16px))}}
+@media(min-width:1024px){.pcar--look{--pcar-pad:var(--gap-6,24px);--pcar-hd-gap:24px;padding-block:var(--gap-6,24px)}}
+
+.pcar--no-arr .pcar-arr{display:none!important}
+
