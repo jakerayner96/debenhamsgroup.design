@@ -29,7 +29,9 @@ window.DG_CHANGELOG=[
    "Bag template: You Might Also Like under the bag, Product carousel medium + View all, 4 + peek · by Master prototype",
    "Message banner warning tone .msg--warning matched to the Order Emails Figma banner (745:3513): bold lead line dropped, icon centred in Grey 4, copy 14 regular black at 18 · by Order + dispatch emails (Jake 2 Nov)"
   ],
-  "fixed": []
+  "fixed": [
+   "Grid view toggle (.gt mobile, .viewtoggle desktop): the view icons drew at ~11px. They are 24px library frames with a 16px glyph, and were squashed to 16. Now the frame shows at 24, so the glyph is 16 as Figma PLP-Grid-View 157:2718 / 157:2622 / 157:2674, with its right edge on the page margin, centred on the title. PLP tile view (3-col) keeps wishlist + bag on the image (157:2674); bag was hidden · by Jake, 2 Nov (PLP grid view)"
+  ]
  },
  {
   "d": "2026-10-30",

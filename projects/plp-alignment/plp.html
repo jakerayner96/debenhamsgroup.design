@@ -87,12 +87,12 @@ body:not(.mode-new) .hd-usp .s{line-height:12px}
 /* PLP title, SEO copy, Show more and the grid-view toggle moved to the DS (components.css) 16 Oct 2026 */
 .plp{padding:0 var(--plp-margin) 24px;max-width:2000px;margin:0 auto} /* whole container caps at 2000px (PLT live) */
 /* grid-view selector — Figma PLP-Grid-View 194-2513 / 157-2631 / 157-2683: 16px icon right of the title,
-   mobile only. Two views: thumbnail (2-col, full card) ⇄ tile grid (3-col, images only — wishlist + AI badge only).
+   mobile only. Three views: thumbnail (2-col, full card) → tile grid (3-col, images only — wishlist + bag + AI badge, 157-2674) → one-wide list.
    The icon shows the view you switch TO: exact design assets (view-grid.svg / view-thumb.svg). */
 @media(max-width:767px){body.mode-new .gt{display:block} /* the view toggle is a new-format feature — live keeps the standard grid */
   .mode-new .grid[data-mcols="3"]{grid-template-columns:repeat(3,1fr);gap:0;margin:0 calc(var(--plp-margin,16px)*-1)} /* tile view: edge to edge, zero gaps — every fascia */
   .mode-new .grid[data-mcols="3"] .pc-info,.mode-new .grid[data-mcols="3"] .pc-badges,.mode-new .grid[data-mcols="3"] .pc-taggstar,.mode-new .grid[data-mcols="3"] .pc-add{display:none}
-  .mode-new .grid[data-mcols="3"] .pc-actions>*:not(:first-child){display:none}
+  /* tile view keeps wishlist + bag on the image (PLP-Grid-View 157:2674, 2 Nov 2026) */
   .mode-new .grid[data-mcols="3"] .cslot{display:none} /* the images-only view drops content slots, like badges */
   .mode-new .grid[data-mcols="1"]{grid-template-columns:1fr}
   .mode-new .grid[data-mcols="1"] .cslot{grid-column:1/span 1} /* a span-2 item in a 1-col grid spawns an implicit track and breaks the list */

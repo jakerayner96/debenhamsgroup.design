@@ -1252,11 +1252,13 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .showmore{display:block;font-size:14px;color:var(--text-primary);padding:2px 0 12px;background:none;border:0;cursor:pointer;font-family:inherit}
 .showmore[hidden]{display:none}
 /* Grid view toggle (promoted) — PLP-Grid-View 194-2513: 16px icon right of the PLP title on mobile; desktop segmented toggle */
-.gt{display:none;position:absolute;right:0;top:10px;width:24px;height:24px;padding:4px;background:none;border:none;cursor:pointer}
-.gt img{width:16px;height:16px;display:block}
+/* The view icons are 24px library frames with a 16px glyph inset gap 1 (4px): show the frame at 24 so the glyph is 16 (Figma 157:2631 / 157:2683 / 157:2727).
+   They were drawn at 16, which shrank the glyph to ~11px (fixed 2 Nov 2026). The button sits gap 1 (4px) past the margin, so the glyph's right edge is on it. */
+.gt{display:none;position:absolute;right:-4px;top:10px;width:24px;height:24px;padding:0;background:none;border:none;cursor:pointer}
+.gt img{width:24px;height:24px;display:block}
 .viewtoggle{display:inline-flex;border:var(--border-w) solid var(--border-default);border-radius:var(--radius-default);overflow:hidden}
 .viewtoggle button{width:36px;height:38px;display:grid;place-items:center;padding:0;background:none;border:0;cursor:pointer}
-.viewtoggle img{width:16px;height:16px;object-fit:contain;opacity:.45}
+.viewtoggle img{width:24px;height:24px;object-fit:contain;opacity:.45} /* 24px frame = 16px glyph, as .gt */
 .viewtoggle button.on img{opacity:1}
 .viewtoggle button.on{background:var(--surface-sunken)}
 /* Content slot (promoted from plp-alignment) — DS Figma 8556-18755. Square in-grid tile that opens its row: Button (media + white CTA),
