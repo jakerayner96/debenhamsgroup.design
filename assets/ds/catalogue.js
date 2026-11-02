@@ -213,12 +213,12 @@ const DG_CATALOGUE = [
   summary:'Inline status: a 4px colour bar, icon and text. Success, neutral, error and warning tones; optional dismiss and inline action.',
   use:['Confirming an applied code, showing a balance, explaining a failure — in place, next to the thing it is about.'],
   avoid:['Stacking more than one at a time.','A dismiss on a neutral message — it is a readout, not an alert.'],
-  anatomy:['4px status bar · 20px icon · 14px text · optional action / ×','Tones: --success-bar/-bg · --surface-sunken · --error-bg · --warning-bar/-bg (Yellow / Light Yellow, bold lead line)'],
+  anatomy:['4px status bar · 20px icon · 14px text · optional action / ×','Tones: --success-bar/-bg · --surface-sunken · --error-bg · --warning-bar/-bg (Yellow / Light Yellow, Grey 4 icon, regular black copy)'],
   variants:[
     {name:'Success', html:'<div class="msg msg--success" style="width:380px"><i></i><div class="body"><span style="flex:1">Promo code SUMMER applied — £6.00 off</span><button class="x" aria-label="Dismiss"></button></div></div>'},
     {name:'Neutral', html:'<div class="msg msg--neutral" style="width:380px"><i></i><div class="body"><span style="flex:1">Gift card balance: £25.00</span><button class="act">Apply</button></div></div>'},
     {name:'Error', html:'<div class="msg msg--error" style="width:380px"><i></i><div class="body"><span style="flex:1">We couldn’t find that gift card. Check the number and PIN.</span></div></div>'},
-    {name:'Warning', html:'<div class="msg msg--warning" style="width:380px"><i></i><div class="body"><img src="assets/ds/icons/lib/icons-info.svg" alt=""><span style="flex:1"><b>Delivery information</b>Your order may be delivered in multiple parcels and arrive at different times. See below for delivery information on each item.</span></div></div>'},
+    {name:'Warning', html:'<div class="msg msg--warning" style="width:380px"><i></i><div class="body"><img src="assets/ds/icons/lib/icons-info.svg" alt=""><span style="flex:1">Your order may be delivered in multiple parcels and arrive at different times. Please see below for delivery information on the specific items in your order.</span></div></div>'},
   ],
   dev:{title:'Molecules/Message Block', status:'match', note:'Dev types: error · warning · info · infoNew · warningNew · infoWithIcon · message. Reconcile to three tones + optional icon.'} },
 

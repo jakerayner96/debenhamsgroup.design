@@ -26,7 +26,8 @@ window.DG_CHANGELOG=[
    "Product carousel arrows (assets/ds/carousel.js): a click now pages by the cards in view minus one, so the last card stays on screen and nobody loses their place (was the whole view) · by Product carousel prototype (projects/product-carousel), Jake 2 Nov",
    "Delivery grid defaults (assets/ds/delivery.js): DG_delivery.grid() now gives the chosen design with no options — option B tabs (o.layout 'tabs'), row format 3 “Get It By · Tomorrow / method” (o.fmt 3) and returns + seller info in the PDP accordions, not the box (o.retIn / o.sellerIn 'acc'). Pass 'list' / 1 / 'box' for the old looks. Catalogue: the default is the first variant; the in-box variants say so. templates/pdp.html, the Shopping agent PDP (was still option A, now B + Returns / Seller Information accordions) and the PDP delivery grid prototype all default to it · by Jake, 2 Nov (delivery grid decision)",
    "PDP template: recommendations under the page — Create The Look (image only) · Why Not Treat Yourself? (View all) · Recently Viewed, DS Product carousel 5 + peek (placements from the Product carousel spec) · by Master prototype",
-   "Bag template: You Might Also Like under the bag, Product carousel medium + View all, 4 + peek · by Master prototype"
+   "Bag template: You Might Also Like under the bag, Product carousel medium + View all, 4 + peek · by Master prototype",
+   "Message banner warning tone .msg--warning matched to the Order Emails Figma banner (745:3513): bold lead line dropped, icon centred in Grey 4, copy 14 regular black at 18 · by Order + dispatch emails (Jake 2 Nov)"
   ],
   "fixed": []
  },
