@@ -22,6 +22,8 @@
   12. Desktop header (lg): the tabs sit vertically centred on the title + subtitle block (was bottom-aligned).
   13. .pcar--full (home + PDP full-width rails): runs to the page margin at every width; desktop cards keep one size (--pcar-card-d 248px, the 5 + peek
       card at 1440), so a wider screen pulls in more products instead of scaling them. Narrow containers (search, mini bag, picker) keep --pcar-per.
+  14. Rail cards = the product card format, always: (Sponsored) · brand (never dropped — PLT / Warehouse included) · name clamped to 2 lines · price
+      now · was · -X% (.save, as the PLP card), wrapping to a second line when the card is narrow · colour swatches (.pc-swatches) when there are colours.
    MODAL (new type, mini bag / added to bag — demiladea.github.io/Debenhams/Add To Cart concept 1):
    6. .mdl--side: desktop drawer — full height, 480 wide, flush to the right edge, square corners, slides in from the right. Mobile keeps .mdl--up.
    7. .mdl-tick: the 16px tick left of the title ("✓ Added to Bag"), the same slot and size as .mdl-back. */
@@ -70,4 +72,5 @@
 @media(max-width:1023px),(hover:none){.pcar-track{scroll-snap-type:none;scroll-behavior:auto}.pcar-track>*{scroll-snap-align:none}}
 @media(min-width:1024px){.pcar--lg .pcar-hd{align-items:center}
   .pcar--full .pcar-track>*{flex-basis:var(--pcar-card-d,248px)}}
+.price-blk--rail .price{flex-wrap:wrap;white-space:normal;row-gap:0}
 /* (url paths are relative to this file; they become icons/lib/… once banked in components.css) */

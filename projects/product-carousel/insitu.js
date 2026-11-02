@@ -21,7 +21,6 @@ const st=document.createElement('style');st.textContent=`
 html.pi-lock,html.pi-lock body{overflow:hidden;height:100%}`;
 document.head.appendChild(st);
 
-const NOBRAND=['plt','warehouse'];
 const TABS={debenhams:['Fashion','Home','Beauty'],boohoo:['Women','Men','Beauty'],boohooman:['New In','Hoodies','Jackets'],plt:['New In','Dresses','Shoes'],karenmillen:['Dresses','Coats','Tailoring'],warehouse:['Dresses','Knitwear','Denim'],brandroom:['Women','Men','Accessories']};
 const TAB={};
 const n=()=>PR().length||1;
@@ -29,11 +28,23 @@ const n=()=>PR().length||1;
 const FEEDS={};
 function ids(id,start,len){const off=start+(TAB[id]||0)*4;return Array.from({length:len},(_,k)=>(off+k*3)%n())}
 /* DS product card for a rail: image · (Sponsored) · brand · name · rail price. Look = image only. No wishlist on rail cards. */
+/* every rail card follows the DS product card: (Sponsored) · brand (always — the feed's, else the brand that opens the name, else the fascia) ·
+   name (2 lines) · price (now · was · -X%) · colour swatches when the product comes in more than one colour */
+const BRANDS=/^(boohooMAN|boohoo|Wallis|Coast|Burton|Oasis|Warehouse|Dorothy Perkins|Karen Millen|PrettyLittleThing|Debenhams)\b\s*/i;
+function brandOf(p){let b=p.brand,n=p.name||'';const m=n.match(BRANDS);
+  if(!b&&m){b=m[1];n=n.slice(m[0].length)}else if(b&&n.toLowerCase().startsWith(b.toLowerCase()+' '))n=n.slice(b.length+1);
+  return [b||BN(),n]}
+const SWP=['#1F1F1F','#C9C9C9','#B4A67A','#2F4A7A','#B97A57','#6E8B6B','#D9B8C4','#FFFFFF','#8FA3B8'];
+const nSw=i=>i%4===1?3:i%5===2?2:i%7===3?5:0;   /* sample feed: some products come in several colours, most in one (as live) */
+function swatches(i){const k=nSw(i);if(!k)return'';const cs=Array.from({length:k},(_,j)=>SWP[(i+j*2)%SWP.length]),show=cs.slice(0,4);
+  return `<div class="pc-swatches${BR()==='plt'?' pc-swatches--round':''}"><span class="set">${show.map((c,j)=>`<span class="pc-swatch${j?'':' on'}"><i style="background:${c}"></i></span>`).join('')}</span>${k>4?`<span class="pc-more">+${k-4}</span>`:''}</div>`}
+function info(i,o){const p=PR()[i],[b,n]=brandOf(p),pct=p.was&&p.pct?String(p.pct).replace(/[^0-9]/g,''):'';
+  return `<div class="pc-info">${o.sp&&o.sp(i)?'<div class="pc-sponsored">Sponsored</div>':''}<div class="pc-toprow"><div class="pc-titles"><div class="pc-brand">${esc(b)}</div><div class="pc-name">${esc(n)}</div></div></div>
+    <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${pct?`<span class="save" data-pct="${pct}"></span>`:''}</div></div>${swatches(i)}</div>`}
 function pc(i,o){const p=PR()[i];if(!p)return'';
-  const img=`<div class="pc-img"><img class="ph" src="${IMG(i)}" alt="${esc((p.brand?p.brand+' ':'')+p.name)}" loading="${EXPORTING?'eager':'lazy'}"></div>`;
+  const img=`<div class="pc-img"><img class="ph" src="${IMG(i)}" alt="${esc(brandOf(p).join(' '))}" loading="${EXPORTING?'eager':'lazy'}"></div>`;
   if(o.look)return `<article class="pc">${img}</article>`;
-  return `<article class="pc">${img}<div class="pc-info">${o.sp&&o.sp(i)?'<div class="pc-sponsored">Sponsored</div>':''}<div class="pc-toprow"><div class="pc-titles">${p.brand&&!NOBRAND.includes(BR())?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div>
-    <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}</div></div></div></article>`}
+  return `<article class="pc">${img}${info(i,o)}</article>`}
 /* the component — markup per the DS catalogue entry 'product-carousel' */
 function pcar(o){FEEDS[o.id]=o;const grid=o.fmt==='grid',per=o.per||5,len=o.len||(grid?(desk()?per*2:6):10),list=o.list||ids(o.id,o.start||0,len);
   const cls=['pcar','pcar--'+(o.size||'md'),grid&&'pcar--grid',o.look&&'pcar--look',o.full&&'pcar--full',o.bleed!==false&&'pcar--bleed',!PC.arrows&&'pcar--no-arr'].filter(Boolean).join(' ');
@@ -66,7 +77,7 @@ PAGES.pdp=function(){const doc=new DOMParser().parseFromString('<div id="x">'+oP
   const bnpl=x.querySelector('.buy .bnpl')||x.querySelector('.bnpl');
   if(PC.hp!==false&&bnpl){const rows=Math.max(1,+PC.hpRows||2),d=doc.createElement('div');d.className='pi-hp';
     d.innerHTML=pcar({id:'hp',size:'sm',fmt:'grid',per:3,len:rows*3,title:'Handpicked For You',start:3,bleed:false});bnpl.after(d)}
-  const recs=(PC.look!==false?pcar({id:'look',size:'md',full:1,look:true,title:'Create The Look',start:9}):'')+(PC.car!==false?pcar({id:'recs',size:'md',full:1,title:'We Think You’ll Like',start:15}):'');
+  const recs=(PC.look!==false?pcar({id:'look',size:'md',full:1,look:true,title:'Create The Look',start:9}):'')+(PC.car!==false?pcar({id:'recs',size:'md',full:1,title:'We Think You’ll Like',start:15,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>{const L=ids('recs',15,10);return L.indexOf(i)===1||L.indexOf(i)===3}):null}):'');
   if(recs){const r=doc.createElement('div');r.className='pi-recs pi-full';r.innerHTML=recs;x.appendChild(r)}   /* outside the PDP's 1440 wrap: full width to the page margin */
   return x.innerHTML};
 
@@ -84,8 +95,7 @@ function picker(){const rs=reels(),n=Object.keys(PICK).length,num=s=>parseFloat(
   const tot=Object.keys(PICK).reduce((a,i)=>a+num((PR()[i]||{}).price),0);
   const card=i=>{const p=PR()[i];if(!p)return'';const on=!!PICK[i];
     return `<article class="pc pc--pick${on?' on':''}" data-pick="${i}"><div class="pc-img"><img class="ph" src="${IMG(i)}" alt="${esc(p.name)}"><button class="chk${on?' on':''}" aria-label="${on?'Remove':'Add'} ${esc(p.name)}" aria-checked="${on}"></button></div>
-      <div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${p.brand&&!NOBRAND.includes(BR())?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div>
-      <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}</div></div></div></article>`};
+      ${info(i,{})}</article>`};
   return `<div class="sheet pi-ctl" id="pictl"><div class="scrim" data-ctlx></div><div class="panel" role="dialog" aria-modal="true" aria-label="Create The Look">
     <div class="head"><h2>Create The Look</h2><button class="modal-x" aria-label="Close" data-ctlx></button></div>
     <div class="body">${rs.map((r,k)=>`<section class="pcar pcar--sm pcar--bleed${PC.arrows?'':' pcar--no-arr'}" style="--pcar-per:3;--pcar-card:140px"><header class="pcar-hd"><div class="pcar-tt"><h2 class="pcar-t">${esc(r.l)}</h2></div></header>
@@ -114,7 +124,7 @@ function miniBag(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.pr
   return `<div class="pi-mb" id="pimb"><div class="mdl-scrim" data-mbx></div>
   <div class="mdl ${d?'mdl--side mdl-anim-side':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Added to bag">
     <div class="modal-hd"><div class="mt"><span class="mdl-tick" aria-hidden="true"></span><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
-    <div class="mdl-bd"><div class="bag-item"><img src="${img}" alt=""><div class="info">${p.brand&&!NOBRAND.includes(BR())?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>
+    <div class="mdl-bd"><div class="bag-item"><img src="${img}" alt=""><div class="info"><div class="b">${esc(p.brand||BN())}</div><div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>
       <div class="pi-btns"><button class="bd sec" data-mbx>Continue Shopping</button><button class="bd pri">View Bag</button></div>
       ${pcar(o)}</div></div></div>`}
 function mountBag(open){const old=document.getElementById('pimb');if(old)old.remove();document.documentElement.classList.toggle('pi-lock',!!open);

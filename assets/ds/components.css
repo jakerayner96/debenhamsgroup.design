@@ -133,7 +133,7 @@
 .pc-swatch.on{border-color:var(--icon-primary)}
 .pc-swatch.on i{border:1px solid #FFF}
 .pc-more{font-weight:var(--w-regular);font-size:14px}
-.pc-swatches--round .pc-swatch,.pc-swatches--round .pc-swatch i{border-radius:var(--radius-pill)} /* PLT runs circle swatches */
+.pc-swatches--round .pc-swatch,.pc-swatches--round .pc-swatch i{border-radius:50%} /* PLT runs circle swatches — 50%, not --radius-pill (PLT's square mode sets that to 0) */
 .pc-swatches--round .pc-swatch{border-color:transparent}
 .pc-swatches--round .pc-swatch.on{border-color:var(--icon-primary)}
 /* ratings */
