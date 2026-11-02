@@ -38,6 +38,7 @@ window.DG_CHANGELOG=[
    "Message banner tone .msg--warning: Yellow bar (--warning-bar #FFD600) on Light Yellow (--warning-bg #FFFBE6), info icon, bold lead line; tokens --warning-bar / --warning-bg; catalogue variant Warning · by Order + dispatch emails (the Figma \"Delivery Information\" banner shown when an order ships in 2+ parcels)"
   ],
   "changed": [
+   "Mini bag / added to bag title is just “Added to Bag” — no tick (Bag 2026): .mdl-tick removed from the DS (CSS, Modal catalogue header variant, drawer example) · by Product carousel prototype, Jake 2 Nov",
    "Quick add on rail cards: top right of the image (the wishlist slot, was bottom right); the tap that adds pops the button into a tick (.pc-iconbtn.pop) · PDP template: Subscribe & Save now sits above Handpicked For You · by Product carousel prototype (mini bag), Jake 2 Nov",
    "Virtual Stylist intro: Camera / Upload side by side at every width, both .bd pri with their 20px glyphs (.ic20, library icons-camera / icons-upload), equal halves, gap 2 (8px), as the v1 Add a Photo sheet (were Take a photo / Upload a photo stacked, primary + secondary) · by Virtual Stylist v2 (Jake review, 2 Nov)",
    "Virtual Stylist intro: consent checkbox centred on its copy, as the DS Checkbox (.chk-row, was the top-aligned .chk-row--lg); How it works glyphs 32 → 24px, copy 13/17 → 12/16 (14/20 → 13/18 from 600px) · by Virtual Stylist v2 (Jake review, 2 Nov)",

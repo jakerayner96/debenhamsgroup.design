@@ -1083,9 +1083,6 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl--side .mdl-bd{min-height:auto}
 .mdl.mdl-anim-side{animation:mdlside .3s ease-in-out both}
 @keyframes mdlside{from{transform:translateX(100%)}to{transform:none}}
-/* .mdl-tick: the 16px tick left of the title (“✓ Added to Bag”), the same slot and size as .mdl-back */
-.mdl-tick{width:16px;height:25px;flex:none;display:grid;place-items:center}
-.mdl-tick::before{content:"";width:16px;height:16px;background:var(--icon-primary);-webkit-mask:url("icons/lib/icons-tick.svg") center/contain no-repeat;mask:url("icons/lib/icons-tick.svg") center/contain no-repeat}
 /* overlay + stage (a page frame the modal sits over: header, then the 50% scrim; .mdl-stage--up anchors to the bottom) */
 .mdl-scrim{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:2}
 .mdl-stage{position:relative;overflow:hidden;background:var(--surface-page,#fff);display:flex;flex-direction:column;border-radius:var(--radius-default)}
