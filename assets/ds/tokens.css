@@ -26,6 +26,8 @@
   /* SPACING — measured in GAPS. 1 gap = 4px = Tailwind spacing unit 1 (p-1 · m-1 · gap-1 · space-x-1 = 0.25rem at a 16px root).
      Always quote both: "gap 4 (16px)". gap-N = N × 4px; the scale is Tailwind's own keys, so gap-N here === Tailwind N.
      --space-<px> names stay as aliases for existing CSS. Tailwind preset: assets/ds/tailwind.preset.js. */
+  /* page container: header bars and the black USP bar run edge to edge; USP cells and page content sit in this centred width (2 Nov 2026) */
+  --page-max:1440px;
   --gap-unit:4px;
   --gap-0:0px;--gap-0_5:2px;--gap-1:4px;--gap-1_5:6px;--gap-2:8px;--gap-3:12px;--gap-4:16px;--gap-5:20px;--gap-6:24px;
   --gap-8:32px;--gap-10:40px;--gap-12:48px;--gap-16:64px;--gap-20:80px;--gap-24:96px;--gap-32:128px;
