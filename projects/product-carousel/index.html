@@ -168,7 +168,7 @@ const P={
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','insitu-pre.js','insitu.js','README.md'],
   store:'proto-product-carousel-v4',
-  initial:()=>({view:'home',arrows:true,hp:true,hpRows:2,car:true,look:true,sponsored:true}),
+  initial:()=>({view:'home',arrows:true,hp:true,hpRows:2,car:true,look:true,sponsored:true,mbType:'look',thresh:true}),
 };
 function renderPanel(host,S,update){
   const c=S.cfg,bn=(P.brands.find(x=>x[0]===S.brand)||[0,S.brand])[1];
@@ -190,7 +190,10 @@ function renderPanel(host,S,update){
     ${sw('car',c.car!==false,'Carousel · We Think You’ll Like')}${sw('look',c.look!==false,'Create the Look')}</div>
     <p style="margin-top:8px">Handpicked For You is the grid, 3 across, in the buy column under the BNPL box. The carousel and Create the Look run full width under the PDP; a tap anywhere on Create the Look opens the <b>Create the Look picker</b> (a reel per category, Add to bag).</p></div>`:''}
   ${c.view==='bag'?`<div class="card"><h3>Mini bag</h3>
-    <p>${S.brand==='debenhams'?'Debenhams: the first two slots are Mirakl sponsored products, labelled. ':''}Close it with the X, Continue Shopping or the scrim; <b>Add to Bag</b> on the PDP opens it again.</p></div>`:''}
+    ${seg('mbType',c.mbType||'look',[['look','Complete the look'],['save','Save your bag'],['toast','Toast']])}
+    <p style="margin-top:8px">${{look:'Modal (slide up on mobile, drawer on desktop): the added item, Continue Shopping / View Bag, then Complete The Look with the mini quick add — <b>Add</b> puts the product in the bag and its line item into the modal.',save:'The same modal, then a divider and <b>Save your bag</b>: email, marketing consent (the button unlocks when ticked), Email My Bag. No box.',toast:'No modal: the DS product toast at the top — image, Added to Bag, size / colour, price, View Bag — for 6 seconds.'}[c.mbType||'look']}</p>
+    ${(c.mbType||'look')!=='toast'?`<div style="margin-top:10px">${sw('thresh',c.thresh!==false,'Free delivery banner')}</div><p style="margin-top:6px">The DS threshold under the line items: “Spend £X more for free delivery” (sample threshold £100), a tick once the bag qualifies.</p>`:''}
+    <p style="margin-top:8px">Close it with the X, Continue Shopping or the scrim; <b>Add to Bag</b> on the PDP opens it again.</p></div>`:''}
   ${(c.view==='pdp'||c.view==='bag')&&S.brand==='debenhams'?`<div class="card"><h3>Sponsored products ${sw('sponsored',c.sponsored!==false,c.sponsored!==false?'On':'Off')}</h3><p>Debenhams only: Mirakl sponsored products, labelled <b>Sponsored</b> above the brand — 2nd and 4th in We Think You’ll Like, the first two in the mini bag.</p></div>`:''}
   <div class="card"><h3>Figma</h3>
     <p><a class="lnk" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=1342-6415" target="_blank">Carousel</a> · <a class="lnk" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=11092-19864" target="_blank">Grid</a> · <a class="lnk" href="https://www.figma.com/design/vVJJ1bgaTGCbGd68bsNiVT/Core-PDP-2026?node-id=638-56822" target="_blank">Create the Look</a> · <a class="lnk" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=1676-10371" target="_blank">Home</a> · <a class="lnk" href="https://www.figma.com/design/vVJJ1bgaTGCbGd68bsNiVT/Core-PDP-2026?node-id=638-57804" target="_blank">MAN carousel</a> · <a class="lnk" href="https://www.figma.com/design/vVJJ1bgaTGCbGd68bsNiVT/Core-PDP-2026?node-id=638-57872" target="_blank">MAN grid</a></p>

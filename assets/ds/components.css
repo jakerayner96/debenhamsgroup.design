@@ -676,6 +676,17 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#000;color:#FFF;font-size:14px;font-weight:var(--w-mid);padding:12px 20px;border-radius:var(--radius-default);z-index:var(--z-toast);white-space:nowrap;box-shadow:var(--shadow-float)}
 .toast--top{bottom:auto;top:16px;left:16px;right:16px;transform:none;background:rgba(255,255,255,.9);color:var(--text-primary);backdrop-filter:blur(3.5px);border-radius:var(--radius-lg);box-shadow:0 0 20px rgba(0,0,0,.1);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:normal;font-weight:var(--w-regular)}
 .toast--top .act{font-weight:var(--w-strong);color:var(--text-link);background:none;border:none;cursor:pointer;white-space:nowrap}
+/* .toast--prod (2 Nov 2026, mini bag “toast” version — Added to Bag without the modal): the top toast with the product — 2:3 image 48 × 72, then
+   “Added to Bag” (strong) over size / colour, price; View Bag on the right; a 2px countdown line along the foot (--toast-ms, 6s). Desktop: top right, 400 wide. */
+.toast--prod{gap:var(--gap-3,12px);overflow:hidden;justify-content:flex-start;white-space:normal;font-weight:var(--w-regular)}
+.toast--prod .toast-img{width:48px;height:72px;flex:none;object-fit:cover;background:var(--surface-media);display:block}
+.toast--prod .toast-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:14px;line-height:18px}
+.toast--prod .toast-tx b{font-weight:var(--w-strong);font-size:16px;line-height:20px}
+.toast--prod .act{text-decoration:underline;text-underline-offset:3px;color:var(--text-primary)}
+.toast--prod .toast-timer{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--text-primary);transform-origin:left;animation:toastTimer var(--toast-ms,6s) linear forwards}
+@keyframes toastTimer{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+@media(min-width:1024px){.toast--prod{left:auto;right:24px;top:24px;width:400px}}
+
 /* Glass toast (29 Oct 2026, App Prototype) — the app's form of .toast--top (Figma 13557-10294 "Added to Wishlist · Manage"): same anatomy, Liquid Glass fill.
    White 90% over a 20px blur + 180% saturate, white .5px rim, soft drop shadow; text --text-primary, action --text-link (strong). 16px from each side, under the
    status bar; 1.8s, or 6s with an action. Light glass, dark text: black text stays >= 15:1 over any photo (iOS 26's clear glass took the old #2B2B2B 70% box to ~4:1). */
@@ -810,6 +821,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pcar-track::-webkit-scrollbar{display:none}
 .pcar-track>*{flex:0 0 var(--pcar-card);width:auto!important;scroll-snap-align:start;min-width:0}
 .pcar-track>.pc .pc-actions{display:none} /* no wishlist on rail cards (DS rule, 27 Oct) */
+/* quick add on rail cards (.pc-actions--qa, 2 Nov 2026 — Complete the Look in the mini bag): the DS circle quick add bottom right of the image; added = tick, disabled */
+.pcar-track>.pc .pc-actions--qa{display:flex;top:auto;bottom:var(--gap-2,8px)}
+.pc-iconbtn[disabled]{cursor:default}
 .pcar .pc-img{aspect-ratio:var(--ratio-product);flex:none;height:auto}.pcar .pc-img img.ph{object-fit:cover}
 .pcar .pc-info{padding-inline:var(--pcar-info-x,0px)}
 /* mobile / touch: a free scroll — no snap, momentum only (whip it to the end, or ease it one card) */

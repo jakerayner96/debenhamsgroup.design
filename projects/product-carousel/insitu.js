@@ -18,6 +18,11 @@ const st=document.createElement('style');st.textContent=`
 .pi-mb>.mdl{z-index:3}
 .pi-mb .mdl--up{max-height:calc(100% - 56px);overflow:hidden}
 .pi-mb .pi-btns{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.pi-mb .pi-btns .bd{width:100%}
+.pi-mb .pi-items{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
+.pi-save{display:flex;flex-direction:column;gap:var(--gap-4,16px)}.pi-save h3{margin:0;font-size:18px;line-height:22px;font-weight:var(--w-strong)}.pi-save p{margin:0;font-size:14px;line-height:20px}.pi-save .bd{width:100%}
+.pi-save .pi-legal{font-size:12px;line-height:16px;color:var(--text-secondary)}.pi-save .pi-legal a{color:inherit}
+.pi-toast{z-index:90}
+#pimb .pc .pc-iconbtn--sq{border-radius:var(--radius-default)!important} /* the Shopping agent page forces .pc .pc-iconbtn round (!important); put the DS square back */
 html.pi-lock,html.pi-lock body{overflow:hidden;height:100%}`;
 document.head.appendChild(st);
 
@@ -29,7 +34,7 @@ const FEEDS={};
 function ids(id,start,len){const off=start+(TAB[id]||0)*4;return Array.from({length:len},(_,k)=>(off+k*3)%n())}
 /* a rail = the DS builder (DG_pcarHTML) over items from the DS feed (DG_feedItem: brand always, -X%, sample swatches); o.sp(i) marks Sponsored slots */
 const round=()=>BR()==='plt';
-const items=(o,list)=>list.map(i=>{const x=DG_feedItem(BR(),i);if(x&&o.sp&&o.sp(i))x.sponsored=true;return x}).filter(Boolean);
+const items=(o,list)=>list.map(i=>{const x=DG_feedItem(BR(),i);if(x&&o.sp&&o.sp(i))x.sponsored=true;if(x&&o.qa&&ADDED.includes(i))x.added=true;return x}).filter(Boolean);
 function pcar(o){FEEDS[o.id]=o;const grid=o.fmt==='grid',per=o.per||5,len=o.len||(grid?(desk()?per*2:6):10),list=o.list||ids(o.id,o.start||0,len);
   return DG_pcarHTML(Object.assign({},o,{grid,per,items:items(o,list),arrows:PC.arrows!==false,tab:TAB[o.id]||0,round:round(),eager:EXPORTING,all:false}))}
 document.addEventListener('pcar:tab',e=>{const el=e.target,o=FEEDS[el.dataset.pl];if(!o)return;TAB[o.id]=e.detail.index;delete o.list;
@@ -72,21 +77,54 @@ window.acInner=function(){const doc=new DOMParser().parseFromString('<div id="x"
     const d=doc.createElement('div');d.className='ac-sec';d.innerHTML=pcar({id:'ac'+k,size:'sm',title:t,per:6,list});sec.replaceWith(d)});
   return doc.getElementById('x').innerHTML};
 
-/* ---- MINI BAG (after Add to Bag): DS modal — slide up on mobile (.mdl--up), drawer on desktop (.mdl--side, proposed) — with
-        the added item (DS bag line item), Continue Shopping / View Bag, then Complete The Look as the carousel (sponsored slots on Debenhams) ---- */
-function miniBag(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was}:PR()[1]||{},img=DP?DP.imgs[0]:IMG(1),d=desk();
-  const list=ids('atb',4,10);   /* Debenhams: the first two slots are Mirakl sponsored (labelled), then Bloomreach “also bought” */
-  const o={id:'atb',size:'sm',title:'Complete The Look',per:3,start:4,list,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
+/* ---- MINI BAG (after Add to Bag) — four versions (PC.mbType), every one from DS parts:
+        look  · DS modal (slide up mobile .mdl--up, drawer desktop .mdl--side) — the added item(s) (bag line items), Continue Shopping / View Bag, then
+                Complete The Look as the carousel with the mini quick add (.pc-qa): first two Sponsored on Debenhams; Add puts the product in the bag and its
+                line item into the modal
+        save  · the same modal, then a divider and Save your bag (DS text field + checkbox row + secondary button) — no box
+        toast · no modal: the DS product toast (.toast--top .toast--prod), 6s
+        Free delivery banner (PC.thresh): the DS threshold (.thresh) under the line items, in the modal versions — fills as items are added ---- */
+const MBT=()=>PC.mbType||'look',THRESH=100,ADDED=[];let SAVED=null;
+const num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
+function mainItem(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,colour:DP.colour}:PR()[1]||{};
+  const sz=(document.querySelector('.sz.on')||{}).textContent,cm=((document.querySelector('.buy')||{}).innerText||'').match(/Colou?r:\s*([^\n]+)/);
+  return Object.assign({},p,{img:DP?DP.imgs[0]:IMG(1),size:sz&&sz.trim()||'12',colour:p.colour||(cm&&cm[1].trim())||''})}
+function bagItems(){return [mainItem()].concat(ADDED.map(i=>{const x=DG_feedItem(BR(),i);return x&&Object.assign({size:'One size'},x)}).filter(Boolean))}
+const lineItem=p=>`<div class="bag-item"><img src="${p.img}" alt=""><div class="info"><div class="b">${esc(p.brand||BN())}</div><div class="n">${esc(p.name)}</div><div class="v">${esc(/one size/i.test(p.size||'')?'One size':'Size '+p.size)} · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
+function thresh(){if(PC.thresh===false)return '';const t=bagItems().reduce((a,p)=>a+num(p.price),0);
+  if(t>=THRESH)return `<div class="thresh thresh--ok"><span class="tick"></span><span>You’ve qualified for free delivery</span></div>`;
+  return `<div class="thresh"><span>Spend <b>£${(THRESH-t).toFixed(2)}</b> more for free delivery</span><div class="track"><div class="fill" style="width:${Math.round(t/THRESH*100)}%"></div></div></div>`}
+function saveBag(){if(SAVED)return `<div class="thresh thresh--ok"><span class="tick"></span><span>Bag saved. We’ll email <b>${esc(SAVED)}</b> about your bag — you’re signed up for ${esc(BN())} emails, unsubscribe any time.</span></div>`;
+  return `<section class="pi-save"><h3>Not ready yet? Save your bag</h3><p>Leave your email and we’ll remind you about the items in your bag.</p>
+    <label class="fld"><input type="email" placeholder=" " autocomplete="email" data-mbmail><span class="lbl">Email address</span></label>
+    <div class="chk-row chk-row--lg"><button type="button" class="chk" aria-checked="false" data-mbopt aria-label="Email me about my bag"></button><span>Email me about my bag, plus offers, new arrivals and style picks from ${esc(BN())}. I can unsubscribe at any time.</span></div>
+    <button type="button" class="bd sec" disabled data-mbsave>Email My Bag</button>
+    <p class="pi-legal">Tick the box to save your bag. Bag reminders are marketing emails, so we need your consent to send them. See our <a href="#">Privacy Policy</a>.</p></section>`}
+function miniBag(){const d=desk(),t=MBT();
+  const list=ids('atb',4,10).filter(i=>i!==1);   /* Debenhams: the first two slots are Mirakl sponsored (labelled), then Bloomreach “also bought” */
+  const o={id:'atb',size:'sm',title:'Complete The Look',per:3,start:4,list,qa:true,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
+  const rail=pcar(o);
   return `<div class="pi-mb" id="pimb"><div class="mdl-scrim" data-mbx></div>
   <div class="mdl ${d?'mdl--side mdl-anim-side':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Added to bag">
     <div class="modal-hd"><div class="mt"><span class="mdl-tick" aria-hidden="true"></span><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
-    <div class="mdl-bd"><div class="bag-item"><img src="${img}" alt=""><div class="info"><div class="b">${esc(p.brand||BN())}</div><div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>
+    <div class="mdl-bd"><div class="pi-items">${bagItems().map(lineItem).join('')}</div>${thresh()}
       <div class="pi-btns"><button class="bd sec" data-mbx>Continue Shopping</button><button class="bd pri">View Bag</button></div>
-      ${pcar(o)}</div></div></div>`}
-function mountBag(open){const old=document.getElementById('pimb');if(old)old.remove();document.documentElement.classList.toggle('pi-lock',!!open);
-  if(open)document.body.insertAdjacentHTML('beforeend',miniBag())}
+      ${t==='save'?'<div class="hr"></div>'+saveBag():rail}</div></div></div>`}
+function toast(){const p=mainItem();return `<div class="toast toast--top toast--prod pi-toast" id="pitoast" role="status"><img class="toast-img" src="${p.img}" alt=""><span class="toast-tx"><b>Added to Bag</b><span>${esc([p.size,p.colour].filter(Boolean).join(' / '))}, ${esc(p.price)}</span></span><button class="act" type="button">View Bag</button>${EXPORTING?'':'<i class="toast-timer"></i>'}</div>`}
+let TT=0;
+function mountBag(open){const old=document.getElementById('pimb'),ot=document.getElementById('pitoast');if(old)old.remove();if(ot)ot.remove();clearTimeout(TT);
+  if(!open){document.documentElement.classList.remove('pi-lock');return}
+  if(MBT()==='toast'){document.documentElement.classList.remove('pi-lock');document.body.insertAdjacentHTML('beforeend',toast());if(!EXPORTING)TT=setTimeout(()=>{const x=document.getElementById('pitoast');if(x)x.remove();PC.bagOpen=false},6000);return}
+  const keep=old&&old.querySelector('.pcar-track')?old.querySelector('.pcar-track').scrollLeft:0,bs=old?old.querySelector('.mdl-bd').scrollTop:0;
+  document.documentElement.classList.add('pi-lock');document.body.insertAdjacentHTML('beforeend',miniBag());
+  const n=document.getElementById('pimb');if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
 document.addEventListener('click',e=>{
   const lk=e.target.closest('.pcar--look[data-pl="look"]');if(lk&&!e.target.closest('.pcar-arr')){e.preventDefault();const c=e.target.closest('.pcar-track>*'),L=FEEDS.look,idx=c?[...c.parentNode.children].indexOf(c):-1;openPicker(L&&idx>=0?ids('look',L.start||0,10)[idx]:null);return}
+  const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();const i=+qa.dataset.qa;if(!ADDED.includes(i))ADDED.push(i);mountBag(true);return}
+  const opt=e.target.closest('#pimb [data-mbopt]');if(opt){e.preventDefault();const on=opt.getAttribute('aria-checked')!=='true';opt.setAttribute('aria-checked',on);opt.classList.toggle('on',on);document.querySelector('#pimb [data-mbsave]').disabled=!on;return}
+  const sv=e.target.closest('#pimb [data-mbsave]');if(sv){e.preventDefault();const f=document.querySelector('#pimb [data-mbmail]'),v=(f.value||'').trim(),fl=f.closest('.fld');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){fl.classList.add('invalid');if(!fl.nextElementSibling||!fl.nextElementSibling.classList.contains('fld-err'))fl.insertAdjacentHTML('afterend','<div class="fld-err">Enter an email address like name@example.com</div>');f.focus();return}
+    SAVED=v;mountBag(true);return}
   if(e.target.closest('[data-mbx]')){e.preventDefault();PC.bagOpen=false;mountBag(false);return}
   if(S.page==='pdp'&&e.target.closest('.ctas .bd.pri')){e.preventDefault();PC.bagOpen=true;mountBag(true)}
   if(e.target.closest('.pcar a[href="#"]'))e.preventDefault()});
