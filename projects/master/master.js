@@ -21,11 +21,12 @@
     if(t.closest('article.pc,.bag-item')){e.preventDefault();e.stopPropagation();go('pdp');return}
     if(t.closest('.hd-nav a,.roundel,.hm-t,.hm-ov,.bc a,.pcar-all,.catpill,.linkchips a,.cat-row a')){e.preventDefault();e.stopPropagation();go('plp')}
   },true);
-  /* Add to bag: the DS toast (catalogue Toast · Top, actionable), 6s; the header bag count goes up by one */
+  /* Add to bag: the DS toast (catalogue Toast · Top, actionable), 6s; the header bag count goes up by one. Bundling (dg:bundle) adds n items */
   let tt;
-  function added(){document.querySelectorAll('[data-master-toast]').forEach(x=>x.remove());clearTimeout(tt);
-    document.body.insertAdjacentHTML('beforeend','<div class="toast toast--top" data-master-toast role="status"><span style="flex:1">Item added to bag</span><button class="act">View</button></div>');
-    document.querySelectorAll('.hd-count').forEach(b=>b.setAttribute('data-n',(+b.getAttribute('data-n')||0)+1));
+  document.addEventListener('dg:bundle',e=>added((e.detail.items||[]).length));
+  function added(n){n=n||1;document.querySelectorAll('[data-master-toast]').forEach(x=>x.remove());clearTimeout(tt);
+    document.body.insertAdjacentHTML('beforeend','<div class="toast toast--top" data-master-toast role="status"><span style="flex:1">'+(n>1?n+' items':'Item')+' added to bag</span><button class="act">View</button></div>');
+    document.querySelectorAll('.hd-count').forEach(b=>b.setAttribute('data-n',(+b.getAttribute('data-n')||0)+n));
     tt=setTimeout(()=>document.querySelectorAll('[data-master-toast]').forEach(x=>x.remove()),6000)}
   /* the PLP speaks its own protocol: answer the shell for it */
   if(M.page==='plp'){

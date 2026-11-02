@@ -12,7 +12,7 @@
    Order — mobile: header · USP banners · gallery (product tags bottom right) · AI tag chip (Virtual Stylist, centred; desktop: under the gallery — Shop Similar is Google, not launched, kept in the DS only) ·
    PDP title · ratings · price · option label + colour swatches · size selector · PDP buy buttons (Add to bag → PayPal → Apple Pay, always) ·
    Ask Deb / Google PDP prompts (ai-prompts.js) · membership box (Unlimited) · Deliver+ · delivery grid (delivery.js, option B tabs; See more → Delivery
-   Options modal; returns line, then Sold & Delivered by — placeholder until a size is picked) · BNPL · Subscribe & Save (subscribe.js; ADD → modal) — that order, Jake 16 Oct · then the accordion set
+   Options modal; returns line, then Sold & Delivered by — placeholder until a size is picked) · BNPL · Subscribe & Save (subscribe.js; ADD → modal) — that order, Jake 16 Oct · Bundling “Complete Your Purchase With” (bundle.js, 2 Nov) · then the accordion set
    (At a Glance open · Description · Product Details & Care · Delivery · Returns · Manufacturer) · footer.
    Desktop: breadcrumb, then gallery + accordions on the left, the buy column on the right.
    Gallery is endless (2 Nov 2026, assets/ds/gallery.js): next on the last image goes to the first, prev on the first to the last, swipe loops.
@@ -54,6 +54,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/carousel.js"></script>
 <script src="assets/ds/gallery.js"></script>
+<script src="assets/ds/bundle.js"></script>
 <script src="assets/ds/export-masks.js"></script>
 <script src="templates/products.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
@@ -104,6 +105,11 @@ function accSet(P){const rows=[['At a Glance',P.glance?`<ul class="glance glance
     ['Manufacturer',`${esc(P.brand)}, Debenhams Group, Manchester M1 2DU.`]].filter(r=>r[1]);
   /* Returns + Seller Information rows come from delivery.js (S.dgRet / S.dgSeller 'acc' = out of the delivery grid, in here) */
   return `<div class="acc-set" data-slot="info">${rows.map(([h,b,o,k])=>k&&window.DG_delivery?DG_delivery.acc(DG_OPTS(),k):`<div class="acc${o?' open':''}"><button class="acc-h">${h}<img src="${LIB}icons-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${b}</div></div>`).join('')}</div>`}
+/* Bundling · Complete Your Purchase With (DS bundle.js, 2 Nov 2026, from live Debenhams): this product + three bought with it, under Subscribe & Save */
+function bundle(P){if(!window.DG_bundle)return '';
+  const WEAR=/dress|boot|shoe|heel|court|sandal|trainer|top|jumper|cardigan|coat|jacket|blazer|trouser|jean|skirt|knit|hoodie|shirt|suit|bag|scarf|belt/i;   /* things with a size or colour choice, not home goods */
+  const more=window.DG_feed?DG_feed(S.brand,0,40,1).filter(x=>WEAR.test(x.name)&&x.name!==P.name).slice(3,6).map(x=>({img:x.img,brand:x.brand,name:x.name,price:x.price,was:x.was,sizes:P.sizes})):[];
+  return `<div data-slot="bundle">${DG_bundle.html({items:[{img:P.imgs[0],brand:P.brand,name:P.name,price:P.price,was:P.was,colour:P.colour,sizes:P.sizes,current:true}].concat(more)})}</div>`}
 function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams,d=desk();
   const crumbs=P.crumbs.map((c,i)=>i<P.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('');
   const bnpl=strip(V('bnpl',0)).replace(/£23\.33/,'£'+(num(P.price)/3).toFixed(2));
@@ -128,6 +134,7 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
       ${window.DG_delivery?DG_delivery.grid(DG_OPTS()):''}
       ${bnpl}
       ${window.DG_subscribe?DG_subscribe.box(SNS(P)):''}
+      ${bundle(P)}
     </div>`;
   return `${header()}<main class="pg">
   ${d?`<nav class="bc" aria-label="Breadcrumb">${crumbs}</nav>`:''}
@@ -140,6 +147,7 @@ function recs(){if(!window.DG_pcarHTML||!window.DG_feed)return '';const R=o=>DG_
 function wire(){
   /* gallery: DS gallery.js — endless (last image → first, first → last; arrows, swipe, thumbs), off while exporting */
   if(window.DG_gallery)DG_gallery(document.querySelector('.pdp-gal'),{endless:!EXPORTING});
+  if(window.DG_bundle)DG_bundle.wire(document);
   if(window.DG_delivery)DG_delivery.mount(document,DG_OPTS());
   if(window.DG_subscribe){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams;document.querySelectorAll('[data-sns-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-sns-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_subscribe.modal(SNS(P),{desk:innerWidth>=600}));DG_subscribe.wire(document.querySelector('[data-sns-modal]'))})}
   document.querySelectorAll('.acc-h').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
