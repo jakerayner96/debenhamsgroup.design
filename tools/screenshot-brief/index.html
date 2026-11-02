@@ -3,209 +3,198 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Screenshot Brief · Debenhams Group</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/ds/tokens.css">
 <link rel="stylesheet" href="../../assets/ds/components.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-/* page layout only — every control is a DS component (.fld .fld--area .fld-hint .fsel .chk .rad .drop .bd .msg .tagpill) */
+/* page layout only — every control is a DS component (.rf Request form family, .drop) */
 *{box-sizing:border-box}
-body{margin:0;font-family:var(--font-family-base);color:var(--text-primary);background:var(--surface-sunken,#F2F2F2)}
-.top{background:var(--surface-raised,#fff);border-bottom:1px solid var(--border-subtle)}
-.top-in{max-width:1040px;margin:0 auto;padding:20px 24px}
-.crumb{font-size:12px;color:var(--text-secondary);margin-bottom:6px}.crumb a{color:inherit}
-.hd{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
-.hd h1{margin:0;font-size:24px;line-height:32px}
-.hd p{margin:2px 0 0;color:var(--text-secondary);font-size:14px;line-height:20px;max-width:640px}
-.hd .sp{flex:1}
-main{max-width:1040px;margin:0 auto;padding:24px 24px 120px}
-.card{background:var(--surface-raised,#fff);border:1px solid var(--border-subtle);border-radius:8px;padding:20px;margin-bottom:16px}
-.card h2{font-size:18px;line-height:24px;margin:0 0 4px}
-.card .help{margin:0 0 16px;color:var(--text-secondary);font-size:13px;line-height:18px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.span2{grid-column:1/-1}
-.stack{display:flex;flex-direction:column;gap:16px}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.grp-lbl{font-size:14px;line-height:20px;font-weight:var(--w-strong,600);margin:0 0 4px}
-.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 16px}
-.opts .rad-row{padding:6px 0}
-.chk-row{padding:6px 0;cursor:pointer;user-select:none}
-.rad-row{cursor:pointer;user-select:none}
-.app{display:flex;gap:12px;align-items:center}
-.app img{width:50px;height:50px;border-radius:12px;flex:none;border:1px solid var(--border-subtle)}
-.app .fsel{flex:1}
-.scr{display:grid;grid-template-columns:48px 200px 1fr;gap:20px;align-items:start;padding:20px 0;border-top:1px solid var(--border-subtle)}
-.scr:first-of-type{border-top:0;padding-top:4px}
-.scr-n{display:flex;flex-direction:column;gap:8px;align-items:center}
-.scr-n b{font-size:32px;line-height:40px;font-weight:var(--w-strong,600)}
-.scr-n .bd{padding:6px 8px;line-height:0}
-.ref{width:200px;aspect-ratio:9/19.5;display:flex;position:relative}
-.ref .drop{flex:1;min-height:0;padding:12px}
-.ref img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:var(--radius-default);border:1px solid var(--border-subtle);display:block}
-.ref .acts{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:6px}
-.ref .acts .bd{flex:1;background:var(--surface-raised,#fff)}
-.ref .drop-over{position:absolute;inset:0;opacity:0}
-.ref.over img{opacity:.5}
-.or{font-size:12px;line-height:16px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin:-4px 0}
-.todo{margin:0;padding:0 0 0 18px;font-size:14px;line-height:22px}
-.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface-raised,#fff);border-top:1px solid var(--border-subtle);z-index:5}
-.bar-in{max-width:1040px;margin:0 auto;padding:12px 24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.bar-in .st{flex:1;font-size:13px;line-height:18px;color:var(--text-secondary);min-width:180px}
-@media (max-width:760px){
-  .top-in,main{padding-left:16px;padding-right:16px}.bar-in{padding:12px 16px}
-  .grid2{grid-template-columns:1fr}
-  .scr{grid-template-columns:1fr;gap:12px}
-  .scr .ref{width:160px}
-  .scr-n{flex-direction:row}.scr-n b{margin-right:auto}
-  .bar-in .st{flex-basis:100%}.bar-in .bd{flex:1}
-}
+body{margin:0;background:var(--rf-bg);padding:48px 20px 80px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+.step{display:none;flex-direction:column;gap:26px}.step.on{display:flex}
+.shot{display:grid;grid-template-columns:150px 1fr;gap:20px;align-items:start}
+.shot .fields{display:flex;flex-direction:column;gap:18px;min-width:0}
+.ref{width:150px;aspect-ratio:9/19.5;display:flex;position:relative}
+.ref .drop{flex:1;min-height:0;padding:10px}
+.ref img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:var(--rf-radius);border:1px solid var(--rf-border);display:block}
+.ref .over{position:absolute;inset:0;opacity:0;cursor:pointer}
+.ref .acts{position:absolute;left:8px;right:8px;bottom:8px}.ref .acts .rf-btn{width:100%;height:36px}
+.ref.drag img{opacity:.5}
+.screens{display:flex;flex-direction:column;gap:18px}
+.foot{font-size:12.5px;color:var(--rf-dim);text-align:center}
+@media (max-width:560px){body{padding:32px 16px 64px}.shot{grid-template-columns:1fr}.ref{width:150px}}
 </style>
 </head>
-<body>
-<div class="top"><div class="top-in">
-  <div class="crumb"><a href="../../#tools">Planning and Tools</a> / Screenshot Brief</div>
-  <div class="hd">
-    <div><h1>App Store screenshot brief</h1>
-      <p>Ecom team → creative team. Fill in every field, add one reference for each screen, then export the PDF and send it to creative. They will capture exactly what you reference for each screen.</p></div>
-  </div>
-</div></div>
+<body class="rf">
+<div class="wrap">
+  <header class="rf-head">
+    <span class="rf-crumb"><a href="../../#tools">Planning and Tools</a></span>
+    <h1>App Store Screenshot Brief</h1>
+    <p>Ecom team → creative team. Fill in every field and add one reference for each screen.<br>At the end you’ll get a PDF to send to creative, who will capture exactly what you reference.</p>
+  </header>
 
-<main>
-  <section class="card">
-    <h2>1 · About the brief</h2>
-    <p class="help">Saved in this browser as you type, so you can come back to it.</p>
-    <div class="grid2">
-      <div class="app span2"><img id="appIcon" alt=""><div class="fsel"><span id="appLbl"></span><select data-k="app" aria-label="App"></select></div></div>
-      <label class="fld"><input data-k="owner" placeholder=" " autocomplete="name"><span class="lbl">Brief owner</span></label>
-      <label class="fld"><input data-k="sent" type="date" placeholder=" "><span class="lbl">Date sent</span></label>
-      <div class="span2"><p class="grp-lbl">Listing type</p><div class="opts" id="listing"></div></div>
-      <div><label class="fld fld--area"><textarea data-k="campaign" placeholder=" " rows="2"></textarea><span class="lbl">Campaign / reason</span></label><div class="fld-hint">e.g. new app version, Black Friday CPP, new brand launch</div></div>
-      <div><label class="fld fld--area"><textarea data-k="build" placeholder=" " rows="2"></textarea><span class="lbl">Build to use</span></label><div class="fld-hint">iOS simulator build + Android AAB: version number and link from the devs</div></div>
-      <div class="span2"><p class="grp-lbl">Sets needed</p><div class="opts" id="sets"></div></div>
-      <div><label class="fld"><input data-k="markets" placeholder=" "><span class="lbl">Markets + languages</span></label><div class="fld-hint">e.g. UK (en-GB), Ireland (en-IE)</div></div>
-      <label class="fld"><input data-k="deadline" type="date" placeholder=" "><span class="lbl">Deadline</span></label>
-      <div class="span2"><label class="fld fld--area"><textarea data-k="account" placeholder=" " rows="3"></textarea><span class="lbl">Test account + app state</span></label><div class="fld-hint">Which fictional account to log in with, what should be in the basket / wishlist / orders, any settings (dark mode, location)</div></div>
+  <nav class="rf-steps" id="steps" style="--rf-n:4"><div class="rf-steps-track"><i></i></div></nav>
+
+  <div class="rf-card">
+    <section class="step" data-step="0">
+      <h2 class="rf-h">About the brief</h2>
+      <label class="rf-field"><span class="rf-label">Fascia</span><select class="rf-input" data-k="app" required></select></label>
+      <div class="rf-row">
+        <label class="rf-field"><span class="rf-label">Brief owner</span><input class="rf-input" data-k="owner" placeholder="Your name" autocomplete="name"></label>
+        <label class="rf-field"><span class="rf-label">Date sent</span><input class="rf-input" type="date" data-k="sent"></label>
+      </div>
+      <div class="rf-field"><span class="rf-label">Listing type</span><div class="rf-radios" id="listing"></div></div>
+      <label class="rf-field"><span class="rf-label">Campaign / reason</span><textarea class="rf-input" data-k="campaign" placeholder="e.g. new app version, Black Friday CPP, new brand launch"></textarea></label>
+      <div class="rf-field"><span class="rf-label">Sets needed</span><div class="rf-chips" id="sets"></div></div>
+      <label class="rf-field"><span class="rf-label">Build to use</span><input class="rf-input" data-k="build" placeholder="iOS simulator build + Android AAB: version number and link from the devs"></label>
+      <div class="rf-row">
+        <label class="rf-field"><span class="rf-label">Markets + languages</span><input class="rf-input" data-k="markets" placeholder="e.g. UK (en-GB)"></label>
+        <label class="rf-field"><span class="rf-label">Deadline</span><input class="rf-input" type="date" data-k="deadline"></label>
+      </div>
+      <label class="rf-field"><span class="rf-label">Test account + app state</span><textarea class="rf-input" data-k="account" placeholder="Which fictional account to log in with, what should be in the basket / wishlist / orders, any settings (dark mode, location)"></textarea></label>
+    </section>
+
+    <section class="step" data-step="1">
+      <h2 class="rf-h">Screens</h2>
+      <p class="rf-hint">In order: screens 1–3 matter most. For every screen give ONE reference: a screenshot from the previous build showing exactly how it should look, OR a link to the equivalent page on the website with the scroll position and any filters or selections. Max one brand panel per set, never in positions 1–3.</p>
+      <div class="screens" id="screens"></div>
+      <div><button class="rf-btn" id="addScr">+ Add another screen</button></div>
+    </section>
+
+    <section class="step" data-step="2">
+      <h2 class="rf-h">Before you send</h2>
+      <p class="rf-hint">Tick each one. Anything left unticked shows on the PDF.</p>
+      <div class="rf-radios" id="checks"></div>
+    </section>
+
+    <section class="step" data-step="3">
+      <h2 class="rf-h">Review &amp; export</h2>
+      <p class="rf-hint">Export the PDF and send it to creative. Gaps are flagged in red on the PDF, so you can export at any point.</p>
+      <div class="rf-note" id="todo"></div>
+    </section>
+
+    <div class="rf-nav">
+      <button class="rf-cta" id="next"></button>
+      <button class="rf-back" id="back">Back</button>
     </div>
-  </section>
+  </div>
 
-  <section class="card">
-    <h2>2 · Screens</h2>
-    <p class="help">In order: screens 1–3 matter most. For every screen give ONE reference: a screenshot from the previous build showing exactly how it should look, OR a link to the equivalent page on the website (a specific PLP, PDP or content page) with the scroll position and any filters or selections. Max one brand panel per set, never in positions 1–3.</p>
-    <div id="screens"></div>
-    <div class="row" style="margin-top:8px"><button class="bd sec" id="addScr">+ Add another screen</button></div>
-  </section>
-
-  <section class="card">
-    <h2>3 · Before you send: checklist</h2>
-    <p class="help">Tick each one. Anything left unticked shows on the PDF.</p>
-    <div class="stack" style="gap:0" id="checks"></div>
-  </section>
-
-  <section class="card" id="todoCard">
-    <h2>Still to do</h2>
-    <p class="help">You can export at any point. These show up so nothing gets missed.</p>
-    <ul class="todo" id="todo"></ul>
-  </section>
-</main>
-
-<div class="bar"><div class="bar-in">
-  <span class="st" id="st"></span>
-  <button class="bd sec" id="clear">Clear form</button>
-  <button class="bd pri" id="export">Export PDF</button>
-</div></div>
+  <p class="foot"><span id="saveNote"></span> · <button class="rf-back" id="clear" style="font-size:12.5px">Clear form</button></p>
+</div>
 
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const H=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const KEY='dg-screenshot-brief-v1',MAX=10;
-const APPS=[{k:'',n:'Choose the app…'},{k:'debenhams',n:'Debenhams'},{k:'boohoo',n:'boohoo'},{k:'boohooman',n:'boohooMAN'},{k:'plt',n:'PrettyLittleThing'},{k:'karenmillen',n:'Karen Millen'}];
-const LISTING=[{k:'default',n:'Default listing'},{k:'apple-cpp',n:'Apple custom product page'},{k:'google-csl',n:'Google custom store listing'}];
+/* every fascia, in the DS site's order (index.html FASCIAS) */
+const APPS=[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PrettyLittleThing'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['debenhamsoutlet','Debenhams Outlet'],['wallis','Wallis'],['burton','Burton'],['principles','Principles'],['coast','Coast'],['oasis','Oasis'],['dorothyperkins','Dorothy Perkins'],['misspap','Misspap'],['dsgnstudio','DSGN Studio'],['trainingdept','Training Dept'],['brandroom','The Brand Room']].map(([k,n])=>({k,n}));
+const ICONS=['debenhams','boohoo','boohooman','plt','karenmillen']; /* fascias with an app icon in assets/brands/app-icons; the rest use their logo */
+const LISTING=[{k:'default',n:'Default listing',d:'The main store page everyone sees'},{k:'apple-cpp',n:'Apple custom product page',d:'A separate App Store page for a campaign or audience (CPP)'},{k:'google-csl',n:'Google custom store listing',d:'A separate Google Play listing for a campaign or audience'}];
 const SETS=['iPhone 6.3"','iPad 13"','Android phone','Feature graphic','App Store header + search image (CPP)','App icon'];
 const CHECKS=['Every screen has a reference (screenshot or link with scroll position)','Each headline matches what its screen shows','No prices, discounts, promo codes or “Sale” in captions: avoid screens with sale banners','No claims (“Best”, “#1”), ratings, reviews or calls to action','Max one brand / non-app panel, not in positions 1–3','Build version confirmed with devs','If the app icon is changing: flag it, it also needs updating in AppsFlyer'];
+const STEPS=['About the brief','Screens','Checklist','Review & export'];
 const blankScr=()=>({headline:'',subline:'',link:'',notes:'',img:''});
-const blank=()=>({app:'',owner:'',sent:new Date().toISOString().slice(0,10),listing:'default',campaign:'',build:'',sets:[],markets:'',deadline:'',account:'',screens:Array.from({length:6},blankScr),checks:CHECKS.map(()=>false)});
-let S=blank(),saveNote='';
+const blank=()=>({app:'',owner:'',sent:new Date().toISOString().slice(0,10),listing:'default',campaign:'',build:'',sets:[],markets:'',deadline:'',account:'',screens:Array.from({length:6},blankScr),checks:CHECKS.map(()=>false),step:0});
+let S=blank();
 try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&v.screens)S={...blank(),...v}}catch(e){}
 
 function save(){
-  try{localStorage.setItem(KEY,JSON.stringify(S));saveNote='Draft saved in this browser'}
-  catch(e){try{localStorage.setItem(KEY,JSON.stringify({...S,screens:S.screens.map(s=>({...s,img:''}))}));saveNote='Draft saved without the screenshots (too big for this browser): export before you close the tab'}catch(e2){saveNote='Couldn’t save a draft here: export before you close the tab'}}
-  todo();
+  let note;
+  try{localStorage.setItem(KEY,JSON.stringify(S));note='Draft saved in this browser'}
+  catch(e){try{localStorage.setItem(KEY,JSON.stringify({...S,screens:S.screens.map(s=>({...s,img:''}))}));note='Draft saved without the screenshots (too big for this browser): export before you close the tab'}catch(e2){note='Couldn’t save a draft here: export before you close the tab'}}
+  $('#saveNote').textContent=note;
+  if(S.step===3)renderTodo();
 }
 
 /* ---------- render ---------- */
-const chkRow=(on,label,attr)=>`<div class="chk-row" ${attr}><button class="chk${on?' on':''}" aria-checked="${on}" aria-label="${H(label)}"></button><span>${H(label)}</span></div>`;
-function renderAbout(){
-  $('[data-k=app]').innerHTML=APPS.map(a=>`<option value="${a.k}"${S.app===a.k?' selected':''}>${a.n}</option>`).join('');
-  appLbl();
-  $$('[data-k]').forEach(el=>{if(el.tagName!=='SELECT')el.value=S[el.dataset.k]||''});
-  $('#listing').innerHTML=LISTING.map(l=>`<div class="rad-row" data-listing="${l.k}"><button class="rad${S.listing===l.k?' on':''}" aria-checked="${S.listing===l.k}" aria-label="${H(l.n)}"></button>${H(l.n)}</div>`).join('');
-  $('#sets').innerHTML=SETS.map((n,i)=>chkRow(S.sets.includes(n),n,`data-set="${i}"`)).join('');
-  $('#checks').innerHTML=CHECKS.map((n,i)=>chkRow(S.checks[i],n,`data-check="${i}"`)).join('');
+function renderSteps(){
+  const el=$('#steps');el.style.setProperty('--rf-fill',(S.step/(STEPS.length-1)*100)+'%');
+  el.querySelectorAll('.rf-step').forEach(b=>b.remove());
+  el.insertAdjacentHTML('beforeend',STEPS.map((n,i)=>`<button class="rf-step${i===S.step?' on':i<S.step?' done':''}" data-go="${i}" aria-current="${i===S.step?'step':'false'}"><span class="n">${i+1}</span><span class="l">${H(n)}</span></button>`).join(''));
+  $$('.step').forEach(s=>s.classList.toggle('on',+s.dataset.step===S.step));
+  $('#next').textContent=S.step<STEPS.length-1?`Next: ${STEPS[S.step+1]}`:'Export PDF';
+  $('#back').hidden=S.step===0;
+  if(S.step===3)renderTodo();
 }
-function appLbl(){const a=APPS.find(x=>x.k===S.app)||APPS[0];$('#appLbl').textContent=a.n;const ic=$('#appIcon');ic.style.display=a.k?'':'none';if(a.k)ic.src=`../../assets/brands/app-icons/${a.k}.png`}
+function renderAbout(){
+  $('[data-k=app]').innerHTML='<option value="" disabled>Choose the fascia…</option>'+APPS.map(a=>`<option value="${a.k}">${a.n}</option>`).join('');
+  $$('[data-k]').forEach(el=>el.value=S[el.dataset.k]||'');
+  $('#listing').innerHTML=LISTING.map(l=>`<button class="rf-radio${S.listing===l.k?' on':''}" role="radio" aria-checked="${S.listing===l.k}" data-listing="${l.k}"><span><b>${H(l.n)}</b><small>${H(l.d)}</small></span></button>`).join('');
+  $('#sets').innerHTML=SETS.map((n,i)=>`<button class="rf-chip${S.sets.includes(n)?' on':''}" aria-pressed="${S.sets.includes(n)}" data-set="${i}">${H(n)}</button>`).join('');
+  $('#checks').innerHTML=CHECKS.map((n,i)=>`<button class="rf-radio rf-radio--check${S.checks[i]?' on':''}" role="checkbox" aria-checked="${!!S.checks[i]}" data-check="${i}"><span>${H(n)}</span></button>`).join('');
+}
 const ico={up:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 10V2M2.5 5.5 6 2l3.5 3.5"/></svg>',down:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2.5 6.5 6 10l3.5-3.5"/></svg>',del:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg>'};
 const words=s=>(s.trim().match(/\S+/g)||[]).length;
-function hlHint(s){const n=words(s.headline);return n>4?`${n} words: aim for 4 or fewer`:'Max ~4 words: must describe what this screen shows'}
+const hlSub=s=>{const n=words(s.headline);return n>4?`${n} words: aim for 4 or fewer`:'Max ~4 words: must describe what this screen shows'};
 function renderScreens(){
   const n=S.screens.length;
-  $('#screens').innerHTML=S.screens.map((s,i)=>`<div class="scr" data-i="${i}">
-    <div class="scr-n"><b>${String(i+1).padStart(2,'0')}</b>${i<3?'<span class="tagpill">Key</span>':''}
-      <button class="bd sec sm" data-a="up" aria-label="Move up"${i?'':' disabled'}>${ico.up}</button><button class="bd sec sm" data-a="down" aria-label="Move down"${i<n-1?'':' disabled'}>${ico.down}</button><button class="bd sec sm" data-a="del" aria-label="Remove screen"${n>1?'':' disabled'}>${ico.del}</button></div>
-    <div class="ref">${s.img?`<img src="${s.img}" alt="Reference screenshot ${i+1}"><input type="file" accept="image/*" class="drop-over" data-img="${i}" aria-label="Replace screenshot"><div class="acts"><button class="bd sec sm" data-a="rm">Remove</button></div>`
-      :`<label class="drop"><input type="file" accept="image/*" data-img="${i}"><b>Drop reference screenshot</b>or click to choose<small>From the previous build</small></label>`}</div>
-    <div class="scr-d stack">
-      <div><label class="fld"><input data-s="headline" value="${H(s.headline)}" placeholder=" "><span class="lbl">Headline</span></label><div class="fld-hint" data-hint>${hlHint(s)}</div></div>
-      <label class="fld"><input data-s="subline" value="${H(s.subline)}" placeholder=" "><span class="lbl">Subline (optional)</span></label>
-      <p class="or">or</p>
-      <div><label class="fld fld--area"><textarea data-s="link" placeholder=" " rows="2">${H(s.link)}</textarea><span class="lbl">Website link to the equivalent page</span></label><div class="fld-hint">URL · page type (PLP / PDP / content / basket / account) · scroll position (e.g. “3rd row of products”) · filters, sort, size or colour selected</div></div>
-      <div><label class="fld fld--area"><textarea data-s="notes" placeholder=" " rows="2">${H(s.notes)}</textarea><span class="lbl">Imagery / notes</span></label><div class="fld-hint">Any campaign asset to swap in, products to show or avoid, anything to hide</div></div>
+  $('#screens').innerHTML=S.screens.map((s,i)=>`<div class="rf-block" data-i="${i}">
+    <div class="rf-block-hd"><span class="rf-num">${String(i+1).padStart(2,'0')}${i<3?' <span class="rf-tag">Key</span>':''}</span>
+      <button class="rf-ibtn" data-a="up" aria-label="Move up"${i?'':' disabled'}>${ico.up}</button><button class="rf-ibtn" data-a="down" aria-label="Move down"${i<n-1?'':' disabled'}>${ico.down}</button><button class="rf-ibtn" data-a="del" aria-label="Remove screen"${n>1?'':' disabled'}>${ico.del}</button></div>
+    <div class="shot">
+      <div class="ref">${s.img?`<img src="${s.img}" alt="Reference screenshot ${i+1}"><input type="file" accept="image/*" class="over" data-img="${i}" aria-label="Replace screenshot"><div class="acts"><button class="rf-btn" data-a="rm">Remove</button></div>`
+        :`<label class="drop"><input type="file" accept="image/*" data-img="${i}"><b>Drop reference screenshot</b>or click to choose<small>From the previous build</small></label>`}</div>
+      <div class="fields">
+        <label class="rf-field"><span class="rf-label">Headline</span><input class="rf-input" data-s="headline" value="${H(s.headline)}" placeholder="What this screen shows"><span class="rf-sub" data-hint>${hlSub(s)}</span></label>
+        <label class="rf-field"><span class="rf-label">Subline (optional)</span><input class="rf-input" data-s="subline" value="${H(s.subline)}"></label>
+        <label class="rf-field"><span class="rf-label">OR website link to the equivalent page</span><textarea class="rf-input" data-s="link" placeholder="URL · page type (PLP / PDP / content / basket / account) · scroll position (e.g. “3rd row of products”) · filters, sort, size or colour selected">${H(s.link)}</textarea></label>
+        <label class="rf-field"><span class="rf-label">Imagery / notes</span><textarea class="rf-input" data-s="notes" placeholder="Any campaign asset to swap in, products to show or avoid, anything to hide">${H(s.notes)}</textarea></label>
+      </div>
     </div></div>`).join('');
   $('#addScr').disabled=n>=MAX;$('#addScr').textContent=n>=MAX?`${MAX} screens is the store maximum`:'+ Add another screen';
 }
-function todo(){
-  const t=[];
-  if(!S.app)t.push('Choose the app');
-  if(!S.owner.trim())t.push('Add the brief owner');
-  if(!S.campaign.trim())t.push('Add the campaign / reason');
-  if(!S.sets.length)t.push('Tick the sets needed');
-  if(!S.build.trim())t.push('Add the build to use');
-  if(!S.markets.trim())t.push('Add the markets + languages');
-  if(!S.deadline)t.push('Add the deadline');
-  if(!S.account.trim())t.push('Describe the test account + app state');
+function issues(){
+  const t=[],a=(step,x)=>t.push({step,x});
+  if(!S.app)a(0,'Choose the fascia');
+  if(!S.owner.trim())a(0,'Add the brief owner');
+  if(!S.campaign.trim())a(0,'Add the campaign / reason');
+  if(!S.sets.length)a(0,'Pick the sets needed');
+  if(!S.build.trim())a(0,'Add the build to use');
+  if(!S.markets.trim())a(0,'Add the markets + languages');
+  if(!S.deadline)a(0,'Add the deadline');
+  if(!S.account.trim())a(0,'Describe the test account + app state');
   S.screens.forEach((s,i)=>{const N=String(i+1).padStart(2,'0');
-    if(!s.img&&!s.link.trim())t.push(`Screen ${N}: add a screenshot or a website link`);
-    if(!s.headline.trim())t.push(`Screen ${N}: add a headline`);else if(words(s.headline)>4)t.push(`Screen ${N}: headline is ${words(s.headline)} words, aim for 4 or fewer`)});
-  const un=S.checks.filter(x=>!x).length;if(un)t.push(`Tick the checklist (${un} left)`);
-  $('#todo').innerHTML=t.map(x=>`<li>${H(x)}</li>`).join('');
-  $('#todoCard').style.display=t.length?'':'none';
-  $('#st').textContent=(t.length?`${t.length} thing${t.length>1?'s':''} still to do · `:'Ready to send · ')+saveNote;
+    if(!s.img&&!s.link.trim())a(1,`Screen ${N}: add a screenshot or a website link`);
+    if(!s.headline.trim())a(1,`Screen ${N}: add a headline`);else if(words(s.headline)>4)a(1,`Screen ${N}: headline is ${words(s.headline)} words, aim for 4 or fewer`)});
+  const un=S.checks.filter(x=>!x).length;if(un)a(2,`Tick the checklist (${un} left)`);
+  return t;
+}
+function renderTodo(){
+  const t=issues(),el=$('#todo');
+  el.classList.toggle('rf-note--done',!t.length);
+  el.innerHTML=t.length?`<b>${t.length} thing${t.length>1?'s':''} still to do</b><ul>${t.map(x=>`<li><button class="lnk" data-go="${x.step}">${H(x.x)}</button></li>`).join('')}</ul>`
+    :`<b>Ready to send.</b> ${S.screens.length} screens, ${S.sets.length} set${S.sets.length>1?'s':''}, every check ticked.`;
 }
 
 /* ---------- events ---------- */
+function go(i){S.step=Math.max(0,Math.min(STEPS.length-1,i));renderSteps();save();window.scrollTo({top:0,behavior:'smooth'})}
 document.addEventListener('input',e=>{
   const el=e.target;
-  if(el.dataset.k){S[el.dataset.k]=el.value;if(el.dataset.k==='app')appLbl();save();return}
-  if(el.dataset.s){const i=+el.closest('.scr').dataset.i;S.screens[i][el.dataset.s]=el.value;if(el.dataset.s==='headline')el.closest('div').querySelector('[data-hint]').textContent=hlHint(S.screens[i]);save()}
+  if(el.dataset.k){S[el.dataset.k]=el.value;save();return}
+  if(el.dataset.s){const i=+el.closest('.rf-block').dataset.i;S.screens[i][el.dataset.s]=el.value;if(el.dataset.s==='headline')el.parentNode.querySelector('[data-hint]').textContent=hlSub(S.screens[i]);save()}
 });
 document.addEventListener('change',e=>{const el=e.target;if(el.dataset.img!=null&&el.files[0])addImg(+el.dataset.img,el.files[0])});
 document.addEventListener('click',e=>{
-  let r=e.target.closest('[data-listing]');if(r){S.listing=r.dataset.listing;renderAbout();save();return}
+  let r=e.target.closest('[data-go]');if(r){go(+r.dataset.go);return}
+  r=e.target.closest('[data-listing]');if(r){S.listing=r.dataset.listing;renderAbout();save();return}
   r=e.target.closest('[data-set]');if(r){const n=SETS[+r.dataset.set];S.sets=S.sets.includes(n)?S.sets.filter(x=>x!==n):SETS.filter(x=>x===n||S.sets.includes(x));renderAbout();save();return}
   r=e.target.closest('[data-check]');if(r){const i=+r.dataset.check;S.checks[i]=!S.checks[i];renderAbout();save();return}
-  r=e.target.closest('[data-a]');if(r){const i=+r.closest('.scr').dataset.i,a=r.dataset.a,L=S.screens;
+  r=e.target.closest('[data-a]');if(r){const i=+r.closest('.rf-block').dataset.i,a=r.dataset.a,L=S.screens;
     if(a==='up'&&i)[L[i-1],L[i]]=[L[i],L[i-1]];
     if(a==='down'&&i<L.length-1)[L[i+1],L[i]]=[L[i],L[i+1]];
     if(a==='del'&&L.length>1&&(!(L[i].img||L[i].headline||L[i].link||L[i].notes)||confirm(`Remove screen ${i+1}?`)))L.splice(i,1);
     if(a==='rm')L[i].img='';
     renderScreens();save()}
 });
+$('#next').onclick=()=>S.step<STEPS.length-1?go(S.step+1):exportPdf();
+$('#back').onclick=()=>go(S.step-1);
 $('#addScr').onclick=()=>{if(S.screens.length<MAX){S.screens.push(blankScr());renderScreens();save()}};
-$('#clear').onclick=()=>{if(confirm('Clear the whole brief? This can’t be undone.')){S=blank();renderAbout();renderScreens();save()}};
+$('#clear').onclick=()=>{if(confirm('Clear the whole brief? This can’t be undone.')){S=blank();renderAbout();renderScreens();renderSteps();save()}};
 /* drag a file onto any screen's reference */
-document.addEventListener('dragover',e=>{const r=e.target.closest('.ref');if(r){e.preventDefault();r.classList.add('over');r.querySelector('.drop')?.classList.add('over')}});
-document.addEventListener('dragleave',e=>{const r=e.target.closest('.ref');if(r&&!r.contains(e.relatedTarget)){r.classList.remove('over');r.querySelector('.drop')?.classList.remove('over')}});
-document.addEventListener('drop',e=>{const r=e.target.closest('.ref');if(!r)return;e.preventDefault();const f=[...e.dataTransfer.files].find(f=>f.type.startsWith('image/'));if(f)addImg(+r.closest('.scr').dataset.i,f)});
+document.addEventListener('dragover',e=>{const r=e.target.closest('.ref');if(r){e.preventDefault();r.classList.add('drag');r.querySelector('.drop')?.classList.add('over')}});
+document.addEventListener('dragleave',e=>{const r=e.target.closest('.ref');if(r&&!r.contains(e.relatedTarget)){r.classList.remove('drag');r.querySelector('.drop')?.classList.remove('over')}});
+document.addEventListener('drop',e=>{const r=e.target.closest('.ref');if(!r)return;e.preventDefault();const f=[...e.dataTransfer.files].find(f=>f.type.startsWith('image/'));if(f)addImg(+r.closest('.rf-block').dataset.i,f)});
 window.addEventListener('dragover',e=>e.preventDefault());window.addEventListener('drop',e=>e.preventDefault());
 /* screenshots are scaled to 1400px tall JPEG: plenty for the brief, small enough to keep in the draft and the PDF */
 function addImg(i,file){
@@ -218,84 +207,92 @@ function addImg(i,file){
 }
 
 /* ---------- PDF ---------- */
-/* jsPDF's built-in Helvetica only covers WinAnsi: swap the few symbols people type, drop anything else it can't draw */
-const pdfTxt=s=>String(s||'').replace(/→/g,'->').replace(/←/g,'<-').replace(/[☐☑✓✔]/g,'').replace(/[^\x09\x0A\x0D\x20-\x7E -ÿ–—‘’“”•…€]/g,'');
+/* Geologica Light + SemiBold from the DS (assets/ds/fonts), embedded so the PDF matches the page; emoji and other symbols the font can't draw are dropped */
+const pdfTxt=s=>String(s||'').replace(/[☐☑✓✔]/g,'').replace(/[\u{1F000}-\u{1FFFF}☀-➿️​-‍]/gu,'');
 const fmtD=d=>d?new Date(d+'T12:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'';
-const loadImg=src=>new Promise(r=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas');c.width=i.naturalWidth;c.height=i.naturalHeight;c.getContext('2d').drawImage(i,0,0);r(c.toDataURL('image/png'))};i.onerror=()=>r(null);i.src=src});
+const b64=buf=>{let s='';const u=new Uint8Array(buf);for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)};
+let FONTS=null;
+const loadFonts=async()=>FONTS||(FONTS=await Promise.all(['light','semibold'].map(w=>fetch(`../../assets/ds/fonts/geologica-${w}.ttf`).then(r=>{if(!r.ok)throw new Error('font '+w);return r.arrayBuffer()}).then(b64))));
+/* app icon (square) where the fascia has one, else its logo rasterised from SVG */
+const loadImg=(src,w)=>new Promise(r=>{const i=new Image();i.onload=()=>{const nw=i.naturalWidth||300,nh=i.naturalHeight||100,W=w||nw,c=document.createElement('canvas');c.width=W;c.height=Math.round(W*nh/nw);c.getContext('2d').drawImage(i,0,0,c.width,c.height);r({src:c.toDataURL('image/png'),ar:nw/nh})};i.onerror=()=>r(null);i.src=src});
 const imgSize=src=>new Promise(r=>{const i=new Image();i.onload=()=>r([i.naturalWidth,i.naturalHeight]);i.onerror=()=>r([9,19.5]);i.src=src});
 
 async function exportPdf(){
-  const btn=$('#export');btn.disabled=true;btn.textContent='Making PDF…';
+  const btn=$('#next');btn.disabled=true;btn.textContent='Making PDF…';
   try{
   const {jsPDF}=window.jspdf,doc=new jsPDF({unit:'mm',format:'a4'});
+  const [L,SB]=await loadFonts();
+  doc.addFileToVFS('Geologica-Light.ttf',L);doc.addFont('Geologica-Light.ttf','Geologica','normal');
+  doc.addFileToVFS('Geologica-SemiBold.ttf',SB);doc.addFont('Geologica-SemiBold.ttf','Geologica','bold');
   const W=210,PH=297,M=16,CW=W-M*2,BOT=PH-18;
-  const INK=[0,0,0],GREY=[118,118,118],LINE=[221,221,221],SOFT=[242,242,242],TEAL=[0,120,125],RED=[201,0,0];
+  const INK=[29,36,38],GREY=[118,118,118],LINE=[225,229,230],FILL=[242,244,244],ACC=[0,120,125],RED=[185,51,51];
   let y=M;
-  const app=APPS.find(a=>a.k===S.app),appName=app&&app.k?app.n:'';
-  const font=(st,sz,c=INK)=>{doc.setFont('helvetica',st);doc.setFontSize(sz);doc.setTextColor(...c)};
-  const lh=sz=>sz*.3528*1.35;
+  const app=APPS.find(a=>a.k===S.app),appName=app?app.n:'';
+  const font=(st,sz,c=INK)=>{doc.setFont('Geologica',st);doc.setFontSize(sz);doc.setTextColor(...c)};
+  const lh=sz=>sz*.3528*1.4;
   const need=h=>{if(y+h>BOT){doc.addPage();y=M}};
   const wrap=(t,w,sz,st='normal')=>{font(st,sz);return doc.splitTextToSize(pdfTxt(t),w)};
-  /* label + value pair; empty values print a red "Not filled in" so gaps are obvious to creative */
+  /* label + value; empty values print a red "Not filled in" so gaps are obvious to creative */
   const fieldH=(v,w)=>lh(8)+1+Math.max(1,wrap(v||'x',w,10).length)*lh(10);
-  function field(lbl,v,x,yy,w,link){
-    font('bold',8,GREY);doc.text(pdfTxt(lbl).toUpperCase(),x,yy+lh(8)*.8);
+  function field(lbl,v,x,yy,w){
+    font('bold',8,GREY);doc.text(pdfTxt(lbl).toUpperCase(),x,yy+lh(8)*.8,{charSpace:.15});
     let ty=yy+lh(8)+1;
     if(!String(v||'').trim()){font('normal',10,RED);doc.text('Not filled in',x,ty+lh(10)*.8);return ty+lh(10)}
-    const L=wrap(v,w,10);font('normal',10,INK);
-    L.forEach(l=>{const m=link&&l.match(/https?:\/\/\S+/);
-      if(m){const pre=l.slice(0,m.index);doc.text(pre,x,ty+lh(10)*.8);const px=x+doc.getTextWidth(pre);doc.setTextColor(...TEAL);doc.textWithLink(m[0],px,ty+lh(10)*.8,{url:m[0]});doc.setTextColor(...INK);const post=l.slice(m.index+m[0].length);if(post)doc.text(post,px+doc.getTextWidth(m[0]),ty+lh(10)*.8)}
-      else doc.text(l,x,ty+lh(10)*.8);ty+=lh(10)});
+    const ls=wrap(v,w,10);font('normal',10,INK);
+    ls.forEach(l=>{const m=l.match(/https?:\/\/\S+/),by=ty+lh(10)*.8;
+      if(m){const pre=l.slice(0,m.index);doc.text(pre,x,by);const px=x+doc.getTextWidth(pre);doc.setTextColor(...ACC);doc.textWithLink(m[0],px,by,{url:m[0]});doc.setTextColor(...INK);const post=l.slice(m.index+m[0].length);if(post)doc.text(post,px+doc.getTextWidth(m[0]),by)}
+      else doc.text(l,x,by);ty+=lh(10)});
     return ty;
   }
-  function h2(t){need(16);y+=4;font('bold',14);doc.text(pdfTxt(t),M,y+lh(14)*.8);y+=lh(14)+2;doc.setDrawColor(...INK);doc.setLineWidth(.4);doc.line(M,y,M+CW,y);y+=5}
-  function box(x,yy,on){doc.setDrawColor(...(on?TEAL:GREY));doc.setLineWidth(.3);if(on){doc.setFillColor(...TEAL);doc.roundedRect(x,yy,3.6,3.6,.6,.6,'FD');doc.setDrawColor(255,255,255);doc.setLineWidth(.45);doc.lines([[.9,.9],[1.7,-1.8]],x+.9,yy+1.9)}else doc.roundedRect(x,yy,3.6,3.6,.6,.6,'S')}
+  function h2(n,t){need(18);y+=4;doc.setFillColor(...ACC);doc.circle(M+3.5,y+3.2,3.5,'F');font('bold',9,[255,255,255]);doc.text(String(n),M+3.5,y+4.4,{align:'center'});font('bold',14);doc.text(pdfTxt(t),M+10,y+5);y+=11;doc.setDrawColor(...LINE);doc.setLineWidth(.3);doc.line(M,y,M+CW,y);y+=5}
+  function box(x,yy,on){doc.setLineWidth(.35);if(on){doc.setFillColor(...ACC);doc.setDrawColor(...ACC);doc.roundedRect(x,yy,4,4,.8,.8,'FD');doc.setDrawColor(255,255,255);doc.setLineWidth(.5);doc.lines([[.9,.9],[1.8,-2]],x+1,yy+2.1)}else{doc.setDrawColor(...LINE);doc.roundedRect(x,yy,4,4,.8,.8,'S')}}
 
-  /* header */
-  const icon=app&&app.k?await loadImg(`../../assets/brands/app-icons/${app.k}.png`):null;
-  let tx=M;if(icon){doc.addImage(icon,'PNG',M,y,16,16);doc.setDrawColor(...LINE);doc.setLineWidth(.2);doc.roundedRect(M,y,16,16,3.5,3.5,'S');tx=M+21}
-  font('bold',22);doc.text('SCREENSHOT BRIEF',tx,y+8);
-  font('normal',10,GREY);doc.text(pdfTxt([appName||'App not chosen',(LISTING.find(l=>l.k===S.listing)||{}).n].filter(Boolean).join('  ·  ')),tx,y+14);
+  /* header: title left, fascia icon or logo right */
+  font('bold',22);doc.text('SCREENSHOT BRIEF',M,y+8);
+  font('normal',10,GREY);doc.text(pdfTxt([appName||'Fascia not chosen',(LISTING.find(l=>l.k===S.listing)||{}).n].join('  ·  ')),M,y+14.5);
+  if(app){const hasIcon=ICONS.includes(app.k),im=await loadImg(hasIcon?`../../assets/brands/app-icons/${app.k}.png`:`../../assets/brands/${app.k}.svg`,hasIcon?null:600);
+    if(im){if(hasIcon){doc.addImage(im.src,'PNG',M+CW-16,y,16,16);doc.setDrawColor(...LINE);doc.setLineWidth(.2);doc.roundedRect(M+CW-16,y,16,16,3.5,3.5,'S')}
+      else{let h=8,w=h*im.ar;if(w>44){w=44;h=w/im.ar}doc.addImage(im.src,'PNG',M+CW-w,y+(16-h)/2,w,h)}}}
   y+=22;
-  font('normal',9,GREY);const intro=wrap('Ecom team -> creative team. Capture exactly what is referenced for each screen.',CW,9);doc.text(intro,M,y+lh(9)*.8);y+=intro.length*lh(9)+2;
+  font('normal',9,GREY);const intro=wrap('Ecom team → creative team. Capture exactly what is referenced for each screen.',CW,9);doc.text(intro,M,y+lh(9)*.8);y+=intro.length*lh(9)+2;
 
   /* 1 · about */
-  h2('1 · About the brief');
+  h2(1,'About the brief');
   const col=(CW-10)/2,pairs=[
     ['Brief owner + date',[S.owner,fmtD(S.sent)].filter(Boolean).join(' · ')],['Sets needed',S.sets.join(', ')],
     ['Campaign / reason',S.campaign],['Build to use',S.build],
     ['Markets + languages',S.markets],['Deadline',fmtD(S.deadline)]];
   for(let i=0;i<pairs.length;i+=2){const h=Math.max(fieldH(pairs[i][1],col),fieldH(pairs[i+1][1],col));need(h+4);
-    field(pairs[i][0],pairs[i][1],M,y,col,true);field(pairs[i+1][0],pairs[i+1][1],M+col+10,y,col,true);y+=h+4}
-  need(fieldH(S.account,CW)+4);y=field('Test account + app state',S.account,M,y,CW,true)+4;
+    field(pairs[i][0],pairs[i][1],M,y,col);field(pairs[i+1][0],pairs[i+1][1],M+col+10,y,col);y+=h+4}
+  need(fieldH(S.account,CW)+4);y=field('Test account + app state',S.account,M,y,CW)+4;
 
-  /* 2 · screens — reference image on the left, details on the right */
-  h2(`2 · Screens (${S.screens.length}, in order: screens 1–3 matter most)`);
-  const IW=46,GX=8,DX=M+17+IW+GX,DW=M+CW-DX;
+  /* 2 · screens: reference image on the left, details on the right */
+  h2(2,`Screens (${S.screens.length}, in order: screens 1–3 matter most)`);
+  const IW=46,PAD=5,IX=M+PAD,DX=IX+IW+8,DW=M+CW-PAD-DX;
   for(let i=0;i<S.screens.length;i++){
     const s=S.screens[i];
     let ih=0,iw=IW;
     if(s.img){const [nw,nh]=await imgSize(s.img);ih=IW*nh/nw;if(ih>110){ih=110;iw=110*nw/nh}}
     const fs=[['Headline',s.headline],['Subline (optional)',s.subline||'—'],['Website link to the equivalent page',s.link||(s.img?'— (screenshot given)':'')],['Imagery / notes',s.notes||'—']];
-    const th=fs.reduce((a,f)=>a+fieldH(f[1],DW)+4,0);
-    const bh=Math.max(s.img?ih:34,th)+10;
+    const HD=10,th=fs.reduce((a,f)=>a+fieldH(f[1],DW)+4,0);
+    const bh=HD+Math.max(s.img?ih:34,th)+PAD+2;
     need(bh+4);
-    doc.setFillColor(250,250,251);doc.setDrawColor(...LINE);doc.setLineWidth(.25);doc.roundedRect(M,y,CW,bh,3,3,'FD');
-    font('bold',18);doc.text(String(i+1).padStart(2,'0'),M+4,y+11);
-    if(i<3){font('bold',6.5,TEAL);doc.text('KEY',M+4.2,y+15.5)}
-    const ix=M+17,iy=y+5;
-    if(s.img){doc.addImage(s.img,'JPEG',ix+(IW-iw)/2,iy,iw,ih);doc.setDrawColor(...LINE);doc.rect(ix+(IW-iw)/2,iy,iw,ih,'S')}
-    else{doc.setFillColor(...SOFT);doc.setDrawColor(...GREY);doc.setLineDashPattern([1.2,1],0);doc.roundedRect(ix,iy,IW,34,2,2,'FD');doc.setLineDashPattern([],0);font('normal',8,GREY);doc.text(doc.splitTextToSize(s.link?'No screenshot: use the website link':'No reference given',IW-8),ix+IW/2,iy+15,{align:'center'})}
-    let fy=y+5;fs.forEach(f=>{fy=field(f[0],f[1],DX,fy,DW,true)+4});
+    doc.setFillColor(255,255,255);doc.setDrawColor(...LINE);doc.setLineWidth(.3);doc.roundedRect(M,y,CW,bh,2.5,2.5,'FD');
+    font('bold',14);doc.text(String(i+1).padStart(2,'0'),IX,y+8);
+    if(i<3){const tw=10;doc.setFillColor(229,241,242);doc.roundedRect(IX+10,y+3.6,tw,5,1.2,1.2,'F');font('bold',6.5,ACC);doc.text('KEY',IX+10+tw/2,y+7,{align:'center'})}
+    const iy=y+HD+2;
+    if(s.img){doc.addImage(s.img,'JPEG',IX+(IW-iw)/2,iy,iw,ih);doc.setDrawColor(...LINE);doc.rect(IX+(IW-iw)/2,iy,iw,ih,'S')}
+    else{doc.setFillColor(...FILL);doc.setDrawColor(181,181,181);doc.setLineDashPattern([1.2,1],0);doc.roundedRect(IX,iy,IW,34,2,2,'FD');doc.setLineDashPattern([],0);font('normal',8,s.link?GREY:RED);doc.text(doc.splitTextToSize(s.link?'No screenshot: use the website link':'No reference given',IW-8),IX+IW/2,iy+15,{align:'center'})}
+    let fy=y+HD+2;fs.forEach(f=>{fy=field(f[0],f[1],DX,fy,DW)+4});
     y+=bh+4;
   }
 
   /* 3 · checklist */
-  h2('3 · Before you send: checklist');
-  CHECKS.forEach((c,i)=>{const L=wrap(c,CW-8,10);const h=L.length*lh(10)+2;need(h);box(M,y+.6,S.checks[i]);font('normal',10,S.checks[i]?INK:RED);doc.text(L,M+7,y+lh(10)*.8);y+=h});
+  h2(3,'Before you send: checklist');
+  CHECKS.forEach((c,i)=>{const ls=wrap(c,CW-8,10);const h=ls.length*lh(10)+2.4;need(h);box(M,y+.4,S.checks[i]);font('normal',10,S.checks[i]?INK:RED);doc.text(ls,M+7,y+lh(10)*.8);y+=h});
 
   /* footer on every page */
-  const pages=doc.getNumberOfPages(),stamp=`${appName||'App'} screenshot brief · ${S.owner||'owner not set'} · ${fmtD(S.sent)||''}`;
+  const pages=doc.getNumberOfPages(),stamp=`${appName||'App'} screenshot brief · ${S.owner||'owner not set'}${S.sent?' · '+fmtD(S.sent):''}`;
   for(let p=1;p<=pages;p++){doc.setPage(p);doc.setDrawColor(...LINE);doc.setLineWidth(.2);doc.line(M,PH-12,M+CW,PH-12);font('normal',8,GREY);doc.text(pdfTxt(stamp),M,PH-7);doc.text(`${p} / ${pages}`,M+CW,PH-7,{align:'right'})}
 
   const slug=s=>pdfTxt(s).replace(/[^\w]+/g,'-').replace(/^-|-$/g,'').slice(0,40);
@@ -303,9 +300,8 @@ async function exportPdf(){
   }catch(e){console.error(e);alert('Sorry, the PDF couldn’t be made: '+e.message)}
   finally{btn.disabled=false;btn.textContent='Export PDF'}
 }
-$('#export').onclick=exportPdf;
 
-renderAbout();renderScreens();save();
+renderAbout();renderScreens();renderSteps();save();
 </script>
 </body>
 </html>

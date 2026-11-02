@@ -484,3 +484,12 @@
   --price-save-pdp:12px;--price-save-fg:var(--text-primary);--price-save-bd:1px solid var(--text-primary);--price-save-pad:0 8px;--price-save-h:30px;
   --price-card-save:none;--price-card-code:none;
 }
+
+/* Request form (.rf) — 2 Nov 2026: the look of the team's internal intake forms (UX Design Request, Screenshot Brief).
+   Not a fascia surface: it always runs this palette whatever data-brand the page has. Grey copy stays Grey 4 (--text-secondary). */
+:root{
+  --rf-bg:#F7F8F8;--rf-card:#FFF;--rf-input:#F2F4F4;--rf-border:#E1E5E6;--rf-chip-border:#E7E7E7;--rf-chip-on:#E8F4F2;
+  --rf-accent:#00787D;--rf-accent-tint:rgba(0,120,125,.1);--rf-text:#1D2426;--rf-dim:var(--text-secondary,#767676);--rf-error:#B93333;
+  --rf-radius:8px;--rf-radius-card:14px;--rf-shadow:0 4px 28px rgba(0,0,0,.07);
+  --rf-font:'Geologica',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;--rf-light:300;--rf-semi:600;
+}
