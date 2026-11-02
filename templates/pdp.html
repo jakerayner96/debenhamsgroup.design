@@ -17,7 +17,7 @@
    Desktop: breadcrumb, then gallery + accordions on the left, the buy column on the right.
    Gallery is endless (2 Nov 2026, assets/ds/gallery.js): next on the last image goes to the first, prev on the first to the last, swipe loops.
    AI Generated strip (26 Oct 2026): S.ai = indexes of the AI gallery images → DS .ai-wrap + .badge-ai on those slides, product tags lift (never on thumbnails).
-   Recommendations (DS Product carousel, banked 2 Nov 2026 from projects/product-carousel): Handpicked For You — the grid, 3 across, in the buy column under the BNPL box (S.hpRows rows, default 2) ·
+   Recommendations (DS Product carousel, banked 2 Nov 2026 from projects/product-carousel): Handpicked For You — the grid, 3 across, in the buy column under BNPL + Subscribe & Save (S.hpRows rows, default 2) ·
    under the page, full width to the page margin (fixed 248px cards, a wider screen shows more): Create The Look (image only; any tap opens the DS Create the Look picker, DG_lookPicker) ·
    We Think You'll Like (Debenhams: 2nd + 4th Sponsored, Mirakl). S.hp / S.look / S.car switch each off. Was: Create The Look · Why Not Treat Yourself? · Recently Viewed (projects/product-carousel spec).
    New PDP features land HERE so every next PDP gets them. Any fascia: ?brand=<slug>. Drop components in via the data-slot hooks. */
@@ -136,8 +136,8 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
       ${dplus}
       ${window.DG_delivery?DG_delivery.grid(DG_OPTS()):''}
       ${bnpl}
-      ${hp()}
       ${window.DG_subscribe?DG_subscribe.box(SNS(P)):''}
+      ${hp()}
       ${bundle(P)}
     </div>`;
   return `${header()}<main class="pg">

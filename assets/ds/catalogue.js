@@ -717,12 +717,12 @@ const DG_CATALOGUE = [
   ],
   dev:{title:'—', status:'ours', note:'Not in dev Storybook — the popup is a Bloomreach Engagement weblayer on live. Hand the weblayer team the layout markup from DG_signup.html() + components.css rules.'} },
 
-{ slug:'bag-item', name:'Bag line item', group:'Overlays & bag', tier:'molecule', css:'.bag-item', figma:'CYyGeUDy4w02enV7uFxZ6W · 1337:250088',
+{ slug:'bag-item', name:'Bag line item', group:'Overlays & bag', tier:'molecule', css:'.bag-item · .bag-item--mini · .bag-item--in', figma:'CYyGeUDy4w02enV7uFxZ6W · 1337:250088 · mini 1337-253306',
   summary:'99×148 image beside brand, name, variant and price. Quantity and remove live in the row.',
   use:['Bag, mini bag, added-to-bag, order confirmation.'],
   avoid:['A different image ratio to the product card.'],
-  anatomy:['Image 99×148 · brand strong · name 2-line · variant --text-secondary · price with strike'],
-  variants:[{name:'Default', html:'<div class="bag-item" style="width:340px">'+PH(99,148)+'<div class="info"><div class="b">Coast</div><div class="n">Long Sleeve Lace and Pleated Midi Shirt Dress</div><div class="v">Size 12 · Pink</div><div class="p"><span class="sale">£70.00</span><s>£139.00</s></div></div></div>'}],
+  anatomy:['Image 99×148 · brand strong · name 2-line · variant --text-secondary · price with strike','Mini (.bag-item--mini — mini bag / added to bag, every version): 1px Grey 2 box, padding 12, image 68 × 102, gap 16; 12/15 lines 8 apart: brand (strong) - name (2 lines) · size / colour · price (sale red + was) · .bag-item--in = the drop-in when an item is quick-added'],
+  variants:[{name:'Mini · added to bag', html:'<div class="bag-item bag-item--mini" style="width:342px">'+PH(68,102)+'<div class="info"><div class="t"><b>boohoo</b> - Plus Mono Oversized Cardigan</div><div class="v">10 / Black</div><div class="p"><span class="sale">£17.60</span><s>£22.00</s></div></div></div>'},{name:'Default', html:'<div class="bag-item" style="width:340px">'+PH(99,148)+'<div class="info"><div class="b">Coast</div><div class="n">Long Sleeve Lace and Pleated Midi Shirt Dress</div><div class="v">Size 12 · Pink</div><div class="p"><span class="sale">£70.00</span><s>£139.00</s></div></div></div>'}],
   dev:{title:'Molecules/Basket/CartLineItemV2Card', status:'partial', note:'Dev has 23 states (low stock, max quantity, gift card, premier, sample, pre-order, price promise, protection plan, subscribe & save, free gift, Taggstar…). Ours draws the base; states to follow from the CA bag variants.'} },
 
 { slug:'order-summary', name:'Order summary', group:'Overlays & bag', tier:'organism', css:".bs · .bs-sum · .bs-ctas · .summary (legacy)", figma:"CYyGeUDy4w02enV7uFxZ6W · 1337:250678 · live /basket 06 Oct 2026",

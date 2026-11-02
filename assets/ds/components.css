@@ -833,8 +833,12 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pcar-track::-webkit-scrollbar{display:none}
 .pcar-track>*{flex:0 0 var(--pcar-card);width:auto!important;scroll-snap-align:start;min-width:0}
 .pcar-track>.pc .pc-actions{display:none} /* no wishlist on rail cards (DS rule, 27 Oct) */
-/* quick add on rail cards (.pc-actions--qa, 2 Nov 2026 — Complete the Look in the mini bag): the DS circle quick add bottom right of the image; added = tick, disabled */
-.pcar-track>.pc .pc-actions--qa{display:flex;top:auto;bottom:var(--gap-2,8px)}
+/* quick add on rail cards (.pc-actions--qa, 2 Nov 2026 — Complete the Look in the mini bag): the DS circle quick add top right of the image (the wishlist slot); added = tick, disabled */
+.pcar-track>.pc .pc-actions--qa{display:flex}
+/* added: the button pops and turns into a tick (.pc-iconbtn.pop on the tap that adds) */
+.pc-iconbtn.pop{animation:qaPop .4s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes qaPop{0%{transform:scale(1)}35%{transform:scale(.8)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.pc-iconbtn.pop{animation:none}}
 .pc-iconbtn[disabled]{cursor:default}
 .pcar .pc-img{aspect-ratio:var(--ratio-product);flex:none;height:auto}.pcar .pc-img img.ph{object-fit:cover}
 .pcar .pc-info{padding-inline:var(--pcar-info-x,0px)}
@@ -1110,6 +1114,18 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .bag-item .b{font-weight:var(--w-strong)}.bag-item .n{font-weight:var(--w-regular);line-height:23px}
 .bag-item .v{font-weight:var(--w-mid);margin-top:auto}
 .bag-item .p{font-size:12px;font-weight:var(--w-mid)}.bag-item .p .sale{color:var(--price-sale)}.bag-item .p s{margin-left:4px}
+/* .bag-item--mini (Bag 2026 Figma CYyGeUDy4w02enV7uFxZ6W 1337-253306 — the mini bag / added to bag card, 2 Nov 2026): a 1px Grey 2 box, padding gap 3 (12px),
+   68 × 102 image, gap 4 (16px) to the text; 12/15 lines gap 2 (8px) apart: brand (strong) - name (2 lines) · size / colour · price now (sale red) + was.
+   .bag-item--in: the entrance when an item is quick-added into the open mini bag (drops in and fades up). */
+.bag-item--mini{grid-template-columns:68px 1fr;gap:var(--gap-4,16px);min-height:0;padding:var(--gap-3,12px);border:1px solid var(--border-subtle);border-radius:var(--radius-default);align-items:start;background:var(--surface-raised)}
+.bag-item--mini img{width:68px;height:102px}
+.bag-item--mini .info{gap:var(--gap-2,8px);font-size:12px;line-height:15px}
+.bag-item--mini .t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.bag-item--mini .t b{font-weight:var(--w-strong)}
+.bag-item--mini .v{margin-top:0;font-weight:var(--w-regular)}
+.bag-item--mini .p{font-size:12px;line-height:15px;font-weight:var(--w-strong)}.bag-item--mini .p s{margin-left:8px;font-weight:var(--w-regular)}
+.bag-item--in{animation:bagIn .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes bagIn{from{opacity:0;transform:translateY(-12px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.bag-item--in{animation:none}}
 .summary{background:var(--surface-sunken);padding:16px;display:flex;flex-direction:column;gap:16px}
 .sum-row{display:flex;align-items:center;justify-content:space-between;font-size:14px}
 .sum-row.total{font-size:16px;font-weight:var(--w-strong)}

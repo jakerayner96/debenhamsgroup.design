@@ -31,7 +31,7 @@
   /* DG_pcarHTML(o) — the markup (catalogue entry 'product-carousel') for a placement, so pages never hand-build a rail (2 Nov 2026, Master prototype).
      o: size 'lg'|'md'|'sm' · title · sub · tabs[] · all (View all label — off by default, Jake 2 Nov) · per (cards in view / grid columns, desktop) · grid · look (image only)
         · bleed (mobile edge to edge) · full (to the page margin, fixed 248px desktop cards) · arrows:false (no chevrons) · id (data-pl) · brand (fallback brand line)
-        · qa (the DS circle quick add, bottom right of the image — square on boohooMAN / KM / Brand Room; data-qa = item.i, tick once item.added —
+        · qa (the DS circle quick add, top right of the image — square on boohooMAN / KM / Brand Room; data-qa = item.i, tick once item.added —
           Complete the Look in the mini bag; the page decides what a tap adds)
         items[]: {img, brand, name, price, was, pct, sponsored, swatches:[{c, name, img}], href, i}
      Card (DG_pcarCard) = the DS product card format, always: (Sponsored) · brand (never blank — the item's, else o.brand) · name, 2 lines · rail price
@@ -44,7 +44,7 @@
       <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${pct?`<span class="save" data-pct="${pct}"></span>`:''}</div></div>${swatches(p,o)}</div>`};
   window.DG_pcarCard=function(p,o){o=o||{};const at=`${p.href?` data-href="${esc(p.href)}"`:''}${p.i!=null?` data-i="${esc(p.i)}"`:''}`;
     const sq=['boohooman','karenmillen','brandroom'].includes(document.documentElement.dataset.brand)?' pc-iconbtn--sq':'';
-    const qa=o.qa?`<div class="pc-actions pc-actions--qa"><button type="button" class="pc-iconbtn${sq}${p.added?' on':''}" data-qa="${esc(p.i)}" aria-label="${p.added?'Added':'Quick add'} ${esc(p.name)}"${p.added?' disabled':''}><img src="assets/ds/icons/${p.added?'lib/icons-tick':'quick-add-16'}.svg" alt=""></button></div>`:'';
+    const qa=o.qa?`<div class="pc-actions pc-actions--qa"><button type="button" class="pc-iconbtn${sq}${p.added?' on':''}${p.pop?' pop':''}" data-qa="${esc(p.i)}" aria-label="${p.added?'Added':'Quick add'} ${esc(p.name)}"${p.added?' disabled':''}><img src="assets/ds/icons/${p.added?'lib/icons-tick':'quick-add-16'}.svg" alt=""></button></div>`:'';
     const img=`<div class="pc-img"><img class="ph" src="${esc(p.img)}" alt="${esc(((p.brand||o.brand)?(p.brand||o.brand)+' ':'')+p.name)}" loading="${o.eager?'eager':'lazy'}">${qa}</div>`;
     if(o.look)return `<article class="pc"${at}>${img}</article>`;
     return `<article class="pc"${at}>${img}${DG_pcarInfo(p,o)}</article>`};

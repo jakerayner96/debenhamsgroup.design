@@ -19,7 +19,7 @@ const st=document.createElement('style');st.textContent=`
 .pi-mb>.mdl{z-index:3}
 .pi-mb .mdl--up{max-height:calc(100% - 56px);overflow:hidden}
 .pi-mb .pi-btns{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.pi-mb .pi-btns .bd{width:100%}
-.pi-mb .pi-items{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
+.pi-mb .pi-items{display:flex;flex-direction:column;gap:var(--gap-2,8px)}
 .pi-save{display:flex;flex-direction:column;gap:var(--gap-4,16px)}.pi-save h3{margin:0;font-size:18px;line-height:22px;font-weight:var(--w-strong)}.pi-save p{margin:0;font-size:14px;line-height:20px}.pi-save .bd{width:100%}
 .pi-save .pi-legal{font-size:12px;line-height:16px;color:var(--text-secondary)}.pi-save .pi-legal a{color:inherit}
 .pi-toast{z-index:90}
@@ -35,7 +35,7 @@ const FEEDS={};
 function ids(id,start,len){const off=start+(TAB[id]||0)*4;return Array.from({length:len},(_,k)=>(off+k*3)%n())}
 /* a rail = the DS builder (DG_pcarHTML) over items from the DS feed (DG_feedItem: brand always, -X%, sample swatches); o.sp(i) marks Sponsored slots */
 const round=()=>BR()==='plt';
-const items=(o,list)=>list.map(i=>{const x=DG_feedItem(BR(),i);if(x&&o.sp&&o.sp(i))x.sponsored=true;if(x&&o.qa&&ADDED.includes(i))x.added=true;return x}).filter(Boolean);
+const items=(o,list)=>list.map(i=>{const x=DG_feedItem(BR(),i);if(x&&o.sp&&o.sp(i))x.sponsored=true;if(x&&o.qa&&ADDED.includes(i)){x.added=true;if(i===JUST)x.pop=true}return x}).filter(Boolean);
 function pcar(o){FEEDS[o.id]=o;const grid=o.fmt==='grid',per=o.per||5,len=o.len||(grid?(desk()?per*2:6):10),list=o.list||ids(o.id,o.start||0,len);
   return DG_pcarHTML(Object.assign({},o,{grid,per,items:items(o,list),arrows:PC.arrows!==false,tab:TAB[o.id]||0,round:round(),eager:EXPORTING,all:false}))}
 document.addEventListener('pcar:tab',e=>{const el=e.target,o=FEEDS[el.dataset.pl];if(!o)return;TAB[o.id]=e.detail.index;delete o.list;
@@ -59,7 +59,7 @@ PAGES.home=function(){const doc=new DOMParser().parseFromString(oHome(),'text/ht
 const oPdp=PAGES.pdp;
 /*   Handpicked For You: the grid, 3 across, in the buy column under the BNPL box (as live), PC.hpRows rows. */
 PAGES.pdp=function(){const doc=new DOMParser().parseFromString('<div id="x">'+oPdp()+'</div>','text/html'),x=doc.getElementById('x');
-  const bnpl=x.querySelector('.buy .bnpl')||x.querySelector('.bnpl');
+  const bnpl=x.querySelector('.buy .sns')||x.querySelector('.buy .bnpl')||x.querySelector('.bnpl');   /* under BNPL + Subscribe & Save */
   if(PC.hp!==false&&bnpl){const rows=Math.max(1,+PC.hpRows||2),d=doc.createElement('div');d.className='pi-hp';
     d.innerHTML=pcar({id:'hp',size:'sm',fmt:'grid',per:3,len:rows*3,title:'Handpicked For You',start:3,bleed:false});bnpl.after(d)}
   const recs=(PC.look!==false?pcar({id:'look',size:'md',full:1,look:true,title:'Create The Look',start:9}):'')+(PC.car!==false?pcar({id:'recs',size:'md',full:1,title:'We Think You’ll Like',start:15,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>{const L=ids('recs',15,10);return L.indexOf(i)===1||L.indexOf(i)===3}):null}):'');
@@ -86,20 +86,21 @@ window.acInner=function(){const doc=new DOMParser().parseFromString('<div id="x"
         save  · the same modal, then a divider and Save your bag (DS text field + checkbox row + secondary button) — no box
         toast · no modal: the DS product toast (.toast--top .toast--prod), 6s
         Free delivery banner (PC.thresh): the DS threshold (.thresh) under the line items, in the modal versions — fills as items are added ---- */
-const MBT=()=>PC.mbType||'live',THRESH=100,ADDED=[];let SAVED=null;
+const MBT=()=>PC.mbType||'live',THRESH=100,ADDED=[];let SAVED=null,JUST=null;   /* JUST = the item quick-added on this render: its line item drops in, its button pops */
 const num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
 function mainItem(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,colour:DP.colour}:PR()[1]||{};
   const sz=(document.querySelector('.sz.on')||{}).textContent,cm=((document.querySelector('.buy')||{}).innerText||'').match(/Colou?r:\s*([^\n]+)/);
   return Object.assign({},p,{img:DP?DP.imgs[0]:IMG(1),size:sz&&sz.trim()||'12',colour:p.colour||(cm&&cm[1].trim())||''})}
-function bagItems(){return [mainItem()].concat(ADDED.map(i=>{const x=DG_feedItem(BR(),i);return x&&Object.assign({size:'One size'},x)}).filter(Boolean))}
-const lineItem=p=>`<div class="bag-item"><img src="${p.img}" alt=""><div class="info"><div class="b">${esc(p.brand||BN())}</div><div class="n">${esc(p.name)}</div><div class="v">${esc(/one size/i.test(p.size||'')?'One size':'Size '+p.size)} · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
+function bagItems(){return [mainItem()].concat(ADDED.map(i=>{const x=DG_feedItem(BR(),i);return x&&Object.assign({size:'One Size',colour:x.swatches?x.swatches[0].name:''},x)}).filter(Boolean))}
+/* the mini bag card (DS .bag-item--mini, Bag 2026): brand - name · size / colour · price */
+const lineItem=p=>`<div class="bag-item bag-item--mini${p.i!=null&&p.i===JUST?' bag-item--in':''}"><img src="${p.img}" alt=""><div class="info"><div class="t"><b>${esc(p.brand||BN())}</b> - ${esc(p.name)}</div><div class="v">${esc([p.size,p.colour].filter(Boolean).join(' / '))}</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
 function thresh(){if(PC.thresh===false)return '';const t=bagItems().reduce((a,p)=>a+num(p.price),0);
   if(t>=THRESH)return `<div class="thresh thresh--ok"><span class="tick"></span><span>You’ve qualified for free delivery</span></div>`;
   return `<div class="thresh"><span>Spend <b>£${(THRESH-t).toFixed(2)}</b> more for free delivery</span><div class="track"><div class="fill" style="width:${Math.round(t/THRESH*100)}%"></div></div></div>`}
 function saveBag(){if(SAVED)return `<div class="thresh thresh--ok"><span class="tick"></span><span>Bag saved. We’ll email <b>${esc(SAVED)}</b> about your bag — you’re signed up for ${esc(BN())} emails, unsubscribe any time.</span></div>`;
   return `<section class="pi-save"><h3>Not ready yet? Save your bag</h3><p>Leave your email and we’ll remind you about the items in your bag.</p>
     <label class="fld"><input type="email" placeholder=" " autocomplete="email" data-mbmail><span class="lbl">Email address</span></label>
-    <div class="chk-row chk-row--lg"><button type="button" class="chk" aria-checked="false" data-mbopt aria-label="Email me about my bag"></button><span>Email me about my bag, plus offers, new arrivals and style picks from ${esc(BN())}. I can unsubscribe at any time.</span></div>
+    <div class="chk-row"><button type="button" class="chk" aria-checked="false" data-mbopt aria-label="Email me about my bag"></button><span>Email me about my bag, plus offers, new arrivals and style picks from ${esc(BN())}. I can unsubscribe at any time.</span></div>
     <button type="button" class="bd sec" disabled data-mbsave>Email My Bag</button>
     <p class="pi-legal">Tick the box to save your bag. Bag reminders are marketing emails, so we need your consent to send them. See our <a href="#">Privacy Policy</a>.</p></section>`}
 function miniBag(){const d=desk(),t=MBT();
@@ -122,7 +123,7 @@ function mountBag(open){const old=document.getElementById('pimb'),ot=document.ge
   const n=document.getElementById('pimb');if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
 document.addEventListener('click',e=>{
   const lk=e.target.closest('.pcar--look[data-pl="look"]');if(lk&&!e.target.closest('.pcar-arr')){e.preventDefault();const c=e.target.closest('.pcar-track>*'),L=FEEDS.look,idx=c?[...c.parentNode.children].indexOf(c):-1;openPicker(L&&idx>=0?ids('look',L.start||0,10)[idx]:null);return}
-  const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();const i=+qa.dataset.qa;if(!ADDED.includes(i))ADDED.push(i);mountBag(true);return}
+  const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();const i=+qa.dataset.qa;if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null;return}
   const opt=e.target.closest('#pimb [data-mbopt]');if(opt){e.preventDefault();const on=opt.getAttribute('aria-checked')!=='true';opt.setAttribute('aria-checked',on);opt.classList.toggle('on',on);document.querySelector('#pimb [data-mbsave]').disabled=!on;return}
   const sv=e.target.closest('#pimb [data-mbsave]');if(sv){e.preventDefault();const f=document.querySelector('#pimb [data-mbmail]'),v=(f.value||'').trim(),fl=f.closest('.fld');
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){fl.classList.add('invalid');if(!fl.nextElementSibling||!fl.nextElementSibling.classList.contains('fld-err'))fl.insertAdjacentHTML('afterend','<div class="fld-err">Enter an email address like name@example.com</div>');f.focus();return}
