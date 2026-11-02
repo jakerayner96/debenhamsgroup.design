@@ -15,6 +15,7 @@
    Options modal; returns line, then Sold & Delivered by — placeholder until a size is picked) · BNPL · Subscribe & Save (subscribe.js; ADD → modal) — that order, Jake 16 Oct · then the accordion set
    (At a Glance open · Description · Product Details & Care · Delivery · Returns · Manufacturer) · footer.
    Desktop: breadcrumb, then gallery + accordions on the left, the buy column on the right.
+   Gallery is endless (2 Nov 2026, assets/ds/gallery.js): next on the last image goes to the first, prev on the first to the last, swipe loops.
    AI Generated strip (26 Oct 2026): S.ai = indexes of the AI gallery images → DS .ai-wrap + .badge-ai on those slides, product tags lift (never on thumbnails).
    Recommendations (2 Nov 2026, Master prototype): DS Product carousel under the page, full width — Create The Look (image only, medium) · Why Not Treat Yourself? (medium + View all) · Recently Viewed; 5 + peek on desktop (projects/product-carousel spec).
    New PDP features land HERE so every next PDP gets them. Any fascia: ?brand=<slug>. Drop components in via the data-slot hooks. */
@@ -52,6 +53,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/dplus-logos.js"></script>
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/carousel.js"></script>
+<script src="assets/ds/gallery.js"></script>
 <script src="assets/ds/export-masks.js"></script>
 <script src="templates/products.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
@@ -136,13 +138,8 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
 function recs(){if(!window.DG_pcarHTML||!window.DG_feed)return '';const R=o=>DG_pcarHTML(Object.assign({per:5,eager:EXPORTING},o));
   return `<section class="recs" data-slot="recs">${R({look:true,title:'Create The Look',items:DG_feed(S.brand,9,10,2)})}${R({title:'Why Not Treat Yourself?',all:true,items:DG_feed(S.brand,3,10,3)})}${R({title:'Recently Viewed',items:DG_feed(S.brand,12,8,1)})}</section>`}
 function wire(){
-  const g=document.querySelector('.pdp-gal');if(!g)return;const sl=g.querySelector('.slides'),th=[...g.querySelectorAll('.thumbs button')],bar=g.querySelector('.pag i');
-  const go=i=>{const im=sl.children[i];if(im)sl.scrollTo({left:im.offsetLeft-sl.offsetLeft,behavior:'smooth'})};
-  th.forEach(b=>b.onclick=()=>go(+b.dataset.i));
-  const cur=()=>Math.round(sl.scrollLeft/(sl.children[0].offsetWidth+4));
-  g.querySelector('.prev').onclick=()=>go(Math.max(0,cur()-1));g.querySelector('.next').onclick=()=>go(Math.min(sl.children.length-1,cur()+1));
-  sl.addEventListener('scroll',()=>{const i=cur(),n=sl.children.length,max=sl.scrollWidth-sl.clientWidth;th.forEach((b,j)=>b.classList.toggle('on',j===i));
-    if(bar)bar.style.left=Math.round((max?sl.scrollLeft/max:0)*(100-100/n))+'%'},{passive:true});
+  /* gallery: DS gallery.js — endless (last image → first, first → last; arrows, swipe, thumbs), off while exporting */
+  if(window.DG_gallery)DG_gallery(document.querySelector('.pdp-gal'),{endless:!EXPORTING});
   if(window.DG_delivery)DG_delivery.mount(document,DG_OPTS());
   if(window.DG_subscribe){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams;document.querySelectorAll('[data-sns-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-sns-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_subscribe.modal(SNS(P),{desk:innerWidth>=600}));DG_subscribe.wire(document.querySelector('[data-sns-modal]'))})}
   document.querySelectorAll('.acc-h').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
