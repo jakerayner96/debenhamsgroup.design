@@ -403,12 +403,13 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 /* project launcher */
 .launchgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:20px 0 32px}
 /* The Brand Room › Brand list: one card per brand, logo tile follows the site theme (white logo on black in dark, black on white in light) */
-.brbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 24px}.brbar .icosearch input{width:220px;opacity:1;padding:0 12px;border-color:var(--med)}.brbar .kbtn{margin-left:auto}
+.brbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 24px}.brbar .icosearch input{width:220px;opacity:1;padding:0 12px;border-color:var(--med)}.brbar .brdls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
 .brgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin:16px 0 40px}
 .brcard{border-radius:var(--r);background:var(--surface);border:1px solid color-mix(in srgb,var(--ink) 6%,transparent);overflow:hidden;display:flex;flex-direction:column}
 .brlogo{aspect-ratio:1;display:block;background:#000}.brlogo img{width:100%;height:100%;display:block}
 [data-theme="light"] .brlogo{background:#fff}[data-theme="light"] .brlogo .bl-d,:root:not([data-theme="light"]) .brlogo .bl-l{display:none}
 .brlogo.none{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;font:600 15px var(--sans);color:#fff}[data-theme="light"] .brlogo.none{color:#0F0F0F}
+.brdl{display:grid;grid-template-columns:auto 1fr 1fr;gap:4px 6px;align-items:center;margin-top:auto;padding-top:8px;border-top:1px solid color-mix(in srgb,var(--ink) 6%,transparent)}.brdl span{font:600 10px var(--sans);letter-spacing:.06em;color:var(--ink-3)}.brdl a{font:500 12px var(--sans);text-align:center;padding:3px 0;border-radius:var(--r-sm);border:1px solid var(--med);color:var(--ink);text-decoration:none}.brdl a:hover{border-color:var(--ink)}.brbody .pill+.brdl{margin-top:4px}
 .brbody{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}.brbody b{font:600 14px var(--sans);color:var(--ink)}.brbody small{font-size:12px;line-height:1.4;color:var(--ink-3)}.brbody .pill{align-self:flex-start;margin:auto 0 0}
 .brcard[hidden],#br-brands [data-sec][hidden]{display:none}
 .launch{background:var(--surface);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:8px;transition:background .15s}
@@ -1820,14 +1821,16 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
     const also=b=>b.on.length?'Also on '+b.on.map(c=>BF[c]||c).join(' · '):b.st==='soon'?'':'Brand Room only';
     const lg=b=>b.s?`<span class="brlogo"><img class="bl-d" src="assets/brands/brandroom-portfolio/${b.s}-white.png" alt="${esc(b.n)}" loading="lazy"><img class="bl-l" src="assets/brands/brandroom-portfolio/${b.s}-black.png" alt="${esc(b.n)}" loading="lazy"></span>`:`<span class="brlogo none">${esc(b.n)}<br><small style="font-weight:400;opacity:.6">logo to come</small></span>`;
     const pill=b=>{const d=BD[b.deal];return b.st==='soon'?`<span class="pill ${d?d[1]:''}">${BR.season} · ${d?d[0]:'to confirm'}</span>`:b.deal?`<span class="pill ok">${BR.season} · ${d[0]}</span>`:''};
-    const brCard=b=>`<div class="brcard" data-st="${b.st}" data-q="${esc((b.n+' '+b.on.map(c=>BF[c]||c).join(' ')+' '+(b.note||'')).toLowerCase())}">${lg(b)}<div class="brbody"><b>${esc(b.n)}</b>${b.note||also(b)?`<small>${b.note?esc(b.note)+(also(b)?'<br>':''):''}${also(b)}</small>`:''}${pill(b)}</div></div>`;
+    const BRP='assets/brands/brandroom-portfolio/',SV=new Set(BR.svg||[]);
+    const dl=b=>b.s?`<div class="brdl">${(SV.has(b.s)?['svg','png']:['png']).map(x=>`<span>${x.toUpperCase()}</span>${['black','white'].map(c=>`<a href="${BRP}${x}/${b.s}-${c}.${x}" download="${b.s}-${c}.${x}" title="${esc(b.n)} · ${c} · transparent ${x==='png'?'500×500 PNG':'SVG'}">${c==='black'?'Black':'White'}</a>`).join('')}`).join('')}</div>`:'';
+    const brCard=b=>`<div class="brcard" data-st="${b.st}" data-q="${esc((b.n+' '+b.on.map(c=>BF[c]||c).join(' ')+' '+(b.note||'')).toLowerCase())}">${lg(b)}<div class="brbody"><b>${esc(b.n)}</b>${b.note||also(b)?`<small>${b.note?esc(b.note)+(also(b)?'<br>':''):''}${also(b)}</small>`:''}${pill(b)}${dl(b)}</div></div>`;
     add(`<section class="page" id="br-brands" data-crumb="The Brand Room / Brand list">
       <div class="kick"><a href="#b-brandroom" style="color:inherit">the brand room</a> <b>· assets/ds/brandroom-brands.js</b></div>
       <h1>Brand list</h1>
-      <p class="lede">Every brand The Brand Room sells today, and the brands launching in ${BR.season}. Use it as the source for brand rails, A–Z pages, nav and logo walls. Logos are the Brand Room Figma set, black on white or white on black.</p>
+      <p class="lede">Every brand The Brand Room sells today, and the brands launching in ${BR.season}. Use it as the source for brand rails, A–Z pages, nav and logo walls. Logos are the Brand Room Figma set, black on white or white on black. Every logo downloads with a transparent background, black or white: as an SVG where Figma has the vector (${(BR.svg||[]).length} brands), and as a 500 × 500 PNG for all of them.</p>
       <div class="meta"><span>live <b>${live.length} brands</b></span><span>coming ${BR.season} <b>${soon.length} new · ${BR.brands.filter(b=>b.deal).length} launching in all</b></span><span>updated <b>${fd(BR.updated)}</b></span><span>logos <b><a href="${BR.figma}" target="_blank" rel="noopener" style="color:inherit">Figma ↗</a></b></span></div>
       <div class="brbar"><button class="cf on" data-f="*">All <span style="opacity:.6">${BR.brands.length}</span></button><button class="cf" data-f="live">Live now <span style="opacity:.6">${live.length}</span></button><button class="cf" data-f="soon">Coming ${BR.season} <span style="opacity:.6">${soon.length}</span></button>
-        <div class="icosearch open"><input type="search" placeholder="Search brands or fascias" aria-label="Search brands"></div><button class="kbtn" id="brCsv">Download list <small>CSV</small></button></div>
+        <div class="icosearch open"><input type="search" placeholder="Search brands or fascias" aria-label="Search brands"></div><span class="brdls">${BR.zip?`<a class="kbtn" href="${BR.zip}" download>All logos <small>ZIP</small></a>`:''}<button class="kbtn" id="brCsv">Download list <small>CSV</small></button></span></div>
       <h2 data-sec="live">Live now <code>${live.length} brands</code></h2><div class="brgrid" data-sec="live">${live.map(brCard).join('')}</div>
       <h2 data-sec="soon">Coming ${BR.season} <code>new to The Brand Room</code></h2><div class="brgrid" data-sec="soon">${soon.map(brCard).join('')}</div>
     </section>`);

@@ -1,7 +1,7 @@
 /* The Brand Room — master brand list. What we sell now and what is coming.
    Source: "Current Brand Mix · 60 Active Portfolio Brands" and "Brands Launching SS27 · 13 Confirmed Brands" (Brand Room trading, sent by Jake 28 Oct 2026).
    Logos: The Brand Room Figma, Content / Logos (NRsu568JGzwCDq4egvkUbn 342:10634) → assets/brands/brandroom-portfolio/<slug>-black.png (black logo, white tile)
-   and <slug>-white.png (white logo, black tile). Vector masters for the brands sourced 28 Oct are in assets/brands/brandroom-portfolio/svg/.
+   and <slug>-white.png (white logo, black tile). Downloads (transparent): png/<slug>-black|white.png at 500×500 for every brand, svg/<slug>-black|white.svg for the brands listed in svg.
    Rendered on the site's The Brand Room › Brand list page (index.html #br-brands). Update this file when a brand is signed, launches or leaves.
 
    Fields: n name · s logo slug (null = no logo yet) · on other fascias that sell it (codes in DG_BR_FASCIAS) · st 'live' | 'soon'
@@ -12,6 +12,9 @@ window.DG_BR_BRANDS={
   updated:'2026-10-28',
   season:'SS27',
   figma:'https://www.figma.com/design/NRsu568JGzwCDq4egvkUbn/The-Brand-Room?node-id=342-10634',
+  /* downloads: every logo as a 500×500 transparent PNG (png/<slug>-black|white.png); these also have vector SVGs (svg/<slug>-black|white.svg). The rest are image logos in Figma, PNG only. */
+  svg:['adidas','altra','aquascutum','armani-exchange','belstaff','calvin-klein','castore','christian-rose','clarks','clarks-originals','crew-clothing','crocs','dickies','ed-hardy','gym-king','hugo','ipanema','juicy-couture','lacoste','lejan','marshall-artist','monterrain','moose-knuckles','napapijri','scholl','seinse','sergio-tacchini','skechers','sweaty-betty','timberland','tommy-hilfiger','true-religion','valentino','vera-wang','zavetti-canada'],
+  zip:'assets/brands/brandroom-portfolio/brand-room-logos.zip',
   brands:[
     /* ---- live: current brand mix (60) ---- */
     {n:'Altra',s:'altra',on:[],st:'live'},
