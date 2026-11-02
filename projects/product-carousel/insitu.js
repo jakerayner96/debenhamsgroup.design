@@ -12,6 +12,7 @@ const st=document.createElement('style');st.textContent=`
 .pi-recs{display:flex;flex-direction:column;gap:var(--gap-10,40px);padding-block:var(--gap-10,40px)}
 .pi-hp{margin-top:var(--gap-6,24px)}
 .pcar--look[data-pl="look"] .pcar-track>*{cursor:pointer}
+.pi-tint::after{content:"";position:absolute;inset:0;background:var(--pi-tint);mix-blend-mode:color;opacity:.6;pointer-events:none}
 .pi-ctl{z-index:90}.pi-ctl .head .modal-x{height:16px}.pi-ctl .foot .bd{width:100%}.pi-ctl .body{gap:var(--gap-8,32px);overflow-x:hidden}.pi-ctl .pcar--bleed{--pcar-pad:24px;margin-inline:-24px}
 .pi-mb{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center}
 @media(min-width:1024px){.pi-mb{justify-content:flex-end;align-items:stretch}}
@@ -35,9 +36,12 @@ function brandOf(p){let b=p.brand,n=p.name||'';const m=n.match(BRANDS);
   if(!b&&m){b=m[1];n=n.slice(m[0].length)}else if(b&&n.toLowerCase().startsWith(b.toLowerCase()+' '))n=n.slice(b.length+1);
   return [b||BN(),n]}
 const SWP=['#1F1F1F','#C9C9C9','#B4A67A','#2F4A7A','#B97A57','#6E8B6B','#D9B8C4','#FFFFFF','#8FA3B8'];
+const SWN=['Black','Grey','Stone','Navy','Tan','Sage','Pink','White','Blue'];
 const nSw=i=>i%4===1?3:i%5===2?2:i%7===3?5:0;   /* sample feed: some products come in several colours, most in one (as live) */
 function swatches(i){const k=nSw(i);if(!k)return'';const cs=Array.from({length:k},(_,j)=>SWP[(i+j*2)%SWP.length]),show=cs.slice(0,4);
-  return `<div class="pc-swatches${BR()==='plt'?' pc-swatches--round':''}"><span class="set">${show.map((c,j)=>`<span class="pc-swatch${j?'':' on'}"><i style="background:${c}"></i></span>`).join('')}</span>${k>4?`<span class="pc-more">+${k-4}</span>`:''}</div>`}
+  /* each swatch is a button carrying its colour's image (data-img); a tap selects it and swaps the card image. The sample feed has no per-colour
+     shots, so data-img is empty here and the other colours tint the shot instead (prototype stand-in, .pi-tint). */
+  return `<div class="pc-swatches${BR()==='plt'?' pc-swatches--round':''}"><span class="set">${show.map((c,j)=>{const nm=SWN[SWP.indexOf(c)];return `<button type="button" class="pc-swatch${j?'':' on'}" data-sw="${j}" data-c="${c}" data-img="" aria-label="${nm}" aria-pressed="${!j}"><i style="background:${c}"></i></button>`}).join('')}</span>${k>4?`<span class="pc-more">+${k-4}</span>`:''}</div>`}
 function info(i,o){const p=PR()[i],[b,n]=brandOf(p),pct=p.was&&p.pct?String(p.pct).replace(/[^0-9]/g,''):'';
   return `<div class="pc-info">${o.sp&&o.sp(i)?'<div class="pc-sponsored">Sponsored</div>':''}<div class="pc-toprow"><div class="pc-titles"><div class="pc-brand">${esc(b)}</div><div class="pc-name">${esc(n)}</div></div></div>
     <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${pct?`<span class="save" data-pct="${pct}"></span>`:''}</div></div>${swatches(i)}</div>`}
@@ -130,6 +134,11 @@ function miniBag(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.pr
 function mountBag(open){const old=document.getElementById('pimb');if(old)old.remove();document.documentElement.classList.toggle('pi-lock',!!open);
   if(open)document.body.insertAdjacentHTML('beforeend',miniBag())}
 document.addEventListener('click',e=>{
+  const sw=e.target.closest('.pcar .pc-swatch[data-sw]');if(sw){e.preventDefault();e.stopPropagation();const card=sw.closest('.pc'),img=card&&card.querySelector('.pc-img');
+    sw.parentNode.querySelectorAll('.pc-swatch').forEach(b=>{const on=b===sw;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+    if(img){const ph=img.querySelector('img.ph');if(sw.dataset.img){ph.src=sw.dataset.img;img.classList.remove('pi-tint')}
+      else{img.classList.toggle('pi-tint',sw.dataset.sw!=='0');img.style.setProperty('--pi-tint',sw.dataset.c)}}
+    return}
   const pk=e.target.closest('#pictl [data-pick]');if(pk){e.preventDefault();const i=+pk.dataset.pick;if(PICK[i])delete PICK[i];else PICK[i]=1;mountPicker(true);return}
   if(e.target.closest('[data-ctlx]')){e.preventDefault();const sh=document.getElementById('pictl');if(sh){sh.classList.remove('open');setTimeout(()=>mountPicker(false),300)}return}
   if(e.target.closest('[data-ctladd]')){e.preventDefault();mountPicker(false);PC.bagOpen=true;mountBag(true);return}

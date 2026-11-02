@@ -24,6 +24,8 @@
       card at 1440), so a wider screen pulls in more products instead of scaling them. Narrow containers (search, mini bag, picker) keep --pcar-per.
   14. Rail cards = the product card format, always: (Sponsored) · brand (never dropped — PLT / Warehouse included) · name clamped to 2 lines · price
       now · was · -X% (.save, as the PLP card), wrapping to a second line when the card is narrow · colour swatches (.pc-swatches) when there are colours.
+  15. Swatches on rail cards are buttons (.pc-swatch as <button>, aria-pressed, aria-label = colour): a tap selects that colour (the ring moves) and swaps
+      the card image to the colour's shot (data-img); hover = Grey 4 keyline. Never opens the PDP.
    MODAL (new type, mini bag / added to bag — demiladea.github.io/Debenhams/Add To Cart concept 1):
    6. .mdl--side: desktop drawer — full height, 480 wide, flush to the right edge, square corners, slides in from the right. Mobile keeps .mdl--up.
    7. .mdl-tick: the 16px tick left of the title ("✓ Added to Bag"), the same slot and size as .mdl-back. */
@@ -73,4 +75,7 @@
 @media(min-width:1024px){.pcar--lg .pcar-hd{align-items:center}
   .pcar--full .pcar-track>*{flex-basis:var(--pcar-card-d,248px)}}
 .price-blk--rail .price{flex-wrap:wrap;white-space:normal;row-gap:0}
+button.pc-swatch{cursor:pointer;flex:none}
+button.pc-swatch:hover:not(.on){border-color:var(--border-strong)}
+button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#2797FF);outline-offset:2px}
 /* (url paths are relative to this file; they become icons/lib/… once banked in components.css) */
