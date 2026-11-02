@@ -2080,32 +2080,33 @@ select.rf-input:invalid{color:var(--rf-dim)}
 
 /* ---- Virtual Stylist intro (2 Nov 2026, vto-prototype v2; assets/ds/vs-intro.js): the launch modal on the DS .mdl in a .vs-layer (the delivery / S&S layer rules).
    How it works (.howto: three numbered steps on sunken cards, the number in the fascia action colour) · For the best result (.ptips: 2 × 2 tips) ·
-   consent (.chk-row, box centred on the copy + .vs-legal 12/16 grey, links --text-link) · Camera / Upload: two .bd pri .ic20 side by side with their glyphs (as v1; Jake 2 Nov) · .vs-note.
+   consent (.chk-row, box centred on the copy, gap 3 + .vs-legal 12/16 --text-primary, links --text-link strong, no underline) · Camera / Upload: two .bd pri .ic20 side by side with their glyphs (as v1; Jake 2 Nov) · .vs-note.
    Centred .mdl--md from 600px, .mdl--up slide up on phones. Glyphs are DS library icons, masked so they take --icon-primary. */
 .vs-intro .mdl-bd{gap:var(--gap-6,24px)}
 .vs-sec{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
 .vs-sec-h{margin:0;font-family:var(--font-family-base);font-size:16px;line-height:20px;font-weight:var(--w-strong,600);color:var(--text-primary);text-align:center}
 .howto{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap-2,8px);list-style:none;margin:0;padding:var(--gap-3,12px) 0 0}
-.howto li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-5,20px) var(--gap-2,8px) var(--gap-4,16px);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);background:var(--surface-sunken);text-align:center;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
+.howto li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-5,20px) var(--gap-2,8px) var(--gap-4,16px);border-radius:var(--radius-lg);background:var(--surface-sunken);text-align:center;font-size:10px;line-height:13px;font-weight:var(--w-regular);color:var(--text-primary)}
 .howto .n{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
 .howto .vsi{width:24px;height:24px}
+.howto li>span{padding:0 1px}   /* copy box 91 in a 109 card, as Figma 15874-1068 (wraps “We style you in / this piece”) */
 .ptips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-2,8px);list-style:none;margin:0;padding:0}
-.ptips li{display:flex;align-items:center;gap:var(--gap-3,12px);min-height:48px;padding:var(--gap-3,12px);border-radius:var(--radius-lg);background:var(--surface-sunken);font-size:13px;line-height:17px;font-weight:var(--w-regular);color:var(--text-primary)}
+.ptips li{display:flex;align-items:center;gap:var(--gap-3,12px);min-height:44px;padding:var(--gap-3,12px);border-radius:var(--radius-lg);background:var(--surface-sunken);font-size:10px;line-height:13px;font-weight:var(--w-regular);color:var(--text-primary)}
 .ptips .vsi{width:20px;height:20px}
 .vsi{display:block;flex:none;background:var(--icon-primary);-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
 .vsi--add-photo{--ic:url("icons/lib/icons-add-photo.svg")}.vsi--ai{--ic:url("icons/lib/icons-ai.svg")}.vsi--hanger{--ic:url("icons/lib/icons-hanger.svg")}
 .vsi--light{--ic:url("icons/lib/icons-light-bulb.svg")}.vsi--dress{--ic:url("icons/lib/icons-dress.svg")}.vsi--face{--ic:url("icons/lib/icons-account.svg")}.vsi--plain{--ic:url("icons/lib/icons-image.svg")}
-.vs-consent{cursor:pointer;-webkit-tap-highlight-color:transparent}   /* the whole row toggles; only the links are exempt */
-.vs-legal{margin:0;flex:1;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary)}
-.vs-legal a{color:var(--text-link);text-decoration:underline}
+.vs-consent{gap:var(--gap-3,12px);cursor:pointer;-webkit-tap-highlight-color:transparent}   /* the whole row toggles; only the links are exempt */
+.vs-legal{margin:0;flex:1;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
+.vs-legal a{color:var(--text-link);font-weight:var(--w-strong,600);text-decoration:none}
 .vs-ctas{display:flex;gap:var(--gap-2,8px)}.vs-ctas .bd{flex:1 1 0;width:auto;min-width:0;padding-left:var(--gap-3,12px);padding-right:var(--gap-3,12px);white-space:nowrap}   /* side by side at every width (Jake, 2 Nov) */
 .vs-note{margin:0;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary);text-align:center}
 .vs-intro.mdl--up .mdl-bd{overflow-y:auto}
 @media(min-width:600px){
   .vs-sec-h{font-size:18px;line-height:24px}
   .howto{gap:var(--gap-4,16px)}
-  .howto li{font-size:13px;line-height:18px;padding:var(--gap-6,24px) var(--gap-4,16px) var(--gap-5,20px)}
-  .ptips{gap:var(--gap-3,12px)}.ptips li{font-size:14px;line-height:20px}
+  .howto li{font-size:12px;line-height:16px;padding:var(--gap-6,24px) var(--gap-4,16px) var(--gap-5,20px)}
+  .ptips{gap:var(--gap-3,12px)}.ptips li{font-size:12px;line-height:16px}
 }
 /* ---- Bag product card + bag sections (2 Nov 2026, Bag 2026 Figma CYyGeUDy4w02enV7uFxZ6W · mobile 1337:250006 / desktop 1337:256981). Markup + behaviour:
    assets/ds/bag.js (DG_bag). Card: 1px --border-subtle, radius 4, gap 3 (12px) in, image 68 × 102 (2:3) → info gap 4 (16px), text 12 (14 from 1024),
