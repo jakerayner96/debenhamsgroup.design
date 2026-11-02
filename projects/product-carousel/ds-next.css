@@ -1,4 +1,4 @@
-/* Product carousel — PROPOSED changes (2 Nov 2026), loaded after components.css by this prototype only.
+/* PROPOSED DS changes (2 Nov 2026) — Product carousel + Modal — loaded after components.css by this prototype only.
    Not banked yet: once signed off, these fold into the .pcar block in assets/ds/components.css (+ the fascia gap into tokens.css),
    the catalogue entry 'product-carousel' and the changelog — and this file is deleted.
    Figma: DS Grid 11092-19864 · DS Carousel 1342-6415 · Home 1676-10371 · Core PDP 2026 Create The Look 638-56822, MAN 638-57804 / 638-57872.
@@ -8,7 +8,10 @@
    2. Images locked 2:3 — the image never stretches or crops to the card's text; tiles and cards share the ratio.
    3. Grid: 3 across on mobile (was 2), --pcar-per across on desktop.
    4. Create the Look (.pcar--look): the carousel on a grey panel (--grey-05), padding gap 4 (16px), image-only 150px tiles, View all right.
-   5. Chevrons optional: .pcar--no-arr drops the desktop arrows (trackpad / shift-scroll + swipe only). */
+   5. Chevrons optional: .pcar--no-arr drops the desktop arrows (trackpad / shift-scroll + swipe only).
+   MODAL (new type, mini bag / added to bag — demiladea.github.io/Debenhams/Add To Cart concept 1):
+   6. .mdl--side: desktop drawer — full height, 480 wide, flush to the right edge, square corners, slides in from the right. Mobile keeps .mdl--up.
+   7. .mdl-tick: the 16px tick left of the title ("✓ Added to Bag"), the same slot and size as .mdl-back. */
 .pcar{--pcar-gap:var(--pcar-gap-x,4px);--pcar-row-gap:16px}
 [data-brand="plt"],[data-brand="brandroom"]{--pcar-gap-x:0px;--pcar-info-x:4px}
 .pcar .pc-info{padding-inline:var(--pcar-info-x,0px)}
@@ -26,3 +29,11 @@
 
 .pcar--no-arr .pcar-arr{display:none!important}
 
+
+.mdl--side{width:480px;height:100%;max-height:none;border-radius:0;overflow-y:auto}
+.mdl--side .mdl-bd{min-height:auto}
+.mdl.mdl-anim-side{animation:mdlside .3s ease-in-out both}
+@keyframes mdlside{from{transform:translateX(100%)}to{transform:none}}
+.mdl-tick{width:16px;height:25px;flex:none;display:grid;place-items:center}
+.mdl-tick::before{content:"";width:16px;height:16px;background:var(--icon-primary);-webkit-mask:url("../../assets/ds/icons/lib/icons-tick.svg") center/contain no-repeat;mask:url("../../assets/ds/icons/lib/icons-tick.svg") center/contain no-repeat}
+/* (url paths are relative to this file; they become icons/lib/… once banked in components.css) */
