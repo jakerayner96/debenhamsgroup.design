@@ -103,7 +103,7 @@ const DG_CATALOGUE = [
   summary:'Floating-label input. The label shrinks from 14 to 12 as the value arrives; errors turn the keyline red and add a message underneath.',
   use:['Every text entry: email, address, promo code, search inside forms.'],
   avoid:['Placeholder text as the only label.','Error colour without an error message.'],
-  anatomy:['50px · padding gap 2 (8px) top/bottom, gap 4 (16px) sides · radius 4 (brand) · Figma 9925-5828','Phone (.fld--tel, 21 Oct 2026): country prefix (.fld-pre: 20×14 flag + dialling code, 1px Grey 3 divider) inside the field, label and value start at 92px','Outline Grey 3 #B5B5B5 at rest and when filled — black only while focused (caret in the field), back to grey on blur','Label 14 grey #767676, floats to 12 on focus / filled; value 14 black; caret #2797FF','Error: #C90000 outline + 14 regular message gap 2 (8px) under · Inactive: Grey 1 #F2F2F2 fill, grey text'],
+  anatomy:['50px · padding gap 2 (8px) top/bottom, gap 4 (16px) sides · radius 4 (brand) · Figma 9925-5828','Phone (.fld--tel, 21 Oct 2026): country prefix (.fld-pre: 20×14 flag + dialling code, 1px Grey 3 divider) inside the field, label and value start at 92px','Outline Grey 3 #B5B5B5 at rest and when filled — black only while focused (caret in the field), back to grey on blur','Label 14 grey #767676, floats to 12 on focus / filled; value 14 black; caret #2797FF','Error: #C90000 outline + 14 regular message gap 2 (8px) under · Inactive: Grey 1 #F2F2F2 fill, grey text','Multi-line (.fld--area, 2 Nov 2026): grows with its text from 96px, idle label on the first line, resizes vertically','Hint (.fld-hint): 12 grey #767676 helper line gap 2 (8px) under the field'],
   variants:[
     {name:'Empty', html:'<label class="fld" style="width:280px"><input placeholder=" "><span class="lbl">Email address</span></label>'},
     {name:'Filled', html:'<label class="fld" style="width:280px"><input placeholder=" " value="jake@debenhams.com"><span class="lbl">Email address</span></label>'},
@@ -111,6 +111,9 @@ const DG_CATALOGUE = [
     {name:'Inactive', html:'<label class="fld inactive" style="width:280px"><input placeholder=" " value="jake@debenhams.com" disabled><span class="lbl">Email address</span></label>'},
     {name:'Error · empty', html:'<div style="width:280px"><label class="fld invalid"><input placeholder=" "><span class="lbl">Email address</span></label><div class="fld-err">This field is required</div></div>'},
     {name:'Phone (.fld--tel)', html:'<label class="fld fld--tel" style="width:280px"><span class="fld-pre"><img src="assets/ds/icons/flags/united-kingdom.svg" alt="">+44</span><input type="tel" placeholder=" "><span class="lbl">Mobile number (optional)</span></label>'},
+    {name:'Multi-line (.fld--area)', html:'<label class="fld fld--area" style="width:280px"><textarea placeholder=" " rows="3"></textarea><span class="lbl">Imagery / notes</span></label>'},
+    {name:'Multi-line · filled', html:'<label class="fld fld--area" style="width:280px"><textarea placeholder=" " rows="3">Use the Black Friday hero on the home screen. Hide the sale banner.</textarea><span class="lbl">Imagery / notes</span></label>'},
+    {name:'With hint (.fld-hint)', html:'<div style="width:280px"><label class="fld"><input placeholder=" "><span class="lbl">Headline</span></label><div class="fld-hint">Max ~4 words: what this screen shows</div></div>'},
   ],
   dev:{title:'Atoms/Input Field', status:'match', note:'Dev has label / errors / readOnlyValue / hyphenatedInput / errorOnlyBorder. Molecules/Date Select is three of these — compose, not a new component.'} },
 

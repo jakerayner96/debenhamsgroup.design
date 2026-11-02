@@ -606,6 +606,14 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .fld:focus-within .lbl,.fld input:not(:placeholder-shown)+.lbl,.fld textarea:not(:placeholder-shown)+.lbl{top:8px;transform:none;font-size:12px;line-height:15px}
 .fld--pin input{letter-spacing:.3em}
 .fld-err{font-size:14px;line-height:18px;color:var(--text-error);margin-top:8px}
+/* Multi-line field (.fld--area) — 2 Nov 2026, Screenshot brief: same outline / label / caret as .fld, grows with its text (min 96px).
+   The idle label sits on the first line (not centred) and floats to 12 at the top on focus or once filled.
+   Hint (.fld-hint): 12 grey helper line gap 2 (8px) under any field — what to write, never the label itself. */
+.fld--area{height:auto;min-height:96px;justify-content:flex-start;padding-top:var(--gap-2,8px);padding-bottom:var(--gap-3,12px)}
+.fld--area textarea{display:block;min-height:60px;resize:vertical;field-sizing:content;padding-top:20px}
+.fld--area .lbl{top:23px;transform:none}
+.fld--area:focus-within .lbl,.fld--area textarea:not(:placeholder-shown)+.lbl{top:8px}
+.fld-hint{font-size:12px;line-height:16px;color:var(--text-secondary);margin-top:var(--gap-2,8px)}
 .fsel{position:relative;display:flex;align-items:center;height:50px;padding:0 44px 0 16px;background:var(--surface-raised);border:1px solid var(--border-control,#B5B5B5);border-radius:var(--radius-default);font-size:16px;color:var(--text-primary);cursor:pointer;box-sizing:border-box}
 .fsel::after{content:"";position:absolute;right:16px;top:50%;width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg)}
 .fsel select{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer;font-size:16px} /* native select drives it (mobile-first pattern) */

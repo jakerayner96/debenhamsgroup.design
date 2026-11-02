@@ -3,6 +3,19 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-11-02",
+  "v": "2026.11.02",
+  "title": "Multi-line text field · field hint · Screenshot Brief tool",
+  "by": "Screenshot Brief (tools/screenshot-brief, from the App Store / Play Store screenshot template vebOMPnswl12a9JehBSt1m 127:897, Jake 2 Nov)",
+  "added": [
+   "Text field variant .fld--area (multi-line): the .fld outline, floating label and caret on a textarea that grows with its text from 96px (field-sizing: content, resizes vertically); the idle label sits on the first line and floats to 12 on focus or once filled; catalogue variants Multi-line and Multi-line · filled · by Screenshot Brief",
+   "Field hint .fld-hint: 12 grey (--text-secondary) helper line gap 2 (8px) under any field, for what to write (never the label itself); catalogue variant With hint · by Screenshot Brief",
+   "Planning and Tools: Screenshot Brief (tools/screenshot-brief/), the ecom → creative screenshot brief as a form: app, listing type, sets, build, markets, test account, up to 10 screens (reference screenshot OR website link, headline, subline, notes), the before-you-send checklist; draft kept in the browser; Export PDF (A4, jsPDF text, clickable links, gaps flagged in red) · by Screenshot Brief"
+  ],
+  "changed": [],
+  "fixed": []
+ },
+ {
   "d": "2026-10-30",
   "v": "2026.10.30",
   "title": "Delivery grid: four row formats (Delivery Methods · Get It By · Get It By date only · Arrives By) · Wishlist collections",
