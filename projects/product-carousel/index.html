@@ -178,8 +178,8 @@ function renderPanel(host,S,update){
   host.innerHTML=`<h1>Product carousel</h1>
   <div class="card"><h3>Screen <small>${bn}</small></h3>${opt('home','Home')}${opt('pdp','PDP')}${opt('search','Search')}${opt('minibag','Mini Bag')}${opt('bag','Bag')}</div>
   ${c.view==='minibag'?`<div class="card"><h3>Added To Bag</h3>
-    ${opt2('live','Live (no reccs)')}${opt2('look','Complete the look')}${opt2('save','Save your bag')}
-    <div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div></div>`:''}`;
+    ${opt2('live','Live (no reccs)')}${opt2('look','Complete the look')}${opt2('toast','Toast')}${opt2('save','Save your bag')}
+    ${(c.mbType||'live')!=='toast'?`<div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div>`:''}</div>`:''}`;
   function opt2(v,b){return `<button class="opt${(c.mbType||'live')===v?' on':''}" data-mb="${v}"><span class="r"></span><span class="t"><b>${b}</b></span></button>`}
   host.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{c.view=b.dataset.view;panel();update()});
   host.querySelectorAll('[data-mb]').forEach(b=>b.onclick=()=>{c.mbType=b.dataset.mb;panel();update()});

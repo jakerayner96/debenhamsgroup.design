@@ -92,8 +92,9 @@ function mainItem(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.p
   const sz=(document.querySelector('.sz.on')||{}).textContent,cm=((document.querySelector('.buy')||{}).innerText||'').match(/Colou?r:\s*([^\n]+)/);
   return Object.assign({},p,{img:DP?DP.imgs[0]:IMG(1),size:sz&&sz.trim()||'12',colour:p.colour||(cm&&cm[1].trim())||''})}
 function bagItems(){return [mainItem()].concat(ADDED.map(i=>{const x=DG_feedItem(BR(),i);return x&&Object.assign({size:'One Size',colour:x.swatches?x.swatches[0].name:''},x)}).filter(Boolean))}
-/* the mini bag card (DS .bag-item--mini, Bag 2026): brand - name · size / colour · price */
-const lineItem=p=>`<div class="bag-item bag-item--mini${p.i!=null&&p.i===JUST?' bag-item--in':''}"><img src="${p.img}" alt=""><div class="info"><div class="t"><b>${esc(p.brand||BN())}</b> - ${esc(p.name)}</div><div class="v">${esc([p.size,p.colour].filter(Boolean).join(' / '))}</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
+/* the line item: Live = the live card (DS .bag-item, 99 × 148); the new versions = the mini bag card (DS .bag-item--mini, Bag 2026): brand - name · size / colour · price */
+const oldItem=p=>`<div class="bag-item"><img src="${p.img}" alt=""><div class="info"><div class="b">${esc(p.brand||BN())}</div><div class="n">${esc(p.name)}</div><div class="v">${esc(/one size/i.test(p.size||'')?'One size':'Size '+p.size)} · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
+const lineItem=p=>MBT()==='live'?oldItem(p):`<div class="bag-item bag-item--mini${p.i!=null&&p.i===JUST?' bag-item--in':''}"><img src="${p.img}" alt=""><div class="info"><div class="t"><b>${esc(p.brand||BN())}</b> - ${esc(p.name)}</div><div class="v">${esc([p.size,p.colour].filter(Boolean).join(' / '))}</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
 function thresh(){if(PC.thresh===false)return '';const t=bagItems().reduce((a,p)=>a+num(p.price),0);
   if(t>=THRESH)return `<div class="thresh thresh--ok"><span class="tick"></span><span>You’ve qualified for free delivery</span></div>`;
   return `<div class="thresh"><span>Spend <b>£${(THRESH-t).toFixed(2)}</b> more for free delivery</span><div class="track"><div class="fill" style="width:${Math.round(t/THRESH*100)}%"></div></div></div>`}
@@ -111,7 +112,7 @@ function miniBag(){const d=desk(),t=MBT();
   <div class="mdl ${d?'mdl--side mdl-anim-side':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Added to bag">
     <div class="modal-hd"><div class="mt"><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
     <div class="mdl-bd"><div class="pi-items">${bagItems().map(lineItem).join('')}</div>${thresh()}
-      <div class="pi-btns"><button class="bd sec" data-mbx>Continue Shopping</button><button class="bd pri">View Bag</button></div>
+      <div class="pi-btns">${t==='live'?'<button class="bd sec" data-mbx>Continue Shopping</button>':''}<button class="bd pri">View Bag</button></div>
       ${t==='save'?'<div class="hr"></div>'+saveBag():t==='look'?rail:''}</div></div></div>`}
 function toast(){const p=mainItem();return `<div class="toast toast--top toast--prod pi-toast" id="pitoast" role="status"><img class="toast-img" src="${p.img}" alt=""><span class="toast-tx"><b>Added to Bag</b><span>${esc([p.size,p.colour].filter(Boolean).join(' / '))}, ${esc(p.price)}</span></span><button class="act" type="button">View Bag</button>${EXPORTING?'':'<i class="toast-timer"></i>'}</div>`}
 let TT=0;
