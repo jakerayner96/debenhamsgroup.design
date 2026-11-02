@@ -26,6 +26,19 @@
     sync();
   }
   window.DG_pcar=function(root){(root||document).querySelectorAll('.pcar').forEach(wire)};
+  /* DG_pcarHTML(o) — the markup (catalogue entry 'product-carousel') for a placement, so pages never hand-build a rail (2 Nov 2026, Master prototype).
+     o: size 'lg'|'md'|'sm' · title · sub · tabs[] · all (View all label) · per (cards in view / grid columns, desktop) · grid · look (image only) · bleed (mobile edge to edge)
+        items[]: {img, brand, name, price, was, href} — the DS product card, rail price, no wishlist. */
+  const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  window.DG_pcarCard=function(p,o){o=o||{};
+    const img=`<div class="pc-img"><img class="ph" src="${esc(p.img)}" alt="${esc((p.brand?p.brand+' ':'')+p.name)}" loading="${o.eager?'eager':'lazy'}"></div>`;
+    if(o.look)return `<article class="pc"${p.href?` data-href="${esc(p.href)}"`:''}>${img}</article>`;
+    return `<article class="pc"${p.href?` data-href="${esc(p.href)}"`:''}>${img}<div class="pc-info"><div class="pc-toprow"><div class="pc-titles">${p.brand?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div>
+      <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}</div></div></div></article>`};
+  window.DG_pcarHTML=function(o){o=o||{};const grid=!!o.grid,tabs=o.tabs&&o.tabs.length?o.tabs:null,hd=o.title||o.sub||tabs||o.all;
+    const cls=['pcar','pcar--'+(o.size||'md'),grid&&'pcar--grid',o.look&&'pcar--look',o.bleed!==false&&'pcar--bleed'].filter(Boolean).join(' ');
+    return `<section class="${cls}" style="--pcar-per:${o.per||5}">${hd?`<header class="pcar-hd">${o.title||o.sub?`<div class="pcar-tt">${o.title?`<h2 class="pcar-t">${esc(o.title)}</h2>`:''}${o.sub?`<p class="pcar-sub">${esc(o.sub)}</p>`:''}</div>`:''}${tabs?`<div class="pcar-tabs">${tabs.map((t,i)=>`<button class="chip${i?'':' on'}" aria-pressed="${!i}">${esc(t)}</button>`).join('')}</div>`:''}${o.all?`<a class="pcar-all" href="#">${esc(o.all===true?'View all':o.all)}</a>`:''}</header>`:''}
+  <div class="pcar-body">${grid?'':'<button class="pcar-arr pcar-arr--prev" disabled></button>'}<div class="pcar-track">${(o.items||[]).map(p=>DG_pcarCard(p,o)).join('')}</div>${grid?'':'<button class="pcar-arr pcar-arr--next"></button>'}</div></section>`};
   const boot=()=>{DG_pcar();if(window.MutationObserver)new MutationObserver(m=>{if(m.some(r=>r.addedNodes.length))DG_pcar()}).observe(document.body,{childList:true,subtree:true})};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();

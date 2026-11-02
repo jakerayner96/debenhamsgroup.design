@@ -9,7 +9,8 @@
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
 /* DS page template — Bag (live /basket layout, 06 Oct 2026). Page scaffolding only; every visible piece is a DS component:
-   header (header.js) · USP banners (usp.js) · page title · threshold · bag item · bag payment summary (bag-summary.js) · footer (footer.js).
+   header (header.js) · USP banners (usp.js) · page title · threshold · bag item · bag payment summary (bag-summary.js) ·
+   recommendations (DS Product carousel, medium + View all, 4 + peek — 2 Nov 2026, Master prototype) · footer (footer.js).
    Any fascia: ?brand=<slug>. Desktop: 1024 container, items | 390px summary column on --surface-sunken. Mobile: total + checkout under the
    title, summary full-bleed after the items. */
 *{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
@@ -18,8 +19,9 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 .items{display:flex;flex-direction:column;gap:var(--gap-4)}
 .items>*{max-width:100%}
 .sumcol{margin-top:var(--gap-6)}
+.recs{padding:var(--gap-10) var(--gap-4) 0}
 footer[data-ftr]{margin-top:var(--gap-10)}
-@media(min-width:1024px){.pg{max-width:1024px;margin:0 auto}.cols{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:var(--gap-4);align-items:start}.sumcol{margin:0;background:var(--surface-sunken)}}
+@media(min-width:1024px){.pg{max-width:1024px;margin:0 auto}.recs{max-width:1024px;margin:0 auto;padding:var(--gap-12) 0 0}.cols{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:var(--gap-4);align-items:start}.sumcol{margin:0;background:var(--surface-sunken)}}
 </style>
 </head>
 <body>
@@ -31,6 +33,9 @@ footer[data-ftr]{margin-top:var(--gap-10)}
 <script src="assets/ds/footer.js"></script>
 <script src="assets/ds/bag-summary.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
+<script src="assets/ds/carousel.js"></script>
+<script src="assets/ds/export-masks.js"></script>
+<script src="templates/feed.js"></script>
 <script>
 /* in: ?brand=<slug> or ?s={"brand":…}; {protoSet} / {protoPing}. out: {protoReady}, {protoPong,h}. */
 const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C&&C.find(x=>x.slug===slug);return c?c.variants[i].html.replace(/ style="width:[^"]*"/,''):''};
@@ -48,6 +53,7 @@ function page(){const ps=((window.PRODUCTS_ALL||{})[S.brand]||[]).slice(0,2),it=
   return header()+(desk()
     ?`<main class="pg">${title}<div class="cols"><div class="items" data-slot="items">${V('threshold',0)}${items}</div><div class="sumcol" data-slot="summary">${sum}</div></div></main>`
     :`<main class="pg">${title}${window.DG_bagTopHTML?DG_bagTopHTML(S.brand,it):''}<div class="items" data-slot="items">${V('threshold',0)}${items}</div></main><div class="sumcol" data-slot="summary">${sum}</div>`)
+    +(window.DG_pcarHTML?`<section class="recs" data-slot="recs">${DG_pcarHTML({title:'You Might Also Like',all:true,per:4,eager:EXPORTING,items:DG_feed(S.brand,5,10,3)})}</section>`:'')
     +`<footer data-ftr="${S.brand}"></footer>`}
 function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
   document.getElementById('app').innerHTML=page();

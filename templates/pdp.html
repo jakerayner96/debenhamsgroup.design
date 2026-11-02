@@ -16,6 +16,7 @@
    (At a Glance open · Description · Product Details & Care · Delivery · Returns · Manufacturer) · footer.
    Desktop: breadcrumb, then gallery + accordions on the left, the buy column on the right.
    AI Generated strip (26 Oct 2026): S.ai = indexes of the AI gallery images → DS .ai-wrap + .badge-ai on those slides, product tags lift (never on thumbnails).
+   Recommendations (2 Nov 2026, Master prototype): DS Product carousel under the page, full width — Create The Look (image only, medium) · Why Not Treat Yourself? (medium + View all) · Recently Viewed; 5 + peek on desktop (projects/product-carousel spec).
    New PDP features land HERE so every next PDP gets them. Any fascia: ?brand=<slug>. Drop components in via the data-slot hooks. */
 *{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
 body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
@@ -32,7 +33,9 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
   .under{margin-top:var(--gap-6)}
   .vs{margin-top:var(--gap-6)}
   .buy{gap:var(--gap-5)}
+  .recs{padding:var(--gap-6) 0 0}
 }
+.recs{display:flex;flex-direction:column;gap:var(--gap-10);padding:var(--gap-4) 0 0}
 </style>
 </head>
 <body>
@@ -48,7 +51,11 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/subscribe.js"></script>
 <script src="assets/ds/dplus-logos.js"></script>
 <script src="assets/ds/catalogue.js"></script>
+<script src="assets/ds/carousel.js"></script>
+<script src="assets/ds/export-masks.js"></script>
 <script src="templates/products.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script src="templates/feed.js"></script>
 <script>
 /* in: ?brand=<slug> or ?s={"brand":…}; {protoSet} / {protoPing} as the review shell expects. out: {protoReady}, {protoPong,h}. */
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -123,7 +130,11 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
   return `${header()}<main class="pg">
   ${d?`<nav class="bc" aria-label="Breadcrumb">${crumbs}</nav>`:''}
   <div class="pdp">${d?`<div><div class="gal">${gallery(P)}</div><div class="vs">${chips}</div>${under}</div>${buy}`:`<div class="gal">${gallery(P)}</div>${buy}${under}`}</div>
+  ${recs()}
   </main><footer data-ftr="${S.brand}"></footer>`}
+/* recommendations: the DS Product carousel (carousel.js DG_pcarHTML), feeds from the fascia's PLP set (templates/feed.js) */
+function recs(){if(!window.DG_pcarHTML||!window.DG_feed)return '';const R=o=>DG_pcarHTML(Object.assign({per:5,eager:EXPORTING},o));
+  return `<section class="recs" data-slot="recs">${R({look:true,title:'Create The Look',items:DG_feed(S.brand,9,10,2)})}${R({title:'Why Not Treat Yourself?',all:true,items:DG_feed(S.brand,3,10,3)})}${R({title:'Recently Viewed',items:DG_feed(S.brand,12,8,1)})}</section>`}
 function wire(){
   const g=document.querySelector('.pdp-gal');if(!g)return;const sl=g.querySelector('.slides'),th=[...g.querySelectorAll('.thumbs button')],bar=g.querySelector('.pag i');
   const go=i=>{const im=sl.children[i];if(im)sl.scrollTo({left:im.offsetLeft-sl.offsetLeft,behavior:'smooth'})};

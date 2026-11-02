@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../">
+<title>Home · DS template</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* DS page template — Home (2 Nov 2026, Master prototype). Order: header (header.js) · USP banners (usp.js) · each fascia's live homepage
+   (projects/usp-banner/home.js: the CMS tiles / heroes / text as captured, 06 Oct · boohoo 19 Oct) · footer (footer.js).
+   Every product module on the live home is the DS Product carousel (.pcar, carousel.js DG_pcarHTML): large header + tabs, 5 + peek on desktop;
+   a home with none gets one after its second module. Top Sellers (medium + View all) further down. Rails: no wishlist (DS rule).
+   Any fascia: ?brand=<slug>. New home features land HERE so every next home gets them. Drop components in via the data-slot hooks. */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+.mod{padding:var(--gap-8) var(--gap-4)}
+@media(min-width:1024px){.mod{padding:var(--gap-12) var(--gap-10);max-width:1440px;margin:0 auto}}
+footer[data-ftr]{margin-top:var(--gap-10)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/ds/header.js"></script>
+<script src="assets/ds/usp-live.js"></script>
+<script src="assets/ds/usp.js"></script>
+<script src="assets/ds/footer.js"></script>
+<script src="assets/ds/catalogue.js"></script>
+<script src="assets/ds/carousel.js"></script>
+<script src="assets/ds/export-masks.js"></script>
+<script src="projects/usp-banner/home.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script src="templates/feed.js"></script>
+<script>
+/* in: ?brand=<slug> or ?s={"brand":…}; {protoSet} / {protoPing} as the review shell expects. out: {protoReady}, {protoPong,h}. */
+const q=new URLSearchParams(location.search);
+let S={brand:q.get('brand')||'debenhams'},EXPORTING=false;
+try{const s=q.get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
+const desk=()=>innerWidth>=1024;
+/* rail tabs per fascia (product carousel spec: home only, max 4) */
+const TABS={debenhams:['Fashion','Home','Beauty'],boohoo:['Women','Men','Beauty'],boohooman:['New In','Hoodies','Jackets'],plt:['New In','Dresses','Shoes'],karenmillen:['Dresses','Coats','Tailoring'],warehouse:['Dresses','Knitwear','Denim'],brandroom:['Women','Men','Accessories']};
+const NOBRAND=['plt','warehouse'];
+const RAILS={};
+function header(){const dev=desk()?'desktop':'mobile';
+  return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header><div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`}
+/* a rail: the live module's own products first (when it has them), topped up from the fascia's PLP set; each tab = a different slice */
+function rail(id,o,live,tab){RAILS[id]={o,live};
+  const own=tab?[]:(live||[]).map(x=>({img:x.src,brand:NOBRAND.includes(S.brand)?'':x.brand,name:x.name,price:x.price,was:x.was})).filter(x=>x.name&&x.price);
+  const items=own.concat(DG_feed(S.brand,(o.start||0)+(tab||0)*4,10-own.length,3));
+  return Object.assign({},o,{items,eager:EXPORTING})}
+function home(){
+  const d=desk();if(!window.renderHome)return '';
+  const doc=new DOMParser().parseFromString(renderHome(S.brand,d),'text/html'),hm=doc.querySelector('.hm');if(!hm)return '';
+  const mods=((window.HOME_LIVE||{})[S.brand]||[]).map(x=>x[d?'d':'m']).filter(o=>o&&o.t==='products');
+  const box=h=>{const el=doc.createElement('div');el.className='mod';el.setAttribute('data-slot','rail');el.innerHTML=h;return el};
+  const feat=k=>{const o=mods[k]||{};return DG_pcarHTML(rail('home'+k,{size:'lg',title:o.title||'Transition Between Seasons',sub:o.sub||'Get ready for cosier days with our easy autumn upgrades',tabs:o.tabs||TABS[S.brand],start:k*5,per:5},o.items))};
+  const ps=[...hm.querySelectorAll(':scope>.hm-p')];
+  if(ps.length)ps.forEach((el,k)=>el.replaceWith(box(feat(k))));
+  else{const at=hm.children[Math.min(1,hm.children.length-1)];at&&at.after(box(feat(0)))}
+  const kids=[...hm.children],at2=kids[Math.min(kids.length-1,5)];
+  at2&&at2.after(box(DG_pcarHTML(rail('homeTop',{size:'md',title:'Top Sellers',all:true,start:7,per:5}))));
+  return `<main data-slot="home">${hm.outerHTML}</main>`}
+document.addEventListener('pcar:tab',e=>{const sec=e.target,i=[...document.querySelectorAll('.pcar')].indexOf(sec),id=Object.keys(RAILS)[i],R=RAILS[id];if(!R)return;
+  sec.querySelector('.pcar-track').innerHTML=rail(id,R.o,R.live,e.detail.index).items.map(p=>DG_pcarCard(p,R.o)).join('')});
+function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
+  if(window.HOME_CSS&&!document.getElementById('homecss')){const st=document.createElement('style');st.id='homecss';st.textContent=HOME_CSS;document.head.appendChild(st)}
+  document.getElementById('app').innerHTML=header()+home()+`<footer data-ftr="${S.brand}"></footer>`;
+  if(window.DG_uspMount)DG_uspMount();
+  document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,S.brand));
+  document.dispatchEvent(new CustomEvent('dg:render'))}
+render();
+document.addEventListener('click',e=>{if(e.target.closest('a[href="#"]'))e.preventDefault()});
+let rz,lw=innerWidth;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if((lw>=1024)!==desk()){lw=innerWidth;render()}},150)});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+</script>
+</body>
+</html>
