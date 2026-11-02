@@ -167,8 +167,8 @@ const P={
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','insitu-pre.js','insitu.js','ds-next.css','README.md'],
-  store:'proto-product-carousel-v3',
-  initial:()=>({view:'home',arrows:true,gap:'fascia',recsFmt:'carousel',look:true,sponsored:true}),
+  store:'proto-product-carousel-v4',
+  initial:()=>({view:'home',arrows:true,gap:'fascia',hp:true,hpRows:2,car:true,look:true,sponsored:true}),
 };
 const GAP0=['plt','brandroom'];
 function renderPanel(host,S,update){
@@ -180,22 +180,25 @@ function renderPanel(host,S,update){
   <p class="intro">The DS <b>Product carousel</b> (<code>.pcar</code>) in situ, on the latest pages: the <b>Shopping agent</b> prototype's home, PDP and search, as they stand, with their product rails swapped for the component. Three types: <b>carousel</b>, <b>grid</b> and <b>Create the Look</b> (grey panel, no product details). Images are always 2:3, and the gap is 4px everywhere, or none on PLT and The Brand Room. Proposed DS changes are staged in <code>ds-next.css</code> until we bank them.</p>
   <div class="card"><h3>Screen <small>${bn}</small></h3>
     ${opt('home','Home page','Feature carousel: large title, subtitle and tabs · Top Sellers')}
-    ${opt('pdp','PDP + recommendations','Create the Look (grey panel) · Why Not Treat Yourself? · Recently Viewed')}
+    ${opt('pdp','PDP + recommendations','Handpicked For You under BNPL · Create the Look (opens the picker) · We Think You’ll Like')}
     ${opt('search','Search suggestions','Search open: Recent / Popular, then Recently Viewed as the carousel, 6 in view on desktop where the panel is wider')}
     ${opt('bag','Mini bag','After Add to Bag: slide up on mobile, drawer on desktop, Complete The Look carousel (as the Add to Cart prototype, concept 1)')}</div>
   <div class="card"><h3>Chevrons <small>desktop + mouse only</small> ${sw('arrows',c.arrows,c.arrows?'On':'Off')}</h3>
     <p>Off = <code>.pcar--no-arr</code>: trackpad / swipe only. Never on mobile or touch screens either way.</p></div>
   <div class="card"><h3>Gap</h3>${seg('gap',c.gap,[['fascia','Fascia default'],['4','4px'],['0','None']])}
     <p style="margin-top:8px">Fascia default: 4px between cards, 16px between grid rows; PLT and Brand Room have no gap (text inset 4px). ${bn}: <b>${c.gap==='fascia'?(GAP0.includes(S.brand)?'none':'4px'):c.gap==='0'?'none':'4px'}</b>.</p></div>
-  ${c.view==='pdp'?`<div class="card"><h3>PDP recommendations</h3>${seg('recsFmt',c.recsFmt,[['carousel','Carousel'],['grid','Grid']])}
-    <div style="margin-top:10px">${sw('look',c.look,'Create the Look')}</div></div>`:''}
+  ${c.view==='pdp'?`<div class="card"><h3>PDP recommendations</h3>
+    <div style="display:flex;flex-direction:column;gap:10px">${sw('hp',c.hp!==false,'Handpicked For You')}
+    ${c.hp!==false?`<div style="display:flex;align-items:center;gap:10px;padding-left:38px"><span>Rows</span>${seg('hpRows',c.hpRows||2,[[1,'1'],[2,'2'],[3,'3'],[4,'4']])}</div>`:''}
+    ${sw('car',c.car!==false,'Carousel · We Think You’ll Like')}${sw('look',c.look!==false,'Create the Look')}</div>
+    <p style="margin-top:8px">Handpicked For You is the grid, 3 across, in the buy column under the BNPL box. The carousel and Create the Look run full width under the PDP; a tap anywhere on Create the Look opens the <b>Create the Look picker</b> (a reel per category, Add to bag).</p></div>`:''}
   ${c.view==='bag'?`<div class="card"><h3>Mini bag ${S.brand==='debenhams'?sw('sponsored',c.sponsored,'Sponsored slots'):''}</h3>
     <p>${S.brand==='debenhams'?'Debenhams: the first two slots are Mirakl sponsored products, labelled. ':''}Close it with the X, Continue Shopping or the scrim; <b>Add to Bag</b> on the PDP opens it again.</p></div>`:''}
   <div class="card"><h3>Figma</h3>
     <p><a class="lnk" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=1342-6415" target="_blank">Carousel</a> · <a class="lnk" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=11092-19864" target="_blank">Grid</a> · <a class="lnk" href="https://www.figma.com/design/vVJJ1bgaTGCbGd68bsNiVT/Core-PDP-2026?node-id=638-56822" target="_blank">Create the Look</a> · <a class="lnk" href="https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=1676-10371" target="_blank">Home</a> · <a class="lnk" href="https://www.figma.com/design/vVJJ1bgaTGCbGd68bsNiVT/Core-PDP-2026?node-id=638-57804" target="_blank">MAN carousel</a> · <a class="lnk" href="https://www.figma.com/design/vVJJ1bgaTGCbGd68bsNiVT/Core-PDP-2026?node-id=638-57872" target="_blank">MAN grid</a></p>
     <p style="margin-top:6px"><a class="lnk" href="../shopping-agent/" target="_blank">Shopping agent prototype</a> · <a class="lnk" href="https://demiladea.github.io/Debenhams/Add%20To%20Cart/index?brand=debenhams" target="_blank">Add to Cart prototype</a> · <a class="lnk" href="https://github.com/jakerayner96/debenhamsgroup.design/tree/main/projects/product-carousel" target="_blank">Spec (README)</a></p></div>`
   host.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{c.view=b.dataset.view;panel();update()});
-  host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{c[g.dataset.seg]=b.dataset.v;panel();update()}));
+  host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{c[g.dataset.seg]=g.dataset.seg==='hpRows'?+b.dataset.v:b.dataset.v;panel();update()}));
   host.querySelectorAll('[data-sw]').forEach(i=>i.onchange=()=>{c[i.dataset.sw]=i.checked;panel();update()});
 }
 /* ==================================================================================================== */

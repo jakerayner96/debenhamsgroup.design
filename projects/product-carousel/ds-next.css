@@ -12,6 +12,9 @@
    5. Chevrons optional: .pcar--no-arr drops the desktop arrows (trackpad / shift-scroll + swipe only).
    8. Tabs (.pcar-tabs .chip, DS Figma 1676-10372): 44px, sentence case 16px, gap 3 (12px), the fascia button radius (--radius-default: 4px, 0 on PLT /
       Brand Room / square fascias). Selected = the primary CTA (--surface-action fill, --text-on-action ink); the others white with a 1px Grey 25 keyline.
+   9. Create the Look picker (the "slot machine"): opened by any tap on Create the Look. The DS sheet (.sheet) with one reel per category — a small-header
+      Product carousel of pickable cards — and Add to bag (n) in the foot. New: .pc--pick (the card toggles; picked = 2px --icon-action ring on the image)
+      with the DS checkbox (.chk) bottom right of the image, gap 2 (8px) in.
    MODAL (new type, mini bag / added to bag — demiladea.github.io/Debenhams/Add To Cart concept 1):
    6. .mdl--side: desktop drawer — full height, 480 wide, flush to the right edge, square corners, slides in from the right. Mobile keeps .mdl--up.
    7. .mdl-tick: the 16px tick left of the title ("✓ Added to Bag"), the same slot and size as .mdl-back. */
@@ -46,4 +49,8 @@
 .pcar-tabs .chip:hover:not(.on){border-color:var(--border-strong)}
 .pcar-tabs .chip.on{background:var(--surface-action);border-color:var(--surface-action);color:var(--text-on-action);font-weight:var(--w-mid)}
 .pcar-tabs .chip:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#2797FF);outline-offset:2px}
+
+.pc--pick{cursor:pointer}
+.pc--pick .pc-img .chk{position:absolute;right:var(--gap-2,8px);bottom:var(--gap-2,8px);z-index:1}
+.pc--pick.on .pc-img::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 2px var(--icon-action);pointer-events:none}
 /* (url paths are relative to this file; they become icons/lib/… once banked in components.css) */
