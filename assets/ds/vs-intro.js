@@ -1,6 +1,6 @@
 /* DG Group Design System — Virtual Stylist intro (2 Nov 2026, vto-prototype v2).
    The launch modal for Virtual Stylist (virtual try-on), on the DS .mdl: How it works (.howto, three numbered steps) · Photo tips (.ptips, 2 × 2) ·
-   the 18+ consent row (DS checkbox .chk in .chk-row--lg + .vs-legal; a legal record, it never gates the buttons) · Take a photo (.bd pri) /
+   the 18+ consent row (DS checkbox .chk in .chk-row, centred on the copy, + .vs-legal; a legal record, it never gates the buttons) · Take a photo (.bd pri) /
    Upload a photo (.bd sec) · the try-on note (.vs-note). Centred .mdl--md from 600px, the .mdl--up slide up on phones.
      DG_vsIntro.html(o)   → the .mdl only (catalogue, Figma)       o = {fascia:'Debenhams', desk:bool, left:5|n, consent:bool}
      DG_vsIntro.layer(o)  → scrim + .mdl in a fixed .vs-layer (pages)
@@ -19,7 +19,7 @@
           <ol class="howto">${STEPS.map(([i,t],n)=>`<li><span class="n">${n+1}</span><i class="vsi vsi--${i}" aria-hidden="true"></i><span>${t}</span></li>`).join('')}</ol></section>
         <section class="vs-sec"><h3 class="vs-sec-h">For the best result</h3>
           <ul class="ptips">${TIPS.map(([i,t])=>`<li><i class="vsi vsi--${i}" aria-hidden="true"></i><span>${t}</span></li>`).join('')}</ul></section>
-        <div class="chk-row chk-row--lg vs-consent" data-vs-consent role="checkbox" aria-checked="${o.consent?'true':'false'}" tabindex="0">
+        <div class="chk-row vs-consent" data-vs-consent role="checkbox" aria-checked="${o.consent?'true':'false'}" tabindex="0">
           <button class="chk${o.consent?' on':''}" tabindex="-1" aria-hidden="true"></button>
           <p class="vs-legal">I'm 18 or over and consent to my photo being processed by ${esc(o.fascia||'Debenhams')} and its AI providers to create my virtual try-on. I accept the <a href="#" data-vs-link>Terms &amp; Conditions</a> and <a href="#" data-vs-link>Privacy Policy</a>.</p>
         </div>
