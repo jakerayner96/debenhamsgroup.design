@@ -843,7 +843,6 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pcar--look .pcar-hd{align-items:center}
 .pcar--look .pc{gap:0}
 .pcar--look .pc-info{display:none}
-@media(max-width:1023px){.pcar--look.pcar--bleed{margin-inline:calc(-1 * var(--gap-4,16px))}}
 @media(min-width:1024px){
   .pcar{--pcar-hd-gap:24px}
   .pcar--lg{--pcar-hd-gap:48px}
@@ -859,8 +858,11 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
   /* .pcar--full (home + PDP full-width rails): to the page margin at every width, one card size, so a wider screen pulls in more products */
   .pcar--full .pcar-track>*{flex-basis:var(--pcar-card-d)}
 }
-/* .pcar--bleed: on a page with a gap 4 (16px) margin, the rail runs to the screen edges on mobile while the header and first card stay on the margin */
-@media(max-width:1023px){.pcar--bleed{--pcar-pad:var(--gap-4,16px);margin-inline:calc(-1 * var(--pcar-pad))}}
+/* .pcar--bleed: the rail scrolls edge to edge of its container — cards going off screen are never clipped by a margin — while the header and the first
+   card start on the margin. --pcar-bleed = the container's side padding: the page gap 4 (16px, mobile) · a modal or sheet gap 6 (24px, every device). */
+.mdl,.sheet .body{--pcar-bleed:var(--gap-6,24px)}
+@media(max-width:1023px){.pcar--bleed{--pcar-pad:var(--pcar-bleed,var(--gap-4,16px));margin-inline:calc(-1 * var(--pcar-pad))}}
+.mdl .pcar--bleed,.sheet .body .pcar--bleed{--pcar-pad:var(--pcar-bleed);margin-inline:calc(-1 * var(--pcar-pad))}
 /* touch-only desktops (iPad landscape) swipe, no arrows */
 @media(min-width:1024px) and (hover:none){.pcar-arr{display:none}}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 4px}
@@ -1042,7 +1044,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl-3d-ctl img{width:16px;height:16px}
 /* mobile types */
 .mdl--alert{width:calc(100% - 32px);max-width:358px;max-height:calc(100% - 32px)}
-.mdl--alert .mdl-bd,.mdl--up .mdl-bd{overflow-y:auto}
+.mdl--alert .mdl-bd,.mdl--up .mdl-bd{overflow-y:auto;margin-inline:-24px;padding-inline:24px} /* the scroll box reaches the window edge, so an edge-to-edge rail inside isn't clipped at the padding (2 Nov) */
 .mdl--up{width:100%;border-radius:var(--radius-default) var(--radius-default) 0 0;max-height:100%}
 .mdl--fs{width:100%;height:100%;border-radius:0}
 .mdl--fs .mdl-bd{flex:1;align-items:center;justify-content:center}

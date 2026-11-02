@@ -65,7 +65,7 @@
     const html=()=>{const picked=all().filter(p=>P.has(p.i)),tot=picked.reduce((a,p)=>a+num(p.price),0),n=picked.length;
       return `<div class="scrim" data-lpx></div><div class="panel" role="dialog" aria-modal="true" aria-label="${esc(o.title||'Create The Look')}">
       <div class="head"><h2>${esc(o.title||'Create The Look')}</h2><button class="modal-x" aria-label="Close" data-lpx></button></div>
-      <div class="body">${o.rows.map(r=>`<section class="pcar pcar--sm pcar--bleed${o.arrows===false?' pcar--no-arr':''}" style="--pcar-per:3;--pcar-card:140px;--pcar-pad:24px;margin-inline:-24px"><header class="pcar-hd"><div class="pcar-tt"><h2 class="pcar-t">${esc(r.label)}</h2></div></header>
+      <div class="body">${o.rows.map(r=>`<section class="pcar pcar--sm pcar--bleed${o.arrows===false?' pcar--no-arr':''}" style="--pcar-per:3;--pcar-card:140px"><header class="pcar-hd"><div class="pcar-tt"><h2 class="pcar-t">${esc(r.label)}</h2></div></header>
         <div class="pcar-body"><button class="pcar-arr pcar-arr--prev" disabled></button><div class="pcar-track">${r.items.map(card).join('')}</div><button class="pcar-arr pcar-arr--next"></button></div></section>`).join('')}</div>
       <div class="foot"><div class="tot"><span>${n} item${n===1?'':'s'}</span><span>£${tot.toFixed(2)}</span></div><button class="bd pri" style="width:100%"${n?'':' disabled'} data-lpadd>Add to bag (${n})</button></div></div>`};
     const draw=()=>{const keep=el?[...el.querySelectorAll('.pcar-track')].map(t=>t.scrollLeft):null,bs=el?el.querySelector('.body').scrollTop:0;

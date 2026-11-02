@@ -16,7 +16,7 @@ const st=document.createElement('style');st.textContent=`
 .pi-mb{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center}
 @media(min-width:1024px){.pi-mb{justify-content:flex-end;align-items:stretch}}
 .pi-mb>.mdl{z-index:3}
-.pi-mb .mdl--up{max-height:calc(100% - 56px);overflow:hidden}.pi-mb .mdl--up .mdl-bd{overflow-y:auto;margin:0 -24px;padding:0 24px}
+.pi-mb .mdl--up{max-height:calc(100% - 56px);overflow:hidden}
 .pi-mb .pi-btns{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.pi-mb .pi-btns .bd{width:100%}
 html.pi-lock,html.pi-lock body{overflow:hidden;height:100%}`;
 document.head.appendChild(st);
@@ -76,7 +76,7 @@ window.acInner=function(){const doc=new DOMParser().parseFromString('<div id="x"
         the added item (DS bag line item), Continue Shopping / View Bag, then Complete The Look as the carousel (sponsored slots on Debenhams) ---- */
 function miniBag(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was}:PR()[1]||{},img=DP?DP.imgs[0]:IMG(1),d=desk();
   const list=ids('atb',4,10);   /* Debenhams: the first two slots are Mirakl sponsored (labelled), then Bloomreach “also bought” */
-  const o={id:'atb',size:'sm',title:'Complete The Look',per:3,bleed:!d,start:4,list,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
+  const o={id:'atb',size:'sm',title:'Complete The Look',per:3,start:4,list,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
   return `<div class="pi-mb" id="pimb"><div class="mdl-scrim" data-mbx></div>
   <div class="mdl ${d?'mdl--side mdl-anim-side':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Added to bag">
     <div class="modal-hd"><div class="mt"><span class="mdl-tick" aria-hidden="true"></span><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
