@@ -19,6 +19,9 @@
       1px off centre (left glyph at x7, right at x9); Pressed (+ hover) = no shadow.
   11. Scrolling: mobile / touch is a free scroll — no snap, momentum only (whip it to the end, or ease it one card). Desktop arrows page by the cards
       in view minus one (assets/ds/carousel.js), so the last card stays on screen as the anchor.
+  12. Desktop header (lg): the tabs sit vertically centred on the title + subtitle block (was bottom-aligned).
+  13. .pcar--full (home + PDP full-width rails): runs to the page margin at every width; desktop cards keep one size (--pcar-card-d 248px, the 5 + peek
+      card at 1440), so a wider screen pulls in more products instead of scaling them. Narrow containers (search, mini bag, picker) keep --pcar-per.
    MODAL (new type, mini bag / added to bag — demiladea.github.io/Debenhams/Add To Cart concept 1):
    6. .mdl--side: desktop drawer — full height, 480 wide, flush to the right edge, square corners, slides in from the right. Mobile keeps .mdl--up.
    7. .mdl-tick: the 16px tick left of the title ("✓ Added to Bag"), the same slot and size as .mdl-back. */
@@ -65,4 +68,6 @@
 .pcar-arr:hover,.pcar-arr:active{box-shadow:none}
 .pcar-arr:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#2797FF);outline-offset:2px}
 @media(max-width:1023px),(hover:none){.pcar-track{scroll-snap-type:none;scroll-behavior:auto}.pcar-track>*{scroll-snap-align:none}}
+@media(min-width:1024px){.pcar--lg .pcar-hd{align-items:center}
+  .pcar--full .pcar-track>*{flex-basis:var(--pcar-card-d,248px)}}
 /* (url paths are relative to this file; they become icons/lib/… once banked in components.css) */

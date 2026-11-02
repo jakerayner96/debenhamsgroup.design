@@ -168,9 +168,8 @@ const P={
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','insitu-pre.js','insitu.js','ds-next.css','README.md'],
   store:'proto-product-carousel-v4',
-  initial:()=>({view:'home',arrows:true,gap:'fascia',hp:true,hpRows:2,car:true,look:true,sponsored:true}),
+  initial:()=>({view:'home',arrows:true,hp:true,hpRows:2,car:true,look:true,sponsored:true}),
 };
-const GAP0=['plt','brandroom'];
 function renderPanel(host,S,update){
   const c=S.cfg,bn=(P.brands.find(x=>x[0]===S.brand)||[0,S.brand])[1];
   const seg=(id,cur,opts)=>`<span class="seg" data-seg="${id}">${opts.map(([v,l])=>`<button data-v="${v}" class="${String(cur)===String(v)?'on':''}">${l}</button>`).join('')}</span>`;
@@ -185,8 +184,6 @@ function renderPanel(host,S,update){
     ${opt('bag','Mini bag','After Add to Bag: slide up on mobile, drawer on desktop, Complete The Look carousel (as the Add to Cart prototype, concept 1)')}</div>
   <div class="card"><h3>Chevrons <small>desktop + mouse only</small> ${sw('arrows',c.arrows,c.arrows?'On':'Off')}</h3>
     <p>Off = <code>.pcar--no-arr</code>: trackpad / swipe only. Never on mobile or touch screens either way.</p></div>
-  <div class="card"><h3>Gap</h3>${seg('gap',c.gap,[['fascia','Fascia default'],['4','4px'],['0','None']])}
-    <p style="margin-top:8px">Fascia default: 4px between cards, 16px between grid rows; PLT and Brand Room have no gap (text inset 4px). ${bn}: <b>${c.gap==='fascia'?(GAP0.includes(S.brand)?'none':'4px'):c.gap==='0'?'none':'4px'}</b>.</p></div>
   ${c.view==='pdp'?`<div class="card"><h3>PDP recommendations</h3>
     <div style="display:flex;flex-direction:column;gap:10px">${sw('hp',c.hp!==false,'Handpicked For You')}
     ${c.hp!==false?`<div style="display:flex;align-items:center;gap:10px;padding-left:38px"><span>Rows</span>${seg('hpRows',c.hpRows||2,[[1,'1'],[2,'2'],[3,'3'],[4,'4']])}</div>`:''}

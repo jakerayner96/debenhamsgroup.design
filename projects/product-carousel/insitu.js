@@ -7,8 +7,9 @@
 (function(){
 const PC=window.PC_STATE;
 const st=document.createElement('style');st.textContent=`
-.pi-mod{padding:var(--gap-8,32px) var(--gap-4,16px)}@media(min-width:1024px){.pi-mod{padding:var(--gap-12,48px) var(--gap-10,40px);max-width:1440px;margin:0 auto}}
-.pi-recs{display:flex;flex-direction:column;gap:var(--gap-10,40px);padding:var(--gap-10,40px) 0}
+.pi-mod{padding:var(--gap-8,32px) var(--gap-4,16px)}@media(min-width:1024px){.pi-mod{padding:var(--gap-12,48px) var(--gap-10,40px)}}
+.pi-full{padding:0 var(--gap-4,16px)}@media(min-width:1024px){.pi-full{padding:0 var(--gap-10,40px)}}
+.pi-recs{display:flex;flex-direction:column;gap:var(--gap-10,40px);padding-block:var(--gap-10,40px)}
 .pi-hp{margin-top:var(--gap-6,24px)}
 .pcar--look[data-pl="look"] .pcar-track>*{cursor:pointer}
 .pi-ctl{z-index:90}.pi-ctl .head .modal-x{height:16px}.pi-ctl .foot .bd{width:100%}.pi-ctl .body{gap:var(--gap-8,32px);overflow-x:hidden}.pi-ctl .pcar--bleed{--pcar-pad:24px;margin-inline:-24px}
@@ -35,7 +36,7 @@ function pc(i,o){const p=PR()[i];if(!p)return'';
     <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}</div></div></div></article>`}
 /* the component — markup per the DS catalogue entry 'product-carousel' */
 function pcar(o){FEEDS[o.id]=o;const grid=o.fmt==='grid',per=o.per||5,len=o.len||(grid?(desk()?per*2:6):10),list=o.list||ids(o.id,o.start||0,len);
-  const cls=['pcar','pcar--'+(o.size||'md'),grid&&'pcar--grid',o.look&&'pcar--look',o.bleed!==false&&'pcar--bleed',!PC.arrows&&'pcar--no-arr'].filter(Boolean).join(' ');
+  const cls=['pcar','pcar--'+(o.size||'md'),grid&&'pcar--grid',o.look&&'pcar--look',o.full&&'pcar--full',o.bleed!==false&&'pcar--bleed',!PC.arrows&&'pcar--no-arr'].filter(Boolean).join(' ');
   const tabs=o.tabs&&o.tabs.length?o.tabs:null,hd=o.title||o.sub||tabs||o.all;
   return `<section class="${cls}" style="--pcar-per:${per}" data-pl="${o.id}">
   ${hd?`<header class="pcar-hd">${o.title||o.sub?`<div class="pcar-tt">${o.title?`<h2 class="pcar-t">${esc(o.title)}</h2>`:''}${o.sub?`<p class="pcar-sub">${esc(o.sub)}</p>`:''}</div>`:''}
@@ -50,12 +51,12 @@ const oHome=PAGES.home;
 PAGES.home=function(){const doc=new DOMParser().parseFromString(oHome(),'text/html'),hm=doc.querySelector('.hm');if(!hm)return oHome();
   const mods=((window.HOME_LIVE||{})[BR()]||[]).map(x=>x[desk()?'d':'m']).filter(o=>o&&o.t==='products');
   const box=h=>{const d=doc.createElement('div');d.className='pi-mod';d.innerHTML=h;return d};
-  const feat=k=>{const o=mods[k]||{};return pcar({id:'home'+k,size:'lg',title:o.title||'Transition Between Seasons',sub:o.sub||'Get ready for cosier days with our easy autumn upgrades',tabs:o.tabs||TABS[BR()],start:k*5})};
+  const feat=k=>{const o=mods[k]||{};return pcar({id:'home'+k,size:'lg',full:1,title:o.title||'Transition Between Seasons',sub:o.sub||'Get ready for cosier days with our easy autumn upgrades',tabs:o.tabs||TABS[BR()],start:k*5})};
   const ps=[...hm.querySelectorAll(':scope>.hm-p')];
   if(ps.length)ps.forEach((el,k)=>el.replaceWith(box(feat(k))));
   else{const at=hm.children[Math.min(1,hm.children.length-1)];at&&at.after(box(feat(0)))}
   const kids=[...hm.children],at2=kids[Math.min(kids.length-1,5)];
-  at2&&at2.after(box(pcar({id:'homeTop',size:'md',title:'Top Sellers',start:7})));
+  at2&&at2.after(box(pcar({id:'homeTop',size:'md',full:1,title:'Top Sellers',start:7})));
   return hm.outerHTML};
 
 /* ---- PDP: Create the Look (grey panel, image only), then the recommendations (carousel or grid) under the PDP ---- */
@@ -65,8 +66,8 @@ PAGES.pdp=function(){const doc=new DOMParser().parseFromString('<div id="x">'+oP
   const bnpl=x.querySelector('.buy .bnpl')||x.querySelector('.bnpl');
   if(PC.hp!==false&&bnpl){const rows=Math.max(1,+PC.hpRows||2),d=doc.createElement('div');d.className='pi-hp';
     d.innerHTML=pcar({id:'hp',size:'sm',fmt:'grid',per:3,len:rows*3,title:'Handpicked For You',start:3,bleed:false});bnpl.after(d)}
-  const recs=(PC.look!==false?pcar({id:'look',size:'md',look:true,title:'Create The Look',start:9}):'')+(PC.car!==false?pcar({id:'recs',size:'md',title:'We Think You’ll Like',start:15}):'');
-  const w=x.querySelector('.wrap')||x;if(recs){const r=doc.createElement('div');r.className='pi-recs';r.innerHTML=recs;w.appendChild(r)}
+  const recs=(PC.look!==false?pcar({id:'look',size:'md',full:1,look:true,title:'Create The Look',start:9}):'')+(PC.car!==false?pcar({id:'recs',size:'md',full:1,title:'We Think You’ll Like',start:15}):'');
+  if(recs){const r=doc.createElement('div');r.className='pi-recs pi-full';r.innerHTML=recs;x.appendChild(r)}   /* outside the PDP's 1440 wrap: full width to the page margin */
   return x.innerHTML};
 
 /* ---- CREATE THE LOOK PICKER (the "slot machine"): a tap anywhere on Create the Look opens it. DS sheet (.sheet: slide up on mobile, centred 480 on
@@ -127,9 +128,8 @@ document.addEventListener('click',e=>{
   if(S.page==='pdp'&&e.target.closest('.ctas .bd.pri')){e.preventDefault();PC.bagOpen=true;mountBag(true)}
   if(e.target.closest('.pcar a[href="#"]'))e.preventDefault()});
 
-/* ---- after every render: chevrons / gap, the mini bag ---- */
+/* ---- after every render: the mini bag ---- */
 const oRender=window.render;
 window.render=function(){oRender.apply(this,arguments);
-  const rs=document.documentElement.style;if(PC.gap==='fascia'||!PC.gap){rs.removeProperty('--pcar-gap-x');rs.removeProperty('--pcar-info-x')}else{rs.setProperty('--pcar-gap-x',PC.gap+'px');rs.setProperty('--pcar-info-x',PC.gap==='0'?'4px':'0px')}
   mountBag(PC.view==='bag'&&PC.bagOpen!==false)};
 })();
