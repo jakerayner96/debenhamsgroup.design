@@ -878,6 +878,21 @@ body.sbm .hdrbtns{display:none}
   </section>
 
   <!-- RADIUS -->
+  <section class="page" id="imagery" data-crumb="System / Foundations / Product imagery">
+    <div class="kick">system / foundations <b>· core rule</b></div>
+    <h1>Product imagery</h1>
+    <p class="lede">Every product image is 2:3 (width : height, portrait). No exceptions, in any component, page, fascia or app. One token, <code>--ratio-product</code>, sets it everywhere.</p>
+    <div class="props">
+      <div class="pr h"><span>Rule</span><span>Do</span><span>Never</span></div>
+      <div class="pr"><code>ratio</code><span><code>aspect-ratio:var(--ratio-product)</code> (2/3)</span><span>square, 3:4, 4:5 or a free height</span></div>
+      <div class="pr"><code>fit</code><span><code>object-fit:cover</code></span><span><code>contain</code> / letterboxing</span></div>
+      <div class="pr"><code>size</code><span>a width + the ratio (height follows)</span><span>a fixed width × height pair</span></div>
+      <div class="pr"><code>mixed grids</code><span>size the columns so each image stays 2:3 (Get the Look)</span><span>cropping one image to another shape to fit</span></div>
+      <div class="pr"><code>new pieces</code><span><code>.ratio-product</code> utility or the token</span><span>a one-off ratio in a project</span></div>
+    </div>
+    <p>Covers the PLP and rail cards, PDP gallery + thumbnails, colour swatches, bag items, Bundling, Subscribe &amp; Save, Get the Look, the agent chat tiles, wishlist collection thumbnails and the mini bag. Not product imagery: CMS / campaign tiles and heroes, category roundels and tiles, brand logos.</p>
+  </section>
+
   <section class="page" id="radius" data-crumb="System / Foundations / Radius">
     <div class="kick">system / foundations <b>· rendering <span class="bn">Debenhams</span></b></div>
     <h1>Radius</h1>
@@ -1929,6 +1944,7 @@ const REG=[
  {h:'colour',t:'Colour',k:'tokens palette semantic primitives neutrals status aqua pink',ic:'◈',s:'Design system'},
  {h:'type',t:'Typography',k:'text styles fonts scale roles weights geologica montserrat roboto jost archivo helvetica urbanist lato public sans hanken grotesk',ic:'Aa',s:'Design system'},
  {h:'spacing',t:'Spacing',k:'4pt scale gaps margins icon sizes z-index breakpoints',ic:'⇥',s:'Design system'},
+ {h:'imagery',t:'Product imagery',k:'image ratio 2:3 3:2 aspect portrait product images crop cover',ic:'▯',s:'Design system'},
  {h:'radius',t:'Radius',k:'corners square plt pill',ic:'◜',s:'Design system'},
  {h:'borders',t:'Borders',k:'dividers widths keyline focus',ic:'▭',s:'Design system'},
  {h:'motion',t:'Motion',k:'animation durations easing reduced',ic:'◐',s:'Design system'},
@@ -1950,7 +1966,7 @@ if(window.DG_IA_REG)REG.push(...window.DG_IA_REG);
 /* ---- routing ---- */
 /* ---- Foundations: merge the eight foundation pages into one ---- */
 (function(){
-  const F=[['colour','Colour'],['type','Typography'],['spacing','Spacing'],['radius','Radius'],['borders','Borders'],['motion','Motion'],['a11y','Accessibility'],['install','Using the system']];
+  const F=[['colour','Colour'],['type','Typography'],['spacing','Spacing'],['imagery','Product imagery'],['radius','Radius'],['borders','Borders'],['motion','Motion'],['a11y','Accessibility'],['install','Using the system']];
   const body=document.getElementById('fbody'),toc=document.getElementById('ftoc');
   if(!body)return;
   F.forEach(([id,t])=>{const sec=document.getElementById(id);if(!sec)return;

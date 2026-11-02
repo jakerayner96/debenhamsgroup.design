@@ -32,7 +32,7 @@
    child elements. Icons from assets/ds/icons/ (exported from Figma).
    ============================================================ */
 .pc{display:flex;flex-direction:column;gap:12px;font-family:var(--font-family-base);color:var(--text-primary);position:relative;min-width:0}
-.pc-img{aspect-ratio:2/3;background:var(--surface-media);position:relative;overflow:hidden;width:100%} /* square corners — matches live + Figma */
+.pc-img{aspect-ratio:var(--ratio-product);background:var(--surface-media);position:relative;overflow:hidden;width:100%} /* square corners — matches live + Figma */
 .pc-img img.ph{width:100%;height:100%;object-fit:cover;display:block}
 .pc-actions{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:8px;align-items:center}
 .pc-iconbtn{width:32px;height:32px;min-width:32px;border-radius:var(--radius-pill);background:var(--surface-raised);border:none;display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 8px rgba(15,15,15,.14);padding:0}
@@ -756,7 +756,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .sz.oos--notify{cursor:pointer}
 .sz--dark{background:#242424;border-color:transparent;color:#FFF}.sz--dark.on{background:var(--surface-action);color:var(--text-on-action);border-color:transparent}
 .cswatches{display:flex;gap:8px;flex-wrap:wrap}
-.cswatch{width:60px;height:89px;border-radius:var(--radius-default);border:1px solid var(--border-subtle);overflow:hidden;position:relative;padding:0;background:var(--surface-media);cursor:pointer}
+.cswatch{width:60px;height:auto;aspect-ratio:var(--ratio-product);border-radius:var(--radius-default);border:1px solid var(--border-subtle);overflow:hidden;position:relative;padding:0;background:var(--surface-media);cursor:pointer}
 .cswatch img{width:100%;height:100%;object-fit:cover;border-radius:calc(var(--radius-default)*.75);display:block}
 .cswatch.on{border-color:var(--text-primary)}
 .cswatch.on::after{content:"";position:absolute;inset:0;border:1px solid #FFF;border-radius:calc(var(--radius-default)*.75);pointer-events:none}
@@ -810,7 +810,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pcar-track::-webkit-scrollbar{display:none}
 .pcar-track>*{flex:0 0 var(--pcar-card);width:auto!important;scroll-snap-align:start;min-width:0}
 .pcar-track>.pc .pc-actions{display:none} /* no wishlist on rail cards (DS rule, 27 Oct) */
-.pcar .pc-img{aspect-ratio:2/3;flex:none;height:auto}.pcar .pc-img img.ph{object-fit:cover}
+.pcar .pc-img{aspect-ratio:var(--ratio-product);flex:none;height:auto}.pcar .pc-img img.ph{object-fit:cover}
 .pcar .pc-info{padding-inline:var(--pcar-info-x,0px)}
 /* mobile / touch: a free scroll — no snap, momentum only (whip it to the end, or ease it one card) */
 @media(max-width:1023px),(hover:none){.pcar-track{scroll-snap-type:none;scroll-behavior:auto}.pcar-track>*{scroll-snap-align:none}}
@@ -1076,8 +1076,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl .mdl-bd p{color:var(--text-primary)}
 .mdl-faq{display:flex;flex-direction:column;gap:30px}.mdl-faq .acc-h{font-weight:var(--w-mid,500)}
 
-.bag-item{display:grid;grid-template-columns:99px 1fr;gap:16px;min-height:148px}
-.bag-item img{width:99px;height:148px;object-fit:cover;background:var(--surface-media)}
+.bag-item{display:grid;grid-template-columns:99px 1fr;gap:16px;min-height:149px}
+.bag-item img{width:99px;height:auto;aspect-ratio:var(--ratio-product);object-fit:cover;background:var(--surface-media)}
 .bag-item .info{display:flex;flex-direction:column;gap:4px;font-size:16px}
 .bag-item .b{font-weight:var(--w-strong)}.bag-item .n{font-weight:var(--w-regular);line-height:23px}
 .bag-item .v{font-weight:var(--w-mid);margin-top:auto}
@@ -1321,11 +1321,13 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .cslot .slot-spon{position:absolute;top:8px;right:8px;color:#FFF;font-size:10px;text-shadow:0 0 4px rgba(0,0,0,.8)}
 .cslot--gtl{background:var(--surface-sunken);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:16px;aspect-ratio:auto}
 .cslot--gtl .slot-title{font-size:18px;font-weight:var(--w-strong);color:var(--text-primary)}
-.cslot--gtl .slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* Get the Look: one large + two stacked, every image exactly 2:3 — the large column is sized so its height (two 2:3 images + the gap) is 2:3 too:
+   small s = (W − 5g/3) / 3, large = 2s + 2g/3 (g = the gap, --gtl-g) */
+.cslot--gtl .slot-grid{--gtl-g:8px;display:grid;grid-template-columns:calc((100% - var(--gtl-g) * 5 / 3) * 2 / 3 + var(--gtl-g) * 2 / 3) 1fr;gap:var(--gtl-g);align-items:start}
 .cslot--gtl .slot-grid img{width:100%;object-fit:cover;border-radius:4px;display:block}
-.cslot--gtl .slot-grid img:first-child{grid-row:1/span 2;height:100%}
-.cslot--gtl .slot-grid img:not(:first-child){aspect-ratio:1/1;height:auto}
-@media(min-width:1024px){.cslot .slot-grad{height:200px}.cslot .slot-view{right:32px;bottom:32px}.cslot--gtl{padding:24px;gap:24px}.cslot--gtl .slot-title{font-size:20px}.cslot--gtl .slot-grid{gap:12px}}
+.cslot--gtl .slot-grid img:first-child{grid-row:1/span 2;height:auto;aspect-ratio:var(--ratio-product)}
+.cslot--gtl .slot-grid img:not(:first-child){aspect-ratio:var(--ratio-product);height:auto} /* was square: product images are 2:3 */
+@media(min-width:1024px){.cslot .slot-grad{height:200px}.cslot .slot-view{right:32px;bottom:32px}.cslot--gtl{padding:24px;gap:24px}.cslot--gtl .slot-title{font-size:20px}.cslot--gtl .slot-grid{--gtl-g:12px}}
 /* PDP gallery (C-pdp-gallery) — Figma Taggstar MAN PDP 3484:23546 / 3484:21984 · live PDPs 16 Oct 2026.
    Mobile: 2:3 slides at 60% width, gap 1 (4px), scroll-snap, full bleed, 4px pagination bar gap 4 (16px) under. Tags top-left 12px.
    Desktop (≥1024): 100px thumbnail column (selected = 1px black keyline) + one main slide with 32px round prev / next. */
@@ -1333,7 +1335,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pdp-gal .main{position:relative;min-width:0}
 .pdp-gal .slides{display:grid;grid-auto-flow:column;grid-auto-columns:60%;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .pdp-gal .slides::-webkit-scrollbar{display:none}
-.pdp-gal .slides img{width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--surface-media);display:block;scroll-snap-align:start}
+.pdp-gal .slides img{width:100%;aspect-ratio:var(--ratio-product);object-fit:cover;background:var(--surface-media);display:block;scroll-snap-align:start}
 .pdp-gal .tags{position:absolute;left:12px;top:12px;display:flex;gap:4px;z-index:2}
 .pdp-gal .thumbs,.pdp-gal .nav{display:none}
 .pdp-gal .pag{height:4px;background:var(--border-subtle,#E7E7E7);border-radius:99px;margin:16px 16px 0;position:relative;overflow:hidden}
@@ -1343,7 +1345,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
   .pdp-gal .thumbs{display:flex;flex-direction:column;gap:8px}
   .pdp-gal .thumbs button{padding:0;border:0;background:none;cursor:pointer;display:block;opacity:.3;transition:opacity .2s}
   .pdp-gal .thumbs button.on,.pdp-gal .thumbs button:hover{opacity:1}   /* no outline: the selected thumb is full strength, the rest 30% */
-  .pdp-gal .thumbs img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:var(--surface-media)}
+  .pdp-gal .thumbs img{width:100%;aspect-ratio:var(--ratio-product);object-fit:cover;display:block;background:var(--surface-media)}
   .pdp-gal .slides{grid-auto-columns:100%;gap:0}
   .pdp-gal .nav{display:grid;place-items:center;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:99px;background:var(--surface-raised,#FFF);border:0;box-shadow:var(--shadow-pill,0 1px 4px rgba(0,0,0,.15));cursor:pointer;z-index:2}
   .pdp-gal .nav.prev{left:12px}.pdp-gal .nav.next{right:12px}
@@ -1614,7 +1616,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .sns-mdl .mdl-ft{gap:var(--gap-3,12px)}
 /* product row (Debenhams live): 72px image on the left, the details small beside it — 14/20, brand semibold, line price */
 .sns-prod{display:flex;gap:var(--gap-6,24px);align-items:center}
-.sns-prod img{width:72px;height:96px;object-fit:contain;flex:none}
+.sns-prod img{width:64px;height:auto;aspect-ratio:var(--ratio-product);object-fit:cover;flex:none} /* was 72 × 96 (3:4, contain): product images are 2:3, cover */
 .sns-prod .i{display:flex;flex-direction:column;align-items:flex-start;gap:var(--gap-2,8px);min-width:0;font-size:14px;line-height:20px}
 .sns-prod .i>b{font-weight:var(--w-strong,600)}
 .sns-f{display:flex;flex-direction:column;align-items:stretch;gap:var(--gap-3,12px);font-size:16px}
@@ -1678,17 +1680,17 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .ac-ctx{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ac-ctx .lbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary,#767676)}.ac-ctx .lbl .ai-icon{width:14px;height:14px}
 .ac-ctx .c{display:inline-flex;align-items:center;height:27px;padding:0 10px;border-radius:var(--radius-pill);background:var(--ai-tint);color:var(--ai-ink);font-size:12px;white-space:nowrap}
 .ac-car{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
-.ac-tile{flex:none;width:120px;display:flex;flex-direction:column;gap:6px}.ac-tile .im{display:block;aspect-ratio:2/3;background:var(--surface-media)}
+.ac-tile{flex:none;width:120px;display:flex;flex-direction:column;gap:6px}.ac-tile .im{display:block;aspect-ratio:var(--ratio-product);background:var(--surface-media)}
 .ac-tile .n{font-size:12px;font-weight:500;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ac-cart{width:100%;height:32px;border:0;border-radius:var(--radius-default,4px);background:var(--surface-action);color:var(--text-on-action);font:var(--w-strong,600) 12px var(--font-family-base);letter-spacing:.02em;text-transform:uppercase;cursor:pointer}   /* the primary CTA, small */
-.ac-pd{display:flex;gap:12px;padding:12px;border:1px solid var(--border-subtle,#E7E7E7);border-radius:16px}.ac-pd .im{width:96px;aspect-ratio:2/3;flex:none;background:var(--surface-media)}
+.ac-pd{display:flex;gap:12px;padding:12px;border:1px solid var(--border-subtle,#E7E7E7);border-radius:16px}.ac-pd .im{width:96px;aspect-ratio:var(--ratio-product);align-self:flex-start;flex:none;background:var(--surface-media)}
 .ac-pd .pd{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px}.ac-pd .pbd{font-size:12px;font-weight:600}.ac-pd .n{font-size:14px;font-weight:500}
 .ac-pd .psz{display:flex;gap:6px;flex-wrap:wrap}.ac-pd .psz span{min-width:34px;height:30px;display:grid;place-items:center;border:1px solid var(--border-control,#B5B5B5);border-radius:4px;font-size:12px;font-weight:var(--w-regular,300)}.ac-pd .psz span.on{border-color:#000;font-weight:600}
 .ac-pd .ac-cart{margin-top:auto}
 .ac-qr{display:flex;flex-wrap:wrap;gap:8px}.ac-qr .ai-pill{font-size:13px}
 .ac-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}.ac-list li{display:flex;gap:8px}.ac-list li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ai-accent);margin-top:7px;flex:none}
 .ac-fit{padding:12px 14px;border-radius:12px;background:var(--ai-tint);display:flex;flex-direction:column;gap:8px}.ac-fit .bar{position:relative;height:4px;border-radius:99px;background:var(--border-subtle)}.ac-fit .bar i{position:absolute;top:-4px;width:12px;height:12px;border-radius:50%;background:var(--ai-fg);transform:translateX(-50%)}.ac-fit .lbl{display:flex;justify-content:space-between;font-size:11px;color:#555}
-.ac-look{display:grid;grid-template-columns:1.2fr 1fr;gap:4px}.ac-look .im{background:var(--surface-media);min-height:120px}.ac-look .r{display:grid;grid-template-rows:1fr 1fr;gap:4px}
+.ac-look{display:grid;grid-template-columns:1.2fr 1fr;gap:4px}.ac-look .im{background:var(--surface-media);aspect-ratio:var(--ratio-product)}.ac-look .r{display:grid;grid-template-rows:1fr 1fr;gap:4px}
 .ac-input{display:flex;align-items:center;gap:12px;height:60px;padding:4px 8px 4px 20px;border:2px solid transparent;border-radius:24px;background:linear-gradient(#FFF,#FFF) padding-box,var(--ai-gradient) border-box}
 .ac-input .ph{flex:1;font-size:16px;font-weight:var(--w-regular,300);color:#777}
 .ac-send{width:40px;height:40px;flex:none;display:grid;place-items:center;border:0;border-radius:50%;background:var(--action-disabled-bg,#E7E7E7);color:var(--action-disabled-fg,#B5B5B5)}   /* empty: the disabled primary */
@@ -1924,8 +1926,8 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .coll-row .t span{font-size:12px;color:var(--text-secondary,#767676)}
 .coll-row::after{content:"";width:24px;height:24px;flex:none;background:url("icons/lib/icons-expand.svg") center/24px 24px no-repeat}
 .coll-row[aria-checked="true"]::after{background-image:url("icons/lib/icons-tick-circle-fill.svg")}
-.coll-thumb{width:50px;height:50px;flex:none;object-fit:cover;background:linear-gradient(-45deg,var(--brand-light-2,#FFE4D2),var(--brand-light-1,#F1C59E))}
-.coll-thumb.q{display:grid;grid-template-columns:1fr 1fr;background:none}.coll-thumb.q img{width:25px;height:25px;object-fit:cover;display:block}
+.coll-thumb{width:40px;height:auto;aspect-ratio:var(--ratio-product);flex:none;object-fit:cover;background:linear-gradient(-45deg,var(--brand-light-2,#FFE4D2),var(--brand-light-1,#F1C59E))}
+.coll-thumb.q{display:grid;grid-template-columns:1fr 1fr;background:none}.coll-thumb.q img{width:20px;height:auto;aspect-ratio:var(--ratio-product);object-fit:cover;display:block} /* was square: product images are 2:3 */
 .coll-promo{background:#FFF;padding:16px 16px 0;display:flex;flex-direction:column;gap:8px}
 .coll-promo .h{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:var(--w-strong)}
 .coll-promo .h em{font-style:normal;font-size:12px;font-weight:var(--w-strong);padding:4px 8px;background:var(--brand-light-1,#F1C59E);color:#000}
@@ -2006,11 +2008,11 @@ select.rf-input:invalid{color:var(--rf-dim)}
    each with a tick on the image, brand · name · price · colour · size select; the total and ADD TO BAG (n) follow the ticks. Built from DS atoms:
    .chk (tick), .price-blk--card, .opt-label, .fsel--sm, .bd.sec. Behaviour + markup: assets/ds/bundle.js (DG_bundle). PDP template: under Subscribe & Save.
    Box: 1px --border-subtle, gap 3 (12px) in · image 80 × 120 (2:3), tick gap 2 (8px) in · image → info gap 4 (16px) · items gap 6 (24px) apart. */
-.bndl{display:flex;flex-direction:column;gap:var(--gap-4,16px);font-family:var(--font-family-base);color:var(--text-primary)}
+.bndl{display:flex;flex-direction:column;gap:var(--gap-4,16px);font-family:var(--font-family-base);font-weight:var(--w-regular);color:var(--text-primary)} /* fascia body weight: Debenhams Light 300 */
 .bndl-t{margin:0;font-size:18px;line-height:24px;font-weight:var(--w-strong)}
 .bndl-box{border:1px solid var(--border-subtle,#E7E7E7);border-radius:var(--radius-default);padding:var(--gap-3,12px);display:flex;flex-direction:column;gap:var(--gap-6,24px)}
 .bndl-item{display:grid;grid-template-columns:80px minmax(0,1fr);gap:var(--gap-4,16px);align-items:start}
-.bndl-img{position:relative;width:80px;aspect-ratio:2/3;background:var(--surface-media);overflow:hidden}
+.bndl-img{position:relative;width:80px;aspect-ratio:var(--ratio-product);background:var(--surface-media);overflow:hidden}
 .bndl-img img{width:100%;height:100%;object-fit:cover;display:block}
 .bndl-img .chk{position:absolute;left:var(--gap-2,8px);top:var(--gap-2,8px)}
 .bndl-info{display:flex;flex-direction:column;gap:var(--gap-3,12px);min-width:0;font-size:14px;line-height:20px}
@@ -2027,3 +2029,9 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .fsel--sm::after{right:14px}
 .fsel .ph{color:var(--text-secondary)}
 .fsel.err{border-color:var(--text-error)}
+
+/* ---- Product image ratio — CORE DS RULE (2 Nov 2026): every product image is 2:3 (tokens.css --ratio-product), in every component, page and fascia.
+   Components above use aspect-ratio:var(--ratio-product). Any new product image: .ratio-product (or the token) — never a fixed width × height,
+   never contain. Mixed sizes keep the ratio by sizing the columns (see .cslot--gtl), never by cropping one image to another shape. */
+.ratio-product{aspect-ratio:var(--ratio-product);object-fit:cover;height:auto}
+.ratio-product>img{width:100%;height:100%;object-fit:cover;display:block}

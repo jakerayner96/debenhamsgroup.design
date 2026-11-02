@@ -29,6 +29,10 @@
   /* page container: header bars and the black USP bar run edge to edge; USP cells and page content sit in this centred width (2 Nov 2026) */
   --page-max:1440px;
   --gap-unit:4px;
+  /* PRODUCT IMAGE RATIO — core DS rule (Jake, 2 Nov 2026): every product image, any component, any page, any fascia, is 2:3 (width:height,
+     portrait). Never another ratio, never contain / letterbox, never a fixed width + height pair. Use aspect-ratio:var(--ratio-product) + object-fit:cover,
+     or the .ratio-product utility. Category / campaign / CMS imagery is not product imagery. */
+  --ratio-product:2/3;
   --gap-0:0px;--gap-0_5:2px;--gap-1:4px;--gap-1_5:6px;--gap-2:8px;--gap-3:12px;--gap-4:16px;--gap-5:20px;--gap-6:24px;
   --gap-8:32px;--gap-10:40px;--gap-12:48px;--gap-16:64px;--gap-20:80px;--gap-24:96px;--gap-32:128px;
   --space-2:var(--gap-0_5);--space-4:var(--gap-1);--space-8:var(--gap-2);--space-12:var(--gap-3);--space-16:var(--gap-4);--space-20:var(--gap-5);--space-24:var(--gap-6);
