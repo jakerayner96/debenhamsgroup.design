@@ -7,7 +7,8 @@
       PLT + The Brand Room: column gap 0 (images touch, as PLT live), rows stay 16px; the card text then takes a 4px inset (as .pc--flush) so neighbours never touch.
    2. Images locked 2:3 — the image never stretches or crops to the card's text; tiles and cards share the ratio.
    3. Grid: 3 across on mobile (was 2), --pcar-per across on desktop.
-   4. Create the Look (.pcar--look): the carousel on a grey panel (--grey-05), padding gap 4 (16px), image-only 150px tiles, View all right.
+   4. Create the Look (.pcar--look): image-only cards. Mobile: on a grey panel (--grey-05), padding gap 4 (16px), 150px tiles. Desktop: no panel —
+      the same width, cards in view and spacing as every other carousel, just without the product text.
    5. Chevrons optional: .pcar--no-arr drops the desktop arrows (trackpad / shift-scroll + swipe only).
    8. Tabs (.pcar-tabs .chip, DS Figma 1676-10372): 44px, sentence case 16px, gap 3 (12px), the fascia button radius (--radius-default: 4px, 0 on PLT /
       Brand Room / square fascias). Selected = the primary CTA (--surface-action fill, --text-on-action ink); the others white with a 1px Grey 25 keyline.
@@ -27,7 +28,7 @@
 .pcar--look .pcar-hd{align-items:center}
 .pcar--look .pc{gap:0}
 @media(max-width:1023px){.pcar--look.pcar--bleed{margin-inline:calc(-1 * var(--gap-4,16px))}}
-@media(min-width:1024px){.pcar--look{--pcar-pad:var(--gap-6,24px);--pcar-hd-gap:24px;padding-block:var(--gap-6,24px)}}
+@media(min-width:1024px){.pcar--look{--pcar-pad:0px;--pcar-hd-gap:24px;background:none;padding-block:0}}
 
 .pcar--no-arr .pcar-arr{display:none!important}
 
