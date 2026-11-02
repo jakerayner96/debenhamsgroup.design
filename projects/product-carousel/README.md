@@ -9,11 +9,13 @@
 - **Code:** `assets/ds/components.css` (`.pcar`), `assets/ds/carousel.js` (behaviour), markup in `assets/ds/catalogue.js` (`product-carousel`)
 
 
-> **In review (2 Nov 2026) — not banked yet.** Proposed changes are staged in `projects/product-carousel/ds-next.css` and fold into `components.css` on sign-off. The prototype shows them **in situ** on the Shopping agent prototype's home, PDP and search (opened as they stand; `insitu.js` swaps their rails for `.pcar`) plus the mini bag after Add to Bag. Changes:
-> one gap everywhere (4px columns, 16px grid rows; **0 on PLT and The Brand Room**, card text inset 4px) · images locked 2:3 · grid 3 across on mobile ·
-> **Create the Look** = the carousel on a grey `--grey-05` panel, image-only 150px tiles · chevrons optional (`.pcar--no-arr`) ·
-> search: the rails use the wide overlay on desktop (6 in view) ·
-> new modal type `.mdl--side` (desktop drawer, mini bag) + `.mdl-tick` header icon; mobile mini bag = `.mdl--up`.
+> **Banked 2 Nov 2026.** Everything from the 2 Nov review is in the DS: `assets/ds/components.css` (.pcar block, product card swatches + `.pc--pick`, modal `.mdl--side` + `.mdl-tick`),
+> `assets/ds/tokens.css` (`--pcar-gap-x` / `--pcar-info-x`: no column gap on PLT + The Brand Room), `assets/ds/carousel.js` (`DG_pcarHTML` / `DG_pcarCard` / `DG_pcarInfo`,
+> arrows page by in view − 1, swatch taps, `DG_lookPicker`), `templates/feed.js` (brand always, −X%, sample swatches, sponsored slots, `DG_feedReels`) and `templates/pdp.html`
+> (Handpicked For You under BNPL · Create the Look → picker · We Think You'll Like, full width). The rules:
+> one gap (4px · 16px grid rows · 0 on PLT / Brand Room) · images 2:3 · grid 3 across on mobile · Create the Look = grey panel on mobile, a plain image-only rail on desktop ·
+> chevrons = DS Navigation Button, optional · mobile free scroll · tabs 36px / 14 / 4px gap in the fascia CTA style, centred on the title on desktop · full-width rails to the page
+> margin with fixed 248px cards · cards always (Sponsored) · brand · 2-line name · now · was · −X% · swatches · no View all links.
 
 ## The ask
 Every product rail on site (home, PDP, search, bag, added to bag, empty states) should be **one component**. Today the placements have drifted: different header sizes, card widths, gaps and arrow behaviour. The dev component that maps to this is `Molecules/PersonalisedCarousel`. Please align it to this spec and use it everywhere.

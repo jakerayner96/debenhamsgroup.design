@@ -166,7 +166,7 @@ const P={
   page:'page.html',
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
-  files:['page.html','insitu-pre.js','insitu.js','ds-next.css','README.md'],
+  files:['page.html','insitu-pre.js','insitu.js','README.md'],
   store:'proto-product-carousel-v4',
   initial:()=>({view:'home',arrows:true,hp:true,hpRows:2,car:true,look:true,sponsored:true}),
 };
@@ -176,7 +176,7 @@ function renderPanel(host,S,update){
   const sw=(id,on,l)=>`<label class="sw"><input type="checkbox" data-sw="${id}"${on?' checked':''}><i></i>${l}</label>`;
   const opt=(v,b,t)=>`<button class="opt${c.view===v?' on':''}" data-view="${v}"><span class="r"></span><span class="t"><b>${b}</b><span>${t}</span></span></button>`;
   host.innerHTML=`<h1>Product carousel</h1>
-  <p class="intro">The DS <b>Product carousel</b> (<code>.pcar</code>) in situ, on the latest pages: the <b>Shopping agent</b> prototype's home, PDP and search, as they stand, with their product rails swapped for the component. Three types: <b>carousel</b>, <b>grid</b> and <b>Create the Look</b> (grey panel, no product details). Images are always 2:3, and the gap is 4px everywhere, or none on PLT and The Brand Room. Proposed DS changes are staged in <code>ds-next.css</code> until we bank them.</p>
+  <p class="intro">The DS <b>Product carousel</b> (<code>.pcar</code>) in situ, on the latest pages: the <b>Shopping agent</b> prototype's home, PDP and search, as they stand, with their product rails swapped for the component. Three types: <b>carousel</b>, <b>grid</b> and <b>Create the Look</b> (grey panel, no product details). Images are always 2:3, and the gap is 4px everywhere, or none on PLT and The Brand Room. Banked in the DS 2 Nov 2026 (components.css · carousel.js · templates/feed.js · templates/pdp.html).</p>
   <div class="card"><h3>Screen <small>${bn}</small></h3>
     ${opt('home','Home page','Feature carousel: large title, subtitle and tabs · Top Sellers')}
     ${opt('pdp','PDP + recommendations','Handpicked For You under BNPL · Create the Look (opens the picker) · We Think You’ll Like')}

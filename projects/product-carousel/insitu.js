@@ -1,6 +1,7 @@
 /* Product carousel · in situ — runs inside the Shopping agent page (projects/shopping-agent/page.html, the latest home / PDP / search),
-   loaded by projects/product-carousel/page.html. It only swaps that page's product rails for the DS Product carousel (.pcar + carousel.js,
-   proposed changes in ds-next.css) and adds the mini bag. Nothing here restyles a DS class; the .pi-* rules are page scaffolding.
+   loaded by projects/product-carousel/page.html. It only swaps that page's product rails for the DS Product carousel — markup from the DS builders
+   (carousel.js DG_pcarHTML / DG_pcarCard, feeds from templates/feed.js DG_feedItem, the Create the Look picker DG_lookPicker) — and adds the mini bag
+   (DS modal .mdl--up / .mdl--side). Nothing here restyles a DS class; the .pi-* rules are page scaffolding.
    Views (PC.view): home (feature carousel with title + subtitle + tabs, Top Sellers) · pdp (Handpicked For You grid under the BNPL box, PC.hpRows rows ·
    Create the Look → opens the Create the Look picker · We Think You'll Like carousel; each on / off) ·
    search (search open: Recently Viewed / Products matching as rails, the overlay width on desktop) · bag (PDP + the mini bag after Add to Bag). */
@@ -12,8 +13,6 @@ const st=document.createElement('style');st.textContent=`
 .pi-recs{display:flex;flex-direction:column;gap:var(--gap-10,40px);padding-block:var(--gap-10,40px)}
 .pi-hp{margin-top:var(--gap-6,24px)}
 .pcar--look[data-pl="look"] .pcar-track>*{cursor:pointer}
-.pi-tint::after{content:"";position:absolute;inset:0;background:var(--pi-tint);mix-blend-mode:color;opacity:.6;pointer-events:none}
-.pi-ctl{z-index:90}.pi-ctl .head .modal-x{height:16px}.pi-ctl .foot .bd{width:100%}.pi-ctl .body{gap:var(--gap-8,32px);overflow-x:hidden}.pi-ctl .pcar--bleed{--pcar-pad:24px;margin-inline:-24px}
 .pi-mb{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center}
 @media(min-width:1024px){.pi-mb{justify-content:flex-end;align-items:stretch}}
 .pi-mb>.mdl{z-index:3}
@@ -28,37 +27,13 @@ const n=()=>PR().length||1;
 /* a feed per rail: a fixed start + 4 per tab, wrapping the fascia's product set */
 const FEEDS={};
 function ids(id,start,len){const off=start+(TAB[id]||0)*4;return Array.from({length:len},(_,k)=>(off+k*3)%n())}
-/* DS product card for a rail: image · (Sponsored) · brand · name · rail price. Look = image only. No wishlist on rail cards. */
-/* every rail card follows the DS product card: (Sponsored) · brand (always — the feed's, else the brand that opens the name, else the fascia) ·
-   name (2 lines) · price (now · was · -X%) · colour swatches when the product comes in more than one colour */
-const BRANDS=/^(boohooMAN|boohoo|Wallis|Coast|Burton|Oasis|Warehouse|Dorothy Perkins|Karen Millen|PrettyLittleThing|Debenhams)\b\s*/i;
-function brandOf(p){let b=p.brand,n=p.name||'';const m=n.match(BRANDS);
-  if(!b&&m){b=m[1];n=n.slice(m[0].length)}else if(b&&n.toLowerCase().startsWith(b.toLowerCase()+' '))n=n.slice(b.length+1);
-  return [b||BN(),n]}
-const SWP=['#1F1F1F','#C9C9C9','#B4A67A','#2F4A7A','#B97A57','#6E8B6B','#D9B8C4','#FFFFFF','#8FA3B8'];
-const SWN=['Black','Grey','Stone','Navy','Tan','Sage','Pink','White','Blue'];
-const nSw=i=>i%4===1?3:i%5===2?2:i%7===3?5:0;   /* sample feed: some products come in several colours, most in one (as live) */
-function swatches(i){const k=nSw(i);if(!k)return'';const cs=Array.from({length:k},(_,j)=>SWP[(i+j*2)%SWP.length]),show=cs.slice(0,4);
-  /* each swatch is a button carrying its colour's image (data-img); a tap selects it and swaps the card image. The sample feed has no per-colour
-     shots, so data-img is empty here and the other colours tint the shot instead (prototype stand-in, .pi-tint). */
-  return `<div class="pc-swatches${BR()==='plt'?' pc-swatches--round':''}"><span class="set">${show.map((c,j)=>{const nm=SWN[SWP.indexOf(c)];return `<button type="button" class="pc-swatch${j?'':' on'}" data-sw="${j}" data-c="${c}" data-img="" aria-label="${nm}" aria-pressed="${!j}"><i style="background:${c}"></i></button>`}).join('')}</span>${k>4?`<span class="pc-more">+${k-4}</span>`:''}</div>`}
-function info(i,o){const p=PR()[i],[b,n]=brandOf(p),pct=p.was&&p.pct?String(p.pct).replace(/[^0-9]/g,''):'';
-  return `<div class="pc-info">${o.sp&&o.sp(i)?'<div class="pc-sponsored">Sponsored</div>':''}<div class="pc-toprow"><div class="pc-titles"><div class="pc-brand">${esc(b)}</div><div class="pc-name">${esc(n)}</div></div></div>
-    <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${pct?`<span class="save" data-pct="${pct}"></span>`:''}</div></div>${swatches(i)}</div>`}
-function pc(i,o){const p=PR()[i];if(!p)return'';
-  const img=`<div class="pc-img"><img class="ph" src="${IMG(i)}" alt="${esc(brandOf(p).join(' '))}" loading="${EXPORTING?'eager':'lazy'}"></div>`;
-  if(o.look)return `<article class="pc">${img}</article>`;
-  return `<article class="pc">${img}${info(i,o)}</article>`}
-/* the component — markup per the DS catalogue entry 'product-carousel' */
+/* a rail = the DS builder (DG_pcarHTML) over items from the DS feed (DG_feedItem: brand always, -X%, sample swatches); o.sp(i) marks Sponsored slots */
+const round=()=>BR()==='plt';
+const items=(o,list)=>list.map(i=>{const x=DG_feedItem(BR(),i);if(x&&o.sp&&o.sp(i))x.sponsored=true;return x}).filter(Boolean);
 function pcar(o){FEEDS[o.id]=o;const grid=o.fmt==='grid',per=o.per||5,len=o.len||(grid?(desk()?per*2:6):10),list=o.list||ids(o.id,o.start||0,len);
-  const cls=['pcar','pcar--'+(o.size||'md'),grid&&'pcar--grid',o.look&&'pcar--look',o.full&&'pcar--full',o.bleed!==false&&'pcar--bleed',!PC.arrows&&'pcar--no-arr'].filter(Boolean).join(' ');
-  const tabs=o.tabs&&o.tabs.length?o.tabs:null,hd=o.title||o.sub||tabs||o.all;
-  return `<section class="${cls}" style="--pcar-per:${per}" data-pl="${o.id}">
-  ${hd?`<header class="pcar-hd">${o.title||o.sub?`<div class="pcar-tt">${o.title?`<h2 class="pcar-t">${esc(o.title)}</h2>`:''}${o.sub?`<p class="pcar-sub">${esc(o.sub)}</p>`:''}</div>`:''}
-    ${tabs?`<div class="pcar-tabs">${tabs.map((t,i)=>`<button class="chip${i===(TAB[o.id]||0)?' on':''}">${esc(t)}</button>`).join('')}</div>`:''}${o.all?'<a class="pcar-all" href="#">View all</a>':''}</header>`:''}
-  <div class="pcar-body">${grid?'':'<button class="pcar-arr pcar-arr--prev" disabled></button>'}<div class="pcar-track">${list.map(i=>pc(i,o)).join('')}</div>${grid?'':'<button class="pcar-arr pcar-arr--next"></button>'}</div></section>`}
+  return DG_pcarHTML(Object.assign({},o,{grid,per,items:items(o,list),arrows:PC.arrows!==false,tab:TAB[o.id]||0,round:round(),eager:EXPORTING,all:false}))}
 document.addEventListener('pcar:tab',e=>{const el=e.target,o=FEEDS[el.dataset.pl];if(!o)return;TAB[o.id]=e.detail.index;delete o.list;
-  const grid=o.fmt==='grid',len=grid?(desk()?(o.per||5)*2:6):10;el.querySelector('.pcar-track').innerHTML=ids(o.id,o.start||0,len).map(i=>pc(i,o)).join('')});
+  const grid=o.fmt==='grid',len=grid?(desk()?(o.per||5)*2:6):10;el.querySelector('.pcar-track').innerHTML=items(o,ids(o.id,o.start||0,len)).map(p=>DG_pcarCard(p,Object.assign({},o,{round:round(),eager:EXPORTING}))).join('')});
 
 /* ---- HOME: every products module in the live home becomes the carousel (title · subtitle · tabs, large header);
         fascias whose home has none (Debenhams, boohoo, MAN) get one after the second module. Top Sellers further down. ---- */
@@ -85,32 +60,9 @@ PAGES.pdp=function(){const doc=new DOMParser().parseFromString('<div id="x">'+oP
   if(recs){const r=doc.createElement('div');r.className='pi-recs pi-full';r.innerHTML=recs;x.appendChild(r)}   /* outside the PDP's 1440 wrap: full width to the page margin */
   return x.innerHTML};
 
-/* ---- CREATE THE LOOK PICKER (the "slot machine"): a tap anywhere on Create the Look opens it. DS sheet (.sheet: slide up on mobile, centred 480 on
-        desktop) with one reel per category — a small-header carousel of pickable cards (.pc--pick + DS checkbox .chk, proposed) — and
-        Add to bag (n) in the foot, which hands over to the mini bag. ---- */
-const REELS=[['Tops',/top|shirt|jumper|blouse|hoodie|knit|polo|henley|cardigan|tee|jacket|coat|blazer|bomber/i],['Bottoms',/trouser|jean|jogger|skirt|short|jort|legging/i],
-  ['Dresses',/dress/i],['Shoes & accessories',/boot|shoe|heel|trainer|sandal|wellies|bag|earring|necklace|belt|scarf|hardware|parfum|edp|toilette|gift set|wreath|diffuser|throw/i]];
-let PICK={};
-function reels(){const all=PR().map((p,i)=>[p,i]),used=new Set();
-  let rs=REELS.map(([l,re])=>{const it=all.filter(([p,i])=>re.test(p.name)&&!used.has(i)).slice(0,10).map(([p,i])=>(used.add(i),i));return {l,it}}).filter(r=>r.it.length>=3).slice(0,3);
-  if(rs.length<3){const rest=all.map(x=>x[1]).filter(i=>!used.has(i));['More to pair','Finishing touches','You might like'].slice(0,3-rs.length).forEach((l,k)=>rs.push({l,it:rest.slice(k*8,k*8+8)}))}
-  return rs}
-function picker(){const rs=reels(),n=Object.keys(PICK).length,num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
-  const tot=Object.keys(PICK).reduce((a,i)=>a+num((PR()[i]||{}).price),0);
-  const card=i=>{const p=PR()[i];if(!p)return'';const on=!!PICK[i];
-    return `<article class="pc pc--pick${on?' on':''}" data-pick="${i}"><div class="pc-img"><img class="ph" src="${IMG(i)}" alt="${esc(p.name)}"><button class="chk${on?' on':''}" aria-label="${on?'Remove':'Add'} ${esc(p.name)}" aria-checked="${on}"></button></div>
-      ${info(i,{})}</article>`};
-  return `<div class="sheet pi-ctl" id="pictl"><div class="scrim" data-ctlx></div><div class="panel" role="dialog" aria-modal="true" aria-label="Create The Look">
-    <div class="head"><h2>Create The Look</h2><button class="modal-x" aria-label="Close" data-ctlx></button></div>
-    <div class="body">${rs.map((r,k)=>`<section class="pcar pcar--sm pcar--bleed${PC.arrows?'':' pcar--no-arr'}" style="--pcar-per:3;--pcar-card:140px"><header class="pcar-hd"><div class="pcar-tt"><h2 class="pcar-t">${esc(r.l)}</h2></div></header>
-      <div class="pcar-body"><button class="pcar-arr pcar-arr--prev" disabled></button><div class="pcar-track">${r.it.map(card).join('')}</div><button class="pcar-arr pcar-arr--next"></button></div></section>`).join('')}</div>
-    <div class="foot"><div class="tot"><span>${n} item${n===1?'':'s'}</span><span>£${tot.toFixed(2)}</span></div><button class="bd pri"${n?'':' disabled'} data-ctladd>Add to bag (${n})</button></div></div></div>`}
-function mountPicker(open){const old=document.getElementById('pictl'),keep=old?[...old.querySelectorAll('.pcar-track')].map(t=>t.scrollLeft):null,bs=old?old.querySelector('.body').scrollTop:0;
-  if(old)old.remove();document.documentElement.classList.toggle('pi-lock',!!open);if(!open)return;
-  document.body.insertAdjacentHTML('beforeend',picker());const sh=document.getElementById('pictl');
-  if(keep){sh.classList.add('open');sh.querySelectorAll('.pcar-track').forEach((t,k)=>t.scrollLeft=keep[k]||0);sh.querySelector('.body').scrollTop=bs}
-  else requestAnimationFrame(()=>requestAnimationFrame(()=>sh.classList.add('open')))}
-function openPicker(pre){PICK={};if(pre!=null)PICK[pre]=1;mountPicker(true)}
+/* ---- CREATE THE LOOK PICKER: a tap anywhere on Create the Look opens the DS picker (DG_lookPicker — reels from templates/feed.js DG_feedReels);
+        Add to bag (n) hands over to the mini bag. ---- */
+function openPicker(pre){DG_lookPicker({rows:DG_feedReels(BR()),pick:pre!=null?[pre]:[],round:round(),arrows:PC.arrows!==false,onAdd:()=>{PC.bagOpen=true;mountBag(true)}})}
 
 /* ---- SEARCH: Recently Viewed / Products matching “…” rails become the carousel (small header); 6 in view on desktop, where the overlay is wide ---- */
 const oAc=window.acInner;
@@ -134,14 +86,6 @@ function miniBag(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.pr
 function mountBag(open){const old=document.getElementById('pimb');if(old)old.remove();document.documentElement.classList.toggle('pi-lock',!!open);
   if(open)document.body.insertAdjacentHTML('beforeend',miniBag())}
 document.addEventListener('click',e=>{
-  const sw=e.target.closest('.pcar .pc-swatch[data-sw]');if(sw){e.preventDefault();e.stopPropagation();const card=sw.closest('.pc'),img=card&&card.querySelector('.pc-img');
-    sw.parentNode.querySelectorAll('.pc-swatch').forEach(b=>{const on=b===sw;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
-    if(img){const ph=img.querySelector('img.ph');if(sw.dataset.img){ph.src=sw.dataset.img;img.classList.remove('pi-tint')}
-      else{img.classList.toggle('pi-tint',sw.dataset.sw!=='0');img.style.setProperty('--pi-tint',sw.dataset.c)}}
-    return}
-  const pk=e.target.closest('#pictl [data-pick]');if(pk){e.preventDefault();const i=+pk.dataset.pick;if(PICK[i])delete PICK[i];else PICK[i]=1;mountPicker(true);return}
-  if(e.target.closest('[data-ctlx]')){e.preventDefault();const sh=document.getElementById('pictl');if(sh){sh.classList.remove('open');setTimeout(()=>mountPicker(false),300)}return}
-  if(e.target.closest('[data-ctladd]')){e.preventDefault();mountPicker(false);PC.bagOpen=true;mountBag(true);return}
   const lk=e.target.closest('.pcar--look[data-pl="look"]');if(lk&&!e.target.closest('.pcar-arr')){e.preventDefault();const c=e.target.closest('.pcar-track>*'),L=FEEDS.look,idx=c?[...c.parentNode.children].indexOf(c):-1;openPicker(L&&idx>=0?ids('look',L.start||0,10)[idx]:null);return}
   if(e.target.closest('[data-mbx]')){e.preventDefault();PC.bagOpen=false;mountBag(false);return}
   if(S.page==='pdp'&&e.target.closest('.ctas .bd.pri')){e.preventDefault();PC.bagOpen=true;mountBag(true)}

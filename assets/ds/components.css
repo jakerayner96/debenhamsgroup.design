@@ -131,6 +131,15 @@
 .pc-swatch{width:20px;height:20px;border:var(--border-w) solid var(--border-subtle);border-radius:var(--radius-default);padding:0;background:var(--surface-raised);overflow:hidden}
 .pc-swatch i{display:block;width:100%;height:100%;border-radius:calc(var(--radius-default)*.75)}
 .pc-swatch.on{border-color:var(--icon-primary)}
+/* rail cards: swatches are buttons (aria-pressed, aria-label = colour); a tap selects the colour and swaps the card image to its shot (data-img, carousel.js) */
+button.pc-swatch{cursor:pointer;flex:none}
+button.pc-swatch:hover:not(.on){border-color:var(--border-strong)}
+button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#2797FF);outline-offset:2px}
+.pc-img--tint::after{content:"";position:absolute;inset:0;background:var(--pc-tint);mix-blend-mode:color;opacity:.6;pointer-events:none} /* stand-in when a feed has no shot for the colour (sample feeds) */
+/* .pc--pick: a pickable card (Create the Look picker) — DS checkbox (.chk) bottom right of the image, gap 2 (8px) in; picked = 2px --icon-action ring */
+.pc--pick{cursor:pointer}
+.pc--pick .pc-img .chk{position:absolute;right:var(--gap-2,8px);bottom:var(--gap-2,8px);z-index:1}
+.pc--pick.on .pc-img::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 2px var(--icon-action);pointer-events:none}
 .pc-swatch.on i{border:1px solid #FFF}
 .pc-more{font-weight:var(--w-regular);font-size:14px}
 .pc-swatches--round .pc-swatch,.pc-swatches--round .pc-swatch i{border-radius:50%} /* PLT runs circle swatches — 50%, not --radius-pill (PLT's square mode sets that to 0) */
@@ -717,7 +726,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .price-blk--card.m .price,.price-blk--card.m .price-code{font-size:var(--price-card-m);line-height:var(--price-card-m-lh)}
 @media(max-width:767px){.price-blk--card .price,.price-blk--card .price-code{font-size:var(--price-card-m);line-height:var(--price-card-m-lh)}}
 /* rail card (recommendations, complete the look): now + was only, one line */
-.price-blk--rail .price{font-size:var(--price-card);line-height:var(--price-card-lh);column-gap:8px;white-space:nowrap;flex-wrap:nowrap}
+.price-blk--rail .price{font-size:var(--price-card);line-height:var(--price-card-lh);column-gap:8px;row-gap:0;flex-wrap:wrap} /* now · was · -X%, wraps when the card is narrow (2 Nov) */
 /* added-to-bag: 12/18, both prices ink, now + was only */
 .price-blk--drawer .price{font-size:var(--price-drawer);line-height:var(--price-drawer-lh);column-gap:8px}
 .price-blk--drawer .now,.price-blk--drawer .now.sale{color:var(--text-primary)}
@@ -768,16 +777,23 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
    <div class="pcar-tabs"><button class="chip on">…</button></div><a class="pcar-all">View all</a></header>
    <div class="pcar-body"><button class="pcar-arr pcar-arr--prev"></button><div class="pcar-track">.pc …</div><button class="pcar-arr pcar-arr--next"></button></div></section>
    Behaviour (arrows, end states, tabs): assets/ds/carousel.js. */
-.pcar{--pcar-gap:8px;--pcar-per:5;--pcar-peek:.4;--pcar-card:165px;--pcar-pad:0px;--pcar-hd-gap:16px;
+/* 2 Nov 2026 (banked from the prototype): one gap everywhere — gap 1 (4px) columns, gap 4 (16px) grid rows; 0 columns on PLT + The Brand Room
+   (tokens.css --pcar-gap-x / --pcar-info-x, card text inset 4px so neighbours never touch). Images locked 2:3. */
+.pcar{--pcar-gap:var(--pcar-gap-x,4px);--pcar-row-gap:16px;--pcar-per:5;--pcar-peek:.4;--pcar-card:165px;--pcar-card-d:248px;--pcar-pad:0px;--pcar-hd-gap:16px;
   display:flex;flex-direction:column;gap:var(--pcar-hd-gap);font-family:var(--font-family-base);color:var(--text-primary);min-width:0;position:relative}
 .pcar-hd{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--gap-4,16px);padding:0 var(--pcar-pad);min-width:0}
 .pcar-tt{display:flex;flex-direction:column;gap:var(--gap-2,8px);min-width:0;flex:1}
 .pcar-t{margin:0;font-size:18px;line-height:22px;font-weight:var(--w-strong)}
 .pcar-sub{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
 .pcar-all{flex:none;font-size:14px;line-height:20px;color:var(--text-primary);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
-.pcar-tabs{display:flex;gap:var(--gap-2,8px);overflow-x:auto;scrollbar-width:none;flex:none;max-width:100%}
+.pcar-tabs{display:flex;gap:var(--gap-1,4px);overflow-x:auto;scrollbar-width:none;flex:none;max-width:100%}
 .pcar-tabs::-webkit-scrollbar{display:none}
-.pcar-tabs .chip{height:32px;padding:0 12px;font-size:14px}
+/* tabs (DS Figma 1676-10372): 36px, 14 sentence case, gap 1 (4px), the fascia button radius; selected = the primary CTA, the rest white + Grey 25 keyline */
+.pcar-tabs .chip{height:36px;padding:0 var(--gap-3,12px);border-radius:var(--radius-default);background:var(--surface-raised);border:1px solid var(--border-default);
+  color:var(--text-primary);font-family:var(--font-family-base);font-size:14px;line-height:18px;font-weight:var(--w-regular);text-transform:none;transition:background var(--dur-fast) var(--ease-standard),border-color var(--dur-fast) var(--ease-standard)}
+.pcar-tabs .chip:hover:not(.on){border-color:var(--border-strong)}
+.pcar-tabs .chip.on{background:var(--surface-action);border-color:var(--surface-action);color:var(--text-on-action);font-weight:var(--w-mid)}
+.pcar-tabs .chip:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#2797FF);outline-offset:2px}
 /* header sizes — lg: home (title + subtitle + tabs) · md: recommendations (default) · sm: search, added to bag */
 .pcar--lg{--pcar-hd-gap:24px}
 .pcar--lg .pcar-hd{flex-direction:column;align-items:stretch}
@@ -789,29 +805,44 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pcar-track::-webkit-scrollbar{display:none}
 .pcar-track>*{flex:0 0 var(--pcar-card);width:auto!important;scroll-snap-align:start;min-width:0}
 .pcar-track>.pc .pc-actions{display:none} /* no wishlist on rail cards (DS rule, 27 Oct) */
-/* arrows — desktop only, centred on the image, hidden at each end */
+.pcar .pc-img{aspect-ratio:2/3;flex:none;height:auto}.pcar .pc-img img.ph{object-fit:cover}
+.pcar .pc-info{padding-inline:var(--pcar-info-x,0px)}
+/* mobile / touch: a free scroll — no snap, momentum only (whip it to the end, or ease it one card) */
+@media(max-width:1023px),(hover:none){.pcar-track{scroll-snap-type:none;scroll-behavior:auto}.pcar-track>*{scroll-snap-align:none}}
+/* arrows = the DS Navigation Button (Figma 9144-1896) — desktop + mouse only, centred on the image, hidden at each end; a click pages by the cards in
+   view minus one (carousel.js). 32px white circle, shadow 0 0 14px 10%, 16px Icons / Left · Right at 1pt nudged 1px off centre; Pressed / hover = no shadow.
+   .pcar--no-arr: no arrows (trackpad / swipe only). */
 .pcar-arr{position:absolute;top:var(--pcar-arr-y,38%);transform:translateY(-50%);z-index:2;width:32px;height:32px;border-radius:var(--radius-pill);border:none;padding:0;
-  background:var(--surface-raised);box-shadow:0 2px 8px rgba(15,15,15,.14);display:none;place-items:center;cursor:pointer;transition:opacity .15s}
-.pcar-arr::before{content:"";width:14px;height:14px;background:var(--text-primary);-webkit-mask:url(icons/lib/icons-left.svg) center/contain no-repeat;mask:url(icons/lib/icons-left.svg) center/contain no-repeat}
+  background:var(--surface-raised);box-shadow:0 0 14px rgba(0,0,0,.1);display:none;place-items:center;cursor:pointer;transition:opacity .15s,box-shadow .15s}
+.pcar-arr::before{content:"";width:16px;height:16px;background:var(--text-primary);-webkit-mask:url(icons/lib/icons-left.svg) center/contain no-repeat;mask:url(icons/lib/icons-left.svg) center/contain no-repeat}
 .pcar-arr--prev{left:calc(var(--pcar-pad) + 12px)}
 .pcar-arr--next{right:12px}
-.pcar-arr--next::before{transform:scaleX(-1)}
+.pcar-arr--prev::before{transform:translateX(-1px)}
+.pcar-arr--next::before{transform:scaleX(-1) translateX(-1px)}
+.pcar-arr:hover,.pcar-arr:active{box-shadow:none}
+.pcar-arr:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#2797FF);outline-offset:2px}
 .pcar-arr[disabled]{opacity:0;pointer-events:none}
+.pcar--no-arr .pcar-arr{display:none!important}
 /* arrows under the rail (.rail-nav) — narrow rails where the arrows can't sit on the images (the agent chat): a left-aligned pair under the cards, on every device; 28px circles, 12px lib chevron (1pt), prev/next dim at the ends */
 .rail-nav{display:flex;gap:8px;margin-top:12px}
 .rail-nav .pcar-arr{position:static;transform:none;display:grid;width:28px;height:28px}
 .rail-nav .pcar-arr::before{width:12px;height:12px}
 .rail-nav .pcar-arr[disabled]{opacity:.35}
-/* grid format — same header, same cards, wrapped: 2 across on mobile, --pcar-per across on desktop */
-.pcar--grid .pcar-track{display:grid;grid-template-columns:repeat(var(--pcar-cols,2),minmax(0,1fr));gap:var(--gap-6,24px) var(--pcar-gap);overflow:visible;scroll-snap-type:none}
+/* grid format (Handpicked For You) — same header, same cards, wrapped: 3 across on mobile, --pcar-per across on desktop, rows gap 4 (16px) */
+.pcar--grid .pcar-track{display:grid;grid-template-columns:repeat(var(--pcar-cols,3),minmax(0,1fr));gap:var(--pcar-row-gap) var(--pcar-gap);overflow:visible;scroll-snap-type:none}
 .pcar--grid .pcar-track>*{flex:none}
 .pcar--grid .pcar-arr{display:none!important}
-/* image-only cards (Create the Look): .pc with no .pc-info */
+/* Create the Look (.pcar--look): image-only cards. Mobile: on a grey panel (--grey-05), padding gap 4 (16px), 150px tiles, the panel edge to edge.
+   Desktop: no panel — the same width, cards in view and spacing as every other rail. A tap anywhere opens the Create the Look picker (DG_lookPicker). */
+.pcar--look{--pcar-card:150px;--pcar-pad:var(--gap-4,16px);background:var(--grey-05,#FAFAFA);padding-block:var(--gap-4,16px)}
+.pcar--look .pcar-hd{align-items:center}
+.pcar--look .pc{gap:0}
 .pcar--look .pc-info{display:none}
+@media(max-width:1023px){.pcar--look.pcar--bleed{margin-inline:calc(-1 * var(--gap-4,16px))}}
 @media(min-width:1024px){
   .pcar{--pcar-hd-gap:24px}
   .pcar--lg{--pcar-hd-gap:48px}
-  .pcar--lg .pcar-hd{flex-direction:row;align-items:flex-end}
+  .pcar--lg .pcar-hd{flex-direction:row;align-items:center} /* tabs vertically centred on the title + subtitle */
   .pcar--lg .pcar-t{font-size:40px;line-height:44px}
   .pcar--lg .pcar-sub{font-size:20px;line-height:28px}
   .pcar-t{font-size:20px;line-height:24px}
@@ -819,6 +850,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
   .pcar-arr{display:grid}
   .pcar-track>*{flex-basis:calc((100% - var(--pcar-gap) * var(--pcar-per)) / (var(--pcar-per) + var(--pcar-peek)))}
   .pcar--grid .pcar-track{grid-template-columns:repeat(var(--pcar-per),minmax(0,1fr))}
+  .pcar--look{--pcar-pad:0px;background:none;padding-block:0}
+  /* .pcar--full (home + PDP full-width rails): to the page margin at every width, one card size, so a wider screen pulls in more products */
+  .pcar--full .pcar-track>*{flex-basis:var(--pcar-card-d)}
 }
 /* .pcar--bleed: on a page with a gap 4 (16px) margin, the rail runs to the screen edges on mobile while the header and first card stay on the margin */
 @media(max-width:1023px){.pcar--bleed{--pcar-pad:var(--gap-4,16px);margin-inline:calc(-1 * var(--pcar-pad))}}
@@ -1007,6 +1041,14 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl--up{width:100%;border-radius:var(--radius-default) var(--radius-default) 0 0;max-height:100%}
 .mdl--fs{width:100%;height:100%;border-radius:0}
 .mdl--fs .mdl-bd{flex:1;align-items:center;justify-content:center}
+/* .mdl--side (desktop drawer — mini bag / added to bag, 2 Nov 2026): full height, 480 wide, flush right, square corners, slides in from the right */
+.mdl--side{width:480px;height:100%;max-height:none;border-radius:0;overflow-y:auto}
+.mdl--side .mdl-bd{min-height:auto}
+.mdl.mdl-anim-side{animation:mdlside .3s ease-in-out both}
+@keyframes mdlside{from{transform:translateX(100%)}to{transform:none}}
+/* .mdl-tick: the 16px tick left of the title (“✓ Added to Bag”), the same slot and size as .mdl-back */
+.mdl-tick{width:16px;height:25px;flex:none;display:grid;place-items:center}
+.mdl-tick::before{content:"";width:16px;height:16px;background:var(--icon-primary);-webkit-mask:url("icons/lib/icons-tick.svg") center/contain no-repeat;mask:url("icons/lib/icons-tick.svg") center/contain no-repeat}
 /* overlay + stage (a page frame the modal sits over: header, then the 50% scrim; .mdl-stage--up anchors to the bottom) */
 .mdl-scrim{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:2}
 .mdl-stage{position:relative;overflow:hidden;background:var(--surface-page,#fff);display:flex;flex-direction:column;border-radius:var(--radius-default)}

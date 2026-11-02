@@ -8,13 +8,11 @@
 <body>
 <script>
 /* In situ: this page IS the Shopping agent page (projects/shopping-agent/page.html — the latest home, PDP and search), opened as it stands,
-   plus three files: insitu-pre.js (state), ds-next.css (the proposed DS changes) and insitu.js (swaps its product rails for the DS
-   Product carousel and adds the mini bag). So every in-situ screen stays as current as the Shopping agent prototype. */
+   plus insitu-pre.js (state) and insitu.js (swaps its product rails for the DS Product carousel — banked 2 Nov 2026 — and adds the mini bag). So every in-situ screen stays as current as the Shopping agent prototype. */
 (function(){
   fetch('projects/shopping-agent/page.html',{cache:'no-cache'}).then(function(r){return r.text()}).then(function(h){
     h=h.replace('<base href="../../">','<base href="../../"><script src="projects/product-carousel/insitu-pre.js"><\/script>')
-       .replace('</head>','<link rel="stylesheet" href="projects/product-carousel/ds-next.css"></head>')
-       .replace(/<\/body>(?![\s\S]*<\/body>)/,'<script src="assets/ds/carousel.js"><\/script><script src="projects/product-carousel/insitu.js"><\/script></body>');
+       .replace(/<\/body>(?![\s\S]*<\/body>)/,'<script src="assets/ds/carousel.js"><\/script><script src="templates/feed.js"><\/script><script src="projects/product-carousel/insitu.js"><\/script></body>');
     document.open();document.write(h);document.close();
   });
 })();

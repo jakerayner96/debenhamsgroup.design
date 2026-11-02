@@ -53,7 +53,7 @@ function page(){const ps=((window.PRODUCTS_ALL||{})[S.brand]||[]).slice(0,2),it=
   return header()+(desk()
     ?`<main class="pg">${title}<div class="cols"><div class="items" data-slot="items">${V('threshold',0)}${items}</div><div class="sumcol" data-slot="summary">${sum}</div></div></main>`
     :`<main class="pg">${title}${window.DG_bagTopHTML?DG_bagTopHTML(S.brand,it):''}<div class="items" data-slot="items">${V('threshold',0)}${items}</div></main><div class="sumcol" data-slot="summary">${sum}</div>`)
-    +(window.DG_pcarHTML?`<section class="recs" data-slot="recs">${DG_pcarHTML({title:'You Might Also Like',all:true,per:4,eager:EXPORTING,items:DG_feed(S.brand,5,10,3)})}</section>`:'')
+    +(window.DG_pcarHTML?`<section class="recs" data-slot="recs">${DG_pcarHTML({title:'You Might Also Like',per:4,round:S.brand==='plt',eager:EXPORTING,items:DG_feed(S.brand,5,10,3)})}</section>`:'')
     +`<footer data-ftr="${S.brand}"></footer>`}
 function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
   document.getElementById('app').innerHTML=page();
