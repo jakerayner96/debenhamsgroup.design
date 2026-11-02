@@ -5,7 +5,7 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-11-02",
   "v": "2026.11.02",
-  "title": "Request form family (.rf) · Multi-line text field · field hint · Screenshot Brief tool · Geologica TTFs · Membership box and Deliver+ in the Figma library · Message banner warning tone · Brand Room logo downloads (SVG + 500px PNG)",
+  "title": "Delivery grid default: option 3 + accordions · Request form family (.rf) · Multi-line text field · field hint · Screenshot Brief tool · Geologica TTFs · Membership box and Deliver+ in the Figma library · Message banner warning tone · Brand Room logo downloads (SVG + 500px PNG)",
   "by": "Screenshot Brief (tools/screenshot-brief, from the App Store / Play Store screenshot template vebOMPnswl12a9JehBSt1m 127:897, Jake 2 Nov) · Order + dispatch emails (debenhams-order-emails, Order Emails Figma fZlGOMy8NZR9PdWKDJ8HAG, Jake 2 Nov)",
   "added": [
    "The Brand Room › Brand list (#br-brands): logo downloads on every brand card, transparent background, black or white. SVG for the 35 brands Figma has as vectors (13 new masters exported from the Brand Room Figma Content / Logos 342:10634 into assets/brands/brandroom-portfolio/svg/: adidas, Aquascutum, Armani Exchange, Clarks Originals, Crew Clothing, Crocs, HUGO, Ipanema, Juicy Couture, Lacoste, Napapijri, Sergio Tacchini, Tommy Hilfiger; colour lockups keep their colours). A 500 × 500 PNG for all 68 (assets/brands/brandroom-portfolio/png/, from the vectors or the full-res Figma source images). An All logos ZIP (brand-room-logos.zip). DG_BR_BRANDS.svg lists the vector brands · by Brand Room logo downloads (Jake 2 Nov)",
@@ -17,7 +17,8 @@ window.DG_CHANGELOG=[
    "Planning and Tools: Screenshot Brief (tools/screenshot-brief/), the ecom → creative screenshot brief as a form: app, listing type, sets, build, markets, test account, up to 10 screens (reference screenshot OR website link, headline, subline, notes), the before-you-send checklist; four steps on the Request form family (About the brief · Screens · Checklist · Review & export), every fascia in the picker (app icon or logo on the PDF), draft kept in the browser; Export PDF (A4, Geologica embedded, clickable links, gaps flagged in red) · by Screenshot Brief",
    "Message banner tone .msg--warning: Yellow bar (--warning-bar #FFD600) on Light Yellow (--warning-bg #FFFBE6), info icon, bold lead line; tokens --warning-bar / --warning-bg; catalogue variant Warning · by Order + dispatch emails (the Figma \"Delivery Information\" banner shown when an order ships in 2+ parcels)"
   ],
-  "changed": [],
+  "changed": [
+   "Delivery grid defaults (assets/ds/delivery.js): DG_delivery.grid() now gives the chosen design with no options — option B tabs (o.layout 'tabs'), row format 3 “Get It By · Tomorrow / method” (o.fmt 3) and returns + seller info in the PDP accordions, not the box (o.retIn / o.sellerIn 'acc'). Pass 'list' / 1 / 'box' for the old looks. Catalogue: the default is the first variant; the in-box variants say so. templates/pdp.html, the Shopping agent PDP (was still option A, now B + Returns / Seller Information accordions) and the PDP delivery grid prototype all default to it · by Jake, 2 Nov (delivery grid decision)",],
   "fixed": []
  },
  {

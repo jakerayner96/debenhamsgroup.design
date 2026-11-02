@@ -51,14 +51,14 @@ PAGES.home=function(){const doc=new DOMParser().parseFromString(oHome(),'text/ht
   if(ps.length)ps.forEach((el,k)=>el.replaceWith(box(feat(k))));
   else{const at=hm.children[Math.min(1,hm.children.length-1)];at&&at.after(box(feat(0)))}
   const kids=[...hm.children],at2=kids[Math.min(kids.length-1,5)];
-  at2&&at2.after(box(pcar({id:'homeTop',size:'md',title:'Top Sellers',all:true,start:7})));
+  at2&&at2.after(box(pcar({id:'homeTop',size:'md',title:'Top Sellers',start:7})));
   return hm.outerHTML};
 
 /* ---- PDP: Create the Look (grey panel, image only), then the recommendations (carousel or grid) under the PDP ---- */
 const oPdp=PAGES.pdp;
 PAGES.pdp=function(){const h=oPdp(),i=h.lastIndexOf('</div>');
-  const recs=`<div class="pi-recs">${PC.look!==false?pcar({id:'look',size:'md',look:true,title:'Create The Look',all:true,start:9}):''}
-    ${pcar({id:'recs',size:'md',fmt:PC.recsFmt==='grid'?'grid':'carousel',title:'Why Not Treat Yourself?',all:true,start:3})}
+  const recs=`<div class="pi-recs">${PC.look!==false?pcar({id:'look',size:'md',look:true,title:'Create The Look',start:9}):''}
+    ${pcar({id:'recs',size:'md',fmt:PC.recsFmt==='grid'?'grid':'carousel',title:'Why Not Treat Yourself?',start:3})}
     ${pcar({id:'recent',size:'md',title:'Recently Viewed',start:12})}</div>`;
   return h.slice(0,i)+recs+h.slice(i)};
 
@@ -67,7 +67,7 @@ const oAc=window.acInner;
 window.acInner=function(){const doc=new DOMParser().parseFromString('<div id="x">'+oAc()+'</div>','text/html'),typing=!!(S.q||'').trim();
   doc.querySelectorAll('.ac-rv').forEach((rv,k)=>{const sec=rv.closest('.ac-sec')||rv,t=(sec.querySelector('h4')||{}).textContent||'Recently Viewed';
     const list=typing&&window.matches?matches(S.q).map(x=>x[1]):[1,21,5,24,31,27,3,9,12,15].map(i=>i%n());
-    const d=doc.createElement('div');d.className='ac-sec';d.innerHTML=pcar({id:'ac'+k,size:'sm',title:t,all:!typing,per:6,list});sec.replaceWith(d)});
+    const d=doc.createElement('div');d.className='ac-sec';d.innerHTML=pcar({id:'ac'+k,size:'sm',title:t,per:6,list});sec.replaceWith(d)});
   return doc.getElementById('x').innerHTML};
 
 /* ---- MINI BAG (after Add to Bag): DS modal — slide up on mobile (.mdl--up), drawer on desktop (.mdl--side, proposed) — with

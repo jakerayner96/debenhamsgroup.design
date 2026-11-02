@@ -62,7 +62,7 @@ const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
 /* delivery grid (DS delivery.js) = option B, Delivery / Click & Collect tabs (projects/delivery-grid, Jake 29 Oct): fastest + cheapest per tab, badges, returns line */
 /* seller line: grey placeholder until a size is picked, then sold by the fascia ('site'; a marketplace key, e.g. 'amass', makes it a link → seller modal) */
 let SELLER=null;
-const DG_OPTS=()=>({fmt:S.dgFmt||1,layout:'tabs',tab:'home',retIn:S.dgRet||'box',sellerIn:S.dgSeller||'box',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
+const DG_OPTS=()=>({fmt:S.dgFmt||3,layout:'tabs',tab:'home',retIn:S.dgRet||'acc',sellerIn:S.dgSeller||'acc',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
 /* Subscribe & Save: the product at 5% off, size = the first size until one is picked; centred modal from 600px, bottom sheet on phones */
 const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(document.querySelector('.sz.on')||{}).textContent||P.sizes[0],colour:P.colour,pct:5});
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
@@ -90,7 +90,7 @@ function accSet(P){const rows=[['At a Glance',P.glance?`<ul class="glance glance
     ['Description',`${esc(P.name)}.${P.glance?' '+esc(P.glance.join('. '))+'.':''}`],
     ['Product Details &amp; Care','Fabric and care from the product feed.'],
     ['Delivery','Every way to get this item, and its price, is in Delivery Methods above.'],
-    ['Returns','Eligible for return within 21 days. Exclusions apply.',0,'ret'],
+    ['Returns',DG_OPTS().retIn==='acc'?'-':'Eligible for return within 21 days. Exclusions apply.',0,'ret'],
     ['Seller Information',DG_OPTS().sellerIn==='acc'?'-':'',0,'seller'],
     ['Manufacturer',`${esc(P.brand)}, Debenhams Group, Manchester M1 2DU.`]].filter(r=>r[1]);
   /* Returns + Seller Information rows come from delivery.js (S.dgRet / S.dgSeller 'acc' = out of the delivery grid, in here) */

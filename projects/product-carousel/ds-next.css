@@ -9,6 +9,8 @@
    3. Grid: 3 across on mobile (was 2), --pcar-per across on desktop.
    4. Create the Look (.pcar--look): the carousel on a grey panel (--grey-05), padding gap 4 (16px), image-only 150px tiles, View all right.
    5. Chevrons optional: .pcar--no-arr drops the desktop arrows (trackpad / shift-scroll + swipe only).
+   8. Tabs (.pcar-tabs .chip, DS Figma 1676-10372): 44px, sentence case 16px, gap 3 (12px), the fascia button radius (--radius-default: 4px, 0 on PLT /
+      Brand Room / square fascias). Selected = the primary CTA (--surface-action fill, --text-on-action ink); the others white with a 1px Grey 25 keyline.
    MODAL (new type, mini bag / added to bag — demiladea.github.io/Debenhams/Add To Cart concept 1):
    6. .mdl--side: desktop drawer — full height, 480 wide, flush to the right edge, square corners, slides in from the right. Mobile keeps .mdl--up.
    7. .mdl-tick: the 16px tick left of the title ("✓ Added to Bag"), the same slot and size as .mdl-back. */
@@ -36,4 +38,11 @@
 @keyframes mdlside{from{transform:translateX(100%)}to{transform:none}}
 .mdl-tick{width:16px;height:25px;flex:none;display:grid;place-items:center}
 .mdl-tick::before{content:"";width:16px;height:16px;background:var(--icon-primary);-webkit-mask:url("../../assets/ds/icons/lib/icons-tick.svg") center/contain no-repeat;mask:url("../../assets/ds/icons/lib/icons-tick.svg") center/contain no-repeat}
+
+.pcar-tabs{gap:var(--gap-3,12px)}
+.pcar-tabs .chip{height:44px;padding:0 var(--gap-4,16px);border-radius:var(--radius-default);background:var(--surface-raised);border:1px solid var(--border-default);
+  color:var(--text-primary);font-family:var(--font-family-base);font-size:16px;line-height:20px;font-weight:var(--w-regular);text-transform:none;transition:background var(--dur-fast) var(--ease-standard),border-color var(--dur-fast) var(--ease-standard)}
+.pcar-tabs .chip:hover:not(.on){border-color:var(--border-strong)}
+.pcar-tabs .chip.on{background:var(--surface-action);border-color:var(--surface-action);color:var(--text-on-action);font-weight:var(--w-mid)}
+.pcar-tabs .chip:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#2797FF);outline-offset:2px}
 /* (url paths are relative to this file; they become icons/lib/… once banked in components.css) */
