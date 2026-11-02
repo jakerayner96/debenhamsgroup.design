@@ -180,7 +180,7 @@ const PAGES=[
   ['home','Home','templates/home.html','Live homepage per fascia · product carousels · footer'],
   ['plp','PLP','projects/plp-alignment/plp.html','P-05 PLP, new format · product cards · sort & filter'],
   ['pdp','PDP','templates/pdp.html','The master PDP (Shopping agent PDP, banked 16 Oct)'],
-  ['bag','Bag','templates/bag.html','Live /basket layout · bag summary · recommendations'],
+  ['bag','Bag','templates/bag.html','Bag 2026 · every bag product card type · summary + Rewards'],
 ];
 /* what is in the master, per page (newest decisions noted with the date they were banked and the project that drove them) */
 const BANKED={
@@ -202,7 +202,9 @@ const BANKED={
        ['22 Oct','Virtual Stylist chip, centred','Between gallery and title on mobile, under the gallery on desktop (live KM)'],
        ['16 Oct','Buy column order','Add to bag → PayPal → Apple Pay · Ask Deb prompts · membership box · Deliver+ (not Brand Room) · delivery grid · BNPL · Subscribe & Save (Shopping agent)'],
        ['15 Oct','Gallery, price, sizes','Core PDP 2026 gallery · .price-blk--pdp · size selector · accordion set']],
-  bag:[['2 Nov','Recommendations','You Might Also Like, .pcar medium + View all, 4 + peek (Product carousel spec)'],
+  bag:[['2 Nov','Bag 2026 (Figma CYyGeUDy4w02enV7uFxZ6W)','Bag product cards (every type), Your Gifts, Delivered by <seller>, Need A Top-Up?, Choose N free samples, Deliver+ banner, Rewards, free-delivery line on the summary card; desktop white panels 676 | 390'],
+       ['2 Nov','Quantity stepper to its Figma','Grey 3 border, 12px icons, delete at 1, + greys at max, pressed fill, 44px tap zones'],
+       ['2 Nov','Recommendations','You Might Also Like, .pcar medium + View all, 4 + peek (Product carousel spec)'],
        ['16 Oct','Bag payment summary','bag-summary.js per fascia, Deliver+ in the bag'],
        ['6 Oct','Live /basket layout','Threshold · bag items · summary column on desktop, total + checkout under the title on mobile']],
 };
@@ -221,6 +223,7 @@ function renderPanel(host,S,update){
   host.innerHTML=`<h1>Master prototype</h1><p class="intro">The whole experience on the latest DS, every fascia. It is the starting point for every new prototype. Once a feature is decided, it is banked here, and the DS component is made from it. Click through it like the site: logo → Home, a category → PLP, a product → PDP, Add to bag → Bag.</p>
   <div class="card"><h3>Page <small>or click through the page</small></h3>${PAGES.map(([v,n,src,d])=>`<button class="opt${pg===v?' on':''}" data-pg="${v}"><span class="r"></span><span class="t"><b>${n}</b><span>${d}</span></span></button>`).join('')}
     <p style="margin:8px 0 0">Source: <code>${cur[2]}</code> · <a class="lnk" href="../../${cur[2]}?brand=${S.brand}${pg==='plp'?'&mode=new':''}" target="_blank">open on its own ↗</a></p></div>
+  ${pg==='bag'?bagCard(S):''}
   <div class="card"><h3>In the master · ${cur[1]}</h3>${li(BANKED[pg]||[])}</div>
   <div class="card"><h3>Not banked yet</h3><p>Built in a project but not in the master. To bank one, land it in its page template.</p>${li(NOT_YET,' bk--todo')}</div>
   <div class="card"><h3>Start a new prototype from the master</h3><ol class="ol">
@@ -230,6 +233,11 @@ function renderPanel(host,S,update){
     <li>Add a line to <code>BANKED</code> in this shell, and remove it from Not banked yet.</li></ol></div>`;
   host.querySelectorAll('[data-pg]').forEach(b=>b.onclick=()=>setPage(b.dataset.pg));
 }
+/* Bag contents: every card / section type in Bag 2026, on by default; switch any off (S.cfg.bagOff → the Bag template). Debenhams-only types are marked. */
+const BAGTYPES=[['oos','Out of stock'],['qtyerr','Quantity error'],['egift','e-Gift Card','Debenhams'],['member','Membership (Unlimited)','Debenhams'],['xcover','XCover: add / added','Debenhams'],['sns','Subscribe & Save','Debenhams'],['taskrabbit','Taskrabbit assembly','Debenhams'],['ts','Taggstar strip'],['gift','Free gift','Debenhams'],['sample','Complimentary sample','Debenhams'],['custom','Customised product'],['preorder','Pre-order'],['seller2','Second seller'],['gifts','Your Gifts','Debenhams'],['topup','Need A Top-Up?'],['samples','Choose 2 free samples','Debenhams'],['dplus','Deliver+ banner (mobile)'],['rewards','Rewards','Debenhams'],['recs','You Might Also Like']];
+function bagCard(S){const off=S.cfg.bagOff||[];
+  return `<div class="card"><h3>Bag contents <small>Bag 2026 card types</small></h3><p>Every type is on. Switch one off to see the bag without it.</p>${BAGTYPES.map(([k,n,only])=>`<label class="sw" style="display:flex;justify-content:space-between;width:100%;padding:5px 0"><span>${n}${only?` <small style="color:var(--dim)">· ${only}</small>`:''}</span><input type="checkbox" data-bt="${k}"${off.includes(k)?'':' checked'}><i></i></label>`).join('')}</div>`}
+document.addEventListener('change',e=>{const k=e.target.dataset&&e.target.dataset.bt;if(!k)return;const off=new Set(S.cfg.bagOff||[]);e.target.checked?off.delete(k):off.add(k);S.cfg.bagOff=[...off];update()});
 function setPage(p){S.cfg.page=p;save();panel();frame.src=src()}
 /* ==================================================================================================== */
 

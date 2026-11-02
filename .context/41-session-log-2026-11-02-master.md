@@ -8,3 +8,11 @@ Jake: a master prototype of the whole experience on the latest DS components and
 - PDP template: Create The Look · Why Not Treat Yourself? · Recently Viewed. Bag template: You Might Also Like.
 - Not banked: product carousel 2 Nov round (ds-next.css), Shopping agent search / Ask / chat / content prompts / NBA, Taggstar, Brand Room sign-up.
 - Verified: 7 fascias × 4 pages × 390 / 1440, journey, export zip.
+
+## Bag 2026 (same day)
+- Jake: the new bag, from all the designs on Bag 2026 › Bag Product Cards - 19.08.26, within the master. Banked in templates/bag.html (so the master's Bag page).
+- New DS: .bpc (Bag product card, every type), .bag-sec / .bag-panel / .bag-gift / .bsmp (Bag sections), .rwd (Rewards), assets/ds/bag.js (builders + reducer act()), .bd.xs.line, .price-blk--bag, .sp-bag--sm, .bag-layer; imagery templates/img/bag (2:3 webp; the Figma's square gift / sample shots padded to 2:3 per the product-image rule).
+- Changed: .qty to its Figma (1234:76756); bag-summary.js opts {thresh, rewards, promo} + DG_bagTopHTML {after}; .bs--m white; .bs-ot 14.
+- DS reds, not the Figma's: price + error = --text-error (#C90000), Figma uses #E90000 / #D33F3F.
+- Master shell: Bag contents card (S.cfg.bagOff). Debenhams = the Figma set; other fascias = own products, Debenhams-only types off.
+- Not done: Figma library components for the new DS pieces (rule: code AND Figma).

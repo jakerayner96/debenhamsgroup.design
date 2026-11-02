@@ -43,9 +43,17 @@ The whole experience on the latest DS, every fascia: **Home → PLP → PDP → 
   - Virtual Stylist chip centred
   - accordion set
   - **New:** Create The Look · Why Not Treat Yourself? · Recently Viewed (Product carousel spec placements)
-- **Bag:** the live /basket layout and bag-summary.js. **New:** You Might Also Like (medium + View all, 4 + peek).
+- **Bag — Bag 2026 (banked 2 Nov, Figma `CYyGeUDy4w02enV7uFxZ6W`, mobile 1337:250006 / desktop 1337:256981):**
+  - **Top:** Your Bag (n), Order Total, out-of-stock banner, free-delivery line, checkout.
+  - **Sections:** Your Gifts · Delivered by <seller> (n) · Need A Top-Up? · Choose 2 free samples.
+  - **Every bag product card type:** standard, out of stock, quantity error, e-Gift Card (+ details modal), membership, XCover add / added, Subscribe & Save, Taskrabbit, Taggstar strip, free gift, complimentary sample, customised, pre-order.
+  - **Then:** the Deliver+ banner (mobile) and the summary, with Rewards on Debenhams and, on desktop, the free-delivery line on the card plus the Promo Code card.
+  - **Interactive:** the quantity stepper, delete, Move to your Wishlist?, XCover, Subscribe & Save, samples (max 2) and top-up all work.
+  - **Bag contents card** (left panel, Bag page): switch any card or section type off.
+  - **Other fascias:** they get their own products, with the Debenhams-only types (marketplace, beauty, Rewards) left out.
 
 ## DS changes made for it (logged in the changelog, 2026.11.02)
+- **Bag 2026:** Bag product card (`.bpc`), Bag sections, Rewards banner (`.rwd`), `assets/ds/bag.js`, `.bd.xs.line`, `.price-blk--bag`, `.sp-bag--sm`, `.bag-layer`. Changed: the Quantity stepper (to its Figma) and bag-summary.js (options, white mobile ground, 14px Order Total).
 - **Added:**
   - `templates/home.html`
   - `templates/feed.js` (rail feeds)

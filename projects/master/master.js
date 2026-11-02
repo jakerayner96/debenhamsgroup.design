@@ -18,7 +18,7 @@
     if(t.closest(IGNORE))return;
     if(M.page==='pdp'&&t.closest('.pdp-ctas .bd.pri')){e.preventDefault();added();return}
     if(t.closest('.pdp-gal'))return;
-    if(t.closest('article.pc,.bag-item')){e.preventDefault();e.stopPropagation();go('pdp');return}
+    if(t.closest('article.pc,.bag-item,.bpc-img,.bpc-name')){e.preventDefault();e.stopPropagation();go('pdp');return}
     if(t.closest('.hd-nav a,.roundel,.hm-t,.hm-ov,.bc a,.pcar-all,.catpill,.linkchips a,.cat-row a')){e.preventDefault();e.stopPropagation();go('plp')}
   },true);
   /* Add to bag: the DS toast (catalogue Toast · Top, actionable), 6s; the header bag count goes up by one. Bundling (dg:bundle) adds n items */

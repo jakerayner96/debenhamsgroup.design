@@ -6,7 +6,10 @@
    below the items, full-bleed, with Promo Code first, then a hairline, then the summary. There is no sticky checkout bar.
    Live has no Delivery row (delivery is priced at checkout); the optional Deliver+ add-on is the only extra row.
    renderBagSummary(brand, items, desk) returns the right-column html. renderBagTop(brand, items) is the mobile-only
-   "Order Total + Checkout" strip live shows under "Your Bag (n)", above the items. */
+   "Order Total + Checkout" strip live shows under "Your Bag (n)", above the items.
+   Options (2 Nov 2026, Bag 2026 Figma): DG_bagSummaryHTML(brand, items, desk, {thresh, rewards, promo}) — thresh = html at the top of the desktop card
+   (the free-delivery line over a hairline), rewards = html under the totals (Debenhams Rewards banner), promo:false drops the Promo Code card (mobile Bag 2026).
+   DG_bagTopHTML(brand, items, {after}) — after = html between Order Total and the checkout button (threshold, out-of-stock banner). */
 (function(){
 const A=(window.DG_ASSET_BASE||''),I=A+'assets/ds/icons/pay/',W=A+'assets/ds/icons/payments/',L=A+'assets/ds/icons/pay/';
 const CARDS16=['visa','mastercard','amex','maestro','visa-electron','apple-pay','payplus','paypal','klarna','clearpay','google-pay','revolut'];
@@ -34,7 +37,7 @@ const WAL={
   apple:()=>`<button type="button" class="bs-w bs-ap"><img src="${W}applepay-onblack.svg" alt="Apple Pay" style="height:22px"></button>`,
   klarna:()=>`<button type="button" class="bs-w bs-kl"><span>Pay with</span><img src="${W}klarna-badge.svg" alt="Klarna" style="height:26px"></button>`
 };
-window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk){
+window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk,o){o=o||{};
   const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]),pct=t.sub?Math.round(t.disc/t.sub*100):0;
   const sum=`<div class="bs-sum"><div class="bs-h">Order Summary</div>${row('Subtotal',gbp(t.sub))}${t.disc?row('Discount','-'+gbp(t.disc)):''}
     ${c.dplus?`<div class="bs-r bs-dp"><span>${esc(c.dplus)}<small>Optional add-on</small></span><span>${gbp(c.dprice)}</span></div>`:''}${row('Order Total',`<b>${gbp(t.total)}</b>`,'bs-tot')}</div>
@@ -45,8 +48,9 @@ window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk){
     <div class="bs-cards">${c.cards.map(logo).join('')}</div>`;
   const promo=`<div class="bs-card bs-pr"><div class="bs-ph">Promo Code</div><div class="bs-pf"><span class="bs-in">Enter code here...</span><button type="button" class="bs-ap2">${c.applyUp?'APPLY':'Apply'}</button></div></div>`;
   const vars=`--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}`;
-  return `<div class="bs${desk?' bs--d':' bs--m'}${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="${vars}">${desk?`<div class="bs-card">${sum}${pay}</div>${promo}`:`${promo}<div class="bs-hr"></div><div class="bs-card bs-flat">${sum}${pay}</div>`}</div>`;
+  const pr=o.promo===false?'':promo,rw=o.rewards||'',th=o.thresh?`<div class="bs-th">${o.thresh}</div>`:'';
+  return `<div class="bs${desk?' bs--d':' bs--m'}${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="${vars}">${desk?`<div class="bs-card">${th}${sum}${rw}${pay}</div>${pr}`:`${pr}${pr?'<div class="bs-hr"></div>':''}<div class="bs-card bs-flat">${sum}${rw}${pay}</div>`}</div>`;
 };
-window.DG_bagTopHTML=window.renderBagTop=function(brand,items){const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]);
-  return `<div class="bs bs-top${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}"><div class="bs-ot">Order Total: <b>${gbp(t.goods)}</b></div><button type="button" class="bs-cta">${esc(c.cta[0])}</button></div>`};
+window.DG_bagTopHTML=window.renderBagTop=function(brand,items,o){o=o||{};const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]);
+  return `<div class="bs bs-top${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}"><div class="bs-ot">Order Total: <b>${gbp(t.goods)}</b></div>${o.after||''}<button type="button" class="bs-cta">${esc(c.cta[0])}</button></div>`};
 })();

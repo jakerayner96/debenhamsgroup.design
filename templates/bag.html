@@ -4,24 +4,38 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <base href="../">
 <title>Bag · DS template</title>
-<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ds/tokens.css">
 <link rel="stylesheet" href="assets/ds/components.css">
 <style>
-/* DS page template — Bag (live /basket layout, 06 Oct 2026). Page scaffolding only; every visible piece is a DS component:
-   header (header.js) · USP banners (usp.js) · page title · threshold · bag item · bag payment summary (bag-summary.js) ·
-   recommendations (DS Product carousel, medium + View all, 4 + peek — 2 Nov 2026, Master prototype) · footer (footer.js).
-   Any fascia: ?brand=<slug>. Desktop: 1024 container, items | 390px summary column on --surface-sunken. Mobile: total + checkout under the
-   title, summary full-bleed after the items. */
+/* DS page template — Bag. Bag 2026 (2 Nov 2026, Figma CYyGeUDy4w02enV7uFxZ6W · mobile 1337:250006 · desktop 1337:256981), banked in the Master prototype.
+   Every visible piece is a DS component: header (header.js) · USP banners (usp.js) · Your Bag (n) · Order Total + free-delivery line + checkout (bag-summary.js top)
+   · out-of-stock banner (.msg--error) · Your Gifts · Delivered by <seller> (n) — bag product cards (bag.js .bpc: standard, out of stock, quantity error, e-gift card,
+   membership, XCover add / added, Subscribe & Save, Taskrabbit, Taggstar strip, free gift, complimentary sample, customised, pre-order) · Need A Top-Up? ·
+   Choose N free samples · Deliver+ bag banner (mobile) · bag summary (bag-summary.js: Rewards on Debenhams; desktop: free-delivery line on the card + Promo Code card)
+   · You Might Also Like (Product carousel) · footer (footer.js). Wishlist → Move to your Wishlist? · View Details → e-Gift Card Details (DS modals).
+   Mobile: sections on the page, gap 6 (24px), hairline between sellers. Desktop: 1082 container, 676 | 390, white panels on --surface-sunken.
+   Any fascia: ?brand=<slug>; S.bagOff = card / section types left out (the Master prototype's Bag contents card). */
 *{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
 body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
-.pg{padding:0 var(--gap-4)}
-.items{display:flex;flex-direction:column;gap:var(--gap-4)}
-.items>*{max-width:100%}
-.sumcol{margin-top:var(--gap-6)}
+.bag-pg{display:flex;flex-direction:column;gap:var(--gap-6);padding-top:var(--gap-6)}
+.bag-head{display:flex;flex-direction:column;gap:var(--gap-4);padding:0 var(--gap-4)}
+.bag-head .bs-top{padding:0;gap:var(--gap-4)}
+.bag-pg>.bag-sec,.bag-col>.bag-sec{padding:0 var(--gap-4)}
+.bag-hr{border:0;border-top:1px solid var(--border-subtle);margin:0}
+.bag-dp{padding:0 var(--gap-4)}
 .recs{padding:var(--gap-10) var(--gap-4) 0}
 footer[data-ftr]{margin-top:var(--gap-10)}
-@media(min-width:1024px){.pg{max-width:1024px;margin:0 auto}.recs{max-width:1024px;margin:0 auto;padding:var(--gap-12) 0 0}.cols{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:var(--gap-4);align-items:start}.sumcol{margin:0;background:var(--surface-sunken)}}
+@media(min-width:1024px){
+  .bag-pg{padding:var(--gap-12) 0 var(--gap-12)}
+  .bag-wrap{width:1082px;max-width:calc(100% - 64px);margin:0 auto;display:flex;flex-direction:column;gap:var(--gap-6)}
+  .bag-cols{display:grid;grid-template-columns:minmax(0,676fr) 390px;gap:var(--gap-4);align-items:start}
+  .bag-col{display:flex;flex-direction:column;gap:var(--gap-4);min-width:0}
+  .bag-pg>.bag-sec,.bag-col>.bag-sec{padding:var(--gap-6)}
+  .bag-col .bsmp-wrap{margin-right:0}
+  .bag-side .bs{background:none;gap:var(--gap-4)}
+  .recs{max-width:1082px;margin:0 auto;padding:var(--gap-12) 0 0}
+}
 </style>
 </head>
 <body>
@@ -32,6 +46,8 @@ footer[data-ftr]{margin-top:var(--gap-10)}
 <script src="assets/ds/usp.js"></script>
 <script src="assets/ds/footer.js"></script>
 <script src="assets/ds/bag-summary.js"></script>
+<script src="assets/ds/taggstar.js"></script>
+<script src="assets/ds/bag.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
 <script src="assets/ds/carousel.js"></script>
 <script src="assets/ds/export-masks.js"></script>
@@ -46,24 +62,78 @@ try{const s=q.get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
 const desk=()=>innerWidth>=1024;
 function header(){const dev=desk()?'desktop':'mobile';
   return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header><div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`}
-function page(){const ps=((window.PRODUCTS_ALL||{})[S.brand]||[]).slice(0,2),it=ps.map(p=>({price:p.price,was:p.was}));
-  const items=ps.map((p,i)=>`<div class="bag-item"><img src="projects/plp-alignment/img/${S.brand}/p${p.img??i}.jpg" alt=""><div class="info">${p.brand?`<div class="b">${esc(p.brand)}</div>`:''}<div class="n">${esc(p.name)}</div><div class="v">Size 12 · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`).join('');
-  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML(S.brand,it,desk()):V('order-summary',0);
-  const title=`<div class="pg-title"><h1>Your Bag (${ps.length})</h1></div>`;
-  return header()+(desk()
-    ?`<main class="pg">${title}<div class="cols"><div class="items" data-slot="items">${V('threshold',0)}${items}</div><div class="sumcol" data-slot="summary">${sum}</div></div></main>`
-    :`<main class="pg">${title}${window.DG_bagTopHTML?DG_bagTopHTML(S.brand,it):''}<div class="items" data-slot="items">${V('threshold',0)}${items}</div></main><div class="sumcol" data-slot="summary">${sum}</div>`)
-    +(window.DG_pcarHTML?`<section class="recs" data-slot="recs">${DG_pcarHTML({title:'You Might Also Like',per:4,round:S.brand==='plt',eager:EXPORTING,items:DG_feed(S.brand,5,10,3)})}</section>`:'')
+/* ---- the bag: Bag 2026 shows every card type once; Debenhams = the Figma set (two sellers, beauty + home), other fascias = their own products ---- */
+const IMGB='templates/img/bag/';
+const FN={debenhams:'Debenhams',boohoo:'boohoo',boohooman:'boohooMAN',plt:'PrettyLittleThing',karenmillen:'Karen Millen',warehouse:'Warehouse',brandroom:'The Brand Room'};
+const OFF=()=>S.bagOff||[];const on=k=>!OFF().includes(k);
+const P=i=>(window.DG_feedItem&&DG_feedItem(S.brand,i))||{img:'',name:'Product',price:'£20.00'};
+const VAR=['10 / Black','12 / Grey','One Size / Black','8 / Navy','M / Cream'];
+function seed(){const b=S.brand,deb=b==='debenhams';
+  const W=/dress|top|jumper|cardigan|coat|jacket|blazer|trouser|jean|skirt|knit|hoodie|shirt|suit/i,wear=[];for(let i=0;i<40&&wear.length<6;i++){const x=P(i);if(x&&W.test(x.name))wear.push(i)}
+  while(wear.length<6)wear.push(wear.length);
+  const prod=(k,o)=>{const x=P(wear[k%wear.length]);return Object.assign({img:x.img,brand:x.brand||FN[b],name:x.name,price:x.price,was:x.was,variant:VAR[k%VAR.length],qty:1,max:10,type:'std'},o)};
+  const tsCfg=(window.DG_taggstar&&DG_taggstar.LIVE&&DG_taggstar.LIVE[b])||{};
+  const ts=deb?{bg:'#000000',alpha:.8,icon:true,msg:{t:'sold',c:'',d:'Sold **X times** since your last visit X days ago'}}:Object.assign({icon:tsCfg.icon!==false,upper:!!tsCfg.upper,msg:{t:'sold',c:'',d:'Sold **X times** since your last visit X days ago'}},tsCfg.bag||{});
+  const own=[prod(0,{id:'oos',type:'oos',variant:'12 / Grey'}),prod(0,{id:'qtyerr',type:'qtyerr',variant:'12 / Grey',qty:10,max:10}),prod(1,{id:'std1'}),
+    deb?{id:'tirtir',type:'std',img:IMGB+'tirtir.webp',brand:'TIRTIR',name:'Mask Fit Red Mini Cushion 4.5g',variant:'One Size / 17w French Vanilla Lorem Ipsum',price:'£17.60',was:'£22.00',qty:1,max:10}:prod(2,{id:'std2'}),
+    deb&&{id:'egift',type:'egift',img:IMGB+'egift.webp',brand:'Debenhams',name:'e-Gift Card',price:'£50.00'},
+    deb&&{id:'member',type:'member',img:IMGB+'unlimited.webp',brand:'Debenhams',name:'Debenhams Unlimited',price:'£14.99',was:'£30.00'}].filter(Boolean);
+  const mk=[ deb&&{id:'fire1',img:IMGB+'fireplace.webp',brand:'Living and Home',name:'50 Inch Electric Fireplace with Remote 12 Flame Colors 1500W',variant:'One Size / Black',price:'£200.00',was:'£300.00',addon:'xcover',k:'xcover'},
+    deb&&{id:'fire2',img:IMGB+'fireplace.webp',brand:'Living and Home',name:'50 Inch Electric Fireplace with Remote 12 Flame Colors 1500W',variant:'One Size / Black',price:'£200.00',was:'£300.00',addon:'xcover-on',k:'xcover'},
+    deb&&{id:'prada1',img:IMGB+'prada.webp',brand:'Prada',name:'Paradoxe Eau De Parfum',variant:'90ml / Misc',price:'£103.00',was:'£145.00',addon:'sns',k:'sns'},
+    deb&&{id:'bed',img:IMGB+'bed.webp',brand:'Somnior',name:'Eleanor Divan Bed with 54" Floor Standing Headboard Velvet',variant:'Small Double / Silver',price:'£148.00',was:'£318.00',addon:'taskrabbit',k:'taskrabbit'},
+    deb&&{id:'prada2',img:IMGB+'prada.webp',brand:'Prada',name:'Paradoxe Eau De Parfum',variant:'90ml / Misc',price:'£103.00',was:'£145.00',gift:{img:IMGB+'lancome.webp',brand:'Lancôme',name:'Lancome Bundle (worth over £99)'},k:'gift'},
+    deb&&{id:'smp1',type:'sample',for:'prada2',img:IMGB+'lancome.webp',brand:'Elie Saab',name:'Le Parfum Absolu Eau De Parfum 1.5ml',k:'sample'},
+    prod(3,{id:'ts1',ts,k:'ts'}),
+    deb?{id:'fire3',img:IMGB+'fireplace.webp',brand:'Living and Home',name:'50 Inch Electric Fireplace with Remote 12 Flame Colors 1500W',variant:'One Size / Black',price:'£200.00',was:'£300.00',ts,addon:'xcover',k:'ts'}:null,
+    prod(4,{id:'custom',qtyMode:'remove',price:'£45.49',was:'£61.99',note:'inc. +£6.99 customisation',custom:[['Bag Label 1:','Text'],['Bag Label 2:','Option'],['Bag Label 3:','Image 2'],['Bag Label 4:','Text text text']],k:'custom'}),
+    prod(5,{id:'pre',badge:'Pre-Order',dispatch:'29th September',k:'preorder'})].filter(Boolean).map(x=>Object.assign({type:'std',qty:1,max:10},x));
+  own.forEach(x=>x.k=x.type==='std'?'std':x.type);
+  return {sellers:[{name:FN[b],items:own},{name:deb?'Pachamama':FN[b]+' Partners',items:mk,second:true}],
+    gifts:deb?[{img:IMGB+'benefit.webp',title:'Benefit Natural Beauty Bundle (Worth £24.92)',text:'Receive a free Benefit Natural Beauty Bundle, when you spend £45 on Benefit'}]:[],
+    topup:[1,2,3].map(k=>prod(k,{id:'top'+k})),topAt:0,
+    samples:deb?{n:2,sel:['boss'],items:[{id:'elie',img:IMGB+'s-eliesaab.webp',brand:'Elie Saab',name:'Le Parfum Absolu Eau De Parfum 1.5ml'},{id:'boss',img:IMGB+'s-boss.webp',brand:'Hugo Boss',name:'Boss Bottled Beyond 1.2ml Eau De Parfum'},{id:'ysl',img:IMGB+'s-ysl.webp',brand:'Yves Saint Laurent',name:'YSL Libre Eau De Parfum 1.2ml Free Gift'}]}:null}}
+let BAG=null,KEY='';
+function bag(){const k=S.brand;if(!BAG||KEY!==k){BAG=seed();KEY=k}return BAG}
+/* the cards on show = the bag minus the types switched off in the panel (S.bagOff) */
+function view(){const B=bag();return Object.assign({},B,{sellers:B.sellers.map(s=>Object.assign({},s,{items:s.items.filter(x=>on(x.k))})).filter(s=>s.items.length&&(on('seller2')||!s.second))})}
+function page(){const B=view(),d=desk(),L=DG_bag.lines(B),n=DG_bag.count(B),oos=B.sellers.some(s=>s.items.some(x=>x.type==='oos'));
+  const tot=L.reduce((a,x)=>a+parseFloat(String(x.price).replace(/[^0-9.]/g,'')),0);
+  const free=`<div class="thresh thresh--ok"><span class="tick"></span><span>You have qualified for free delivery!</span></div>`;
+  const rewards=S.brand==='debenhams'&&on('rewards')?`<div class="rwd"><span class="rwd-w">Rewards</span><div class="rwd-t"><span>Earn <b>£<i>${Math.floor(tot*.05)}</i>.${String(Math.round(tot*5)%100).padStart(2,'0')}</b> rewards</span><small>when you complete this order</small></div></div>`:'';
+  const banner=oos?DG_bag.oosBanner():'';
+  const secs=[B.gifts.length&&on('gifts')?DG_bag.gifts(B.gifts):'',
+    ...B.sellers.map((s,i)=>(i&&!d?'<hr class="bag-hr">':'')+DG_bag.seller(s.name,s.items,oos?s.items.length:0)),
+    B.topup.length&&on('topup')?DG_bag.topup(B.topup,B.topAt):'',
+    B.samples&&on('samples')?DG_bag.samples(B.samples):''].filter(Boolean).join('');
+  const title=`<h1 class="bag-title">Your Bag (${n})</h1>`;
+  const dplusOn=window.BAG_LIVE&&(BAG_LIVE[S.brand]||{}).dplus;
+  const dp=!d&&dplusOn&&on('dplus')?`<div class="bag-dp" data-slot="dplus">${V('deliver-plus',5)}</div>`:'';
+  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML(S.brand,L,d,{thresh:d?free:'',rewards,promo:d}):'';
+  const main=d?`<main class="bag-pg"><div class="bag-wrap">${title}${banner}<div class="bag-cols"><div class="bag-col" data-slot="items">${secs}</div><div class="bag-side" data-slot="summary">${sum}</div></div></div></main>`
+    :`<main class="bag-pg"><div class="bag-head">${title}${window.DG_bagTopHTML?DG_bagTopHTML(S.brand,L,{after:banner+free}):''}</div>${secs}${dp}<div data-slot="summary">${sum}</div></main>`;
+  return header()+main
+    +(window.DG_pcarHTML&&on('recs')?`<section class="recs" data-slot="recs">${DG_pcarHTML({title:'You Might Also Like',per:4,round:S.brand==='plt',eager:EXPORTING,items:DG_feed(S.brand,5,10,3)})}</section>`:'')
     +`<footer data-ftr="${S.brand}"></footer>`}
-function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
+/* bag actions (DS bag.js reducer) + the two modals; the samples rail arrows scroll by one card */
+document.addEventListener('click',e=>{const t=e.target.closest('[data-bag]');if(!t)return;e.preventDefault();e.stopPropagation();const a=t.dataset.bag,id=t.dataset.id;
+  if(a==='close'){document.querySelectorAll('[data-bag-modal]').forEach(x=>x.remove());return}
+  if(a==='wish'||a==='egift'){const it=bag().sellers.flatMap(s=>s.items).find(x=>x.id===id);document.querySelectorAll('[data-bag-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_bag.modal(a,it,desk()));return}
+  if(a==='sprev'||a==='snext'){const r=t.parentElement.querySelector('.bsmp-rail');r.scrollBy({left:(a==='snext'?1:-1)*150,behavior:'smooth'});return}
+  document.querySelectorAll('[data-bag-modal]').forEach(x=>x.remove());
+  const y=scrollY;DG_bag.act(bag(),a,id);render();scrollTo(0,y);
+  document.dispatchEvent(new CustomEvent('dg:bag',{detail:{action:a,id}}))},true);
+function samplesNav(){document.querySelectorAll('.bsmp-wrap').forEach(w=>{const r=w.querySelector('.bsmp-rail'),[p,n]=w.querySelectorAll('.pcar-arr');if(!r)return;
+  const f=()=>{p.disabled=r.scrollLeft<4;n.disabled=r.scrollLeft+r.clientWidth>=r.scrollWidth-4};r.addEventListener('scroll',f,{passive:true});f()})}
+function render(){window.DG_BAG_EAGER=EXPORTING;document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
   document.getElementById('app').innerHTML=page();
   if(window.DG_uspMount)DG_uspMount();
   document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,S.brand));
-  document.dispatchEvent(new CustomEvent('dg:render'))}
-render();
+  samplesNav();document.dispatchEvent(new CustomEvent('dg:render'))}
+(window.DG_taggstar?DG_taggstar.load():Promise.resolve()).then(render);render();
 let rz,lw=innerWidth;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if((lw>=1024)!==desk()){lw=innerWidth;render()}},150)});
 addEventListener('message',e=>{const d=e.data||{};
-  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoSet){if(d.protoSet.brand&&d.protoSet.brand!==S.brand)BAG=null;S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
   if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
 addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
 document.addEventListener('click',e=>{if(e.target.closest('a[href="#"],button'))e.preventDefault()});

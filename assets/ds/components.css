@@ -104,6 +104,7 @@
 .sp-bag{display:block;width:100%;box-sizing:border-box;padding:8px;background:var(--sp-bg,var(--surface-media));color:var(--sp-fg,var(--text-primary));border-radius:var(--sp-r,var(--radius-default));font-family:var(--font-family-base);font-size:12px;line-height:normal;font-weight:var(--w-regular);text-transform:var(--sp-case,none);-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px)}
 .sp-bag:has(.sp-ico){display:flex;align-items:center;gap:4px}.sp-bag .sp-ico{display:block;width:20px;height:20px;flex:none}
 .sp-bag b{font-weight:var(--w-strong)}
+.sp-bag--sm{padding:4px 8px;line-height:21px}.sp-bag--sm:has(.sp-ico){gap:8px}.sp-bag--sm .sp-ico{width:16px;height:16px} /* reduced height + 16px icon (Bag 2026 product cards, 2 Nov 2026) */
 /* placement + text details (were only in the taggstar.js copy — single source here since 16 Oct) */
 .pc-taggstar{overflow:hidden}.pc-taggstar .t{overflow:hidden;text-overflow:ellipsis;min-width:0}.pc-taggstar span b,.sp-bag span b,.sp-pdp span b{font-weight:var(--w-strong)}
 .sp-pdp{max-width:calc(100% - 24px)}.sp-pdp .in{min-width:0}.sp-pdp .tx{min-width:0}.sp-pdp.off{display:none!important}
@@ -554,6 +555,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .bd.ter[disabled],.bd.xs[disabled]{background:#F2F2F2;color:#B5B5B5;cursor:not-allowed} /* tertiary disabled is grey on every brand */
 .bd.xs{background:var(--surface-neutral);color:#242424;height:auto;padding:8px;font-size:12px;line-height:16px;font-weight:var(--w-regular);text-transform:none;border-color:transparent}
 .bd.xs:active{background:var(--surface-neutral-pressed)}
+.bd.xs.line{background:var(--surface-raised);border-color:var(--border-default)} /* small outlined (Remove · Bag 2026): white, 1px Grey 2.5 */
+.bd.xs.line:active{background:var(--surface-neutral)}
 .bd.txt{background:none;border-color:transparent;color:var(--text-link);height:auto;min-height:34px;padding:5px 24px;font-size:14px;font-weight:var(--link-w,var(--w-strong));text-transform:none}
 .bd.txt:active{color:var(--text-link-pressed)}
 .bd.txt[disabled]{color:var(--text-link-disabled);cursor:not-allowed}
@@ -649,11 +652,18 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .tog{width:44px;height:24px;flex:none;border-radius:99px;background:var(--border-default);border:none;position:relative;cursor:pointer;transition:background var(--dur-base)}
 .tog::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:99px;background:#FFF;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left var(--dur-base)}
 .tog.on,.tog[aria-checked="true"]{background:var(--icon-action)}.tog.on::after,.tog[aria-checked="true"]::after{left:22px}
+/* Quantity stepper — Bag 2026 Quantity Selector (CYyGeUDy4w02enV7uFxZ6W · 1234:76756), mobile + desktop. 28px tall: two 28 × 28 buttons (gap 2 / 8px
+   in, 12px icon) and a 16px count (12 mid weight), 1px Grey 3 (--border-control), radius 4 outside. At 1 the minus is the delete icon (removes the line).
+   At the max the plus greys out (disabled). Pressed / hover: the segment fills --surface-neutral. Tap zone 44 × 44 per button (::after). */
 .qty{display:inline-flex;align-items:center}
-.qty button{width:28px;height:28px;border:1px solid var(--border-strong);background:var(--surface-raised);display:grid;place-items:center;padding:0;cursor:pointer}
+.qty button{position:relative;width:28px;height:28px;border:1px solid var(--border-control);background:var(--surface-raised);display:grid;place-items:center;padding:0;cursor:pointer;color:var(--text-primary)}
+.qty button::after{content:"";position:absolute;inset:-8px -8px} /* 44 × 44 tap zone */
 .qty button:first-child{border-radius:var(--radius-default) 0 0 var(--radius-default);border-right:none}.qty button:last-child{border-radius:0 var(--radius-default) var(--radius-default) 0;border-left:none}
-.qty button img{width:14px;height:14px}
-.qty span{height:28px;min-width:16px;padding:0 4px;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong);background:var(--surface-raised);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:var(--w-mid)}
+.qty button:only-child{border:1px solid var(--border-control);border-radius:var(--radius-default)} /* remove only (out of stock, gift card, membership) */
+.qty button img{width:12px;height:12px;display:block}
+.qty button:hover:not([disabled]),.qty button:active:not([disabled]){background:var(--surface-neutral)}
+.qty button[disabled]{cursor:not-allowed}.qty button[disabled] img{opacity:.3}
+.qty span{height:28px;min-width:16px;padding:0 4px;border-top:1px solid var(--border-control);border-bottom:1px solid var(--border-control);background:var(--surface-raised);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:var(--w-mid);box-sizing:border-box}
 .promo{display:flex;gap:8px;align-items:flex-start}
 .promo .fld{flex:1}
 .promo .bd,.promo .bd.sm,.promo .bd.md{width:95px;flex:none;height:50px;padding:0 8px;line-height:24px} /* Apply matches the 50px field exactly */
@@ -747,6 +757,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .price-blk--drawer .price{font-size:var(--price-drawer);line-height:var(--price-drawer-lh);column-gap:8px}
 .price-blk--drawer .now,.price-blk--drawer .now.sale{color:var(--text-primary)}
 /* basket line / quick add: 16/24, now + was (quick add adds saving + code) */
+.price-blk--bag .price{font-size:12px;line-height:normal;column-gap:8px}.price-blk--bag .now{font-size:inherit;font-weight:var(--w-strong)}.price-blk--bag .was{font-size:inherit;font-weight:var(--w-regular);color:var(--text-primary)} /* bag product card (Bag 2026): 12 mobile / 14 desktop, sale now strong, was regular struck */
+@media(min-width:1024px){.price-blk--bag .price{font-size:14px}}
 .price-blk--line{gap:4px}
 .price-blk--line .price{font-size:var(--price-line);line-height:var(--price-line-lh);column-gap:8px}
 .price-blk--line .price-code{font-size:var(--price-card);line-height:var(--price-card-lh)}
@@ -1436,7 +1448,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .bs--sm .bs-cta{font-size:14px;font-weight:400}.bs--sm .bs-or{font-size:12px}
 .bs--sm .bs-ph{font-size:16px;line-height:24px;font-weight:400}.bs--sm .bs-ap2{font-size:14px;font-weight:var(--w-regular,300)}
 .bs-top{background:var(--surface-raised,#FFF);gap:24px;padding:0 0 24px}
-.bs-top .bs-ot{font-size:16px;line-height:24px}.bs-top .bs-ot b{font-weight:600;margin-left:4px}
+.bs--m{background:var(--surface-raised,#FFF)} /* Bag 2026 (2 Nov 2026): the mobile summary sits on white, not the sunken grey */
+.bs-top .bs-ot{font-size:14px;line-height:normal} /* Bag 2026 (2 Nov 2026): 14, was 16 */.bs-top .bs-ot b{font-weight:600;margin-left:4px}
 .bs-top.bs--sm .bs-ot{font-size:12px}.bs-top.bs--sm .bs-ot b{font-weight:400}
 /* Size selector: the size-guide glyph (fix 16 Oct — was sized inline per page) */
 .sizes-head .guide img{width:16px;height:16px;display:block;flex:none}
@@ -1536,10 +1549,10 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dgrid-bulky{display:flex;align-items:flex-start;gap:var(--gap-2,8px);margin:0;font-family:var(--font-family-base);font-size:12px;line-height:16px;color:var(--text-primary)}
 .dgrid-bulky img{width:16px;height:16px;flex:none}
 /* modal */
-.dopts-layer,.sns-layer,.vs-layer{position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--gap-4,16px) 0}
-.dopts-layer--up,.sns-layer--up,.vs-layer--up{align-items:flex-end;padding:var(--gap-14,56px) 0 0}
-.dopts-layer>.mdl,.sns-layer>.mdl,.vs-layer>.mdl{z-index:3;max-height:100%;animation:mdlfade .3s ease-in-out both}
-.dopts-layer--up>.mdl,.sns-layer--up>.mdl,.vs-layer--up>.mdl{animation-name:mdlup}
+.dopts-layer,.sns-layer,.vs-layer,.bag-layer{position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--gap-4,16px) 0}
+.dopts-layer--up,.sns-layer--up,.vs-layer--up,.bag-layer--up{align-items:flex-end;padding:var(--gap-14,56px) 0 0}
+.dopts-layer>.mdl,.sns-layer>.mdl,.vs-layer>.mdl,.bag-layer>.mdl{z-index:3;max-height:100%;animation:mdlfade .3s ease-in-out both}
+.dopts-layer--up>.mdl,.sns-layer--up>.mdl,.vs-layer--up>.mdl,.bag-layer--up>.mdl{animation-name:mdlup}
 .dopts .mdl-bd{overflow-y:auto;gap:var(--gap-4,16px)}
 .dopts .mdl-bd [hidden]{display:none}
 .dopts [data-dg-mpanel]{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
@@ -2082,3 +2095,86 @@ select.rf-input:invalid{color:var(--rf-dim)}
   .ptips{gap:var(--gap-3,12px)}.ptips li{font-size:14px;line-height:20px}
   .vs-ctas{flex-direction:row}
 }
+/* ---- Bag product card + bag sections (2 Nov 2026, Bag 2026 Figma CYyGeUDy4w02enV7uFxZ6W · mobile 1337:250006 / desktop 1337:256981). Markup + behaviour:
+   assets/ds/bag.js (DG_bag). Card: 1px --border-subtle, radius 4, gap 3 (12px) in, image 68 × 102 (2:3) → info gap 4 (16px), text 12 (14 from 1024),
+   brand strong + " - name", variant line, bag price; right column: wishlist (16) · quantity stepper · spacer. Error / out of stock: --text-error border + the
+   error .msg on top; out of stock greys the copy (price stays red). Add-ons sit under a hairline: XCover (Add / Remove), Subscribe & Save, Taskrabbit, free gift,
+   customisation, pre-order dispatch note; Taggstar = the DS .sp-bag strip. Sections: Your Gifts · Delivered by <seller> (n) · Need A Top-Up? · Choose N free
+   samples. Mobile: sections on the page (16 margins), a hairline between sellers. Desktop: white panels (gap 6 / 24px in) on --surface-sunken, 676 | 390. */
+.bag-pg{font-family:var(--font-family-base);font-weight:var(--w-regular);color:var(--text-primary)}
+.bag-sec{display:flex;flex-direction:column;gap:var(--gap-3,12px);min-width:0}
+.bag-sec-hd{display:flex;align-items:center;gap:var(--gap-2,8px);min-width:0}
+.bag-sec-hd img{width:16px;height:16px;flex:none}
+.bag-sec-t{margin:0;font-size:18px;line-height:normal;font-weight:var(--w-strong);flex:1;min-width:0}
+.bag-sec-tt{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--gap-1,4px)}
+.bag-sec-sub{font-size:14px;line-height:normal}
+.bag-seller{font-size:14px;line-height:21px}.bag-seller b{font-weight:var(--w-strong)}
+.bag-list{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
+.bag-nav{display:flex;gap:var(--gap-2,8px);flex:none}
+.bag-nav .pcar-arr,.bsmp-wrap .pcar-arr{display:grid}
+.bag-nav .pcar-arr{position:static;transform:none}
+.bag-nav .pcar-arr[disabled]{opacity:.25;pointer-events:none}
+.bpc{border:1px solid var(--border-subtle);border-radius:var(--radius-default);padding:var(--gap-3,12px);display:flex;flex-direction:column;gap:var(--gap-3,12px);background:var(--surface-raised);font-size:12px;line-height:normal;min-width:0}
+.bpc--err{border-color:var(--text-error)}
+.bpc-row{display:flex;gap:var(--gap-3,12px);align-items:stretch;min-width:0}
+.bpc-main{flex:1;min-width:0;display:flex;gap:var(--gap-4,16px);align-items:flex-start}
+.bpc-img{width:68px;aspect-ratio:var(--ratio-product);height:auto;object-fit:cover;flex:none;background:var(--surface-media);display:block}
+.bpc-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--gap-2,8px)}
+.bpc-name{margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden} /* mobile: 2 lines max, the variant 1 (truncate) */
+.bpc-name b{font-weight:700}
+.bpc-var{margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bpc-note{margin:-6px 0 0;color:var(--text-secondary)}
+.bpc-badge{display:inline-flex;align-items:center;gap:var(--gap-2,8px);color:#444;font-weight:var(--w-mid)}.bpc-badge img{width:16px;height:16px}
+.bpc-link{display:inline-flex;align-items:center;gap:var(--gap-1,4px);font:inherit;font-weight:var(--w-strong);color:var(--text-link,#00787D);background:none;border:0;padding:0;cursor:pointer;align-self:flex-start}.bpc-link img{width:16px;height:16px}
+.bpc-act{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;flex:none}
+.bpc-act>i{width:16px;height:16px} /* spacer: centres the stepper between the wishlist and the bottom */
+.bpc-wish{width:16px;height:16px;padding:0;border:0;background:none;cursor:pointer;position:relative}.bpc-wish img{width:16px;height:16px;display:block}
+.bpc-wish::after{content:"";position:absolute;inset:-14px}
+.bpc--oos .bpc-info{color:var(--text-secondary)}.bpc--oos .bpc-info .was{color:var(--text-secondary)}
+.bpc .msg--error .body{font-size:14px;line-height:normal}
+.bpc-add{border-top:1px solid var(--border-subtle);padding-top:var(--gap-4,16px);display:flex;flex-direction:column;gap:var(--gap-3,12px)}
+.bpc-add-hd{display:flex;align-items:center;gap:var(--gap-1,4px);justify-content:space-between}
+.bpc-add-hd>div{display:flex;flex-direction:column;gap:var(--gap-1,4px);min-width:0}
+.bpc-add-hd>.bpc-sns{flex-direction:row;gap:0}
+.bpc-add-t{font-weight:var(--w-strong)}
+.bpc-add .bd.xs{flex:none}
+.bpc-cta{font-weight:var(--w-strong);color:var(--text-link,#00787D);background:none;border:0;padding:0;font:inherit;font-weight:var(--w-strong);cursor:pointer;text-align:left;align-self:flex-start}
+.bpc-fine{margin:0}.bpc-fine u{font-weight:var(--w-strong);text-underline-offset:2px}
+.bpc-grey{margin:0;color:var(--text-secondary)}.bpc-grey u{font-weight:var(--w-strong);color:var(--text-primary)}
+.bpc-pow{display:flex;align-items:center;gap:var(--gap-1,4px);color:#595959}.bpc-pow img{height:13px;width:auto}
+.bpc-sns{display:flex;flex:none;align-items:stretch}.bpc-sns>*{font:inherit;font-weight:var(--w-strong);border:0;padding:4px 8px;line-height:normal}.bpc-sns button{cursor:pointer;background:#EEE;color:#545454}.bpc-sns .save{background:#FDE8E8;color:var(--text-error)}
+.bpc-sns button.on{background:var(--surface-neutral);color:var(--text-primary)}
+.bpc-gift-hd{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:14px;font-weight:var(--w-strong)}.bpc-gift-hd img{width:16px;height:16px}
+.bpc-kv{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.bpc-kv div{display:flex;gap:var(--gap-2,8px)}.bpc-kv span{width:72px;flex:none}.bpc-kv b{font-weight:var(--w-strong)}
+.bpc-dispatch{display:flex;align-items:center;gap:10px;background:#F2F2F2;border-radius:var(--radius-default);padding:var(--gap-3,12px) var(--gap-4,16px)}.bpc-dispatch img{width:20px;height:20px;flex:none}.bpc-dispatch b{font-weight:var(--w-strong)}
+.bpc .sp-bag{margin:0}
+.bag-gift{border:1px solid var(--border-subtle);border-radius:var(--radius-default);padding:var(--gap-3,12px);display:flex;gap:var(--gap-4,16px);align-items:center;font-size:12px}
+.bag-gift>div{display:flex;flex-direction:column;gap:var(--gap-2,8px);min-width:0}.bag-gift b{font-weight:700}
+/* sample cards (Choose N free samples): bordered, gap 3 (12px) in, image 116 × 174 (2:3), name, Add to Bag (.bd.xs) / Remove (.bd.xs.line); full = the rest disabled */
+.bsmp-wrap{position:relative;margin-right:calc(var(--gap-4,16px) * -1)}
+.bsmp-rail{display:flex;gap:var(--gap-2,8px);overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory;padding-right:var(--gap-4,16px)}
+.bsmp-rail::-webkit-scrollbar{display:none}
+.bsmp{flex:0 0 auto;width:142px;border:1px solid var(--border-subtle);border-radius:var(--radius-default);padding:var(--gap-3,12px);display:flex;flex-direction:column;gap:var(--gap-4,16px);scroll-snap-align:start;box-sizing:border-box;font-size:12px;line-height:normal}
+.bsmp img{width:116px;aspect-ratio:var(--ratio-product);height:auto;object-fit:cover;display:block}
+.bsmp p{margin:0;flex:1}.bsmp b{font-weight:700}
+.bsmp .bd{align-self:flex-start}
+.bsmp-wrap .pcar-arr{top:calc(12px + 174px / 2)}
+.bsmp-wrap .pcar-arr--prev{left:var(--gap-4,16px)}.bsmp-wrap .pcar-arr--next{right:var(--gap-4,16px)}
+.bsmp-wrap .pcar-arr[disabled]{opacity:0;pointer-events:none}
+/* Rewards banner (Debenhams Rewards, bag summary): grey gradient, REWARDS wordmark (Antonio bold), Earn £x.xx rewards in the rewards orange */
+.rwd{display:flex;align-items:center;justify-content:space-between;gap:var(--gap-4,16px);padding:var(--gap-4,16px) var(--gap-6,24px);border-radius:var(--radius-default);background:linear-gradient(90deg,rgba(242,242,242,.85),rgba(231,231,231,.85));font-family:var(--font-family-base);color:#000}
+.rwd-w{font:700 31.6px/1 'Antonio',var(--font-family-base);letter-spacing:-.63px;text-transform:uppercase;text-shadow:0 0 52px rgba(0,0,0,.25)}
+.rwd-t{display:flex;flex-direction:column;align-items:flex-end;gap:var(--gap-2,8px);text-align:right;font-size:16px;font-weight:var(--w-regular);white-space:nowrap}
+.rwd-t b{font-weight:700;background:linear-gradient(100deg,#EB5A07,#F57918 50%,#FF9829);-webkit-background-clip:text;background-clip:text;color:transparent}.rwd-t b i{font-style:normal;font-size:24px}
+.rwd-t small{font-size:12px}
+/* desktop: each section is a white panel, gap 6 (24px) in, on the --surface-sunken page */
+@media(min-width:1024px){
+  .bag-pg{background:var(--surface-sunken)}
+  .bag-panel{background:var(--surface-raised);border-radius:var(--radius-default);padding:var(--gap-6,24px)}
+  .bpc,.bag-gift,.bpc-add,.bpc-dispatch{font-size:14px}
+  .bpc-name{-webkit-line-clamp:4} /* desktop: 4 lines shared by name and variant */
+  .bpc-badge{font-size:14px}
+}
+/* bag summary: the free-delivery line at the top of the desktop card, over a hairline (Bag 2026 desktop 1337:256981) */
+.bs-th{margin:-24px -24px 0;padding:var(--gap-4,16px) var(--gap-6,24px);border-bottom:1px solid var(--border-subtle)}
+.bag-title{margin:0;font-size:24px;line-height:normal;font-weight:var(--w-strong)} /* Your Bag (n) — Bag 2026: 24 strong */
