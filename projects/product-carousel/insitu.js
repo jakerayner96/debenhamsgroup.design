@@ -109,7 +109,7 @@ function miniBag(){const d=desk(),t=MBT();
   const rail=pcar(o);
   return `<div class="pi-mb" id="pimb"><div class="mdl-scrim" data-mbx></div>
   <div class="mdl ${d?'mdl--side mdl-anim-side':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Added to bag">
-    <div class="modal-hd"><div class="mt"><span class="mdl-tick" aria-hidden="true"></span><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
+    <div class="modal-hd"><div class="mt"><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
     <div class="mdl-bd"><div class="pi-items">${bagItems().map(lineItem).join('')}</div>${thresh()}
       <div class="pi-btns"><button class="bd sec" data-mbx>Continue Shopping</button><button class="bd pri">View Bag</button></div>
       ${t==='save'?'<div class="hr"></div>'+saveBag():t==='look'?rail:''}</div></div></div>`}
