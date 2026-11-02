@@ -1522,10 +1522,10 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dgrid-bulky{display:flex;align-items:flex-start;gap:var(--gap-2,8px);margin:0;font-family:var(--font-family-base);font-size:12px;line-height:16px;color:var(--text-primary)}
 .dgrid-bulky img{width:16px;height:16px;flex:none}
 /* modal */
-.dopts-layer,.sns-layer{position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--gap-4,16px) 0}
-.dopts-layer--up,.sns-layer--up{align-items:flex-end;padding:var(--gap-14,56px) 0 0}
-.dopts-layer>.mdl,.sns-layer>.mdl{z-index:3;max-height:100%;animation:mdlfade .3s ease-in-out both}
-.dopts-layer--up>.mdl,.sns-layer--up>.mdl{animation-name:mdlup}
+.dopts-layer,.sns-layer,.vs-layer{position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--gap-4,16px) 0}
+.dopts-layer--up,.sns-layer--up,.vs-layer--up{align-items:flex-end;padding:var(--gap-14,56px) 0 0}
+.dopts-layer>.mdl,.sns-layer>.mdl,.vs-layer>.mdl{z-index:3;max-height:100%;animation:mdlfade .3s ease-in-out both}
+.dopts-layer--up>.mdl,.sns-layer--up>.mdl,.vs-layer--up>.mdl{animation-name:mdlup}
 .dopts .mdl-bd{overflow-y:auto;gap:var(--gap-4,16px)}
 .dopts .mdl-bd [hidden]{display:none}
 .dopts [data-dg-mpanel]{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
@@ -2037,3 +2037,34 @@ select.rf-input:invalid{color:var(--rf-dim)}
    never contain. Mixed sizes keep the ratio by sizing the columns (see .cslot--gtl), never by cropping one image to another shape. */
 .ratio-product{aspect-ratio:var(--ratio-product);object-fit:cover;height:auto}
 .ratio-product>img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ---- Virtual Stylist intro (2 Nov 2026, vto-prototype v2; assets/ds/vs-intro.js): the launch modal on the DS .mdl in a .vs-layer (the delivery / S&S layer rules).
+   How it works (.howto: three numbered steps on sunken cards, the number in the fascia action colour) · For the best result (.ptips: 2 × 2 tips) ·
+   consent (.chk-row--lg + .vs-legal 12/16 grey, links --text-link) · Take a photo .bd pri over Upload a photo .bd sec (one primary per view) · .vs-note.
+   Centred .mdl--md from 600px, .mdl--up slide up on phones. Glyphs are DS library icons, masked so they take --icon-primary. */
+.vs-intro .mdl-bd{gap:var(--gap-6,24px)}
+.vs-sec{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
+.vs-sec-h{margin:0;font-family:var(--font-family-base);font-size:16px;line-height:20px;font-weight:var(--w-strong,600);color:var(--text-primary);text-align:center}
+.howto{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap-2,8px);list-style:none;margin:0;padding:var(--gap-3,12px) 0 0}
+.howto li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-5,20px) var(--gap-2,8px) var(--gap-4,16px);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);background:var(--surface-sunken);text-align:center;font-size:13px;line-height:17px;font-weight:var(--w-regular);color:var(--text-primary)}
+.howto .n{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
+.howto .vsi{width:32px;height:32px}
+.ptips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-2,8px);list-style:none;margin:0;padding:0}
+.ptips li{display:flex;align-items:center;gap:var(--gap-3,12px);min-height:48px;padding:var(--gap-3,12px);border-radius:var(--radius-lg);background:var(--surface-sunken);font-size:13px;line-height:17px;font-weight:var(--w-regular);color:var(--text-primary)}
+.ptips .vsi{width:20px;height:20px}
+.vsi{display:block;flex:none;background:var(--icon-primary);-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
+.vsi--add-photo{--ic:url("icons/lib/icons-add-photo.svg")}.vsi--ai{--ic:url("icons/lib/icons-ai.svg")}.vsi--hanger{--ic:url("icons/lib/icons-hanger.svg")}
+.vsi--light{--ic:url("icons/lib/icons-light-bulb.svg")}.vsi--dress{--ic:url("icons/lib/icons-dress.svg")}.vsi--face{--ic:url("icons/lib/icons-account.svg")}.vsi--plain{--ic:url("icons/lib/icons-image.svg")}
+.vs-consent{cursor:pointer;-webkit-tap-highlight-color:transparent}   /* the whole row toggles; only the links are exempt */
+.vs-legal{margin:0;flex:1;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary)}
+.vs-legal a{color:var(--text-link);text-decoration:underline}
+.vs-ctas{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.vs-ctas .bd{width:100%}
+.vs-note{margin:0;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary);text-align:center}
+.vs-intro.mdl--up .mdl-bd{overflow-y:auto}
+@media(min-width:600px){
+  .vs-sec-h{font-size:18px;line-height:24px}
+  .howto{gap:var(--gap-4,16px)}
+  .howto li{font-size:14px;line-height:20px;padding:var(--gap-6,24px) var(--gap-4,16px) var(--gap-5,20px)}
+  .ptips{gap:var(--gap-3,12px)}.ptips li{font-size:14px;line-height:20px}
+  .vs-ctas{flex-direction:row}
+}
