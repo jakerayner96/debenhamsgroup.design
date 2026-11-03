@@ -1,6 +1,8 @@
 # Figma sync — code → Figma library
 
-Builds the Figma library **Debenhams Group DS** (https://www.figma.com/design/mkimeRGTWN8UDHq55Cbk9D) from this repo: every token as a variable, every catalogue component as a Figma component set bound to those variables. Code stays canonical; Figma mirrors it. Built 27 Oct 2026.
+> **Retired 3 Nov 2026.** The file this built (mkimeRGTWN8UDHq55Cbk9D, "Debenhams Group DS - DO NOT USE") was merged into the one DS library, **Debenhams Design System** (https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So): tokens → `Core` + `DG Group Design System` collections, styles, and the components it lacked (boards "… (from code)"). Don't run this against the old file. The capture / binder steps below still work as a way to turn a catalogue component into Figma layers, but land the result in the DS file and map it in `assets/ds/figma-lib.js`.
+
+Built the (now retired) Figma file **Debenhams Group DS** from this repo: every token as a variable, every catalogue component as a Figma component set bound to those variables. Code stays canonical; Figma mirrors it. Built 27 Oct 2026.
 
 ## What is in the file
 
