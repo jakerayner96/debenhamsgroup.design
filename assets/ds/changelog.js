@@ -12,6 +12,9 @@ window.DG_CHANGELOG=[
    "Full-screen layer .vs-layer--fs: the intro is .mdl--fs on phones (header top, body scrolls, footer pinned: consent, Camera / Upload, note); glyph modifiers .vsi.big / .vsi.sm, .vsi--tick / .vsi--cross · by Virtual Stylist v2"
   ],
   "changed": [
+   "Modal leaving: every modal now animates out the way it came — drawer (.mdl--side) slides back out right (.mdl-anim-side-out), slide up sinks (.mdl-anim-down), others fade (.mdl-anim-fade-out) — and the scrim fades in and out (.mdl-scrim--out), 300ms · by Product carousel prototype (mini bag), Jake 3 Nov",
+   "Product toast (.toast--prod): three skinny thumbnail styles on the DS toast (50 tall): 24 × 36 thumb (default), --square 34 × 34, --edge full-height image flush left; copy just Added to Bag + View Bag; mobile at the bottom, desktop centred under the USP banners (--toast-top) · by Product carousel prototype, Jake 3 Nov",
+   "Product toast (.toast--prod): moved to the bottom of the screen — rises in, sinks out — solid white with the toast shadow (no see-through blur); toast actions now use the fascia font (the button didn’t inherit it — View Bag wasn’t Geologica on Debenhams) · by Product carousel prototype (mini bag toast), Jake 3 Nov",
    "Virtual Stylist intro: every line of copy 12/16 or larger (steps and tips were 10/13), Jake 3 Nov: too small; consent row moved into the pinned footer; phones now full screen (was the .mdl--up slide up) · by Virtual Stylist v2"
   ]
  },

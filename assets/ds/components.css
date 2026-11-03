@@ -683,25 +683,35 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .msg--neutral i{background:var(--border-subtle)}.msg--neutral .body{background:var(--surface-media)}
 .msg--error i{background:var(--text-error)}.msg--error .body{background:var(--error-bg);font-weight:var(--w-regular);line-height:18px}
 .msg--warning i{background:var(--warning-bar)}.msg--warning .body{background:var(--warning-bg);font-weight:var(--w-regular);line-height:18px;color:#000}/* heads-up, not a failure = Figma "Safety Message Banner" (Order Emails 745:3513): Yellow bar on Light Yellow, 20px black info icon (Jake 2 Nov: black, not the Figma grey), one line of 14 regular black copy, no lead line (2 Nov 2026) */
-.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#000;color:#FFF;font-size:14px;font-weight:var(--w-mid);padding:12px 20px;border-radius:var(--radius-default);z-index:var(--z-toast);white-space:nowrap;box-shadow:var(--shadow-float)}
+.toast{font-family:var(--font-family-base);position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#000;color:#FFF;font-size:14px;font-weight:var(--w-mid);padding:12px 20px;border-radius:var(--radius-default);z-index:var(--z-toast);white-space:nowrap;box-shadow:var(--shadow-float)}
 .toast--top{bottom:auto;top:16px;left:16px;right:16px;transform:none;background:rgba(255,255,255,.9);color:var(--text-primary);backdrop-filter:blur(3.5px);border-radius:var(--radius-lg);box-shadow:0 0 20px rgba(0,0,0,.1);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:normal;font-weight:var(--w-regular)}
-.toast--top .act{font-weight:var(--w-strong);color:var(--text-link);background:none;border:none;cursor:pointer;white-space:nowrap}
+.toast--top .act{font:inherit;font-weight:var(--w-strong);color:var(--text-link);background:none;border:none;padding:0;cursor:pointer;white-space:nowrap} /* the fascia font — a button doesn’t inherit it (3 Nov) */
 /* top toast motion (3 Nov 2026): fades + eases down 8px in, fades + eases up out (.toast--out) — never pops on or off */
 .toast--top{animation:toastIn .32s cubic-bezier(.2,.8,.2,1) both}
 .toast--top.toast--out{animation:toastOut .28s ease-in forwards}
 @keyframes toastIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 @keyframes toastOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-8px)}}
 @media (prefers-reduced-motion:reduce){.toast--top,.toast--top.toast--out{animation-duration:.01s}}
-/* .toast--prod (2 Nov 2026, mini bag “toast” version — Added to Bag without the modal): the top toast with the product — 2:3 image 48 × 72, then
-   “Added to Bag” (strong) over size / colour, price; View Bag on the right in the DS action colour (as every top toast); a faint 2px countdown line in the
-   action colour along the foot (--toast-ms, 6s); fades in and out with the top toast. Desktop: top right, 400 wide. */
-.toast--prod{gap:var(--gap-3,12px);overflow:hidden;justify-content:flex-start;white-space:normal;font-weight:var(--w-regular)}
-.toast--prod .toast-img{width:48px;height:72px;flex:none;object-fit:cover;background:var(--surface-media);display:block}
-.toast--prod .toast-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:14px;line-height:18px}
-.toast--prod .toast-tx b{font-weight:var(--w-strong);font-size:16px;line-height:20px}
+/* .toast--prod (mini bag “toast” version — Added to Bag without the modal; 3 Nov 2026): the DS toast (Figma 5146-559 — 50 tall, 14 copy, action right)
+   with a tiny product thumbnail, solid white + the toast shadow, at the BOTTOM of the screen — rises in, sinks out (.toast--out), never covers the header or
+   the sticky USP bar. Copy: “Added to Bag” · View Bag in the action colour. A faint 2px countdown line along the foot (--toast-ms, 6s).
+   Thumbnail styles: (default) 24 × 36 portrait inside the padding · --square 34 × 34 crop · --edge a full-height 2:3 image flush to the left edge.
+   Mobile: the bottom of the screen, 16 in. Desktop: centred under the USP banners, 400 wide. */
+.toast.toast--prod{top:auto;bottom:16px;left:16px;right:16px;min-height:50px;box-sizing:border-box;padding:7px 16px 7px 12px;background:var(--surface-raised,#FFF);-webkit-backdrop-filter:none;backdrop-filter:none;
+  box-shadow:0 0 20px rgba(0,0,0,.12);gap:var(--gap-3,12px);overflow:hidden;justify-content:flex-start;font-size:14px;line-height:18px;font-weight:var(--w-regular);animation:toastUp .36s cubic-bezier(.2,.8,.2,1) both}
+.toast.toast--prod.toast--out{animation:toastDown .3s ease-in forwards}
+@keyframes toastUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes toastDown{from{opacity:1;transform:none}to{opacity:0;transform:translateY(24px)}}
+.toast--prod .toast-img{width:24px;height:36px;flex:none;object-fit:cover;background:var(--surface-media);display:block}
+.toast--prod .toast-tx{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toast--prod .act{font-size:14px;line-height:18px}
+.toast--prod.toast--square{padding:8px 16px 8px 8px}.toast--prod.toast--square .toast-img{width:34px;height:34px;border-radius:calc(var(--radius-lg) - 4px)}
+.toast--prod.toast--edge{padding:0 16px 0 0;align-items:stretch}.toast--prod.toast--edge .toast-img{width:34px;height:auto;min-height:50px}.toast--prod.toast--edge .toast-tx,.toast--prod.toast--edge .act{align-self:center}
 .toast--prod .toast-timer{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--text-link);opacity:.5;transform-origin:left;animation:toastTimer var(--toast-ms,6s) linear forwards}
 @keyframes toastTimer{from{transform:scaleX(1)}to{transform:scaleX(0)}}
-@media(min-width:1024px){.toast--prod{left:auto;right:24px;top:24px;width:400px}}
+/* desktop: centred under the USP banners (--toast-top = the bottom of the last USP row in view, or of the sticky bar once scrolled), drops in from above */
+@media(min-width:1024px){.toast.toast--prod{top:var(--toast-top,24px);bottom:auto;left:50%;right:auto;margin-left:-200px;width:400px;animation-name:toastIn}.toast.toast--prod.toast--out{animation-name:toastOut}}
+@media (prefers-reduced-motion:reduce){.toast.toast--prod,.toast.toast--prod.toast--out{animation-duration:.01s}}
 
 /* Glass toast (29 Oct 2026, App Prototype) — the app's form of .toast--top (Figma 13557-10294 "Added to Wishlist · Manage"): same anatomy, Liquid Glass fill.
    White 90% over a 20px blur + 180% saturate, white .5px rim, soft drop shadow; text --text-primary, action --text-link (strong). 16px from each side, under the
@@ -1099,6 +1109,11 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl-stage--fs>.mdl-layer{align-items:stretch}
 .mdl.mdl-anim-fade{animation:mdlfade .3s ease-in-out both}.mdl.mdl-anim-up{animation:mdlup .3s ease-in-out both}
 @keyframes mdlfade{from{opacity:0}to{opacity:1}}@keyframes mdlup{from{transform:translateY(100%)}to{transform:none}}
+/* leaving (3 Nov 2026): every modal animates out the way it came — drawer slides back out right, slide up sinks, others fade — and the scrim fades with it,
+   300ms; the page adds the -out class, then removes the layer when it ends. Never vanishes instantly. */
+.mdl.mdl-anim-side-out{animation:mdlsideout .3s ease-in forwards}.mdl.mdl-anim-down{animation:mdldown .3s ease-in forwards}.mdl.mdl-anim-fade-out{animation:mdlfadeout .3s ease-in forwards}
+.mdl-scrim{animation:mdlfade .3s ease-out both}.mdl-scrim.mdl-scrim--out{animation:mdlfadeout .3s ease-in forwards}
+@keyframes mdlsideout{from{transform:none}to{transform:translateX(100%)}}@keyframes mdldown{from{transform:none}to{transform:translateY(100%)}}@keyframes mdlfadeout{from{opacity:1}to{opacity:0}}
 /* modal content slots (Figma 8127-26292 Returns, 8127-26481 Seller info) */
 .mdl-kv{display:flex;flex-direction:column;gap:8px}.mdl-kv b{font-weight:var(--w-strong,600)}
 .mdl-opts{display:flex;flex-direction:column;gap:16px}

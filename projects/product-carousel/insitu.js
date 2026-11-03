@@ -18,11 +18,12 @@ const st=document.createElement('style');st.textContent=`
 @media(min-width:1024px){.pi-mb{justify-content:flex-end;align-items:stretch}}
 .pi-mb>.mdl{z-index:3}
 .pi-mb .mdl--up{max-height:calc(100% - 56px);overflow:hidden}
-.pi-mb .pi-btns{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.pi-mb .pi-btns .bd{width:100%}
+.pi-mb .pi-btns{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.pi-mb .pi-btns .bd,.pi-mb .pi-btns .pay{width:100%}
 .pi-mb .pi-items{display:flex;flex-direction:column;gap:var(--gap-2,8px)}
 .pi-save{display:flex;flex-direction:column;gap:var(--gap-4,16px)}.pi-save h3{margin:0;font-size:18px;line-height:22px;font-weight:var(--w-strong)}.pi-save p{margin:0;font-size:14px;line-height:20px}.pi-save .bd{width:100%}
 .pi-save .pi-legal{font-size:12px;line-height:16px;color:var(--text-secondary)}.pi-save .pi-legal a{color:inherit}
 .pi-toast{z-index:90}
+.pi-mb2{z-index:95}@media(min-width:1024px){.pi-mb2{justify-content:center;align-items:center}}
 #pimb .pc .pc-iconbtn--sq{border-radius:var(--radius-default)!important} /* the Shopping agent page forces .pc .pc-iconbtn round (!important); put the DS square back */
 html.pi-lock,html.pi-lock body{overflow:hidden;height:100%}`;
 document.head.appendChild(st);
@@ -86,6 +87,10 @@ window.acInner=function(){const doc=new DOMParser().parseFromString('<div id="x"
         save  · the same modal, then a divider and Save your bag (DS text field + checkbox row + secondary button) — no box
         toast · no modal: the DS product toast (.toast--top .toast--prod), 6s
         Free delivery banner (PC.thresh): the DS threshold (.thresh) under the line items, in the modal versions — fills as items are added ---- */
+/* the bag CTA (PC.cta): View Bag → the bag · Checkout → straight to checkout (the Checkout 2026 prototype); PC.applePay adds the DS Apple Pay button under it */
+const CHECKOUT='https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html';
+const CTA=()=>PC.cta==='checkout'?'Checkout':'View Bag';
+const ctas=()=>`<button class="bd pri" data-mbgo>${CTA()}</button>${PC.applePay?'<button class="pay pay--apple" data-mbgo="pay" aria-label="Apple Pay"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button>':''}`;
 const MBT=()=>PC.mbType||'live',THRESH=100,ADDED=[];let SAVED=null,JUST=null;   /* JUST = the item quick-added on this render: its line item drops in, its button pops */
 const num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
 function mainItem(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,colour:DP.colour}:PR()[1]||{};
@@ -98,37 +103,59 @@ const lineItem=p=>MBT()==='live'?oldItem(p):`<div class="bag-item bag-item--mini
 function thresh(){if(PC.thresh===false)return '';const t=bagItems().reduce((a,p)=>a+num(p.price),0);
   if(t>=THRESH)return `<div class="thresh thresh--ok"><span class="tick"></span><span>You’ve qualified for free delivery</span></div>`;
   return `<div class="thresh"><span>Spend <b>£${(THRESH-t).toFixed(2)}</b> more for free delivery</span><div class="track"><div class="fill" style="width:${Math.round(t/THRESH*100)}%"></div></div></div>`}
-function saveBag(){if(SAVED)return `<div class="thresh thresh--ok"><span class="tick"></span><span>Bag saved. We’ll email <b>${esc(SAVED)}</b> about your bag — you’re signed up for ${esc(BN())} emails, unsubscribe any time.</span></div>`;
-  return `<section class="pi-save"><h3>Not ready yet? Save your bag</h3><p>Leave your email and we’ll remind you about the items in your bag.</p>
+function saveBag(inModal){if(SAVED)return `<div class="thresh thresh--ok"><span class="tick"></span><span>Bag saved. We’ll email <b>${esc(SAVED)}</b> about your bag — you’re signed up for ${esc(BN())} emails, unsubscribe any time.</span></div>`;
+  return `<section class="pi-save">${inModal?'':'<h3>Not ready yet? Save your bag</h3>'}<p>Leave your email and we’ll remind you about the items in your bag.</p>
     <label class="fld"><input type="email" placeholder=" " autocomplete="email" data-mbmail><span class="lbl">Email address</span></label>
     <div class="chk-row"><button type="button" class="chk" aria-checked="false" data-mbopt aria-label="Email me about my bag"></button><span>Email me about my bag, plus offers, new arrivals and style picks from ${esc(BN())}. I can unsubscribe at any time.</span></div>
     <button type="button" class="bd sec" disabled data-mbsave>Email My Bag</button>
     <p class="pi-legal">Tick the box to save your bag. Bag reminders are marketing emails, so we need your consent to send them. See our <a href="#">Privacy Policy</a>.</p></section>`}
 function miniBag(){const d=desk(),t=MBT();
   const list=ids('atb',4,10).filter(i=>i!==1);   /* Debenhams: the first two slots are Mirakl sponsored (labelled), then Bloomreach “also bought” */
-  const o={id:'atb',size:'sm',title:'Complete The Look',per:3,start:4,list,qa:true,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
+  const o={id:'atb',size:'sm',title:'Complete The Look',per:4,card:100,compact:true,start:4,list,qa:true,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
   const rail=pcar(o);
+  /* order: Live as live (item · threshold · Continue Shopping / View Bag); the new versions lead with the threshold, then the item(s), then their extra */
+  const items=`<div class="pi-items">${bagItems().map(lineItem).join('')}</div>`,vb=ctas();
+  const body=t==='live'?items+thresh()+`<div class="pi-btns"><button class="bd sec" data-mbx>Continue Shopping</button>${vb}</div>`
+    :t==='look'?thresh()+items+rail+`<div class="pi-btns">${vb}</div>`
+    :t==='save'?thresh()+items+`<div class="pi-btns">${vb}</div><div class="hr"></div>${saveBag()}`
+    :thresh()+items+`<div class="pi-btns">${vb}${SAVED?'':'<button class="bd sec" data-mblater>Save for later</button>'}</div>${SAVED?saveBag():''}`;
   return `<div class="pi-mb" id="pimb"><div class="mdl-scrim" data-mbx></div>
   <div class="mdl ${d?'mdl--side mdl-anim-side':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Added to bag">
     <div class="modal-hd"><div class="mt"><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
-    <div class="mdl-bd"><div class="pi-items">${bagItems().map(lineItem).join('')}</div>${thresh()}
-      <div class="pi-btns">${t==='live'?'<button class="bd sec" data-mbx>Continue Shopping</button>':''}<button class="bd pri">View Bag</button></div>
-      ${t==='save'?'<div class="hr"></div>'+saveBag():t==='look'?rail:''}</div></div></div>`}
-function toast(){const p=mainItem();return `<div class="toast toast--top toast--prod pi-toast" id="pitoast" role="status"><img class="toast-img" src="${p.img}" alt=""><span class="toast-tx"><b>Added to Bag</b><span>${esc([p.size,p.colour].filter(Boolean).join(' / '))}, ${esc(p.price)}</span></span><button class="act" type="button">View Bag</button>${EXPORTING?'':'<i class="toast-timer"></i>'}</div>`}
+    <div class="mdl-bd">${body}</div></div></div>`}
+/* Save for later: a second modal over the mini bag with the email capture (Small on desktop, slide up on mobile) */
+function laterModal(){const d=desk();return `<div class="pi-mb pi-mb2" id="pimb2"><div class="mdl-scrim" data-mb2x></div>
+  <div class="mdl ${d?'mdl--sm mdl-anim-fade':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Save your bag">
+    <div class="modal-hd"><div class="mt"><span>Save your bag</span></div><button class="modal-x" aria-label="Close" data-mb2x></button></div>
+    <div class="mdl-bd">${saveBag(true)}</div></div></div>`}
+function toast(){const p=mainItem(),ts=PC.toastStyle||'thumb';return `<div class="toast toast--top toast--prod${ts==='thumb'?'':' toast--'+ts} pi-toast" id="pitoast" role="status"><img class="toast-img" src="${p.img}" alt=""><span class="toast-tx">Added to Bag</span><button class="act" type="button" data-mbgo>${CTA()}</button>${EXPORTING?'':'<i class="toast-timer"></i>'}</div>`}
 let TT=0;
-function mountBag(open){const old=document.getElementById('pimb'),ot=document.getElementById('pitoast');if(old)old.remove();if(ot)ot.remove();clearTimeout(TT);
-  if(!open){document.documentElement.classList.remove('pi-lock');return}
-  if(MBT()==='toast'){document.documentElement.classList.remove('pi-lock');document.body.insertAdjacentHTML('beforeend',toast());if(!EXPORTING)TT=setTimeout(()=>{const x=document.getElementById('pitoast');if(x){x.classList.add('toast--out');setTimeout(()=>x.remove(),300)}PC.bagOpen=false},6000);return}
+function mountBag(open,instant){const old=document.getElementById('pimb'),ot=document.getElementById('pitoast');clearTimeout(TT);
+  if(ot)ot.remove();
+  if(!open){document.documentElement.classList.remove('pi-lock');const m2=document.getElementById('pimb2');if(m2)m2.remove();
+    if(old&&!instant&&!EXPORTING){const m=old.querySelector('.mdl'),sc=old.querySelector('.mdl-scrim');old.id='';old.style.pointerEvents='none';   /* leave the way it came: drawer out right, slide up down; scrim fades */
+      m.classList.remove('mdl-anim-up','mdl-anim-side');m.classList.add(m.classList.contains('mdl--side')?'mdl-anim-side-out':'mdl-anim-down');if(sc)sc.classList.add('mdl-scrim--out');setTimeout(()=>old.remove(),320)}
+    else if(old)old.remove();return}
   const keep=old&&old.querySelector('.pcar-track')?old.querySelector('.pcar-track').scrollLeft:0,bs=old?old.querySelector('.mdl-bd').scrollTop:0;
+  if(old)old.remove();
+  if(MBT()==='toast'){document.documentElement.classList.remove('pi-lock');document.body.insertAdjacentHTML('beforeend',toast());
+    const tt=document.getElementById('pitoast');if(desk()){const rows=[...document.querySelectorAll('.usp-row1')].map(r=>r.getBoundingClientRect().bottom).filter(y=>y>0),hb=(document.querySelector('#hdrwrap,header.hd')||{getBoundingClientRect:()=>({bottom:0})}).getBoundingClientRect().bottom;
+      tt.style.setProperty('--toast-top',Math.max(16,...rows,hb)+16+'px')}   /* centred under the USP banners (or the sticky bar once scrolled) */
+    if(!EXPORTING)TT=setTimeout(()=>{const x=document.getElementById('pitoast');if(x){x.classList.add('toast--out');setTimeout(()=>x.remove(),300)}PC.bagOpen=false},6000);return}
   document.documentElement.classList.add('pi-lock');document.body.insertAdjacentHTML('beforeend',miniBag());
-  const n=document.getElementById('pimb');if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
+  const n=document.getElementById('pimb');if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');n.querySelector('.mdl-scrim').style.animation='none';const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
 document.addEventListener('click',e=>{
   const lk=e.target.closest('.pcar--look[data-pl="look"]');if(lk&&!e.target.closest('.pcar-arr')){e.preventDefault();const c=e.target.closest('.pcar-track>*'),L=FEEDS.look,idx=c?[...c.parentNode.children].indexOf(c):-1;openPicker(L&&idx>=0?ids('look',L.start||0,10)[idx]:null);return}
   const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();const i=+qa.dataset.qa;if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null;return}
-  const opt=e.target.closest('#pimb [data-mbopt]');if(opt){e.preventDefault();const on=opt.getAttribute('aria-checked')!=='true';opt.setAttribute('aria-checked',on);opt.classList.toggle('on',on);document.querySelector('#pimb [data-mbsave]').disabled=!on;return}
-  const sv=e.target.closest('#pimb [data-mbsave]');if(sv){e.preventDefault();const f=document.querySelector('#pimb [data-mbmail]'),v=(f.value||'').trim(),fl=f.closest('.fld');
+  const later=e.target.closest('#pimb [data-mblater]');if(later){e.preventDefault();document.body.insertAdjacentHTML('beforeend',laterModal());return}
+  if(e.target.closest('[data-mb2x]')){e.preventDefault();const m=document.getElementById('pimb2');if(m){const w=m.querySelector('.mdl');m.style.pointerEvents='none';w.classList.remove('mdl-anim-up','mdl-anim-fade');w.classList.add(w.classList.contains('mdl--up')?'mdl-anim-down':'mdl-anim-fade-out');m.querySelector('.mdl-scrim').classList.add('mdl-scrim--out');setTimeout(()=>m.remove(),320)}return}
+  const go=e.target.closest('[data-mbgo]');if(go){e.preventDefault();
+    if(go.dataset.mbgo==='pay'||PC.cta==='checkout'){location.href=CHECKOUT+'?brand='+BR();return}
+    PC.bagOpen=false;mountBag(false,true);PC.view='bag';S.page='bag';S.search=false;render();scrollTo(0,0);parent.postMessage({protoNav:{view:'bag'}},'*');return}
+  const opt=e.target.closest('.pi-mb [data-mbopt]');if(opt){e.preventDefault();const on=opt.getAttribute('aria-checked')!=='true';opt.setAttribute('aria-checked',on);opt.classList.toggle('on',on);opt.closest('.pi-mb').querySelector('[data-mbsave]').disabled=!on;return}
+  const sv=e.target.closest('.pi-mb [data-mbsave]');if(sv){e.preventDefault();const f=sv.closest('.pi-mb').querySelector('[data-mbmail]'),v=(f.value||'').trim(),fl=f.closest('.fld');
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){fl.classList.add('invalid');if(!fl.nextElementSibling||!fl.nextElementSibling.classList.contains('fld-err'))fl.insertAdjacentHTML('afterend','<div class="fld-err">Enter an email address like name@example.com</div>');f.focus();return}
-    SAVED=v;mountBag(true);return}
+    SAVED=v;const m2=document.getElementById('pimb2');if(m2)m2.remove();mountBag(true);return}
   if(e.target.closest('[data-mbx]')){e.preventDefault();PC.bagOpen=false;mountBag(false);return}
   if(S.page==='pdp'&&e.target.closest('.ctas .bd.pri')){e.preventDefault();PC.bagOpen=true;mountBag(true)}
   if(e.target.closest('.pcar a[href="#"]'))e.preventDefault()});

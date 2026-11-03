@@ -31,7 +31,7 @@
   /* DG_pcarHTML(o) — the markup (catalogue entry 'product-carousel') for a placement, so pages never hand-build a rail (2 Nov 2026, Master prototype).
      o: size 'lg'|'md'|'sm' · title · sub · tabs[] · all (View all label — off by default, Jake 2 Nov) · per (cards in view / grid columns, desktop) · grid · look (image only)
         · bleed (mobile edge to edge) · full (to the page margin, fixed 248px desktop cards) · arrows:false (no chevrons) · id (data-pl) · brand (fallback brand line)
-        · qa (the DS circle quick add, top right of the image — square on boohooMAN / KM / Brand Room; data-qa = item.i, tick once item.added —
+        · compact (the DS .pc--compact card, 12px copy) · card (mobile card width px, default 165) · qa (the DS circle quick add, top right of the image — square on boohooMAN / KM / Brand Room; data-qa = item.i, tick once item.added —
           Complete the Look in the mini bag; the page decides what a tap adds)
         items[]: {img, brand, name, price, was, pct, sponsored, swatches:[{c, name, img}], href, i}
      Card (DG_pcarCard) = the DS product card format, always: (Sponsored) · brand (never blank — the item's, else o.brand) · name, 2 lines · rail price
@@ -47,10 +47,10 @@
     const qa=o.qa?`<div class="pc-actions pc-actions--qa"><button type="button" class="pc-iconbtn${sq}${p.added?' on':''}${p.pop?' pop':''}" data-qa="${esc(p.i)}" aria-label="${p.added?'Added':'Quick add'} ${esc(p.name)}"${p.added?' disabled':''}><img src="assets/ds/icons/${p.added?'lib/icons-tick':'quick-add-16'}.svg" alt=""></button></div>`:'';
     const img=`<div class="pc-img"><img class="ph" src="${esc(p.img)}" alt="${esc(((p.brand||o.brand)?(p.brand||o.brand)+' ':'')+p.name)}" loading="${o.eager?'eager':'lazy'}">${qa}</div>`;
     if(o.look)return `<article class="pc"${at}>${img}</article>`;
-    return `<article class="pc"${at}>${img}${DG_pcarInfo(p,o)}</article>`};
+    return `<article class="pc${o.compact?' pc--compact':''}"${at}>${img}${DG_pcarInfo(p,o)}</article>`};
   window.DG_pcarHTML=function(o){o=o||{};const grid=!!o.grid,tabs=o.tabs&&o.tabs.length?o.tabs:null,hd=o.title||o.sub||tabs||o.all;
     const cls=['pcar','pcar--'+(o.size||'md'),grid&&'pcar--grid',o.look&&'pcar--look',o.full&&'pcar--full',o.arrows===false&&'pcar--no-arr',o.bleed!==false&&'pcar--bleed'].filter(Boolean).join(' ');
-    return `<section class="${cls}" style="--pcar-per:${o.per||5}"${o.id?` data-pl="${esc(o.id)}"`:''}>${hd?`<header class="pcar-hd">${o.title||o.sub?`<div class="pcar-tt">${o.title?`<h2 class="pcar-t">${esc(o.title)}</h2>`:''}${o.sub?`<p class="pcar-sub">${esc(o.sub)}</p>`:''}</div>`:''}${tabs?`<div class="pcar-tabs">${tabs.map((t,i)=>`<button class="chip${i===(o.tab||0)?' on':''}" aria-pressed="${i===(o.tab||0)}">${esc(t)}</button>`).join('')}</div>`:''}${o.all?`<a class="pcar-all" href="#">${esc(o.all===true?'View all':o.all)}</a>`:''}</header>`:''}
+    return `<section class="${cls}" style="--pcar-per:${o.per||5}${o.card?';--pcar-card:'+o.card+'px':''}"${o.id?` data-pl="${esc(o.id)}"`:''}>${hd?`<header class="pcar-hd">${o.title||o.sub?`<div class="pcar-tt">${o.title?`<h2 class="pcar-t">${esc(o.title)}</h2>`:''}${o.sub?`<p class="pcar-sub">${esc(o.sub)}</p>`:''}</div>`:''}${tabs?`<div class="pcar-tabs">${tabs.map((t,i)=>`<button class="chip${i===(o.tab||0)?' on':''}" aria-pressed="${i===(o.tab||0)}">${esc(t)}</button>`).join('')}</div>`:''}${o.all?`<a class="pcar-all" href="#">${esc(o.all===true?'View all':o.all)}</a>`:''}</header>`:''}
   <div class="pcar-body">${grid?'':'<button class="pcar-arr pcar-arr--prev" disabled></button>'}<div class="pcar-track">${(o.items||[]).map(p=>DG_pcarCard(p,o)).join('')}</div>${grid?'':'<button class="pcar-arr pcar-arr--next"></button>'}</div></section>`};
   /* swatch taps (any rail card): select the colour, swap the image to its shot (data-img). With no shot, the colour tints the image as a stand-in (sample feeds). */
   document.addEventListener('click',e=>{const sw=e.target.closest('.pcar .pc-swatch[data-sw]');if(!sw)return;e.preventDefault();e.stopPropagation();
