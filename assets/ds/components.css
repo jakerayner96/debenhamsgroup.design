@@ -686,14 +686,20 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#000;color:#FFF;font-size:14px;font-weight:var(--w-mid);padding:12px 20px;border-radius:var(--radius-default);z-index:var(--z-toast);white-space:nowrap;box-shadow:var(--shadow-float)}
 .toast--top{bottom:auto;top:16px;left:16px;right:16px;transform:none;background:rgba(255,255,255,.9);color:var(--text-primary);backdrop-filter:blur(3.5px);border-radius:var(--radius-lg);box-shadow:0 0 20px rgba(0,0,0,.1);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:normal;font-weight:var(--w-regular)}
 .toast--top .act{font-weight:var(--w-strong);color:var(--text-link);background:none;border:none;cursor:pointer;white-space:nowrap}
+/* top toast motion (3 Nov 2026): fades + eases down 8px in, fades + eases up out (.toast--out) — never pops on or off */
+.toast--top{animation:toastIn .32s cubic-bezier(.2,.8,.2,1) both}
+.toast--top.toast--out{animation:toastOut .28s ease-in forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes toastOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-8px)}}
+@media (prefers-reduced-motion:reduce){.toast--top,.toast--top.toast--out{animation-duration:.01s}}
 /* .toast--prod (2 Nov 2026, mini bag “toast” version — Added to Bag without the modal): the top toast with the product — 2:3 image 48 × 72, then
-   “Added to Bag” (strong) over size / colour, price; View Bag on the right; a 2px countdown line along the foot (--toast-ms, 6s). Desktop: top right, 400 wide. */
+   “Added to Bag” (strong) over size / colour, price; View Bag on the right in the DS action colour (as every top toast); a faint 2px countdown line in the
+   action colour along the foot (--toast-ms, 6s); fades in and out with the top toast. Desktop: top right, 400 wide. */
 .toast--prod{gap:var(--gap-3,12px);overflow:hidden;justify-content:flex-start;white-space:normal;font-weight:var(--w-regular)}
 .toast--prod .toast-img{width:48px;height:72px;flex:none;object-fit:cover;background:var(--surface-media);display:block}
 .toast--prod .toast-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:14px;line-height:18px}
 .toast--prod .toast-tx b{font-weight:var(--w-strong);font-size:16px;line-height:20px}
-.toast--prod .act{text-decoration:underline;text-underline-offset:3px;color:var(--text-primary)}
-.toast--prod .toast-timer{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--text-primary);transform-origin:left;animation:toastTimer var(--toast-ms,6s) linear forwards}
+.toast--prod .toast-timer{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--text-link);opacity:.5;transform-origin:left;animation:toastTimer var(--toast-ms,6s) linear forwards}
 @keyframes toastTimer{from{transform:scaleX(1)}to{transform:scaleX(0)}}
 @media(min-width:1024px){.toast--prod{left:auto;right:24px;top:24px;width:400px}}
 
