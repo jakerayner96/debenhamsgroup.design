@@ -12,6 +12,7 @@ window.DG_CHANGELOG=[
    "Full-screen layer .vs-layer--fs: the intro is .mdl--fs on phones (header top, body centred and scrolling, footer pinned: consent, Camera / Upload, note) · by Virtual Stylist v2"
   ],
   "changed": [
+   "Product card letter-spacing: always 0, the font’s default — the compact card brand line had .04em and PLT’s uppercase names .02em · by Product carousel prototype (mini bag cards), Jake 3 Nov",
    "Free delivery threshold in a container (.thresh--box) to Jake’s Figma (13732:374 / :377): Grey 05 ground (#FAFAFA), radius 4, 14 light copy with the amount strong, Grey 2 track; qualified = 20px tick circle in the action colour — one spec on every device · by Product carousel review (Figma DS page 13639:10), Jake 3 Nov",
    "Product toast (.toast--prod) to Jake’s Figma (13732:383 / :386), one spec on every device: thumbnail 33 × 50 radius 4 inset 4 (58 tall) · --edge 40 × 60 flush left (60 tall) · card radius 8 · shadow 0 0 20 12% · 14 light + View Bag 14 strong in the action colour; the 24 × 36 thumb and --square styles retired · by Product carousel review (Figma DS page 13639:10), Jake 3 Nov",
    "Navigation Button (.nav-btn + .nav-btn--left / --right / --up / --down / --close) for EVERY directional arrow (Figma 9144-1896): carousel arrows, PDP gallery arrows (shadow was --shadow-pill), home tile arrows (were 90% white with a keyline) · by Product carousel review (Figma DS page 13639:10), Jake 3 Nov",

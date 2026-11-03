@@ -155,7 +155,7 @@ button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--bor
 .pc--compact{gap:8px}
 .pc--compact .pc-info{gap:6px;font-size:12px}
 .pc--compact .pc-titles{gap:2px}
-.pc--compact .pc-brand{font-size:11px;letter-spacing:.04em} /* title case, never caps */
+.pc--compact .pc-brand{font-size:11px} /* title case, never caps */
 .pc--compact .pc-name{font-size:12px}
 .pc--compact .pc-price{font-size:13px}
 .pc--compact .pc-offer,.pc--compact .pc-sponsored{font-size:11px}
@@ -165,7 +165,9 @@ button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--bor
 .pc--compact .badge{height:24px;font-size:11px}
 .pc--compact .pc-add{min-height:36px;font-size:14px}
 .pc--compact .pc-add img{width:20px;height:20px}
-.pc-name--caps{text-transform:uppercase;letter-spacing:.02em} /* PLT names run uppercase */
+.pc-name--caps{text-transform:uppercase} /* PLT names run uppercase */
+/* product card copy always sits at the font’s own spacing — 0 letter-spacing on every card size (Jake, 3 Nov 2026) */
+.pc{letter-spacing:0}
 /* flush variant — full-bleed zero-gutter grids (boohooMAN new): text insets 4px under the image */
 .pc--flush .pc-info{padding:0 4px 12px}
 .pc--flush .pc-taggstar,.pc--flush .pc-add{margin:0 4px}
