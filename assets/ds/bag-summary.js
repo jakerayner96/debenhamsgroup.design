@@ -13,11 +13,13 @@
 (function(){
 const A=(window.DG_ASSET_BASE||''),I=A+'assets/ds/icons/pay/',W=A+'assets/ds/icons/payments/',L=A+'assets/ds/icons/pay/';
 const CARDS16=['visa','mastercard','amex','maestro','visa-electron','apple-pay','payplus','paypal','klarna','clearpay','google-pay','revolut'];
+const CARDS26=['visa','mastercard','amex','apple-pay','google-pay','paypal','payplus','klarna','clearpay']; /* Bag 2026 card row */
 const CARDS25=['visa','mastercard','amex','maestro','visa-electron','apple-pay','paypal','klarna','clearpay','google-pay'];
 const D=(o)=>Object.assign({dplus:null,dprice:2.99,cta:['Checkout with Deliver+','Checkout without Deliver+'],bg:'#000',fg:'#FFF',up:true,promo:null,
-  pp:'Checkout',msg:'Pay in 30 days. Credit option.',wallets:['paypal','paylater','apple','klarna'],cards:CARDS25,applyUp:true},o);
+  pp:'Checkout',msg:'Pay in 30 days. Credit option.',wallets:['paypal','paylater','apple','klarna'],cards:CARDS25,applyUp:true,
+  del:2.99,delNow:0.49,wf:'Worry-Free Purchase®',wfRate:0.04,cards26:CARDS26},o);
 window.BAG_LIVE={
-  debenhams:D({dplus:'Debenhams Deliver+',bg:'#7BE7D8',fg:'#000',promo:'{p}% Off applied',pp:'',cards:CARDS16}),
+  debenhams:D({dplus:'Debenhams Deliver+',bg:'#7BE7D8',fg:'#000',promo:'{p}% Off applied',pp:'Checkout',msg:'Pay in 3 interest-free payments of {3}.',kl:'#0B051D',cards:CARDS16}), /* Bag 2026: PayPal Checkout · pay in 3 · Klarna navy */
   boohoo:D({dplus:'Boohoo Deliver+',bg:'#444444',promo:'{p}% off!*'}),
   boohooman:D({dplus:'BOOHOOMAN Deliver+',promo:'{p}% OFF'}),
   plt:D({dplus:'PLT Deliver+',cta:['Checkout with PLT Deliver+','Checkout without PLT Deliver+'],bg:'#550503',promo:'{p}% OFF*!',small:true}),
@@ -35,17 +37,26 @@ const WAL={
   paypal:c=>`<button type="button" class="bs-w bs-pp"><img src="${W}paypal-wordmark.svg" alt="PayPal" style="height:22px">${c.pp?`<span>${esc(c.pp)}</span>`:''}</button>`,
   paylater:()=>`<button type="button" class="bs-w bs-pp"><img src="${W}paypal-monogram.png" alt="" style="height:20px"><span>Pay Later</span></button>`,
   apple:()=>`<button type="button" class="bs-w bs-ap"><img src="${W}applepay-onblack.svg" alt="Apple Pay" style="height:22px"></button>`,
-  klarna:()=>`<button type="button" class="bs-w bs-kl"><span>Pay with</span><img src="${W}klarna-badge.svg" alt="Klarna" style="height:26px"></button>`
+  klarna:c=>`<button type="button" class="bs-w bs-kl"${c.kl?` style="background:${c.kl}"`:''}><span>Pay with</span><img src="${W}klarna-badge.svg" alt="Klarna" style="height:26px"></button>`
 };
 window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk,o){o=o||{};
   const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]),pct=t.sub?Math.round(t.disc/t.sub*100):0;
-  const sum=`<div class="bs-sum"><div class="bs-h">Order Summary</div>${row('Subtotal',gbp(t.sub))}${t.disc?row('Discount','-'+gbp(t.disc)):''}
+  /* Bag 2026 (CYyGeUDy4w02enV7uFxZ6W desktop 1337:256981 / mobile 1337:257572, Jake 3 Nov) — the default: Subtotal · Delivery (now strong + struck was) ·
+     Worry-Free Purchase® · Discounts (link + chevron) · optional rows (o.extra = [[label, value]] — Sales Tax, Gift Card, Donation) · hairline · Order Total.
+     o.live:true keeps the 6 Oct live capture (Discount · Deliver+ add-on · Discounts included). */
+  const v26=!o.live;
+  if(v26){const dn=c.delNow!=null?c.delNow:c.del,wf=c.wf?Math.round(t.sub*c.wfRate*100)/100:0,tot=t.sub-t.disc+dn+wf;t.total=tot;
+    const dl=c.delNow!=null&&c.delNow<c.del?`<span class="bs-dl"><b>${gbp(dn)}</b><s>${gbp(c.del)}</s></span>`:gbp(dn);
+    var sum26=`<div class="bs-sum bs-sum--26"><div class="bs-h">Order Summary</div><div class="bs-body"><div class="bs-rows">${row('Subtotal',gbp(t.sub))}${row('Delivery',dl)}${wf?row(esc(c.wf),gbp(wf)):''}</div>
+      ${t.disc?row('<button type="button" class="bs-dsc">Discounts<i aria-hidden="true"></i></button>','-'+gbp(t.disc)):''}${(o.extra||[]).map(r=>row(esc(r[0]),esc(r[1]))).join('')}</div>
+      ${row('Order Total',gbp(tot),'bs-tot26')}</div>`}
+  const sum=v26?sum26:`<div class="bs-sum"><div class="bs-h">Order Summary</div>${row('Subtotal',gbp(t.sub))}${t.disc?row('Discount','-'+gbp(t.disc)):''}
     ${c.dplus?`<div class="bs-r bs-dp"><span>${esc(c.dplus)}<small>Optional add-on</small></span><span>${gbp(c.dprice)}</span></div>`:''}${row('Order Total',`<b>${gbp(t.total)}</b>`,'bs-tot')}</div>
     ${t.disc?`<div class="bs-di"><b>Discounts included:</b>${row(esc(c.promo.replace('{p}',pct)),'-'+gbp(t.disc))}</div>`:''}`;
   const msg=esc(c.msg.replace('{3}',gbp(t.total/3)));
   const pay=`<div class="bs-ctas">${c.cta.map(l=>`<button type="button" class="bs-cta">${esc(l)}</button>`).join('')}
     ${c.cta.length>1?'<div class="bs-or"><span>OR</span></div>':''}${c.wallets.map(k=>(WAL[k](c))+(k==='paylater'?`<div class="bs-msg"><img src="${W}bnpl-paypal-logo.svg" alt="PayPal"><span>${msg} <u>Learn more</u></span></div>`:'')).join('')}</div>
-    <div class="bs-cards">${c.cards.map(logo).join('')}</div>`;
+    <div class="bs-cards">${(v26?c.cards26:c.cards).map(logo).join('')}</div>`;
   const promo=`<div class="bs-card bs-pr"><div class="bs-ph">Promo Code</div><div class="bs-pf"><span class="bs-in">Enter code here...</span><button type="button" class="bs-ap2">${c.applyUp?'APPLY':'Apply'}</button></div></div>`;
   const vars=`--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}`;
   const pr=o.promo===false?'':promo,rw=o.rewards||'',th=o.thresh?`<div class="bs-th">${o.thresh}</div>`:'';

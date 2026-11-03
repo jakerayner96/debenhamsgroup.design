@@ -101,7 +101,7 @@ function bag(){const k=S.brand;if(!BAG||KEY!==k){BAG=seed();KEY=k}return BAG}
 function view(){const B=bag();return Object.assign({},B,{sellers:B.sellers.map(s=>Object.assign({},s,{items:s.items.filter(x=>on(x.k))})).filter(s=>s.items.length&&(on('seller2')||!s.second))})}
 function page(){const B=view(),d=desk(),L=DG_bag.lines(B),n=DG_bag.count(B),oos=B.sellers.some(s=>s.items.some(x=>x.type==='oos'));
   const tot=L.reduce((a,x)=>a+parseFloat(String(x.price).replace(/[^0-9.]/g,'')),0);
-  const free=`<div class="thresh thresh--ok"><span class="tick"></span><span>You have qualified for free delivery!</span></div>`;
+  const free=`<div class="thresh thresh--ok"><span class="tick"></span><span>${d?'You have qualified for 49p delivery':'You have qualified for free delivery!'}</span></div>`; /* Bag 2026: desktop card top 49p (the Delivery row), mobile top free */
   const rewards=S.brand==='debenhams'&&on('rewards')?`<div class="rwd"><span class="rwd-w">Rewards</span><div class="rwd-t"><span>Earn <b>£<i>${Math.floor(tot*.05)}</i>.${String(Math.round(tot*5)%100).padStart(2,'0')}</b> rewards</span><small>when you complete this order</small></div></div>`:'';
   const banner=oos?DG_bag.oosBanner():'';
   const secs=[B.gifts.length&&on('gifts')?DG_bag.gifts(B.gifts):'',

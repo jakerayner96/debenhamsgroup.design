@@ -1512,6 +1512,14 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .bs--sm .bs-cta{font-size:14px;font-weight:400}.bs--sm .bs-or{font-size:12px}
 .bs--sm .bs-ph{font-size:16px;line-height:24px;font-weight:400}.bs--sm .bs-ap2{font-size:14px;font-weight:var(--w-regular,300)}
 .bs-top{background:var(--surface-raised,#FFF);gap:24px;padding:0 0 24px}
+/* Bag 2026 order summary (default, 3 Nov 2026 · Figma Bag 2026 1337:256981 / 1337:257572): title 18 strong · rows 16/20 regular, 8 apart · Discounts row 16 under them (link colour + chevron) · hairline · Order Total 16/20 strong */
+.bs-sum--26{gap:16px}.bs-sum--26 .bs-h{font-size:18px;line-height:23px}
+.bs-body,.bs-rows{display:flex;flex-direction:column}.bs-body{gap:16px}.bs-rows{gap:8px}
+.bs-sum--26 .bs-r{font-size:16px;line-height:20px;font-weight:var(--w-regular,300)}
+.bs-dl{display:inline-flex;gap:8px}.bs-dl b{font-weight:var(--w-strong,600)}
+.bs-dsc{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;background:none;cursor:pointer;font:var(--w-strong,600) 16px/20px var(--font-family-base);color:var(--text-link)}
+.bs-dsc i{width:12px;height:12px;background:currentColor;-webkit-mask:url(icons/lib/icons-down.svg) center/contain no-repeat;mask:url(icons/lib/icons-down.svg) center/contain no-repeat}
+.bs-r.bs-tot26{border-top:1px solid var(--border-subtle);padding-top:16px;font-weight:var(--w-strong,600)}
 .bs--m{background:var(--surface-raised,#FFF)} /* Bag 2026 (2 Nov 2026): the mobile summary sits on white, not the sunken grey */
 .bs-top .bs-ot{font-size:14px;line-height:normal} /* Bag 2026 (2 Nov 2026): 14, was 16 */.bs-top .bs-ot b{font-weight:600;margin-left:4px}
 .bs-top.bs--sm .bs-ot{font-size:12px}.bs-top.bs--sm .bs-ot b{font-weight:400}
