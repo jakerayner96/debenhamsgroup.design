@@ -775,6 +775,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 @media(max-width:767px){.price-blk--card .price,.price-blk--card .price-code{font-size:var(--price-card-m);line-height:var(--price-card-m-lh)}}
 /* rail card (recommendations, complete the look): now + was only, one line */
 .price-blk--rail .price{font-size:var(--price-card);line-height:var(--price-card-lh);column-gap:8px;row-gap:0;flex-wrap:wrap} /* now · was · -X%, wraps when the card is narrow (2 Nov) */
+/* compact rail cards (.pc--compact — mini bag Complete the look, 100px cards): price the same 12/16 as the name, now · was on one line, the -X% dropped (too small to fit · Jake 3 Nov) */
+.pc--compact .price-blk--rail .price{font-size:12px;line-height:16px;column-gap:4px}
+.pc--compact .price-blk--rail .save{display:none}
 /* added-to-bag: 12/18, both prices ink, now + was only */
 .price-blk--drawer .price{font-size:var(--price-drawer);line-height:var(--price-drawer-lh);column-gap:8px}
 .price-blk--drawer .now,.price-blk--drawer .now.sale{color:var(--text-primary)}
