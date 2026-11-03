@@ -8,6 +8,9 @@ window.DG_CHANGELOG=[
   "title": "Virtual Stylist intro: six start screen layouts (Jake’s final options) · copy up to 12/16",
   "by": "Virtual Stylist v2 (vto-prototype/v2, Jake 3 Nov)",
   "added": [
+   "Figma library: new page ✅ Shopping Agent — the Ask Deb / Google GECX agent components moved into the DS from Zi4qRcAFTELiCvFIl29mJC 162-7209 and rebuilt natively (Agent / Header · Desktop + Mobile, Ask, ADD TO BAG, Chat input, Context chip, Prompt pill · soft + outline, Quick reply, Starter prompt, Suggestion pill, Rail arrows; DS library icons); the DS Header’s Ask now points at the DS-owned Agent / Ask · by Product carousel review (Figma page 13639:10), Jake 3 Nov",
+   "Figma library: Delivery grid component set (PDP page, Device = Mobile / Desktop) from the code version (delivery.js — option B tabs, format 3, returns + seller in the accordions) · by Product carousel review (Figma page 13639:10), Jake 3 Nov",
+   "Figma library: Subscribe & Save component set (BANNERS & MESSAGING) — PDP box (ADD → modal), modal mobile bottom sheet, modal desktop; S&S / Product Card Banner is the bag version · by Product carousel review (Figma page 13639:10), Jake 3 Nov",
    "Virtual Stylist intro options (assets/ds/vs-intro.js o.steps / o.tips, DG_vsIntro.OPTIONS; catalogue variants for all four): How it works as .howto step cards (Jake's Figma 15874-1068) or .vs-tl timeline (number on a line, title 14/20 strong + line 12/16, glyph right); For the best result as .ptips cards or .vs-chips pills (wrapping, centred, --radius-pill). Five formats were reviewed first (cards, timeline, product hero, photo guide, step by step); Jake kept timeline + the pills, the others are gone · by Virtual Stylist v2",
    "Full-screen layer .vs-layer--fs: the intro is .mdl--fs on phones (header top, body centred and scrolling, footer pinned: consent, Camera / Upload, note) · by Virtual Stylist v2"
   ],
