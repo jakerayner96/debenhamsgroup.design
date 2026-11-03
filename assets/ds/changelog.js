@@ -5,13 +5,14 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-11-03",
   "v": "2026.11.03",
-  "title": "Virtual Stylist intro: full screen + start screen options (How it works cards or timeline · tips cards or pills) · copy up to 12/16",
+  "title": "Virtual Stylist intro: six start screen layouts (Jake’s final options) · copy up to 12/16",
   "by": "Virtual Stylist v2 (vto-prototype/v2, Jake 3 Nov)",
   "added": [
    "Virtual Stylist intro options (assets/ds/vs-intro.js o.steps / o.tips, DG_vsIntro.OPTIONS; catalogue variants for all four): How it works as .howto step cards (Jake's Figma 15874-1068) or .vs-tl timeline (number on a line, title 14/20 strong + line 12/16, glyph right); For the best result as .ptips cards or .vs-chips pills (wrapping, centred, --radius-pill). Five formats were reviewed first (cards, timeline, product hero, photo guide, step by step); Jake kept timeline + the pills, the others are gone · by Virtual Stylist v2",
    "Full-screen layer .vs-layer--fs: the intro is .mdl--fs on phones (header top, body centred and scrolling, footer pinned: consent, Camera / Upload, note) · by Virtual Stylist v2"
   ],
   "changed": [
+   "Virtual Stylist intro: the six final start screen layouts from Jake’s Figma (LxHqA4rFpRYNWJu8vzn18X 15898-33012) replace the steps / tips options: o.layout 1 to 6 (DG_vsIntro.LAYOUTS) · step cards now 2 × 2 with four steps (new fourth step: Pick your size and add to bag, quick-add glyph .vsi--quick-add) at 14/18 · timeline copy Add a photo / Check the look / Add To Bag, its line in --text-primary · tips copy Use a full length photo (was Head to toe in frame), tiles 56 tall, pills gap 8 / 4 · headings centred or left (.vs-intro--left) · Welcome version (.vs-intro--welcome) · phones back to the slide up (.vs-layer--up + .mdl--up, hugging the content); the full-screen .vs-layer--fs retired · by Virtual Stylist v2, Jake 3 Nov",
    "Product card letter-spacing: always 0, the font’s default — the compact card brand line had .04em and PLT’s uppercase names .02em · by Product carousel prototype (mini bag cards), Jake 3 Nov",
    "Free delivery threshold in a container (.thresh--box) to Jake’s Figma (13732:374 / :377): Grey 05 ground (#FAFAFA), radius 4, 14 light copy with the amount strong, Grey 2 track; qualified = 20px tick circle in the action colour — one spec on every device · by Product carousel review (Figma DS page 13639:10), Jake 3 Nov",
    "Product toast (.toast--prod) to Jake’s Figma (13732:383 / :386), one spec on every device: thumbnail 33 × 50 radius 4 inset 4 (58 tall) · --edge 40 × 60 flush left (60 tall) · card radius 8 · shadow 0 0 20 12% · 14 light + View Bag 14 strong in the action colour; the 24 × 36 thumb and --square styles retired · by Product carousel review (Figma DS page 13639:10), Jake 3 Nov",

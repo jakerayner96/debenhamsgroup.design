@@ -2122,34 +2122,52 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .ratio-product>img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* ---- Virtual Stylist intro (2 Nov 2026, vto-prototype v2; assets/ds/vs-intro.js): the launch modal on the DS .mdl in a .vs-layer (the delivery / S&S layer rules).
-   How it works (.howto: three numbered steps on sunken cards, the number in the fascia action colour) · For the best result (.ptips: 2 × 2 tips) ·
-   consent (.chk-row, box centred on the copy, gap 3 + .vs-legal 12/16 --text-primary, links --text-link strong, no underline) · Camera / Upload: two .bd pri .ic20 side by side with their glyphs (as v1; Jake 2 Nov) · .vs-note.
-   Centred .mdl--md from 600px, .mdl--up slide up on phones. Glyphs are DS library icons, masked so they take --icon-primary. */
-.vs-intro .mdl-bd{gap:var(--gap-6,24px)}
+   Spec: Jake's final six start screens, Figma LxHqA4rFpRYNWJu8vzn18X 15898-33012 (3 Nov 2026). Slide up (.vs-layer--up + .mdl--up, hugging the content) on phones,
+   centred .mdl--md from 600px. Header: title 20/25 strong + 16 close · body: How it works then For the best result, gap 8 (32px; 6, 24px, with a headed timeline) ·
+   footer gap 4 (16px): consent (.chk-row, box centred on the copy, gap 3 + .vs-legal 12/16 --text-primary, links --text-link strong, no underline) ·
+   Camera / Upload: two .bd pri .ic20 side by side (as v1; Jake 2 Nov) · .vs-note 12/16 grey.
+   How it works: .howto 2 × 2 step cards (four steps) or .vs-tl timeline (three) · tips: .ptips 2 × 2 tiles or .vs-chips pills · headings centred or --left.
+   Glyphs are DS library icons, masked so they take --icon-primary. Every line of copy 12/16 or larger. */
+.vs-intro .mdl-bd{gap:var(--gap-8,32px)}
+.vs-intro--steps-timeline:not(.vs-intro--welcome) .mdl-bd{gap:var(--gap-6,24px)}
+.vs-intro .mdl-ft{gap:var(--gap-4,16px)}
 .vs-sec{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
 .vs-sec-h{margin:0;font-family:var(--font-family-base);font-size:16px;line-height:20px;font-weight:var(--w-strong,600);color:var(--text-primary);text-align:center}
-.howto{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap-2,8px);list-style:none;margin:0;padding:var(--gap-3,12px) 0 0}
-.howto li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-5,20px) var(--gap-2,8px) var(--gap-4,16px);border-radius:var(--radius-lg);background:var(--surface-sunken);text-align:center;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
+.vs-intro--left .vs-sec-h{text-align:left}
+/* step cards: 2 × 2, the number straddling the top edge */
+.howto{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-6,24px) var(--gap-2,8px);list-style:none;margin:0;padding:var(--gap-3,12px) 0 0}
+.howto li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--gap-2,8px);padding:28px var(--gap-4,16px) var(--gap-4,16px);border-radius:var(--radius-lg);background:var(--surface-sunken);text-align:center;font-size:14px;line-height:18px;font-weight:var(--w-regular);color:var(--text-primary)}
 .howto .n{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
 .howto .vsi{width:24px;height:24px}
+/* timeline: number on a line, title + line, glyph right */
+.vs-tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.vs-intro--welcome .vs-tl{margin:calc(-1 * var(--gap-3,12px)) 0}   /* no heading: the first and last rows sit flush */
+.vs-tl li{position:relative;display:flex;align-items:center;gap:var(--gap-4,16px);padding:var(--gap-3,12px) 0}
+.vs-tl li:not(:last-child)::after{content:"";position:absolute;left:12px;top:calc(50% + 16px);height:calc(100% - 32px);border-left:1px solid var(--border-default)}
+.vs-tl .n{width:24px;height:24px;flex:none;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
+.vs-tl .tx{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.vs-tl b{font-size:14px;line-height:20px;font-weight:var(--w-strong,600);color:var(--text-primary)}
+.vs-tl .tx span{font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
+.vs-tl .vsi{width:24px;height:24px}
+/* tip tiles: 2 × 2 */
 .ptips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-2,8px);list-style:none;margin:0;padding:0}
-.ptips li{display:flex;align-items:center;gap:var(--gap-3,12px);min-height:44px;padding:var(--gap-3,12px);border-radius:var(--radius-lg);background:var(--surface-sunken);font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
+.ptips li{display:flex;align-items:center;gap:var(--gap-3,12px);min-height:56px;box-sizing:border-box;padding:var(--gap-3,12px);border-radius:var(--radius-lg);background:var(--surface-sunken);font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
 .ptips .vsi{width:20px;height:20px}
+/* tip pills: wrapping, 1px --border-subtle */
+.vs-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:var(--gap-2,8px) var(--gap-1,4px)}
+.vs-intro--left .vs-chips{justify-content:flex-start}
+.vs-chips li{display:flex;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-2,8px) var(--gap-3,12px);border:1px solid var(--border-subtle);border-radius:var(--radius-pill);font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
+.vs-chips .vsi{width:16px;height:16px}
 .vsi{display:block;flex:none;background:var(--icon-primary);-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
-.vsi--add-photo{--ic:url("icons/lib/icons-add-photo.svg")}.vsi--ai{--ic:url("icons/lib/icons-ai.svg")}.vsi--hanger{--ic:url("icons/lib/icons-hanger.svg")}
+.vsi--add-photo{--ic:url("icons/lib/icons-add-photo.svg")}.vsi--ai{--ic:url("icons/lib/icons-ai.svg")}.vsi--hanger{--ic:url("icons/lib/icons-hanger.svg")}.vsi--quick-add{--ic:url("icons/lib/icons-quick-add.svg")}
 .vsi--light{--ic:url("icons/lib/icons-light-bulb.svg")}.vsi--dress{--ic:url("icons/lib/icons-dress.svg")}.vsi--face{--ic:url("icons/lib/icons-account.svg")}.vsi--plain{--ic:url("icons/lib/icons-image.svg")}
 .vs-consent{gap:var(--gap-3,12px);cursor:pointer;-webkit-tap-highlight-color:transparent}   /* the whole row toggles; only the links are exempt */
 .vs-legal{margin:0;flex:1;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
 .vs-legal a{color:var(--text-link);font-weight:var(--w-strong,600);text-decoration:none}
 .vs-ctas{display:flex;gap:var(--gap-2,8px)}.vs-ctas .bd{flex:1 1 0;width:auto;min-width:0;padding-left:var(--gap-3,12px);padding-right:var(--gap-3,12px);white-space:nowrap}   /* side by side at every width (Jake, 2 Nov) */
 .vs-note{margin:0;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary);text-align:center}
-.vs-intro.mdl--up .mdl-bd,.vs-intro.mdl--fs .mdl-bd{overflow-y:auto}
-@media(min-width:600px){
-  .vs-sec-h{font-size:18px;line-height:24px}
-  .howto{gap:var(--gap-4,16px)}
-  .howto li{font-size:12px;line-height:16px;padding:var(--gap-6,24px) var(--gap-4,16px) var(--gap-5,20px)}
-  .ptips{gap:var(--gap-3,12px)}.ptips li{font-size:12px;line-height:16px}
-}
+.vs-intro.mdl--up{padding-bottom:calc(var(--gap-6,24px) + env(safe-area-inset-bottom,0px))}
+.vs-intro.mdl--up .mdl-bd{overflow-y:auto}
 /* ---- Bag product card + bag sections (2 Nov 2026, Bag 2026 Figma CYyGeUDy4w02enV7uFxZ6W · mobile 1337:250006 / desktop 1337:256981). Markup + behaviour:
    assets/ds/bag.js (DG_bag). Card: 1px --border-subtle, radius 4, gap 3 (12px) in, image 68 × 102 (2:3) → info gap 4 (16px), text 12 (14 from 1024),
    brand strong + " - name", variant line, bag price; right column: wishlist (16) · quantity stepper · spacer. Error / out of stock: --text-error border + the
@@ -2234,31 +2252,6 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .bs-th{margin:-24px -24px 0;padding:var(--gap-4,16px) var(--gap-6,24px);border-bottom:1px solid var(--border-subtle)}
 .bag-title{margin:0;font-size:24px;line-height:normal;font-weight:var(--w-strong)} /* Your Bag (n) — Bag 2026: 24 strong */
 
-/* ---- Virtual Stylist intro · full screen + start screen options (3 Nov 2026, Jake: copy up to the T&Cs size, full screen to use the whole phone).
-   .vs-layer--fs: the layer fills the screen, the .mdl--fs window runs edge to edge; header top, body centred and scrolls, footer (consent, Camera / Upload, note) pinned.
-   Every line of copy is 12/16 or larger. How it works: .howto cards (--steps-cards) or .vs-tl timeline (--steps-timeline) · tips: .ptips cards (--tips-cards) or .vs-chips pills (--tips-pills). */
-.vs-layer--fs{padding:0;align-items:stretch}
-.vs-layer--fs>.mdl{animation-name:mdlup;height:100%;max-height:100%}
-.vs-intro.mdl--fs{padding:var(--gap-6,24px) var(--gap-6,24px) calc(var(--gap-6,24px) + env(safe-area-inset-bottom,0px))}
-.vs-intro.mdl--fs .mdl-bd{flex:1;gap:var(--gap-8,32px);align-items:stretch;justify-content:center}   /* not the .mdl--fs media centring */
-.vs-intro .mdl-ft{gap:var(--gap-4,16px)}
-/* cards in full screen: bigger cards and tiles so the content uses the height */
-.vs-intro.mdl--fs .howto li{padding:var(--gap-6,24px) var(--gap-2,8px) var(--gap-5,20px);gap:var(--gap-3,12px)}
-.vs-intro.mdl--fs .howto .vsi{width:32px;height:32px}
-.vs-intro.mdl--fs .ptips li{min-height:56px}
-/* timeline: number on a line, title + line, glyph right */
-.vs-tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.vs-tl li{position:relative;display:flex;align-items:center;gap:var(--gap-4,16px);padding:var(--gap-3,12px) 0}
-.vs-tl li:not(:last-child)::after{content:"";position:absolute;left:12px;top:calc(50% + 16px);height:calc(100% - 32px);border-left:1px solid var(--border-default)}
-.vs-tl .n{width:24px;height:24px;flex:none;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
-.vs-tl .tx{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
-.vs-tl b{font-size:14px;line-height:20px;font-weight:var(--w-strong,600)}
-.vs-tl .tx span{font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary)}
-.vs-tl .vsi{width:24px;height:24px}
-/* pills: wrapping, centred */
-.vs-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:var(--gap-2,8px)}
-.vs-chips li{display:flex;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-2,8px) var(--gap-3,12px);border:1px solid var(--border-subtle);border-radius:var(--radius-pill);font-size:12px;line-height:16px;font-weight:var(--w-regular)}
-.vs-chips .vsi{width:16px;height:16px}
 /* ---- Navigation menu (.mnav mobile drawer · .mega desktop mega menu), 3 Nov 2026 — copied from the live sites (all seven run the same platform menu).
    Markup + behaviour: assets/ds/nav.js (DG_nav, mounts on the DS header: burger → drawer, desktop category hover → mega menu). Data: assets/ds/nav-live.js.
    Per-fascia values come in as custom properties (--mn-*) set from the data's st block, so the copy, order and imagery stay as live.
