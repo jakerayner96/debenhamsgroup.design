@@ -56,6 +56,7 @@ const DG_CATALOGUE = [
   use:['One primary per view — the thing you most want the customer to do.','Secondary for the alternative path (Continue shopping, Cancel).','Tertiary and text buttons for low-emphasis actions inside modules.'],
   avoid:['Two primaries side by side.','Colouring a button per instance — the brand mode does it.','Sentence-case a primary label on a fascia that runs uppercase (PLT, Brand Room).'],
   anatomy:['Full-width CTAs 358 × 50 (Primary, Secondary, Text only) · Buy It Now removed from every fascia for now (15 Oct 2026); .bd.buy stays for the CTA-colour icon buttons (Added, Checkout securely) · Tertiary 40 hugs · XS 31 hugs','Label 16/24 · weight from --w-btn · case from --case-btn1/2','Icon slot 16px (20 / 24 also in Figma), left of the label — drawn in the label colour','Spinner state: label gives way to a 24px arc, fill drops to Neutral'],
+    '.bd-pair: two buttons side by side, equal width, 8 apart (e.g. View Bag secondary | Checkout primary)',
   variants:[
     {name:'Default', html:'<div class="bd-stack"><button class="bd pri">Add to bag</button><button class="bd sec">Continue shopping</button><button class="bd ter">Tertiary</button><button class="bd xs">Tertiary XS</button><button class="bd txt">Text only</button></div>'},
     {name:'Disabled', html:'<div class="bd-stack"><button class="bd pri" disabled>Add to bag</button><button class="bd sec" disabled>Continue shopping</button><button class="bd ter" disabled>Tertiary</button><button class="bd xs" disabled>Tertiary XS</button><button class="bd txt" disabled>Text only</button></div>'},
@@ -670,6 +671,7 @@ const DG_CATALOGUE = [
   use:['Small: seller info, confirmations, short messages.','Medium / Large: returns, size guide, delivery options, filters and sort on mobile (slide up), added to bag, Shop The Set.','Full screen: View in 3D, image zoom, video.'],
   avoid:['A modal inside a modal.','Two columns under 1024w — Large drops to one column.','The info icon on a title that wraps — that needs a new header component.','A 24px or 2pt close, or a close at a different inset per modal.'],
   anatomy:[
+    '.mdl--compact: 16 between header, body and blocks (the Added to Bag sheet) · .mdl--tight-hd: header 16, body 24 · sticky CTAs: once .mdl-bd scrolls, the CTA group gets .mdl-sticky + --float (shadow only, secondary keeps a white fill) or --fade (white gradient behind) — the title stays pinned',
     'Window: white (--surface-raised), radius 4, padding gap 6 (24px), gap 6 (24px) between header, body and foot · Medium pads gap 8 (32px) at the bottom',
     'Header (.modal-hd): title Geologica SemiBold 20 · close 16 × 16 (Icons / Close) on the title line · five types: title + X · X only · back + title + X · title + info + X · back + title + info + X (info only when the title sits on one line)',
     'Desktop sizes: Small max 512, 16px margins under 480w · Medium max 720, 16px margins under 688w · Large max 960, 32px margins under 896w, two columns → one under 1024w · Full screen max 1248 × 960, 32px side margins under 1184w, 32px top / bottom under 896h',

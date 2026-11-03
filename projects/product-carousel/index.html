@@ -183,9 +183,14 @@ function renderPanel(host,S,update){
     ${opt2('live','Live (no reccs)')}${opt2('look','Complete the look')}${opt2('toast','Toast · thumbnail')}${opt2('toastedge','Toast · edge image')}${opt2('save','Save your bag')}${opt2('later','Save for later')}
     ${/^toast/.test(c.mbType||'live')?'':`<div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div>`}</div>
   ${(c.mbType||'live')==='look'?`<div class="card"><h3>Complete the look rail ${sw('ctlTitleOn',c.ctlTitleOn!==false,'Title')}</h3>
-    ${c.ctlTitleOn!==false?`<input class="pi-in" data-in="ctlTitle" value="${(c.ctlTitle||'Complete The Look').replace(/"/g,'&quot;')}" aria-label="Rail title">`:''}</div>`:''}
-  <div class="card"><h3>Bag CTA</h3>${seg('cta',c.cta||'bag',[['bag','View Bag'],['checkout','Checkout']])}
-    <p style="margin-top:8px">${(c.cta||'bag')==='checkout'?'Checkout goes straight to checkout (the Checkout 2026 prototype).':'View Bag goes to the bag.'}</p>
+    ${c.ctlTitleOn!==false?`<input class="pi-in" data-in="ctlTitle" value="${(c.ctlTitle||'Complete The Look').replace(/"/g,'&quot;')}" aria-label="Rail title">`:''}
+    <div class="f" style="margin-top:10px"><span>Layout</span>${seg('ctlFmt',c.ctlFmt||'carousel',[['carousel','Carousel'],['grid','Grid']])}</div>
+    ${c.ctlFmt==='grid'?`<div class="f" style="margin-top:10px"><span>Rows</span>${seg('ctlRows',c.ctlRows||2,[['1','1'],['2','2'],['3','3']])}</div>`:''}</div>`:''}
+  ${/^toast/.test(c.mbType||'live')?'':`<div class="card"><h3>Sticky CTA</h3>${seg('ctaSticky',c.ctaSticky||'fade',[['fade','Gradient'],['float','Floating']])}
+    <p style="margin-top:8px">Once the sheet scrolls, the CTAs stick to its foot${(c.ctaSticky||'fade')==='float'?', floating with a soft shadow':' on a white gradient'} — the title stays pinned at the top.</p></div>`}
+  <div class="card"><h3>Bag CTA</h3>${seg('cta',c.cta||'bag',[['bag','View Bag'],['checkout','Checkout'],['both','Both']])}
+    ${c.cta==='both'?`<div class="f" style="margin-top:10px"><span>Layout</span>${seg('ctaLay',c.ctaLay||'side',[['side','Side by side'],['stack','Top and bottom']])}</div>`:''}
+    <p style="margin-top:8px">${{checkout:'Checkout goes straight to checkout (the Checkout 2026 prototype).',both:'Checkout (primary) goes to checkout, View Bag (secondary) to the bag.'}[c.cta||'bag']||'View Bag goes to the bag.'}</p>
     <div style="margin-top:10px">${sw('applePay',!!c.applePay,'Apple Pay')}</div></div>`:''}`;
   function opt2(v,b){return `<button class="opt${(c.mbType||'live')===v?' on':''}" data-mb="${v}"><span class="r"></span><span class="t"><b>${b}</b></span></button>`}
   host.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{c.view=b.dataset.view;panel();update()});

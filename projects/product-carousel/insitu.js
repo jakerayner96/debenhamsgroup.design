@@ -12,7 +12,9 @@ const st=document.createElement('style');st.textContent=`
 .pi-mod{padding:var(--gap-8,32px) var(--gap-4,16px)}@media(min-width:1024px){.pi-mod{padding:var(--gap-12,48px) var(--gap-10,40px)}}
 .pi-full{padding:0 var(--gap-4,16px)}@media(min-width:1024px){.pi-full{padding:0 var(--gap-10,40px)}}
 .pi-recs{display:flex;flex-direction:column;gap:var(--gap-10,40px);padding-block:var(--gap-10,40px)}
-.pi-hp{margin-top:var(--gap-6,24px)}
+.pi-hp{padding-bottom:6px}.pi-hp .pcar{--pcar-row-gap:40px} /* Figma Handpicked: straight under Subscribe & Save, 40 between rows */
+.pi-save .chk-row+[data-mbsave]{margin-top:-8px} /* Figma: Email My Bag 16 under the consent row */
+.wrap~.pi-recs{padding-top:10px} /* Figma PDP: Create the Look right under the accordions */
 .pcar--look[data-pl="look"] .pcar-track>*{cursor:pointer}
 .pi-mb{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center}
 @media(min-width:1024px){.pi-mb{justify-content:flex-end;align-items:stretch}}
@@ -26,7 +28,8 @@ const st=document.createElement('style');st.textContent=`
 .pi-mb2{z-index:95}@media(min-width:1024px){.pi-mb2{justify-content:center;align-items:center}}
 #pimb .pc .pc-iconbtn--sq{border-radius:var(--radius-default)!important} /* the Shopping agent page forces .pc .pc-iconbtn round (!important); put the DS square back */
 html.pi-lock,html.pi-lock body{overflow:hidden;height:100%}
-.pi-bag{display:flex;flex-direction:column;gap:var(--gap-6,24px);padding:var(--gap-4,16px)}.pi-bag-hd .bs-top{padding:0;gap:16px;margin-top:16px}.pi-bag .bag-list{display:flex;flex-direction:column;gap:16px}`;
+.pi-bag{display:flex;flex-direction:column;gap:var(--gap-6,24px);padding:var(--gap-4,16px) var(--gap-4,16px) 0}.pi-bag-hd .bs-top{padding:0;gap:16px;margin-top:16px}.pi-bag-hd .bs-ctas{gap:12px}
+.pi-bag~[data-slot="summary"] .bs-flat{margin-top:16px}.pi-bag~.pi-recs{padding-block:16px;gap:24px} /* Figma Bag: summary 16 under Promo · rails 16 in, 24 apart */.pi-bag .bag-list{display:flex;flex-direction:column;gap:16px}`;
 document.head.appendChild(st);
 
 const TABS={debenhams:['Fashion','Home','Beauty'],boohoo:['Women','Men','Beauty'],boohooman:['New In','Hoodies','Jackets'],plt:['New In','Dresses','Shoes'],karenmillen:['Dresses','Coats','Tailoring'],warehouse:['Dresses','Knitwear','Denim'],brandroom:['Women','Men','Accessories']};
@@ -123,7 +126,8 @@ window.acInner=function(){const doc=new DOMParser().parseFromString('<div id="x"
 /* the bag CTA (PC.cta): View Bag → the bag · Checkout → straight to checkout (the Checkout 2026 prototype); PC.applePay adds the DS Apple Pay button under it */
 const CHECKOUT='https://jakerayner96.github.io/checkout-2026-promo-gift-card/checkout-gift-card.html';
 const CTA=()=>PC.cta==='checkout'?'Checkout':'View Bag';
-const ctas=()=>`<button class="bd pri" data-mbgo>${CTA()}</button>${PC.applePay?'<button class="pay pay--apple" data-mbgo="pay" aria-label="Apple Pay"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button>':''}`;
+/* Bag CTA (panel): View Bag · Checkout · both — Checkout primary + View Bag secondary, side by side (.bd-pair, View Bag left) or stacked (Checkout on top) */
+const ctas=()=>`${PC.cta==='both'?(PC.ctaLay==='stack'?'<button class="bd pri" data-mbgo="checkout">Checkout</button><button class="bd sec" data-mbgo>View Bag</button>':'<div class="bd-pair"><button class="bd sec" data-mbgo>View Bag</button><button class="bd pri" data-mbgo="checkout">Checkout</button></div>'):`<button class="bd pri" data-mbgo>${CTA()}</button>`}${PC.applePay?'<button class="pay pay--apple" data-mbgo="pay" aria-label="Apple Pay"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button>':''}`;
 const MBT=()=>PC.mbType||'live',THRESH=100,ADDED=[];let SAVED=null,JUST=null;   /* JUST = the item quick-added on this render: its line item drops in, its button pops */
 const num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
 function mainItem(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,colour:DP.colour}:PR()[1]||{};
@@ -146,7 +150,8 @@ function saveBag(inModal){if(SAVED)return `<div class="thresh thresh--ok"><span 
 function miniBag(){const d=desk(),t=MBT();
   const list=ids('atb',4,10).filter(i=>i!==1);   /* Debenhams: the first two slots are Mirakl sponsored (labelled), then Bloomreach “also bought” */
   /* Complete the look rail (panel): title editable / off (PC.ctlTitle, PC.ctlTitleOn) · card copy 12 (compact, as the Figma mini bag) · cards one fixed width, sized to fit (autoFit) */
-  const o={id:'atb',size:'sm',title:PC.ctlTitleOn===false?'':(PC.ctlTitle||'Complete The Look'),per:4,card:100,fixed:true,compact:true,start:4,list,qa:true,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
+  const grid=PC.ctlFmt==='grid',rows=Math.max(1,Math.min(3,+PC.ctlRows||2));   /* the rail as a carousel, or a 3-across grid of 1 – 3 rows (panel) */
+  const o={id:'atb',size:'sm',title:PC.ctlTitleOn===false?'':(PC.ctlTitle||'Complete The Look'),per:grid?3:4,card:100,fixed:!grid,compact:true,start:4,list:grid?list.slice(0,rows*3):list,fmt:grid?'grid':undefined,len:grid?rows*3:undefined,bleed:grid?false:undefined,qa:true,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
   const rail=pcar(o);
   /* order: Live as live (item · threshold · Continue Shopping / View Bag); the new versions lead with the threshold, then the item(s), then their extra */
   /* Complete the look keeps to one view: the item you came for + the one just added (it drops in); earlier adds fold into “+N more in your bag” */
@@ -157,16 +162,19 @@ function miniBag(){const d=desk(),t=MBT();
     :t==='save'?thresh()+items+`<div class="pi-btns">${vb}</div><div class="hr"></div>${saveBag()}`
     :thresh()+items+`<div class="pi-btns">${vb}${SAVED?'':'<button class="bd sec" data-mblater>Save My Bag</button>'}</div>${SAVED?saveBag():''}`;
   return `<div class="pi-mb" id="pimb"><div class="mdl-scrim" data-mbx></div>
-  <div class="mdl ${d?'mdl--side mdl-anim-side':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Added to bag">
+  <div class="mdl ${t==='live'?'mdl--tight-hd':'mdl--compact'} ${d?'mdl--side mdl-anim-side':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Added to bag">
     <div class="modal-hd"><div class="mt"><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
     <div class="mdl-bd">${body}</div>${t==='look'&&PIN()?`<div class="mdl-ft mdl-ft--pinned pi-btns">${vb}</div>`:''}</div></div>`}
 /* fit: scale to fit — the rail cards shrink until nothing scrolls (the Figma mini bag; the panel options were removed 3 Nov) */
 const FIT=()=>'scale',PIN=()=>false;
-function autoFit(n){if(MBT()!=='look'||FIT()==='pin')return;const bd=n.querySelector('.mdl-bd'),rail=n.querySelector('[data-pl="atb"]');if(!bd||!rail)return;
+function autoFit(n){if(MBT()!=='look'||PC.ctlFmt==='grid')return;const bd=n.querySelector('.mdl-bd'),rail=n.querySelector('[data-pl="atb"]');if(!bd||!rail)return;
   /* scale the rail's cards (image + copy together, so nothing re-wraps) by exactly the overflow; the first card stays on the 24px margin */
   const body=rail.querySelector('.pcar-body'),pad=24;let z=1;body.style.zoom='';body.style.removeProperty('--pcar-pad');
   for(let k=0;k<6;k++){const over=bd.scrollHeight-bd.clientHeight;if(over<=0)break;const h=body.getBoundingClientRect().height;z=Math.max(.4,z*(h-over-3)/h);
     body.style.zoom=z;body.style.setProperty('--pcar-pad',(pad/z)+'px');if(z===.4)break}}
+/* once the sheet body scrolls, the CTA group sticks to its foot — floating (shadow only) or on a white fade (panel, PC.ctaSticky); the title stays pinned */
+function sticky(n){const bd=n&&n.querySelector('.mdl-bd');if(!bd)return;const b=[...bd.children].filter(x=>x.classList.contains('pi-btns')).pop();if(!b)return;
+  b.classList.remove('mdl-sticky','mdl-sticky--float','mdl-sticky--fade');if(bd.scrollHeight>bd.clientHeight+2)b.classList.add('mdl-sticky','mdl-sticky--'+(PC.ctaSticky==='float'?'float':'fade'))}
 /* Save for later: a second modal over the mini bag with the email capture (Small on desktop, slide up on mobile) */
 function laterModal(){const d=desk();return `<div class="pi-mb pi-mb2" id="pimb2"><div class="mdl-scrim" data-mb2x></div>
   <div class="mdl ${d?'mdl--sm mdl-anim-fade':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Save your bag">
@@ -187,14 +195,14 @@ function mountBag(open,instant){const old=document.getElementById('pimb'),ot=doc
       tt.style.setProperty('--toast-top',Math.max(4,...rows,hb)+(desk()?16:12)+'px')}   /* under the USP banners (or the sticky bar once scrolled) — every device, as the Figma */
     if(!EXPORTING)TT=setTimeout(()=>{const x=document.getElementById('pitoast');if(x){x.classList.add('toast--out');setTimeout(()=>x.remove(),300)}PC.bagOpen=false},6000);return}
   document.documentElement.classList.add('pi-lock');document.body.insertAdjacentHTML('beforeend',miniBag());
-  const n=document.getElementById('pimb');autoFit(n);if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');n.querySelector('.mdl-scrim').style.animation='none';const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
+  const n=document.getElementById('pimb');autoFit(n);sticky(n);if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');n.querySelector('.mdl-scrim').style.animation='none';const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
 document.addEventListener('click',e=>{
   const lk=e.target.closest('.pcar--look[data-pl="look"]');if(lk&&!e.target.closest('.pcar-arr')){e.preventDefault();const c=e.target.closest('.pcar-track>*'),L=FEEDS.look,idx=c?[...c.parentNode.children].indexOf(c):-1;openPicker(L&&idx>=0?ids('look',L.start||0,10)[idx]:null);return}
   const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();const i=+qa.dataset.qa;if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null;return}
   const later=e.target.closest('#pimb [data-mblater]');if(later){e.preventDefault();document.body.insertAdjacentHTML('beforeend',laterModal());return}
   if(e.target.closest('[data-mb2x]')){e.preventDefault();const m=document.getElementById('pimb2');if(m){const w=m.querySelector('.mdl');m.style.pointerEvents='none';w.classList.remove('mdl-anim-up','mdl-anim-fade');w.classList.add(w.classList.contains('mdl--up')?'mdl-anim-down':'mdl-anim-fade-out');m.querySelector('.mdl-scrim').classList.add('mdl-scrim--out');setTimeout(()=>m.remove(),320)}return}
   const go=e.target.closest('[data-mbgo]');if(go){e.preventDefault();
-    if(go.dataset.mbgo==='pay'||PC.cta==='checkout'){location.href=CHECKOUT+'?brand='+BR();return}
+    if(go.dataset.mbgo==='pay'||go.dataset.mbgo==='checkout'||PC.cta==='checkout'){location.href=CHECKOUT+'?brand='+BR();return}
     PC.bagOpen=false;mountBag(false,true);PC.view='bag';S.page='bag';S.search=false;render();scrollTo(0,0);parent.postMessage({protoNav:{view:'bag'}},'*');return}
   const opt=e.target.closest('.pi-mb [data-mbopt]');if(opt){e.preventDefault();const on=opt.getAttribute('aria-checked')!=='true';opt.setAttribute('aria-checked',on);opt.classList.toggle('on',on);return}
   const sv=e.target.closest('.pi-mb [data-mbsave]');if(sv){e.preventDefault();const f=sv.closest('.pi-mb').querySelector('[data-mbmail]'),v=(f.value||'').trim(),fl=f.closest('.fld');

@@ -220,7 +220,7 @@ button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--bor
    when the Caveat type is used — the caption text is a required prop. No caption, no asterisk. */
 .usp-sep{display:inline-block;width:4px;height:1px;background:currentColor;vertical-align:middle;margin:0 8px;flex:none}
 .usp-code{white-space:nowrap}.usp-code b{font-weight:var(--w-strong);user-select:all} /* "Code: XYZ" — label regular, value strong, one tap selects it */
-.usp-row{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;row-gap:2px}
+.usp-row{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;row-gap:4px} /* wrapped lines as the Figma USP Banner */
 .usp-row .usp-t{white-space:normal}
 .usp-sep.wrapbr{display:block;width:100%;height:0;margin:0;background:none} /* wrapped sections: the dash yields to a line break */
 .hd-usp:has(.usp-cd),.usp-cell:has(.usp-cd){flex-direction:column;gap:2px} /* countdown always sits on its own row, 2px under the text */
@@ -547,6 +547,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .bd-stack{display:flex;flex-direction:column;align-items:center;gap:20px;width:358px;max-width:100%}
 .bd-stack .bd{width:100%}
 .bd-stack .bd.ter,.bd-stack .bd.xs,.bd-stack .bd.sm{width:auto}
+/* .bd-pair: two buttons side by side, equal width, gap 2 (8px) — e.g. View Bag (secondary) | Checkout (primary) (3 Nov 2026) */
+.bd-pair{display:flex;gap:var(--gap-2,8px);width:100%}.bd-pair>.bd{flex:1 1 0;min-width:0;width:auto;padding-inline:var(--gap-3,12px)}
 .bd.cta{width:358px;max-width:100%}
 .bd.pri:active{background:var(--surface-action-pressed)}
 .bd.pri[disabled],.bd.pri.dis{background:var(--action-disabled-bg);color:var(--action-disabled-fg);cursor:not-allowed}
@@ -1060,7 +1062,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .glance li{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:var(--w-regular)}
 .glance li i{width:24px;height:24px;border-radius:99px;border:1px solid var(--border-default);display:grid;place-items:center;flex:none;font-style:normal;font-size:12px}
 .glance--chips{flex-direction:row;flex-wrap:wrap;gap:12px 16px}.glance--chips li{font-size:14px}
-.acc-b ul.glance--chips{flex-direction:row;padding-left:0;margin:0} /* chips keep wrapping inside an accordion body (.acc-b ul is a column) — Figma PDP At A Glance, 3 Nov */
+.acc-b ul.glance--chips{flex-direction:row;padding-left:0;margin:0;gap:12px 16px} /* chips keep wrapping inside an accordion body (.acc-b ul is a column) — Figma PDP At A Glance, 3 Nov */
 .linkchips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .linkchips a{background:var(--surface-sunken);border:1px solid var(--border-subtle);border-radius:var(--radius-default);padding:8px 12px;font-size:14px;color:var(--text-primary);text-decoration:none}
 
@@ -1108,6 +1110,14 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl-refresh::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-refresh.svg") center/16px 16px no-repeat}
 .mdl-refresh+.modal-x{margin-left:0}
 .mdl-bd{display:flex;flex-direction:column;gap:24px;font-size:16px;font-weight:var(--w-regular);line-height:normal;min-height:0}
+/* .mdl--compact: 16 between header, body and every block in it (the Added to Bag sheet, Figma review 13752:7583 – 13759:7583, 3 Nov 2026) */
+.mdl--compact,.mdl--compact .mdl-bd{gap:var(--gap-4,16px)}
+.mdl--tight-hd{gap:var(--gap-4,16px)} /* header 16 above the body, body keeps 24 (the live Added to Bag sheet) */
+/* sticky CTAs in a scrolling modal body (3 Nov 2026): once the body scrolls the CTA group sticks to its foot — the title stays pinned above (it sits outside .mdl-bd).
+   .mdl-sticky--float: no ground, the buttons float with a soft shadow · .mdl-sticky--fade: a white gradient rises behind them */
+.mdl-bd>.mdl-sticky{position:sticky;bottom:0;z-index:2;flex:none}
+.mdl-sticky--float .bd,.mdl-sticky--float .pay{box-shadow:0 4px 16px rgba(0,0,0,.18)}.mdl-sticky--float .bd.sec{background:var(--surface-raised,#FFF)} /* a floating secondary keeps a white fill over the content */
+.mdl-sticky--fade{margin-inline:-24px;padding:40px 24px 0;margin-top:-24px;background:linear-gradient(to bottom,rgba(255,255,255,0),var(--surface-raised,#FFF) 55%);pointer-events:none}.mdl-sticky--fade>*{pointer-events:auto}
 .mdl-ft{display:flex;flex-direction:column;gap:16px}.mdl-ft .bd{width:100%}
 /* .mdl-ft--pinned (3 Nov 2026): CTAs pinned to the foot of the window, floating over the scrolling body — full-bleed white with a soft shadow above */
 .mdl-ft--pinned{flex:none;margin:0 -24px -24px;padding:16px 24px 24px;background:var(--surface-raised,#FFF);box-shadow:0 -6px 16px -8px rgba(0,0,0,.16);position:relative;z-index:1}
@@ -1368,7 +1378,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .ai-pill--outline:hover{background:linear-gradient(var(--ai-tint),var(--ai-tint)) padding-box,var(--ai-gradient) border-box}
 .ai-pill--soft{box-shadow:var(--shadow-puck)}.ai-pill--soft:hover{box-shadow:var(--shadow-pill)}   /* prompt chips: shadow, never a solid outline */
 .ai-pill--sm{height:32px;font-size:13px;padding:0 12px 0 10px}.ai-pill--sm .ai-icon{width:16px;height:16px}
-.ai-pill--wrap{height:auto;min-height:40px;padding:8px 16px 8px 12px;white-space:normal;font-weight:var(--w-regular,400)}
+.ai-pill--wrap{height:auto;min-height:44px;padding:8px 16px 8px 12px;white-space:normal;font-weight:var(--w-regular,400)}
 .ai-iconbtn{display:grid;place-items:center;width:32px;height:32px;padding:0;border:0;background:none;cursor:pointer}.ai-iconbtn .ai-icon{width:24px;height:24px}
 
 /* ============================================================
@@ -1493,17 +1503,17 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .bs-di b{font-weight:600}.bs-di .bs-r{font-size:14px;line-height:21px;justify-content:flex-end;gap:0}.bs-di .bs-r>span:first-child{text-align:right}.bs-di .bs-r>span:last-child{min-width:85px;text-align:right}
 .bs-ctas{display:flex;flex-direction:column;gap:8px}
 .bs-cta{display:flex;align-items:center;justify-content:center;width:100%;height:50px;border:0;border-radius:var(--radius-default);background:var(--bs-bg);color:var(--bs-fg);font:600 16px/16px var(--font-family-base);text-transform:var(--bs-case);cursor:pointer;padding:0 12px}
-.bs-or{display:flex;align-items:center;gap:16px;color:#9CA3AF;font-size:14px;line-height:21px;margin:0 0 0}
+.bs-or{display:flex;align-items:center;gap:16px;color:#9CA3AF;font-size:16px;line-height:23px;padding:8px 0;margin:0} /* Figma Order Summary: OR row 8 above / below, 16/23 */
 .bs-or:before,.bs-or:after{content:"";flex:1;height:1px;background:#E5E7EB}
 .bs-w{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:50px;border:0;border-radius:4px;cursor:pointer;font:400 18px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;padding:0}
 .bs-w img{display:block;width:auto}
 .bs-pp{background:#FFC439;color:#2C2E2F}.bs-ap{background:#000}.bs-kl{background:#0E0E0E;color:#FFF;font-size:16px;gap:6px}
-.bs-msg{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 6px;font:400 11px/16px 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#2C2E2F;text-align:center;margin:4px 0 0}
+.bs-msg{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 6px;font:400 11px/16px 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#2C2E2F;text-align:center;margin:0;padding:4px 0 10px} /* Figma Order Summary: the pay-in-3 row */
 .bs-msg img{height:12px;width:auto;display:block}.bs-msg u{color:#0070E0}
 .bs-cards{display:flex;justify-content:space-between;align-items:center;gap:2px}
 .bs-cards img{height:21px;width:auto;min-width:0;flex:0 1 auto;display:block;object-fit:contain}
 .bs-pr{gap:16px}
-.bs-ph{font-size:18px;line-height:27px;font-weight:600}
+.bs-ph{font-size:18px;line-height:23px;font-weight:600} /* Figma Promo Code: 18/23 */
 .bs-pf{display:flex;gap:16px}
 .bs-in{flex:1;min-width:0;height:50px;display:flex;align-items:center;padding:0 16px;border:1px solid #B5B5B5;border-radius:var(--radius-default);background:var(--surface-raised,#FFF);font-size:16px;font-weight:var(--w-regular,300);color:#757575;white-space:nowrap;overflow:hidden}
 .bs-ap2{flex:none;height:50px;padding:0 20px;border:1px solid #B5B5B5;border-radius:var(--radius-default);background:var(--surface-raised,#FFF);font:400 16px/16px var(--font-family-base);color:#000;cursor:pointer}
