@@ -145,8 +145,8 @@ function saveBag(inModal){if(SAVED)return `<div class="thresh thresh--ok"><span 
     <p class="pi-legal">Tick the box to save your bag. Bag reminders are marketing emails, so we need your consent to send them. See our <a href="#">Privacy Policy</a>.</p></section>`}
 function miniBag(){const d=desk(),t=MBT();
   const list=ids('atb',4,10).filter(i=>i!==1);   /* Debenhams: the first two slots are Mirakl sponsored (labelled), then Bloomreach “also bought” */
-  /* Complete the look rail (panel): title editable / off (PC.ctlTitle, PC.ctlTitleOn) · card copy 12 or 14 (PC.ctlText) · cards one fixed width, sized to fit (autoFit) */
-  const o={id:'atb',size:'sm',title:PC.ctlTitleOn===false?'':(PC.ctlTitle||'Complete The Look'),per:4,card:100,fixed:true,compact:PC.ctlText!=='14',start:4,list,qa:true,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
+  /* Complete the look rail (panel): title editable / off (PC.ctlTitle, PC.ctlTitleOn) · card copy 12 (compact, as the Figma mini bag) · cards one fixed width, sized to fit (autoFit) */
+  const o={id:'atb',size:'sm',title:PC.ctlTitleOn===false?'':(PC.ctlTitle||'Complete The Look'),per:4,card:100,fixed:true,compact:true,start:4,list,qa:true,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
   const rail=pcar(o);
   /* order: Live as live (item · threshold · Continue Shopping / View Bag); the new versions lead with the threshold, then the item(s), then their extra */
   /* Complete the look keeps to one view: the item you came for + the one just added (it drops in); earlier adds fold into “+N more in your bag” */
@@ -155,13 +155,13 @@ function miniBag(){const d=desk(),t=MBT();
   const body=t==='live'?items+thresh()+`<div class="pi-btns"><button class="bd sec" data-mbx>Continue Shopping</button>${vb}</div>`
     :t==='look'?thresh()+items+rail+(PIN()?'':`<div class="pi-btns">${vb}</div>`)
     :t==='save'?thresh()+items+`<div class="pi-btns">${vb}</div><div class="hr"></div>${saveBag()}`
-    :thresh()+items+`<div class="pi-btns">${vb}${SAVED?'':'<button class="bd sec" data-mblater>Save for later</button>'}</div>${SAVED?saveBag():''}`;
+    :thresh()+items+`<div class="pi-btns">${vb}${SAVED?'':'<button class="bd sec" data-mblater>Save My Bag</button>'}</div>${SAVED?saveBag():''}`;
   return `<div class="pi-mb" id="pimb"><div class="mdl-scrim" data-mbx></div>
   <div class="mdl ${d?'mdl--side mdl-anim-side':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Added to bag">
     <div class="modal-hd"><div class="mt"><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
     <div class="mdl-bd">${body}</div>${t==='look'&&PIN()?`<div class="mdl-ft mdl-ft--pinned pi-btns">${vb}</div>`:''}</div></div>`}
-/* fit (PC.ctlFit): scale = shrink the rail cards until nothing scrolls · pin = CTAs pinned to the foot, the body scrolls · both */
-const FIT=()=>PC.ctlFit||'scale',PIN=()=>FIT()!=='scale';
+/* fit: scale to fit — the rail cards shrink until nothing scrolls (the Figma mini bag; the panel options were removed 3 Nov) */
+const FIT=()=>'scale',PIN=()=>false;
 function autoFit(n){if(MBT()!=='look'||FIT()==='pin')return;const bd=n.querySelector('.mdl-bd'),rail=n.querySelector('[data-pl="atb"]');if(!bd||!rail)return;
   /* scale the rail's cards (image + copy together, so nothing re-wraps) by exactly the overflow; the first card stays on the 24px margin */
   const body=rail.querySelector('.pcar-body'),pad=24;let z=1;body.style.zoom='';body.style.removeProperty('--pcar-pad');
@@ -172,7 +172,7 @@ function laterModal(){const d=desk();return `<div class="pi-mb pi-mb2" id="pimb2
   <div class="mdl ${d?'mdl--sm mdl-anim-fade':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Save your bag">
     <div class="modal-hd"><div class="mt"><span>Save your bag</span></div><button class="modal-x" aria-label="Close" data-mb2x></button></div>
     <div class="mdl-bd">${saveBag(true)}</div></div></div>`}
-function toast(){const p=mainItem(),ts=PC.toastStyle==='edge'?'edge':'square';return `<div class="toast toast--top toast--prod${ts==='edge'?' toast--edge':''} pi-toast" id="pitoast" role="status"><img class="toast-img" src="${p.img}" alt=""><span class="toast-tx">Added to Bag</span><button class="act" type="button" data-mbgo>${CTA()}</button>${EXPORTING?'':'<i class="toast-timer"></i>'}</div>`}
+function toast(){const p=mainItem(),ts=MBT()==='toastedge'?'edge':'square';   /* two mini bag versions: Toast (thumbnail) · Toast · edge */return `<div class="toast toast--top toast--prod${ts==='edge'?' toast--edge':''} pi-toast" id="pitoast" role="status"><img class="toast-img" src="${p.img}" alt=""><span class="toast-tx">Added to Bag</span><button class="act" type="button" data-mbgo>${CTA()}</button>${EXPORTING?'':'${FM()?'':'<i class="toast-timer"></i>'}'}</div>`}
 let TT=0;
 function mountBag(open,instant){const old=document.getElementById('pimb'),ot=document.getElementById('pitoast');clearTimeout(TT);
   if(ot)ot.remove();
@@ -182,9 +182,9 @@ function mountBag(open,instant){const old=document.getElementById('pimb'),ot=doc
     else if(old)old.remove();return}
   const keep=old&&old.querySelector('.pcar-track')?old.querySelector('.pcar-track').scrollLeft:0,bs=old?old.querySelector('.mdl-bd').scrollTop:0;
   if(old)old.remove();
-  if(MBT()==='toast'){document.documentElement.classList.remove('pi-lock');document.body.insertAdjacentHTML('beforeend',toast());
-    const tt=document.getElementById('pitoast');if(desk()){const rows=[...document.querySelectorAll('.usp-row1')].map(r=>r.getBoundingClientRect().bottom).filter(y=>y>0),hb=(document.querySelector('#hdrwrap,header.hd')||{getBoundingClientRect:()=>({bottom:0})}).getBoundingClientRect().bottom;
-      tt.style.setProperty('--toast-top',Math.max(16,...rows,hb)+16+'px')}   /* centred under the USP banners (or the sticky bar once scrolled) */
+  if(/^toast/.test(MBT())){document.documentElement.classList.remove('pi-lock');document.body.insertAdjacentHTML('beforeend',toast());
+    const tt=document.getElementById('pitoast');{const rows=[...document.querySelectorAll('.usp-row1,[data-usp-banners]')].map(r=>r.getBoundingClientRect().bottom).filter(y=>y>0),hb=(document.querySelector('#hdrwrap,header.hd')||{getBoundingClientRect:()=>({bottom:0})}).getBoundingClientRect().bottom;
+      tt.style.setProperty('--toast-top',Math.max(4,...rows,hb)+(desk()?16:12)+'px')}   /* under the USP banners (or the sticky bar once scrolled) — every device, as the Figma */
     if(!EXPORTING)TT=setTimeout(()=>{const x=document.getElementById('pitoast');if(x){x.classList.add('toast--out');setTimeout(()=>x.remove(),300)}PC.bagOpen=false},6000);return}
   document.documentElement.classList.add('pi-lock');document.body.insertAdjacentHTML('beforeend',miniBag());
   const n=document.getElementById('pimb');autoFit(n);if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');n.querySelector('.mdl-scrim').style.animation='none';const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}

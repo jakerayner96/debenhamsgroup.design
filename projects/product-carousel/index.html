@@ -180,13 +180,10 @@ function renderPanel(host,S,update){
   host.innerHTML=`<h1>Product carousel</h1>
   <div class="card"><h3>Screen <small>${bn}</small></h3>${opt('home','Home')}${opt('pdp','PDP')}${opt('search','Search')}${opt('minibag','Mini Bag')}${opt('bag','Bag')}</div>
   ${c.view==='minibag'?`<div class="card"><h3>Added To Bag</h3>
-    ${opt2('live','Live (no reccs)')}${opt2('look','Complete the look')}${opt2('toast','Toast')}${opt2('save','Save your bag')}${opt2('later','Save for later')}
-    ${(c.mbType||'live')==='toast'?`<div style="margin-top:12px">${seg('toastStyle',c.toastStyle==='edge'?'edge':'square',[['square','Square'],['edge','Edge']])}</div>`:`<div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div>`}</div>
+    ${opt2('live','Live (no reccs)')}${opt2('look','Complete the look')}${opt2('toast','Toast · thumbnail')}${opt2('toastedge','Toast · edge image')}${opt2('save','Save your bag')}${opt2('later','Save for later')}
+    ${/^toast/.test(c.mbType||'live')?'':`<div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div>`}</div>
   ${(c.mbType||'live')==='look'?`<div class="card"><h3>Complete the look rail ${sw('ctlTitleOn',c.ctlTitleOn!==false,'Title')}</h3>
     ${c.ctlTitleOn!==false?`<input class="pi-in" data-in="ctlTitle" value="${(c.ctlTitle||'Complete The Look').replace(/"/g,'&quot;')}" aria-label="Rail title">`:''}
-    <div class="f" style="margin-top:10px"><span>Card text</span>${seg('ctlText',c.ctlText||'12',[['14','14'],['12','12']])}</div>
-    <div class="f" style="margin-top:10px"><span>Fit</span>${seg('ctlFit',c.ctlFit||'scale',[['scale','Scale to fit'],['pin','Pin CTAs'],['both','Both']])}</div>
-    <p style="margin-top:8px">${{scale:'The rail cards shrink until everything fits — no scroll.',pin:'The CTAs float at the bottom; the rest scrolls.',both:'Cards shrink to fit and the CTAs stay pinned.'}[c.ctlFit||'scale']}</p></div>`:''}
   <div class="card"><h3>Bag CTA</h3>${seg('cta',c.cta||'bag',[['bag','View Bag'],['checkout','Checkout']])}
     <p style="margin-top:8px">${(c.cta||'bag')==='checkout'?'Checkout goes straight to checkout (the Checkout 2026 prototype).':'View Bag goes to the bag.'}</p>
     <div style="margin-top:10px">${sw('applePay',!!c.applePay,'Apple Pay')}</div></div>`:''}`;

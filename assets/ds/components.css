@@ -698,14 +698,14 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 @keyframes toastOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-8px)}}
 @media (prefers-reduced-motion:reduce){.toast--top,.toast--top.toast--out{animation-duration:.01s}}
 /* .toast--prod (mini bag “toast” version — Added to Bag without the modal; 3 Nov 2026): the DS toast (Figma 5146-559 — 50 tall, 14 copy, action right)
-   with a tiny product thumbnail, solid white + the toast shadow, at the BOTTOM of the screen — rises in, sinks out (.toast--out), never covers the header or
-   the sticky USP bar. Copy: “Added to Bag” · View Bag in the action colour. A faint 2px countdown line along the foot (--toast-ms, 6s).
+   with a tiny product thumbnail, solid white + the toast shadow, UNDER THE USP BANNERS on every device (Figma review screens 13761:7583 / 13819:184848, Jake 3 Nov —
+   was the bottom on phones) — drops in from above, lifts out (.toast--out), never covers the header or the sticky USP bar. Copy: “Added to Bag” · View Bag in the action colour. A faint 2px countdown line along the foot (--toast-ms, 6s).
    Two styles (Figma DS 13732:383 / 13732:386, Jake 3 Nov), one spec on every device: (default) a 33 × 50 thumbnail, radius 4, inset 4 — 58 tall ·
    --edge a 40 × 60 image flush to the left edge — 60 tall. Card radius 8, shadow 0 0 20 12%, copy 14 light, View Bag 14 strong in the action colour.
-   Mobile: the bottom of the screen, 16 in. Desktop: centred under the USP banners, 400 wide. */
-.toast.toast--prod{top:auto;bottom:16px;left:16px;right:16px;min-height:58px;box-sizing:border-box;padding:4px 16px 4px 4px;background:var(--surface-raised,#FFF);-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:var(--radius-lg);
-  box-shadow:0 0 20px rgba(0,0,0,.12);gap:var(--gap-3,12px);overflow:hidden;justify-content:flex-start;font-size:14px;line-height:18px;font-weight:var(--w-regular);animation:toastUp .36s cubic-bezier(.2,.8,.2,1) both}
-.toast.toast--prod.toast--out{animation:toastDown .3s ease-in forwards}
+   --toast-top = the bottom of the last USP row in view (or the sticky bar once scrolled) + 12 on phones / + 16 on desktop. Mobile: 16 in. Desktop: centred, 400 wide. */
+.toast.toast--prod{top:var(--toast-top,16px);bottom:auto;left:16px;right:16px;min-height:58px;box-sizing:border-box;padding:4px 16px 4px 4px;background:var(--surface-raised,#FFF);-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:var(--radius-lg);
+  box-shadow:0 0 20px rgba(0,0,0,.12);gap:var(--gap-3,12px);overflow:hidden;justify-content:flex-start;font-size:14px;line-height:18px;font-weight:var(--w-regular);animation:toastIn .36s cubic-bezier(.2,.8,.2,1) both}
+.toast.toast--prod.toast--out{animation:toastOut .3s ease-in forwards}
 @keyframes toastUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes toastDown{from{opacity:1;transform:none}to{opacity:0;transform:translateY(24px)}}
 .toast--prod .toast-img{width:33px;height:50px;flex:none;object-fit:cover;background:var(--surface-media);display:block;border-radius:var(--radius-default)}
