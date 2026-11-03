@@ -3,6 +3,19 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-11-03",
+  "v": "2026.11.03",
+  "title": "Virtual Stylist intro: full screen + five start-screen formats for review · copy up to 12/16",
+  "by": "Virtual Stylist v2 (vto-prototype/v2, Jake 3 Nov)",
+  "added": [
+   "Virtual Stylist intro layouts (o.layout in assets/ds/vs-intro.js, DG_vsIntro.LAYOUTS; catalogue variants A to E): cards A (Jake's Figma 15874-1068) · list B (.vs-tl numbered timeline with title + line, .vs-checks tip list) · hero C (.vs-hero this product beside your photo, 2:3, .vs-chips tips) · guide D (.vs-stepper three-step stepper, .vs-doavoid Do / Avoid columns) · pages E (.vs-pages three swipe pages, .vs-dots + Next, Camera / Upload on the last) · by Virtual Stylist v2",
+   "Full-screen layer .vs-layer--fs: the intro is .mdl--fs on phones (header top, body scrolls, footer pinned: consent, Camera / Upload, note); glyph modifiers .vsi.big / .vsi.sm, .vsi--tick / .vsi--cross · by Virtual Stylist v2"
+  ],
+  "changed": [
+   "Virtual Stylist intro: every line of copy 12/16 or larger (steps and tips were 10/13), Jake 3 Nov: too small; consent row moved into the pinned footer; phones now full screen (was the .mdl--up slide up) · by Virtual Stylist v2"
+  ]
+ },
+ {
   "d": "2026-11-02",
   "v": "2026.11.02",
   "title": "Virtual Stylist intro modal · Product carousel banked (tabs · gaps · Create the Look + picker · card format · swatches · full-width rails) · Modal drawer · Master prototype · Home page template · carousel markup builder · export fix for masked icons · Delivery grid default: option 3 + accordions · Request form family (.rf) · Multi-line text field · field hint · Screenshot Brief tool · Geologica TTFs · Membership box and Deliver+ in the Figma library · Message banner warning tone · Brand Room logo downloads (SVG + 500px PNG)",

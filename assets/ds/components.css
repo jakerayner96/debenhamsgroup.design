@@ -2092,12 +2092,11 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .vs-sec{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
 .vs-sec-h{margin:0;font-family:var(--font-family-base);font-size:16px;line-height:20px;font-weight:var(--w-strong,600);color:var(--text-primary);text-align:center}
 .howto{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap-2,8px);list-style:none;margin:0;padding:var(--gap-3,12px) 0 0}
-.howto li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-5,20px) var(--gap-2,8px) var(--gap-4,16px);border-radius:var(--radius-lg);background:var(--surface-sunken);text-align:center;font-size:10px;line-height:13px;font-weight:var(--w-regular);color:var(--text-primary)}
+.howto li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-5,20px) var(--gap-2,8px) var(--gap-4,16px);border-radius:var(--radius-lg);background:var(--surface-sunken);text-align:center;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
 .howto .n{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
 .howto .vsi{width:24px;height:24px}
-.howto li>span{padding:0 1px}   /* copy box 91 in a 109 card, as Figma 15874-1068 (wraps “We style you in / this piece”) */
 .ptips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-2,8px);list-style:none;margin:0;padding:0}
-.ptips li{display:flex;align-items:center;gap:var(--gap-3,12px);min-height:44px;padding:var(--gap-3,12px);border-radius:var(--radius-lg);background:var(--surface-sunken);font-size:10px;line-height:13px;font-weight:var(--w-regular);color:var(--text-primary)}
+.ptips li{display:flex;align-items:center;gap:var(--gap-3,12px);min-height:44px;padding:var(--gap-3,12px);border-radius:var(--radius-lg);background:var(--surface-sunken);font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
 .ptips .vsi{width:20px;height:20px}
 .vsi{display:block;flex:none;background:var(--icon-primary);-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
 .vsi--add-photo{--ic:url("icons/lib/icons-add-photo.svg")}.vsi--ai{--ic:url("icons/lib/icons-ai.svg")}.vsi--hanger{--ic:url("icons/lib/icons-hanger.svg")}
@@ -2107,7 +2106,7 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .vs-legal a{color:var(--text-link);font-weight:var(--w-strong,600);text-decoration:none}
 .vs-ctas{display:flex;gap:var(--gap-2,8px)}.vs-ctas .bd{flex:1 1 0;width:auto;min-width:0;padding-left:var(--gap-3,12px);padding-right:var(--gap-3,12px);white-space:nowrap}   /* side by side at every width (Jake, 2 Nov) */
 .vs-note{margin:0;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary);text-align:center}
-.vs-intro.mdl--up .mdl-bd{overflow-y:auto}
+.vs-intro.mdl--up .mdl-bd,.vs-intro.mdl--fs .mdl-bd{overflow-y:auto}
 @media(min-width:600px){
   .vs-sec-h{font-size:18px;line-height:24px}
   .howto{gap:var(--gap-4,16px)}
@@ -2197,3 +2196,82 @@ select.rf-input:invalid{color:var(--rf-dim)}
 /* bag summary: the free-delivery line at the top of the desktop card, over a hairline (Bag 2026 desktop 1337:256981) */
 .bs-th{margin:-24px -24px 0;padding:var(--gap-4,16px) var(--gap-6,24px);border-bottom:1px solid var(--border-subtle)}
 .bag-title{margin:0;font-size:24px;line-height:normal;font-weight:var(--w-strong)} /* Your Bag (n) — Bag 2026: 24 strong */
+
+/* ---- Virtual Stylist intro · full screen + five formats (3 Nov 2026, Jake: text up to the T&Cs size, full screen to use the whole phone).
+   .vs-layer--fs: the layer fills the screen, the .mdl--fs window runs edge to edge; header top, body scrolls, footer (consent, Camera / Upload, note) pinned.
+   Every line of copy is 12/16 or larger. Layouts: --cards A · --list B · --hero C · --guide D · --pages E (assets/ds/vs-intro.js LAYOUTS). */
+.vs-layer--fs{padding:0;align-items:stretch}
+.vs-layer--fs>.mdl{animation-name:mdlup;height:100%;max-height:100%}
+.vs-intro.mdl--fs{padding:var(--gap-6,24px) var(--gap-6,24px) calc(var(--gap-6,24px) + env(safe-area-inset-bottom,0px))}
+.vs-intro.mdl--fs .mdl-bd{flex:1;gap:var(--gap-8,32px);align-items:stretch;justify-content:flex-start}   /* not the .mdl--fs media centring */
+.vs-intro .mdl-ft{gap:var(--gap-4,16px)}
+.vs-intro--cards.mdl--fs .mdl-bd,.vs-intro--list.mdl--fs .mdl-bd,.vs-intro--guide.mdl--fs .mdl-bd{justify-content:center}
+.vsi--tick{--ic:url("icons/lib/icons-tick.svg")}.vsi--cross{--ic:url("icons/lib/icons-close.svg")}
+.vsi.big{width:32px;height:32px}.vsi.sm{width:12px;height:12px}
+/* B · timeline: number on a line, title + line, glyph right */
+.vs-tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.vs-tl li{position:relative;display:flex;align-items:center;gap:var(--gap-4,16px);padding:var(--gap-3,12px) 0}
+.vs-tl li:not(:last-child)::after{content:"";position:absolute;left:12px;top:calc(50% + 16px);height:calc(100% - 32px);border-left:1px solid var(--border-default)}
+.vs-tl .n{width:24px;height:24px;flex:none;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
+.vs-tl .tx{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.vs-tl b{font-size:14px;line-height:20px;font-weight:var(--w-strong,600)}
+.vs-tl .tx span{font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary)}
+.vs-tl .vsi{width:24px;height:24px}
+.vs-checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.vs-checks li{display:flex;align-items:center;gap:var(--gap-3,12px);padding:var(--gap-3,12px) 0;border-bottom:1px solid var(--border-subtle);font-size:12px;line-height:16px;font-weight:var(--w-regular)}
+.vs-checks li:last-child{border-bottom:0}
+.vs-checks .vsi{width:20px;height:20px}
+/* C · product hero: this piece + your photo, 2:3 each */
+.vs-hero{display:flex;align-items:center;justify-content:center;gap:var(--gap-3,12px)}
+.vs-hero .ph{width:112px;aspect-ratio:var(--ratio-product,2/3);border-radius:var(--radius-lg);background:var(--surface-sunken);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--gap-2,8px)}
+.vs-hero .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.vs-hero .ph--you{border:1px dashed var(--border-strong);background:var(--surface-raised)}
+.vs-hero .ph small{font-size:12px;line-height:16px;color:var(--text-secondary)}
+.vs-hero .plus{width:32px;height:32px;border-radius:var(--radius-pill);background:var(--surface-action);display:grid;place-items:center;flex:none}
+.vs-hero .plus .vsi{width:16px;height:16px;background:var(--text-on-action)}
+.vs-hero-t{display:flex;flex-direction:column;gap:var(--gap-1,4px);text-align:center}
+.vs-hero-t .vs-sec-h{font-size:18px;line-height:24px}
+.vs-hero-t p{margin:0;font-size:12px;line-height:16px;color:var(--text-secondary)}
+.vs-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:var(--gap-2,8px)}
+.vs-chips li{display:flex;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-2,8px) var(--gap-3,12px);border:1px solid var(--border-subtle);border-radius:var(--radius-pill);font-size:12px;line-height:16px}
+.vs-chips .vsi{width:16px;height:16px}
+.vs-intro--hero.mdl--fs .mdl-bd{gap:var(--gap-5,20px)}
+.vs-intro--hero .vs-hero .ph{width:84px}
+.vs-intro--hero .vs-tl li{padding:var(--gap-1,4px) 0}
+.vs-intro--hero .vs-tl li:not(:last-child)::after{top:calc(50% + 14px);height:calc(100% - 28px)}
+/* A in full screen: bigger cards and tiles so the content uses the height */
+.vs-intro--cards.mdl--fs .howto li{padding:var(--gap-6,24px) var(--gap-2,8px) var(--gap-5,20px);gap:var(--gap-3,12px)}
+.vs-intro--cards.mdl--fs .howto .vsi{width:32px;height:32px}
+.vs-intro--cards.mdl--fs .ptips li{min-height:56px}
+/* D · photo guide: stepper + Do / Avoid */
+.vs-stepper{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);position:relative}
+.vs-stepper::before{content:"";position:absolute;left:16.66%;right:16.66%;top:24px;border-top:1px solid var(--border-default)}
+.vs-stepper li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--gap-2,8px);text-align:center}
+.vs-stepper .n{position:relative;width:48px;height:48px;border-radius:var(--radius-pill);background:var(--surface-sunken);border:1px solid var(--border-subtle);display:grid;place-items:center}
+.vs-stepper .n .vsi{width:24px;height:24px}
+.vs-stepper em{position:absolute;top:-4px;right:-4px;width:20px;height:20px;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);font-style:normal;font-size:12px;line-height:20px;font-weight:var(--w-strong,600);text-align:center}
+.vs-stepper b{font-size:12px;line-height:16px;font-weight:var(--w-strong,600)}
+.vs-doavoid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-2,8px)}
+.vs-doavoid .col{border-radius:var(--radius-lg);background:var(--surface-sunken);padding:var(--gap-4,16px) var(--gap-3,12px);display:flex;flex-direction:column;gap:var(--gap-3,12px)}
+.vs-doavoid h4{margin:0;display:flex;align-items:center;gap:var(--gap-2,8px);font-size:14px;line-height:20px;font-weight:var(--w-strong,600)}
+.vs-doavoid h4 .vsi{width:16px;height:16px}
+.vs-doavoid .do h4 .vsi{background:var(--text-success,#1B7A3E)}
+.vs-doavoid .avoid h4 .vsi{background:var(--text-error,#C90000)}
+.vs-doavoid ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-3,12px)}
+.vs-doavoid li{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:12px;line-height:16px;font-weight:var(--w-regular)}
+.vs-doavoid li .vsi{width:20px;height:20px}
+.vs-doavoid .avoid li .vsi{width:12px;height:12px;margin:0 4px;background:var(--icon-secondary)}
+/* E · step by step: three pages, swipe or Next; the last carries consent, then Camera / Upload replace Next */
+.vs-intro--pages .mdl-bd{overflow:hidden!important;gap:0}
+.vs-pages{flex:1;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 calc(var(--gap-6,24px)*-1)}
+.vs-pages::-webkit-scrollbar{display:none}
+.vs-pages .vs-pg{flex:0 0 100%;scroll-snap-align:start;box-sizing:border-box;padding:0 var(--gap-6,24px);display:flex;flex-direction:column;justify-content:center;gap:var(--gap-6,24px);overflow-y:auto}
+.vs-pages .vs-pg-ic{align-self:center;width:72px;height:72px;border-radius:var(--radius-pill);background:var(--surface-sunken);display:grid;place-items:center}
+.vs-pages .vs-sec-h{font-size:20px;line-height:25px}
+.vs-pages .vs-pg-p{margin:0;text-align:center;font-size:14px;line-height:20px;color:var(--text-secondary)}
+.ptips--lg{grid-template-columns:1fr 1fr}.ptips--lg li{flex-direction:column;justify-content:center;text-align:center;min-height:112px;gap:var(--gap-3,12px)}.ptips--lg .vsi{width:32px;height:32px}
+.vs-dots{display:flex;justify-content:center;gap:var(--gap-2,8px)}
+.vs-dots i{width:8px;height:8px;border-radius:var(--radius-pill);background:var(--border-default);cursor:pointer}
+.vs-dots i.on{background:var(--icon-primary);width:24px}
+[data-vs-next-wrap] .bd{width:100%}
+.vs-intro--pages.mdl--md .mdl-bd{min-height:420px}
