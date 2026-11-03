@@ -778,6 +778,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 /* compact rail cards (.pc--compact — mini bag Complete the look, 100px cards): price the same 12/16 as the name, now · was on one line, the -X% dropped (too small to fit · Jake 3 Nov) */
 .pc--compact .price-blk--rail .price{font-size:12px;line-height:16px;column-gap:4px}
 .pc--compact .price-blk--rail .save{display:none}
+/* any rail / grid card under 160px wide (Handpicked grid 117 · Create the Look picker 124–146): the -X% would wrap onto its own line, so it goes (Jake 3 Nov) */
+.price-blk--rail{container-type:inline-size}
+@container (max-width:159px){.price-blk--rail .save{display:none}}
 /* added-to-bag: 12/18, both prices ink, now + was only */
 .price-blk--drawer .price{font-size:var(--price-drawer);line-height:var(--price-drawer-lh);column-gap:8px}
 .price-blk--drawer .now,.price-blk--drawer .now.sale{color:var(--text-primary)}
