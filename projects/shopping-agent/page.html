@@ -666,7 +666,7 @@ function pdp(){
     <div class="pag"><div class="track"><div class="fill" id="pagfill"></div></div></div></div>`;
   const ctaRow=[S.vtoPos==='cta'&&ON('vto')?`<button class="ai-pill ai-pill--soft ai-cta vs-chip" ${F('vto','B · under CTA')} data-q="Virtual Stylist" data-vto="1"><img src="${A}img/hanger.svg" alt="">Virtual Stylist</button>`:'',S.ssPos==='cta'&&ON('shopSimilar')?`<button class="ai-pill ai-pill--soft ai-cta" ${F('shopSimilar','B · under CTA')} data-q="Shop similar">${spk(16)}Shop similar</button>`:''].filter(Boolean);
   const info=`<div class="buy">${top.length?`<div class="tchips">${top.join('')}</div>`:''}<div class="prow"><div><div class="pbrand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div></div><button class="wl-c" aria-label="Add to wishlist"><img src="${wishIcon()}" alt=""></button></div>
-    ${V('ratings',0)}
+    ${V('ratings',1)}
     ${prc(p,'pdp')}
     <div style="font-size:14px">Colour: <b>${esc(DP?DP.colour:'Hot Pink')}</b></div><div class="cswatches"><button class="cswatch on"><img src="${GI[0]}" alt="" style="width:60px;height:89px;object-fit:cover;display:block"></button></div>
     ${V('size-selector',0).replace(' style="width:360px"','').replace(/<button class="sz">One size<\/button>/,'')}

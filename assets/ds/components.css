@@ -151,6 +151,9 @@ button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--bor
 .pc-stars .set{display:flex;gap:2px}
 .pc-stars img{width:12px;height:12px;display:block;object-fit:contain}
 .pc-stars span{font-weight:var(--w-regular)}
+/* PDP review stars (live debenhams.com, mobile + desktop): 16px stars 4 apart, 8 to the count — Light 16/16 underlined, text-primary. Figma: PDP Review Stars */
+.pc-stars--pdp .set{gap:4px}.pc-stars--pdp img{width:16px;height:16px}
+.pc-stars--pdp span:not(.set){font-size:16px;line-height:16px;font-weight:var(--w-light,300);color:var(--text-primary);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
 /* compact variant — the shorter PLT / Brand Room format, the target for all fascias */
 .pc--compact{gap:8px}
 .pc--compact .pc-info{gap:6px;font-size:12px}
@@ -758,7 +761,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .price-blk .save[data-pct]::before{content:"-" attr(data-pct) "%"}
 .price-code{color:var(--price-sale);font-size:var(--price-code);line-height:var(--price-code-lh);font-weight:var(--price-code-w)}
 /* PDP: 12px row → code line · gap --price-pdp-gap between prices · saving styled by theme (plain / pill / outlined box) */
-.price-blk--pdp .price{font-size:var(--price-pdp);line-height:var(--price-pdp-lh);column-gap:var(--price-pdp-gap);align-items:center}
+.price-blk--pdp .price{font-size:var(--price-pdp);line-height:var(--price-pdp-lh);column-gap:var(--price-pdp-gap);row-gap:8px;align-items:center}
 .price-blk--pdp .price .was{font-size:var(--price-pdp-was);font-weight:var(--price-pdp-was-w);color:var(--price-pdp-was-fg)}
 .price-blk--pdp .price .save{display:inline-flex;align-items:center;font-size:var(--price-save-pdp);color:var(--price-save-fg);background:var(--price-save-bg);border:var(--price-save-bd);padding:var(--price-save-pad);border-radius:var(--price-save-r);height:var(--price-save-h);box-sizing:border-box}
 .price-blk--pdp .price .save[data-pct]::before{content:var(--price-save-pre) attr(data-pct) "%"}

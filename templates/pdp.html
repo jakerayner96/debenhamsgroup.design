@@ -127,7 +127,7 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
   const buy=`<div class="buy" data-slot="buy">
       ${d?'':chips}
       <div class="pdp-head"><div class="titles"><span class="brand">${esc(P.brand)}</span><h1 class="name">${esc(P.name)}</h1></div><button class="wish" aria-label="Add to wishlist"><img src="${wishIcon(S.brand)}" alt=""></button></div>
-      ${V('ratings',0).replace(/ style="[^"]*"/,'')}
+      ${V('ratings',1).replace(/ style="[^"]*"/,'')}
       ${price(P)}
       <div class="opt-label">Colour: <b>${esc(P.colour)}</b></div>
       <div class="cswatches"><button class="cswatch on" aria-label="${esc(P.colour)}"><img src="${P.imgs[0]}" alt=""></button></div>

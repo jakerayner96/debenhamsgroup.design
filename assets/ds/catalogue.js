@@ -375,8 +375,9 @@ const DG_CATALOGUE = [
   summary:'Five 12px stars and a count.',
   use:['Cards and PDP header.'],
   avoid:['Stars without the count.'],
-  anatomy:['12px stars, gap 0.5 (2px) between · count in --text-secondary'],
-  variants:[{name:'Default', html:'<div class="pc-stars" style="font-family:var(--font-family-base)"><span class="set"><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-half.svg" alt=""><img src="assets/ds/icons/star-outline.svg" alt=""></span><span>(9)</span></div>'}],
+  anatomy:['Cards: 12px stars, gap 0.5 (2px) between · count in --text-secondary','PDP (.pc-stars--pdp, Figma PDP Review Stars): 16px stars, 4px between, 8px to the count · count Light 16/16 underlined, --text-primary'],
+  variants:[{name:'Default', html:'<div class="pc-stars" style="font-family:var(--font-family-base)"><span class="set"><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-half.svg" alt=""><img src="assets/ds/icons/star-outline.svg" alt=""></span><span>(9)</span></div>'},
+    {name:'PDP (.pc-stars--pdp, live: 16px stars, count Light 16 underlined)', html:'<div class="pc-stars pc-stars--pdp" style="font-family:var(--font-family-base)"><span class="set"><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-fill.svg" alt=""><img src="assets/ds/icons/star-half.svg" alt=""></span><span>(128)</span></div>'}],
   dev:{title:'—', status:'partial', note:'Inside CT Product Card (showRatings, averageRating, totalReviewCount).'} },
 
 /* ───────────── PDP MODULES ───────────── */
