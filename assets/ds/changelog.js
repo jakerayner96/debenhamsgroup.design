@@ -5,25 +5,14 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-11-03",
   "v": "2026.11.03",
-  "title": "Navigation menu (copied from live) · Alert icon “!” · Virtual Stylist intro: full screen + five start-screen formats for review · copy up to 12/16",
+  "title": "Virtual Stylist intro: full screen + start screen options (How it works cards or timeline · tips cards or pills) · copy up to 12/16",
   "by": "Virtual Stylist v2 (vto-prototype/v2, Jake 3 Nov)",
   "added": [
-   "Threshold in a container .thresh--box (the fascia light tint --neutral, padding 12 / 16, white track) — catalogue variant · by Product carousel prototype (mini bag), Jake 3 Nov",
-   "Modal pinned foot .mdl-ft--pinned (CTAs float at the bottom over the scrolling body, white with a soft top shadow) · by Product carousel prototype (mini bag), Jake 3 Nov",
-   "Product carousel .pcar--fixed (DG_pcarHTML fixed): one card width on every device — panels that size cards to fit · by Product carousel prototype (mini bag), Jake 3 Nov",
-   "Navigation menu (.mnav mobile burger drawer + .mega desktop mega menu, assets/ds/nav.js DG_nav + assets/ds/nav-live.js data, catalogue entry Navigation menu): copied from the seven live sites (390 drawer level 1 + level 2, 1440 mega menu per category: columns, headings, links, badges, campaign tile, label colours, Warehouse OUTLET highlight), local imagery in assets/ds/nav/; mounts on the DS header by itself; loaded by the Home / PDP / Bag templates and the Master prototype (PLP too), menu links route to the PLP in the master · by Jake, 3 Nov (master needs the menu)",
-   "Virtual Stylist intro layouts (o.layout in assets/ds/vs-intro.js, DG_vsIntro.LAYOUTS; catalogue variants A to E): cards A (Jake's Figma 15874-1068) · list B (.vs-tl numbered timeline with title + line, .vs-checks tip list) · hero C (.vs-hero this product beside your photo, 2:3, .vs-chips tips) · guide D (.vs-stepper three-step stepper, .vs-doavoid Do / Avoid columns) · pages E (.vs-pages three swipe pages, .vs-dots + Next, Camera / Upload on the last) · by Virtual Stylist v2",
-   "Full-screen layer .vs-layer--fs: the intro is .mdl--fs on phones (header top, body scrolls, footer pinned: consent, Camera / Upload, note); glyph modifiers .vsi.big / .vsi.sm, .vsi--tick / .vsi--cross · by Virtual Stylist v2"
+   "Virtual Stylist intro options (assets/ds/vs-intro.js o.steps / o.tips, DG_vsIntro.OPTIONS; catalogue variants for all four): How it works as .howto step cards (Jake's Figma 15874-1068) or .vs-tl timeline (number on a line, title 14/20 strong + line 12/16, glyph right); For the best result as .ptips cards or .vs-chips pills (wrapping, centred, --radius-pill). Five formats were reviewed first (cards, timeline, product hero, photo guide, step by step); Jake kept timeline + the pills, the others are gone · by Virtual Stylist v2",
+   "Full-screen layer .vs-layer--fs: the intro is .mdl--fs on phones (header top, body centred and scrolling, footer pinned: consent, Camera / Upload, note) · by Virtual Stylist v2"
   ],
   "changed": [
-   "Modal drawer (.mdl--side): the header stays put and the body scrolls (was the whole drawer), so a pinned foot can float · by Product carousel prototype (mini bag), Jake 3 Nov",
-   "Modal leaving: every modal now animates out the way it came — drawer (.mdl--side) slides back out right (.mdl-anim-side-out), slide up sinks (.mdl-anim-down), others fade (.mdl-anim-fade-out) — and the scrim fades in and out (.mdl-scrim--out), 300ms · by Product carousel prototype (mini bag), Jake 3 Nov",
-   "Product toast (.toast--prod): three skinny thumbnail styles on the DS toast (50 tall): 24 × 36 thumb (default), --square 34 × 34, --edge full-height image flush left; copy just Added to Bag + View Bag; mobile at the bottom, desktop centred under the USP banners (--toast-top) · by Product carousel prototype, Jake 3 Nov",
-   "Product toast (.toast--prod): moved to the bottom of the screen — rises in, sinks out — solid white with the toast shadow (no see-through blur); toast actions now use the fascia font (the button didn’t inherit it — View Bag wasn’t Geologica on Debenhams) · by Product carousel prototype (mini bag toast), Jake 3 Nov",
-   "Virtual Stylist intro: every line of copy 12/16 or larger (steps and tips were 10/13), Jake 3 Nov: too small; consent row moved into the pinned footer; phones now full screen (was the .mdl--up slide up) · by Virtual Stylist v2"
-  ],
-  "fixed": [
-   "Icons / Alert (assets/ds/icons/lib/icons-alert.svg): the “!” was missing — Figma draws it as a text layer inside the triangle, the library SVG only had the triangle; now a stem + dot path, so every error / warning banner and the bag out-of-stock states show it · by Jake, 3 Nov"
+   "Virtual Stylist intro: every line of copy 12/16 or larger (steps and tips were 10/13), Jake 3 Nov: too small; consent row moved into the pinned footer; phones now full screen (was the .mdl--up slide up); full screen enlarges the step cards (32px glyphs) and tip tiles (56 tall) · by Virtual Stylist v2"
   ]
  },
  {
