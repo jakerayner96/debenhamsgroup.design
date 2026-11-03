@@ -25,11 +25,43 @@ const st=document.createElement('style');st.textContent=`
 .pi-toast{z-index:90}
 .pi-mb2{z-index:95}@media(min-width:1024px){.pi-mb2{justify-content:center;align-items:center}}
 #pimb .pc .pc-iconbtn--sq{border-radius:var(--radius-default)!important} /* the Shopping agent page forces .pc .pc-iconbtn round (!important); put the DS square back */
-html.pi-lock,html.pi-lock body{overflow:hidden;height:100%}`;
+html.pi-lock,html.pi-lock body{overflow:hidden;height:100%}
+.pi-bag{display:flex;flex-direction:column;gap:var(--gap-6,24px);padding:var(--gap-4,16px)}.pi-bag-hd .bs-top{padding:0;gap:16px;margin-top:16px}.pi-bag .bag-list{display:flex;flex-direction:column;gap:16px}`;
 document.head.appendChild(st);
 
 const TABS={debenhams:['Fashion','Home','Beauty'],boohoo:['Women','Men','Beauty'],boohooman:['New In','Hoodies','Jackets'],plt:['New In','Dresses','Shoes'],karenmillen:['Dresses','Coats','Tailoring'],warehouse:['Dresses','Knitwear','Denim'],brandroom:['Women','Men','Accessories']};
 const TAB={};
+
+/* ---- FIGMA MATCH (Jake 3 Nov 2026): the screens on the DS Figma review page (aIHmkCaTy9c5EWOxAGw0So 13639:18 mobile) are the master —
+        this prototype renders the same DS components in the same state, with the same content (Debenhams). ---- */
+const FM=()=>BR()==='debenhams';
+/* rails pinned to the Figma products, by brand + name */
+const BYN=names=>names.map(nm=>{for(let i=0;i<n();i++){const x=DG_feedItem(BR(),i);if(x&&((x.brand?x.brand+' ':'')+x.name).indexOf(nm)===0)return i}return -1}).filter(i=>i>=0);
+const FIG={
+  hp:['Burton Cotton Rich Ribbed Roll Neck Jumper','Burton Blue Black Dark Wash Stretch Slim Fit Jean','Wallis Petite Floral Cape Detail Pencil Dress','Wallis Hista Ruched Mid Heel Pointed Knee Boots','Long Waxed Coat Drifter Cotton Relaxed V-neck Cardigan','Wallis Wide Fit Darcia Snaffle Detail'],
+  look:['boohoo Oversized Faux Suede Jacket','Burton Navy Wool Look Harrington Jacket','Burton Black Stretch Slim Fit Jeans','Living and Home 45cm Prelit Autumn Wreath','OHS Autumn Gonk Throw','Living and Home 180cm Autumn Garland','Coast Pleat Detail Lace Trim Maxi Dress','Debenhams Up to 40% off Wallis Ponte','Burton Khaki Slim Fit Chino Trousers','Wallis Petite Ponte Snaffle Trim Midi Dress'],
+  recs:['Living and Home 45cm Prelit Autumn Wreath','Catherine Lansfield Scottish Everlastings','OHS Autumn Gonk Throw','Nicola Spring Diffuser','Living and Home 180cm Autumn Garland','Living and Home 45cm Artificial Pre-lit Autumn Harvest','Coast Pleat Detail Lace Trim Maxi Dress','Furn Picking Patch Pumpkin Duvet','Debenhams Up to 40% off Wallis Ponte','Dorothy Perkins Petite Berry Floral'],
+  bagrec:['Wallis Petite Floral Cape Detail Pencil Dress','Wallis Wide Fit Darcia Snaffle Detail','Burton Navy Wool Look Harrington Jacket','Debenhams Watercolour Print Duvet Cover','OHS Autumn Gonk Throw','Living and Home 45cm Artificial Pre-lit Autumn Harvest']};
+const FL=k=>FM()?BYN(FIG[k]):undefined;
+/* USP: the Figma USP Banner (Use Code) — the code message without the midnight countdown */
+if(window.DG_USP_LIVE&&DG_USP_LIVE.debenhams)DG_USP_LIVE.debenhams.forEach(r=>(r.items||[]).forEach(it=>{if(it.type==='codecountdown')it.type='code'}));
+/* PDP buy column, as the Figma PDP (13796:18062): price · Size Selector (Size: · Size Guide + Icons / Measure · M out of stock, none chosen) ·
+   PayPal word mark · Ask Deb prompts (hugging) · DS Membership box · BNPL logos + legal · At A Glance chips */
+const FIG_SIZES=`<div class="sizes"><div class="sizes-head"><span>Size:</span><span class="guide"><img src="assets/ds/icons/lib/icons-measure.svg" alt="">Size Guide</span></div><div class="set">${['XS','S','M','L','XL'].map(z=>`<button class="sz${z==='M'?' oos oos--strike':''}">${z}</button>`).join('')}</div></div>`;
+const FIG_BNPL=`<div class="bnpl bnpl--legal"><div class="chips"><span class="pc pc--paypal"><img src="assets/ds/icons/payments/bnpl-paypal-logo.svg" alt="PayPal"></span><span class="pc pc--payplus"><img src="assets/ds/icons/payments/bnpl-payplus-glyph.svg" alt="Pay+"></span><span class="pc pc--klarna"><img src="assets/ds/icons/payments/bnpl-klarna-word.svg" alt="Klarna"></span><span class="pc pc--clearpay"><img src="assets/ds/icons/payments/clearpay-lockup-mini.svg" alt="Clearpay"></span></div><div class="small">18+, T&amp;C apply. Credit subject to status</div><a class="more" href="#">See more</a></div>`;
+function figPdp(x){if(!FM())return;const q=s=>x.querySelector(s);
+  const pb=q('.buy .price-blk');if(pb)pb.outerHTML=`<div class="price-blk price-blk--pdp"><div class="price"><span class="now sale">£98.00</span><span class="was">£140.00</span><span class="save" data-pct="30"></span></div><div class="price-code">£63.00 with code FASHION</div></div>`;
+  const sz=q('.buy .sizes');if(sz)sz.outerHTML=FIG_SIZES;
+  x.querySelectorAll('.buy .ctas .pp-co').forEach(e=>e.remove());
+  const unl=q('.buy .unl');if(unl&&window.DG_memberBoxHTML)unl.outerHTML=DG_memberBoxHTML('debenhams');
+  const bn=q('.buy .bnpl');if(bn)bn.outerHTML=FIG_BNPL;
+  const sns=q('.buy .sns');if(sns)sns.innerHTML=sns.innerHTML.replace(/£\d+\.\d\d(?=<\/b>|<\/span>)/,'£93.10');
+  x.querySelectorAll('.acc-set .glance').forEach(u=>{u.classList.add('glance--chips');u.innerHTML=u.innerHTML.replace('Regular fit','Relaxed fit')});
+  x.querySelectorAll('.acc-set .acc-h').forEach(h=>{if(/^At a Glance/.test(h.textContent))h.firstChild.textContent='At A Glance'})}
+/* header: the Figma Agent header has no bag count */
+function figHeader(){if(FM())document.querySelectorAll('.hd-count').forEach(b=>b.classList.remove('hd-count'))}
+/* footer: the DS Footer (footer.js — Figma 664-1063), as the Figma screens */
+function figFooter(){const pf=document.querySelector('.pgfoot');if(!FM()||!pf||!window.DG_footer)return;if(!pf.querySelector('[data-ftr]')){pf.innerHTML='<footer data-ftr="debenhams"></footer>';DG_footer(pf.firstChild,'debenhams')}}
 const n=()=>PR().length||1;
 /* a feed per rail: a fixed start + 4 per tab, wrapping the fascia's product set */
 const FEEDS={};
@@ -62,8 +94,9 @@ const oPdp=PAGES.pdp;
 PAGES.pdp=function(){const doc=new DOMParser().parseFromString('<div id="x">'+oPdp()+'</div>','text/html'),x=doc.getElementById('x');
   const bnpl=x.querySelector('.buy .sns')||x.querySelector('.buy .bnpl')||x.querySelector('.bnpl');   /* under BNPL + Subscribe & Save */
   if(PC.hp!==false&&bnpl){const rows=Math.max(1,+PC.hpRows||2),d=doc.createElement('div');d.className='pi-hp';
-    d.innerHTML=pcar({id:'hp',size:'sm',fmt:'grid',per:3,len:rows*3,title:'Handpicked For You',start:3,bleed:false});bnpl.after(d)}
-  const recs=(PC.look!==false?pcar({id:'look',size:'md',full:1,look:true,title:'Create The Look',start:9}):'')+(PC.car!==false?pcar({id:'recs',size:'md',full:1,title:'We Think You’ll Like',start:15,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>{const L=ids('recs',15,10);return L.indexOf(i)===1||L.indexOf(i)===3}):null}):'');
+    d.innerHTML=pcar({id:'hp',size:'sm',fmt:'grid',per:3,len:rows*3,title:'Handpicked For You',start:3,bleed:false,list:FM()&&rows===2?FL('hp'):undefined});bnpl.after(d)}
+  const recs=(PC.look!==false?pcar({id:'look',size:'md',full:1,look:true,title:'Create The Look',start:9,list:FL('look')}):'')+(PC.car!==false?pcar({id:'recs',size:'md',full:1,title:'We Think You’ll Like',start:15,list:FL('recs'),sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>{const L=FL('recs')||ids('recs',15,10);return L.indexOf(i)===1||L.indexOf(i)===3}):null}):'');
+  figPdp(x);
   if(recs){const r=doc.createElement('div');r.className='pi-recs pi-full';r.innerHTML=recs;x.appendChild(r)}   /* outside the PDP's 1440 wrap: full width to the page margin */
   return x.innerHTML};
 
@@ -95,20 +128,20 @@ const MBT=()=>PC.mbType||'live',THRESH=100,ADDED=[];let SAVED=null,JUST=null;   
 const num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
 function mainItem(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,colour:DP.colour}:PR()[1]||{};
   const sz=(document.querySelector('.sz.on')||{}).textContent,cm=((document.querySelector('.buy')||{}).innerText||'').match(/Colou?r:\s*([^\n]+)/);
-  return Object.assign({},p,{img:DP?DP.imgs[0]:IMG(1),size:sz&&sz.trim()||'12',colour:p.colour||(cm&&cm[1].trim())||''})}
+  return Object.assign({},p,{img:DP?DP.imgs[0]:IMG(1),size:sz&&sz.trim()||(FM()?'M':'12'),colour:p.colour||(cm&&cm[1].trim())||''})}
 function bagItems(){return [mainItem()].concat(ADDED.map(i=>{const x=DG_feedItem(BR(),i);return x&&Object.assign({size:'One Size',colour:x.swatches?x.swatches[0].name:''},x)}).filter(Boolean))}
 /* the line item: Live = the live card (DS .bag-item, 99 × 148); the new versions = the mini bag card (DS .bag-item--mini, Bag 2026): brand - name · size / colour · price */
 const oldItem=p=>`<div class="bag-item"><img src="${p.img}" alt=""><div class="info"><div class="b">${esc(p.brand||BN())}</div><div class="n">${esc(p.name)}</div><div class="v">${esc(/one size/i.test(p.size||'')?'One size':'Size '+p.size)} · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
 const lineItem=p=>MBT()==='live'?oldItem(p):`<div class="bag-item bag-item--mini${p.i!=null&&p.i===JUST?' bag-item--in':''}"><img src="${p.img}" alt=""><div class="info"><div class="t"><b>${esc(p.brand||BN())}</b> - ${esc(p.name)}</div><div class="v">${esc([p.size,p.colour].filter(Boolean).join(' / '))}</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
 function thresh(){if(PC.thresh===false)return '';const t=bagItems().reduce((a,p)=>a+num(p.price),0);
-  const bx=MBT()==='live'?'':' thresh--box';   /* the new versions: in the DS container so it stands out */
+  const bx=MBT()==='live'||FM()?'':' thresh--box';   /* Figma mini bags (3 Nov): the plain threshold line */   /* the new versions: in the DS container so it stands out */
   if(t>=THRESH)return `<div class="thresh thresh--ok${bx}"><span class="tick"></span><span>You’ve qualified for free delivery</span></div>`;
   return `<div class="thresh${bx}"><span>Spend <b>£${(THRESH-t).toFixed(2)}</b> more for free delivery</span><div class="track"><div class="fill" style="width:${Math.round(t/THRESH*100)}%"></div></div></div>`}
 function saveBag(inModal){if(SAVED)return `<div class="thresh thresh--ok"><span class="tick"></span><span>Bag saved. We’ll email <b>${esc(SAVED)}</b> about your bag — you’re signed up for ${esc(BN())} emails, unsubscribe any time.</span></div>`;
   return `<section class="pi-save">${inModal?'':'<h3>Not ready yet? Save your bag</h3>'}<p>Leave your email and we’ll remind you about the items in your bag.</p>
     <label class="fld"><input type="email" placeholder=" " autocomplete="email" data-mbmail><span class="lbl">Email address</span></label>
     <div class="chk-row"><button type="button" class="chk" aria-checked="false" data-mbopt aria-label="Email me about my bag"></button><span>Email me about my bag, plus offers, new arrivals and style picks from ${esc(BN())}. I can unsubscribe at any time.</span></div>
-    <button type="button" class="bd sec" disabled data-mbsave>Email My Bag</button>
+    <button type="button" class="bd sec" data-mbsave>Email My Bag</button>
     <p class="pi-legal">Tick the box to save your bag. Bag reminders are marketing emails, so we need your consent to send them. See our <a href="#">Privacy Policy</a>.</p></section>`}
 function miniBag(){const d=desk(),t=MBT();
   const list=ids('atb',4,10).filter(i=>i!==1);   /* Debenhams: the first two slots are Mirakl sponsored (labelled), then Bloomreach “also bought” */
@@ -163,7 +196,7 @@ document.addEventListener('click',e=>{
   const go=e.target.closest('[data-mbgo]');if(go){e.preventDefault();
     if(go.dataset.mbgo==='pay'||PC.cta==='checkout'){location.href=CHECKOUT+'?brand='+BR();return}
     PC.bagOpen=false;mountBag(false,true);PC.view='bag';S.page='bag';S.search=false;render();scrollTo(0,0);parent.postMessage({protoNav:{view:'bag'}},'*');return}
-  const opt=e.target.closest('.pi-mb [data-mbopt]');if(opt){e.preventDefault();const on=opt.getAttribute('aria-checked')!=='true';opt.setAttribute('aria-checked',on);opt.classList.toggle('on',on);opt.closest('.pi-mb').querySelector('[data-mbsave]').disabled=!on;return}
+  const opt=e.target.closest('.pi-mb [data-mbopt]');if(opt){e.preventDefault();const on=opt.getAttribute('aria-checked')!=='true';opt.setAttribute('aria-checked',on);opt.classList.toggle('on',on);return}
   const sv=e.target.closest('.pi-mb [data-mbsave]');if(sv){e.preventDefault();const f=sv.closest('.pi-mb').querySelector('[data-mbmail]'),v=(f.value||'').trim(),fl=f.closest('.fld');
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){fl.classList.add('invalid');if(!fl.nextElementSibling||!fl.nextElementSibling.classList.contains('fld-err'))fl.insertAdjacentHTML('afterend','<div class="fld-err">Enter an email address like name@example.com</div>');f.focus();return}
     SAVED=v;const m2=document.getElementById('pimb2');if(m2)m2.remove();mountBag(true);return}
@@ -173,10 +206,20 @@ document.addEventListener('click',e=>{
 
 /* ---- BAG page: You Might Also Like under the line items (as templates/bag.html) ---- */
 const oBag=PAGES.bag;
-PAGES.bag=function(){const h=oBag();return h.replace(/<\/main>/,`<div class="pi-full pi-recs">${pcar({id:'bagrec',size:'md',full:1,title:'You Might Also Like',start:5})}</div></main>`)};
+PAGES.bag=function(){
+  if(FM()&&!desk()&&window.DG_bag&&window.DG_bagSummaryHTML){
+    /* the Figma mobile Bag: Your Bag (2) · Order Total · threshold · both checkouts · Bag Product Cards (Coast · Prada + Subscribe & Save) · Promo Code ·
+       Order Summary · You Might Also Like · Recently Viewed */
+    const cards=[DG_bag.card({id:'b1',type:'std',img:'projects/plp-alignment/img/debenhams/p1.jpg',brand:'Coast',name:'Long Sleeve Lace and Pleated Midi Shirt Dress',variant:'12 / Grey',price:'£70.00',was:'£139.00',qty:1,max:10}),
+      DG_bag.card({id:'b2',type:'std',img:'templates/img/bag/prada.webp',brand:'Prada',name:'Paradoxe Eau De Parfum',variant:'90ml / Misc',price:'£103.00',was:'£145.00',qty:1,max:10,addon:'sns'})].join('');
+    const top=`<div class="bs bs-top" style="--bs-bg:#7BE7D8;--bs-fg:#000;--bs-case:uppercase"><div class="bs-ot">Order Total: <b>£64.00</b></div><div class="thresh"><span>Spend <b>£30.00</b> more for free delivery</span><div class="track"><div class="fill" style="width:70%"></div></div></div><div class="bs-ctas"><button type="button" class="bs-cta">Checkout with Deliver+</button><button type="button" class="bs-cta">Checkout without Deliver+</button></div></div>`;
+    const sum=DG_bagSummaryHTML('debenhams',[{price:'£63.20',was:'£79.00'}],false,{wf:3.18,pay3:28.08});
+    const rails=`<div class="pi-full pi-recs">${pcar({id:'bagrec',size:'md',full:1,title:'You Might Also Like',start:5,list:FL('bagrec')})}${pcar({id:'bagrv',size:'md',full:1,title:'Recently Viewed',start:5,list:FL('bagrec')})}</div>`;
+    return `<main class="pi-bag"><div class="pi-bag-hd"><h1 class="bag-title">Your Bag (2)</h1>${top}</div><div class="bag-list">${cards}</div></main><div data-slot="summary">${sum}</div>${rails}`}
+  const h=oBag();return h.replace(/<\/main>/,`<div class="pi-full pi-recs">${pcar({id:'bagrec',size:'md',full:1,title:'You Might Also Like',start:5})}</div></main>`)};
 
 /* ---- after every render: the mini bag ---- */
 const oRender=window.render;
-window.render=function(){oRender.apply(this,arguments);
+window.render=function(){oRender.apply(this,arguments);figHeader();figFooter();
   mountBag(PC.view==='minibag'&&PC.bagOpen!==false)};
 })();

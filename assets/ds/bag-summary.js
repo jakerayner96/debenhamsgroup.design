@@ -43,9 +43,9 @@ window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk,o){o=
   const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]),pct=t.sub?Math.round(t.disc/t.sub*100):0;
   /* Bag 2026 (CYyGeUDy4w02enV7uFxZ6W desktop 1337:256981 / mobile 1337:257572, Jake 3 Nov) — the default: Subtotal · Delivery (now strong + struck was) ·
      Worry-Free Purchase® · Discounts (link + chevron) · optional rows (o.extra = [[label, value]] — Sales Tax, Gift Card, Donation) · hairline · Order Total.
-     o.live:true keeps the 6 Oct live capture (Discount · Deliver+ add-on · Discounts included). */
+     o.wf = a fixed Worry-Free amount, o.pay3 = the pay-in-3 amount (else 4% of the subtotal / total ÷ 3). o.live:true keeps the 6 Oct live capture (Discount · Deliver+ add-on · Discounts included). */
   const v26=!o.live;
-  if(v26){const dn=c.delNow!=null?c.delNow:c.del,wf=c.wf?Math.round(t.sub*c.wfRate*100)/100:0,tot=t.sub-t.disc+dn+wf;t.total=tot;
+  if(v26){const dn=c.delNow!=null?c.delNow:c.del,wf=c.wf?(o.wf!=null?o.wf:Math.round(t.sub*c.wfRate*100)/100):0,tot=t.sub-t.disc+dn+wf;t.total=tot;
     const dl=c.delNow!=null&&c.delNow<c.del?`<span class="bs-dl"><b>${gbp(dn)}</b><s>${gbp(c.del)}</s></span>`:gbp(dn);
     var sum26=`<div class="bs-sum bs-sum--26"><div class="bs-h">Order Summary</div><div class="bs-body"><div class="bs-rows">${row('Subtotal',gbp(t.sub))}${row('Delivery',dl)}${wf?row(esc(c.wf),gbp(wf)):''}</div>
       ${t.disc?row('<button type="button" class="bs-dsc">Discounts<i aria-hidden="true"></i></button>','-'+gbp(t.disc)):''}${(o.extra||[]).map(r=>row(esc(r[0]),esc(r[1]))).join('')}</div>
@@ -53,7 +53,7 @@ window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk,o){o=
   const sum=v26?sum26:`<div class="bs-sum"><div class="bs-h">Order Summary</div>${row('Subtotal',gbp(t.sub))}${t.disc?row('Discount','-'+gbp(t.disc)):''}
     ${c.dplus?`<div class="bs-r bs-dp"><span>${esc(c.dplus)}<small>Optional add-on</small></span><span>${gbp(c.dprice)}</span></div>`:''}${row('Order Total',`<b>${gbp(t.total)}</b>`,'bs-tot')}</div>
     ${t.disc?`<div class="bs-di"><b>Discounts included:</b>${row(esc(c.promo.replace('{p}',pct)),'-'+gbp(t.disc))}</div>`:''}`;
-  const msg=esc(c.msg.replace('{3}',gbp(t.total/3)));
+  const msg=esc(c.msg.replace('{3}',gbp(o.pay3!=null?o.pay3:t.total/3)));
   const pay=`<div class="bs-ctas">${c.cta.map(l=>`<button type="button" class="bs-cta">${esc(l)}</button>`).join('')}
     ${c.cta.length>1?'<div class="bs-or"><span>OR</span></div>':''}${c.wallets.map(k=>(WAL[k](c))+(k==='paylater'?`<div class="bs-msg"><img src="${W}bnpl-paypal-logo.svg" alt="PayPal"><span>${msg} <u>Learn more</u></span></div>`:'')).join('')}</div>
     <div class="bs-cards">${(v26?c.cards26:c.cards).map(logo).join('')}</div>`;

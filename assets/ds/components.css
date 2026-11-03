@@ -948,6 +948,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .bnpl .pc img{max-width:24px;max-height:11px;object-fit:contain}   /* DS Figma 12484:4028: each logo inset in its 32×22 badge, never edge to edge */
 .bnpl .pc--payplus{background:#003B61}.bnpl .pc--klarna{background:#FFB1D2}.bnpl .pc--clearpay{background:#B2FCE3}.bnpl .pc--paypal{background:#FFF;border:1px solid var(--border-subtle)}
 .bnpl .terms{font-weight:var(--w-regular)}.bnpl .small{font-size:12px;color:var(--text-secondary)}
+/* .bnpl--legal (Figma BNPL 2969:10048): logos · legal line 12/17 · See more on its own line, 14 underlined */
+.bnpl--legal .small{line-height:17px}.bnpl--legal .more{font-size:14px;line-height:18px;font-weight:var(--w-mid,400);color:var(--text-primary);text-decoration:underline;align-self:flex-start}
 .thresh{display:flex;flex-direction:column;gap:12px;font-size:14px}
 .thresh b{font-weight:var(--w-strong)}
 .thresh .track{height:4px;border-radius:var(--radius-pill);background:var(--border-subtle);overflow:hidden}
@@ -1058,6 +1060,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .glance li{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:var(--w-regular)}
 .glance li i{width:24px;height:24px;border-radius:99px;border:1px solid var(--border-default);display:grid;place-items:center;flex:none;font-style:normal;font-size:12px}
 .glance--chips{flex-direction:row;flex-wrap:wrap;gap:12px 16px}.glance--chips li{font-size:14px}
+.acc-b ul.glance--chips{flex-direction:row;padding-left:0;margin:0} /* chips keep wrapping inside an accordion body (.acc-b ul is a column) — Figma PDP At A Glance, 3 Nov */
 .linkchips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .linkchips a{background:var(--surface-sunken);border:1px solid var(--border-subtle);border-radius:var(--radius-default);padding:8px 12px;font-size:14px;color:var(--text-primary);text-decoration:none}
 
