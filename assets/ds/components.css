@@ -1686,7 +1686,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
    Keyline only between rows, gap 4 (16px) row padding, 15px semibold head, 16px chevron (icons-down) that flips open. */
 .acc-set .acc{display:block;border:0}.acc-set .acc+.acc{border-top:var(--border-w,1px) solid var(--border-subtle)}
 .acc-set .acc:not(.open) .acc-b{display:none}
-.acc-set .acc-h{padding:var(--gap-4,16px) 0;font:var(--w-strong,600) 15px var(--font-family-base)}
+.acc-set .acc-h{padding:var(--gap-4,16px) 0;font:var(--w-mid,500) 16px/20px var(--font-family-base)} /* = the DS Figma Accordion title (Medium 16), as in the Footer (Jake 3 Nov; was 600 15) */
 .acc-set .acc-h img{width:16px;height:16px}
 .acc-set .acc-b{padding:0 0 var(--gap-4,16px);font-size:14px;font-weight:var(--w-regular,300);line-height:1.6}
 .acc-set .acc-b .glance{margin:0;padding:0}

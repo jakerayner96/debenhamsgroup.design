@@ -381,7 +381,7 @@ const DG_CATALOGUE = [
   dev:{title:'—', status:'partial', note:'Inside CT Product Card (showRatings, averageRating, totalReviewCount).'} },
 
 /* ───────────── PDP MODULES ───────────── */
-{ slug:'accordion', name:'Accordion', group:'PDP modules', tier:'molecule', css:'.acc', figma:'core-pdp C16',
+{ slug:'accordion', name:'Accordion', group:'PDP modules', tier:'molecule', css:'.acc · .acc-set (PDP)', figma:'DS library aIHmkCaTy9c5EWOxAGw0So · Accordion 882:4580 (State × Contents = None / Text / Iconography / At a Glance) · PDP Accordion Set 13843:19203',
   summary:'Title row with a chevron; body reveals beneath. Divider between items, none above the first.',
   use:['PDP details, delivery and returns, footer link groups on mobile.'],
   avoid:['Nesting accordions.'],
