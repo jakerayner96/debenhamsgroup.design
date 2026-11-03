@@ -153,7 +153,7 @@ button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--bor
 .pc-stars span{font-weight:var(--w-regular)}
 /* PDP review stars (live debenhams.com, mobile + desktop): 16px stars 4 apart, 8 to the count — Light 16/16 underlined, text-primary. Figma: PDP Review Stars */
 .pc-stars--pdp .set{gap:4px}.pc-stars--pdp img{width:16px;height:16px}
-.pc-stars--pdp span:not(.set){font-size:16px;line-height:16px;font-weight:var(--w-light,300);color:var(--text-primary);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.pc-stars--pdp span:not(.set){font-size:16px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
 /* compact variant — the shorter PLT / Brand Room format, the target for all fascias */
 .pc--compact{gap:8px}
 .pc--compact .pc-info{gap:6px;font-size:12px}
