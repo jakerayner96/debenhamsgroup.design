@@ -2167,6 +2167,8 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .vs-consent{gap:var(--gap-3,12px);cursor:pointer;-webkit-tap-highlight-color:transparent}   /* the whole row toggles; only the links are exempt */
 .vs-legal{margin:0;flex:1;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
 .vs-legal a{color:var(--text-link);font-weight:var(--w-strong,600);text-decoration:none}
+.vs-warn{margin:calc(-1 * var(--gap-2,8px)) 0 0 36px;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-error)}   /* under the copy (box 24 + gap 12), as live */
+.vs-warn[hidden]{display:none}
 .vs-ctas{display:flex;gap:var(--gap-2,8px)}.vs-ctas .bd{flex:1 1 0;width:auto;min-width:0;padding-left:var(--gap-3,12px);padding-right:var(--gap-3,12px);white-space:nowrap}   /* side by side at every width (Jake, 2 Nov) */
 .vs-note{margin:0;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary);text-align:center}
 .vs-intro.mdl--up{padding-bottom:calc(var(--gap-6,24px) + env(safe-area-inset-bottom,0px))}

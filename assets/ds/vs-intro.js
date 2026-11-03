@@ -1,6 +1,6 @@
 /* DG Group Design System — Virtual Stylist intro (2 Nov 2026, vto-prototype v2).
    The launch modal for Virtual Stylist (virtual try-on), on the DS .mdl: How it works (.howto, three numbered steps) · Photo tips (.ptips, 2 × 2) ·
-   the 18+ consent row (DS checkbox .chk in .chk-row, centred on the copy, + .vs-legal; a legal record, it never gates the buttons) · Camera / Upload
+   the 18+ consent row (DS checkbox .chk in .chk-row, centred on the copy, + .vs-legal; Camera / Upload need it ticked: unticked they show .vs-warn, as live) · Camera / Upload
    (.bd pri .ic20 with the library glyphs, side by side, as v1) · the try-on note (.vs-note). Slide up (.mdl--up) on phones, centred .mdl--md from 600px; six start screen layouts (o.layout, below).
      DG_vsIntro.html(o)   → the .mdl only (catalogue, Figma)       o = {fascia:'Debenhams', desk:bool, left:5|n, consent:bool, layout:'1'..'6'}
      DG_vsIntro.layer(o)  → scrim + .mdl in a fixed .vs-layer (pages)
@@ -37,7 +37,7 @@
   const consentRow=o=>`<div class="chk-row vs-consent" data-vs-consent role="checkbox" aria-checked="${o.consent?'true':'false'}" tabindex="0">
           <button class="chk${o.consent?' on':''}" tabindex="-1" aria-hidden="true"></button>
           <p class="vs-legal">I'm 18 or over and consent to my photo being processed by ${esc(o.fascia||'Debenhams')} and its AI providers to create my virtual try-on. I accept the <a href="#" data-vs-link>Terms &amp; Conditions</a> and <a href="#" data-vs-link>Privacy Policy</a>.</p>
-        </div>`;
+        </div><p class="vs-warn" data-vs-warn role="alert" hidden>Please tick the box above to continue</p>`;   /* live copy (debenhams.com, 3 Nov 2026) */
   function html(o){o=o||{};const k=LAYOUTS[o.layout]?String(o.layout):'1',L=LAYOUTS[k];
     return `<div class="mdl ${o.desk?'mdl--md':'mdl--up'} vs-intro vs-intro--l${k} vs-intro--steps-${L.steps} vs-intro--tips-${L.tips} vs-intro--${L.align}${L.welcome?' vs-intro--welcome':''}" role="dialog" aria-modal="true" aria-labelledby="vs-intro-t">
       <div class="modal-hd"><span class="mt" id="vs-intro-t">${L.welcome?'Welcome to Virtual Stylist':'Virtual Stylist'}</span><button class="modal-x" data-vs-close aria-label="Close"></button></div>
@@ -49,9 +49,11 @@
     el.querySelectorAll('[data-vs-close]').forEach(b=>b.onclick=e=>{e.preventDefault();h.onClose&&h.onClose()});
     el.querySelectorAll('[data-vs-link]').forEach(a=>a.onclick=e=>{e.preventDefault();e.stopPropagation()});
     const row=el.querySelector('[data-vs-consent]');
-    if(row){const t=()=>{const on=row.getAttribute('aria-checked')!=='true';row.setAttribute('aria-checked',on);row.querySelector('.chk').classList.toggle('on',on);h.onConsent&&h.onConsent(on)};
+    const warn=el.querySelector('[data-vs-warn]'),ok=()=>!row||row.getAttribute('aria-checked')==='true';
+    if(row){const t=()=>{const on=row.getAttribute('aria-checked')!=='true';row.setAttribute('aria-checked',on);row.querySelector('.chk').classList.toggle('on',on);if(on&&warn)warn.hidden=true;h.onConsent&&h.onConsent(on)};
       row.onclick=e=>{if(e.target.closest('a'))return;t()};row.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();t()}}}
     const c=el.querySelector('[data-vs-camera]'),u=el.querySelector('[data-vs-upload]');
-    if(c)c.onclick=()=>h.onCamera&&h.onCamera();if(u)u.onclick=()=>h.onUpload&&h.onUpload()}
+    const go=f=>()=>{if(!ok()){if(warn)warn.hidden=false;return}f&&f()};   /* as live: unticked, the buttons show the warning instead */
+    if(c)c.onclick=go(h.onCamera);if(u)u.onclick=go(h.onUpload)}
   root.DG_vsIntro={html,layer,wire,note,STEPS,TIPS,LAYOUTS};
 })(typeof window!=='undefined'?window:globalThis);
