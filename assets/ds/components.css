@@ -2296,3 +2296,43 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .vs-dots i.on{background:var(--icon-primary);width:24px}
 [data-vs-next-wrap] .bd{width:100%}
 .vs-intro--pages.mdl--md .mdl-bd{min-height:420px}
+/* ---- Navigation menu (.mnav mobile drawer · .mega desktop mega menu), 3 Nov 2026 — copied from the live sites (all seven run the same platform menu).
+   Markup + behaviour: assets/ds/nav.js (DG_nav, mounts on the DS header: burger → drawer, desktop category hover → mega menu). Data: assets/ds/nav-live.js.
+   Per-fascia values come in as custom properties (--mn-*) set from the data's st block, so the copy, order and imagery stay as live.
+   Drawer: full screen on the page ground · header 56: logo | 1px divider | flag + GBP £ · close 24 right · level 1 rows 50 (16 margins, optional 38 roundel,
+   chevron) · level 2 slides in: back row 50 (chevron-left + label 16), groups (heading, 36px link rows, 1px hairline under each group), badges (pill 10 bold).
+   Mega: under the 40px category row, full width on --mn-panel, columns 196 + gap 8 (32px) from 53px in, headings + 32px link rows, campaign tile 212 × 315 + caption,
+   the page under a veil (--mn-veil). Active category on --mn-act, 0 8 padding. */
+.mnav{position:fixed;inset:0;z-index:var(--z-modal,1000);background:var(--surface-page,#FFF);color:var(--text-primary);font-family:var(--font-family-base);display:flex;flex-direction:column;overflow:hidden;animation:mnin .25s ease-out both}
+@keyframes mnin{from{transform:translateX(-100%)}to{transform:none}}
+.mnav-hd{flex:none;height:56px;display:flex;align-items:center;gap:var(--gap-3,12px);padding:0 var(--gap-4,16px);border-bottom:1px solid var(--mn-line,#E7E7E7)}
+.mnav-hd .lg{height:20px;width:auto;max-width:106px;object-fit:contain;object-position:left center;display:block}
+.mnav-hd .dv{width:1px;height:24px;background:var(--mn-line,#E7E7E7)}
+.mnav-hd .cur{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:12px;color:#333;flex:1}.mnav-hd .cur img{width:22px;height:14px;display:block}
+.mnav-x{width:24px;height:24px;border:0;padding:0;background:none;cursor:pointer;display:grid;place-items:center}.mnav-x img{width:24px;height:24px}
+.mnav-body{position:relative;flex:1;min-height:0;overflow:hidden}
+.mnav-pane{position:absolute;inset:0;overflow-y:auto;background:var(--surface-page,#FFF);scrollbar-width:none;transition:transform .3s ease}
+.mnav-pane::-webkit-scrollbar{display:none}
+.mnav-pane--l2{transform:translateX(100%)}.mnav.l2 .mnav-pane--l2{transform:none}.mnav.l2 .mnav-pane--l1{transform:translateX(-30%)}
+.mnav-row{display:flex;align-items:center;gap:var(--gap-3,12px);width:100%;min-height:50px;padding:0 var(--gap-4,16px);border:0;background:none;cursor:pointer;text-align:left;font:inherit;font-size:var(--mn-l1-fs,14px);font-weight:var(--mn-l1-fw,300);color:var(--mn-l1-col,#000);text-decoration:none;box-sizing:border-box}
+.mnav-row .rd{width:38px;height:38px;border-radius:var(--radius-pill);object-fit:cover;flex:none;display:block}
+.mnav-row span{flex:1;min-width:0}
+.mnav-row .ch{width:24px;height:24px;flex:none}
+.mnav-back{display:flex;align-items:center;gap:var(--gap-3,12px);width:100%;height:50px;padding:0 var(--gap-4,16px);border:0;border-bottom:1px solid var(--mn-line,#E7E7E7);background:none;font:inherit;font-size:16px;font-weight:var(--w-regular,400);color:var(--text-primary);cursor:pointer;text-align:left}
+.mnav-back img{width:20px;height:20px}
+.mnav-grp{padding:var(--gap-4,16px) var(--gap-4,16px) var(--gap-2,8px);border-bottom:1px solid var(--mn-line,#E7E7E7)}
+.mnav-h{margin:0 0 var(--gap-2,8px);font-size:var(--mn-mh-fs,16px);font-weight:var(--mn-mh-fw,700);line-height:24px}
+.mnav-a,.mega-a{display:flex;align-items:center;gap:var(--gap-3,12px);color:inherit;text-decoration:none}
+.mnav-a{min-height:36px;font-size:var(--mn-ml-fs,14px);font-weight:var(--mn-ml-fw,300)}
+.mnav-b,.mega-b{display:inline-flex;align-items:center;height:16px;padding:2px 8px;box-sizing:border-box;border-radius:var(--radius-pill);background:var(--mn-badge,#7BE7D8);color:var(--mn-badge-fg,#000);font-size:10px;font-weight:700;text-transform:uppercase;white-space:nowrap;line-height:1}
+.hd-nav a.mega-on{background:var(--mn-act,#F3F4F6);color:var(--text-primary);align-self:stretch;display:flex;align-items:center;padding:0 var(--gap-2,8px);margin:0 calc(var(--gap-2,8px) * -1);text-decoration:none}
+.mega{position:fixed;left:0;right:0;z-index:calc(var(--z-modal,1000) - 2);background:var(--mn-panel,#FFF);font-family:var(--font-family-base);color:var(--text-primary);box-shadow:0 1px 0 var(--mn-line,#E7E7E7)}
+.mega-in{max-width:1440px;margin:0 auto;padding:28px 45px var(--gap-8,32px) 53px;display:flex;gap:var(--gap-8,32px);align-items:flex-start;box-sizing:border-box}
+.mega-col{width:196px;flex:none;display:flex;flex-direction:column;gap:var(--gap-6,24px)}
+.mega-h{margin:0 0 var(--gap-1,4px);font-size:var(--mn-dh-fs,16px);font-weight:var(--mn-dh-fw,600);line-height:24px}
+.mega-a{min-height:32px;font-size:var(--mn-dl-fs,14px);font-weight:var(--mn-dl-fw,300);line-height:20px}
+.mega-a:hover{text-decoration:underline}
+.mega-tile{margin-left:auto;width:212px;flex:none;display:flex;flex-direction:column;gap:var(--gap-2,8px);text-decoration:none;color:inherit;font-size:var(--mn-dl-fs,14px)}
+.mega-tile img{width:212px;height:auto;aspect-ratio:212/315;object-fit:cover;display:block} /* campaign imagery (CMS), not a product image */
+.mega-tile span{text-align:center}
+.mega-veil{position:fixed;left:0;right:0;bottom:0;z-index:calc(var(--z-modal,1000) - 3);background:var(--mn-veil,rgba(255,255,255,.8))}

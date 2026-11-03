@@ -19,7 +19,7 @@
     if(M.page==='pdp'&&t.closest('.pdp-ctas .bd.pri')){e.preventDefault();added();return}
     if(t.closest('.pdp-gal'))return;
     if(t.closest('article.pc,.bag-item,.bpc-img,.bpc-name')){e.preventDefault();e.stopPropagation();go('pdp');return}
-    if(t.closest('.hd-nav a,.roundel,.hm-t,.hm-ov,.bc a,.pcar-all,.catpill,.linkchips a,.cat-row a')){e.preventDefault();e.stopPropagation();go('plp')}
+    if(t.closest('.hd-nav a,.mega-a,.mnav-a,.roundel,.hm-t,.hm-ov,.bc a,.pcar-all,.catpill,.linkchips a,.cat-row a')){e.preventDefault();e.stopPropagation();go('plp')}
   },true);
   /* Add to bag: the DS toast (catalogue Toast · Top, actionable), 6s; the header bag count goes up by one. Bundling (dg:bundle) adds n items */
   let tt;
@@ -33,6 +33,8 @@
     addEventListener('message',e=>{const d=e.data||{};
       if(d.protoSet)document.documentElement.classList.toggle('exporting',!!d.exporting);   /* DS export fixes (export-masks.js) key off html.exporting */
       if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+    /* the DS navigation menu (burger drawer + mega menu) on the PLP's own header */
+    if(!window.DG_nav){const base=document.currentScript?document.currentScript.src:location.href;['../../assets/ds/nav-live.js','../../assets/ds/nav.js'].forEach(f=>{const x=document.createElement('script');x.src=new URL(f,base).href;x.async=false;document.head.appendChild(x)})}
     if(!window.DG_exportMasks){const x=document.createElement('script');x.src=new URL('../../assets/ds/export-masks.js',document.currentScript?document.currentScript.src:location.href).href;document.head.appendChild(x)}
     const ready=()=>parent.postMessage({protoReady:1},'*');
     if(document.readyState==='complete')setTimeout(ready,50);else addEventListener('load',ready);
