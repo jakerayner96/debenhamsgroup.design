@@ -139,7 +139,7 @@ function laterModal(){const d=desk();return `<div class="pi-mb pi-mb2" id="pimb2
   <div class="mdl ${d?'mdl--sm mdl-anim-fade':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Save your bag">
     <div class="modal-hd"><div class="mt"><span>Save your bag</span></div><button class="modal-x" aria-label="Close" data-mb2x></button></div>
     <div class="mdl-bd">${saveBag(true)}</div></div></div>`}
-function toast(){const p=mainItem(),ts=PC.toastStyle||'thumb';return `<div class="toast toast--top toast--prod${ts==='thumb'?'':' toast--'+ts} pi-toast" id="pitoast" role="status"><img class="toast-img" src="${p.img}" alt=""><span class="toast-tx">Added to Bag</span><button class="act" type="button" data-mbgo>${CTA()}</button>${EXPORTING?'':'<i class="toast-timer"></i>'}</div>`}
+function toast(){const p=mainItem(),ts=PC.toastStyle==='edge'?'edge':'square';return `<div class="toast toast--top toast--prod${ts==='edge'?' toast--edge':''} pi-toast" id="pitoast" role="status"><img class="toast-img" src="${p.img}" alt=""><span class="toast-tx">Added to Bag</span><button class="act" type="button" data-mbgo>${CTA()}</button>${EXPORTING?'':'<i class="toast-timer"></i>'}</div>`}
 let TT=0;
 function mountBag(open,instant){const old=document.getElementById('pimb'),ot=document.getElementById('pitoast');clearTimeout(TT);
   if(ot)ot.remove();

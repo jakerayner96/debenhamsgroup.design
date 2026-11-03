@@ -124,7 +124,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
   .gal{overflow:hidden;scroll-snap-type:none;gap:0}
   .gal .slide{flex:0 0 100%;height:auto;aspect-ratio:2/3}
   .pag{display:none}
-  .arrow{display:grid;place-items:center;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:var(--radius-pill);background:#FFF;box-shadow:var(--shadow-tile);border:0;padding:0;cursor:pointer;z-index:3}
+  .arrow{display:grid;place-items:center;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:var(--radius-pill);background:#FFF;box-shadow:0 0 14px rgba(0,0,0,.1);border:0;padding:0;cursor:pointer;z-index:3}
   .arrow img{width:16px;height:16px}.arrow.l{left:12px}.arrow.r{right:12px}
   .onimg{left:16px;right:16px;bottom:16px;gap:8px;flex-direction:row;align-items:center}
   .galmain .onimg .ai-pill{height:36px;font-size:14px;padding:0 16px 0 12px;gap:6px}.galmain .onimg .ai-icon{width:18px!important;height:18px!important}
@@ -142,8 +142,8 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 @media(min-width:1024px){.tr-chips{top:16px;right:16px}.ptags{right:16px;bottom:16px}.ptags span{font-size:14px;padding:8px 12px}}
 .tchip{height:auto!important;padding:9px 14px!important;gap:6px!important;font-size:13px!important;font-weight:var(--w-regular,300)!important}.tchip img{width:16px;height:12px}.tchip .ai-icon{width:16px!important;height:16px!important}
 .prow .pname{margin-top:4px}
-.wl-c{flex:none;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:#FFF;box-shadow:var(--shadow-puck);cursor:pointer}.wl-c img{width:20px;height:20px;object-fit:contain}
-.pc .pc-iconbtn{border-radius:50%!important;width:32px;height:32px;background:#FFF;box-shadow:var(--shadow-puck);border:0}.pc .pc-iconbtn img{width:16px;height:16px}
+.wl-c{flex:none;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:#FFF;box-shadow:var(--shadow-pill);cursor:pointer}.wl-c img{width:20px;height:20px;object-fit:contain}
+.pc .pc-iconbtn{border-radius:50%!important;width:32px;height:32px;background:#FFF;box-shadow:var(--shadow-pill);border:0}.pc .pc-iconbtn img{width:16px;height:16px}
 .buy .bd{width:100%}
 .pbrand{font-size:16px;font-weight:600}.pname{font-size:16px;font-weight:var(--w-regular,300);margin-top:2px}
 .prow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}

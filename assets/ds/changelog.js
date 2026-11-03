@@ -12,6 +12,10 @@ window.DG_CHANGELOG=[
    "Full-screen layer .vs-layer--fs: the intro is .mdl--fs on phones (header top, body centred and scrolling, footer pinned: consent, Camera / Upload, note) · by Virtual Stylist v2"
   ],
   "changed": [
+   "Free delivery threshold in a container (.thresh--box) to Jake’s Figma (13732:374 / :377): Grey 05 ground (#FAFAFA), radius 4, 14 light copy with the amount strong, Grey 2 track; qualified = 20px tick circle in the action colour — one spec on every device · by Product carousel review (Figma DS page 13639:10), Jake 3 Nov",
+   "Product toast (.toast--prod) to Jake’s Figma (13732:383 / :386), one spec on every device: thumbnail 33 × 50 radius 4 inset 4 (58 tall) · --edge 40 × 60 flush left (60 tall) · card radius 8 · shadow 0 0 20 12% · 14 light + View Bag 14 strong in the action colour; the 24 × 36 thumb and --square styles retired · by Product carousel review (Figma DS page 13639:10), Jake 3 Nov",
+   "Navigation Button (.nav-btn + .nav-btn--left / --right / --up / --down / --close) for EVERY directional arrow (Figma 9144-1896): carousel arrows, PDP gallery arrows (shadow was --shadow-pill), home tile arrows (were 90% white with a keyline) · by Product carousel review (Figma DS page 13639:10), Jake 3 Nov",
+   "Wishlist = the Icon Only Button (Figma 3504-281) everywhere: .wl-btn and .pc-iconbtn take its shadow 0 0 14 −4 25% (were --shadow-puck / 0 2 8 14%) · by Product carousel review (Figma DS page 13639:10), Jake 3 Nov",
    "Virtual Stylist intro: every line of copy 12/16 or larger (steps and tips were 10/13), Jake 3 Nov: too small; consent row moved into the pinned footer; phones now full screen (was the .mdl--up slide up); full screen enlarges the step cards (32px glyphs) and tip tiles (56 tall) · by Virtual Stylist v2"
   ]
  },

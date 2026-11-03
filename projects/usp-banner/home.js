@@ -166,7 +166,7 @@ window.HOME_CSS=`
 .hm-t img{display:block;width:100%;height:auto;object-fit:cover}
 .hm-t img.rd{border-radius:50%}
 .hm-ov{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap;box-sizing:border-box}
-.hm-ar{position:absolute;width:32px;height:32px;margin-top:-16px;border-radius:50%;background:rgba(255,255,255,.9);box-shadow:0 0 0 1px rgba(0,0,0,.06);z-index:2;pointer-events:none}
+.hm-ar{position:absolute;width:32px;height:32px;margin-top:-16px;border-radius:50%;background:#FFF;box-shadow:0 0 14px rgba(0,0,0,.1);z-index:2;pointer-events:none} /* = DS Navigation Button (9144-1896) */
 .hm-ar::after{content:'';position:absolute;left:50%;top:50%;width:7px;height:7px;border:solid #000;border-width:0 1.5px 1.5px 0;transform:translate(-65%,-50%) rotate(-45deg)}
 .hm-ar[style*="left:"]::after{transform:translate(-35%,-50%) rotate(135deg)}
 .hm-p .hm-ar{margin-top:0}

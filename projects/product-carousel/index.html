@@ -181,7 +181,7 @@ function renderPanel(host,S,update){
   <div class="card"><h3>Screen <small>${bn}</small></h3>${opt('home','Home')}${opt('pdp','PDP')}${opt('search','Search')}${opt('minibag','Mini Bag')}${opt('bag','Bag')}</div>
   ${c.view==='minibag'?`<div class="card"><h3>Added To Bag</h3>
     ${opt2('live','Live (no reccs)')}${opt2('look','Complete the look')}${opt2('toast','Toast')}${opt2('save','Save your bag')}${opt2('later','Save for later')}
-    ${(c.mbType||'live')==='toast'?`<div style="margin-top:12px">${seg('toastStyle',c.toastStyle||'thumb',[['thumb','Thumb'],['square','Square'],['edge','Edge']])}</div>`:`<div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div>`}</div>
+    ${(c.mbType||'live')==='toast'?`<div style="margin-top:12px">${seg('toastStyle',c.toastStyle==='edge'?'edge':'square',[['square','Square'],['edge','Edge']])}</div>`:`<div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div>`}</div>
   ${(c.mbType||'live')==='look'?`<div class="card"><h3>Complete the look rail ${sw('ctlTitleOn',c.ctlTitleOn!==false,'Title')}</h3>
     ${c.ctlTitleOn!==false?`<input class="pi-in" data-in="ctlTitle" value="${(c.ctlTitle||'Complete The Look').replace(/"/g,'&quot;')}" aria-label="Rail title">`:''}
     <div class="f" style="margin-top:10px"><span>Card text</span>${seg('ctlText',c.ctlText||'12',[['14','14'],['12','12']])}</div>

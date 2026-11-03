@@ -35,7 +35,7 @@
 .pc-img{aspect-ratio:var(--ratio-product);background:var(--surface-media);position:relative;overflow:hidden;width:100%} /* square corners — matches live + Figma */
 .pc-img img.ph{width:100%;height:100%;object-fit:cover;display:block}
 .pc-actions{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:8px;align-items:center}
-.pc-iconbtn{width:32px;height:32px;min-width:32px;border-radius:var(--radius-pill);background:var(--surface-raised);border:none;display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 8px rgba(15,15,15,.14);padding:0}
+.pc-iconbtn{width:32px;height:32px;min-width:32px;border-radius:var(--radius-pill);background:var(--surface-raised);border:none;display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-pill);padding:0} /* = Icon Only Button · Small (Figma 3504-281) */
 .pc-iconbtn img{width:16px;height:16px;display:block;object-fit:contain}
 .pc-iconbtn:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 .pc-iconbtn--sq{border-radius:var(--radius-default)} /* boohooMAN / KM / Brand Room run square wishlist buttons */
@@ -695,18 +695,19 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 /* .toast--prod (mini bag “toast” version — Added to Bag without the modal; 3 Nov 2026): the DS toast (Figma 5146-559 — 50 tall, 14 copy, action right)
    with a tiny product thumbnail, solid white + the toast shadow, at the BOTTOM of the screen — rises in, sinks out (.toast--out), never covers the header or
    the sticky USP bar. Copy: “Added to Bag” · View Bag in the action colour. A faint 2px countdown line along the foot (--toast-ms, 6s).
-   Thumbnail styles: (default) 24 × 36 portrait inside the padding · --square 34 × 34 crop · --edge a full-height 2:3 image flush to the left edge.
+   Two styles (Figma DS 13732:383 / 13732:386, Jake 3 Nov), one spec on every device: (default) a 33 × 50 thumbnail, radius 4, inset 4 — 58 tall ·
+   --edge a 40 × 60 image flush to the left edge — 60 tall. Card radius 8, shadow 0 0 20 12%, copy 14 light, View Bag 14 strong in the action colour.
    Mobile: the bottom of the screen, 16 in. Desktop: centred under the USP banners, 400 wide. */
-.toast.toast--prod{top:auto;bottom:16px;left:16px;right:16px;min-height:50px;box-sizing:border-box;padding:7px 16px 7px 12px;background:var(--surface-raised,#FFF);-webkit-backdrop-filter:none;backdrop-filter:none;
+.toast.toast--prod{top:auto;bottom:16px;left:16px;right:16px;min-height:58px;box-sizing:border-box;padding:4px 16px 4px 4px;background:var(--surface-raised,#FFF);-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:var(--radius-lg);
   box-shadow:0 0 20px rgba(0,0,0,.12);gap:var(--gap-3,12px);overflow:hidden;justify-content:flex-start;font-size:14px;line-height:18px;font-weight:var(--w-regular);animation:toastUp .36s cubic-bezier(.2,.8,.2,1) both}
 .toast.toast--prod.toast--out{animation:toastDown .3s ease-in forwards}
 @keyframes toastUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes toastDown{from{opacity:1;transform:none}to{opacity:0;transform:translateY(24px)}}
-.toast--prod .toast-img{width:24px;height:36px;flex:none;object-fit:cover;background:var(--surface-media);display:block}
+.toast--prod .toast-img{width:33px;height:50px;flex:none;object-fit:cover;background:var(--surface-media);display:block;border-radius:var(--radius-default)}
 .toast--prod .toast-tx{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .toast--prod .act{font-size:14px;line-height:18px}
-.toast--prod.toast--square{padding:8px 16px 8px 8px}.toast--prod.toast--square .toast-img{width:34px;height:34px;border-radius:calc(var(--radius-lg) - 4px)}
-.toast--prod.toast--edge{padding:0 16px 0 0;align-items:stretch}.toast--prod.toast--edge .toast-img{width:34px;height:auto;min-height:50px}.toast--prod.toast--edge .toast-tx,.toast--prod.toast--edge .act{align-self:center}
+
+.toast--prod.toast--edge{padding:0 16px 0 0;min-height:60px;align-items:stretch}.toast--prod.toast--edge .toast-img{width:40px;height:60px;border-radius:0}.toast--prod.toast--edge .toast-tx,.toast--prod.toast--edge .act{align-self:center}
 .toast--prod .toast-timer{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--text-link);opacity:.5;transform-origin:left;animation:toastTimer var(--toast-ms,6s) linear forwards}
 @keyframes toastTimer{from{transform:scaleX(1)}to{transform:scaleX(0)}}
 /* desktop: centred under the USP banners (--toast-top = the bottom of the last USP row in view, or of the sticky bar once scrolled), drops in from above */
@@ -860,6 +861,16 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pcar .pc-info{padding-inline:var(--pcar-info-x,0px)}
 /* mobile / touch: a free scroll — no snap, momentum only (whip it to the end, or ease it one card) */
 @media(max-width:1023px),(hover:none){.pcar-track{scroll-snap-type:none;scroll-behavior:auto}.pcar-track>*{scroll-snap-align:none}}
+/* Navigation Button (.nav-btn, Figma DS 9144-1896) — EVERY directional arrow on site (rails, PDP gallery, home tiles, modals): 32px white circle,
+   shadow 0 0 14px 10%, 16px Icons / Left · Right · Up · Down at 1pt (12px Close); Pressed / hover = no shadow. .nav-btn--left / --right / --up / --down / --close set the glyph. */
+.nav-btn{display:grid;place-items:center;width:32px;height:32px;flex:none;padding:0;border:0;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);box-shadow:0 0 14px rgba(0,0,0,.1);cursor:pointer;transition:box-shadow .15s,opacity .15s}
+.nav-btn:hover,.nav-btn:active{box-shadow:none}.nav-btn:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#2797FF);outline-offset:2px}
+.nav-btn::before{content:"";width:16px;height:16px;background:var(--text-primary);-webkit-mask:var(--nav-ic,url(icons/lib/icons-right.svg)) center/contain no-repeat;mask:var(--nav-ic,url(icons/lib/icons-right.svg)) center/contain no-repeat}
+.nav-btn--left{--nav-ic:url(icons/lib/icons-left.svg)}.nav-btn--left::before{transform:translateX(-1px)}.nav-btn--right::before{transform:translateX(1px)}
+.nav-btn--up{--nav-ic:url(icons/lib/icons-up.svg)}.nav-btn--down{--nav-ic:url(icons/lib/icons-down.svg)}.nav-btn--close{--nav-ic:url(icons/lib/icons-close.svg)}.nav-btn--close::before{width:12px;height:12px}
+.nav-btn>img{display:none} /* old markup with an <img> glyph: the mask draws it */
+/* the PDP gallery arrows are the Navigation Button */
+@media(min-width:1024px){.pdp-gal .nav{box-shadow:0 0 14px rgba(0,0,0,.1)!important;transition:box-shadow .15s}.pdp-gal .nav:hover,.pdp-gal .nav:active{box-shadow:none!important}}
 /* arrows = the DS Navigation Button (Figma 9144-1896) — desktop + mouse only, centred on the image, hidden at each end; a click pages by the cards in
    view minus one (carousel.js). 32px white circle, shadow 0 0 14px 10%, 16px Icons / Left · Right at 1pt nudged 1px off centre; Pressed / hover = no shadow.
    .pcar--no-arr: no arrows (trackpad / swipe only). */
@@ -931,8 +942,10 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .thresh .track{height:4px;border-radius:var(--radius-pill);background:var(--border-subtle);overflow:hidden}
 .thresh .fill{height:100%;border-radius:var(--radius-pill);background:var(--tickc)}
 .thresh--ok{flex-direction:row;align-items:center;gap:12px}
-/* .thresh--box (3 Nov 2026, mini bag): the threshold in a container so it stands out — the fascia’s light tint (--neutral), padding gap 3 / 4 (12 / 16), the fascia radius; white track */
-.thresh--box{background:var(--neutral,#F2F2F2);padding:var(--gap-3,12px) var(--gap-4,16px);border-radius:var(--radius-default)}.thresh--box .track{background:var(--surface-raised,#FFF)}
+/* .thresh--box (mini bag — Figma DS 13732:374 / 13732:377, Jake 3 Nov): Grey 05 container (--surface-sunken #FAFAFA), padding 12 / 16, radius 4; copy 14 light ink,
+   amount strong; track Grey 2, fill --tickc; qualified: the 20px tick circle in the action colour + 14 light copy. One size on every device. */
+.thresh--box{background:var(--surface-sunken,#FAFAFA);padding:var(--gap-3,12px) var(--gap-4,16px);border-radius:var(--radius-default);font-weight:var(--w-regular);line-height:18px}.thresh--box .track{background:var(--border-subtle)}
+.thresh--box.thresh--ok .tick{background:var(--text-link)}
 .thresh--ok .tick{width:20px;height:20px;border-radius:99px;background:var(--tickc);display:grid;place-items:center;flex:none}
 .thresh--ok .tick::after{content:"";width:8px;height:4px;border-left:2px solid #FFF;border-bottom:2px solid #FFF;transform:translateY(-1px) rotate(-45deg)}
 /* Deliver+ — SEEL Enhancements 2026 exact (Latest Components 28.08.26). Ground/ink/link/checkbox/radius per fascia via --dplus-*;
@@ -1787,7 +1800,8 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .memb-banner button{flex:none;height:32px;padding:0 16px;border:0;border-radius:var(--radius-default,4px);background:#000;color:#FFF;font:var(--w-strong,600) 14px var(--font-family-base);letter-spacing:.02em;cursor:pointer}
 
 /* Wishlist button: a white circle on the puck shadow — 44px beside the PDP title (VTO Figma 15656:21955), 32px on product cards */
-.wl-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;padding:0;border:0;border-radius:50%;background:#FFF;box-shadow:var(--shadow-puck);cursor:pointer}.wl-btn img{width:20px;height:20px;object-fit:contain}
+/* Wishlist = the DS Icon Only Button (Figma 3504-281, Jake 3 Nov): Large 44 (20 glyph) beside the PDP title, Small 32 (16 glyph) on imagery; white circle, shadow 0 0 14 -4 25% */
+.wl-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;padding:0;border:0;border-radius:50%;background:#FFF;box-shadow:var(--shadow-pill);cursor:pointer}.wl-btn img{width:20px;height:20px;object-fit:contain}
 .wl-btn--sm{width:32px;height:32px}.wl-btn--sm img{width:16px;height:16px}
 /* Tooltip (.tip) — "something new here" coach mark. Figma HoBuVNEhf1qpL61XFipy0f 135:8952 (Best App Ever), nib flipped to point up:
    a flat bubble on the fascia's page colour, centred copy — "NEW!" semibold over 12/16 text in the fascia's regular weight (--w-regular; Figma = Roboto Light for PLT) — a 24px diamond nib and a 12px close top right.
