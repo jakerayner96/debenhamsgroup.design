@@ -31,7 +31,7 @@
   /* DG_pcarHTML(o) — the markup (catalogue entry 'product-carousel') for a placement, so pages never hand-build a rail (2 Nov 2026, Master prototype).
      o: size 'lg'|'md'|'sm' · title · sub · tabs[] · all (View all label — off by default, Jake 2 Nov) · per (cards in view / grid columns, desktop) · grid · look (image only)
         · bleed (mobile edge to edge) · full (to the page margin, fixed 248px desktop cards) · arrows:false (no chevrons) · id (data-pl) · brand (fallback brand line)
-        · compact (the DS .pc--compact card, 12px copy) · card (mobile card width px, default 165) · qa (the DS circle quick add, top right of the image — square on boohooMAN / KM / Brand Room; data-qa = item.i, tick once item.added —
+        · fixed (--pcar-card on desktop too) · compact (the DS .pc--compact card, 12px copy) · card (mobile card width px, default 165) · qa (the DS circle quick add, top right of the image — square on boohooMAN / KM / Brand Room; data-qa = item.i, tick once item.added —
           Complete the Look in the mini bag; the page decides what a tap adds)
         items[]: {img, brand, name, price, was, pct, sponsored, swatches:[{c, name, img}], href, i}
      Card (DG_pcarCard) = the DS product card format, always: (Sponsored) · brand (never blank — the item's, else o.brand) · name, 2 lines · rail price
@@ -49,7 +49,7 @@
     if(o.look)return `<article class="pc"${at}>${img}</article>`;
     return `<article class="pc${o.compact?' pc--compact':''}"${at}>${img}${DG_pcarInfo(p,o)}</article>`};
   window.DG_pcarHTML=function(o){o=o||{};const grid=!!o.grid,tabs=o.tabs&&o.tabs.length?o.tabs:null,hd=o.title||o.sub||tabs||o.all;
-    const cls=['pcar','pcar--'+(o.size||'md'),grid&&'pcar--grid',o.look&&'pcar--look',o.full&&'pcar--full',o.arrows===false&&'pcar--no-arr',o.bleed!==false&&'pcar--bleed'].filter(Boolean).join(' ');
+    const cls=['pcar','pcar--'+(o.size||'md'),grid&&'pcar--grid',o.look&&'pcar--look',o.full&&'pcar--full',o.fixed&&'pcar--fixed',o.arrows===false&&'pcar--no-arr',o.bleed!==false&&'pcar--bleed'].filter(Boolean).join(' ');
     return `<section class="${cls}" style="--pcar-per:${o.per||5}${o.card?';--pcar-card:'+o.card+'px':''}"${o.id?` data-pl="${esc(o.id)}"`:''}>${hd?`<header class="pcar-hd">${o.title||o.sub?`<div class="pcar-tt">${o.title?`<h2 class="pcar-t">${esc(o.title)}</h2>`:''}${o.sub?`<p class="pcar-sub">${esc(o.sub)}</p>`:''}</div>`:''}${tabs?`<div class="pcar-tabs">${tabs.map((t,i)=>`<button class="chip${i===(o.tab||0)?' on':''}" aria-pressed="${i===(o.tab||0)}">${esc(t)}</button>`).join('')}</div>`:''}${o.all?`<a class="pcar-all" href="#">${esc(o.all===true?'View all':o.all)}</a>`:''}</header>`:''}
   <div class="pcar-body">${grid?'':'<button class="pcar-arr pcar-arr--prev" disabled></button>'}<div class="pcar-track">${(o.items||[]).map(p=>DG_pcarCard(p,o)).join('')}</div>${grid?'':'<button class="pcar-arr pcar-arr--next"></button>'}</div></section>`};
   /* swatch taps (any rail card): select the colour, swap the image to its shot (data-img). With no shot, the colour tints the image as a stand-in (sample feeds). */

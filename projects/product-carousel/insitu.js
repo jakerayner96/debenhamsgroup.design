@@ -19,7 +19,7 @@ const st=document.createElement('style');st.textContent=`
 .pi-mb>.mdl{z-index:3}
 .pi-mb .mdl--up{max-height:calc(100% - 56px);overflow:hidden}
 .pi-mb .pi-btns{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.pi-mb .pi-btns .bd,.pi-mb .pi-btns .pay{width:100%}
-.pi-mb .pi-items{display:flex;flex-direction:column;gap:var(--gap-2,8px)}
+.pi-mb .pi-items{display:flex;flex-direction:column;gap:var(--gap-2,8px)}.pi-more{font-size:12px;line-height:15px;color:var(--text-secondary)}
 .pi-save{display:flex;flex-direction:column;gap:var(--gap-4,16px)}.pi-save h3{margin:0;font-size:18px;line-height:22px;font-weight:var(--w-strong)}.pi-save p{margin:0;font-size:14px;line-height:20px}.pi-save .bd{width:100%}
 .pi-save .pi-legal{font-size:12px;line-height:16px;color:var(--text-secondary)}.pi-save .pi-legal a{color:inherit}
 .pi-toast{z-index:90}
@@ -101,8 +101,9 @@ function bagItems(){return [mainItem()].concat(ADDED.map(i=>{const x=DG_feedItem
 const oldItem=p=>`<div class="bag-item"><img src="${p.img}" alt=""><div class="info"><div class="b">${esc(p.brand||BN())}</div><div class="n">${esc(p.name)}</div><div class="v">${esc(/one size/i.test(p.size||'')?'One size':'Size '+p.size)} · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
 const lineItem=p=>MBT()==='live'?oldItem(p):`<div class="bag-item bag-item--mini${p.i!=null&&p.i===JUST?' bag-item--in':''}"><img src="${p.img}" alt=""><div class="info"><div class="t"><b>${esc(p.brand||BN())}</b> - ${esc(p.name)}</div><div class="v">${esc([p.size,p.colour].filter(Boolean).join(' / '))}</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
 function thresh(){if(PC.thresh===false)return '';const t=bagItems().reduce((a,p)=>a+num(p.price),0);
-  if(t>=THRESH)return `<div class="thresh thresh--ok"><span class="tick"></span><span>You’ve qualified for free delivery</span></div>`;
-  return `<div class="thresh"><span>Spend <b>£${(THRESH-t).toFixed(2)}</b> more for free delivery</span><div class="track"><div class="fill" style="width:${Math.round(t/THRESH*100)}%"></div></div></div>`}
+  const bx=MBT()==='live'?'':' thresh--box';   /* the new versions: in the DS container so it stands out */
+  if(t>=THRESH)return `<div class="thresh thresh--ok${bx}"><span class="tick"></span><span>You’ve qualified for free delivery</span></div>`;
+  return `<div class="thresh${bx}"><span>Spend <b>£${(THRESH-t).toFixed(2)}</b> more for free delivery</span><div class="track"><div class="fill" style="width:${Math.round(t/THRESH*100)}%"></div></div></div>`}
 function saveBag(inModal){if(SAVED)return `<div class="thresh thresh--ok"><span class="tick"></span><span>Bag saved. We’ll email <b>${esc(SAVED)}</b> about your bag — you’re signed up for ${esc(BN())} emails, unsubscribe any time.</span></div>`;
   return `<section class="pi-save">${inModal?'':'<h3>Not ready yet? Save your bag</h3>'}<p>Leave your email and we’ll remind you about the items in your bag.</p>
     <label class="fld"><input type="email" placeholder=" " autocomplete="email" data-mbmail><span class="lbl">Email address</span></label>
@@ -111,18 +112,28 @@ function saveBag(inModal){if(SAVED)return `<div class="thresh thresh--ok"><span 
     <p class="pi-legal">Tick the box to save your bag. Bag reminders are marketing emails, so we need your consent to send them. See our <a href="#">Privacy Policy</a>.</p></section>`}
 function miniBag(){const d=desk(),t=MBT();
   const list=ids('atb',4,10).filter(i=>i!==1);   /* Debenhams: the first two slots are Mirakl sponsored (labelled), then Bloomreach “also bought” */
-  const o={id:'atb',size:'sm',title:'Complete The Look',per:4,card:100,compact:true,start:4,list,qa:true,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
+  /* Complete the look rail (panel): title editable / off (PC.ctlTitle, PC.ctlTitleOn) · card copy 12 or 14 (PC.ctlText) · cards one fixed width, sized to fit (autoFit) */
+  const o={id:'atb',size:'sm',title:PC.ctlTitleOn===false?'':(PC.ctlTitle||'Complete The Look'),per:4,card:100,fixed:true,compact:PC.ctlText!=='14',start:4,list,qa:true,sp:BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null};
   const rail=pcar(o);
   /* order: Live as live (item · threshold · Continue Shopping / View Bag); the new versions lead with the threshold, then the item(s), then their extra */
-  const items=`<div class="pi-items">${bagItems().map(lineItem).join('')}</div>`,vb=ctas();
+  /* Complete the look keeps to one view: the item you came for + the one just added (it drops in); earlier adds fold into “+N more in your bag” */
+  const all=bagItems(),shown=t==='look'&&all.length>2?[all[0],all[all.length-1]]:all,more=all.length-shown.length;
+  const items=`<div class="pi-items">${shown.map(lineItem).join('')}${more?`<div class="pi-more">+${more} more in your bag</div>`:''}</div>`,vb=ctas();
   const body=t==='live'?items+thresh()+`<div class="pi-btns"><button class="bd sec" data-mbx>Continue Shopping</button>${vb}</div>`
-    :t==='look'?thresh()+items+rail+`<div class="pi-btns">${vb}</div>`
+    :t==='look'?thresh()+items+rail+(PIN()?'':`<div class="pi-btns">${vb}</div>`)
     :t==='save'?thresh()+items+`<div class="pi-btns">${vb}</div><div class="hr"></div>${saveBag()}`
     :thresh()+items+`<div class="pi-btns">${vb}${SAVED?'':'<button class="bd sec" data-mblater>Save for later</button>'}</div>${SAVED?saveBag():''}`;
   return `<div class="pi-mb" id="pimb"><div class="mdl-scrim" data-mbx></div>
   <div class="mdl ${d?'mdl--side mdl-anim-side':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Added to bag">
     <div class="modal-hd"><div class="mt"><span>Added to Bag</span></div><button class="modal-x" aria-label="Close" data-mbx></button></div>
-    <div class="mdl-bd">${body}</div></div></div>`}
+    <div class="mdl-bd">${body}</div>${t==='look'&&PIN()?`<div class="mdl-ft mdl-ft--pinned pi-btns">${vb}</div>`:''}</div></div>`}
+/* fit (PC.ctlFit): scale = shrink the rail cards until nothing scrolls · pin = CTAs pinned to the foot, the body scrolls · both */
+const FIT=()=>PC.ctlFit||'scale',PIN=()=>FIT()!=='scale';
+function autoFit(n){if(MBT()!=='look'||FIT()==='pin')return;const bd=n.querySelector('.mdl-bd'),rail=n.querySelector('[data-pl="atb"]');if(!bd||!rail)return;
+  /* scale the rail's cards (image + copy together, so nothing re-wraps) by exactly the overflow; the first card stays on the 24px margin */
+  const body=rail.querySelector('.pcar-body'),pad=24;let z=1;body.style.zoom='';body.style.removeProperty('--pcar-pad');
+  for(let k=0;k<6;k++){const over=bd.scrollHeight-bd.clientHeight;if(over<=0)break;const h=body.getBoundingClientRect().height;z=Math.max(.4,z*(h-over-3)/h);
+    body.style.zoom=z;body.style.setProperty('--pcar-pad',(pad/z)+'px');if(z===.4)break}}
 /* Save for later: a second modal over the mini bag with the email capture (Small on desktop, slide up on mobile) */
 function laterModal(){const d=desk();return `<div class="pi-mb pi-mb2" id="pimb2"><div class="mdl-scrim" data-mb2x></div>
   <div class="mdl ${d?'mdl--sm mdl-anim-fade':'mdl--up mdl-anim-up'}" role="dialog" aria-modal="true" aria-label="Save your bag">
@@ -143,7 +154,7 @@ function mountBag(open,instant){const old=document.getElementById('pimb'),ot=doc
       tt.style.setProperty('--toast-top',Math.max(16,...rows,hb)+16+'px')}   /* centred under the USP banners (or the sticky bar once scrolled) */
     if(!EXPORTING)TT=setTimeout(()=>{const x=document.getElementById('pitoast');if(x){x.classList.add('toast--out');setTimeout(()=>x.remove(),300)}PC.bagOpen=false},6000);return}
   document.documentElement.classList.add('pi-lock');document.body.insertAdjacentHTML('beforeend',miniBag());
-  const n=document.getElementById('pimb');if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');n.querySelector('.mdl-scrim').style.animation='none';const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
+  const n=document.getElementById('pimb');autoFit(n);if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');n.querySelector('.mdl-scrim').style.animation='none';const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
 document.addEventListener('click',e=>{
   const lk=e.target.closest('.pcar--look[data-pl="look"]');if(lk&&!e.target.closest('.pcar-arr')){e.preventDefault();const c=e.target.closest('.pcar-track>*'),L=FEEDS.look,idx=c?[...c.parentNode.children].indexOf(c):-1;openPicker(L&&idx>=0?ids('look',L.start||0,10)[idx]:null);return}
   const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();const i=+qa.dataset.qa;if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null;return}

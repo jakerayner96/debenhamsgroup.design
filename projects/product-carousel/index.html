@@ -62,6 +62,8 @@ a{color:var(--accent)}
 .f small{font-size:10.5px;color:var(--dim)}.f small.warn{color:var(--warn)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .sw{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink);cursor:pointer;font-weight:400}
+.pi-in{width:100%;margin-top:10px;background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:7px 10px;font:inherit;font-size:12px}
+.card .f{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .sw input{display:none}.sw i{width:30px;height:18px;border-radius:99px;background:#3A3A3A;position:relative;transition:.15s;flex:none}.sw i::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:99px;background:#fff;transition:.15s}
 .sw input:checked+i{background:var(--accent)}.sw input:checked+i::after{left:14px}
 .rules{font-size:10.5px;color:var(--dim);line-height:1.55}.rules b{color:#C8C8C8;font-weight:600}
@@ -180,6 +182,11 @@ function renderPanel(host,S,update){
   ${c.view==='minibag'?`<div class="card"><h3>Added To Bag</h3>
     ${opt2('live','Live (no reccs)')}${opt2('look','Complete the look')}${opt2('toast','Toast')}${opt2('save','Save your bag')}${opt2('later','Save for later')}
     ${(c.mbType||'live')==='toast'?`<div style="margin-top:12px">${seg('toastStyle',c.toastStyle||'thumb',[['thumb','Thumb'],['square','Square'],['edge','Edge']])}</div>`:`<div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div>`}</div>
+  ${(c.mbType||'live')==='look'?`<div class="card"><h3>Complete the look rail ${sw('ctlTitleOn',c.ctlTitleOn!==false,'Title')}</h3>
+    ${c.ctlTitleOn!==false?`<input class="pi-in" data-in="ctlTitle" value="${(c.ctlTitle||'Complete The Look').replace(/"/g,'&quot;')}" aria-label="Rail title">`:''}
+    <div class="f" style="margin-top:10px"><span>Card text</span>${seg('ctlText',c.ctlText||'12',[['14','14'],['12','12']])}</div>
+    <div class="f" style="margin-top:10px"><span>Fit</span>${seg('ctlFit',c.ctlFit||'scale',[['scale','Scale to fit'],['pin','Pin CTAs'],['both','Both']])}</div>
+    <p style="margin-top:8px">${{scale:'The rail cards shrink until everything fits — no scroll.',pin:'The CTAs float at the bottom; the rest scrolls.',both:'Cards shrink to fit and the CTAs stay pinned.'}[c.ctlFit||'scale']}</p></div>`:''}
   <div class="card"><h3>Bag CTA</h3>${seg('cta',c.cta||'bag',[['bag','View Bag'],['checkout','Checkout']])}
     <p style="margin-top:8px">${(c.cta||'bag')==='checkout'?'Checkout goes straight to checkout (the Checkout 2026 prototype).':'View Bag goes to the bag.'}</p>
     <div style="margin-top:10px">${sw('applePay',!!c.applePay,'Apple Pay')}</div></div>`:''}`;
@@ -188,6 +195,7 @@ function renderPanel(host,S,update){
   host.querySelectorAll('[data-mb]').forEach(b=>b.onclick=()=>{c.mbType=b.dataset.mb;panel();update()});
   host.querySelectorAll('[data-sw]').forEach(i=>i.onchange=()=>{c[i.dataset.sw]=i.checked;panel();update()});
   host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{c[g.dataset.seg]=b.dataset.v;panel();update()}));
+  host.querySelectorAll('[data-in]').forEach(i=>{let t;i.oninput=()=>{clearTimeout(t);t=setTimeout(()=>{c[i.dataset.in]=i.value;update()},250)}});
 }
 /* ==================================================================================================== */
 

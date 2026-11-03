@@ -903,6 +903,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
   .pcar--look{--pcar-pad:0px;background:none;padding-block:0}
   /* .pcar--full (home + PDP full-width rails): to the page margin at every width, one card size, so a wider screen pulls in more products */
   .pcar--full .pcar-track>*{flex-basis:var(--pcar-card-d)}
+  /* .pcar--fixed: one card width on every device (--pcar-card) — rails inside a panel that size their cards to fit (mini bag) */
+  .pcar--fixed .pcar-track>*{flex-basis:var(--pcar-card)}
 }
 /* .pcar--bleed: the rail scrolls edge to edge of its container — cards going off screen are never clipped by a margin — while the header and the first
    card start on the margin. --pcar-bleed = the container's side padding: the page gap 4 (16px, mobile) · a modal or sheet gap 6 (24px, every device). */
@@ -929,6 +931,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .thresh .track{height:4px;border-radius:var(--radius-pill);background:var(--border-subtle);overflow:hidden}
 .thresh .fill{height:100%;border-radius:var(--radius-pill);background:var(--tickc)}
 .thresh--ok{flex-direction:row;align-items:center;gap:12px}
+/* .thresh--box (3 Nov 2026, mini bag): the threshold in a container so it stands out — the fascia’s light tint (--neutral), padding gap 3 / 4 (12 / 16), the fascia radius; white track */
+.thresh--box{background:var(--neutral,#F2F2F2);padding:var(--gap-3,12px) var(--gap-4,16px);border-radius:var(--radius-default)}.thresh--box .track{background:var(--surface-raised,#FFF)}
 .thresh--ok .tick{width:20px;height:20px;border-radius:99px;background:var(--tickc);display:grid;place-items:center;flex:none}
 .thresh--ok .tick::after{content:"";width:8px;height:4px;border-left:2px solid #FFF;border-bottom:2px solid #FFF;transform:translateY(-1px) rotate(-45deg)}
 /* Deliver+ — SEEL Enhancements 2026 exact (Latest Components 28.08.26). Ground/ink/link/checkbox/radius per fascia via --dplus-*;
@@ -1078,6 +1082,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl-refresh+.modal-x{margin-left:0}
 .mdl-bd{display:flex;flex-direction:column;gap:24px;font-size:16px;font-weight:var(--w-regular);line-height:normal;min-height:0}
 .mdl-ft{display:flex;flex-direction:column;gap:16px}.mdl-ft .bd{width:100%}
+/* .mdl-ft--pinned (3 Nov 2026): CTAs pinned to the foot of the window, floating over the scrolling body — full-bleed white with a soft shadow above */
+.mdl-ft--pinned{flex:none;margin:0 -24px -24px;padding:16px 24px 24px;background:var(--surface-raised,#FFF);box-shadow:0 -6px 16px -8px rgba(0,0,0,.16);position:relative;z-index:1}
 .mdl--sm{width:512px}
 .mdl--md{width:720px;padding-bottom:32px}
 .mdl--lg{width:960px}
@@ -1095,8 +1101,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl--fs{width:100%;height:100%;border-radius:0}
 .mdl--fs .mdl-bd{flex:1;align-items:center;justify-content:center}
 /* .mdl--side (desktop drawer — mini bag / added to bag, 2 Nov 2026): full height, 480 wide, flush right, square corners, slides in from the right */
-.mdl--side{width:480px;height:100%;max-height:none;border-radius:0;overflow-y:auto}
-.mdl--side .mdl-bd{min-height:auto}
+.mdl--side{width:480px;height:100%;max-height:none;border-radius:0;overflow:hidden} /* the header stays, the body scrolls (3 Nov — so a pinned foot can float) */
+.mdl--side .mdl-bd{flex:1;min-height:0;overflow-y:auto;margin-inline:-24px;padding-inline:24px}
 .mdl.mdl-anim-side{animation:mdlside .3s ease-in-out both}
 @keyframes mdlside{from{transform:translateX(100%)}to{transform:none}}
 /* overlay + stage (a page frame the modal sits over: header, then the 50% scrim; .mdl-stage--up anchors to the bottom) */
