@@ -157,11 +157,11 @@ function thresh(){if(PC.thresh===false)return '';const t=bagItems().reduce((a,p)
      look    · Complete The Look — outfit pieces for the dress (shoes, bag, jewellery, a coat); first two Sponsored (Mirakl marketplace)
      similar · You May Also Like — alternatives to the dress (same occasion, other styles)
      fbt     · Frequently Bought Together — the bag holds Prada Paradoxe: its hand cream, refill, gift set, the Intense
-     till    · Little Extras Under £10 — the till: small cheap add-ons (socks, lip balm, a claw clip, hand cream)
+     till    · Extra’s Under £10 — the till: small cheap add-ons (socks, lip balm, a claw clip, hand cream)
    Style: cards (carousel / 1–3 row grid) · list (.rec-list rows) · bundle (the DS .bndl, Frequently Bought Together only). Card text, swatches,
    quick add shape, card size and image gap from the Cards panel (Jake's Figma review variants 13939:19737 … 13939:26225). */
 const RECL=t=>{const k=RK.indexOf(t)+1,R=window.PI_RECS&&PI_RECS[t];return FM()&&R?R.items.map((x,j)=>k*1000+j):t==='fbt'?ids('fbt',12,8):t==='till'?ids('till',30,8):ids('atb',4,10).filter(i=>i!==1)};
-const RECT=t=>(PC['title_'+t]||'').trim()||(window.PI_RECS&&PI_RECS[t]&&PI_RECS[t].title)||{look:'Complete The Look',similar:'You May Also Like',fbt:'Frequently Bought Together',till:'Little Extras Under £10'}[t];
+const RECT=t=>(PC['title_'+t]||'').trim()||(window.PI_RECS&&PI_RECS[t]&&PI_RECS[t].title)||{look:'Complete The Look',similar:'You May Also Like',fbt:'Frequently Bought Together',till:'Extra’s Under £10'}[t];
 /* Added to Bag recommendations (Jake 11 Nov — Figma 13943:31066, one card format per rail, never a mix):
    under £10 (till) · Small card (100 × 150, price only) + quick add, single-variant products only — straight in the bag
    the rest · Standard card (127 × 190, min height 250, Brand - Name, price). Quick add (PC.qaMode) picks the products that suit it:
