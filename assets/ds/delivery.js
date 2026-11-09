@@ -4,7 +4,7 @@
    · Delivery Grid UX catch up 16 Oct 2026 (James's PR: badges + a third home row when two click & collects come back; bulky surcharge upfront).
    CSS: components.css "Delivery grid" block (.dgrid-*, .dopts-*). Markup only — no styles in here.
 
-   DEFAULT (2 Nov 2026, Jake): option B tabs + row format 3 + returns and seller info in the accordions — what DG_delivery.grid({}) gives.
+   DEFAULT (9 Nov 2026, Jake): option B tabs (Delivery / Collection) + Get It By date-only rows + returns and seller info IN the box — what DG_delivery.grid({}) gives.
    Use:  DG_delivery.grid(o)  → the PDP box html      (o.layout 'tabs' Demi (default) · 'list' live sentences · 'line' one-liner)
          DG_delivery.modal(o) → the modal layer html  (o.modal 'toggle' Paul's Figma · 'list' one sectioned list · 'tab' the tab you came from)
          DG_delivery.bulky()  → the surcharge caveat that sits under the price
@@ -12,15 +12,15 @@
          DG_delivery.mount(document, o) → wire + See more opens the modal over the page, X / scrim closes it (what templates/pdp.html uses)
          DG_delivery.setSeller(document, o) → re-draw the "Sold & Delivered by" line (call when a size is picked) and wire its seller link
          DG_delivery.acc(o, 'ret'|'seller') → that info as a row for the PDP accordion set (.acc-set): Returns · Seller Information
-   Box = delivery only (29 Oct): o.retIn / o.sellerIn 'acc' (default since 2 Nov: out of the box, into the accordion set) · 'box' (in the box under the methods).
+   Returns / seller (29 Oct): o.retIn / o.sellerIn 'box' (default again since 9 Nov: in the box under the methods) · 'acc' (out of the box, into the accordion set — box = delivery only).
+   Collection label o.ccLabel (9 Nov): 'Collection' (default, Jake) · 'Click & Collect' (the live sites' word, all seven fascias) · 'Collect Nearby' (Paul's Figma) — the tab, the modal toggle, the list heading.
    Seller line (under the returns line): o.seller null → placeholder "Select a size to see seller info" (grey) · 'site' → sold by the fascia
    itself (o.brand, plain text) · a SELLERS key / object → a marketplace seller, the name is a link that opens the seller modal.
    o: {layout, scen:'std'|'cc'|'market'|'bulky', premier, prog, pr, prBadge:'fastest'|'home', badges, tab, modal, ni:'split'|'mixed',
        sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date, brand, seller,
-       retIn:'box'|'acc', sellerIn:'box'|'acc', fmt:1|2|3|4}
-   Row format o.fmt (30 Oct, Jake's Figma explorations): 1 "Delivery Methods" · method (+ badge) / Arrives … · cut-off
-     2 "Get It By" · Arrives Tomorrow (+ badge) / method · cut-off · 3 "Get It By" · Tomorrow / method · cut-off (default since 2 Nov — the chosen option) · 4 "Arrives By" · Tomorrow / method · cut-off.
-     The modal rows follow the same format; its title stays Delivery Options. */
+       retIn:'box'|'acc', sellerIn:'box'|'acc', ccLabel}
+   Rows (9 Nov, Jake: the winning option, formats 1, 2 and 4 removed): "Get It By" · Tomorrow / 4th Nov (+ badge) / method · cut-off.
+     The modal rows match; its title stays Delivery Options. */
 (function(root){
   const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
   const IC='assets/ds/icons/lib/';
@@ -52,6 +52,7 @@
   const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const day=(o,d)=>{const t=new Date(o.today||Date.now());t.setDate(t.getDate()+d);return ord(t.getDate())+' '+MON[t.getMonth()]};
   const money=p=>p===0?'FREE':p<1?Math.round(p*100)+'p':'£'+p.toFixed(2);
+  const CC=o=>esc(o.ccLabel||'Collection');   /* the collect tab / toggle / heading word */
   const cutoff=(o,m)=>m.cut===2?(o.cut==='12am'?'Order by 11PM':'Order by 11pm'):m.cut?(o.cut==='12am'?'Order by 12AM':'Order by midnight'):'';
 
   /* the response for a scenario, in the order the API returns it. 'cc' = the live bug: collect comes back first and Super Saver isn't on */
@@ -112,25 +113,21 @@
 
   /* the checkout Delivery Method row (DS .dmeth, no radio) — the box and the modal both use it, so they match checkout.
      name (+ badge) / "Arrives …" (· cut-off) | price, was inline after it */
-  /* arrival + cut-off as two parts: .dmeth-a draws the · between them, and drops it when the cut-off wraps to its own line */
-  const arrives=(o,m)=>`<span>${m.nom?'Arrives on a day and time of your choice':m.d===1?'Arrives Tomorrow':'Arrives by '+day(o,m.d)}</span>${cutoff(o,m)?` <span>${cutoff(o,m)}</span>`:''}`;
   /* a badge rides on the name's last word, so a long name wraps with it and it never sits on a line of its own */
   const named=(o,name,b)=>{if(!b||o.badges===false)return esc(name);const i=name.lastIndexOf(' ');return `${esc(name.slice(0,i+1))}<span class="nw">${esc(name.slice(i+1))}${badge(o,b)}</span>`};
-  /* formats 2–4 lead with the date (strong, + badge) and put the method name (· cut-off) under it */
-  const FMT_T={1:'Delivery Methods',2:'Get It By',3:'Get It By',4:'Arrives By'};
-  const fmt=o=>FMT_T[o.fmt]?+o.fmt:3;
-  const lead=(o,m)=>{const bare=fmt(o)>2;return m.nom?(bare?'Day of your choice':'Arrives on a day of your choice'):m.d===1?(bare?'Tomorrow':'Arrives Tomorrow'):(bare?'':'Arrives by ')+day(o,m.d)};
-  const dmeth=(o,m,name,b)=>`<li class="dmeth"><div class="dmeth-l">${fmt(o)===1?`<div class="dmeth-n">${named(o,name,b)}</div><span class="dmeth-a">${arrives(o,m)}</span>`
-        :`<div class="dmeth-n">${named(o,lead(o,m),b)}</div><span class="dmeth-a"><span>${esc(name)}</span>${cutoff(o,m)?` <span>${cutoff(o,m)}</span>`:''}</span>`}</div>
+  /* Get It By: the date leads (strong, + badge), the method name (· cut-off) under it; .dmeth-a draws the · and drops it when the cut-off wraps */
+  const TITLE='Get It By';
+  const lead=(o,m)=>m.nom?'Day of your choice':m.d===1?'Tomorrow':day(o,m.d);
+  const dmeth=(o,m,name,b)=>`<li class="dmeth"><div class="dmeth-l"><div class="dmeth-n">${named(o,lead(o,m),b)}</div><span class="dmeth-a"><span>${esc(name)}</span>${cutoff(o,m)?` <span>${cutoff(o,m)}</span>`:''}</span></div>
       <div class="dmeth-p"><b>${m.prem?'FREE':(m.from?'From ':'')+money(m.p)}</b>${m.was?`<s>${money(m.was)}</s>`:''}</div></li>`;
-  /* B · Demi: Delivery / Click & Collect tabs, the fastest + cheapest of each as checkout rows */
+  /* B · Demi: Delivery / Collection tabs, the fastest + cheapest of each as checkout rows */
   function row(o,{m,b}){return dmeth(o,m,m.s,b)}
   function tabs(o){const M=methods(o),hasC=M.collect.length>0,first=o.tab==='collect'&&hasC?'collect':'home';
-    const panel=(k,l,more)=>`<div class="dgrid-panel" data-dg-panel="${k}"${k===first?'':' hidden'}><ul class="dmeth-list dmeth-list--sm">${picks(o,M[k]).map(r=>row(o,r)).join('')}</ul>${k==='home'?bulkyNote(o):''}${moreLink(o,k,more)}</div>`;
+    const panel=(k,more)=>`<div class="dgrid-panel" data-dg-panel="${k}"${k===first?'':' hidden'}><ul class="dmeth-list dmeth-list--sm">${picks(o,M[k]).map(r=>row(o,r)).join('')}</ul>${k==='home'?bulkyNote(o):''}${moreLink(o,k,more)}</div>`;
     const order=first==='collect'?['collect','home']:['home','collect'];
-    const T={home:'Delivery',collect:'Click &amp; Collect'};
+    const T={home:'Delivery',collect:CC(o)};
     return {hd:hasC?`<div class="dgrid-tabs" role="tablist">${order.map(k=>`<button role="tab" data-dg-tab="${k}" class="${k===first?'on':''}" aria-selected="${k===first}">${T[k]}</button>`).join('')}</div>`:'',body:`
-      <div class="dgrid-panes">${panel('home','Delivery','See more')}${hasC?panel('collect','Click & Collect','See more'):''}</div>`}}
+      <div class="dgrid-panes">${panel('home','See more')}${hasC?panel('collect','See more'):''}</div>`}}
 
   /* C · one-liner (Amazon style) — everything else lives in the modal. Icon: DS fast (slanted) truck when it arrives tomorrow, the upright truck otherwise */
   function line(o){const M=methods(o),f=fastest(pdpPool(M.home)),cc=cheapest(M.collect);if(!f)return '';
@@ -140,7 +137,7 @@
       <button class="dgrid-more" data-dg-more="home">${M.collect.length?'Delivery &amp; collection options':'Delivery options'}</button>`}
 
   function grid(o){o=Object.assign({layout:'tabs'},o);const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
-    return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>${FMT_T[fmt(o)]}</h2>${x.hd}</div>`}${x.body}${o.retIn==='box'?ret(o):''}${o.sellerIn==='box'?seller(o):''}</section>`}
+    return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>${TITLE}</h2>${x.hd}</div>`}${x.body}${o.retIn!=='acc'?ret(o):''}${o.sellerIn!=='acc'?seller(o):''}</section>`}
 
   /* ---- modal ---- */
   function sortL(o,l){const s=l.slice();s.sort(o.sort==='speed'?(a,b)=>(a.nom?99:a.d)-(b.nom?99:b.d)||a.p-b.p:(a,b)=>a.p-b.p||(a.nom?99:a.d)-(b.nom?99:b.d));return s}
@@ -148,14 +145,14 @@
   function homeBlock(o,M,head){const uk=M.home.filter(m=>!m.ni),ni=M.home.filter(m=>m.ni);
     if(o.ni==='mixed'||!ni.length)return (head?`<h3 class="dopts-grp">Home delivery</h3>`:'')+ul(o,sortL(o,M.home));
     return (head?`<h3 class="dopts-grp">Home delivery</h3>`:'')+ul(o,sortL(o,uk))+`<hr class="dopts-hr">`+(head?`<h3 class="dopts-grp">Northern Ireland</h3>`:'')+ul(o,sortL(o,ni))}
-  const collectBlock=(o,M,head)=>M.collect.length?(head?`<h3 class="dopts-grp">Click &amp; collect</h3>`:'')+ul(o,sortL(o,M.collect)):`<p class="dopts-empty">Click &amp; collect isn’t available for this item.</p>`;
+  const collectBlock=(o,M,head)=>M.collect.length?(head?`<h3 class="dopts-grp">${CC(o)}</h3>`:'')+ul(o,sortL(o,M.collect)):`<p class="dopts-empty">${CC(o)} isn’t available for this item.</p>`;
   function modal(o,tab){const M=methods(o);tab=tab==='collect'?'collect':'home';
     const lay=o.desk?'mdl--sm':o.sheet==='up'?'mdl--up':'mdl--alert';
     const bulky=o.scen==='bulky'?`<div class="msg msg--neutral"><i></i><div class="body"><span>${BULKY_COPY}</span></div></div>`:'';
     let body,title='Delivery Options';
     if(o.modal==='list'){body=homeBlock(o,M,1)+(M.collect.length?`<hr class="dopts-hr">`+collectBlock(o,M,1):'')}
     else if(o.modal==='tab'){title=tab==='collect'?'Collection Options':'Delivery Options';body=tab==='collect'?collectBlock(o,M,0):homeBlock(o,M,0)}
-    else{body=`<div class="dopts-seg" role="tablist"><button data-dg-seg="home" class="${tab==='home'?'on':''}">Delivery</button><button data-dg-seg="collect" class="${tab==='collect'?'on':''}">Click &amp; Collect</button></div>
+    else{body=`<div class="dopts-seg" role="tablist"><button data-dg-seg="home" class="${tab==='home'?'on':''}">Delivery</button><button data-dg-seg="collect" class="${tab==='collect'?'on':''}">${CC(o)}</button></div>
       <div class="dopts-panes"><div data-dg-mpanel="home"${tab==='home'?'':' hidden'}>${homeBlock(o,M,0)}</div><div data-dg-mpanel="collect"${tab==='collect'?'':' hidden'}>${collectBlock(o,M,0)}</div></div>`}
     return `<div class="dopts-layer${lay==='mdl--up'?' dopts-layer--up':''}" data-dg-modal><div class="mdl-scrim" data-dg-close></div>
       <div class="mdl ${lay} dopts" role="dialog" aria-modal="true" aria-label="${title}"><div class="modal-hd"><span class="mt">${title}</span><button class="modal-x" data-dg-close aria-label="Close"></button></div>

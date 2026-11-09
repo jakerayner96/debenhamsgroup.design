@@ -74,10 +74,10 @@ const desk=()=>innerWidth>=1024;
 const IC='assets/ds/icons/',LIB=IC+'lib/';
 const WISH={boohooman:'bookmark',karenmillen:'bookmark',brandroom:'bookmark',plt:'plt-heart'};
 const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
-/* delivery grid (DS delivery.js) = option B, Delivery / Click & Collect tabs (projects/delivery-grid, Jake 29 Oct): fastest + cheapest per tab, badges, returns line */
+/* delivery grid (DS delivery.js) = option B, Delivery / Collection tabs (projects/delivery-grid, Jake 29 Oct): fastest + cheapest per tab, badges, returns line */
 /* seller line: grey placeholder until a size is picked, then sold by the fascia ('site'; a marketplace key, e.g. 'amass', makes it a link → seller modal) */
 let SELLER=null;
-const DG_OPTS=()=>({fmt:S.dgFmt||3,layout:'tabs',tab:'home',retIn:S.dgRet||'acc',sellerIn:S.dgSeller||'acc',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
+const DG_OPTS=()=>({layout:'tabs',tab:'home',retIn:S.dgRet||'box',sellerIn:S.dgSeller||'box',ccLabel:S.dgCC||'Collection',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
 /* Subscribe & Save: the product at 5% off, size = the first size until one is picked; centred modal from 600px, bottom sheet on phones */
 const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(document.querySelector('.sz.on')||{}).textContent||P.sizes[0],colour:P.colour,pct:5});
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
@@ -108,7 +108,7 @@ function accSet(P){const rows=[['At a Glance',P.glance?`<ul class="glance glance
     ['Returns',DG_OPTS().retIn==='acc'?'-':'Eligible for return within 21 days. Exclusions apply.',0,'ret'],
     ['Seller Information',DG_OPTS().sellerIn==='acc'?'-':'',0,'seller'],
     ['Manufacturer',`${esc(P.brand)}, Debenhams Group, Manchester M1 2DU.`]].filter(r=>r[1]);
-  /* Returns + Seller Information rows come from delivery.js (S.dgRet / S.dgSeller 'acc' = out of the delivery grid, in here) */
+  /* Returns + Seller Information rows come from delivery.js (S.dgRet / S.dgSeller: 'box' default since 9 Nov = in the delivery grid · 'acc' = out of it, in here) */
   return `<div class="acc-set" data-slot="info">${rows.map(([h,b,o,k])=>k&&window.DG_delivery?DG_delivery.acc(DG_OPTS(),k):`<div class="acc${o?' open':''}"><button class="acc-h">${h}<img src="${LIB}icons-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${b}</div></div>`).join('')}</div>`}
 /* Bundling · Complete Your Purchase With (DS bundle.js, 2 Nov 2026, from live Debenhams): this product + three bought with it, under Subscribe & Save */
 function bundle(P){if(!window.DG_bundle)return '';

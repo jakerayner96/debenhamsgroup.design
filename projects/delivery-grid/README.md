@@ -6,8 +6,14 @@
 
 **Figma:** "Debenhams · PDP Delivery Grid" `kgwbvFUR9kMyoLls1kpks9` (Debenhams Group team), page Delivery grid: **Components** `74:2` (Badge set · PDP box set, Format 1–4 × State · Delivery Options modal set, Format × Tab) and **Screens** `74:44` (per format: PDP → Click & Collect tab → See more → modal Click & Collect · Unlimited · delivery only, built from PDP backdrop + component instances). Captured from the DS code (30 Oct). Jake's 29 Oct explorations are on the Archive page.
 
-## Row formats (30 Oct)
-Four options from Jake's Figma explorations, `o.fmt` in delivery.js (panel: Row format): 1 Delivery Methods · method / Arrives … (default) · 2 Get It By · Arrives Tomorrow / method · 3 Get It By · Tomorrow / method · 4 Arrives By · Tomorrow / method. The modal rows follow the format.
+## Rows (9 Nov)
+**Get It By, date only** won: Tomorrow / 4th Nov (+ badge) first, then the method name · cut-off. Formats 1, 2 and 4 (30 Oct explorations) are removed from the panel and from delivery.js. The modal rows match.
+
+## Collection label (9 Nov)
+The collect tab, the modal toggle and the list heading say **Collection** (Jake's pick). Live check, 9 Nov, all seven fascias' `/pages/informational/delivery`: none uses "Collect Nearby"; every one says "click & collect and locker collection" in its FAQ copy. Method names differ by fascia (Debenhams / Warehouse "Evri ParcelShop", "24/7 InPost Locker | Shop Collect"; boohooMAN "Evri Parcel Shop Click & Collect"; Karen Millen "Evri Standard / Next Day Parcel Collection"; boohoo / PLT "Evri Parcel Shop"). The PDP itself has no collect label on live (flat method list), so there's no per-fascia word to copy. `o.ccLabel`: Collection (default) · Click & Collect · Collect Nearby, panel: Collection tab label.
+
+## Returns + seller (9 Nov)
+Default back **in the box** (returns line, then Sold & Delivered by). The panel's In the box card still moves either to the accordion set.
 
 ## Sources
 - Modal: Figma Gifting `PIh1ikzvYNH1FR4arKJbe4` · `209-294935` (Home Delivery) · `209-295333` (Collect Nearby) — Paul Dossis
@@ -25,9 +31,9 @@ Four options from Jake's Figma explorations, `o.fmt` in delivery.js (panel: Row 
 ## Options (left panel)
 | | |
 |---|---|
-| **PDP option** | fixed: **B · Tabs** — Delivery / Click & Collect; rows (box + modal) = the DS Delivery method row from checkout (Checkout 2026 `3996:171709`), no radio, Fastest / Cheapest per tab; See more opens the modal on that tab. First tab: Delivery / Click & Collect |
+| **PDP option** | fixed: **B · Tabs** — Delivery / Collection (label option); rows (box + modal) = the DS Delivery method row from checkout (Checkout 2026 `3996:171709`), no radio, Fastest / Cheapest per tab; See more opens the modal on that tab. First tab: Delivery / Click & Collect |
 | Modal | fixed (Jake, 16 Oct): Home Delivery / Collect Nearby toggle (Paul) only, page grid type · NI always its own section · price low → high · slides up on mobile web + app, DS small modal on desktop |
-| In the box | Returns info and Seller info each "In the box" or "Accordion" (Returns row / a Seller Information row under it), so the box can be delivery only (Jake, 29 Oct) |
+| In the box | Returns info and Seller info each "In the box" (default, 9 Nov) or "Accordion" (Returns row / a Seller Information row under it), so the box can be delivery only (Jake, 29 Oct) |
 | Rules | badges · cut-off "midnight" / "12AM" · See more with two methods · returns line + days |
 | Product | standard · C&C comes back first (the live bug) · marketplace (two methods) · bulky (caveat under the price, in the box and in the modal) |
 | Customer | Standard / the fascia's programme (Unlimited, Premier Club, Premier, Royalty — next day free) |

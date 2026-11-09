@@ -174,8 +174,8 @@ const P={
   brands:[['debenhams','Debenhams'],['boohoo','boohoo'],['boohooman','boohooMAN'],['plt','PLT'],['karenmillen','Karen Millen'],['warehouse','Warehouse'],['brandroom','Brand Room']],
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','README.md','../../assets/ds/delivery.js','../../assets/ds/subscribe.js'],
-  store:'proto-delivery-grid-v2',   /* v2 (2 Nov): new defaults — format 3, returns + seller in the accordions */
-  initial:()=>({fmt:'3',layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',retIn:'acc',sellerIn:'acc',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
+  store:'proto-delivery-grid-v3',   /* v3 (9 Nov): new defaults — Collection tab, Get It By date-only rows only, returns + seller in the box */
+  initial:()=>({ccLabel:'Collection',layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',retIn:'box',sellerIn:'box',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
 };
 const PROG={debenhams:'Unlimited',boohoo:'Premier Club',boohooman:'Premier',plt:'Royalty',karenmillen:'Premier'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -189,17 +189,14 @@ function renderPanel(host,S,update){
   /* modal fixed (Jake, 16 Oct): Home Delivery / Collect Nearby toggle only, NI always its own section, priced low → high, slides up on mobile.
      PDP option fixed to B · tabs (Jake, 29 Oct): A (live + James's PR) and C (one-liner) dropped, so their PR / postcode rules go too */
   Object.assign(c,{layout:'tabs',ret:true,modal:'toggle',open:'',ni:'split',sort:'price',sheet:'up'});
-  host.innerHTML=`<h1>PDP delivery grid</h1><p class="intro">The PDP <b>Delivery Methods</b> box, <b>option B</b> (Delivery / Click &amp; Collect tabs), with Paul's <b>Delivery Options</b> modal behind See more — on the DS PDP template, web (mobile + desktop) and app. Brief: Delivery Grid UX catch up, 16 Oct 2026; B chosen 29 Oct.</p>
+  host.innerHTML=`<h1>PDP delivery grid</h1><p class="intro">The PDP <b>Delivery Methods</b> box, <b>option B</b> (Delivery / Collection tabs, Get It By date-only rows), with Paul's <b>Delivery Options</b> modal behind See more — on the DS PDP template, web (mobile + desktop) and app. Brief: Delivery Grid UX catch up, 16 Oct 2026; B chosen 29 Oct.</p>
   <div class="card"><h3>PDP option <small>B · tabs</small></h3>
     <p>Demi’s mockup: two tabs, checkout-style rows with the price on the right, Fastest / Cheapest badges, Premier view. See more opens the modal on the tab you’re in.</p>
-    <div class="f"><span>First tab</span>${seg('tab',[['home','Delivery'],['collect','Click &amp; Collect']])}</div></div>
-  <div class="card"><h3>Row format <small>30 Oct</small></h3>
-    ${radio('fmt','1','1 · Delivery Methods','Method name first, then Arrives Tomorrow / Arrives by 4th Nov.')}
-    ${radio('fmt','2','2 · Get It By','Arrives Tomorrow / Arrives by 4th Nov first, then the method name.')}
-    ${radio('fmt','3','3 · Get It By, date only','Tomorrow / 4th Nov first, then the method name.')}
-    ${radio('fmt','4','4 · Arrives By, date only','Tomorrow / 4th Nov first, then the method name.')}</div>
+    <div class="f"><span>Collection tab label</span>${seg('ccLabel',[['Collection','Collection'],['Click & Collect','Click &amp; Collect'],['Collect Nearby','Collect Nearby']])}<small>${c.ccLabel==='Click & Collect'?'What all seven live sites say (delivery pages, 9 Nov).':c.ccLabel==='Collect Nearby'?'Paul’s Figma modal wording. No live fascia uses it.':'Jake’s pick (9 Nov). Live sites say click &amp; collect.'} Tab, modal toggle and list heading.</small></div>
+    <div class="f"><span>First tab</span>${seg('tab',[['home','Delivery'],['collect',esc(c.ccLabel||'Collection')]])}</div>
+    <p style="margin-top:10px">Rows: <b>Get It By</b> · Tomorrow / 4th Nov first, then the method name (the winning format, 9 Nov).</p></div>
   <div class="card"><h3>In the box</h3>
-    <p>${c.retIn==='acc'&&c.sellerIn==='acc'?'The box is <b>delivery only</b>: returns and seller info sit in the accordions under the product.':'Push returns and seller info out of the box into the accordion set, so the box is delivery only.'}</p>
+    <p>${c.retIn==='acc'&&c.sellerIn==='acc'?'The box is <b>delivery only</b>: returns and seller info sit in the accordions under the product.':'Default: returns and seller info in the box. Move either to the accordion set to make the box delivery only.'}</p>
     <div class="f"><span>Returns info</span>${seg('retIn',[['box','In the box'],['acc','Accordion']])}<small>${c.retIn==='acc'?'In the Returns accordion (already on the PDP), off the box.':'Calendar line under the methods. The Returns accordion stays too.'}</small></div>
     <div class="f"><span>Seller info</span>${seg('sellerIn',[['box','In the box'],['acc','Accordion']])}<small>${c.sellerIn==='acc'?'A Seller Information accordion under Returns. Same placeholder / link rules.':'Sold &amp; Delivered by line at the bottom of the box.'}</small></div>
     <div class="f"><span>Return window (days)</span><input id="rd" type="number" min="1" value="${esc(c.retDays)}"></div></div>

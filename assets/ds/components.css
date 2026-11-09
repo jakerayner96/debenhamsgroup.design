@@ -1594,7 +1594,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
    Live PDP box (Dynamo = what checkout serves) · Demi Adesanya's tabbed mockup · Paul Dossis's modal (Gifting PIh1ikzvYNH1FR4arKJbe4 · 209-294935 / 209-295333).
    Box: 1px --border-subtle, radius --radius-default, padding gap 4 (16px), gap 4 (16px) between parts; title 16/20 semibold like the other PDP boxes. Three layouts:
      .dgrid-rows--pr  James's PR rows ("Arrives Tomorrow [Fastest]" / method | price), fastest first, cheapest last, + a third home row when both are click & collect
-     .dgrid-tabs  Delivery / Click & Collect underline tabs, checkout-style .dgrid-row (when + badge · method · cut-off | price, was struck under)
+     .dgrid-tabs  Delivery / Collection underline tabs, checkout-style .dgrid-row (when + badge · method · cut-off | price, was struck under)
      .dgrid--line one line ("Get it Tomorrow to M4 7BB"), no box title; everything else in the modal
    Badges .dgrid-badge beside the arrival line: 18px high, 11/16 medium, 6px sides, --radius-default (slimmed 29 Oct) · --fast red (--text-error on --error-bg) · --cheap grey · --member = the programme (Premier, Unlimited, Royalty).
    Tabs (.dgrid-tabs) sit top right on the title line (.dgrid-hd).
@@ -1602,7 +1602,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
    Box = delivery only (29 Oct): returns / seller can leave the box for the accordion set — DG_delivery.acc(o,'ret'|'seller') → .acc rows, .dgrid-retacc · .dgrid-seller--acc.
    Bulky: .dgrid-bulky under the price (upfront) + .dgrid-note in the box + a neutral .msg in the modal.
    Modal = the DS .mdl (desktop .mdl--sm · mobile web .mdl--alert as the Figma 358 · app .mdl--up) inside .dopts-layer; body = .dopts-seg toggle
-   (Home Delivery / Collect Nearby — the page's 12px underline tabs), .dopts-list rows in the page row type (14/20: name semibold · "Arrives by …" regular | price semibold, was 12 light grey under it),
+   (Delivery / Collection — the page's 12px underline tabs), .dopts-list rows in the page row type (14/20: name semibold · "Arrives by …" regular | price semibold, was 12 light grey under it),
    .dopts-hr before Northern Ireland, .dopts-grp section heads (one-list variant), .dopts-note 12px footnote. Rows gap 4 (16px). */
 .dgrid{display:flex;flex-direction:column;gap:var(--gap-4,16px);padding:var(--gap-4,16px);border:var(--border-w,1px) solid var(--border-subtle);border-radius:var(--radius-default);font-family:var(--font-family-base);color:var(--text-primary);text-align:left;background:var(--surface-page)}
 .dgrid--line{gap:var(--gap-3,12px)}
