@@ -178,23 +178,7 @@ button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--bor
 .pc-size i{width:12px;height:12px;flex:none;background:currentColor;-webkit-mask:url(icons/lib/icons-down.svg) center/contain no-repeat;mask:url(icons/lib/icons-down.svg) center/contain no-repeat}
 .pc-size select{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer;font-size:16px}
 .pc-size.err .v{color:var(--text-error)}
-/* Quick Add modal (.qadd — assets/ds/quickadd.js, 11 Nov 2026; Figma Quick Add i0Dgzx7sPX23ffsI55hhRp 652:47180 / 651:33756 / 652:56024, as live):
-   title 20 strong · brand 16 strong + name 16/24 light (or a 64 × 96 thumbnail beside them for shade / ml products) · price · Colour: X + the image swatch ·
-   Size: X + Size guide + size buttons (or the DS select for shades / ml / beds) · stock line 16 red · Add To Bag (primary) + View Product (secondary) */
-.qadd-layer{position:fixed;inset:0;z-index:95;display:flex;align-items:flex-end;justify-content:center} /* over any sheet / drawer it opens from */
-.qadd-layer>.mdl{position:relative;z-index:3;width:100%}.qadd-layer>.mdl--up{max-height:calc(100% - 56px);overflow:auto}
-@media(min-width:1024px){.qadd-layer{align-items:center}.qadd-layer>.mdl--sm{width:auto}}
-.qadd .mdl-bd{gap:24px}
-.qadd-p{display:flex;flex-direction:column;gap:4px}.qadd-p b{font-size:16px;line-height:20px;font-weight:var(--w-strong)}.qadd-p span{font-size:16px;line-height:24px;font-weight:var(--w-regular)}
-.qadd-row{display:flex;gap:16px;align-items:flex-start}.qadd-row>img{width:64px;aspect-ratio:var(--ratio-product);height:auto;object-fit:cover;flex:none;border-radius:var(--radius-default);background:var(--surface-media)}
-.qadd-row .qadd-p{gap:8px}
-.qadd .price-blk--qa .price{font-size:20px;line-height:24px;column-gap:8px}.qadd .price-blk--qa .save{font-size:14px}
-.qadd-opt{display:flex;flex-direction:column;gap:12px}.qadd-lbl{display:flex;justify-content:space-between;align-items:center;font-size:16px;line-height:20px}.qadd-lbl b{font-weight:var(--w-mid)}
-.qadd-lbl .guide{display:flex;align-items:center;gap:4px;font-size:14px}.qadd-lbl .guide img{width:16px;height:16px}
-.qadd .sizes .set{flex-wrap:wrap}
-.qadd .qadd-stock{font-size:16px;line-height:20px;color:var(--text-error);margin:0}
-.qadd .qadd-err{font-size:14px;line-height:20px;color:var(--text-error);margin:-4px 0 0}
-.qadd-ctas{display:flex;flex-direction:column;gap:8px}.qadd-ctas .bd{width:100%}
+/* Quick Add modal: one component — the .qa build further down (Quick add, 9 Nov 2026); the 11 Nov .qadd modal was merged into it (DG_quickAdd.html(p,{desk}) + .wire still work). */
 /* .rec-list — recommendations as rows (Added to Bag · Frequently Bought Together, 9 Nov 2026): 48 × 72 image (2:3), name + price, the DS quick add (.pc-iconbtn) right */
 .rec-list{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
 .rec-row{display:grid;grid-template-columns:48px 1fr auto;gap:var(--gap-3,12px);align-items:center;font-size:12px;line-height:15px}
@@ -2343,3 +2327,61 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .mega-tile img{width:212px;height:auto;aspect-ratio:212/315;object-fit:cover;display:block} /* campaign imagery (CMS), not a product image */
 .mega-tile span{text-align:center}
 .mega-veil{position:fixed;left:0;right:0;bottom:0;z-index:calc(var(--z-modal,1000) - 3);background:var(--mn-veil,rgba(255,255,255,.8))}
+/* ---------- Quick add (9 Nov 2026 · Figma Quick-Add i0Dgzx7sPX23ffsI55hhRp, Designs 14/01/2026 646:12943) ----------
+   The PLP quick add (the card's bag-with-plus, .pc-add “Add”, .pc-qa mini). Behaviour: assets/ds/quickadd.js (DG_quickAdd).
+   No colour or size to choose → added straight from the card: the button presses, spins, ticks, then returns to default after 2s (646:22792).
+   Anything to choose → the Quick Add window: desktop a centred 480 window (.mdl--qa), mobile the DS slide up (.mdl--up) — overlay fades, window slides from the bottom.
+     Beauty (651:22558)  product row with a 64 × 96 image · Colour: shade dropdown (.cdd — chip + name, stock note per shade)
+     Fashion (652:46555) brand / name / price block · Colour: image swatches (.cswatches) · Size: .sz buttons (struck when out of stock)
+     Home (652:55790)    brand / name / price block · Colour: image swatches · Size: the DS select (.fsel)
+   Colour is pre-selected (the card's colour, PDP logic). Stock line under the options (.alert--text). ADD TO BAG → spinner (.bd.spn) → ✓ ADDED (.bd.done) → the window closes itself after 2s. VIEW PRODUCT under it. */
+.qa-layer{position:fixed;inset:0;z-index:calc(var(--z-modal) + 5);display:flex;align-items:center;justify-content:center;padding:var(--gap-4,16px) 0}
+.qa-layer>.mdl-scrim{position:absolute;inset:0;z-index:0}
+.qa-layer>.mdl{z-index:3;max-height:100%;animation:mdlfade .3s ease-in-out both}
+.qa-layer--up{align-items:flex-end;padding:var(--gap-14,56px) 0 0}
+.qa-layer--up>.mdl{animation-name:mdlup}
+.mdl--qa{width:480px;max-height:calc(100% - 32px)}
+.mdl--qa .mdl-bd{overflow:visible} /* the shade list opens over the window, never clipped by it (651:32910) */
+.qa-prod{display:flex;gap:var(--gap-4,16px);align-items:flex-start}
+.qa-prod>img{width:64px;height:auto;aspect-ratio:var(--ratio-product);object-fit:cover;flex:none;background:var(--surface-media);display:block}
+.qa-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px}
+.qa-nm{display:flex;flex-direction:column;gap:4px;font-size:16px;line-height:normal;color:var(--text-primary)}
+.qa-nm b{font-weight:var(--w-strong)}
+.qa-nm span{font-weight:var(--w-regular)}
+.qa--sw .qa-nm span{line-height:24px}
+.qa-opt{display:flex;flex-direction:column;gap:12px}
+.qa-opt .fsel{width:100%}
+.qa-opt .sizes .set{gap:8px}
+.qa-opt .sz{min-width:50px;padding:0 12px}
+/* price: 16 now (strong, sale red) + was (regular, struck); fashion / home add the saving and the code line at 14 */
+.price-blk--qa{gap:4px}
+.price-blk--qa .price{font-size:16px;line-height:20px;column-gap:8px;row-gap:4px;flex-wrap:wrap;align-items:center}
+.price-blk--qa .price .save{font-size:14px;line-height:normal}
+.price-blk--qa .price-code{font-size:14px;line-height:normal;font-weight:var(--w-regular)}
+@media(max-width:599px){.qa-prod .price-blk--qa .price{font-size:14px}}
+/* Colour dropdown (.cdd): a 50 tall field — 30px colour chip + shade name, chevron right; open = the list over the field, selected row on Grey 1, its chip ringed */
+.cdd{position:relative}
+.cdd-btn{display:flex;align-items:center;gap:12px;width:100%;height:50px;padding:8px 16px;background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:var(--radius-default);font:inherit;font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);cursor:pointer;text-align:left;box-sizing:border-box}
+.cdd-btn>span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cdd-btn::after{content:"";width:24px;height:24px;flex:none;background:currentColor;-webkit-mask:url("icons/lib/icons-down.svg") center/24px 24px no-repeat;mask:url("icons/lib/icons-down.svg") center/24px 24px no-repeat;transition:transform var(--dur-base)}
+.cdd.open .cdd-btn::after{transform:rotate(180deg)}
+.cdd-chip{width:30px;height:30px;flex:none;border-radius:var(--radius-default);background:var(--surface-media)}
+.cdd-list{position:absolute;left:0;right:0;top:0;z-index:4;display:none;margin:0;padding:0;list-style:none;background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:var(--radius-default);box-shadow:var(--shadow-card);max-height:240px;overflow-y:auto}
+.cdd.open .cdd-list{display:block}
+.cdd-opt{display:flex;align-items:center;gap:12px;width:100%;min-height:46px;padding:8px 16px;background:none;border:0;font:inherit;font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);cursor:pointer;text-align:left}
+.cdd-opt:hover,.cdd-opt.on{background:var(--surface-media)}
+.cdd-opt.on .cdd-chip{box-shadow:0 0 0 1px var(--surface-raised),0 0 0 2px var(--text-primary)}
+.cdd-opt small{display:block;font-size:12px;line-height:16px;color:var(--text-error)}
+.cdd-opt.oos{color:var(--text-disabled);cursor:default}
+/* Stock alert · Text: the plain red line (no ground, no rule) — quick add + PDP stock under the options */
+.alert--text{background:none;border:0;padding:0;display:block;font-size:16px;line-height:normal;letter-spacing:.02em;color:var(--text-error)}
+.alert--text.sm{font-size:14px;letter-spacing:0}
+/* Button · Added (.bd.done): the primary after it has added — tick + ADDED, no interaction */
+.bd.done{display:inline-flex;align-items:center;justify-content:center;gap:8px;pointer-events:none}
+.bd.done::before{content:"";width:24px;height:24px;flex:none;background:currentColor;-webkit-mask:url("icons/lib/icons-tick.svg") center/24px 24px no-repeat;mask:url("icons/lib/icons-tick.svg") center/24px 24px no-repeat}
+/* the card's quick add button states (Icon Only Button · Quick Add → Touch Down → Spinner → Tick, 646:22792): pressed, spinning, ticked; back to default after 2s */
+.spin.sm{width:16px;height:16px;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1.5px))}
+.qa-tick{display:inline-block;width:16px;height:16px;flex:none;background:currentColor;-webkit-mask:url("icons/lib/icons-tick.svg") center/16px 16px no-repeat;mask:url("icons/lib/icons-tick.svg") center/16px 16px no-repeat;vertical-align:middle}
+.qa-press{transform:scale(.9);transition:transform .12s ease-out}
+.qa-busy,.qa-ok{pointer-events:none}
+.pc-iconbtn.qa-busy,.pc-iconbtn.qa-ok{color:var(--icon-primary)}

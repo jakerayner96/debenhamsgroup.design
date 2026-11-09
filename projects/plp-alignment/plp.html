@@ -212,6 +212,19 @@ body:not(.mode-new) .hd-usp .s{line-height:12px}
 </footer>
 
 <script src="data.js"></script>
+<script src="../../assets/ds/quickadd.js"></script>
+<script>
+/* Quick add (DS DG_quickAdd, 9 Nov 2026 — Figma Quick-Add i0Dgzx7sPX23ffsI55hhRp): when quick add is on for the PLP, the card's quick add
+   (on-image bag-with-plus, "Add" under the image, or the mini price-row Add) adds straight away when there is nothing to choose,
+   otherwise it opens the Quick Add window (desktop) / slide up (mobile). The rest of the grid is the PLP's; nothing here restyles the DS. */
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('article.pc [aria-label="Quick add"],article.pc .pc-add,article.pc .pc-qa');
+  if(!t||!window.DG_quickAdd||!window.__plist)return;e.preventDefault();e.stopPropagation();
+  const a=t.closest('article.pc'),i=+a.dataset.idx,b=(window.__ovrKey||'debenhams:').split(':')[0];
+  const src=(q,j)=>`img/${b}/p${q.img!==undefined?q.img:j}.jpg`,abs=u=>new URL(u,document.baseURI).href;
+  const p=window.__plist[i];if(!p)return;
+  DG_quickAdd.open({p,img:abs(src(p,i)),peers:window.__plist.map((q,j)=>({name:q.name,brand:q.brand,img:abs(src(q,j))})),el:t});
+},true);
+</script>
 <div id="anat" hidden><div class="box"></div></div>
 <script>
 const AST='../../assets';const IMG='img';

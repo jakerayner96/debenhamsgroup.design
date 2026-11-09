@@ -10,7 +10,7 @@
   const go=page=>{if(!page||page===M.page&&page!=='pdp')return;
     if(parent!==window)parent.postMessage({protoNav:{page}},'*');
     else{const s=Object.assign({},M.state||{},{page});location.href=location.pathname+'?s='+encodeURIComponent(JSON.stringify(s))}};
-  const IGNORE='.pc-iconbtn,.pcar-arr,.pcar-tabs,.chip,.wish,.sz,.cswatch,.acc-h,[data-sns-open],.dgrid-tabs,.dgrid-more,.hd-burger,input,select,textarea';
+  const IGNORE='.pc-iconbtn,.pc-add,.pc-qa,[data-qa-layer],.pcar-arr,.pcar-tabs,.chip,.wish,.sz,.cswatch,.acc-h,[data-sns-open],.dgrid-tabs,.dgrid-more,.hd-burger,input,select,textarea';
   document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;
     const act=t.closest('.toast--top .act');if(act){e.preventDefault();go('bag');return}
     if(t.closest('.hd-logo')){e.preventDefault();go('home');return}
@@ -24,6 +24,8 @@
   /* Add to bag: the DS toast (catalogue Toast · Top, actionable), 6s; the header bag count goes up by one. Bundling (dg:bundle) adds n items */
   let tt;
   document.addEventListener('dg:bundle',e=>added((e.detail.items||[]).length));
+  /* Quick add (DS quickadd.js) bumps the header bag count itself; View product → PDP */
+  document.addEventListener('dg:quickadd-view',()=>go('pdp'));
   function added(n){n=n||1;document.querySelectorAll('[data-master-toast]').forEach(x=>x.remove());clearTimeout(tt);
     document.body.insertAdjacentHTML('beforeend','<div class="toast toast--top" data-master-toast role="status"><span style="flex:1">'+(n>1?n+' items':'Item')+' added to bag</span><button class="act">View</button></div>');
     document.querySelectorAll('.hd-count').forEach(b=>b.setAttribute('data-n',(+b.getAttribute('data-n')||0)+n));
