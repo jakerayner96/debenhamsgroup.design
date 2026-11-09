@@ -117,6 +117,109 @@ window.PI_RECS={
      "8"
     ],
     "colour": "Silver"
+   },
+   {
+    "brand": "Lloyd Baker",
+    "name": "Tawi Leather Purse",
+    "price": "£19.99",
+    "was": "£45.00",
+    "pct": "56",
+    "img": "projects/product-carousel/img/recs/lloyd-baker-tawi-leather-purse.jpg",
+    "href": "https://www.debenhams.com/product/lloyd-baker-tawi-leather-purse_p-bd72ca65-dcd9-4b90-86b6-5593ac8d0ffc"
+   },
+   {
+    "brand": "MUCHV",
+    "name": "18K Gold Solid Hoop Earrings - 18mm",
+    "price": "£24.00",
+    "was": "£30.00",
+    "pct": "20",
+    "img": "projects/product-carousel/img/recs/muchv-18k-gold-solid-hoop-earrings-18mm.jpg",
+    "href": "https://www.debenhams.com/product/muchv-18k-gold-solid-hoop-earrings---18mm_p-2143422c-f0c2-4f94-8842-e10dd9be9be1"
+   },
+   {
+    "brand": "MODISHION",
+    "name": "Elegant Soft Plaid Scarf Shawl",
+    "price": "£9.81",
+    "was": "£23.40",
+    "pct": "58",
+    "img": "projects/product-carousel/img/recs/modishion-elegant-soft-plaid-scarf-shawl.jpg",
+    "href": "https://www.debenhams.com/product/modishion-elegant-soft-plaid-scarf-shawl_p-8852db0a-ee0d-4842-bdf6-e337ba346ebc"
+   },
+   {
+    "brand": "MODISHION",
+    "name": "Faux Fur Collar Scarf",
+    "price": "£7.49",
+    "was": "£18.75",
+    "pct": "60",
+    "img": "projects/product-carousel/img/recs/modishion-faux-fur-collar-scarf.jpg",
+    "href": "https://www.debenhams.com/product/modishion-faux-fur-collar-scarf_p-1f851840-061b-42ba-a485-56aa077fd62d"
+   },
+   {
+    "brand": "Ashwood Leather",
+    "name": "'Ava' Stylish Real Leather Crossbody Bag",
+    "price": "£32.49",
+    "was": "£94.99",
+    "pct": "66",
+    "img": "projects/product-carousel/img/recs/ashwood-leather-ava-stylish-real-leather-crossbody-bag.jpg",
+    "href": "https://www.debenhams.com/product/ashwood-leather-ava-stylish-real-leather-crossbody-bag_p-5a5b1fb4-9d53-409f-ab69-180a5a3c50cb"
+   },
+   {
+    "brand": "Wallis",
+    "name": "Everly Velvet Asymmetric Pointed Stiletto High Heel Court Shoes",
+    "price": "£53.10",
+    "was": "£59.00",
+    "pct": "10",
+    "img": "projects/product-carousel/img/recs/wallis-everly-velvet-asymmetric-pointed-stiletto-high-heel-c.jpg",
+    "href": "https://www.debenhams.com/product/wallis-everly-velvet-asymmetric-pointed-stiletto-high-heel-court-shoes_byy15635",
+    "opt": "Size",
+    "sizes": [
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8"
+    ],
+    "colour": "Burgundy"
+   },
+   {
+    "brand": "Coast",
+    "name": "Sicily Velvet Diamante Ankle Strap Pointed Court Shoes",
+    "price": "£58.50",
+    "was": "£65.00",
+    "pct": "10",
+    "img": "projects/product-carousel/img/recs/coast-sicily-velvet-diamante-ankle-strap-pointed-court-shoes.jpg",
+    "href": "https://www.debenhams.com/product/coast-sicily-velvet-diamante-ankle-strap-pointed-court-shoes_bcc11152",
+    "opt": "Size",
+    "sizes": [
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8"
+    ],
+    "colour": "Black"
+   },
+   {
+    "brand": "Warehouse",
+    "name": "Faux Fur Collared Check Belted Coat",
+    "price": "£71.00",
+    "was": "£119.00",
+    "pct": "40",
+    "img": "projects/product-carousel/img/recs/warehouse-faux-fur-collared-check-belted-coat.jpg",
+    "href": "https://www.debenhams.com/product/warehouse-faux-fur-collared-check-belted-coat_bww09175",
+    "opt": "Size",
+    "sizes": [
+     "6",
+     "8",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18"
+    ],
+    "colour": "Camel"
    }
   ]
  },
@@ -380,6 +483,24 @@ window.PI_RECS={
      "201 Rose Tempura",
      "208 Raspberry Lust"
     ]
+   },
+   {
+    "brand": "Prada",
+    "name": "Paradoxe Eau de Parfum 50ml & 10ml Gift Set",
+    "price": "£92.00",
+    "was": "£115.00",
+    "pct": "20",
+    "img": "projects/product-carousel/img/recs/prada-paradoxe-eau-de-parfum-50ml-10ml-gift-set.jpg",
+    "href": "https://www.debenhams.com/product/prada-paradoxe-eau-de-parfum-50ml-10ml-gift-set_ydd25970"
+   },
+   {
+    "brand": "Prada",
+    "name": "Paradoxe Intense Eau de Parfum 90ml & 10ml Gift Set",
+    "price": "£136.00",
+    "was": "£170.00",
+    "pct": "20",
+    "img": "projects/product-carousel/img/recs/prada-paradoxe-intense-eau-de-parfum-90ml-10ml-gift-set.jpg",
+    "href": "https://www.debenhams.com/product/prada-paradoxe-intense-eau-de-parfum-90ml-10ml-gift-set_ydd25972"
    }
   ],
   "bag": {

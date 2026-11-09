@@ -183,25 +183,11 @@ function renderPanel(host,S,update){
   const opt=(v,b)=>`<button class="opt${c.view===v?' on':''}" data-view="${v}"><span class="r"></span><span class="t"><b>${b}</b></span></button>`;
   host.innerHTML=`<h1>Product carousel</h1>
   <div class="card"><h3>Screen <small>${bn}</small></h3>${opt('home','Home')}${opt('pdp','PDP')}${opt('search','Search')}${opt('minibag','Mini Bag')}${opt('bag','Bag')}</div>
-  <div class="card"><h3>Card text</h3>
-    ${rad('cardInfo',c.cardInfo||'full',[['full','Brand + name','Brand on its own line, the name under it'],['clean','Name','The name only, 2 lines'],['inline','Brand - name','Brand strong, then the name, one run'],['inline2','Brand name','As above, without the dash'],['price','Price only','No brand or name']])}
-    <div style="margin-top:10px">${sw('cardSw',c.cardSw!=null?c.cardSw!==false:(c.cardInfo||'full')==='full','Colour swatches')}</div>
-    <p style="margin-top:8px">Every rail and recommendation. Sponsored always shows.</p></div>
-  ${c.view==='minibag'?`<div class="card"><h3>Added To Bag</h3>
-    ${rad('mbType',c.mbType||'live',[['live','Live (no reccs)','As live: the item and the CTAs, no recommendations'],['look','Complete the look','Coast dress → shoes, a bag, jewellery, a coat. First two Sponsored'],['similar','Similar items','Coast dress → other party dresses for the same occasion'],['fbt','Frequently bought together','Prada Paradoxe → the hand cream, a refill, the gift set'],['till','At the till · under £10','Coast dress → small add-ons under £10, like the till in store']])}
-    <div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div></div>
-  ${(c.mbType&&c.mbType!=='live')?(()=>{const t=c.mbType,def={look:'Complete The Look',similar:'You May Also Like',fbt:'Frequently Bought Together',till:'Little Extras Under £10'}[t],st=c.recStyle==='bundle'&&t!=='fbt'?'rail':(c.recStyle||'rail'),cards=st==='rail';
-    const fmt=`<div class="sub">${seg('ctlFmt',c.ctlFmt||'carousel',[['carousel','Carousel'],['grid','Grid']])}${c.ctlFmt==='grid'?`<div class="f"><span>Rows</span>${seg('ctlRows',c.ctlRows||2,[['1','1'],['2','2'],['3','3']])}</div>`:''}</div>`;
-    return `<div class="card"><h3>Recommendations ${sw('ctlTitleOn',c.ctlTitleOn!==false,'Title')}</h3>
-    ${c.ctlTitleOn!==false?`<input class="pi-in" data-in="title_${t}" value="${(c['title_'+t]||def).replace(/"/g,'&quot;')}" aria-label="Title">`:''}
-    <h4>Style</h4>${rad('recStyle',st,[['rail','Cards','A carousel or a grid of product cards',fmt],['list','List','Three rows: image, name, price, quick add']].concat(t==='fbt'?[['bundle','Bundle','The DS bundle: tick the pieces, pick sizes, add them all']]:[]))}</div>
-    ${cards?`<div class="card"><h3>Card</h3>${rad('recCard',c.recCard||'std',[['std','Standard','127 × 190 image, min height 250, brand - name, price'],['sm','Small · price only','100 × 150 image, price and quick add']])}</div>
-    <div class="card"><h3>Quick add</h3>${rad('qaMode',c.qaMode||'bag',[['bag','Straight to bag','Only single-variant products get it. Products that need a size or shade have no button; a tap opens their PDP'],['modal','Quick Add modal','Every card has it. Single-variant products go straight in; the rest open the Quick Add modal (as live)'],['pdp','None → PDP','No button. A tap opens the product page'],['inline','Inline size','“Size: Select size” on cards that need a size; the quick add adds once one is chosen']])}
-    ${c.recCard==='sm'?'<p style="margin-top:8px">Small cards have no room for a size, so those products use the modal.</p>':''}</div>`:''}`})():''}
-  <div class="card"><h3>Sticky CTA</h3>${rad('ctaSticky',c.ctaSticky||'fade',[['fade','Gradient','A white gradient behind the CTAs'],['float','Floating','The CTAs float with a soft shadow']])}
-    <p style="margin-top:8px">Once the sheet scrolls, the CTAs stick to its foot; the title stays pinned at the top.</p></div>
-  <div class="card"><h3>Bag CTA</h3>${rad('cta',c.cta||'bag',[['bag','View Bag','Goes to the bag'],['checkout','Checkout','Straight to checkout (the Checkout 2026 prototype)'],['both','Both','Checkout (primary) and View Bag (secondary)',`<div class="sub">${seg('ctaLay',c.ctaLay||'side',[['side','Side by side'],['stack','Top and bottom']])}</div>`]])}
-    <div style="margin-top:10px">${sw('applePay',!!c.applePay,'Apple Pay')}</div></div>`:''}`;
+  ${c.view==='minibag'?(()=>{const t=c.mbType||'live',recs=t!=='live',till=t==='till',qa=till?'bag':(t==='similar'&&c.qaMode==='bag'?'modal':(c.qaMode||'modal'));
+    return `<div class="card"><h3>Recommendations</h3>${rad('mbType',t,[['live','Live (no recs)'],['look','Complete the look'],['similar','Similar items'],['fbt','Frequently bought together'],['till','Under £10']])}</div>
+  ${recs&&!till?`<div class="card"><h3>Quick add</h3>${rad('qaMode',qa,(t==='similar'?[]:[['bag','Quick add → bag']]).concat([['modal','Quick add → Quick Add modal'],['pdp','No quick add → PDP']]))}</div>
+  <div class="card"><h3>Layout</h3>${rad('ctlFmt',c.ctlFmt||'carousel',[['carousel','Carousel'],['grid','Grid',0,`<div class="sub">${seg('ctlRows',c.ctlRows||2,[['1','1 row'],['2','2 rows'],['3','3 rows']])}</div>`]])}</div>`:''}
+  <div class="card"><h3>Bag CTA</h3>${rad('cta',c.cta||'bag',[['bag','View Bag'],['checkout','Checkout'],['both','Both',0,`<div class="sub">${seg('ctaLay',c.ctaLay||'side',[['side','Side by side'],['stack','Stacked']])}</div>`]])}</div>`})():''}`;
   function opt2(v,b){return `<button class="opt${(c.mbType||'live')===v?' on':''}" data-mb="${v}"><span class="r"></span><span class="t"><b>${b}</b></span></button>`}
   host.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{c.view=b.dataset.view;panel();update()});
   host.querySelectorAll('[data-mb]').forEach(b=>b.onclick=()=>{c.mbType=b.dataset.mb;panel();update()});

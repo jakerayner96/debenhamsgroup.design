@@ -12,6 +12,7 @@ window.DG_CHANGELOG=[
    "Rail card options (DG_pcarHTML): tall — min height 250 so brand + name always fit (Figma 13943:31066) · inlineSize — Size: Select size ⌄ under the price for items with sizes[] (.pc-size, a native select) · item.noQa — no quick add on that card"
   ],
   "changed": [
+   "Product carousel prototype panel simplified (Jake 11 Nov): Screen, Recommendations (Live, Complete the look, Similar items, Frequently bought together, Under £10), Quick add (to bag, Quick Add modal, none to PDP), Layout (carousel or grid + rows), Bag CTA; Card text, card size, style, sticky and Sponsored options removed. One card format per rail, never a mix: quick add to bag shows single-variant products only, the modal only products that need a size or shade, none to PDP any; Under £10 = small price-only cards, single-variant, straight in; no Sponsored in the sheet · by Product carousel prototype, Jake 11 Nov",
    "Product carousel prototype · Added to Bag: card Standard (127 × 190, min 250, Brand - Name, price, square quick add) or Small (100 × 150, price only); quick add Straight to bag (single-variant only, the rest go to the PDP) · Quick Add modal · None → PDP · Inline size; every scenario product tagged single / multi variant; the carousel keeps its height as items are added — the sheet scrolls and View Bag floats pinned (was: the rail shrank to fit)"
   ]
  },

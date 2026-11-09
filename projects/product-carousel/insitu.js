@@ -151,23 +151,18 @@ function thresh(){if(PC.thresh===false)return '';const t=bagItems().reduce((a,p)
    quick add shape, card size and image gap from the Cards panel (Jake's Figma review variants 13939:19737 … 13939:26225). */
 const RECL=t=>{const k=RK.indexOf(t)+1,R=window.PI_RECS&&PI_RECS[t];return FM()&&R?R.items.map((x,j)=>k*1000+j):t==='fbt'?ids('fbt',12,8):t==='till'?ids('till',30,8):ids('atb',4,10).filter(i=>i!==1)};
 const RECT=t=>(PC['title_'+t]||'').trim()||(window.PI_RECS&&PI_RECS[t]&&PI_RECS[t].title)||{look:'Complete The Look',similar:'You May Also Like',fbt:'Frequently Bought Together',till:'Little Extras Under £10'}[t];
-function rec(t){const grid=PC.ctlFmt==='grid',rows=Math.max(1,Math.min(3,+PC.ctlRows||2)),st=PC.recStyle==='list'?'list':PC.recStyle==='bundle'&&t==='fbt'?'bundle':'rail';
-  const title=PC.ctlTitleOn===false?'':RECT(t),list=RECL(t);
-  const hd=title?`<header class="pcar-hd"><div class="pcar-tt"><h2 class="pcar-t">${esc(title)}</h2></div></header>`:'';
-  if(st==='list'){const L=items({qa:true},list.slice(0,3)),lv=PC.cardInfo||'full',sq=PC.qaShape==='square'?' pc-iconbtn--sq':'';
-    const tx=x=>lv==='price'?'':lv==='inline'||lv==='inline2'?`<span class="n"><b>${esc(x.brand||'')}</b>${lv==='inline'?' - ':' '}${esc(x.name)}</span>`:`${lv==='clean'?'':`<span class="b">${esc(x.brand||'')}</span>`}<span class="n">${esc(x.name)}</span>`;
-    return `<section class="pcar pcar--sm pi-rec">${hd}<div class="rec-list">${L.map(x=>`<div class="rec-row"><img src="${esc(x.img)}" alt=""><div class="t">${tx(x)}<div class="price-blk price-blk--rail"><div class="price"><span class="now${x.was?' sale':''}">${esc(x.price)}</span>${x.was?`<span class="was">${esc(x.was)}</span>`:''}</div></div></div><button type="button" class="pc-iconbtn${sq}${x.added?' on':''}" data-qa="${x.i}" aria-label="${x.added?'Added':'Quick add'} ${esc(x.name)}"${x.added?' disabled':''}><img src="assets/ds/icons/${x.added?'lib/icons-tick':'quick-add-16'}.svg" alt=""></button></div>`).join('')}</div></section>`}
-  if(st==='bundle'&&window.DG_bundle){const L=list.slice(0,2).map(i=>Object.assign({},FI(i),{sizes:/ml/i.test((FI(i)||{}).name||'')?['One size']:['30ml','50ml','90ml'],i}));
-    return DG_bundle.html({title:title||RECT(t),items:L,cta:'Add to bag'})}
-  /* card (Jake 11 Nov, Figma 13943:31066): std = 127 × 190 image, min height 250, Brand - Name, price · sm = 100 × 150, price only.
-     quick add (PC.qaMode): bag — the button only on single-variant products, it adds straight to the bag; multi-variant cards go to the PDP ·
-     modal — every card has it; single adds, multi opens the DS Quick Add modal · pdp — no button, a tap opens the PDP · inline — multi-variant cards
-     carry "Size: Select size ⌄" and the button adds once a size is chosen */
-  const sm=PC.recCard==='sm',m=QAM(),multi=x=>!!(x.sizes&&x.sizes.length);
-  return pcar({id:'rec-'+t,size:'sm',title,per:grid?3:4,card:sm?100:127,fixed:!grid,compact:true,tall:!sm,info:sm?'price':'inline',swatches:false,start:4,list:grid?list.slice(0,rows*3):list,fmt:grid?'grid':undefined,len:grid?rows*3:undefined,bleed:grid?false:undefined,
-    qa:m!=='pdp',qaShape:'square',inlineSize:m==='inline'&&!sm,noQa:x=>multi(x)&&(m==='bag'||(m==='inline'&&sm)),
-    sp:t==='look'&&BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null})}
-const QAM=()=>['bag','modal','pdp','inline'].includes(PC.qaMode)?PC.qaMode:'bag',SZ={};
+/* Added to Bag recommendations (Jake 11 Nov — Figma 13943:31066, one card format per rail, never a mix):
+   under £10 (till) · Small card (100 × 150, price only) + quick add, single-variant products only — straight in the bag
+   the rest · Standard card (127 × 190, min height 250, Brand - Name, price). Quick add (PC.qaMode) picks the products that suit it:
+     bag   · single-variant products only (bags, jewellery, scarves, gift sets) — every card's quick add adds straight in
+     modal · products that need a size or shade (shoes, coats, dresses, fragrance sizes) — every card's quick add opens the DS Quick Add modal
+     pdp   · any product, no button — a tap opens the PDP
+   Similar items are all dresses (all need a size): straight to bag isn't offered, it falls back to the modal. No Sponsored in the sheet. */
+const QAM=()=>{const m=['bag','modal','pdp'].includes(PC.qaMode)?PC.qaMode:'modal';return MBT()==='till'?'bag':MBT()==='similar'&&m==='bag'?'modal':m},SZ={};
+function rec(t){const grid=PC.ctlFmt==='grid'&&t!=='till',rows=Math.max(1,Math.min(3,+PC.ctlRows||2)),m=QAM(),sm=t==='till',multi=x=>!!(x.sizes&&x.sizes.length);
+  const all=RECL(t),list=all.filter(i=>{const x=FI(i);return !x||m==='pdp'?true:m==='bag'?!multi(x):multi(x)});
+  return pcar({id:'rec-'+t,size:'sm',title:RECT(t),per:grid?3:4,card:sm?100:127,fixed:!grid,compact:true,tall:!sm,info:sm?'price':'inline',swatches:false,start:4,
+    list:grid?list.slice(0,rows*3):list,fmt:grid?'grid':undefined,len:grid?rows*3:undefined,bleed:grid?false:undefined,qa:m!=='pdp',qaShape:'square',sp:null})}
 function miniBag(){const d=desk(),t=MBT();
   const rail=rec(t);
   /* order: Live as live (item · threshold · Continue Shopping / View Bag); the new versions lead with the threshold, then the item(s), then their extra */
@@ -215,7 +210,7 @@ document.addEventListener('click',e=>{
   const lk=e.target.closest('.pcar--look[data-pl="look"]');if(lk&&!e.target.closest('.pcar-arr')){e.preventDefault();const c=e.target.closest('.pcar-track>*'),L=FEEDS.look,idx=c?[...c.parentNode.children].indexOf(c):-1;openPicker(L&&idx>=0?ids('look',L.start||0,10)[idx]:null);return}
   const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();e.stopPropagation();const i=+qa.dataset.qa,x=FI(i)||{};
     if(x.sizes&&x.sizes.length&&!ADDED.includes(i)){
-      if(QAM()==='modal'||PC.recCard==='sm'){if(window.DG_quickAdd){document.body.insertAdjacentHTML('beforeend',DG_quickAdd.html(x,{desk:desk()}));DG_quickAdd.wire(document.body.lastElementChild)}return}
+      if(QAM()!=='inline'){if(window.DG_quickAdd){document.body.insertAdjacentHTML('beforeend',DG_quickAdd.html(x,{desk:desk()}));DG_quickAdd.wire(document.body.lastElementChild)}return}
       const card=qa.closest('.pc'),sel=card&&card.querySelector('[data-qsz]');if(sel&&!sel.value){const l=sel.closest('.pc-size');l.classList.add('err');l.querySelector('.v').textContent='Select a '+(x.opt||'size').toLowerCase();return}
       if(sel)SZ[i]=sel.value}
     if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null;return}
