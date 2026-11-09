@@ -100,15 +100,17 @@
    Debenhams + boohoo; remaining slots for the other fascias land as each is audited. */
 [data-brand="debenhams"]{/* default — no overrides */}
 [data-brand="boohoo"]{
+  /* boohoo refresh ’26 (9 Nov 2026): master pink #F9D7EA replaces every old pink; black on pink in all situations; full logo where possible;
+     primary button = black with white text, the boohooMAN button palette. Pink shades below derived from #F9D7EA (same hue). */
   --text-on-action:#FFF; /* golden: primary ink is white */
   --w-btn:600;--btn-outline:#000; /* golden button truth */
   --brand-name:'boohoo';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:500;--w-mid:400;--w-strong:700;
-  --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#FFE0EB;--usp-b-fg:#0F0F0F;
-  --brand-primary:#F8B5CC;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
+  --usp-a-bg:#000;--usp-a-bg2:#000;--usp-a-fg:#FFF;--usp-b-bg:#F9D7EA;--usp-b-fg:#0F0F0F;
+  --brand-primary:#F9D7EA;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;
   --border-action:var(--surface-action);--border-focus:var(--surface-action);--text-link:var(--surface-action);--text-link-hover:#242424;--icon-action:var(--surface-action);
-  --brand-neutral:#F1DCE3;--brand-light-4:#FFE9F0;--brand-light-3:#FEE0EA;--brand-light-2:#FCD3E1;--brand-light-1:#FBC7D8;
-  --brand-dark-1:#EEA5BE;--brand-dark-2:#EA92B0;--brand-dark-3:#DD789B;--brand-primary-dark:#CB4870;
+  --brand-neutral:#F6E3EE;--brand-light-4:#FEF6FA;--brand-light-3:#FDF0F7;--brand-light-2:#FCE9F3;--brand-light-1:#FAE1EF;
+  --brand-dark-1:#F5C2DF;--brand-dark-2:#F0B2D5;--brand-dark-3:#E495C2;--brand-primary-dark:#CD6AA2;
   --nav-bg:#FFF;
 }
 [data-brand="boohooman"]{
@@ -243,7 +245,7 @@
   --text-link-pressed:#000;--text-link-disabled:#000;
   --tickc:#000;--vto:#000;--dot:#000;--new:#000;
   --card-bg:#000;--card-ink:#FFF;--card-btn-bg:#FFF;--card-btn-ink:#000;
-  --dplus-bg:#FFE0EB;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000; /* boohoo keeps Light-3 pink for Deliver+ */
+  --dplus-bg:#F9D7EA;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000; /* boohoo Deliver+ on the master pink #F9D7EA, black ink (refresh 9 Nov 2026: black on pink in all situations) */
 }
 [data-brand="boohooman"]{--card-btn-bg:#01FE8A;--new:#01FE8A;--dplus-bg:#101010;--dplus-fg:#FFF;--dplus-link:#FFF;--dplus-check:#01FE8A}
 [data-brand="warehouse"]{--dplus-bg:#F2F2F2;--dplus-check:#000} /* The Brand Room has no Deliver+ (rule, Jake 22 Oct 2026 — DG_hasDplus in dplus-logos.js) */
@@ -291,7 +293,7 @@
   --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
   --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#000000;--new:#000000;
   --card-bg:#000;--card-ink:#FFF;--card-btn-bg:#FFF;--card-btn-ink:#000;
-  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000;
 }
 [data-brand="wallis"]{ /* from the front-end theme (wallis, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Wallis';--font-family-base:'Urbanist',ui-sans-serif,-apple-system,system-ui,sans-serif;
@@ -322,7 +324,7 @@
   --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
   --text-link-pressed:#284D7B;--text-link-disabled:#B5B5B5;--tickc:#284D7B;--vto:#284D7B;--dot:#284D7B;--new:#284D7B;
   --card-bg:#000000;--card-ink:#FFF;--card-btn-bg:#FFF;--card-btn-ink:#000;
-  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000;
 }
 [data-brand="principles"]{ /* from the front-end theme (principles, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Principles';--font-family-base:'Lato',ui-sans-serif,-apple-system,system-ui,sans-serif;
@@ -354,7 +356,7 @@
   --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
   --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
-  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000;
 }
 [data-brand="oasis"]{ /* from the front-end theme (oasis, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Oasis';--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
@@ -370,7 +372,7 @@
   --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
   --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
-  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000;
 }
 [data-brand="dorothyperkins"]{ /* from the front-end theme (dorothy-perkins, 09 Sep) via .context/inventory/05 §3 */
   --brand-name:'Dorothy Perkins';--font-family-base:'PublicSans',ui-sans-serif,-apple-system,system-ui,sans-serif;
@@ -386,7 +388,7 @@
   --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
   --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
-  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000;
 }
 [data-brand="misspap"]{ /* Jake 12 Oct 2026: type + buttons = boohoo / MAN (Montserrat, 600 buttons), in Misspap #101820 instead of black, grey secondary outline; header inverted (C-05 .hd--inv) */
   --brand-name:'Misspap';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
@@ -417,7 +419,7 @@
   --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
   --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#284D7B;--new:#000000;
   --card-bg:linear-gradient(131deg,#1ABC9C 1.8%,#16A085 100%);--card-ink:#FFF;--card-btn-bg:#1ABC9C;--card-btn-ink:#FFF;
-  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000;
 }
 [data-brand="trainingdept"]{ /* Jake 12 Oct 2026: black like boohoo (black buttons + outlines), DSGN Studio's font; header = live (black logo bar, white nav strip) */
   --brand-name:'Training Dept';--font-family-base:'Hanken Grotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;
@@ -432,7 +434,7 @@
   --sec-pressed:#D6D6D6;--sec-disabled-border:#F2F2F2;--surface-neutral:#F2F2F2;--surface-neutral-pressed:#E7E7E7;
   --text-link-pressed:#000000;--text-link-disabled:#B5B5B5;--tickc:#000000;--vto:#000000;--dot:#000000;--new:#000000;
   --card-bg:#000;--card-ink:#FFF;--card-btn-bg:#FFF;--card-btn-ink:#000;
-  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000000;--dplus-check:#000000;
+  --dplus-bg:#F2F2F2;--dplus-fg:#000;--dplus-link:#000;--dplus-check:#000;
 }
 
 /* ============================================================
@@ -442,19 +444,19 @@
    Debenhams · boohoo · MAN · PLT · KM keep their colour-alignment palettes — differences are listed in .context/22.
    ============================================================ */
 [data-brand="debenhams"]{--dplus-bg:#E8F4F2;--dplus-fg:#000000;--dplus-link:#00787D;--dplus-check:#00787D;--dplus-radius:4px;}
-[data-brand="boohoo"]{--dplus-bg:#FFE0EB;--dplus-fg:#000000;--dplus-link:#BB305F;--dplus-check:#BB305F;--dplus-radius:4px;}
+[data-brand="boohoo"]{--dplus-bg:#F9D7EA;--dplus-fg:#000000;--dplus-link:#000;--dplus-check:#000;--dplus-radius:4px;}
 [data-brand="boohooman"]{--dplus-bg:#000000;--dplus-fg:#FFFFFF;--dplus-link:#FFFFFF;--dplus-check:#FFFFFF;--dplus-radius:4px;}
 [data-brand="plt"]{--dplus-bg:#EAAFA4;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#FFFDF7;--dplus-radius:0px;}
 [data-brand="karenmillen"]{--dplus-bg:#000000;--dplus-fg:#FFFFFF;--dplus-link:#FFFFFF;--dplus-check:#FFFFFF;--dplus-radius:4px;}
-[data-brand="burton"]{--dplus-bg:#E2EAF4;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--surface-neutral:#E2EAF4;} /* type + buttons now boohoo / MAN (block above, Jake 12 Oct) */
-[data-brand="coast"]{--dplus-bg:#E2E0DC;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#E2E0DC;--brand-light-3:#E2E0DC;}
+[data-brand="burton"]{--dplus-bg:#E2EAF4;--dplus-fg:#000000;--dplus-link:#000;--dplus-check:#000;--dplus-radius:0px;--surface-neutral:#E2EAF4;} /* type + buttons now boohoo / MAN (block above, Jake 12 Oct) */
+[data-brand="coast"]{--dplus-bg:#E2E0DC;--dplus-fg:#000000;--dplus-link:#000;--dplus-check:#000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#E2E0DC;--brand-light-3:#E2E0DC;}
 [data-brand="dorothyperkins"]{--dplus-bg:#181729;--dplus-fg:#FFFFFF;--dplus-link:#FFFFFF;--dplus-check:#FFFFFF;--dplus-radius:0px;--font-family-base:'Public Sans',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#181729;--brand-light-3:#181729;}
-[data-brand="dsgnstudio"]{--dplus-bg:#F4F6F0;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Hanken Grotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-neutral:#F4F6F0;--brand-light-3:#F4F6F0;}
-[data-brand="misspap"]{--dplus-bg:#E7D5C6;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--surface-neutral:#E7D5C6;} /* type + buttons now boohoo / MAN (block above, Jake 12 Oct) */
-[data-brand="oasis"]{--dplus-bg:#EDE6DF;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#EDE6DF;--brand-light-3:#EDE6DF;}
-[data-brand="principles"]{--dplus-bg:#FBF6F0;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Lato',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#FBF6F0;--brand-light-3:#FBF6F0;}
-[data-brand="wallis"]{--dplus-bg:#F9EEF3;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Urbanist',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#F9EEF3;--brand-light-3:#F9EEF3;}
-[data-brand="warehouse"]{--dplus-bg:#FDFFF5;--dplus-fg:#000000;--dplus-link:#000000;--dplus-check:#000000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:300;--surface-neutral:#FDFFF5;--brand-light-3:#FDFFF5;} /* Jake 12 Oct: Warehouse buttons 300 */
+[data-brand="dsgnstudio"]{--dplus-bg:#F4F6F0;--dplus-fg:#000000;--dplus-link:#000;--dplus-check:#000;--dplus-radius:0px;--font-family-base:'Hanken Grotesk',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-neutral:#F4F6F0;--brand-light-3:#F4F6F0;}
+[data-brand="misspap"]{--dplus-bg:#E7D5C6;--dplus-fg:#000000;--dplus-link:#000;--dplus-check:#000;--dplus-radius:0px;--surface-neutral:#E7D5C6;} /* type + buttons now boohoo / MAN (block above, Jake 12 Oct) */
+[data-brand="oasis"]{--dplus-bg:#EDE6DF;--dplus-fg:#000000;--dplus-link:#000;--dplus-check:#000;--dplus-radius:0px;--font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#EDE6DF;--brand-light-3:#EDE6DF;}
+[data-brand="principles"]{--dplus-bg:#FBF6F0;--dplus-fg:#000000;--dplus-link:#000;--dplus-check:#000;--dplus-radius:0px;--font-family-base:'Lato',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#FBF6F0;--brand-light-3:#FBF6F0;}
+[data-brand="wallis"]{--dplus-bg:#F9EEF3;--dplus-fg:#000000;--dplus-link:#000;--dplus-check:#000;--dplus-radius:0px;--font-family-base:'Urbanist',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:400;--surface-neutral:#F9EEF3;--brand-light-3:#F9EEF3;}
+[data-brand="warehouse"]{--dplus-bg:#FDFFF5;--dplus-fg:#000000;--dplus-link:#000;--dplus-check:#000;--dplus-radius:0px;--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:400;--w-btn:300;--surface-neutral:#FDFFF5;--brand-light-3:#FDFFF5;} /* Jake 12 Oct: Warehouse buttons 300 */
 
 /* Deliver+ per-fascia type + surfaces read from the SEEL bag/checkout/modal nodes (10 Sep 2026) */
 [data-brand="plt"]{--dplus-white:#FFFDF7} /* PLT "Background White" — every white surface in the set */

@@ -26,18 +26,18 @@ export const aqua = {
 
 // Pink family (Boohoo brand)
 export const pink = {
-  light4: '#ffe9f0',
-  light3: '#ffe0eb',
-  neutral: '#f1dce3',
-  light2: '#fcd3e1',
+  light4: '#fef6fa',
+  light3: '#f9d7ea',
+  neutral: '#f6e3ee',
+  light2: '#fce9f3',
   light1: '#ffc2d7',
-  primary: '#f8b5cc',
-  dark1: '#eea5be',
-  dark2: '#ea92b0',
-  dark3: '#dd789b',
-  cta: '#bb305f',
+  primary: '#f9d7ea',
+  dark1: '#f5c2df',
+  dark2: '#f0b2d5',
+  dark3: '#e495c2',
+  cta: '#000000',
   ctaTouchDown: '#a02651', // TODO: confirm with brand team
-  primaryDark: '#cb4870',
+  primaryDark: '#cd6aa2',
 } as const;
 
 // TODO: Add brand colour families for the other 14 facias as they are audited:

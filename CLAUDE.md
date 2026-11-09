@@ -47,3 +47,5 @@ The Debenhams Group UX site: design system docs, project archive (options + chos
 
 ## Related repos (under github.com/jakerayner96, migrating to a new org later via Transfer)
 Group-Design-System · colour-alignment-prototype · UX-Design-Request · checkout-2026-promo-gift-card · debenhams-giftcard-email · vto-prototype · plt-app-prototype (private) · debenhams-design-system-scraper (private)
+
+- **boohoo refresh ’26 (9 Nov 2026).** Master pink **#F9D7EA** replaces every old boohoo pink (#F8B5CC, #FFE0EB, #BB305F…); black on pink in all situations; the full logo (assets/brands/boohoo.svg) wherever it fits, the b mark (boohoo-mark.svg) only where it can’t; primary buttons black / white like boohooMAN. Use the tokens (--brand-primary, --brand-light-*/dark-*, --usp-b-bg, --dplus-*), never a hex.

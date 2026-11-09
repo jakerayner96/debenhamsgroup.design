@@ -139,18 +139,18 @@
 [data-brand='boohoo'] {
   --font-family-base: 'Montserrat', ui-sans-serif, -apple-system, BlinkMacSystemFont,
     'Segoe UI', system-ui, sans-serif;
-  --brand-primary: #f8b5cc;
-  --brand-action: #bb305f;
+  --brand-primary: #f9d7ea;
+  --brand-action: #000000;
   --brand-action-pressed: #a02651;
-  --brand-neutral: #f1dce3;
-  --brand-light-4: #ffe9f0;
-  --brand-light-3: #ffe0eb;
-  --brand-light-2: #fcd3e1;
+  --brand-neutral: #f6e3ee;
+  --brand-light-4: #fef6fa;
+  --brand-light-3: #fdf0f7;
+  --brand-light-2: #fce9f3;
   --brand-light-1: #ffc2d7;
-  --brand-dark-1: #eea5be;
-  --brand-dark-2: #ea92b0;
-  --brand-dark-3: #dd789b;
-  --brand-primary-dark: #cb4870;
+  --brand-dark-1: #f5c2df;
+  --brand-dark-2: #f0b2d5;
+  --brand-dark-3: #e495c2;
+  --brand-primary-dark: #cd6aa2;
 }
 
 [data-brand='boohoo-man'] {
