@@ -303,7 +303,7 @@ window.PI_RECS={
      "16",
      "18"
     ],
-    "colour": "Emerald"
+    "colour": "Black"
    },
    {
     "brand": "Coast",

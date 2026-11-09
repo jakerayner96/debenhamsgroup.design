@@ -2341,6 +2341,7 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .qa-layer>.mdl{z-index:3;max-height:100%;animation:mdlfade .3s ease-in-out both}
 .qa-layer--up{align-items:flex-end;padding:var(--gap-14,56px) 0 0}
 .qa-layer--up>.mdl{animation-name:mdlup}
+.qa-layer>.mdl.mdl-anim-down{animation:mdldown .3s ease-in forwards}.qa-layer>.mdl.mdl-anim-fade-out{animation:mdlfadeout .3s ease-in forwards} /* closing slides back down (fades on desktop) — the open animation no longer wins (11 Nov) */
 .mdl--qa{width:480px;max-height:calc(100% - 32px)}
 .mdl--qa .mdl-bd{overflow:visible} /* the shade list opens over the window, never clipped by it (651:32910) */
 .qa-prod{display:flex;gap:var(--gap-4,16px);align-items:flex-start}

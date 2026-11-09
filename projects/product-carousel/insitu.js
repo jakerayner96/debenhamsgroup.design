@@ -47,9 +47,19 @@ if(window.DG_USP_LIVE&&DG_USP_LIVE.debenhams)DG_USP_LIVE.debenhams.forEach(r=>(r
    PayPal word mark · Ask Deb prompts (hugging) · DS Membership box · BNPL logos + legal · At A Glance chips */
 const FIG_SIZES=`<div class="sizes"><div class="sizes-head"><span>Size:</span><span class="guide"><img src="assets/ds/icons/lib/icons-measure.svg" alt="">Size Guide</span></div><div class="set">${['XS','S','M','L','XL'].map(z=>`<button class="sz${z==='M'?' oos oos--strike':''}">${z}</button>`).join('')}</div></div>`;
 const FIG_BNPL=`<div class="bnpl bnpl--legal"><div class="chips"><span class="pc pc--paypal"><img src="assets/ds/icons/payments/bnpl-paypal-logo.svg" alt="PayPal"></span><span class="pc pc--payplus"><img src="assets/ds/icons/payments/bnpl-payplus-glyph.svg" alt="Pay+"></span><span class="pc pc--klarna"><img src="assets/ds/icons/payments/bnpl-klarna-word.svg" alt="Klarna"></span><span class="pc pc--clearpay"><img src="assets/ds/icons/payments/clearpay-lockup-mini.svg" alt="Clearpay"></span></div><div class="small">18+, T&amp;C apply. Credit subject to status</div><a class="more" href="#">See more</a></div>`;
-function figPdp(x){if(!FM())return;const q=s=>x.querySelector(s);
-  const pb=q('.buy .price-blk');if(pb)pb.outerHTML=`<div class="price-blk price-blk--pdp"><div class="price"><span class="now sale">£98.00</span><span class="was">£140.00</span><span class="save" data-pct="30"></span></div><div class="price-code">£63.00 with code FASHION</div></div>`;
-  const sz=q('.buy .sizes');if(sz)sz.outerHTML=FIG_SIZES;
+function pdpProduct(x){const P=PC.pdpItem;if(!P)return;const q=s=>x.querySelector(s);
+  const br=q('.buy .pbrand'),nm=q('.buy .pname');if(br)br.textContent=P.brand||'';if(nm)nm.textContent=P.name;
+  x.querySelectorAll('.galwrap img').forEach(im=>{im.src=P.img;im.removeAttribute('style');im.alt=P.name});
+  x.querySelectorAll('.cswatches .cswatch img').forEach(im=>{im.src=P.img});
+  const col=[...x.querySelectorAll('.buy div')].find(d=>/^Colour:/.test(d.textContent.trim())&&d.children.length===1);if(col)col.innerHTML=P.colour?`Colour: <b>${esc(P.colour)}</b>`:'';
+  const pct=P.pct?String(P.pct).replace(/[^0-9]/g,''):'',pb=q('.buy .price-blk');
+  if(pb)pb.outerHTML=`<div class="price-blk price-blk--pdp"><div class="price"><span class="now${P.was?' sale':''}">${esc(String(P.price).replace(/^From\s*/,''))}</span>${P.was?`<span class="was">${esc(P.was)}</span>`:''}${pct?`<span class="save" data-pct="${pct}"></span>`:''}</div></div>`;
+  const sz=q('.buy .sizes'),L=P.sizes||[];
+  if(sz)sz.outerHTML=L.length?`<div class="sizes"><div class="sizes-head"><span>${esc(P.opt||'Size')}:</span>${(P.opt||'Size')==='Size'&&!L.some(z=>/ml$/i.test(z))?'<span class="guide"><img src="assets/ds/icons/lib/icons-measure.svg" alt="">Size Guide</span>':''}</div><div class="set">${L.map(z=>`<button class="sz">${esc(z)}</button>`).join('')}</div></div>`:'';
+  x.querySelectorAll('.ptags').forEach(t=>t.remove())}
+function figPdp(x){pdpProduct(x);if(!FM())return;const q=s=>x.querySelector(s);
+  const pb=PC.pdpItem?null:q('.buy .price-blk');if(pb)pb.outerHTML=`<div class="price-blk price-blk--pdp"><div class="price"><span class="now sale">£98.00</span><span class="was">£140.00</span><span class="save" data-pct="30"></span></div><div class="price-code">£63.00 with code FASHION</div></div>`;
+  const sz=PC.pdpItem?null:q('.buy .sizes');if(sz)sz.outerHTML=FIG_SIZES;
   x.querySelectorAll('.buy .ctas .pp-co').forEach(e=>e.remove());
   const unl=q('.buy .unl');if(unl&&window.DG_memberBoxHTML)unl.outerHTML=DG_memberBoxHTML('debenhams');
   const bn=q('.buy .bnpl');if(bn)bn.outerHTML=FIG_BNPL;
@@ -127,7 +137,8 @@ const CTA=()=>PC.cta==='checkout'?'Checkout':'View Bag';
 const ctas=()=>`${PC.cta==='both'?(PC.ctaLay==='stack'?'<button class="bd pri" data-mbgo="checkout">Checkout</button><button class="bd sec" data-mbgo>View Bag</button>':'<div class="bd-pair"><button class="bd sec" data-mbgo>View Bag</button><button class="bd pri" data-mbgo="checkout">Checkout</button></div>'):`<button class="bd pri" data-mbgo>${CTA()}</button>`}${PC.applePay?'<button class="pay pay--apple" data-mbgo="pay" aria-label="Apple Pay"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button>':''}`;
 const MBT=()=>['live','look','similar','fbt','till'].includes(PC.mbType)?PC.mbType:'live',THRESH=100,ADDED=[];let SAVED=null,JUST=null;   /* JUST = the item quick-added on this render: its line item drops in, its button pops */
 const num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
-function mainItem(){if(FM()&&MBT()==='fbt'&&window.PI_RECS&&PI_RECS.fbt.bag){const b=PI_RECS.fbt.bag;return Object.assign({},b,{price:String(b.price).replace(/^From\s*/,''),size:b.size||'50ml',colour:''})}   /* Frequently bought together: the bag holds Prada Paradoxe */
+function mainItem(){if(PC.pdpItem){const P=PC.pdpItem,sz=(document.querySelector('.buy .sz.on')||{}).textContent;return Object.assign({},P,{price:String(P.price).replace(/^From\s*/,''),size:sz?sz.trim():(P.sizes&&P.sizes.length?P.sizes[0]:'One Size'),colour:P.colour||''})}
+  if(FM()&&MBT()==='fbt'&&window.PI_RECS&&PI_RECS.fbt.bag){const b=PI_RECS.fbt.bag;return Object.assign({},b,{price:String(b.price).replace(/^From\s*/,''),size:b.size||'50ml',colour:''})}   /* Frequently bought together: the bag holds Prada Paradoxe */
   const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,colour:DP.colour}:PR()[1]||{};
   const sz=(document.querySelector('.sz.on')||{}).textContent,cm=((document.querySelector('.buy')||{}).innerText||'').match(/Colou?r:\s*([^\n]+)/);
   return Object.assign({},p,{img:DP?DP.imgs[0]:IMG(1),size:sz&&sz.trim()||(FM()?'M':'12'),colour:p.colour||(cm&&cm[1].trim())||''})}
@@ -205,11 +216,14 @@ function mountBag(open,instant){const old=document.getElementById('pimb'),ot=doc
 /* inline size: the choice shows in the row */
 document.addEventListener('change',e=>{const sel=e.target.closest('#pimb [data-qsz]');if(!sel)return;const l=sel.closest('.pc-size'),x=FI(+sel.dataset.qsz)||{};l.classList.remove('err');l.classList.toggle('on',!!sel.value);l.querySelector('.v').textContent=sel.value||('Select '+(x.opt||'size').toLowerCase())});
 /* the DS Quick Add modal: add → the bag (line item drops in); View Product → the PDP; X / scrim → closes */
-const qaClose=()=>document.querySelectorAll('.qadd-layer').forEach(l=>l.remove());
+const qaClose=()=>document.querySelectorAll('.qadd-layer').forEach(l=>{if(l.__out)return;l.__out=1;const w=l.querySelector('.mdl'),sc=l.querySelector('.mdl-scrim');l.style.pointerEvents='none';
+  if(w){w.style.animation='';w.classList.remove('mdl-anim-up','mdl-anim-fade');w.classList.add(w.classList.contains('mdl--up')?'mdl-anim-down':'mdl-anim-fade-out')}if(sc)sc.classList.add('mdl-scrim--out');setTimeout(()=>l.remove(),EXPORTING?0:320)});   /* slides back down, as it came */
 document.addEventListener('dg:quickadd',e=>{const{i,size}=e.detail;SZ[i]=size;qaClose();if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null});
 /* View Product / no quick add: back to the prototype's PDP (the sheet closes) */
-const goPdp=()=>{qaClose();PC.bagOpen=false;mountBag(false,true);PC.view='pdp';S.page='pdp';S.search=false;render();scrollTo(0,0);parent.postMessage({protoNav:{view:'pdp'}},'*')};
-document.addEventListener('dg:quickadd-pdp',goPdp);
+/* a tapped recommendation (no quick add) or View Product: the Quick Add and the sheet slide down, then the PDP of THAT product (PC.pdpItem) */
+const goPdp=i=>{const x=FI(i);qaClose();PC.bagOpen=false;mountBag(false);
+  setTimeout(()=>{PC.pdpItem=x||null;PC.view='pdp';S.page='pdp';S.search=false;render();scrollTo(0,0);parent.postMessage({protoNav:{view:'pdp'}},'*')},EXPORTING?0:330)};
+document.addEventListener('dg:quickadd-pdp',e=>goPdp(+e.detail.i));
 document.addEventListener('dg:quickadd-close',qaClose);
 /* the bundle's Add to bag: its ticked items go in the bag, their line items drop in */
 document.addEventListener('dg:bundle',e=>{if(!e.target.closest('#pimb'))return;const L=RECL('fbt').slice(0,2);e.detail.items.forEach(x=>{const i=L.find(k=>(FI(k)||{}).name===x.name);if(i!=null&&!ADDED.includes(i)){ADDED.push(i);JUST=i}});mountBag(true);JUST=null});
@@ -222,7 +236,7 @@ document.addEventListener('click',e=>{
       if(sel)SZ[i]=sel.value}
     if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null;return}
   /* no quick add (or a tap on the card itself): the product's PDP */
-  const card=e.target.closest('#pimb .pc[data-href]');if(card&&!e.target.closest('button,select,label,.pc-size')){e.preventDefault();goPdp();return}
+  const card=e.target.closest('#pimb .pc[data-href]');if(card&&!e.target.closest('button,select,label,.pc-size')){e.preventDefault();goPdp(+card.dataset.i);return}
   const go=e.target.closest('[data-mbgo]');if(go){e.preventDefault();
     if(go.dataset.mbgo==='pay'||go.dataset.mbgo==='checkout'||PC.cta==='checkout'){location.href=CHECKOUT+'?brand='+BR();return}
     PC.bagOpen=false;mountBag(false,true);PC.view='bag';S.page='bag';S.search=false;render();scrollTo(0,0);parent.postMessage({protoNav:{view:'bag'}},'*');return}
