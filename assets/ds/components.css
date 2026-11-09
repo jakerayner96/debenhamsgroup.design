@@ -732,7 +732,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .toast--top .toast-msg{flex:1;min-width:0}
 .toast--top .toast-end{display:flex;align-items:center;gap:var(--gap-4,16px);flex:none}
 .toast--top .toast-end .act{font-size:13.33px;line-height:17px}
-.toast--top .toast-x{width:12px;height:12px;flex:none;padding:0;border:0;cursor:pointer;background:url("icons/lib/icons-close.svg") center/12px 12px no-repeat}
+.toast--top .toast-x{width:12px;height:12px;flex:none;padding:0;border:0;cursor:pointer;background:url("icons/lib/icons-close-12.svg") center/12px 12px no-repeat}   /* 12 grid: 1px stroke */
 @media(min-width:1024px){.toast--top:not(.toast--prod):not(.toast--app){left:50%;right:auto;margin-left:-200px;width:400px;box-sizing:border-box}}
 /* top toast motion (3 Nov 2026): fades + eases down 8px in, fades + eases up out (.toast--out) — never pops on or off */
 .toast--top{animation:toastIn .32s cubic-bezier(.2,.8,.2,1) both}
@@ -1129,7 +1129,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .modal-hd{display:flex;align-items:flex-start;gap:16px;padding:24px 24px 0}
 .modal-hd .mt{flex:1;min-width:0;font-family:var(--font-family-base);font-size:20px;font-weight:var(--w-strong,600);line-height:25px;color:var(--text-primary)}
 .modal-x{display:grid;place-items:center;width:16px;height:25px;flex:none;margin-left:auto;padding:0;border:0;background:none;cursor:pointer}
-.modal-x::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-close.svg") center/16px 16px no-repeat}
+.modal-x::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-close-16.svg") center/16px 16px no-repeat}   /* drawn on a 16 grid: the stroke is exactly 1px at this size (Jake, 9 Nov: always 1pt) */
 .modal-x--abs{position:absolute;top:24px;right:24px;height:16px}
 /* ---------- Modal types (Figma DS aIHmkCaTy9c5EWOxAGw0So · Desktop 8085-17553 · Mobile 8084-24491 · Overlay + animation 8084-23215 · Headers 8113-19029) ----------
    One component, typed by size. Every type: white window, radius 4, padding gap 6 (24px), gap 6 (24px) between header / body / foot,
@@ -1960,7 +1960,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .mdl--signup{padding:0;gap:0;overflow:hidden;width:480px;max-height:calc(100vh - 32px);overflow-y:auto;scrollbar-width:none}
 .mdl--signup::-webkit-scrollbar{display:none}
 .mdl--signup .modal-x--abs{z-index:3}
-.modal-x--inv::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M23 1L1 23M1 1l22 22' stroke='%23FFF' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E")} /* white close for dark surfaces and images */
+.modal-x--inv::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M15.5 .5L.5 15.5M.5 .5l15 15' stroke='%23FFF' stroke-width='1' stroke-linecap='round' fill='none'/%3E%3C/svg%3E")} /* white close for dark surfaces and images */
 .sup-media{position:relative;background:var(--surface-media,#F2F2F2);overflow:hidden}
 .sup-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .sup-media picture{display:contents}
@@ -2011,7 +2011,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
   .sup--split:not(.sup--steps) .sup-title{font-size:22px;line-height:26px}
   .sup--split:not(.sup--steps) .sup-form{gap:8px}
   .sup--split:not(.sup--steps) .sup-no{margin:-4px 0 0}
-  .sup--split:not(.sup--steps) .modal-x--abs::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M23 1L1 23M1 1l22 22' stroke='%23FFF' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E")} /* close sits on the image */
+  .sup--split:not(.sup--steps) .modal-x--abs::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M15.5 .5L.5 15.5M.5 .5l15 15' stroke='%23FFF' stroke-width='1' stroke-linecap='round' fill='none'/%3E%3C/svg%3E")} /* close sits on the image */
   .sup-foot{padding:12px 16px 16px}}
 /* full bleed */
 .sup--bleed{background:#000;color:#FFF;display:flex;flex-direction:column;aspect-ratio:2/3} /* one portrait ratio on desktop (480 × 720) and mobile */
