@@ -13,6 +13,7 @@ window.DG_CHANGELOG=[
    "Virtual Stylist intro layouts 7 to 10 (.vs-intro--short): 7 three one-line steps (.vs-steps) + tip line (.vs-tip) · 8 intro line (.vs-lede) + tick list (.vs-checks) · 9 intro + example photo (.vs-eg, new asset assets/ds/img/vs-example.jpg, o.photo override) beside the tick list · 10 intro + tip line. Tips are plain text with no border or fill, so they don't read as buttons; copy written to the ux-writing skill (front-loaded, sentence case, short lines); new glyph .vsi--tick · by Virtual Stylist v2, Jake 9 Nov"
   ],
   "changed": [
+   "Top toast (.toast--top) to the DS Figma Toast 5146-559 exactly: message 14/18, action 13.33 strong in --text-link, 16 gap to a new 12px close (.toast-x), inside .toast-end; centred 400 wide on desktop. New drop-in assets/ds/toast.js (DG_toast / DG_toastTop): the toast sits under the USP banners (--toast-top) and follows the sticky black bar when the page scrolls · by Virtual Stylist v2, Jake 9 Nov",
    "Product carousel prototype: Added to Bag versions are now Live · Complete the look · Frequently bought together (cards — carousel or 1–3 row grid —, a list, or the DS bundle); Save your bag, Save for later and both toasts removed; a Cards setting (Full · No swatches · Clean · Price only) drives every rail on every screen · by Product carousel prototype, Jake 9 Nov",]
  },
  {

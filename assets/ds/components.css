@@ -700,8 +700,16 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .msg--error i{background:var(--text-error)}.msg--error .body{background:var(--error-bg);font-weight:var(--w-regular);line-height:18px}
 .msg--warning i{background:var(--warning-bar)}.msg--warning .body{background:var(--warning-bg);font-weight:var(--w-regular);line-height:18px;color:#000}/* heads-up, not a failure = Figma "Safety Message Banner" (Order Emails 745:3513): Yellow bar on Light Yellow, 20px black info icon (Jake 2 Nov: black, not the Figma grey), one line of 14 regular black copy, no lead line (2 Nov 2026) */
 .toast{font-family:var(--font-family-base);position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#000;color:#FFF;font-size:14px;font-weight:var(--w-mid);padding:12px 20px;border-radius:var(--radius-default);z-index:var(--z-toast);white-space:nowrap;box-shadow:var(--shadow-float)}
-.toast--top{bottom:auto;top:16px;left:16px;right:16px;transform:none;background:rgba(255,255,255,.9);color:var(--text-primary);backdrop-filter:blur(3.5px);border-radius:var(--radius-lg);box-shadow:0 0 20px rgba(0,0,0,.1);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:normal;font-weight:var(--w-regular)}
+.toast--top{bottom:auto;top:var(--toast-top,16px);left:16px;right:16px;transform:none;background:rgba(255,255,255,.9);color:var(--text-primary);backdrop-filter:blur(3.5px);border-radius:var(--radius-lg);box-shadow:0 0 20px rgba(0,0,0,.1);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:normal;font-weight:var(--w-regular)}
 .toast--top .act{font:inherit;font-weight:var(--w-strong);color:var(--text-link);background:none;border:none;padding:0;cursor:pointer;white-space:nowrap} /* the fascia font — a button doesn’t inherit it (3 Nov) */
+/* top toast to the DS Figma Toast 5146-559 (Device=Web, Jake 9 Nov): 14/18 message, 13.33 strong action in --text-link, 16 gap, 12px close; under the USP banners
+   via --toast-top (assets/ds/toast.js DG_toast sets it and follows the sticky bar while it shows) */
+.toast--top{line-height:18px}
+.toast--top .toast-msg{flex:1;min-width:0}
+.toast--top .toast-end{display:flex;align-items:center;gap:var(--gap-4,16px);flex:none}
+.toast--top .toast-end .act{font-size:13.33px;line-height:17px}
+.toast--top .toast-x{width:12px;height:12px;flex:none;padding:0;border:0;cursor:pointer;background:url("icons/lib/icons-close.svg") center/12px 12px no-repeat}
+@media(min-width:1024px){.toast--top:not(.toast--prod):not(.toast--app){left:50%;right:auto;margin-left:-200px;width:400px;box-sizing:border-box}}
 /* top toast motion (3 Nov 2026): fades + eases down 8px in, fades + eases up out (.toast--out) — never pops on or off */
 .toast--top{animation:toastIn .32s cubic-bezier(.2,.8,.2,1) both}
 .toast--top.toast--out{animation:toastOut .28s ease-in forwards}
