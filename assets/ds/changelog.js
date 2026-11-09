@@ -5,7 +5,7 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-11-09",
   "v": "2026.11.09",
-  "title": "Virtual Stylist intro: four short start screen layouts (7 to 10)",
+  "title": "Virtual Stylist intro: final design (Figma 15921-1329) · top toast to Figma 5146-559 + toast.js",
   "by": "Virtual Stylist v2 (vto-prototype/v2, Jake 9 Nov: too long, pills look tappable)",
   "added": [
    "Rail card info levels (DG_pcarHTML o.info): full (default) · noswatch · clean (name on one line + price, no brand, no swatches) · price (image + price only); Sponsored stays on every level · by Product carousel prototype, Jake 9 Nov",
@@ -13,6 +13,7 @@ window.DG_CHANGELOG=[
    "Virtual Stylist intro layouts 7 to 10 (.vs-intro--short): 7 three one-line steps (.vs-steps) + tip line (.vs-tip) · 8 intro line (.vs-lede) + tick list (.vs-checks) · 9 intro + example photo (.vs-eg, new asset assets/ds/img/vs-example.jpg, o.photo override) beside the tick list · 10 intro + tip line. Tips are plain text with no border or fill, so they don't read as buttons; copy written to the ux-writing skill (front-loaded, sentence case, short lines); new glyph .vsi--tick · by Virtual Stylist v2, Jake 9 Nov"
   ],
   "changed": [
+   "Virtual Stylist intro: one final design (Jake’s Figma 15921-1329) replaces layouts 1 to 10: Welcome to Virtual Stylist + Take or upload a photo to see yourself in this product, an example photo (94 wide, 2:3, tilted 2deg, --shadow-pill) beside For the best results... and four plain icon tips (Use bright lighting, Face the camera, Use a full length photo, Mirror selfies are OK!; new glyph .vsi--mirror = icons-app). Retired: o.layout / DG_vsIntro.LAYOUTS, .howto, .vs-tl, .ptips, .vs-chips, .vs-steps, .vs-tip, .vs-checks, .vs-sec / .vs-sec-h · by Virtual Stylist v2, Jake 9 Nov",
    "Rail card text levels match Jake's Figma review variants (13939:19737 … 13939:26225): Brand + name · Name (2 lines) · Brand - Name and Brand Name (brand strong, one run) · Price only; swatches on / off separately (o.swatches); qaShape square / round on any fascia · Product carousel prototype: Added to Bag scenarios with real debenhams.com products (projects/product-carousel/recs.js, images 2:3) — Complete The Look (outfit pieces), You May Also Like (similar dresses), Frequently Bought Together (the bag holds Prada Paradoxe), Little Extras Under £10 (the till); cards / list / bundle, card size small / large, image gap 4px / none · by Product carousel prototype, Jake 9 Nov",
    "Top toast (.toast--top) to the DS Figma Toast 5146-559 exactly: message 14/18, action 13.33 strong in --text-link, 16 gap to a new 12px close (.toast-x), inside .toast-end; centred 400 wide on desktop. New drop-in assets/ds/toast.js (DG_toast / DG_toastTop): the toast sits under the USP banners (--toast-top) and follows the sticky black bar when the page scrolls · by Virtual Stylist v2, Jake 9 Nov",
    "Product carousel prototype: Added to Bag versions are now Live · Complete the look · Frequently bought together (cards — carousel or 1–3 row grid —, a list, or the DS bundle); Save your bag, Save for later and both toasts removed; a Cards setting (Full · No swatches · Clean · Price only) drives every rail on every screen · by Product carousel prototype, Jake 9 Nov",]

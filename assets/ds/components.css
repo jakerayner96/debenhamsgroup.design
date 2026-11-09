@@ -2169,60 +2169,23 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .ratio-product>img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* ---- Virtual Stylist intro (2 Nov 2026, vto-prototype v2; assets/ds/vs-intro.js): the launch modal on the DS .mdl in a .vs-layer (the delivery / S&S layer rules).
-   Spec: Jake's final six start screens, Figma LxHqA4rFpRYNWJu8vzn18X 15898-33012 (3 Nov 2026). Slide up (.vs-layer--up + .mdl--up, hugging the content) on phones,
-   centred .mdl--md from 600px. Header: title 20/25 strong + 16 close · body: How it works then For the best result, gap 8 (32px; 6, 24px, with a headed timeline) ·
-   footer gap 4 (16px): consent (.chk-row, box centred on the copy, gap 3 + .vs-legal 12/16 --text-primary, links --text-link strong, no underline) ·
-   Camera / Upload: two .bd pri .ic20 side by side (as v1; Jake 2 Nov) · .vs-note 12/16 grey.
-   How it works: .howto 2 × 2 step cards (four steps) or .vs-tl timeline (three) · tips: .ptips 2 × 2 tiles or .vs-chips pills · headings centred or --left.
-   Glyphs are DS library icons, masked so they take --icon-primary. Every line of copy 12/16 or larger. */
-.vs-intro .mdl-bd{gap:var(--gap-8,32px)}
-.vs-intro--steps-timeline:not(.vs-intro--welcome) .mdl-bd{gap:var(--gap-6,24px)}
+   Final design: Jake's Figma LxHqA4rFpRYNWJu8vzn18X 15921-1329 (9 Nov 2026). Slide up (.vs-layer--up + .mdl--up, hugging the content) on phones, centred .mdl--md from 600px.
+   Header: Welcome to Virtual Stylist 20/25 strong + 16 close · .vs-lede 14/20, 16 under the title · gap 6 (24px) · .vs-eg: example photo 94 wide 2:3, radius --radius-lg,
+   --shadow-pill, tilted 2deg | gap 6 | "For the best results..." 14/20 strong, gap 3, four tips (16 glyph, gap 2, 14/16 regular, gap 3 apart: plain text, never a pill or a tile) ·
+   gap 6 · footer gap 4 (16px): consent (.chk-row + .vs-legal 12/16, links --text-link strong) · Camera / Upload (.bd pri .ic20, side by side) · .vs-note 12/16 grey.
+   Glyphs are DS library icons, masked so they take --icon-primary. */
+.vs-intro .modal-hd{margin-bottom:calc(-1 * var(--gap-2,8px))}   /* title to intro line 16 */
+.vs-intro .mdl-bd{gap:var(--gap-6,24px);padding-bottom:12px;margin-bottom:-12px}   /* room for the photo shadow inside the scrolling body */
 .vs-intro .mdl-ft{gap:var(--gap-4,16px)}
-.vs-sec{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
-.vs-sec-h{margin:0;font-family:var(--font-family-base);font-size:16px;line-height:20px;font-weight:var(--w-strong,600);color:var(--text-primary);text-align:center}
-.vs-intro--left .vs-sec-h{text-align:left}
-/* step cards: 2 × 2, the number straddling the top edge */
-.howto{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-6,24px) var(--gap-2,8px);list-style:none;margin:0;padding:var(--gap-3,12px) 0 0}
-.howto li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--gap-2,8px);padding:28px var(--gap-4,16px) var(--gap-4,16px);border-radius:var(--radius-lg);background:var(--surface-sunken);text-align:center;font-size:14px;line-height:18px;font-weight:var(--w-regular);color:var(--text-primary)}
-.howto .n{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
-.howto .vsi{width:24px;height:24px}
-/* timeline: number on a line, title + line, glyph right */
-.vs-tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.vs-intro--welcome .vs-tl{margin:calc(-1 * var(--gap-3,12px)) 0}   /* no heading: the first and last rows sit flush */
-.vs-tl li{position:relative;display:flex;align-items:center;gap:var(--gap-4,16px);padding:var(--gap-3,12px) 0}
-.vs-tl li:not(:last-child)::after{content:"";position:absolute;left:12px;top:calc(50% + 16px);height:calc(100% - 32px);border-left:1px solid var(--border-default)}
-.vs-tl .n{width:24px;height:24px;flex:none;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
-.vs-tl .tx{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
-.vs-tl b{font-size:14px;line-height:20px;font-weight:var(--w-strong,600);color:var(--text-primary)}
-.vs-tl .tx span{font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
-.vs-tl .vsi{width:24px;height:24px}
-/* tip tiles: 2 × 2 */
-.ptips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-2,8px);list-style:none;margin:0;padding:0}
-.ptips li{display:flex;align-items:center;gap:var(--gap-3,12px);min-height:56px;box-sizing:border-box;padding:var(--gap-3,12px);border-radius:var(--radius-lg);background:var(--surface-sunken);font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
-.ptips .vsi{width:20px;height:20px}
-/* tip pills: wrapping, 1px --border-subtle */
-.vs-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:var(--gap-2,8px) var(--gap-1,4px)}
-.vs-intro--left .vs-chips{justify-content:flex-start}
-.vs-chips li{display:flex;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-2,8px) var(--gap-3,12px);border:1px solid var(--border-subtle);border-radius:var(--radius-pill);font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
-.vs-chips .vsi{width:16px;height:16px}
-.vsi{display:block;flex:none;background:var(--icon-primary);-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
-.vsi--add-photo{--ic:url("icons/lib/icons-add-photo.svg")}.vsi--ai{--ic:url("icons/lib/icons-ai.svg")}.vsi--hanger{--ic:url("icons/lib/icons-hanger.svg")}.vsi--quick-add{--ic:url("icons/lib/icons-quick-add.svg")}
-.vsi--tick{--ic:url("icons/lib/icons-tick.svg")}
-/* short layouts 7-10 (9 Nov): one intro line or three one-line steps, tips as plain text. Nothing that reads as a button: no borders, no fills */
-.vs-intro--short .mdl-bd{gap:var(--gap-5,20px)}
 .vs-lede{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
-.vs-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-3,12px)}
-.vs-steps li{display:flex;align-items:center;gap:var(--gap-3,12px);font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
-.vs-steps .n{width:24px;height:24px;flex:none;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
-.vs-tip{margin:0;display:flex;align-items:flex-start;gap:var(--gap-2,8px);font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary)}
-.vs-tip .vsi{width:16px;height:16px;background:var(--text-secondary)}
-.vs-checks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-2,8px) var(--gap-4,16px)}
-.vs-checks li{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
-.vs-checks .vsi{width:16px;height:16px}
-.vs-eg{display:flex;align-items:center;gap:var(--gap-4,16px)}
-.vs-eg-img{width:80px;aspect-ratio:2/3;flex:none;border-radius:var(--radius-lg);background:var(--surface-media,var(--surface-sunken)) url("img/vs-example.jpg") center/cover no-repeat}
-.vs-eg .vs-sec{flex:1;min-width:0}.vs-eg .vs-checks{grid-template-columns:1fr}
-.vsi--light{--ic:url("icons/lib/icons-light-bulb.svg")}.vsi--dress{--ic:url("icons/lib/icons-dress.svg")}.vsi--face{--ic:url("icons/lib/icons-account.svg")}.vsi--plain{--ic:url("icons/lib/icons-image.svg")}
+.vs-eg{display:flex;align-items:center;gap:28px}   /* Figma 23 from the tilted photo’s bounding box */
+.vs-eg-img{height:140px;aspect-ratio:2/3;flex:none;border-radius:var(--radius-lg);box-shadow:var(--shadow-pill);transform:rotate(-2deg);background:var(--surface-media,#F2F2F2) url("img/vs-example.jpg") center/cover no-repeat}
+.vs-eg-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--gap-3,12px);padding-bottom:var(--gap-1,4px)}
+.vs-eg-h{margin:0;font-family:var(--font-family-base);font-size:14px;line-height:20px;font-weight:var(--w-strong,600);color:var(--text-primary)}
+.vs-tips{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-3,12px)}
+.vs-tips li{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:14px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
+.vsi{display:block;flex:none;width:16px;height:16px;background:var(--icon-primary);-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
+.vsi--light{--ic:url("icons/lib/icons-light-bulb.svg")}.vsi--face{--ic:url("icons/lib/icons-account.svg")}.vsi--dress{--ic:url("icons/lib/icons-dress.svg")}.vsi--mirror{--ic:url("icons/lib/icons-app.svg")}
 .vs-consent{gap:var(--gap-3,12px);cursor:pointer;-webkit-tap-highlight-color:transparent}   /* the whole row toggles; only the links are exempt */
 .vs-legal{margin:0;flex:1;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
 .vs-legal a{color:var(--text-link);font-weight:var(--w-strong,600);text-decoration:none}
