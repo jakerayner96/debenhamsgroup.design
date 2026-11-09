@@ -157,12 +157,13 @@ const RECT=t=>(PC['title_'+t]||'').trim()||(window.PI_RECS&&PI_RECS[t]&&PI_RECS[
      bag   · single-variant products only (bags, jewellery, scarves, gift sets) — every card's quick add adds straight in
      modal · products that need a size or shade (shoes, coats, dresses, fragrance sizes) — every card's quick add opens the DS Quick Add modal
      pdp   · any product, no button — a tap opens the PDP
+     inline · products that need a size or shade, "Size: Select size" on the card (Figma 13943:28800, min height 265); the quick add adds once chosen
    Similar items are all dresses (all need a size): straight to bag isn't offered, it falls back to the modal. No Sponsored in the sheet. */
-const QAM=()=>{const m=['bag','modal','pdp'].includes(PC.qaMode)?PC.qaMode:'modal';return MBT()==='till'?'bag':MBT()==='similar'&&m==='bag'?'modal':m},SZ={};
+const QAM=()=>{const m=['bag','modal','pdp','inline'].includes(PC.qaMode)?PC.qaMode:'modal';return MBT()==='till'?'bag':MBT()==='similar'&&m==='bag'?'modal':m},SZ={};
 function rec(t){const grid=PC.ctlFmt==='grid'&&t!=='till',rows=Math.max(1,Math.min(3,+PC.ctlRows||2)),m=QAM(),sm=t==='till',multi=x=>!!(x.sizes&&x.sizes.length);
   const all=RECL(t),list=all.filter(i=>{const x=FI(i);return !x||m==='pdp'?true:m==='bag'?!multi(x):multi(x)});
   return pcar({id:'rec-'+t,size:'sm',title:RECT(t),per:grid?3:4,card:sm?100:127,fixed:!grid,compact:true,tall:!sm,info:sm?'price':'inline',swatches:false,start:4,
-    list:grid?list.slice(0,rows*3):list,fmt:grid?'grid':undefined,len:grid?rows*3:undefined,bleed:grid?false:undefined,qa:m!=='pdp',qaShape:'square',sp:null})}
+    list:grid?list.slice(0,rows*3):list,fmt:grid?'grid':undefined,len:grid?rows*3:undefined,bleed:grid?false:undefined,qa:m!=='pdp',qaShape:'square',inlineSize:m==='inline',sp:null})}
 function miniBag(){const d=desk(),t=MBT();
   const rail=rec(t);
   /* order: Live as live (item · threshold · Continue Shopping / View Bag); the new versions lead with the threshold, then the item(s), then their extra */
@@ -196,13 +197,19 @@ function mountBag(open,instant){const old=document.getElementById('pimb'),ot=doc
   const keep=old&&old.querySelector('.pcar-track')?old.querySelector('.pcar-track').scrollLeft:0,bs=old?old.querySelector('.mdl-bd').scrollTop:0;
   if(old)old.remove();
   document.documentElement.classList.add('pi-lock');document.body.insertAdjacentHTML('beforeend',miniBag());
-  const n=document.getElementById('pimb');if(window.DG_bundle)DG_bundle.wire(n);autoFit(n);sticky(n);if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');n.querySelector('.mdl-scrim').style.animation='none';const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
+  const n=document.getElementById('pimb');if(window.DG_bundle)DG_bundle.wire(n);autoFit(n);sticky(n);if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');n.querySelector('.mdl-scrim').style.animation='none';const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}
+  /* just added (Jake 11 Nov): keep the carousel in full view — the sheet scrolls so the rail sits right above the pinned CTAs, the line items move up */
+  if(JUST!=null){const bd=n.querySelector('.mdl-bd'),rail=n.querySelector('[data-pl^="rec-"]');if(bd&&rail){const ft=bd.querySelector('.mdl-sticky'),b=bd.getBoundingClientRect(),r=rail.getBoundingClientRect();
+    const btn=ft&&ft.querySelector('.bd,.pay'),stuckLim=b.bottom-(btn?btn.getBoundingClientRect().height+(ft.getBoundingClientRect().bottom-btn.getBoundingClientRect().bottom):0);
+    const over=r.bottom-stuckLim+16;if(over>0)bd.scrollTo({top:bd.scrollTop+over,behavior:EXPORTING?'auto':'smooth'})}}}
 /* inline size: the choice shows in the row */
 document.addEventListener('change',e=>{const sel=e.target.closest('#pimb [data-qsz]');if(!sel)return;const l=sel.closest('.pc-size'),x=FI(+sel.dataset.qsz)||{};l.classList.remove('err');l.classList.toggle('on',!!sel.value);l.querySelector('.v').textContent=sel.value||('Select '+(x.opt||'size').toLowerCase())});
 /* the DS Quick Add modal: add → the bag (line item drops in); View Product → the PDP; X / scrim → closes */
 const qaClose=()=>document.querySelectorAll('.qadd-layer').forEach(l=>l.remove());
 document.addEventListener('dg:quickadd',e=>{const{i,size}=e.detail;SZ[i]=size;qaClose();if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null});
-document.addEventListener('dg:quickadd-pdp',e=>{if(e.detail.href)window.open(e.detail.href,'_blank','noopener')});
+/* View Product / no quick add: back to the prototype's PDP (the sheet closes) */
+const goPdp=()=>{qaClose();PC.bagOpen=false;mountBag(false,true);PC.view='pdp';S.page='pdp';S.search=false;render();scrollTo(0,0);parent.postMessage({protoNav:{view:'pdp'}},'*')};
+document.addEventListener('dg:quickadd-pdp',goPdp);
 document.addEventListener('dg:quickadd-close',qaClose);
 /* the bundle's Add to bag: its ticked items go in the bag, their line items drop in */
 document.addEventListener('dg:bundle',e=>{if(!e.target.closest('#pimb'))return;const L=RECL('fbt').slice(0,2);e.detail.items.forEach(x=>{const i=L.find(k=>(FI(k)||{}).name===x.name);if(i!=null&&!ADDED.includes(i)){ADDED.push(i);JUST=i}});mountBag(true);JUST=null});
@@ -210,12 +217,12 @@ document.addEventListener('click',e=>{
   const lk=e.target.closest('.pcar--look[data-pl="look"]');if(lk&&!e.target.closest('.pcar-arr')){e.preventDefault();const c=e.target.closest('.pcar-track>*'),L=FEEDS.look,idx=c?[...c.parentNode.children].indexOf(c):-1;openPicker(L&&idx>=0?ids('look',L.start||0,10)[idx]:null);return}
   const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();e.stopPropagation();const i=+qa.dataset.qa,x=FI(i)||{};
     if(x.sizes&&x.sizes.length&&!ADDED.includes(i)){
-      if(QAM()!=='inline'){if(window.DG_quickAdd){document.body.insertAdjacentHTML('beforeend',DG_quickAdd.html(x,{desk:desk()}));DG_quickAdd.wire(document.body.lastElementChild)}return}
+      if(QAM()!=='inline'){if(window.DG_quickAdd){const mb=document.querySelector('#pimb .mdl');document.body.insertAdjacentHTML('beforeend',DG_quickAdd.html(x,{desk:desk(),minH:!desk()&&mb?Math.ceil(mb.getBoundingClientRect().height):0}));   /* at least as tall as the Added to Bag sheet, so it never shows behind */DG_quickAdd.wire(document.body.lastElementChild)}return}
       const card=qa.closest('.pc'),sel=card&&card.querySelector('[data-qsz]');if(sel&&!sel.value){const l=sel.closest('.pc-size');l.classList.add('err');l.querySelector('.v').textContent='Select a '+(x.opt||'size').toLowerCase();return}
       if(sel)SZ[i]=sel.value}
     if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null;return}
   /* no quick add (or a tap on the card itself): the product's PDP */
-  const card=e.target.closest('#pimb .pc[data-href]');if(card&&!e.target.closest('button,select,label,.pc-size')){e.preventDefault();window.open(card.dataset.href,'_blank','noopener');return}
+  const card=e.target.closest('#pimb .pc[data-href]');if(card&&!e.target.closest('button,select,label,.pc-size')){e.preventDefault();goPdp();return}
   const go=e.target.closest('[data-mbgo]');if(go){e.preventDefault();
     if(go.dataset.mbgo==='pay'||go.dataset.mbgo==='checkout'||PC.cta==='checkout'){location.href=CHECKOUT+'?brand='+BR();return}
     PC.bagOpen=false;mountBag(false,true);PC.view='bag';S.page='bag';S.search=false;render();scrollTo(0,0);parent.postMessage({protoNav:{view:'bag'}},'*');return}

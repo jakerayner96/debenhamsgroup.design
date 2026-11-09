@@ -185,7 +185,7 @@ function renderPanel(host,S,update){
   <div class="card"><h3>Screen <small>${bn}</small></h3>${opt('home','Home')}${opt('pdp','PDP')}${opt('search','Search')}${opt('minibag','Mini Bag')}${opt('bag','Bag')}</div>
   ${c.view==='minibag'?(()=>{const t=c.mbType||'live',recs=t!=='live',till=t==='till',qa=till?'bag':(t==='similar'&&c.qaMode==='bag'?'modal':(c.qaMode||'modal'));
     return `<div class="card"><h3>Recommendations</h3>${rad('mbType',t,[['live','Live (no recs)'],['look','Complete the look'],['similar','Similar items'],['fbt','Frequently bought together'],['till','Under £10']])}</div>
-  ${recs&&!till?`<div class="card"><h3>Quick add</h3>${rad('qaMode',qa,(t==='similar'?[]:[['bag','Quick add → bag']]).concat([['modal','Quick add → Quick Add modal'],['pdp','No quick add → PDP']]))}</div>
+  ${recs&&!till?`<div class="card"><h3>Quick add</h3>${rad('qaMode',qa,(t==='similar'?[]:[['bag','Quick add → bag']]).concat([['modal','Quick add → Quick Add modal'],['inline','Select size on the card'],['pdp','No quick add → PDP']]))}</div>
   <div class="card"><h3>Layout</h3>${rad('ctlFmt',c.ctlFmt||'carousel',[['carousel','Carousel'],['grid','Grid',0,`<div class="sub">${seg('ctlRows',c.ctlRows||2,[['1','1 row'],['2','2 rows'],['3','3 rows']])}</div>`]])}</div>`:''}
   <div class="card"><h3>Bag CTA</h3>${rad('cta',c.cta||'bag',[['bag','View Bag'],['checkout','Checkout'],['both','Both',0,`<div class="sub">${seg('ctaLay',c.ctaLay||'side',[['side','Side by side'],['stack','Stacked']])}</div>`]])}</div>`})():''}`;
   function opt2(v,b){return `<button class="opt${(c.mbType||'live')===v?' on':''}" data-mb="${v}"><span class="r"></span><span class="t"><b>${b}</b></span></button>`}

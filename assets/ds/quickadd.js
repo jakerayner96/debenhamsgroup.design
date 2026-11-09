@@ -75,7 +75,7 @@
     if(m.sizeUi==='select'&&m.sizes.length)size=`<div class="qa-opt"><div class="opt-label">${SL}: <b>${sz?esc(sz.l):''}</b></div><label class="fsel"><span>${sz?esc(sz.l):'Select '+sl}</span><select data-qa="sel" aria-label="${SL}"><option value="-1"${st.s<0?' selected':''} disabled>Select ${sl}</option>${m.sizes.map((s,i)=>`<option value="${i}"${i===st.s?' selected':''}${s.oos?' disabled':''}>${esc(s.l)}${s.oos?' — out of stock':''}</option>`).join('')}</select></label>${st.err?`<div class="alert alert--text sm" role="alert">Please select a ${sl}</div>`:''}</div>`;
     const stk=stock?`<div class="alert alert--text">Only ${stock} left in stock</div>`:'';
     const atb=st.phase==='busy'?'<button type="button" class="bd pri spn full" aria-label="Adding"><i></i></button>':st.phase==='done'?'<button type="button" class="bd pri done full">Added</button>':'<button type="button" class="bd pri full" data-qa="add">Add to bag</button>';
-    return `<div class="mdl ${desk?'mdl--qa':'mdl--up'} qa${thumb?'':' qa--sw'}" role="dialog" aria-modal="true" aria-label="Quick Add"><div class="modal-hd"><div class="mt">Quick Add</div><button type="button" class="modal-x" data-qa="close" aria-label="Close"></button></div><div class="mdl-bd">${prod}${colour}${size}${stk}<div class="mdl-ft" style="gap:8px">${atb}<button type="button" class="bd sec full" data-qa="view">View product</button></div></div></div>`}
+    return `<div class="mdl ${desk?'mdl--qa':'mdl--up'} qa${thumb?'':' qa--sw'}"${st.minH?` style="min-height:${+st.minH}px"`:''} role="dialog" aria-modal="true" aria-label="Quick Add"><div class="modal-hd"><div class="mt">Quick Add</div><button type="button" class="modal-x" data-qa="close" aria-label="Close"></button></div><div class="mdl-bd">${prod}${colour}${size}${stk}<div class="mdl-ft" style="gap:8px">${atb}<button type="button" class="bd sec full" data-qa="view">View product</button></div></div></div>`}
   /* ---- behaviour ---- */
   let cur=null;
   const fire=(type,item)=>{const ev=new CustomEvent(type,{detail:{item},cancelable:true});const ok=document.dispatchEvent(ev);
@@ -116,12 +116,13 @@
     const x=layer.querySelector('.modal-x');if(x)try{x.focus({preventScroll:true})}catch(e){}}
 
   /* ---- the earlier API (product-carousel prototype, Added to Bag quick add): DG_quickAdd.html(p, {desk, stock}) + DG_quickAdd.wire(layer).
-     p = {i, brand, name, price, was, pct, img, colour, opt ('Size' | 'Shade'), sizes[], href}. The same window as above; the page owns the bag:
+     p = {i, brand, name, price, was, pct, img, colour, opt ('Size' | 'Shade'), sizes[], href}. o.minH = a minimum height (px): opened over another
+     sheet, at least as tall as it, so the sheet behind never shows — the CTAs sit at the foot. The same window as above; the page owns the bag:
      wire() fires 'dg:quickadd' {i, size} · 'dg:quickadd-pdp' {i, href} · 'dg:quickadd-close' on the layer (bubbling) and the page removes it. */
   const LEG={};let legN=0;
   function legacyModel(p){const L=p.sizes||[],lbl=p.opt||'Size',drop=lbl!=='Size'||L.some(z=>/ml$/i.test(z));
     return {colourUi:p.colour&&!drop?'images':null,colours:[{n:p.colour||'',img:p.img}],sizes:L.map(l=>({l:String(l)})),sizeUi:drop?'select':'buttons',sizeLabel:lbl}}
-  function legacyHtml(p,o){o=o||{};const m=legacyModel(p),k='q'+(++legN),st={c:0,s:m.sizes.length===1?0:-1,stock:o.stock===false?0:3};
+  function legacyHtml(p,o){o=o||{};const m=legacyModel(p),k='q'+(++legN),st={c:0,s:m.sizes.length===1?0:-1,stock:o.stock===false?0:3,minH:o.minH||0};
     LEG[k]={m,p:Object.assign({},p,{pct:p.pct&&!/%/.test(p.pct)?p.pct+'%':p.pct}),desk:!!o.desk,st};
     return `<div class="qa-layer${o.desk?'':' qa-layer--up'} qadd-layer" data-qa-layer data-qadd="${esc(p.i)}" data-qa-k="${k}" data-href="${esc(p.href||'')}"><div class="mdl-scrim" data-qa="close"></div>${html(m,LEG[k].p,p.img,o.desk,st)}</div>`}
   function wire(layer){if(!layer||layer.__w)return;layer.__w=1;const c=LEG[layer.dataset.qaK];if(!c)return;const i=+layer.dataset.qadd;

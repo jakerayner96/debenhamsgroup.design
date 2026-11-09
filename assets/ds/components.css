@@ -172,7 +172,7 @@ button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--bor
 /* card info levels (DG_pcarHTML o.info, 9 Nov 2026): clean = name only (2 lines) · inline / inline2 = the brand strong at the start of the name run · price = price only */
 .pc-name--in b{font-weight:var(--w-strong)}
 /* rail card min height (.pc--tall, 11 Nov 2026 — Figma 13943:31066): 250, so the brand + name always have room; the inline size row (.pc-size) under the price */
-.pc--tall{min-height:250px}
+.pc--tall{min-height:250px}.pc--tall:has(.pc-size){min-height:265px} /* with the inline size row: 265 (Figma 13943:28800) */
 .pc-size{position:relative;display:flex;align-items:center;gap:8px;font-size:12px;line-height:15px;font-weight:var(--w-regular);cursor:pointer}
 .pc-size .v{color:var(--text-secondary);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pc-size.on .v{color:var(--text-primary)}
 .pc-size i{width:12px;height:12px;flex:none;background:currentColor;-webkit-mask:url(icons/lib/icons-down.svg) center/contain no-repeat;mask:url(icons/lib/icons-down.svg) center/contain no-repeat}
@@ -2385,3 +2385,5 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .qa-press{transform:scale(.9);transition:transform .12s ease-out}
 .qa-busy,.qa-ok{pointer-events:none}
 .pc-iconbtn.qa-busy,.pc-iconbtn.qa-ok{color:var(--icon-primary)}
+/* Quick Add with a minimum height (DG_quickAdd o.minH — over the Added to Bag sheet, 11 Nov 2026): the body fills it, the CTAs sit at the foot */
+.mdl.qa .mdl-bd{flex:1}.mdl.qa .mdl-ft{margin-top:auto}
