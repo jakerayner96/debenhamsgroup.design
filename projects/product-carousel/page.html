@@ -11,8 +11,12 @@
    plus insitu-pre.js (state) and insitu.js (swaps its product rails for the DS Product carousel — banked 2 Nov 2026 — and adds the mini bag). So every in-situ screen stays as current as the Shopping agent prototype. */
 (function(){
   fetch('projects/shopping-agent/page.html',{cache:'no-cache'}).then(function(r){return r.text()}).then(function(h){
-    h=h.replace('<base href="../../">','<base href="../../"><script src="projects/product-carousel/insitu-pre.js"><\/script>')
-       .replace(/<\/body>(?![\s\S]*<\/body>)/,'<script src="assets/ds/carousel.js"><\/script><script src="assets/ds/bag.js"><\/script><script src="assets/ds/bundle.js"><\/script><script src="templates/feed.js"><\/script><script src="projects/product-carousel/insitu.js"><\/script></body>');
+    /* cache-bust every script and stylesheet (9 Nov 2026): a fresh copy on each load, so a push shows up straight away (Pages caches for 10 min) */
+    var v='v='+Date.now(),q=function(u){return u+(u.indexOf('?')<0?'?':'&')+v};
+    h=h.replace(/(<script[^>]*\ssrc=")((?:assets|templates|projects)\/[^"]+)"/g,function(m,a,u){return a+q(u)+'"'})
+       .replace(/(<link[^>]*\shref=")((?:assets|templates|projects)\/[^"]+\.css)"/g,function(m,a,u){return a+q(u)+'"'});
+    h=h.replace('<base href="../../">','<base href="../../"><script src="'+q('projects/product-carousel/insitu-pre.js')+'"><\/script>')
+       .replace(/<\/body>(?![\s\S]*<\/body>)/,['assets/ds/carousel.js','assets/ds/bag.js','assets/ds/bundle.js','templates/feed.js','projects/product-carousel/insitu.js'].map(function(u){return '<script src="'+q(u)+'"><\/script>'}).join('')+'</body>');
     document.open();document.write(h);document.close();
   });
 })();
