@@ -2,7 +2,7 @@
    The launch modal for Virtual Stylist (virtual try-on), on the DS .mdl: How it works (.howto, three numbered steps) · Photo tips (.ptips, 2 × 2) ·
    the 18+ consent row (DS checkbox .chk in .chk-row, centred on the copy, + .vs-legal; Camera / Upload need it ticked: unticked they show .vs-warn, as live) · Camera / Upload
    (.bd pri .ic20 with the library glyphs, side by side, as v1) · the try-on note (.vs-note). Slide up (.mdl--up) on phones, centred .mdl--md from 600px; six start screen layouts (o.layout, below).
-     DG_vsIntro.html(o)   → the .mdl only (catalogue, Figma)       o = {fascia:'Debenhams', desk:bool, left:5|n, consent:bool, layout:'1'..'6' (default '6')}
+     DG_vsIntro.html(o)   → the .mdl only (catalogue, Figma)       o = {fascia:'Debenhams', desk:bool, left:5|n, consent:bool, layout:'1'..'10' (default '6'), photo:url (layout 9 example, default assets/ds/img/vs-example.jpg)}
      DG_vsIntro.layer(o)  → scrim + .mdl in a fixed .vs-layer (pages)
      DG_vsIntro.wire(root, {onCamera, onUpload, onClose, onConsent}) → binds the X, scrim, consent row and the two buttons
    Copy is instructional; no emojis, no em dashes. */
@@ -22,7 +22,18 @@
     '3':{label:'Timeline + tip cards, centred',steps:'timeline',tips:'cards',align:'centre'},
     '4':{label:'Timeline + tip cards',steps:'timeline',tips:'cards',align:'left'},
     '5':{label:'Timeline + pills',steps:'timeline',tips:'pills',align:'left'},
-    '6':{label:'Welcome, timeline + pills',steps:'timeline',tips:'pills',align:'left',welcome:true}};
+    '6':{label:'Welcome, timeline + pills',steps:'timeline',tips:'pills',align:'left',welcome:true},
+    /* short layouts (Jake, 9 Nov: the screen was too long and the pills looked tappable). One intro line or three one-line steps,
+       tips as plain text (a tick list or a single line): no borders, no fills, nothing that reads as a button. */
+    '7':{label:'Short: three steps + tip line',short:['steps','tip']},
+    '8':{label:'Short: intro + tick list',short:['lede','checks']},
+    '9':{label:'Short: intro + example photo',short:['lede','example']},
+    '10':{label:'Shortest: intro + tip line',short:['lede','tip']}};
+  /* short layout copy (ux-writing: front-loaded, sentence case, under 14 words a line) */
+  const LEDE='Add a full-length photo to see this on you.';
+  const STEPS3=['Add a full-length photo','We style you in this piece','Pick your size and add to bag'];
+  const TIPLINE='Get your whole body in shot. Mirror selfies work.';
+  const CHECKS=['Head to toe in shot','Plain background','Good light','Mirror selfies work'];
   const CARDS=[['add-photo','Take or upload a photo'],['ai','We\u2019ll style you in your selected piece'],['hanger','Check and decide if it\u2019s right for you'],['quick-add','Pick your size and add to bag']];
   const TL=[['add-photo','Add a photo','Take or upload any full length photo'],['ai','Check the look','We\u2019ll style you in your selected piece'],['quick-add','Add To Bag','Choose your size and add it to your bag']];
   const TIP={light:['light','Use bright lighting'],dress:['dress','Use a full length photo'],plain:['plain','Use a plain background'],face:['face','Face the camera']};
@@ -34,14 +45,22 @@
     :`<ol class="howto">${CARDS.map(([i,t],n)=>`<li><span class="n">${n+1}</span>${vsi(i)}<span>${t}</span></li>`).join('')}</ol>`}</section>`;
   const tipsHTML=k=>`<section class="vs-sec">${H('For the best result')}<ul class="${k==='pills'?'vs-chips':'ptips'}">${TIPS_ORDER[k].map(t=>TIP[t]).map(([i,t])=>`<li>${vsi(i)}<span>${t}</span></li>`).join('')}</ul></section>`;
   const TIPS=TIPS_ORDER.cards.map(t=>TIP[t]),STEPS=CARDS;
+  const checks=()=>`<ul class="vs-checks">${CHECKS.map(t=>`<li>${vsi('tick')}<span>${t}</span></li>`).join('')}</ul>`;
+  const SHORT={
+    lede:()=>`<p class="vs-lede">${LEDE}</p>`,
+    steps:()=>`<ol class="vs-steps">${STEPS3.map((t,n)=>`<li><span class="n">${n+1}</span><span>${t}</span></li>`).join('')}</ol>`,
+    tip:()=>`<p class="vs-tip">${vsi('light')}<span>${TIPLINE}</span></p>`,
+    checks:()=>`<section class="vs-sec">${H('For the best result')}${checks()}</section>`,
+    example:o=>`<div class="vs-eg"><div class="vs-eg-img" role="img" aria-label="Example: a full-length mirror selfie"${o.photo?` style="background-image:url('${esc(o.photo)}')"`:''}></div><div class="vs-sec">${H('For the best result')}${checks()}</div></div>`};
   const consentRow=o=>`<div class="chk-row vs-consent" data-vs-consent role="checkbox" aria-checked="${o.consent?'true':'false'}" tabindex="0">
           <button class="chk${o.consent?' on':''}" tabindex="-1" aria-hidden="true"></button>
           <p class="vs-legal">I'm 18 or over and consent to my photo being processed by ${esc(o.fascia||'Debenhams')} and its AI providers to create my virtual try-on. I accept the <a href="#" data-vs-link>Terms &amp; Conditions</a> and <a href="#" data-vs-link>Privacy Policy</a>.</p>
         </div><p class="vs-warn" data-vs-warn role="alert" hidden>Please tick the box above to continue</p>`;   /* live copy (debenhams.com, 3 Nov 2026) */
   function html(o){o=o||{};const k=LAYOUTS[o.layout]?String(o.layout):'6',L=LAYOUTS[k];
-    return `<div class="mdl ${o.desk?'mdl--md':'mdl--up'} vs-intro vs-intro--l${k} vs-intro--steps-${L.steps} vs-intro--tips-${L.tips} vs-intro--${L.align}${L.welcome?' vs-intro--welcome':''}" role="dialog" aria-modal="true" aria-labelledby="vs-intro-t">
+    const cls=L.short?'vs-intro--short vs-intro--left':`vs-intro--steps-${L.steps} vs-intro--tips-${L.tips} vs-intro--${L.align}${L.welcome?' vs-intro--welcome':''}`;
+    return `<div class="mdl ${o.desk?'mdl--md':'mdl--up'} vs-intro vs-intro--l${k} ${cls}" role="dialog" aria-modal="true" aria-labelledby="vs-intro-t">
       <div class="modal-hd"><span class="mt" id="vs-intro-t">${L.welcome?'Welcome to Virtual Stylist':'Virtual Stylist'}</span><button class="modal-x" data-vs-close aria-label="Close"></button></div>
-      <div class="mdl-bd">${stepsHTML(L.steps,!L.welcome)}${tipsHTML(L.tips)}</div>
+      <div class="mdl-bd">${L.short?L.short.map(p=>SHORT[p](o)).join(''):stepsHTML(L.steps,!L.welcome)+tipsHTML(L.tips)}</div>
       <div class="mdl-ft">${consentRow(o)}<div class="vs-ctas"><button class="bd pri ic20" data-vs-camera>${CAM}Camera</button><button class="bd pri ic20" data-vs-upload>${UPL}Upload</button></div><p class="vs-note" data-vs-note>${note(o.left)}</p></div>
     </div>`}
   const layer=o=>`<div class="vs-layer${o&&o.desk?'':' vs-layer--up'}" data-vs-intro><div class="mdl-scrim" data-vs-close></div>${html(o)}</div>`;

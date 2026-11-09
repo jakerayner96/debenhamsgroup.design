@@ -2190,6 +2190,21 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .vs-chips .vsi{width:16px;height:16px}
 .vsi{display:block;flex:none;background:var(--icon-primary);-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
 .vsi--add-photo{--ic:url("icons/lib/icons-add-photo.svg")}.vsi--ai{--ic:url("icons/lib/icons-ai.svg")}.vsi--hanger{--ic:url("icons/lib/icons-hanger.svg")}.vsi--quick-add{--ic:url("icons/lib/icons-quick-add.svg")}
+.vsi--tick{--ic:url("icons/lib/icons-tick.svg")}
+/* short layouts 7-10 (9 Nov): one intro line or three one-line steps, tips as plain text. Nothing that reads as a button: no borders, no fills */
+.vs-intro--short .mdl-bd{gap:var(--gap-5,20px)}
+.vs-lede{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
+.vs-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-3,12px)}
+.vs-steps li{display:flex;align-items:center;gap:var(--gap-3,12px);font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
+.vs-steps .n{width:24px;height:24px;flex:none;border-radius:var(--radius-pill);background:var(--surface-action);color:var(--text-on-action);display:grid;place-items:center;font-size:12px;line-height:1;font-weight:var(--w-strong,600)}
+.vs-tip{margin:0;display:flex;align-items:flex-start;gap:var(--gap-2,8px);font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-secondary)}
+.vs-tip .vsi{width:16px;height:16px;background:var(--text-secondary)}
+.vs-checks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-2,8px) var(--gap-4,16px)}
+.vs-checks li{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
+.vs-checks .vsi{width:16px;height:16px}
+.vs-eg{display:flex;align-items:center;gap:var(--gap-4,16px)}
+.vs-eg-img{width:80px;aspect-ratio:2/3;flex:none;border-radius:var(--radius-lg);background:var(--surface-media,var(--surface-sunken)) url("img/vs-example.jpg") center/cover no-repeat}
+.vs-eg .vs-sec{flex:1;min-width:0}.vs-eg .vs-checks{grid-template-columns:1fr}
 .vsi--light{--ic:url("icons/lib/icons-light-bulb.svg")}.vsi--dress{--ic:url("icons/lib/icons-dress.svg")}.vsi--face{--ic:url("icons/lib/icons-account.svg")}.vsi--plain{--ic:url("icons/lib/icons-image.svg")}
 .vs-consent{gap:var(--gap-3,12px);cursor:pointer;-webkit-tap-highlight-color:transparent}   /* the whole row toggles; only the links are exempt */
 .vs-legal{margin:0;flex:1;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}

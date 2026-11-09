@@ -3,6 +3,16 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-11-09",
+  "v": "2026.11.09",
+  "title": "Virtual Stylist intro: four short start screen layouts (7 to 10)",
+  "by": "Virtual Stylist v2 (vto-prototype/v2, Jake 9 Nov: too long, pills look tappable)",
+  "added": [
+   "Virtual Stylist intro layouts 7 to 10 (.vs-intro--short): 7 three one-line steps (.vs-steps) + tip line (.vs-tip) · 8 intro line (.vs-lede) + tick list (.vs-checks) · 9 intro + example photo (.vs-eg, new asset assets/ds/img/vs-example.jpg, o.photo override) beside the tick list · 10 intro + tip line. Tips are plain text with no border or fill, so they don't read as buttons; copy written to the ux-writing skill (front-loaded, sentence case, short lines); new glyph .vsi--tick · by Virtual Stylist v2, Jake 9 Nov"
+  ],
+  "changed": []
+ },
+ {
   "d": "2026-11-03",
   "v": "2026.11.03",
   "title": "Virtual Stylist intro: six start screen layouts (Jake’s final options) · copy up to 12/16",
