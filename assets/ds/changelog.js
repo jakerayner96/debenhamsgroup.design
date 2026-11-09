@@ -8,9 +8,12 @@ window.DG_CHANGELOG=[
   "title": "Virtual Stylist intro: four short start screen layouts (7 to 10)",
   "by": "Virtual Stylist v2 (vto-prototype/v2, Jake 9 Nov: too long, pills look tappable)",
   "added": [
+   "Rail card info levels (DG_pcarHTML o.info): full (default) · noswatch · clean (name on one line + price, no brand, no swatches) · price (image + price only); Sponsored stays on every level · by Product carousel prototype, Jake 9 Nov",
+   "Recommendation rows .rec-list / .rec-row: 48 × 72 image (2:3), brand + name + price, the DS quick add right (Added to Bag · Frequently Bought Together list) · by Product carousel prototype, Jake 9 Nov",
    "Virtual Stylist intro layouts 7 to 10 (.vs-intro--short): 7 three one-line steps (.vs-steps) + tip line (.vs-tip) · 8 intro line (.vs-lede) + tick list (.vs-checks) · 9 intro + example photo (.vs-eg, new asset assets/ds/img/vs-example.jpg, o.photo override) beside the tick list · 10 intro + tip line. Tips are plain text with no border or fill, so they don't read as buttons; copy written to the ux-writing skill (front-loaded, sentence case, short lines); new glyph .vsi--tick · by Virtual Stylist v2, Jake 9 Nov"
   ],
-  "changed": []
+  "changed": [
+   "Product carousel prototype: Added to Bag versions are now Live · Complete the look · Frequently bought together (cards — carousel or 1–3 row grid —, a list, or the DS bundle); Save your bag, Save for later and both toasts removed; a Cards setting (Full · No swatches · Clean · Price only) drives every rail on every screen · by Product carousel prototype, Jake 9 Nov",]
  },
  {
   "d": "2026-11-03",
