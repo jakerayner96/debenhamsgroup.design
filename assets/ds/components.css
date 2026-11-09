@@ -171,6 +171,30 @@ button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--bor
 .pc-name--caps{text-transform:uppercase} /* PLT names run uppercase */
 /* card info levels (DG_pcarHTML o.info, 9 Nov 2026): clean = name only (2 lines) · inline / inline2 = the brand strong at the start of the name run · price = price only */
 .pc-name--in b{font-weight:var(--w-strong)}
+/* rail card min height (.pc--tall, 11 Nov 2026 — Figma 13943:31066): 250, so the brand + name always have room; the inline size row (.pc-size) under the price */
+.pc--tall{min-height:250px}
+.pc-size{position:relative;display:flex;align-items:center;gap:8px;font-size:12px;line-height:15px;font-weight:var(--w-regular);cursor:pointer}
+.pc-size .v{color:var(--text-secondary);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pc-size.on .v{color:var(--text-primary)}
+.pc-size i{width:12px;height:12px;flex:none;background:currentColor;-webkit-mask:url(icons/lib/icons-down.svg) center/contain no-repeat;mask:url(icons/lib/icons-down.svg) center/contain no-repeat}
+.pc-size select{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer;font-size:16px}
+.pc-size.err .v{color:var(--text-error)}
+/* Quick Add modal (.qadd — assets/ds/quickadd.js, 11 Nov 2026; Figma Quick Add i0Dgzx7sPX23ffsI55hhRp 652:47180 / 651:33756 / 652:56024, as live):
+   title 20 strong · brand 16 strong + name 16/24 light (or a 64 × 96 thumbnail beside them for shade / ml products) · price · Colour: X + the image swatch ·
+   Size: X + Size guide + size buttons (or the DS select for shades / ml / beds) · stock line 16 red · Add To Bag (primary) + View Product (secondary) */
+.qadd-layer{position:fixed;inset:0;z-index:95;display:flex;align-items:flex-end;justify-content:center} /* over any sheet / drawer it opens from */
+.qadd-layer>.mdl{position:relative;z-index:3;width:100%}.qadd-layer>.mdl--up{max-height:calc(100% - 56px);overflow:auto}
+@media(min-width:1024px){.qadd-layer{align-items:center}.qadd-layer>.mdl--sm{width:auto}}
+.qadd .mdl-bd{gap:24px}
+.qadd-p{display:flex;flex-direction:column;gap:4px}.qadd-p b{font-size:16px;line-height:20px;font-weight:var(--w-strong)}.qadd-p span{font-size:16px;line-height:24px;font-weight:var(--w-regular)}
+.qadd-row{display:flex;gap:16px;align-items:flex-start}.qadd-row>img{width:64px;aspect-ratio:var(--ratio-product);height:auto;object-fit:cover;flex:none;border-radius:var(--radius-default);background:var(--surface-media)}
+.qadd-row .qadd-p{gap:8px}
+.qadd .price-blk--qa .price{font-size:20px;line-height:24px;column-gap:8px}.qadd .price-blk--qa .save{font-size:14px}
+.qadd-opt{display:flex;flex-direction:column;gap:12px}.qadd-lbl{display:flex;justify-content:space-between;align-items:center;font-size:16px;line-height:20px}.qadd-lbl b{font-weight:var(--w-mid)}
+.qadd-lbl .guide{display:flex;align-items:center;gap:4px;font-size:14px}.qadd-lbl .guide img{width:16px;height:16px}
+.qadd .sizes .set{flex-wrap:wrap}
+.qadd .qadd-stock{font-size:16px;line-height:20px;color:var(--text-error);margin:0}
+.qadd .qadd-err{font-size:14px;line-height:20px;color:var(--text-error);margin:-4px 0 0}
+.qadd-ctas{display:flex;flex-direction:column;gap:8px}.qadd-ctas .bd{width:100%}
 /* .rec-list — recommendations as rows (Added to Bag · Frequently Bought Together, 9 Nov 2026): 48 × 72 image (2:3), name + price, the DS quick add (.pc-iconbtn) right */
 .rec-list{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
 .rec-row{display:grid;grid-template-columns:48px 1fr auto;gap:var(--gap-3,12px);align-items:center;font-size:12px;line-height:15px}

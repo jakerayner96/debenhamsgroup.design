@@ -3,6 +3,19 @@
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
  {
+  "d": "2026-11-11",
+  "v": "2026.11.11",
+  "title": "Quick Add modal · rail card min height 250 + inline size · Added to Bag quick add options",
+  "by": "Product carousel prototype (projects/product-carousel), Jake 11 Nov",
+  "added": [
+   "Quick Add (.qadd + assets/ds/quickadd.js, DG_quickAdd) — the live Quick Add modal (Figma Quick Add i0Dgzx7sPX23ffsI55hhRp 652:47180 / 651:33756 / 652:56024): title, brand + name, price, Colour + image swatch, Size + Size guide + size buttons, or the DS select beside a thumbnail for shades / ml; stock line; Add to Bag + View Product; slide up on phones, small centred modal on desktop, over any sheet",
+   "Rail card options (DG_pcarHTML): tall — min height 250 so brand + name always fit (Figma 13943:31066) · inlineSize — Size: Select size ⌄ under the price for items with sizes[] (.pc-size, a native select) · item.noQa — no quick add on that card"
+  ],
+  "changed": [
+   "Product carousel prototype · Added to Bag: card Standard (127 × 190, min 250, Brand - Name, price, square quick add) or Small (100 × 150, price only); quick add Straight to bag (single-variant only, the rest go to the PDP) · Quick Add modal · None → PDP · Inline size; every scenario product tagged single / multi variant; the carousel keeps its height as items are added — the sheet scrolls and View Bag floats pinned (was: the rail shrank to fit)"
+  ]
+ },
+ {
   "d": "2026-11-09",
   "v": "2026.11.09",
   "title": "Virtual Stylist intro: final design (Figma 15921-1329) · top toast to Figma 5146-559 + toast.js",

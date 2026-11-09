@@ -191,11 +191,11 @@ function renderPanel(host,S,update){
     return `<div class="card"><h3>Recommendations ${sw('ctlTitleOn',c.ctlTitleOn!==false,'Title')}</h3>
     ${c.ctlTitleOn!==false?`<input class="pi-in" data-in="title_${t}" value="${(c['title_'+t]||def).replace(/"/g,'&quot;')}" aria-label="Title">`:''}
     <div class="f" style="margin-top:10px"><span>Style</span>${seg('recStyle',st==='bundle'&&t!=='fbt'?'rail':st,[['rail','Cards'],['list','List']].concat(t==='fbt'?[['bundle','Bundle']]:[]))}</div>
-    ${st!=='list'&&!(st==='bundle'&&t==='fbt')?`<div class="f" style="margin-top:10px"><span>Layout</span>${seg('ctlFmt',c.ctlFmt||'carousel',[['carousel','Carousel'],['grid','Grid']])}</div>
-    ${c.ctlFmt==='grid'?`<div class="f" style="margin-top:10px"><span>Rows</span>${seg('ctlRows',c.ctlRows||2,[['1','1'],['2','2'],['3','3']])}</div>`:''}
-    <div class="f" style="margin-top:10px"><span>Card size</span>${seg('cardSize',c.cardSize||'sm',[['sm','Small'],['lg','Large']])}</div>
-    <div class="f" style="margin-top:10px"><span>Image gap</span>${seg('cardGap',c.cardGap||'on',[['on','4px'],['off','None']])}</div>`:''}
-    ${st!=='bundle'?`<div class="f" style="margin-top:10px"><span>Quick add</span>${seg('qaShape',c.qaShape||'round',[['round','Round'],['square','Square']])}</div>`:''}</div>`})():''}
+    ${st!=='list'&&!(st==='bundle'&&t==='fbt')?`<div class="f" style="margin-top:10px"><span>Card</span>${seg('recCard',c.recCard||'std',[['std','Standard'],['sm','Small · price only']])}</div>
+    <div class="f" style="margin-top:10px"><span>Quick add</span>${seg('qaMode',c.qaMode||'bag',[['bag','Straight to bag'],['modal','Quick Add modal'],['pdp','None → PDP'],['inline','Inline size']])}</div>
+    <p style="margin-top:8px">${{bag:'Single-variant products get the quick add and go straight in the bag. Products that need a size or shade have no button — a tap opens their PDP.',modal:'Every card has the quick add. Single-variant products go straight in; the rest open the Quick Add modal (as live) to choose a size or shade.',pdp:'No quick add. A tap opens the product page to add it there.',inline:'Products that need a size show “Size: Select size” on the card; the quick add adds once one is chosen. Single-variant products add straight away.'}[c.qaMode||'bag']}${(c.recCard==='sm')?' Small cards have no room for a size, so those products use the modal.':''}</p>
+    <div class="f" style="margin-top:10px"><span>Layout</span>${seg('ctlFmt',c.ctlFmt||'carousel',[['carousel','Carousel'],['grid','Grid']])}</div>
+    ${c.ctlFmt==='grid'?`<div class="f" style="margin-top:10px"><span>Rows</span>${seg('ctlRows',c.ctlRows||2,[['1','1'],['2','2'],['3','3']])}</div>`:''}`:''}</div>`})():''}
   <div class="card"><h3>Sticky CTA</h3>${seg('ctaSticky',c.ctaSticky||'fade',[['fade','Gradient'],['float','Floating']])}
     <p style="margin-top:8px">Once the sheet scrolls, the CTAs stick to its foot${(c.ctaSticky||'fade')==='float'?', floating with a soft shadow':' on a white gradient'} — the title stays pinned at the top.</p></div>
   <div class="card"><h3>Bag CTA</h3>${seg('cta',c.cta||'bag',[['bag','View Bag'],['checkout','Checkout'],['both','Both']])}

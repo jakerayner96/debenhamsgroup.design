@@ -1,5 +1,5 @@
 /* Product carousel prototype · Added to Bag recommendations (9 Nov 2026) — real debenhams.com products per scenario (captured 9 Nov, images in img/recs, 2:3).
-   look · similar · till run over the Coast dress on the PDP; fbt swaps the bag item for Prada Paradoxe. */
+   look · similar · till run over the Coast dress on the PDP; fbt swaps the bag item for Prada Paradoxe.    Variants (11 Nov): sizes[] + opt ('Size' | 'Shade') = a multi-variant product (choose before it can go in the bag); none = single variant (quick add straight in). */
 window.PI_RECS={
  "look": {
   "title": "Complete The Look",
@@ -12,7 +12,17 @@ window.PI_RECS={
     "was": "£59.00",
     "pct": "50",
     "img": "projects/product-carousel/img/recs/coast-maria-faux-leather-sequin-embellished-stiletto-court-s.jpg",
-    "href": "https://www.debenhams.com/product/coast-maria-faux-leather-sequin-embellished-stiletto-court-shoes_bcc14812"
+    "href": "https://www.debenhams.com/product/coast-maria-faux-leather-sequin-embellished-stiletto-court-shoes_bcc14812",
+    "opt": "Size",
+    "sizes": [
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8"
+    ],
+    "colour": "Gold"
    },
    {
     "brand": "Ashwood Leather",
@@ -39,7 +49,18 @@ window.PI_RECS={
     "was": "£119.00",
     "pct": "40",
     "img": "projects/product-carousel/img/recs/oasis-belted-faux-fur-maxi-coat.jpg",
-    "href": "https://www.debenhams.com/product/oasis-belted-faux-fur-maxi-coat_baa12105"
+    "href": "https://www.debenhams.com/product/oasis-belted-faux-fur-maxi-coat_baa12105",
+    "opt": "Size",
+    "sizes": [
+     "6",
+     "8",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18"
+    ],
+    "colour": "Cream"
    },
    {
     "brand": "Coast",
@@ -48,7 +69,17 @@ window.PI_RECS={
     "was": "£55.00",
     "pct": "40",
     "img": "projects/product-carousel/img/recs/coast-bessy-bow-detail-high-stiletto-slingback-satin-court-s.jpg",
-    "href": "https://www.debenhams.com/product/coast-bessy-bow-detail-high-stiletto-slingback-satin-court-shoes_bcc15186"
+    "href": "https://www.debenhams.com/product/coast-bessy-bow-detail-high-stiletto-slingback-satin-court-shoes_bcc15186",
+    "opt": "Size",
+    "sizes": [
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8"
+    ],
+    "colour": "Black"
    },
    {
     "brand": "Serla",
@@ -75,7 +106,17 @@ window.PI_RECS={
     "was": "£39.99",
     "pct": "23",
     "img": "projects/product-carousel/img/recs/anne-michelle-diamante-strappy-stiletto-heel-sandals.jpg",
-    "href": "https://www.debenhams.com/product/anne-michelle-diamante-strappy-stiletto-heel-sandals_p-efb0df64-9fb6-4296-8a7e-a033b94d10ea"
+    "href": "https://www.debenhams.com/product/anne-michelle-diamante-strappy-stiletto-heel-sandals_p-efb0df64-9fb6-4296-8a7e-a033b94d10ea",
+    "opt": "Size",
+    "sizes": [
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8"
+    ],
+    "colour": "Silver"
    }
   ]
  },
@@ -90,7 +131,18 @@ window.PI_RECS={
     "was": "£69.00",
     "pct": "10",
     "img": "projects/product-carousel/img/recs/dorothy-perkins-velvet-sequin-wrap-midi-dress.jpg",
-    "href": "https://www.debenhams.com/product/dorothy-perkins-velvet-sequin-wrap-midi-dress_bqq14156"
+    "href": "https://www.debenhams.com/product/dorothy-perkins-velvet-sequin-wrap-midi-dress_bqq14156",
+    "opt": "Size",
+    "sizes": [
+     "6",
+     "8",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18"
+    ],
+    "colour": "Black"
    },
    {
     "brand": "FS Collection",
@@ -99,14 +151,36 @@ window.PI_RECS={
     "was": "£59.00",
     "pct": "25",
     "img": "projects/product-carousel/img/recs/fs-collection-floral-velvet-devore-ruched-long-sleeve-midi-d.jpg",
-    "href": "https://www.debenhams.com/product/fs-collection-floral-velvet-devore-ruched-long-sleeve-midi-dress_p-1d981495-4188-400a-a1de-c905eda33e57"
+    "href": "https://www.debenhams.com/product/fs-collection-floral-velvet-devore-ruched-long-sleeve-midi-dress_p-1d981495-4188-400a-a1de-c905eda33e57",
+    "opt": "Size",
+    "sizes": [
+     "6",
+     "8",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18"
+    ],
+    "colour": "Wine"
    },
    {
     "brand": "Coast",
     "name": "Square Neck Celestial Embellished Velvet Midi Party Dress",
     "price": "£179.00",
     "img": "projects/product-carousel/img/recs/coast-square-neck-celestial-embellished-velvet-midi-party-dr.jpg",
-    "href": "https://www.debenhams.com/product/coast-square-neck-celestial-embellished-velvet-midi-party-dress_bcc14091"
+    "href": "https://www.debenhams.com/product/coast-square-neck-celestial-embellished-velvet-midi-party-dress_bcc14091",
+    "opt": "Size",
+    "sizes": [
+     "6",
+     "8",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18"
+    ],
+    "colour": "Black"
    },
    {
     "brand": "Wallis",
@@ -115,14 +189,36 @@ window.PI_RECS={
     "was": "£85.00",
     "pct": "10",
     "img": "projects/product-carousel/img/recs/wallis-velvet-burn-out-sequin-midi-dress.jpg",
-    "href": "https://www.debenhams.com/product/wallis-velvet-burn-out-sequin-midi-dress_byy18370"
+    "href": "https://www.debenhams.com/product/wallis-velvet-burn-out-sequin-midi-dress_byy18370",
+    "opt": "Size",
+    "sizes": [
+     "6",
+     "8",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18"
+    ],
+    "colour": "Emerald"
    },
    {
     "brand": "Coast",
     "name": "Sequin Long Sleeve Midi Dress",
     "price": "£199.00",
     "img": "projects/product-carousel/img/recs/coast-sequin-long-sleeve-midi-dress.jpg",
-    "href": "https://www.debenhams.com/product/coast-sequin-long-sleeve-midi-dress_bcc14086"
+    "href": "https://www.debenhams.com/product/coast-sequin-long-sleeve-midi-dress_bcc14086",
+    "opt": "Size",
+    "sizes": [
+     "6",
+     "8",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18"
+    ],
+    "colour": "Olive"
    },
    {
     "brand": "Coast",
@@ -131,7 +227,18 @@ window.PI_RECS={
     "was": "£129.00",
     "pct": "10",
     "img": "projects/product-carousel/img/recs/coast-coast-muse-one-shoulder-asymmetric-fringed-midi-dress.jpg",
-    "href": "https://www.debenhams.com/product/coast-coast-muse-one-shoulder-asymmetric-fringed-midi-dress_bcc14049"
+    "href": "https://www.debenhams.com/product/coast-coast-muse-one-shoulder-asymmetric-fringed-midi-dress_bcc14049",
+    "opt": "Size",
+    "sizes": [
+     "6",
+     "8",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18"
+    ],
+    "colour": "Black"
    },
    {
     "brand": "Dorothy Perkins",
@@ -140,7 +247,18 @@ window.PI_RECS={
     "was": "£35.00",
     "pct": "10",
     "img": "projects/product-carousel/img/recs/dorothy-perkins-bow-back-long-sleeve-velvet-mini-dress.jpg",
-    "href": "https://www.debenhams.com/product/dorothy-perkins-bow-back-long-sleeve-velvet-mini-dress_bqq24934"
+    "href": "https://www.debenhams.com/product/dorothy-perkins-bow-back-long-sleeve-velvet-mini-dress_bqq24934",
+    "opt": "Size",
+    "sizes": [
+     "6",
+     "8",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18"
+    ],
+    "colour": "Red"
    },
    {
     "brand": "Oasis",
@@ -149,7 +267,17 @@ window.PI_RECS={
     "was": "£69.00",
     "pct": "30",
     "img": "projects/product-carousel/img/recs/oasis-petite-velvet-bow-detail-mini-dress.jpg",
-    "href": "https://www.debenhams.com/product/oasis-petite-velvet-bow-detail-mini-dress_baa13870"
+    "href": "https://www.debenhams.com/product/oasis-petite-velvet-bow-detail-mini-dress_baa13870",
+    "opt": "Size",
+    "sizes": [
+     "4",
+     "6",
+     "8",
+     "10",
+     "12",
+     "14"
+    ],
+    "colour": "Red"
    }
   ]
  },
@@ -182,7 +310,13 @@ window.PI_RECS={
     "was": "£82.00",
     "pct": "25",
     "img": "projects/product-carousel/img/recs/prada-paradoxe-intense-eau-de-parfum.jpg",
-    "href": "https://www.debenhams.com/product/prada-paradoxe-intense-eau-de-parfum_ydd12926"
+    "href": "https://www.debenhams.com/product/prada-paradoxe-intense-eau-de-parfum_ydd12926",
+    "opt": "Size",
+    "sizes": [
+     "30ml",
+     "50ml",
+     "90ml"
+    ]
    },
    {
     "brand": "Prada",
@@ -200,7 +334,13 @@ window.PI_RECS={
     "was": "£72.00",
     "pct": "20",
     "img": "projects/product-carousel/img/recs/prada-paradoxe-sweet-chemistry-eau-de-parfum.jpg",
-    "href": "https://www.debenhams.com/product/prada-paradoxe-sweet-chemistry-eau-de-parfum_ydd25297"
+    "href": "https://www.debenhams.com/product/prada-paradoxe-sweet-chemistry-eau-de-parfum_ydd25297",
+    "opt": "Size",
+    "sizes": [
+     "30ml",
+     "50ml",
+     "90ml"
+    ]
    },
    {
     "brand": "Prada",
@@ -208,7 +348,13 @@ window.PI_RECS={
     "price": "From £61.60",
     "was": "£77.00",
     "img": "projects/product-carousel/img/recs/prada-prada-paradoxe-virtual-flower-eau-de-parfum.jpg",
-    "href": "https://www.debenhams.com/product/prada-prada-paradoxe-virtual-flower-eau-de-parfum_ydd15785"
+    "href": "https://www.debenhams.com/product/prada-prada-paradoxe-virtual-flower-eau-de-parfum_ydd15785",
+    "opt": "Size",
+    "sizes": [
+     "30ml",
+     "50ml",
+     "90ml"
+    ]
    },
    {
     "brand": "Clarins",
@@ -226,7 +372,14 @@ window.PI_RECS={
     "was": "£40.00",
     "pct": "25",
     "img": "projects/product-carousel/img/recs/yves-saint-laurent-loveshine-high-shine-lipstick-4g.jpg",
-    "href": "https://www.debenhams.com/product/yves-saint-laurent-loveshine-high-shine-lipstick-4g_ydd14637"
+    "href": "https://www.debenhams.com/product/yves-saint-laurent-loveshine-high-shine-lipstick-4g_ydd14637",
+    "opt": "Shade",
+    "sizes": [
+     "44 Nude Lavalliere",
+     "150 Nude Lingerie",
+     "201 Rose Tempura",
+     "208 Raspberry Lust"
+    ]
    }
   ],
   "bag": {
@@ -286,7 +439,14 @@ window.PI_RECS={
     "name": "Lasting Matte Lip Liner",
     "price": "£3.99",
     "img": "projects/product-carousel/img/recs/rimmel-london-lasting-matte-lip-liner.jpg",
-    "href": "https://www.debenhams.com/product/rimmel-london-lasting-matte-lip-liner_ydd12806"
+    "href": "https://www.debenhams.com/product/rimmel-london-lasting-matte-lip-liner_ydd12806",
+    "opt": "Shade",
+    "sizes": [
+     "Nude",
+     "Rose",
+     "Berry",
+     "Espresso"
+    ]
    },
    {
     "brand": "boohoo",

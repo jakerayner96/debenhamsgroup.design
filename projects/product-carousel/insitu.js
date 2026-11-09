@@ -69,7 +69,7 @@ const round=()=>BR()==='plt';
 /* FI(i): a feed item, or (i ≥ 1000) one of the real Added to Bag scenario products (recs.js — PI_RECS, Debenhams) */
 const RK=['look','similar','fbt','till'];
 const FI=i=>{if(i>=1000){const R=window.PI_RECS&&PI_RECS[RK[Math.floor(i/1000)-1]],x=R&&R.items[i%1000];return x?Object.assign({},x,{i}):null}return DG_feedItem(BR(),i)};
-const items=(o,list)=>list.map(i=>{const x=FI(i);if(x&&o.sp&&o.sp(i))x.sponsored=true;if(x&&o.qa&&ADDED.includes(i)){x.added=true;if(i===JUST)x.pop=true}return x}).filter(Boolean);
+const items=(o,list)=>list.map(i=>{const x=FI(i);if(x&&o.noQa&&o.noQa(x))x.noQa=true;if(x&&SZ[i])x.size=SZ[i];if(x&&o.sp&&o.sp(i))x.sponsored=true;if(x&&o.qa&&ADDED.includes(i)){x.added=true;if(i===JUST)x.pop=true}return x}).filter(Boolean);
 function pcar(o){FEEDS[o.id]=o;const grid=o.fmt==='grid',per=o.per||5,len=o.len||(grid?(desk()?per*2:6):10),list=o.list||ids(o.id,o.start||0,len);
   return DG_pcarHTML(Object.assign({info:PC.cardInfo||'full',swatches:PC.cardSw==null?undefined:PC.cardSw!==false},o,{grid,per,items:items(o,list),arrows:PC.arrows!==false,tab:TAB[o.id]||0,round:round(),eager:EXPORTING,all:false}))}
 document.addEventListener('pcar:tab',e=>{const el=e.target,o=FEEDS[el.dataset.pl];if(!o)return;TAB[o.id]=e.detail.index;delete o.list;
@@ -131,7 +131,7 @@ function mainItem(){if(FM()&&MBT()==='fbt'&&window.PI_RECS&&PI_RECS.fbt.bag){con
   const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,colour:DP.colour}:PR()[1]||{};
   const sz=(document.querySelector('.sz.on')||{}).textContent,cm=((document.querySelector('.buy')||{}).innerText||'').match(/Colou?r:\s*([^\n]+)/);
   return Object.assign({},p,{img:DP?DP.imgs[0]:IMG(1),size:sz&&sz.trim()||(FM()?'M':'12'),colour:p.colour||(cm&&cm[1].trim())||''})}
-function bagItems(){return [mainItem()].concat(ADDED.map(i=>{const x=FI(i);return x&&Object.assign({size:'One Size',colour:x.swatches?x.swatches[0].name:''},x)}).filter(Boolean))}
+function bagItems(){return [mainItem()].concat(ADDED.map(i=>{const x=FI(i);return x&&Object.assign({},x,{size:SZ[i]||'One Size',colour:x.colour||(x.swatches?x.swatches[0].name:''),price:String(x.price).replace(/^From\s*/,'')})}).filter(Boolean))}
 /* the line item: Live = the live card (DS .bag-item, 99 × 148); the new versions = the mini bag card (DS .bag-item--mini, Bag 2026): brand - name · size / colour · price */
 const oldItem=p=>`<div class="bag-item"><img src="${p.img}" alt=""><div class="info"><div class="b">${esc(p.brand||BN())}</div><div class="n">${esc(p.name)}</div><div class="v">${esc(/one size/i.test(p.size||'')?'One size':'Size '+p.size)} · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
 const lineItem=p=>MBT()==='live'?oldItem(p):`<div class="bag-item bag-item--mini${p.i!=null&&p.i===JUST?' bag-item--in':''}"><img src="${p.img}" alt=""><div class="info"><div class="t"><b>${esc(p.brand||BN())}</b> - ${esc(p.name)}</div><div class="v">${esc([p.size,p.colour].filter(Boolean).join(' / '))}</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
@@ -159,14 +159,20 @@ function rec(t){const grid=PC.ctlFmt==='grid',rows=Math.max(1,Math.min(3,+PC.ctl
     return `<section class="pcar pcar--sm pi-rec">${hd}<div class="rec-list">${L.map(x=>`<div class="rec-row"><img src="${esc(x.img)}" alt=""><div class="t">${tx(x)}<div class="price-blk price-blk--rail"><div class="price"><span class="now${x.was?' sale':''}">${esc(x.price)}</span>${x.was?`<span class="was">${esc(x.was)}</span>`:''}</div></div></div><button type="button" class="pc-iconbtn${sq}${x.added?' on':''}" data-qa="${x.i}" aria-label="${x.added?'Added':'Quick add'} ${esc(x.name)}"${x.added?' disabled':''}><img src="assets/ds/icons/${x.added?'lib/icons-tick':'quick-add-16'}.svg" alt=""></button></div>`).join('')}</div></section>`}
   if(st==='bundle'&&window.DG_bundle){const L=list.slice(0,2).map(i=>Object.assign({},FI(i),{sizes:/ml/i.test((FI(i)||{}).name||'')?['One size']:['30ml','50ml','90ml'],i}));
     return DG_bundle.html({title:title||RECT(t),items:L,cta:'Add to bag'})}
-  const lg=PC.cardSize==='lg',h=pcar({id:'rec-'+t,size:'sm',title,per:grid?3:4,card:lg?130:100,fixed:!grid,compact:true,start:4,list:grid?list.slice(0,rows*3):list,fmt:grid?'grid':undefined,len:grid?rows*3:undefined,bleed:grid?false:undefined,qa:true,qaShape:PC.qaShape||'round',
-    sp:t==='look'&&BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null});
-  return PC.cardGap==='off'?h.replace(/(<section class="pcar[^>]*?style=")/,'$1--pcar-gap:0px;--pcar-row-gap:16px;'):h}
+  /* card (Jake 11 Nov, Figma 13943:31066): std = 127 × 190 image, min height 250, Brand - Name, price · sm = 100 × 150, price only.
+     quick add (PC.qaMode): bag — the button only on single-variant products, it adds straight to the bag; multi-variant cards go to the PDP ·
+     modal — every card has it; single adds, multi opens the DS Quick Add modal · pdp — no button, a tap opens the PDP · inline — multi-variant cards
+     carry "Size: Select size ⌄" and the button adds once a size is chosen */
+  const sm=PC.recCard==='sm',m=QAM(),multi=x=>!!(x.sizes&&x.sizes.length);
+  return pcar({id:'rec-'+t,size:'sm',title,per:grid?3:4,card:sm?100:127,fixed:!grid,compact:true,tall:!sm,info:sm?'price':'inline',swatches:false,start:4,list:grid?list.slice(0,rows*3):list,fmt:grid?'grid':undefined,len:grid?rows*3:undefined,bleed:grid?false:undefined,
+    qa:m!=='pdp',qaShape:'square',inlineSize:m==='inline'&&!sm,noQa:x=>multi(x)&&(m==='bag'||(m==='inline'&&sm)),
+    sp:t==='look'&&BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null})}
+const QAM=()=>['bag','modal','pdp','inline'].includes(PC.qaMode)?PC.qaMode:'bag',SZ={};
 function miniBag(){const d=desk(),t=MBT();
   const rail=rec(t);
   /* order: Live as live (item · threshold · Continue Shopping / View Bag); the new versions lead with the threshold, then the item(s), then their extra */
   /* Complete the look keeps to one view: the item you came for + the one just added (it drops in); earlier adds fold into “+N more in your bag” */
-  const all=bagItems(),shown=t!=='live'&&all.length>2?[all[0],all[all.length-1]]:all,more=all.length-shown.length;
+  const all=bagItems(),shown=all,more=0;
   const items=`<div class="pi-items">${shown.map(lineItem).join('')}${more?`<div class="pi-more">+${more} more in your bag</div>`:''}</div>`,vb=ctas();
   const body=t==='live'?items+thresh()+`<div class="pi-btns"><button class="bd sec" data-mbx>Continue Shopping</button>${vb}</div>`
     :thresh()+items+rail+`<div class="pi-btns">${vb}</div>`;
@@ -176,7 +182,8 @@ function miniBag(){const d=desk(),t=MBT();
     <div class="mdl-bd">${body}</div></div></div>`}
 /* fit: scale to fit — the rail cards shrink until nothing scrolls (the Figma mini bag; the panel options were removed 3 Nov) */
 const FIT=()=>'scale',PIN=()=>false;
-function autoFit(n){if(MBT()==='live'||PC.ctlFmt==='grid'||PC.cardSize==='lg'||(PC.recStyle&&PC.recStyle!=='rail'))return;const bd=n.querySelector('.mdl-bd'),rail=n.querySelector('[data-pl^="rec-"]');if(!bd||!rail)return;
+function autoFit(n){return;   /* 11 Nov: the carousel keeps its height — the sheet scrolls and the CTAs float pinned instead */
+if(MBT()==='live'||PC.ctlFmt==='grid'||PC.cardSize==='lg'||(PC.recStyle&&PC.recStyle!=='rail'))return;const bd=n.querySelector('.mdl-bd'),rail=n.querySelector('[data-pl^="rec-"]');if(!bd||!rail)return;
   /* scale the rail's cards (image + copy together, so nothing re-wraps) by exactly the overflow; the first card stays on the 24px margin */
   const body=rail.querySelector('.pcar-body'),pad=24;let z=1;body.style.zoom='';body.style.removeProperty('--pcar-pad');
   for(let k=0;k<6;k++){const over=bd.scrollHeight-bd.clientHeight;if(over<=0)break;const h=body.getBoundingClientRect().height;z=Math.max(.4,z*(h-over-3)/h);
@@ -195,11 +202,25 @@ function mountBag(open,instant){const old=document.getElementById('pimb'),ot=doc
   if(old)old.remove();
   document.documentElement.classList.add('pi-lock');document.body.insertAdjacentHTML('beforeend',miniBag());
   const n=document.getElementById('pimb');if(window.DG_bundle)DG_bundle.wire(n);autoFit(n);sticky(n);if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');n.querySelector('.mdl-scrim').style.animation='none';const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
+/* inline size: the choice shows in the row */
+document.addEventListener('change',e=>{const sel=e.target.closest('#pimb [data-qsz]');if(!sel)return;const l=sel.closest('.pc-size'),x=FI(+sel.dataset.qsz)||{};l.classList.remove('err');l.classList.toggle('on',!!sel.value);l.querySelector('.v').textContent=sel.value||('Select '+(x.opt||'size').toLowerCase())});
+/* the DS Quick Add modal: add → the bag (line item drops in); View Product → the PDP; X / scrim → closes */
+const qaClose=()=>document.querySelectorAll('.qadd-layer').forEach(l=>l.remove());
+document.addEventListener('dg:quickadd',e=>{const{i,size}=e.detail;SZ[i]=size;qaClose();if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null});
+document.addEventListener('dg:quickadd-pdp',e=>{if(e.detail.href)window.open(e.detail.href,'_blank','noopener')});
+document.addEventListener('dg:quickadd-close',qaClose);
 /* the bundle's Add to bag: its ticked items go in the bag, their line items drop in */
 document.addEventListener('dg:bundle',e=>{if(!e.target.closest('#pimb'))return;const L=RECL('fbt').slice(0,2);e.detail.items.forEach(x=>{const i=L.find(k=>(FI(k)||{}).name===x.name);if(i!=null&&!ADDED.includes(i)){ADDED.push(i);JUST=i}});mountBag(true);JUST=null});
 document.addEventListener('click',e=>{
   const lk=e.target.closest('.pcar--look[data-pl="look"]');if(lk&&!e.target.closest('.pcar-arr')){e.preventDefault();const c=e.target.closest('.pcar-track>*'),L=FEEDS.look,idx=c?[...c.parentNode.children].indexOf(c):-1;openPicker(L&&idx>=0?ids('look',L.start||0,10)[idx]:null);return}
-  const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();const i=+qa.dataset.qa;if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null;return}
+  const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();e.stopPropagation();const i=+qa.dataset.qa,x=FI(i)||{};
+    if(x.sizes&&x.sizes.length&&!ADDED.includes(i)){
+      if(QAM()==='modal'||PC.recCard==='sm'){if(window.DG_quickAdd){document.body.insertAdjacentHTML('beforeend',DG_quickAdd.html(x,{desk:desk()}));DG_quickAdd.wire(document.body.lastElementChild)}return}
+      const card=qa.closest('.pc'),sel=card&&card.querySelector('[data-qsz]');if(sel&&!sel.value){const l=sel.closest('.pc-size');l.classList.add('err');l.querySelector('.v').textContent='Select a '+(x.opt||'size').toLowerCase();return}
+      if(sel)SZ[i]=sel.value}
+    if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null;return}
+  /* no quick add (or a tap on the card itself): the product's PDP */
+  const card=e.target.closest('#pimb .pc[data-href]');if(card&&!e.target.closest('button,select,label,.pc-size')){e.preventDefault();window.open(card.dataset.href,'_blank','noopener');return}
   const go=e.target.closest('[data-mbgo]');if(go){e.preventDefault();
     if(go.dataset.mbgo==='pay'||go.dataset.mbgo==='checkout'||PC.cta==='checkout'){location.href=CHECKOUT+'?brand='+BR();return}
     PC.bagOpen=false;mountBag(false,true);PC.view='bag';S.page='bag';S.search=false;render();scrollTo(0,0);parent.postMessage({protoNav:{view:'bag'}},'*');return}
