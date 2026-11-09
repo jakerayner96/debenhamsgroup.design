@@ -66,9 +66,12 @@ const FEEDS={};
 function ids(id,start,len){const off=start+(TAB[id]||0)*4;return Array.from({length:len},(_,k)=>(off+k*3)%n())}
 /* a rail = the DS builder (DG_pcarHTML) over items from the DS feed (DG_feedItem: brand always, -X%, sample swatches); o.sp(i) marks Sponsored slots */
 const round=()=>BR()==='plt';
-const items=(o,list)=>list.map(i=>{const x=DG_feedItem(BR(),i);if(x&&o.sp&&o.sp(i))x.sponsored=true;if(x&&o.qa&&ADDED.includes(i)){x.added=true;if(i===JUST)x.pop=true}return x}).filter(Boolean);
+/* FI(i): a feed item, or (i ≥ 1000) one of the real Added to Bag scenario products (recs.js — PI_RECS, Debenhams) */
+const RK=['look','similar','fbt','till'];
+const FI=i=>{if(i>=1000){const R=window.PI_RECS&&PI_RECS[RK[Math.floor(i/1000)-1]],x=R&&R.items[i%1000];return x?Object.assign({},x,{i}):null}return DG_feedItem(BR(),i)};
+const items=(o,list)=>list.map(i=>{const x=FI(i);if(x&&o.sp&&o.sp(i))x.sponsored=true;if(x&&o.qa&&ADDED.includes(i)){x.added=true;if(i===JUST)x.pop=true}return x}).filter(Boolean);
 function pcar(o){FEEDS[o.id]=o;const grid=o.fmt==='grid',per=o.per||5,len=o.len||(grid?(desk()?per*2:6):10),list=o.list||ids(o.id,o.start||0,len);
-  return DG_pcarHTML(Object.assign({info:PC.cardInfo||'full'},o,{grid,per,items:items(o,list),arrows:PC.arrows!==false,tab:TAB[o.id]||0,round:round(),eager:EXPORTING,all:false}))}
+  return DG_pcarHTML(Object.assign({info:PC.cardInfo||'full',swatches:PC.cardSw==null?undefined:PC.cardSw!==false},o,{grid,per,items:items(o,list),arrows:PC.arrows!==false,tab:TAB[o.id]||0,round:round(),eager:EXPORTING,all:false}))}
 document.addEventListener('pcar:tab',e=>{const el=e.target,o=FEEDS[el.dataset.pl];if(!o)return;TAB[o.id]=e.detail.index;delete o.list;
   const grid=o.fmt==='grid',len=grid?(desk()?(o.per||5)*2:6):10;el.querySelector('.pcar-track').innerHTML=items(o,ids(o.id,o.start||0,len)).map(p=>DG_pcarCard(p,Object.assign({},o,{round:round(),eager:EXPORTING}))).join('')});
 
@@ -122,12 +125,13 @@ const CHECKOUT='https://jakerayner96.github.io/checkout-2026-promo-gift-card/che
 const CTA=()=>PC.cta==='checkout'?'Checkout':'View Bag';
 /* Bag CTA (panel): View Bag · Checkout · both — Checkout primary + View Bag secondary, side by side (.bd-pair, View Bag left) or stacked (Checkout on top) */
 const ctas=()=>`${PC.cta==='both'?(PC.ctaLay==='stack'?'<button class="bd pri" data-mbgo="checkout">Checkout</button><button class="bd sec" data-mbgo>View Bag</button>':'<div class="bd-pair"><button class="bd sec" data-mbgo>View Bag</button><button class="bd pri" data-mbgo="checkout">Checkout</button></div>'):`<button class="bd pri" data-mbgo>${CTA()}</button>`}${PC.applePay?'<button class="pay pay--apple" data-mbgo="pay" aria-label="Apple Pay"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button>':''}`;
-const MBT=()=>['live','look','fbt'].includes(PC.mbType)?PC.mbType:'live',THRESH=100,ADDED=[];let SAVED=null,JUST=null;   /* JUST = the item quick-added on this render: its line item drops in, its button pops */
+const MBT=()=>['live','look','similar','fbt','till'].includes(PC.mbType)?PC.mbType:'live',THRESH=100,ADDED=[];let SAVED=null,JUST=null;   /* JUST = the item quick-added on this render: its line item drops in, its button pops */
 const num=s=>parseFloat(String(s).replace(/[^0-9.]/g,''))||0;
-function mainItem(){const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,colour:DP.colour}:PR()[1]||{};
+function mainItem(){if(FM()&&MBT()==='fbt'&&window.PI_RECS&&PI_RECS.fbt.bag){const b=PI_RECS.fbt.bag;return Object.assign({},b,{price:String(b.price).replace(/^From\s*/,''),size:b.size||'50ml',colour:''})}   /* Frequently bought together: the bag holds Prada Paradoxe */
+  const DP=PDPP(),p=DP?{brand:DP.brand,name:DP.name,price:DP.price,was:DP.was,colour:DP.colour}:PR()[1]||{};
   const sz=(document.querySelector('.sz.on')||{}).textContent,cm=((document.querySelector('.buy')||{}).innerText||'').match(/Colou?r:\s*([^\n]+)/);
   return Object.assign({},p,{img:DP?DP.imgs[0]:IMG(1),size:sz&&sz.trim()||(FM()?'M':'12'),colour:p.colour||(cm&&cm[1].trim())||''})}
-function bagItems(){return [mainItem()].concat(ADDED.map(i=>{const x=DG_feedItem(BR(),i);return x&&Object.assign({size:'One Size',colour:x.swatches?x.swatches[0].name:''},x)}).filter(Boolean))}
+function bagItems(){return [mainItem()].concat(ADDED.map(i=>{const x=FI(i);return x&&Object.assign({size:'One Size',colour:x.swatches?x.swatches[0].name:''},x)}).filter(Boolean))}
 /* the line item: Live = the live card (DS .bag-item, 99 × 148); the new versions = the mini bag card (DS .bag-item--mini, Bag 2026): brand - name · size / colour · price */
 const oldItem=p=>`<div class="bag-item"><img src="${p.img}" alt=""><div class="info"><div class="b">${esc(p.brand||BN())}</div><div class="n">${esc(p.name)}</div><div class="v">${esc(/one size/i.test(p.size||'')?'One size':'Size '+p.size)} · Qty 1</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
 const lineItem=p=>MBT()==='live'?oldItem(p):`<div class="bag-item bag-item--mini${p.i!=null&&p.i===JUST?' bag-item--in':''}"><img src="${p.img}" alt=""><div class="info"><div class="t"><b>${esc(p.brand||BN())}</b> - ${esc(p.name)}</div><div class="v">${esc([p.size,p.colour].filter(Boolean).join(' / '))}</div><div class="p">${p.was?`<span class="sale">${esc(p.price)}</span><s>${esc(p.was)}</s>`:esc(p.price)}</div></div></div>`;
@@ -138,17 +142,26 @@ function thresh(){if(PC.thresh===false)return '';const t=bagItems().reduce((a,p)
 /* the recommendations in the Added to Bag sheet (panel): Complete The Look (outfit pieces — first two Sponsored on Debenhams, Mirakl) or
    Frequently Bought Together (what goes with it — Bloomreach "bought together") · title editable / off · the rail as a carousel or a 3-across grid of
    1 – 3 rows; Frequently Bought Together can also be a list (.rec-list) or the DS bundle (.bndl, tick and add them all) · cards say as much as PC.cardInfo */
-const FBT_DEB=[8,30,28,6,10,0];   /* the Coast dress: court shoes, Mary Janes, a belt, knee boots, wellies, a jumper */
-function rec(t){const fbt=t==='fbt',grid=PC.ctlFmt==='grid',rows=Math.max(1,Math.min(3,+PC.ctlRows||2)),st=fbt?(PC.fbtStyle||'rail'):'rail';
-  const title=PC.ctlTitleOn===false?'':fbt?(PC.fbtTitle||'Frequently Bought Together'):(PC.ctlTitle||'Complete The Look');
-  const list=fbt?(BR()==='debenhams'?FBT_DEB:ids('fbt',12,8)):ids('atb',4,10).filter(i=>i!==1);
+/* the recommendations in the Added to Bag sheet (panel, PC.mbType) — four scenarios, each with real debenhams.com products (recs.js):
+     look    · Complete The Look — outfit pieces for the dress (shoes, bag, jewellery, a coat); first two Sponsored (Mirakl marketplace)
+     similar · You May Also Like — alternatives to the dress (same occasion, other styles)
+     fbt     · Frequently Bought Together — the bag holds Prada Paradoxe: its hand cream, refill, gift set, the Intense
+     till    · Little Extras Under £10 — the till: small cheap add-ons (socks, lip balm, a claw clip, hand cream)
+   Style: cards (carousel / 1–3 row grid) · list (.rec-list rows) · bundle (the DS .bndl, Frequently Bought Together only). Card text, swatches,
+   quick add shape, card size and image gap from the Cards panel (Jake's Figma review variants 13939:19737 … 13939:26225). */
+const RECL=t=>{const k=RK.indexOf(t)+1,R=window.PI_RECS&&PI_RECS[t];return FM()&&R?R.items.map((x,j)=>k*1000+j):t==='fbt'?ids('fbt',12,8):t==='till'?ids('till',30,8):ids('atb',4,10).filter(i=>i!==1)};
+const RECT=t=>(PC['title_'+t]||'').trim()||(window.PI_RECS&&PI_RECS[t]&&PI_RECS[t].title)||{look:'Complete The Look',similar:'You May Also Like',fbt:'Frequently Bought Together',till:'Little Extras Under £10'}[t];
+function rec(t){const grid=PC.ctlFmt==='grid',rows=Math.max(1,Math.min(3,+PC.ctlRows||2)),st=PC.recStyle==='list'?'list':PC.recStyle==='bundle'&&t==='fbt'?'bundle':'rail';
+  const title=PC.ctlTitleOn===false?'':RECT(t),list=RECL(t);
   const hd=title?`<header class="pcar-hd"><div class="pcar-tt"><h2 class="pcar-t">${esc(title)}</h2></div></header>`:'';
-  if(st==='list'){const L=items({qa:true},list.slice(0,3)),lv=PC.cardInfo||'full';
-    return `<section class="pcar pcar--sm pi-rec">${hd}<div class="rec-list">${L.map(x=>`<div class="rec-row"><img src="${esc(x.img)}" alt=""><div class="t">${lv==='price'?'':`${lv==='clean'?'':`<span class="b">${esc(x.brand||'')}</span>`}<span class="n">${esc(x.name)}</span>`}<div class="price-blk price-blk--rail"><div class="price"><span class="now${x.was?' sale':''}">${esc(x.price)}</span>${x.was?`<span class="was">${esc(x.was)}</span>`:''}</div></div></div><button type="button" class="pc-iconbtn${x.added?' on':''}" data-qa="${x.i}" aria-label="${x.added?'Added':'Quick add'} ${esc(x.name)}"${x.added?' disabled':''}><img src="assets/ds/icons/${x.added?'lib/icons-tick':'quick-add-16'}.svg" alt=""></button></div>`).join('')}</div></section>`}
-  if(st==='bundle'&&window.DG_bundle){const L=list.slice(0,2).map(i=>Object.assign({},DG_feedItem(BR(),i),{sizes:['4','5','6','7','8'],i}));
-    return DG_bundle.html({title:title||'Frequently Bought Together',items:L,cta:'Add to bag'})}
-  return pcar({id:fbt?'fbt':'atb',size:'sm',title,per:grid?3:4,card:100,fixed:!grid,compact:true,start:4,list:grid?list.slice(0,rows*3):list,fmt:grid?'grid':undefined,len:grid?rows*3:undefined,bleed:grid?false:undefined,qa:true,
-    sp:!fbt&&BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null})}
+  if(st==='list'){const L=items({qa:true},list.slice(0,3)),lv=PC.cardInfo||'full',sq=PC.qaShape==='square'?' pc-iconbtn--sq':'';
+    const tx=x=>lv==='price'?'':lv==='inline'||lv==='inline2'?`<span class="n"><b>${esc(x.brand||'')}</b>${lv==='inline'?' - ':' '}${esc(x.name)}</span>`:`${lv==='clean'?'':`<span class="b">${esc(x.brand||'')}</span>`}<span class="n">${esc(x.name)}</span>`;
+    return `<section class="pcar pcar--sm pi-rec">${hd}<div class="rec-list">${L.map(x=>`<div class="rec-row"><img src="${esc(x.img)}" alt=""><div class="t">${tx(x)}<div class="price-blk price-blk--rail"><div class="price"><span class="now${x.was?' sale':''}">${esc(x.price)}</span>${x.was?`<span class="was">${esc(x.was)}</span>`:''}</div></div></div><button type="button" class="pc-iconbtn${sq}${x.added?' on':''}" data-qa="${x.i}" aria-label="${x.added?'Added':'Quick add'} ${esc(x.name)}"${x.added?' disabled':''}><img src="assets/ds/icons/${x.added?'lib/icons-tick':'quick-add-16'}.svg" alt=""></button></div>`).join('')}</div></section>`}
+  if(st==='bundle'&&window.DG_bundle){const L=list.slice(0,2).map(i=>Object.assign({},FI(i),{sizes:/ml/i.test((FI(i)||{}).name||'')?['One size']:['30ml','50ml','90ml'],i}));
+    return DG_bundle.html({title:title||RECT(t),items:L,cta:'Add to bag'})}
+  const lg=PC.cardSize==='lg',h=pcar({id:'rec-'+t,size:'sm',title,per:grid?3:4,card:lg?130:100,fixed:!grid,compact:true,start:4,list:grid?list.slice(0,rows*3):list,fmt:grid?'grid':undefined,len:grid?rows*3:undefined,bleed:grid?false:undefined,qa:true,qaShape:PC.qaShape||'round',
+    sp:t==='look'&&BR()==='debenhams'&&PC.sponsored!==false?(i=>list.indexOf(i)<2):null});
+  return PC.cardGap==='off'?h.replace(/(<section class="pcar[^>]*?style=")/,'$1--pcar-gap:0px;--pcar-row-gap:16px;'):h}
 function miniBag(){const d=desk(),t=MBT();
   const rail=rec(t);
   /* order: Live as live (item · threshold · Continue Shopping / View Bag); the new versions lead with the threshold, then the item(s), then their extra */
@@ -163,7 +176,7 @@ function miniBag(){const d=desk(),t=MBT();
     <div class="mdl-bd">${body}</div></div></div>`}
 /* fit: scale to fit — the rail cards shrink until nothing scrolls (the Figma mini bag; the panel options were removed 3 Nov) */
 const FIT=()=>'scale',PIN=()=>false;
-function autoFit(n){if(MBT()==='live'||PC.ctlFmt==='grid'||(MBT()==='fbt'&&(PC.fbtStyle||'rail')!=='rail'))return;const bd=n.querySelector('.mdl-bd'),rail=n.querySelector('[data-pl="atb"],[data-pl="fbt"]');if(!bd||!rail)return;
+function autoFit(n){if(MBT()==='live'||PC.ctlFmt==='grid'||PC.cardSize==='lg'||(PC.recStyle&&PC.recStyle!=='rail'))return;const bd=n.querySelector('.mdl-bd'),rail=n.querySelector('[data-pl^="rec-"]');if(!bd||!rail)return;
   /* scale the rail's cards (image + copy together, so nothing re-wraps) by exactly the overflow; the first card stays on the 24px margin */
   const body=rail.querySelector('.pcar-body'),pad=24;let z=1;body.style.zoom='';body.style.removeProperty('--pcar-pad');
   for(let k=0;k<6;k++){const over=bd.scrollHeight-bd.clientHeight;if(over<=0)break;const h=body.getBoundingClientRect().height;z=Math.max(.4,z*(h-over-3)/h);
@@ -183,7 +196,7 @@ function mountBag(open,instant){const old=document.getElementById('pimb'),ot=doc
   document.documentElement.classList.add('pi-lock');document.body.insertAdjacentHTML('beforeend',miniBag());
   const n=document.getElementById('pimb');if(window.DG_bundle)DG_bundle.wire(n);autoFit(n);sticky(n);if(old){n.querySelector('.mdl').classList.remove('mdl-anim-up','mdl-anim-side');n.querySelector('.mdl-scrim').style.animation='none';const tr=n.querySelector('.pcar-track');if(tr)tr.scrollLeft=keep;n.querySelector('.mdl-bd').scrollTop=bs}}
 /* the bundle's Add to bag: its ticked items go in the bag, their line items drop in */
-document.addEventListener('dg:bundle',e=>{if(!e.target.closest('#pimb'))return;const L=FBT_DEB.slice(0,2);e.detail.items.forEach(x=>{const i=L.find(k=>(DG_feedItem(BR(),k)||{}).name===x.name);if(i!=null&&!ADDED.includes(i)){ADDED.push(i);JUST=i}});mountBag(true);JUST=null});
+document.addEventListener('dg:bundle',e=>{if(!e.target.closest('#pimb'))return;const L=RECL('fbt').slice(0,2);e.detail.items.forEach(x=>{const i=L.find(k=>(FI(k)||{}).name===x.name);if(i!=null&&!ADDED.includes(i)){ADDED.push(i);JUST=i}});mountBag(true);JUST=null});
 document.addEventListener('click',e=>{
   const lk=e.target.closest('.pcar--look[data-pl="look"]');if(lk&&!e.target.closest('.pcar-arr')){e.preventDefault();const c=e.target.closest('.pcar-track>*'),L=FEEDS.look,idx=c?[...c.parentNode.children].indexOf(c):-1;openPicker(L&&idx>=0?ids('look',L.start||0,10)[idx]:null);return}
   const qa=e.target.closest('#pimb [data-qa]');if(qa){e.preventDefault();const i=+qa.dataset.qa;if(!ADDED.includes(i)){ADDED.push(i);JUST=i}mountBag(true);JUST=null;return}

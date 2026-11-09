@@ -169,8 +169,8 @@ button.pc-swatch:focus-visible{outline:var(--border-w-focus,2px) solid var(--bor
 .pc--compact .pc-add{min-height:36px;font-size:14px}
 .pc--compact .pc-add img{width:20px;height:20px}
 .pc-name--caps{text-transform:uppercase} /* PLT names run uppercase */
-/* card info levels (DG_pcarHTML o.info, 9 Nov 2026): clean = name on one line + price · price = price only (Sponsored stays) */
-.pc-info--clean .pc-name{-webkit-line-clamp:1}
+/* card info levels (DG_pcarHTML o.info, 9 Nov 2026): clean = name only (2 lines) · inline / inline2 = the brand strong at the start of the name run · price = price only */
+.pc-name--in b{font-weight:var(--w-strong)}
 /* .rec-list — recommendations as rows (Added to Bag · Frequently Bought Together, 9 Nov 2026): 48 × 72 image (2:3), name + price, the DS quick add (.pc-iconbtn) right */
 .rec-list{display:flex;flex-direction:column;gap:var(--gap-3,12px)}
 .rec-row{display:grid;grid-template-columns:48px 1fr auto;gap:var(--gap-3,12px);align-items:center;font-size:12px;line-height:15px}

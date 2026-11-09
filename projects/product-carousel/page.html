@@ -16,7 +16,7 @@
     h=h.replace(/(<script[^>]*\ssrc=")((?:assets|templates|projects)\/[^"]+)"/g,function(m,a,u){return a+q(u)+'"'})
        .replace(/(<link[^>]*\shref=")((?:assets|templates|projects)\/[^"]+\.css)"/g,function(m,a,u){return a+q(u)+'"'});
     h=h.replace('<base href="../../">','<base href="../../"><script src="'+q('projects/product-carousel/insitu-pre.js')+'"><\/script>')
-       .replace(/<\/body>(?![\s\S]*<\/body>)/,['assets/ds/carousel.js','assets/ds/bag.js','assets/ds/bundle.js','templates/feed.js','projects/product-carousel/insitu.js'].map(function(u){return '<script src="'+q(u)+'"><\/script>'}).join('')+'</body>');
+       .replace(/<\/body>(?![\s\S]*<\/body>)/,['assets/ds/carousel.js','assets/ds/bag.js','assets/ds/bundle.js','templates/feed.js','projects/product-carousel/recs.js','projects/product-carousel/insitu.js'].map(function(u){return '<script src="'+q(u)+'"><\/script>'}).join('')+'</body>');
     document.open();document.write(h);document.close();
   });
 })();

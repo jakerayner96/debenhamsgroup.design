@@ -1,7 +1,7 @@
 /* Product carousel · in situ — runs first in the Shopping agent page (before its own script reads ?s= or registers its message listener).
    Keeps this prototype's state in window.PC_STATE and hands the Shopping agent page the page / search state each view needs. */
 (function(){
-const D={view:'home',arrows:true,hp:true,hpRows:2,car:true,look:true,sponsored:true,mbType:'live',thresh:true,cta:'bag',applePay:false,ctlTitle:'Complete The Look',ctlTitleOn:true,ctlFmt:'carousel',ctlRows:2,cardInfo:'full',fbtStyle:'rail',ctaSticky:'fade',ctaLay:'side'};
+const D={view:'home',arrows:true,hp:true,hpRows:2,car:true,look:true,sponsored:true,mbType:'live',thresh:true,cta:'bag',applePay:false,ctlTitle:'Complete The Look',ctlTitleOn:true,ctlFmt:'carousel',ctlRows:2,cardInfo:'full',recStyle:'rail',cardSize:'sm',cardGap:'on',qaShape:'round',ctaSticky:'fade',ctaLay:'side'};
 const sp=new URLSearchParams(location.search);let pc={};try{pc=JSON.parse(sp.get('s')||'{}')}catch(e){}
 const PC=window.PC_STATE=Object.assign({},D,pc);
 /* Figma match (3 Nov): the Figma PDP's Ask Deb prompts, hugging their copy */
