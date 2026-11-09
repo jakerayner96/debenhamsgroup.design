@@ -36,7 +36,7 @@
         · info (9 Nov 2026, how much a card says — Jake's Figma review variants 13939:19737 … 13939:26225): 'full' (default — the card format below) · 'noswatch'
           (brand + name) · 'clean' (name only) · 'inline' (**Brand** - Name, one 2-line run) · 'inline2' (**Brand** Name) · 'price' (price only). Sponsored stays on every level.
           swatches:true / false overrides the level's swatches · qaShape:'square' = the square quick add on any fascia
-        · tall (min-height 250 so brand + name always fit — Jake 11 Nov, Figma 13943:31066) · inlineSize (items with sizes[] get "Size: Select size ⌄" under the price,
+        · tall (min-height 250 so brand + name always fit — Jake 11 Nov, Figma 13943:31066) · inlineSize (items with sizes[] get "Select size ⌄" under the price — "Size: 10 ⌄" once chosen,
           a native select — data-qsz = item.i; item.size = the chosen one) · item.noQa drops the quick add on that card (a multi-variant product when quick add goes straight to the bag)
         items[]: {img, brand, name, price, was, pct, sponsored, swatches:[{c, name, img}], href, i}
      Card (DG_pcarCard) = the DS product card format, always: (Sponsored) · brand (never blank — the item's, else o.brand) · name, 2 lines · rail price
