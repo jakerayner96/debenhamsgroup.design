@@ -179,15 +179,20 @@ function renderPanel(host,S,update){
   const opt=(v,b)=>`<button class="opt${c.view===v?' on':''}" data-view="${v}"><span class="r"></span><span class="t"><b>${b}</b></span></button>`;
   host.innerHTML=`<h1>Product carousel</h1>
   <div class="card"><h3>Screen <small>${bn}</small></h3>${opt('home','Home')}${opt('pdp','PDP')}${opt('search','Search')}${opt('minibag','Mini Bag')}${opt('bag','Bag')}</div>
+  <div class="card"><h3>Cards</h3>${seg('cardInfo',c.cardInfo||'full',[['full','Full'],['noswatch','No swatches'],['clean','Clean'],['price','Price only']])}
+    <p style="margin-top:8px">${{full:'Sponsored · brand · name · price · swatches.',noswatch:'Brand · name · price — no colour swatches.',clean:'Name on one line + price — no brand, no swatches.',price:'Image and price only.'}[c.cardInfo||'full']} Every rail and recommendation.</p></div>
   ${c.view==='minibag'?`<div class="card"><h3>Added To Bag</h3>
-    ${opt2('live','Live (no reccs)')}${opt2('look','Complete the look')}${opt2('toast','Toast · thumbnail')}${opt2('toastedge','Toast · edge image')}${opt2('save','Save your bag')}${opt2('later','Save for later')}
-    ${/^toast/.test(c.mbType||'live')?'':`<div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div>`}</div>
-  ${(c.mbType||'live')==='look'?`<div class="card"><h3>Complete the look rail ${sw('ctlTitleOn',c.ctlTitleOn!==false,'Title')}</h3>
-    ${c.ctlTitleOn!==false?`<input class="pi-in" data-in="ctlTitle" value="${(c.ctlTitle||'Complete The Look').replace(/"/g,'&quot;')}" aria-label="Rail title">`:''}
-    <div class="f" style="margin-top:10px"><span>Layout</span>${seg('ctlFmt',c.ctlFmt||'carousel',[['carousel','Carousel'],['grid','Grid']])}</div>
-    ${c.ctlFmt==='grid'?`<div class="f" style="margin-top:10px"><span>Rows</span>${seg('ctlRows',c.ctlRows||2,[['1','1'],['2','2'],['3','3']])}</div>`:''}</div>`:''}
-  ${/^toast/.test(c.mbType||'live')?'':`<div class="card"><h3>Sticky CTA</h3>${seg('ctaSticky',c.ctaSticky||'fade',[['fade','Gradient'],['float','Floating']])}
-    <p style="margin-top:8px">Once the sheet scrolls, the CTAs stick to its foot${(c.ctaSticky||'fade')==='float'?', floating with a soft shadow':' on a white gradient'} — the title stays pinned at the top.</p></div>`}
+    ${opt2('live','Live (no reccs)')}${opt2('look','Complete the look')}${opt2('fbt','Frequently bought together')}
+    <div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div></div>
+  ${(c.mbType==='look'||c.mbType==='fbt')?(()=>{const fb=c.mbType==='fbt',tk=fb?'fbtTitle':'ctlTitle',def=fb?'Frequently Bought Together':'Complete The Look',st=fb?(c.fbtStyle||'rail'):'rail';
+    return `<div class="card"><h3>${fb?'Frequently bought together':'Complete the look'} ${sw('ctlTitleOn',c.ctlTitleOn!==false,'Title')}</h3>
+    ${c.ctlTitleOn!==false?`<input class="pi-in" data-in="${tk}" value="${(c[tk]||def).replace(/"/g,'&quot;')}" aria-label="Title">`:''}
+    ${fb?`<div class="f" style="margin-top:10px"><span>Style</span>${seg('fbtStyle',st,[['rail','Cards'],['list','List'],['bundle','Bundle']])}</div>`:''}
+    ${st==='rail'?`<div class="f" style="margin-top:10px"><span>Layout</span>${seg('ctlFmt',c.ctlFmt||'carousel',[['carousel','Carousel'],['grid','Grid']])}</div>
+    ${c.ctlFmt==='grid'?`<div class="f" style="margin-top:10px"><span>Rows</span>${seg('ctlRows',c.ctlRows||2,[['1','1'],['2','2'],['3','3']])}</div>`:''}`:''}
+    <p style="margin-top:8px">${fb?{rail:'What goes with it (Bloomreach bought together), as product cards with the quick add.',list:'Three rows — image, name, price, quick add.',bundle:'The DS bundle: tick the pieces, pick sizes, add them all.'}[st]:'Outfit pieces; the first two are Sponsored (Mirakl).'}</p></div>`})():''}
+  <div class="card"><h3>Sticky CTA</h3>${seg('ctaSticky',c.ctaSticky||'fade',[['fade','Gradient'],['float','Floating']])}
+    <p style="margin-top:8px">Once the sheet scrolls, the CTAs stick to its foot${(c.ctaSticky||'fade')==='float'?', floating with a soft shadow':' on a white gradient'} — the title stays pinned at the top.</p></div>
   <div class="card"><h3>Bag CTA</h3>${seg('cta',c.cta||'bag',[['bag','View Bag'],['checkout','Checkout'],['both','Both']])}
     ${c.cta==='both'?`<div class="f" style="margin-top:10px"><span>Layout</span>${seg('ctaLay',c.ctaLay||'side',[['side','Side by side'],['stack','Top and bottom']])}</div>`:''}
     <p style="margin-top:8px">${{checkout:'Checkout goes straight to checkout (the Checkout 2026 prototype).',both:'Checkout (primary) goes to checkout, View Bag (secondary) to the bag.'}[c.cta||'bag']||'View Bag goes to the bag.'}</p>

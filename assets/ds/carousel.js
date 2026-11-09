@@ -33,15 +33,17 @@
         · bleed (mobile edge to edge) · full (to the page margin, fixed 248px desktop cards) · arrows:false (no chevrons) · id (data-pl) · brand (fallback brand line)
         · fixed (--pcar-card on desktop too) · compact (the DS .pc--compact card, 12px copy) · card (mobile card width px, default 165) · qa (the DS circle quick add, top right of the image — square on boohooMAN / KM / Brand Room; data-qa = item.i, tick once item.added —
           Complete the Look in the mini bag; the page decides what a tap adds)
+        · info (9 Nov 2026, how much a card says): 'full' (default — the card format below) · 'noswatch' (no colour swatches) · 'clean' (name on one line + price: no brand,
+          no swatches) · 'price' (price only). Sponsored stays on every level.
         items[]: {img, brand, name, price, was, pct, sponsored, swatches:[{c, name, img}], href, i}
      Card (DG_pcarCard) = the DS product card format, always: (Sponsored) · brand (never blank — the item's, else o.brand) · name, 2 lines · rail price
      now · was · -X% · colour swatches (buttons: a tap selects the colour and swaps the image to its shot, data-img). No wishlist on rail cards. */
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
   const swatches=(p,o)=>{const L=p.swatches||[];if(L.length<2)return'';const show=L.slice(0,4);
     return `<div class="pc-swatches${o.round?' pc-swatches--round':''}"><span class="set">${show.map((w,j)=>`<button type="button" class="pc-swatch${j?'':' on'}" data-sw="${j}" data-c="${esc(w.c)}" data-img="${esc(w.img||'')}" aria-label="${esc(w.name||w.c)}" aria-pressed="${!j}"><i style="background:${esc(w.c)}"></i></button>`).join('')}</span>${L.length>4?`<span class="pc-more">+${L.length-4}</span>`:''}</div>`};
-  window.DG_pcarInfo=function(p,o){o=o||{};const pct=p.was&&p.pct?String(p.pct).replace(/[^0-9]/g,''):'';
-    return `<div class="pc-info">${p.sponsored?'<div class="pc-sponsored">Sponsored</div>':''}<div class="pc-toprow"><div class="pc-titles"><div class="pc-brand">${esc(p.brand||o.brand||'')}</div><div class="pc-name">${esc(p.name)}</div></div></div>
-      <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${pct?`<span class="save" data-pct="${pct}"></span>`:''}</div></div>${swatches(p,o)}</div>`};
+  window.DG_pcarInfo=function(p,o){o=o||{};const pct=p.was&&p.pct?String(p.pct).replace(/[^0-9]/g,''):'',lv=o.info||'full',br=lv==='full'||lv==='noswatch';
+    return `<div class="pc-info${lv==='full'?'':' pc-info--'+lv}">${p.sponsored?'<div class="pc-sponsored">Sponsored</div>':''}${lv==='price'?'':`<div class="pc-toprow"><div class="pc-titles">${br?`<div class="pc-brand">${esc(p.brand||o.brand||'')}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div></div>`}
+      <div class="price-blk price-blk--rail"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${pct?`<span class="save" data-pct="${pct}"></span>`:''}</div></div>${lv==='full'?swatches(p,o):''}</div>`};
   window.DG_pcarCard=function(p,o){o=o||{};const at=`${p.href?` data-href="${esc(p.href)}"`:''}${p.i!=null?` data-i="${esc(p.i)}"`:''}`;
     const sq=['boohooman','karenmillen','brandroom'].includes(document.documentElement.dataset.brand)?' pc-iconbtn--sq':'';
     const qa=o.qa?`<div class="pc-actions pc-actions--qa"><button type="button" class="pc-iconbtn${sq}${p.added?' on':''}${p.pop?' pop':''}" data-qa="${esc(p.i)}" aria-label="${p.added?'Added':'Quick add'} ${esc(p.name)}"${p.added?' disabled':''}><img src="assets/ds/icons/${p.added?'lib/icons-tick':'quick-add-16'}.svg" alt=""></button></div>`:'';

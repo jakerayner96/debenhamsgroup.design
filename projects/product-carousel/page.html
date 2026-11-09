@@ -12,7 +12,7 @@
 (function(){
   fetch('projects/shopping-agent/page.html',{cache:'no-cache'}).then(function(r){return r.text()}).then(function(h){
     h=h.replace('<base href="../../">','<base href="../../"><script src="projects/product-carousel/insitu-pre.js"><\/script>')
-       .replace(/<\/body>(?![\s\S]*<\/body>)/,'<script src="assets/ds/carousel.js"><\/script><script src="assets/ds/bag.js"><\/script><script src="templates/feed.js"><\/script><script src="projects/product-carousel/insitu.js"><\/script></body>');
+       .replace(/<\/body>(?![\s\S]*<\/body>)/,'<script src="assets/ds/carousel.js"><\/script><script src="assets/ds/bag.js"><\/script><script src="assets/ds/bundle.js"><\/script><script src="templates/feed.js"><\/script><script src="projects/product-carousel/insitu.js"><\/script></body>');
     document.open();document.write(h);document.close();
   });
 })();
