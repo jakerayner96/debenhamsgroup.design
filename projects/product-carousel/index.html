@@ -30,7 +30,9 @@ a{color:var(--accent)}
 .top select{background:#161616;color:var(--ink);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 8px;font:inherit;font-size:11.5px}
 .export{display:flex;align-items:center;gap:8px;background:var(--ink);color:#000;padding:6px 12px;border-radius:99px;font-weight:600;font-size:12px;flex:none}
 .export:disabled{opacity:.5;cursor:progress}.export svg{width:13px;height:13px}
-.seg{display:inline-flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;flex:none}
+.seg{display:inline-flex;flex-wrap:wrap;max-width:100%;border:1px solid rgba(255,255,255,.25);border-radius:99px;overflow:hidden;flex:none}
+.rads .sub{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:2px 0 10px 26px}.rads .sub .f{margin:0;gap:10px;flex-direction:row;align-items:center}
+.card h4{margin:12px 0 2px;font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.04em}
 .seg button{padding:5px 12px;color:#B0B0B0;font-size:11.5px;white-space:nowrap}
 .seg button.on{background:var(--ink);color:#000;font-weight:700}
 .seg button:disabled{opacity:.35;cursor:not-allowed}
@@ -175,37 +177,36 @@ const P={
 function renderPanel(host,S,update){
   const c=S.cfg,bn=(P.brands.find(x=>x[0]===S.brand)||[0,S.brand])[1];
   const seg=(id,cur,opts)=>`<span class="seg" data-seg="${id}">${opts.map(([v,l])=>`<button data-v="${v}" class="${String(cur)===String(v)?'on':''}">${l}</button>`).join('')}</span>`;
+  /* radio list (11 Nov, Jake): every option group is a list of radios; a selected option's sub options (a short toggle) sit under it */
+  const rad=(id,cur,opts)=>`<div class="rads" data-rad="${id}">${opts.map(([v,l,d,sub])=>{const on=String(cur)===String(v);return `<button class="opt${on?' on':''}" data-v="${v}"><span class="r"></span><span class="t"><b>${l}</b>${d?`<span>${d}</span>`:''}</span></button>${on&&sub?sub:''}`}).join('')}</div>`;
   const sw=(id,on,l)=>`<label class="sw"><input type="checkbox" data-sw="${id}"${on?' checked':''}><i></i>${l}</label>`;
   const opt=(v,b)=>`<button class="opt${c.view===v?' on':''}" data-view="${v}"><span class="r"></span><span class="t"><b>${b}</b></span></button>`;
   host.innerHTML=`<h1>Product carousel</h1>
   <div class="card"><h3>Screen <small>${bn}</small></h3>${opt('home','Home')}${opt('pdp','PDP')}${opt('search','Search')}${opt('minibag','Mini Bag')}${opt('bag','Bag')}</div>
-  <div class="card"><h3>Cards</h3>
-    <div class="f"><span>Text</span>${seg('cardInfo',c.cardInfo||'full',[['full','Brand + name'],['clean','Name'],['inline','Brand - name'],['inline2','Brand name'],['price','Price only']])}</div>
+  <div class="card"><h3>Card text</h3>
+    ${rad('cardInfo',c.cardInfo||'full',[['full','Brand + name','Brand on its own line, the name under it'],['clean','Name','The name only, 2 lines'],['inline','Brand - name','Brand strong, then the name, one run'],['inline2','Brand name','As above, without the dash'],['price','Price only','No brand or name']])}
     <div style="margin-top:10px">${sw('cardSw',c.cardSw!=null?c.cardSw!==false:(c.cardInfo||'full')==='full','Colour swatches')}</div>
     <p style="margin-top:8px">Every rail and recommendation. Sponsored always shows.</p></div>
   ${c.view==='minibag'?`<div class="card"><h3>Added To Bag</h3>
-    ${opt2('live','Live (no reccs)')}${opt2('look','Complete the look')}${opt2('similar','Similar items')}${opt2('fbt','Frequently bought together')}${opt2('till','At the till · under £10')}
-    <p style="margin-top:8px">${{live:'As live: the item and the CTAs, no recommendations.',look:'Coast dress in the bag → outfit pieces: shoes, a bag, jewellery, a coat. First two Sponsored.',similar:'Coast dress in the bag → other party dresses for the same occasion.',fbt:'Prada Paradoxe in the bag → what shoppers add: the hand cream, a refill, the gift set.',till:'Coast dress in the bag → small add-ons under £10, like the till in store.'}[c.mbType||'live']}</p>
+    ${rad('mbType',c.mbType||'live',[['live','Live (no reccs)','As live: the item and the CTAs, no recommendations'],['look','Complete the look','Coast dress → shoes, a bag, jewellery, a coat. First two Sponsored'],['similar','Similar items','Coast dress → other party dresses for the same occasion'],['fbt','Frequently bought together','Prada Paradoxe → the hand cream, a refill, the gift set'],['till','At the till · under £10','Coast dress → small add-ons under £10, like the till in store']])}
     <div style="margin-top:12px">${sw('thresh',c.thresh!==false,'Free delivery threshold')}</div></div>
-  ${(c.mbType&&c.mbType!=='live')?(()=>{const t=c.mbType,def={look:'Complete The Look',similar:'You May Also Like',fbt:'Frequently Bought Together',till:'Little Extras Under £10'}[t],st=c.recStyle||'rail';
+  ${(c.mbType&&c.mbType!=='live')?(()=>{const t=c.mbType,def={look:'Complete The Look',similar:'You May Also Like',fbt:'Frequently Bought Together',till:'Little Extras Under £10'}[t],st=c.recStyle==='bundle'&&t!=='fbt'?'rail':(c.recStyle||'rail'),cards=st==='rail';
+    const fmt=`<div class="sub">${seg('ctlFmt',c.ctlFmt||'carousel',[['carousel','Carousel'],['grid','Grid']])}${c.ctlFmt==='grid'?`<div class="f"><span>Rows</span>${seg('ctlRows',c.ctlRows||2,[['1','1'],['2','2'],['3','3']])}</div>`:''}</div>`;
     return `<div class="card"><h3>Recommendations ${sw('ctlTitleOn',c.ctlTitleOn!==false,'Title')}</h3>
     ${c.ctlTitleOn!==false?`<input class="pi-in" data-in="title_${t}" value="${(c['title_'+t]||def).replace(/"/g,'&quot;')}" aria-label="Title">`:''}
-    <div class="f" style="margin-top:10px"><span>Style</span>${seg('recStyle',st==='bundle'&&t!=='fbt'?'rail':st,[['rail','Cards'],['list','List']].concat(t==='fbt'?[['bundle','Bundle']]:[]))}</div>
-    ${st!=='list'&&!(st==='bundle'&&t==='fbt')?`<div class="f" style="margin-top:10px"><span>Card</span>${seg('recCard',c.recCard||'std',[['std','Standard'],['sm','Small · price only']])}</div>
-    <div class="f" style="margin-top:10px"><span>Quick add</span>${seg('qaMode',c.qaMode||'bag',[['bag','Straight to bag'],['modal','Quick Add modal'],['pdp','None → PDP'],['inline','Inline size']])}</div>
-    <p style="margin-top:8px">${{bag:'Single-variant products get the quick add and go straight in the bag. Products that need a size or shade have no button — a tap opens their PDP.',modal:'Every card has the quick add. Single-variant products go straight in; the rest open the Quick Add modal (as live) to choose a size or shade.',pdp:'No quick add. A tap opens the product page to add it there.',inline:'Products that need a size show “Size: Select size” on the card; the quick add adds once one is chosen. Single-variant products add straight away.'}[c.qaMode||'bag']}${(c.recCard==='sm')?' Small cards have no room for a size, so those products use the modal.':''}</p>
-    <div class="f" style="margin-top:10px"><span>Layout</span>${seg('ctlFmt',c.ctlFmt||'carousel',[['carousel','Carousel'],['grid','Grid']])}</div>
-    ${c.ctlFmt==='grid'?`<div class="f" style="margin-top:10px"><span>Rows</span>${seg('ctlRows',c.ctlRows||2,[['1','1'],['2','2'],['3','3']])}</div>`:''}`:''}</div>`})():''}
-  <div class="card"><h3>Sticky CTA</h3>${seg('ctaSticky',c.ctaSticky||'fade',[['fade','Gradient'],['float','Floating']])}
-    <p style="margin-top:8px">Once the sheet scrolls, the CTAs stick to its foot${(c.ctaSticky||'fade')==='float'?', floating with a soft shadow':' on a white gradient'} — the title stays pinned at the top.</p></div>
-  <div class="card"><h3>Bag CTA</h3>${seg('cta',c.cta||'bag',[['bag','View Bag'],['checkout','Checkout'],['both','Both']])}
-    ${c.cta==='both'?`<div class="f" style="margin-top:10px"><span>Layout</span>${seg('ctaLay',c.ctaLay||'side',[['side','Side by side'],['stack','Top and bottom']])}</div>`:''}
-    <p style="margin-top:8px">${{checkout:'Checkout goes straight to checkout (the Checkout 2026 prototype).',both:'Checkout (primary) goes to checkout, View Bag (secondary) to the bag.'}[c.cta||'bag']||'View Bag goes to the bag.'}</p>
+    <h4>Style</h4>${rad('recStyle',st,[['rail','Cards','A carousel or a grid of product cards',fmt],['list','List','Three rows: image, name, price, quick add']].concat(t==='fbt'?[['bundle','Bundle','The DS bundle: tick the pieces, pick sizes, add them all']]:[]))}</div>
+    ${cards?`<div class="card"><h3>Card</h3>${rad('recCard',c.recCard||'std',[['std','Standard','127 × 190 image, min height 250, brand - name, price'],['sm','Small · price only','100 × 150 image, price and quick add']])}</div>
+    <div class="card"><h3>Quick add</h3>${rad('qaMode',c.qaMode||'bag',[['bag','Straight to bag','Only single-variant products get it. Products that need a size or shade have no button; a tap opens their PDP'],['modal','Quick Add modal','Every card has it. Single-variant products go straight in; the rest open the Quick Add modal (as live)'],['pdp','None → PDP','No button. A tap opens the product page'],['inline','Inline size','“Size: Select size” on cards that need a size; the quick add adds once one is chosen']])}
+    ${c.recCard==='sm'?'<p style="margin-top:8px">Small cards have no room for a size, so those products use the modal.</p>':''}</div>`:''}`})():''}
+  <div class="card"><h3>Sticky CTA</h3>${rad('ctaSticky',c.ctaSticky||'fade',[['fade','Gradient','A white gradient behind the CTAs'],['float','Floating','The CTAs float with a soft shadow']])}
+    <p style="margin-top:8px">Once the sheet scrolls, the CTAs stick to its foot; the title stays pinned at the top.</p></div>
+  <div class="card"><h3>Bag CTA</h3>${rad('cta',c.cta||'bag',[['bag','View Bag','Goes to the bag'],['checkout','Checkout','Straight to checkout (the Checkout 2026 prototype)'],['both','Both','Checkout (primary) and View Bag (secondary)',`<div class="sub">${seg('ctaLay',c.ctaLay||'side',[['side','Side by side'],['stack','Top and bottom']])}</div>`]])}
     <div style="margin-top:10px">${sw('applePay',!!c.applePay,'Apple Pay')}</div></div>`:''}`;
   function opt2(v,b){return `<button class="opt${(c.mbType||'live')===v?' on':''}" data-mb="${v}"><span class="r"></span><span class="t"><b>${b}</b></span></button>`}
   host.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{c.view=b.dataset.view;panel();update()});
   host.querySelectorAll('[data-mb]').forEach(b=>b.onclick=()=>{c.mbType=b.dataset.mb;panel();update()});
   host.querySelectorAll('[data-sw]').forEach(i=>i.onchange=()=>{c[i.dataset.sw]=i.checked;panel();update()});
+  host.querySelectorAll('[data-rad]').forEach(g=>g.querySelectorAll(':scope>.opt').forEach(b=>b.onclick=()=>{c[g.dataset.rad]=b.dataset.v;panel();update()}));
   host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{c[g.dataset.seg]=b.dataset.v;panel();update()}));
   host.querySelectorAll('[data-in]').forEach(i=>{let t;i.oninput=()=>{clearTimeout(t);t=setTimeout(()=>{c[i.dataset.in]=i.value;update()},250)}});
 }
