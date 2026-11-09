@@ -4,7 +4,7 @@
 const D={view:'home',arrows:true,hp:true,hpRows:2,car:true,look:true,sponsored:true,mbType:'live',thresh:true,cta:'bag',applePay:false,ctlTitle:'Complete The Look',ctlTitleOn:true,ctlFmt:'carousel',ctlRows:2,cardInfo:'full',qaMode:'modal',ctaSticky:'fade',ctaLay:'side'};
 const sp=new URLSearchParams(location.search);let pc={};try{pc=JSON.parse(sp.get('s')||'{}')}catch(e){}
 /* settings that left the panel (11 Nov) are fixed: a remembered old value never reaches the rails */
-const FIX=o=>{['cardInfo','cardSw','recStyle','recCard','ctaSticky','ctlTitleOn','thresh','applePay','sponsored'].forEach(k=>{o[k]=D[k]});['cardSw','recStyle','recCard'].forEach(k=>delete o[k]);return o};
+const FIX=o=>{['cardInfo','cardSw','recStyle','recCard','ctaSticky','ctlTitleOn','thresh','applePay','sponsored'].forEach(k=>{o[k]=D[k]});['cardSw','recStyle','recCard'].forEach(k=>delete o[k]);Object.keys(o).filter(k=>/^title_/.test(k)).forEach(k=>delete o[k]);return o};
 const PC=window.PC_STATE=FIX(Object.assign({},D,pc));
 /* Figma match (3 Nov): the Figma PDP's Ask Deb prompts, hugging their copy */
 const FIGP=b=>(b||'debenhams')==='debenhams'?{pdpPrompts:['Will this suit me?','Gifts for her under £50','Is this suitable for a winter wedding?'],pdpDir:'row'}:{};
