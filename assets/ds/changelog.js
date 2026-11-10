@@ -12,6 +12,7 @@ window.DG_CHANGELOG=[
    "Rail card options (DG_pcarHTML): tall — min height 250 so brand + name always fit (Figma 13943:31066) · inlineSize — Size: Select size ⌄ under the price for items with sizes[] (.pc-size, a native select) · item.noQa — no quick add on that card"
   ],
   "changed": [
+   "Virtual Stylist intro: the example row (.vs-eg) is a full width 50/50 split: photo and tips halves with a fixed 28 gap, the photo fills its half to the margin at 2:3 and scales as the modal widens (was fixed 94 × 140); the tips half never narrower than its longest line, so no tip wraps on small phones · by Virtual Stylist v2, Jake 10 Nov",
    "Virtual Stylist intro: tip 2 Face the camera is now Have one person in shot (same person glyph, .vsi--face) · Figma VTO 15937-4139 · by Virtual Stylist v2, Jake 10 Nov",
    "Quick Add closing slides back down (fades on desktop) — fixed: the open animation (.qa-layer--up>.mdl) overrode .mdl-anim-down, so it vanished · prototype: tapping a recommendation (no quick add) or View Product slides the Quick Add and the sheet down, then lands on the PDP of the product tapped (brand, name, price, images, colour, sizes) — adding there puts that product in the bag · by Product carousel prototype, Jake 11 Nov",
    "Rail card inline size (.pc-size): Select size + chevron 8 after the text (was pushed right), the Size: label only once a size is chosen (Size: 10) — Figma 13943:31991 · by Product carousel prototype, Jake 11 Nov",
