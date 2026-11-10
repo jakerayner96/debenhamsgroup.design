@@ -1,7 +1,7 @@
 {
  "debenhams": {
   "name": "Debenhams",
-  "src": "signed off \u00b7 Aug 2026",
+  "src": "signed off · Aug 2026",
   "primaryName": "Aqua",
   "ctaName": "CTA Aqua",
   "neutralName": "Aqua Neutral",
@@ -49,25 +49,25 @@
  },
  "boohoo": {
   "name": "boohoo",
-  "src": "signed off \u00b7 Aug 2026 (pink removed)",
+  "src": "boohoo refresh ’26 · 9 Nov 2026 (master pink #F9D7EA)",
   "primaryName": "Primary",
   "ctaName": "CTA",
   "neutralName": "Neutral",
   "primary": {
-   "Primary": "#000000",
+   "Primary": "#F9D7EA",
    "CTA": "#000000"
   },
   "shades": {
-   "Neutral": "#F2F2F2",
-   "Neutral Pressed": "#E7E7E7",
-   "Light 4": "#D6D6D6",
-   "Light 3": "#B5B5B5",
-   "Light 2": "#808080",
-   "Light 1": "#4D4D4D",
-   "Dark 1": "#000000",
-   "Dark 2": "#000000",
-   "Dark 3": "#000000",
-   "Primary Dark": "#000000"
+   "Neutral": "#F6E3EE",
+   "Neutral Pressed": "#F1D4E5",
+   "Light 4": "#FEF6FA",
+   "Light 3": "#FDF0F7",
+   "Light 2": "#FCE9F3",
+   "Light 1": "#FAE1EF",
+   "Dark 1": "#F5C2DF",
+   "Dark 2": "#F0B2D5",
+   "Dark 3": "#E495C2",
+   "Primary Dark": "#CD6AA2"
   },
   "accents": {},
   "extended": {
@@ -97,7 +97,7 @@
  },
  "boohooman": {
   "name": "boohooMAN",
-  "src": "signed off \u00b7 Aug 2026",
+  "src": "signed off · Aug 2026",
   "primaryName": "Primary",
   "ctaName": "CTA",
   "neutralName": "Neutral",
@@ -147,7 +147,7 @@
  },
  "plt": {
   "name": "PrettyLittleThing",
-  "src": "signed off \u00b7 Aug 2026",
+  "src": "signed off · Aug 2026",
   "primaryName": "Garnet",
   "ctaName": "CTA Garnet",
   "neutralName": "Garnet Neutral",
@@ -198,7 +198,7 @@
  },
  "karenmillen": {
   "name": "Karen Millen",
-  "src": "signed off \u00b7 KM review Aug 2026",
+  "src": "signed off · KM review Aug 2026",
   "primaryName": "Primary",
   "ctaName": "CTA",
   "neutralName": "Neutral",
@@ -246,7 +246,7 @@
  },
  "warehouse": {
   "name": "Warehouse",
-  "src": "from code \u00b7 mono like boohoo / MAN \u2014 to sign off",
+  "src": "from code · mono like boohoo / MAN — to sign off",
   "primaryName": "Primary",
   "ctaName": "CTA",
   "neutralName": "Neutral",
@@ -294,7 +294,7 @@
  },
  "brandroom": {
   "name": "The Brand Room",
-  "src": "from code \u00b7 mono like boohoo / MAN \u2014 to sign off",
+  "src": "from code · mono like boohoo / MAN — to sign off",
   "primaryName": "Primary",
   "ctaName": "CTA",
   "neutralName": "Neutral",
@@ -342,7 +342,7 @@
  },
  "burton": {
   "name": "Burton",
-  "src": "from code (live navy, 23 Oct) \u00b7 ramp derived with the DS mix ratios \u2014 to sign off",
+  "src": "from code (live navy, 23 Oct) · ramp derived with the DS mix ratios — to sign off",
   "primaryName": "Primary",
   "ctaName": "CTA",
   "neutralName": "Neutral",
@@ -390,7 +390,7 @@
  },
  "principles": {
   "name": "Principles",
-  "src": "from code \u00b7 ramp derived with the DS mix ratios \u2014 to sign off",
+  "src": "from code · ramp derived with the DS mix ratios — to sign off",
   "primaryName": "Primary",
   "ctaName": "CTA",
   "neutralName": "Neutral",
@@ -438,7 +438,7 @@
  },
  "coast": {
   "name": "Coast",
-  "src": "from code \u00b7 mono, sand neutral \u2014 to sign off",
+  "src": "from code · mono, sand neutral — to sign off",
   "primaryName": "Primary",
   "ctaName": "CTA",
   "neutralName": "Neutral",
