@@ -9,8 +9,18 @@
 ## Rows (9 Nov)
 **Get It By, date only** won: Tomorrow / 4th Nov (+ badge) first, then the method name · cut-off. Formats 1, 2 and 4 (30 Oct explorations) are removed from the panel and from delivery.js. The modal rows match.
 
-## Collection label (9 Nov)
-The collect tab, the modal toggle and the list heading say **Collection** (Jake's pick). Live check, 9 Nov, all seven fascias' `/pages/informational/delivery`: none uses "Collect Nearby"; every one says "click & collect and locker collection" in its FAQ copy. Method names differ by fascia (Debenhams / Warehouse "Evri ParcelShop", "24/7 InPost Locker | Shop Collect"; boohooMAN "Evri Parcel Shop Click & Collect"; Karen Millen "Evri Standard / Next Day Parcel Collection"; boohoo / PLT "Evri Parcel Shop"). The PDP itself has no collect label on live (flat method list), so there's no per-fascia word to copy. `o.ccLabel`: Collection (default) · Click & Collect · Collect Nearby, panel: Collection tab label.
+## Collection label (9 Nov, live check 10 Nov)
+The collect tab, the modal toggle and the list heading say **Collection** by default (Jake's pick). Panel: Collection tab label = Collection · Collect Nearby · Click & Collect (`o.ccLabel`).
+
+Live checkout tab labels (10 Nov, guest bag with an own-brand item, test address, stopped at Delivery Method, no order placed). The first tab is **Home Delivery** everywhere:
+
+| Fascia | Collection tab |
+|---|---|
+| Debenhams, boohoo, Warehouse, Coast, Oasis | Collect Nearby |
+| boohooMAN, Karen Millen, PLT | Click & Collect |
+| The Brand Room | none (home delivery only) |
+
+Stored in the DS as `DG_delivery.CC_LIVE`; the panel shows the live label for the fascia you're on.
 
 ## Returns + seller (9 Nov)
 Default back **in the box** (returns line, then Sold & Delivered by). The panel's In the box card still moves either to the accordion set.

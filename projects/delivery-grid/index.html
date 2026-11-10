@@ -6,6 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="../../assets/ds/delivery.js"></script>   <!-- CC_LIVE: each fascia's live checkout collection tab label -->
 <style>
 /* ============================================================
    Review shell — Jake's standard prototype format (model: Core PDP 2026, jakerayner96.github.io/core-pdp-2026).
@@ -192,7 +193,7 @@ function renderPanel(host,S,update){
   host.innerHTML=`<h1>PDP delivery grid</h1><p class="intro">The PDP <b>Delivery Methods</b> box, <b>option B</b> (Delivery / Collection tabs, Get It By date-only rows), with Paul's <b>Delivery Options</b> modal behind See more — on the DS PDP template, web (mobile + desktop) and app. Brief: Delivery Grid UX catch up, 16 Oct 2026; B chosen 29 Oct.</p>
   <div class="card"><h3>PDP option <small>B · tabs</small></h3>
     <p>Demi’s mockup: two tabs, checkout-style rows with the price on the right, Fastest / Cheapest badges, Premier view. See more opens the modal on the tab you’re in.</p>
-    <div class="f"><span>Collection tab label</span>${seg('ccLabel',[['Collection','Collection'],['Click & Collect','Click &amp; Collect'],['Collect Nearby','Collect Nearby']])}<small>${c.ccLabel==='Click & Collect'?'Click &amp; Collect.':c.ccLabel==='Collect Nearby'?'Collect Nearby: the checkout tab on some fascias, and Paul’s Figma.':'Collection: Jake’s pick (9 Nov).'} Used for the tab, the modal toggle and the list heading. Per-fascia checkout labels not yet verified.</small></div>
+    <div class="f"><span>Collection tab label</span>${seg('ccLabel',[['Collection','Collection'],['Collect Nearby','Collect Nearby'],['Click & Collect','Click &amp; Collect']])}<small>${(()=>{const L=(window.DG_delivery&&DG_delivery.CC_LIVE)||{},v=L[b];return v===null?`Live ${bn} checkout: no collection tab (home delivery only).`:v?`Live ${bn} checkout: Home Delivery / <b>${esc(v)}</b>.`:''})()} Collection is Jake’s pick. Used for the tab, the modal toggle and the list heading.</small></div>
     <div class="f"><span>First tab</span>${seg('tab',[['home','Delivery'],['collect',esc(c.ccLabel||'Collection')]])}</div>
     <p style="margin-top:10px">Rows: <b>Get It By</b> · Tomorrow / 4th Nov first, then the method name (the winning format, 9 Nov).</p></div>
   <div class="card"><h3>In the box</h3>

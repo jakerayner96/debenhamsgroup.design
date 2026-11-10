@@ -13,7 +13,8 @@
          DG_delivery.setSeller(document, o) → re-draw the "Sold & Delivered by" line (call when a size is picked) and wire its seller link
          DG_delivery.acc(o, 'ret'|'seller') → that info as a row for the PDP accordion set (.acc-set): Returns · Seller Information
    Returns / seller (29 Oct): o.retIn / o.sellerIn 'box' (default again since 9 Nov: in the box under the methods) · 'acc' (out of the box, into the accordion set — box = delivery only).
-   Collection label o.ccLabel (9 Nov): 'Collection' (default, Jake) · 'Click & Collect' (the live sites' word, all seven fascias) · 'Collect Nearby' (Paul's Figma) — the tab, the modal toggle, the list heading.
+   Collection label o.ccLabel (9 Nov): 'Collection' (default, Jake) · 'Collect Nearby' · 'Click & Collect' — the tab, the modal toggle, the list heading.
+   CC_LIVE = what each fascia's live checkout tab says (Home Delivery / …), checked 10 Nov with an own-brand item in a guest bag. null = no collection tab on live.
    Seller line (under the returns line): o.seller null → placeholder "Select a size to see seller info" (grey) · 'site' → sold by the fascia
    itself (o.brand, plain text) · a SELLERS key / object → a marketplace seller, the name is a link that opens the seller modal.
    o: {layout, scen:'std'|'cc'|'market'|'bulky', premier, prog, pr, prBadge:'fastest'|'home', badges, tab, modal, ni:'split'|'mixed',
@@ -53,6 +54,8 @@
   const day=(o,d)=>{const t=new Date(o.today||Date.now());t.setDate(t.getDate()+d);return ord(t.getDate())+' '+MON[t.getMonth()]};
   const money=p=>p===0?'FREE':p<1?Math.round(p*100)+'p':'£'+p.toFixed(2);
   const CC=o=>esc(o.ccLabel||'Collection');   /* the collect tab / toggle / heading word */
+  const CC_LIVE={debenhams:'Collect Nearby',boohoo:'Collect Nearby',warehouse:'Collect Nearby',coast:'Collect Nearby',oasis:'Collect Nearby',
+    boohooman:'Click & Collect',karenmillen:'Click & Collect',plt:'Click & Collect',brandroom:null};
   const cutoff=(o,m)=>m.cut===2?(o.cut==='12am'?'Order by 11PM':'Order by 11pm'):m.cut?(o.cut==='12am'?'Order by 12AM':'Order by midnight'):'';
 
   /* the response for a scenario, in the order the API returns it. 'cc' = the live bug: collect comes back first and Super Saver isn't on */
@@ -172,5 +175,5 @@
   const bulky=()=>`<p class="dgrid-bulky"><img src="${IC}icons-info.svg" alt="">${BULKY_COPY}</p>`;
   /* only the seller line is re-drawn and re-wired — See more / tabs keep their handlers */
   function setSeller(doc,o){doc.querySelectorAll('[data-dg-seller]').forEach(n=>{n.outerHTML=seller(o,n.classList.contains('dgrid-seller--acc'))});doc.querySelectorAll('[data-dg-sellerinfo]').forEach(b=>b.onclick=()=>openSeller(doc,o))}
-  root.DG_delivery={grid,modal,wire,mount,bulky,acc,methods,rows:rowsList,seller,sellerModal,setSeller,SITE,SELLERS,HOME,COLLECT};
+  root.DG_delivery={grid,modal,wire,mount,bulky,acc,methods,rows:rowsList,seller,sellerModal,setSeller,SITE,SELLERS,HOME,COLLECT,CC_LIVE};
 })(typeof window!=='undefined'?window:globalThis);
