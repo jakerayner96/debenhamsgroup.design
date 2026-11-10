@@ -25,7 +25,7 @@ window.DG_CHANGELOG=[
   "title": "boohoo refresh ’26 · the shades palette goes pink · Deliver+ set in Figma",
   "by": "boohoo logo + brand refresh ’26 (Jake, 10 Nov) · DS Figma tidy",
   "added": [
-   "Figma (Debenhams Design System aIHmkCaTy9c5EWOxAGw0So): the full Deliver+ set from code, every fascia that runs it, on 🟡 BANNERS & MESSAGING"
+   "Figma (Debenhams Design System aIHmkCaTy9c5EWOxAGw0So): Deliver+ — one component set (14144:244, board \"Deliver+ (from code)\" on 🟡 BANNERS & MESSAGING) with Fascia × Variant: 13 fascias × 10 variants (PDP banner mobile / desktop / light ground, PDP + checkout modal mobile / desktop, bag banner mobile / desktop, checkout banner mobile / desktop / not added), captured from the live DS so it matches code exactly. The DS site's Deliver+ Figma link now points at it"
   ],
   "changed": [
    "boohoo colour palette (Layer 0 / palette.json / palette.js + Figma Boohoo mode): the Aug 2026 mono palette is replaced by the refresh pinks. Primary #F9D7EA · CTA #000000 · Neutral #F6E3EE · Neutral Pressed #F1D4E5 · Light 4 → 1 #FEF6FA #FDF0F7 #FCE9F3 #FAE1EF · Dark 1 → 3 #F5C2DF #F0B2D5 #E495C2 · Primary Dark #CD6AA2",
