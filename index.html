@@ -1569,6 +1569,7 @@ presets: [require('@designsystem-debenhamsgroup/tokens/tailwind-preset')]</div>
 <script src="assets/ds/brandroom-brands.js"></script>
 <script src="assets/ds/header.js"></script>
 <script src="assets/ds/delivery.js"></script>
+<script src="assets/ds/membership.js"></script>
 <script src="assets/ds/ai-prompts.js"></script>
 <script src="assets/ds/subscribe.js"></script>
 <script src="assets/ds/vs-intro.js"></script>
@@ -1671,6 +1672,47 @@ window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||se
     tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>window.fxShow(b.dataset.fx))}
   window.fxShow(window.DG_fxSel,sec);
 };
+/* Deliver+ & Memberships (Brand Centre › #memberships, 10 Nov 2026, Jake): every Deliver+ and membership component, every fascia, every programme, on one page.
+   Built from the DS itself — membership.js (box, band, vars), delivery.js (member delivery grid + the mini pill), dplus-logos.js + the deliver-plus catalogue entry,
+   the .mpill / .mbanner / .bd.mbr classes — each block in its fascia's mode (data-brand), so it renders exactly as the component pages do. Built on first visit. */
+window.buildMemberships=function(){const sec=document.getElementById('memberships');if(!sec||sec.dataset.mx)return;sec.dataset.mx='1';
+  const host=sec.querySelector('.mxhost');if(!host)return;
+  const it=(n,h)=>`<div class="fv${wide(h)?' wide':''}"><div class="fvc">${h}</div><span class="fvn">${n}</span></div>`;
+  const grp=a=>`<div class="fvg">${a.join('')}</div>`;
+  const W=(w,h)=>`<div style="width:${w}px">${h}</div>`;
+  const cat=(slug,name)=>{const c=C.find(x=>x.slug===slug);const v=c&&c.variants.find(v=>v.name===name);return v?v.html:''};
+  const PROG=[{b:'debenhams',n:'Debenhams Unlimited',pill:'Unlimited'},{b:'debenhams',n:'Debenhams Unlimited+',pill:'Unlimited+',plus:1},{b:'boohoo',n:'boohoo Premier Club',pill:'Premier'},
+    {b:'boohooman',n:'boohooMAN Premier',pill:'Premier'},{b:'plt',n:'PLT Royalty',pill:'Royalty',banner:'Royalty Delivery'},{b:'karenmillen',n:'Karen Millen Premier',pill:'Premier'}];
+  const progBlock=p=>{const plus=p.plus?' mpill--plus':'';const vars=window.DG_memberVars?DG_memberVars(p.b,{plus:p.plus}):'';
+    const parts=[];
+    parts.push(grp([it(p.plus?'PDP · Membership box (Unlimited+ uses the Unlimited box until its art is signed off)':'PDP · Membership box',W(358,window.DG_memberBoxHTML?DG_memberBoxHTML(p.b):'')),
+      it('PDP · Delivery grid, member (the mini pill on the member method)',W(358,window.DG_delivery?DG_delivery.grid({premier:true,prog:p.pill,brand:p.b}):''))]));
+    parts.push(grp([it('Chip · mini pill (--sm) — delivery grid + modal',`<span class="mpill mpill--sm${plus}"><i></i><b>${p.pill}</b></span>`),
+      it('Chip · Active pill — checkout delivery method',`<span class="mpill${plus}"><i></i><b>${p.pill}</b><span>Active</span></span>`),
+      it('Checkout · Membership banner (active)',W(342,`<div class="mbanner"><span class="nm">${p.banner||p.pill}</span><span class="st">Active</span></div>`)),
+      it('Checkout · Delivery method, member',cat('delivery-method','Unlimited user · with radio'))]));
+    parts.push(grp([it('Account · Membership band',W(358,window.DG_memberBandHTML?DG_memberBandHTML(p.b,{plus:p.plus}):'')),
+      it('Account · Membership band · active',W(358,window.DG_memberBandHTML?DG_memberBandHTML(p.b,{plus:p.plus,status:'Active'}):'')),
+      it('Landing · Membership band (--lg)',W(600,window.DG_memberBandHTML?DG_memberBandHTML(p.b,{plus:p.plus,size:'lg'}):'')),
+      it('Join CTA on programme art (.bd.mbr / .bd.mbr-out)',`<div style="display:flex;gap:12px;padding:24px;${vars};background:var(--mb-bg) var(--mb-img) center/cover;color:var(--mb-fg)"><button class="bd mbr">Join ${p.pill}</button><button class="bd mbr-out">Learn more</button></div>`)]));
+    if(p.b==='debenhams'&&!p.plus)parts.push(grp([it('PDP · Membership banner (add to bag)',cat('membership-banner','Debenhams Unlimited')),it('Bag · membership line',cat('bag-product-card','Membership'))]));
+    return `<div class="fx" data-brand="${p.b}" data-mx="${p.b}"><div class="fl"><span>${p.n}</span><em>${(Object.fromEntries(FASCIAS))[p.b]||p.b} · membership</em></div><div class="canvas fxc">${parts.join('')}</div></div>`};
+  const dp=C.find(x=>x.slug==='deliver-plus');const off=new Set(dp.notOn||[]);
+  const dpBody=()=>{const groups=[];dp.variants.forEach(v=>{const g=groups[groups.length-1];if(v.col&&g&&g.col===v.col)g.items.push(v);else groups.push({col:v.col,items:[v]})});
+    return groups.map(g=>g.col?`<div class="fvg${g.items.some(v=>wide(v.html))?' wide':''}">${g.items.map(v=>it(v.name,v.html)).join('')}</div>`:it(g.items[0].name,g.items[0].html)).join('')};
+  const dpBlocks=FASCIAS.filter(f=>!off.has(f[0])).map(([sl,nm])=>`<div class="fx" data-brand="${sl}" data-mx="${sl}"><div class="fl"><span>${nm}</span><em>Deliver+</em></div><div class="canvas fxc">${dpBody()}</div></div>`).join('');
+  const offList=FASCIAS.filter(f=>off.has(f[0])).map(f=>f[1]).join(', ');
+  host.innerHTML=`<h2 id="mx-programmes">Every membership component, per programme</h2><p class="lede" style="margin-top:0">PDP box and member delivery grid, the membership pills (the mini one is the chip on the delivery grid and in checkout when a membership is active), checkout banner and delivery method, account / landing bands and the Join buttons — each programme in its own fascia. Warehouse and The Brand Room run no programme.</p>
+    <div class="fxstack">${PROG.map(progBlock).join('')}</div>
+    <h2 id="mx-dplus">Deliver+ — every fascia</h2><p class="lede" style="margin-top:0">PDP banner (mobile, desktop, light ground), PDP + checkout modal, bag banner and checkout banner (added / not added). Not on ${offList}.</p>
+    <div class="fxstack">${dpBlocks}</div>`;
+  host.querySelectorAll('.fx').forEach(fx=>{if(window.dgLum(fx)<.5)fx.classList.add('dark')});
+  if(window.DG_delivery&&DG_delivery.wire)host.querySelectorAll('.fx').forEach(fx=>{try{DG_delivery.wire(fx,{})}catch(e){}});
+  const chips=sec.querySelector('.mxchips');if(chips){const bs=[['all','All'],...FASCIAS.filter(f=>!off.has(f[0])||PROG.some(p=>p.b===f[0]))];
+    chips.innerHTML=bs.map(([sl,nm])=>`<button class="cf${sl==='all'?' on':''}" data-mx-f="${sl}">${nm}</button>`).join('');
+    chips.querySelectorAll('button').forEach(b=>b.onclick=()=>{chips.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));const f=b.dataset.mxF;
+      host.querySelectorAll('[data-mx]').forEach(x=>x.hidden=f!=='all'&&x.dataset.mx!==f);if(window.hugBoxes)requestAnimationFrame(window.hugBoxes)})}
+  if(window.hugBoxes)requestAnimationFrame(window.hugBoxes)};
 /* brand tabs on component pages: Debenhams by default, one fascia at a time, All = every fascia stacked. The pick carries to the next component page. */
 window.DG_fxSel='debenhams';
 window.fxShow=function(sl,sec){sec=sec||document.querySelector('.page.on');window.DG_fxSel=sl;if(!sec)return;
@@ -1786,7 +1828,7 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
 
   put('sbProjects',P.map(sbLink).join('')+'<a href="#projects">All projects</a>');
   put('sbTools',T.map(sbLink).join('')+'<a href="#tools">All Planning and Tools</a>');
-  put('sbBrands','<a href="#b-debenhamsgroup">Debenhams Group</a><a href="#memberships">Memberships</a><span class="sub">Core brands</span>'+F.filter(f=>CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')
+  put('sbBrands','<a href="#b-debenhamsgroup">Debenhams Group</a><a href="#memberships">Deliver+ &amp; Memberships</a><span class="sub">Core brands</span>'+F.filter(f=>CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')
     +'<span class="sub">More fascias</span>'+F.filter(f=>!CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')+'<a href="#brands">All brands</a>');
   /* home: the six most recently worked-on projects as a table */
   const tlink=(u,t)=>u?`<a class="tl" href="${u}" target="_blank" rel="noopener">${t} ↗</a>`:'<span class="tl none">—</span>';
@@ -1820,7 +1862,7 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   const MS=window.DG_MEMBERSHIPS=[
     {b:'debenhams',n:'Debenhams Unlimited',logo:'assets/brands/memberships/unlimited-logo.svg',bg:'assets/brands/memberships/prem-bg-deb.jpg',ic:'icons-unlimited-infinity',c:{box:'#DCDCDC',ink:'#000000',cta:'#000000',ctaInk:'#FFFFFF'},copy:'Enjoy unlimited delivery for an entire year from just £14.99'},
     {b:'debenhams',n:'Unlimited+',logo:'assets/brands/memberships/unlimited-plus-logo.svg',ic:'icons-unlimited-plus',c:{box:'#DCDCDC',ink:'#000000',cta:'#000000',ctaInk:'#FFFFFF'},copy:'New tier — artwork, colours and benefits to confirm',tbc:1},
-    {b:'boohoo',n:'Premier Club',logo:'assets/brands/memberships/prem-logo-bh.svg',bg:'assets/brands/memberships/prem-bg-bh.jpg',ic:'icons-delivery-fast',c:{box:'#E1D8CF',ink:'#000000',cta:'#8D113A',ctaInk:'#FFFFFF'},copy:'Enjoy unlimited delivery for an entire year from just £9.99'},
+    {b:'boohoo',n:'Premier Club',logo:'assets/brands/memberships/prem-logo-bh.svg',bg:'assets/brands/memberships/prem-bg-bh.jpg',ic:'icons-delivery-fast',c:{box:'#F9D7EA',ink:'#000000',cta:'#000000',ctaInk:'#FFFFFF'},copy:'Enjoy unlimited delivery for an entire year from just £9.99'},
     {b:'boohooman',n:'Premier',logo:'assets/brands/memberships/prem-logo-bm.png',bg:'assets/brands/memberships/prem-bg-bm.jpg',ic:'icon-boohooman-premier',c:{box:'#CECECE',ink:'#000000',cta:'#000000',ctaInk:'#FFFFFF'},copy:'Enjoy unlimited delivery for an entire year from just £9.99'},
     {b:'plt',n:'Royalty',logo:'assets/brands/memberships/prem-logo-plt.png',bg:'assets/brands/memberships/prem-bg-plt.jpg',ic:'icons-plt-royalty',extra:[['Royalty emblem','assets/brands/memberships/plt-royalty-emblem.svg'],['Royalty mark','assets/brands/memberships/plt-royalty-mark.png'],['Royalty lockup','assets/brands/memberships/plt-royalty-lockup.png']],c:{box:'#20090C',ink:'#FFFFFF',cta:'#FFFFFF',ctaInk:'#000000'},copy:'Enjoy unlimited delivery for an entire year from just £9.99'},
     {b:'karenmillen',n:'Premier',logo:'assets/brands/memberships/prem-logo-km.png',ic:'icons-unlimited',c:{box:'#000000',ink:'#FFFFFF',cta:'#FFFFFF',ctaInk:'#000000'},copy:'Enjoy unlimited delivery for an entire year from just £14.99'}
@@ -1831,11 +1873,14 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
     <div class="krow"><span>Colours</span>${Object.entries({Box:m.c.box,Text:m.c.ink,CTA:m.c.cta,'CTA text':m.c.ctaInk}).map(([k,v])=>`<span class="msw"><i style="background:${v}"></i>${k} <code>${v}</code></span>`).join('')}</div>
     <div class="krow"><span>Icon</span><span class="msic"><img src="assets/ds/icons/lib/${m.ic}.svg" alt=""></span><code>${m.ic}.svg</code></div>
     <div class="krow"><span>Assets</span>${[m.logo&&['Logo',m.logo],m.bg&&['Background',m.bg],...(m.extra||[])].filter(Boolean).map(([t,u])=>`<a class="kbtn" href="${u}" download>${t} <small>${u.split('.').pop().toUpperCase()}</small></a>`).join('')}<a class="kbtn" href="assets/ds/icons/lib/${m.ic}.svg" download>Icon <small>SVG</small></a></div></div></div>`;
-  add(`<section class="page" id="memberships" data-crumb="Brand Centre / Memberships">
+  add(`<section class="page" id="memberships" data-crumb="Brand Centre / Deliver+ &amp; Memberships">
     <div class="kick"><a href="#brands" style="color:inherit">brand centre</a> <b>· sub-brands</b></div>
-    <h1>Memberships</h1>
-    <p class="lede">Each fascia's loyalty and delivery programme: Debenhams Unlimited (and the new Unlimited+), boohoo Premier Club, boohooMAN Premier, PLT Royalty and Karen Millen Premier. The box is shown as it renders on the PDP, with its colours, icon and artwork to download.</p>
+    <h1>Deliver+ &amp; Memberships</h1>
+    <p class="lede">Everything for the delivery programmes, on one page: each fascia's membership — Debenhams Unlimited and Unlimited+, boohoo Premier Club, boohooMAN Premier, PLT Royalty, Karen Millen Premier — with its kit (colours, icon, artwork), every component it appears in (PDP box, the delivery-grid chip, checkout pill and banner, account bands, Join buttons), and Deliver+ for every fascia that runs it. Figma: the Deliver+ &amp; Memberships page in the DS file.</p>
+    <div class="cfilters mxchips" style="margin:8px 0 24px"></div>
+    <h2 id="mx-kits">Programme kits</h2>
     <div class="kits">${MS.map(msCard).join('')}</div>
+    <div class="mxhost"></div>
   </section>`);
   /* The Brand Room › Brand list — the master list of brands we sell now and the ones coming (assets/ds/brandroom-brands.js) */
   const BR=window.DG_BR_BRANDS;
@@ -1905,7 +1950,7 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
       if(el.dataset.v==='--font-family-base')v=v.split(',')[0].replace(/['"]/g,'');el.textContent=v.toUpperCase().startsWith('#')?v.toUpperCase():v});
     const hero=sec.querySelector('.bhero');if(hero&&window.dgLum&&window.dgLum(hero)<.5)hero.classList.add('dark')};
 
-  window.DG_IA_REG=[{h:'memberships',t:'Memberships',k:'sub-brands loyalty unlimited unlimited+ premier premier club royalty subscription delivery',ic:'✦',s:'Brand Centre'},{h:'b-debenhamsgroup',t:'Debenhams Group',k:'group logo lockup monogram corporate dg',ic:'✦',s:'Brand Centre'},{h:'tools',t:'Planning and Tools',k:'trello board shipping scraper planning',ic:'☰',s:'Planning and Tools'}]
+  window.DG_IA_REG=[{h:'memberships',t:'Deliver+ & Memberships',k:'deliver+ deliver plus seel sub-brands loyalty unlimited unlimited+ premier premier club royalty subscription delivery membership pill chip active checkout banner band member box delivery grid',ic:'✦',s:'Brand Centre'},{h:'b-debenhamsgroup',t:'Debenhams Group',k:'group logo lockup monogram corporate dg',ic:'✦',s:'Brand Centre'},{h:'tools',t:'Planning and Tools',k:'trello board shipping scraper planning',ic:'☰',s:'Planning and Tools'}]
     .concat(P.map(x=>({h:x.pg,u:x.pg?null:(x.u||x.r),t:x.n,k:x.k,ic:'▸',s:'Project'})))
     .concat(T.filter(x=>!x.pg).map(x=>({u:x.u||x.r,t:x.n,k:x.k,ic:'↗',s:'Planning and Tools'})))
     .concat(F.map(([sl,nm])=>({h:'b-'+sl,t:nm,k:'brand fascia logo guidelines '+sl,ic:'✦',s:'Brand Centre'})));
@@ -1990,6 +2035,7 @@ const pages=[...document.querySelectorAll('.page')];
 function route(){
   let h=(location.hash||'#home').slice(1);
   if(window.DG_LEGACY&&window.DG_LEGACY[h]){location.hash='#'+window.DG_LEGACY[h];return}
+  if(h==='memberships'&&window.buildMemberships)window.buildMemberships();
   if(h.startsWith('c-')&&window.buildFascias){window.buildFascias(h);const _s=document.getElementById(h);if(_s&&window.fxShow)window.fxShow(window.DG_fxSel,_s)}
   if(h.startsWith('b-')&&document.getElementById(h)){window.setBrand(h.slice(2));if(window.fillBrand)window.fillBrand(h)}
   const pg=document.getElementById(h);
