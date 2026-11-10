@@ -758,6 +758,27 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .toast--app .act{margin-left:auto;font-weight:var(--w-strong);color:var(--text-link);background:none;border:none;cursor:pointer;white-space:nowrap}
 .toast--app .ico{width:20px;height:20px;flex:none;background:url("icons/lib/icons-wishlist.svg") center/20px 20px no-repeat}
 .toast--glass{background:var(--glass-toast,rgba(255,255,255,.9));-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);border:.5px solid rgba(255,255,255,.6);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+/* TOAST PLACEMENT (10 Nov 2026, Jake — the Principles “Added to wishlist · Manage” black bar → the DS floating white toast): one rule for every web toast
+   (.toast--top and the .toast--prod product toast). PHONES + TABLETS (< 1024): floats at the BOTTOM — 16 in from each side, 16 above the bottom edge
+   (+ the safe area), lifted above any bar pinned to the bottom (sticky ATB, cookie bar — toast.js sets --toast-bottom); rises 8px in, sinks out.
+   DESKTOP (≥ 1024): top-centred, 400 wide, under the USP banners (--toast-top), drops in / lifts out — as before. App toasts (.toast--app / --glass) keep the app rule (above the tab bar). */
+@media(max-width:1023px){
+  .toast.toast--top:not(.toast--app):not(.toast--glass){top:auto;bottom:calc(var(--toast-bottom,16px) + env(safe-area-inset-bottom,0px));animation-name:toastRise}
+  .toast.toast--top:not(.toast--app):not(.toast--glass).toast--out{animation-name:toastSink}
+}
+@keyframes toastRise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes toastSink{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}
+/* busy state (Figma 13557-10294 “Added To Wishlist” + spinner): the action swaps for the small DS spinner while the save is in flight */
+.toast--top .toast-end .spin.sm{width:14px;height:14px}
+/* Wishlisted state (10 Nov 2026): the wishlist button shows the FILLED glyph once the item is saved (heart / bookmark / PLT heart, -fill.svg) and a small pop; assets/ds/wishlist.js toggles it */
+.is-wished>img{animation:wishPop .36s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes wishPop{0%{transform:scale(.7)}60%{transform:scale(1.15)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.is-wished>img{animation:none}}
+/* .toast-demo: a static frame for showing the pattern in situ on the DS site — the toast inside is pinned to the frame, not the window */
+.toast-demo{position:relative;overflow:hidden;background:var(--surface-page,#FFF);box-shadow:0 0 0 1px var(--border-subtle,#E7E7E7)}
+.toast-demo .toast{position:absolute;animation:none}
+.toast-demo--phone .toast.toast--top{top:auto;bottom:16px;left:16px;right:16px;width:auto;margin:0}
+.toast-demo--desk .toast.toast--top{bottom:auto;top:var(--demo-top,16px);left:50%;right:auto;margin-left:-200px;width:400px;box-sizing:border-box}
 .alert{background:var(--error-bg);border-left:2px solid var(--text-error);padding:10px 12px;display:flex;gap:12px;align-items:center;font-size:14px}
 .empty{display:flex;flex-direction:column;align-items:center;gap:16px;padding:24px 16px;text-align:center}
 .empty img{width:32px;height:32px}

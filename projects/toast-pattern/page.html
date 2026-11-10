@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../../">
+<title>Toast pattern · page</title>
+</head>
+<body>
+<script>
+/* Toast pattern — the page. Like the master, it has no page of its own: it writes the DS template for state.page AS IT STANDS into this
+   document (PLP projects/plp-alignment/plp.html?mode=new · PDP templates/pdp.html), so the toast is fixed to the device viewport, then adds
+   layer.js, which fires the configured DS toast (toast.js / wishlist.js — loaded by the templates). in: ?s={brand,page,toast,hold,place,scroll} */
+(function(){
+  const SRC={plp:'projects/plp-alignment/plp.html',pdp:'templates/pdp.html'};
+  let S={brand:'debenhams',page:'plp',toast:'wishlist',hold:true,place:'ds',scroll:true};
+  try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes
+  if(!SRC[S.page])S.page='plp';if(S.brand==='principles')S.page='pdp';
+  const sp=new URLSearchParams();sp.set('s',JSON.stringify(S));sp.set('brand',S.brand);if(S.page==='plp')sp.set('mode','new');
+  history.replaceState(null,'',location.pathname+'?'+sp.toString());
+  fetch(SRC[S.page],{cache:'no-cache'}).then(r=>r.text()).then(h=>{
+    h=S.page==='plp'?h.replace(/<head>/i,'<head><base href="'+new URL('../plp-alignment/',location.href).href+'">')
+                    :h.replace('<base href="../">','<base href="../../">');
+    const pre=`<script>window.TOASTCFG=${JSON.stringify(S)}<\/script>`;
+    h=h.replace(/<\/head>/i,pre+'</head>').replace(/<\/body>(?![\s\S]*<\/body>)/i,'<script src="'+new URL('layer.js',location.href).href+'"><\/script></body>');
+    document.open();document.write(h);document.close();
+  });
+})();
+</script>
+</body>
+</html>

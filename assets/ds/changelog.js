@@ -22,12 +22,19 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-11-10",
   "v": "2026.11.10",
-  "title": "boohoo refresh ’26 · the shades palette goes pink · Deliver+ set in Figma",
+  "title": "boohoo refresh ’26 · the shades palette goes pink · Deliver+ set in Figma · Toast pattern (bottom on phones) + wishlist.js",
   "by": "boohoo logo + brand refresh ’26 (Jake, 10 Nov) · DS Figma tidy",
   "added": [
+   "Toast pattern (Jake 10 Nov — Principles’ black “Added to wishlist · Manage” bar → the DS floating white toast): Toast page gains the pattern rules (where / when / motion / never) and in-situ examples per fascia — phone 390 (bottom) and desktop 1280 (top centre, under the USP banners) — plus Saving (spinner) and Removed (Undo) variants",
+   "assets/ds/wishlist.js (DG_wishlist): every wishlist button on a page toggles — filled glyph + pop (.is-wished) and the toast “Added to Wishlist · Manage” (spinner while saving) / “Removed from Wishlist · Undo”; events dg:wishlist, dg:wishlist-manage. Loaded by the PLP + PDP templates (so the master has it)",
+   "Filled wishlist glyphs: icons/heart-24-fill, heart-16-fill, bookmark-fill, plt-heart-fill, lib/icons-wishlist-fill · Wishlist button gains a Wishlisted variant",
+   "Project: Toast pattern (projects/toast-pattern) — review shell on the PLP / PDP templates, every fascia + Principles; toast type, hold, placement comparison",
    "Figma (Debenhams Design System aIHmkCaTy9c5EWOxAGw0So): Deliver+ — one component set (14144:244, board \"Deliver+ (from code)\" on 🟡 BANNERS & MESSAGING) with Fascia × Variant: 13 fascias × 10 variants (PDP banner mobile / desktop / light ground, PDP + checkout modal mobile / desktop, bag banner mobile / desktop, checkout banner mobile / desktop / not added), captured from the live DS so it matches code exactly. The DS site's Deliver+ Figma link now points at it"
   ],
   "changed": [
+   "Toast placement — one rule for every web toast (.toast--top + .toast--prod): phones + tablets (< 1024) float at the BOTTOM, 16 in / 16 up + safe area, 12 above any bar pinned to the bottom (toast.js --toast-bottom / DG_toastBottom), rising in; desktop stays top-centre under the USP banners. Replaces the 3 Nov top-on-phones placement; app toasts unchanged · by Toast pattern, Jake 10 Nov",
+   "toast.js: DG_toast({busy:true}) shows the spinner in the action slot; .done(action) swaps it in. Master: Add to bag uses DG_toast “Added to Bag · View Bag”, and its toast link only goes to the bag from its own toast",
+   "Toast catalogue: the black snackbar is retired (the floating toast replaces it); static demos no longer shift left under the desktop centring margin",
    "boohoo colour palette (Layer 0 / palette.json / palette.js + Figma Boohoo mode): the Aug 2026 mono palette is replaced by the refresh pinks. Primary #F9D7EA · CTA #000000 · Neutral #F6E3EE · Neutral Pressed #F1D4E5 · Light 4 → 1 #FEF6FA #FDF0F7 #FCE9F3 #FAE1EF · Dark 1 → 3 #F5C2DF #F0B2D5 #E495C2 · Primary Dark #CD6AA2",
    "Figma: the Boohoo logo variants (Logos set, Black + White) now carry the new logo, so every instance in the file and the library updates. The boohoo colour board shows the new pink shades"
   ]
