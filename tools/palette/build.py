@@ -14,7 +14,7 @@ def brand(key,name,primary,cta,shades,src,accents=None,mono=None,primaryName='Pr
     B[key]=dict(name=name,src=src,primaryName=primaryName,ctaName=ctaName,neutralName=neutralName,
       primary={'Primary':primary,'CTA':cta},shades=dict(shades),accents=accents or {},extended=dict(EXT),mono={**MONOP,**(mono or {})})
 brand('debenhams','Debenhams','#7BE7D8','#00787D',{'Neutral':'#E8F4F2','Neutral Pressed':'#D7EBE8','Light 4':'#E6FFFC','Light 3':'#D6FFF9','Light 2':'#B8FDF4','Light 1':'#9DEDE2','Dark 1':'#76DECF','Dark 2':'#70BEB3','Dark 3':'#529C92','Primary Dark':'#00565A'},'signed off · Aug 2026',primaryName='Aqua',ctaName='CTA Aqua',neutralName='Aqua Neutral')
-brand('boohoo','boohoo','#000000','#000000',MONO,'signed off · Aug 2026 (pink removed)')
+brand('boohoo','boohoo','#F9D7EA','#000000',{'Neutral':'#F6E3EE','Neutral Pressed':'#F1D4E5','Light 4':'#FEF6FA','Light 3':'#FDF0F7','Light 2':'#FCE9F3','Light 1':'#FAE1EF','Dark 1':'#F5C2DF','Dark 2':'#F0B2D5','Dark 3':'#E495C2','Primary Dark':'#CD6AA2'},'boohoo refresh ’26 · 9 Nov 2026 (master pink #F9D7EA)')
 brand('boohooman','boohooMAN','#000000','#000000',MONO,'signed off · Aug 2026',accents={'Aggressive Green (MAN)':'#01FE8A'})
 brand('plt','PrettyLittleThing','#550503','#550503',{'Neutral':'#F3EAE8','Neutral Pressed':'#E5D4D1','Light 4':'#FCF0EE','Light 3':'#FFD5CD','Light 2':'#EAAFA4','Light 1':'#C77E75','Dark 1':'#450603','Dark 2':'#360502','Dark 3':'#270401','Primary Dark':'#1E0301'},'signed off · Aug 2026',
       accents={'Warm Peach (PLT)':'#F1C59E','Light Cream (PLT)':'#FFE4D2'},mono={'Background White':'#FFFDF7','Grey 05':'#FAF5E7'},primaryName='Garnet',ctaName='CTA Garnet',neutralName='Garnet Neutral')

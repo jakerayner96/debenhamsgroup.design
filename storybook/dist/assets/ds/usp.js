@@ -51,11 +51,14 @@
     const tn=tone(o.brand,colour),cls='hd-usp '+(MOD[colour||'fascia']||'')+' usp-'+tn+(tn==='dark'&&(o.cd==='red'||colour==='red')?' usp-cd-red':'')+(star&&!b.caveat&&o.flag?' cav-missing':'')+(on?' on':'');
     return href?'<a class="'+cls+'" href="'+esc(href)+'" data-href="'+esc(b.href)+'">'+'<span class="usp-row">'+parts.join('<span class="usp-sep"></span>')+'</span>'+cd+cav+'</a>'
                :'<div class="'+cls+'"><span class="usp-row">'+parts.join('<span class="usp-sep"></span>')+'</span>'+cd+cav+'</div>'}
+  /* sticky (2 Nov 2026, as live Debenhams): a row with sticky:true — by default the black bar — stays pinned to the top while the header and the other
+     USP rows scroll off (the mount is display:contents, so the row sticks for the whole page) */
   function rowHTML(r,o){const L=r.items&&r.items.length?r.items:[r];o=Object.assign({},o,{cd:r.cd||'white'});
-    if(L.length<2)return '<div class="usp-row1">'+bar(L[0],r.colour,1,o)+'</div>';
-    if(o.desk)return '<div class="usp-row1 usp-cells'+((r.colour||'fascia')==='fascia'?' usp-cells--alt':'')+'">'+L.map(m=>bar(m,r.colour,1,o)).join('')+'</div>';
+    const st=(r.sticky!=null?r.sticky:r.colour==='black')?' usp-row1--sticky':'';
+    if(L.length<2)return '<div class="usp-row1'+st+'">'+bar(L[0],r.colour,1,o)+'</div>';
+    if(o.desk)return '<div class="usp-row1'+st+' usp-cells'+((r.colour||'fascia')==='fascia'?' usp-cells--alt':'')+'">'+L.map(m=>bar(m,r.colour,1,o)).join('')+'</div>';
     const cur=(r.rotate?0:(r.idx||0))%L.length,ms=r.rotate&&o.auto>0?o.auto*1000:0;
-    return '<div class="usp-row1 usp-stack"'+(ms?' data-rotate="'+ms+'"':'')+'>'+L.map((m,j)=>bar(m,r.colour,j===cur,o)).join('')+'</div>'}
+    return '<div class="usp-row1'+st+' usp-stack"'+(ms?' data-rotate="'+ms+'"':'')+'>'+L.map((m,j)=>bar(m,r.colour,j===cur,o)).join('')+'</div>'}
   window.DG_uspHTML=function(rows,o){o=Object.assign({brand:document.documentElement.dataset.brand,desk:innerWidth>=1024,caveats:false,auto:5,link:'live',flag:false},o||{});
     if(typeof rows==='string'){o.brand=rows;rows=(window.DG_USP_LIVE||{})[rows]||[]}
     const out={above:'',below:''};(rows||[]).forEach(r=>{if(r&&r.on!==false)out[r.pos==='above'?'above':'below']+=rowHTML(r,o)});return out};
