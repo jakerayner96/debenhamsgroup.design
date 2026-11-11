@@ -1158,8 +1158,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl-info{width:12px}.mdl-info::before{width:12px;height:12px;background:url("icons/lib/icons-info.svg") center/12px 12px no-repeat}
 /* .mdl-refresh: a 16px refresh / start-again action left of the close, the same line and size as the X (Ask Deb chat, 29 Oct) */
 .mdl-refresh{width:16px;height:25px;flex:none;margin-left:auto;padding:0;border:0;background:none;display:grid;place-items:center;cursor:pointer}
-.mdl-refresh::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-refresh.svg") center/16px 16px no-repeat}
+.mdl-refresh::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-refresh-16.svg") center/16px 16px no-repeat}   /* 16 grid, 1px, the same 15px span as the close (Jake 11 Nov) */
 .mdl-refresh+.modal-x{margin-left:0}
+.modal-hd .mdl-refresh{margin-right:8px}   /* refresh ↔ close 24 apart (header gap 16 + 8) */
 .mdl-bd{display:flex;flex-direction:column;gap:24px;font-size:16px;font-weight:var(--w-regular);line-height:normal;min-height:0}
 /* .mdl--compact: 16 between header, body and every block in it (the Added to Bag sheet, Figma review 13752:7583 – 13759:7583, 3 Nov 2026) */
 .mdl--compact,.mdl--compact .mdl-bd{gap:var(--gap-4,16px)}
@@ -1831,19 +1832,19 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 /* ===== AI resume — the way back into a closed conversation (shopping agent, Jake 11 Nov) =====
    Feedback: once the chat window is closed it isn't obvious how to get back to it. Shown only after a conversation has started and the window is closed;
    tapping any of these reopens the same conversation (the refresh in the chat header is what starts again). Four patterns:
-   .ai-fab          56px white circle, the AI sparkle, an --ai-fg dot (= a conversation is waiting) · bottom right, 16px in (24px from 1024)
-   .ai-fab--ext     the same, extended: sparkle + “Continue chat”, 48px
+   .ai-fab          40px white circle (= the PLP back to top), the AI sparkle, an --ai-fg dot (= a conversation is waiting) · bottom right, 16px in (24px from 1024), 12 above .btt
+   .ai-fab--ext     the same, extended: sparkle + “Continue chat”, 40px
    .ai-resume       peek bar: sparkle · “Ask Deb” + the last reply on one line · up chevron · close (hides the bar, the chat is still there)
    .ai-dot          just the dot, on the launcher that opened the chat (Ask pill / AI circle / header search icon) — no floating UI */
-.ai-fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-sticky,200) + 1);display:grid;place-items:center;width:56px;height:56px;padding:0;border:0;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08);cursor:pointer;font-family:var(--font-family-base);color:var(--text-primary);animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both;transition:box-shadow .15s,transform .15s}
+.ai-fab{position:fixed;right:16px;bottom:calc(16px + var(--fab-lift,0px) + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-sticky,200) + 1);display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08);cursor:pointer;font-family:var(--font-family-base);color:var(--text-primary);animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both;transition:box-shadow .15s,transform .15s}
 .ai-fab:hover{box-shadow:0 6px 20px rgba(0,0,0,.18),0 1px 3px rgba(0,0,0,.08)}.ai-fab:active{transform:scale(.96)}
 .ai-fab:focus-visible,.ai-resume:focus-within{outline:var(--border-w-focus,2px) solid var(--border-focus,#000);outline-offset:2px}
-.ai-fab .ai-icon{width:24px;height:24px}
-.ai-fab__dot{position:absolute;top:9px;right:9px;width:10px;height:10px;border-radius:50%;background:var(--ai-fg);box-shadow:0 0 0 2px var(--surface-raised,#FFF)}
-.ai-fab--ext{display:inline-flex;align-items:center;gap:8px;width:auto;height:48px;padding:0 20px 0 16px;font-size:15px;font-weight:var(--w-mid,500);line-height:1;white-space:nowrap}
-.ai-fab--ext .ai-icon{width:20px;height:20px}
-.ai-fab--ext .ai-fab__dot{top:-2px;right:-2px}
-.ai-resume{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-sticky,200) + 1);display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 8px 8px 16px;border-radius:var(--radius-lg,8px);background:rgba(255,255,255,.96);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);box-shadow:0 0 20px rgba(0,0,0,.12);font-family:var(--font-family-base);color:var(--text-primary);animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both}
+.ai-fab .ai-icon{width:20px;height:20px}
+.ai-fab__dot{position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:var(--ai-fg);box-shadow:0 0 0 2px var(--surface-raised,#FFF)}
+.ai-fab--ext{display:inline-flex;align-items:center;gap:8px;width:auto;height:40px;padding:0 16px 0 12px;font-size:14px;font-weight:var(--w-mid,500);line-height:1;white-space:nowrap}
+.ai-fab--ext .ai-icon{width:18px;height:18px}
+.ai-fab--ext .ai-fab__dot{top:-1px;right:-1px}
+.ai-resume{position:fixed;left:16px;right:16px;bottom:calc(16px + var(--fab-lift,0px) + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-sticky,200) + 1);display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 8px 8px 16px;border-radius:var(--radius-lg,8px);background:rgba(255,255,255,.96);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);box-shadow:0 0 20px rgba(0,0,0,.12);font-family:var(--font-family-base);color:var(--text-primary);animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both}
 .ai-resume__open{display:flex;align-items:center;gap:12px;flex:1;min-width:0;padding:0;border:0;background:none;cursor:pointer;text-align:left;font:inherit;color:inherit}
 .ai-resume .ai-icon{width:20px;height:20px}
 .ai-resume__tx{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
@@ -1854,7 +1855,17 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .ai-resume__x::before{width:12px;height:12px;-webkit-mask-image:url("icons/lib/icons-close-12.svg");mask-image:url("icons/lib/icons-close-12.svg")}
 .ai-dot{position:relative}
 .ai-dot::after{content:"";position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--ai-fg);box-shadow:0 0 0 2px var(--surface-raised,#FFF);pointer-events:none;animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both}
-@media(min-width:1024px){.ai-fab{right:24px;bottom:24px}.ai-resume{left:auto;right:24px;bottom:24px;width:360px}}
+@media(min-width:1024px){.ai-fab{right:24px;bottom:calc(24px + var(--fab-lift,0px))}.ai-resume{left:auto;right:24px;bottom:calc(24px + var(--fab-lift,0px));width:360px}}
+.ai-fab,.ai-resume{transition:box-shadow .15s,transform .15s,bottom .22s cubic-bezier(.2,.8,.2,1)}
+/* Back to top (.btt, PLP — as live: 40px black circle, white up chevron) — appears once the page has scrolled (.is-on), bottom right 16 (24 from 1024).
+   The AI resume button stacks 12 above it while both show (--fab-lift); or a page shows only one of them (shopping agent: PLP option “Replace it”). */
+.btt{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:var(--z-sticky,200);display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:var(--surface-inverse,#0F0F0F);cursor:pointer;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s}
+.btt::before{content:"";width:16px;height:16px;background:var(--text-inverse,#FFF);-webkit-mask:url("icons/lib/icons-up-16.svg") center/16px 16px no-repeat;mask:url("icons/lib/icons-up-16.svg") center/16px 16px no-repeat}
+.btt.is-on{opacity:1;transform:none;pointer-events:auto}
+.btt:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#000);outline-offset:2px}
+:root:has(.btt.is-on){--fab-lift:52px}
+@media(min-width:1024px){.btt{right:24px;bottom:24px}}
+@media(prefers-reduced-motion:reduce){.btt,.ai-fab,.ai-resume{transition:none}}
 @keyframes aiFabIn{from{opacity:0;transform:translateY(12px) scale(.92)}}
 @media(prefers-reduced-motion:reduce){.ai-fab,.ai-resume,.ai-dot::after{animation:none}}
 html.exporting .ai-fab,html.exporting .ai-resume,body.exporting .ai-fab,body.exporting .ai-resume,body.exporting .ai-dot::after{animation:none}

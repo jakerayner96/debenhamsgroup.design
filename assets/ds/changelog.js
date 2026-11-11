@@ -8,10 +8,12 @@ window.DG_CHANGELOG=[
   "title": "AI resume: a way back into a closed agent chat · Ask back to the search bar's height",
   "by": "Shopping agent (projects/shopping-agent), Jake 11 Nov: feedback — once you close the chat it isn't obvious how to get back to it",
   "added": [
+   "Back to top (.btt, catalogue Back to top) — the live PLP button: 40px black circle, 16px white up chevron (icons-up-16), bottom right, .is-on once scrolled; icons icons-refresh-16 + icons-up-16 (16 grid, 1px) · by Shopping agent (Jake 11 Nov)",
    "Toast .toast--inset — the toast inside a panel, anchored just above its footer on every device (the agent chat, above the input; --toast-inset side margin); catalogue variants Inside a panel + busy (View Bag tapped → spinner) · by Shopping agent",
    "AI resume (catalogue: AI resume (re-open chat)) — .ai-fab (56px floating button, sparkle + --ai-fg dot), .ai-fab--ext (Continue chat pill), .ai-resume (peek bar: Ask Deb + the last reply, up chevron, close) and .ai-dot (dot on the launcher). Shown once a conversation has started and the window is closed; tapping reopens the same conversation. Figma: Agent / Resume set (Type = FAB / Continue chat / Peek bar / Dot), DS library 14276:225 · by Shopping agent"
   ],
   "changed": [
+   "AI resume .ai-fab is 40px (= the PLP back to top; sparkle 20, dot 8) and stacks 12 above .btt while it shows (--fab-lift); .ai-fab--ext 40px · Modal header refresh (.mdl-refresh) uses the 16-grid icons-refresh-16 (1px, the close's 15px span) and sits 24px from the close · by Shopping agent (Jake 11 Nov)",
    "Toast (.toast--top, toast.js): solid white (--surface-raised), no blur — matches the Figma library Toast (White, 100%) · by Shopping agent (Jake 11 Nov)"
   ],
   "fixed": [

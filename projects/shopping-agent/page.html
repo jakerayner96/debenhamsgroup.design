@@ -250,6 +250,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
   background:var(--chat-messenger-internal-titlebar-background,#fff);border-radius:var(--chat-messenger-internal-chat-border-radius,0) 0 0 var(--chat-messenger-internal-chat-border-radius,0);
   display:flex;flex-direction:column;font-family:var(--chat-messenger-font-family);color:var(--chat-messenger-color--on-surface,#222);overflow:hidden}
 .cm.mob{border-radius:0}
+.cm-tb .mdl-refresh{margin-right:12px}   /* refresh ↔ close 24 apart (gap 12 + 12), Jake 11 Nov */
 .cm-tb{display:flex;align-items:flex-start;gap:12px;padding:var(--chat-messenger-internal-titlebar-padding,24px 24px 0 24px);flex:none;min-height:25px}
 /* title bar = the DS modal header (.modal-hd · .mt · .modal-x, 29 Oct): “Ask Deb” SemiBold 20/25 once chatting, no icon; 16px close on the title line, 24px in from the top and right */
 .cm-tb .mt{flex:1;min-width:0;font-family:var(--chat-messenger-internal-titlebar-title-font-family);font-size:var(--chat-messenger-internal-titlebar-title-font-size,20px);font-weight:var(--chat-messenger-internal-titlebar-title-font-weight,600);line-height:25px;color:var(--text-primary)}
@@ -789,7 +790,14 @@ function reply(q,vto,typed){
   if(/discover|new|browse/i.test(q))return KINDS[0](q);
   return KINDS[1](q);
 }
-function openChat(q,vto){CHAT.open=true;
+/* the phone keyboard (Jake 11 Nov): opening the agent from search puts it away, so closing the agent lands on the search screen with it down;
+   tapping the field brings it back. The shell's “Keyboard on screen” follows (protoKbSet). */
+function kbDown(){if(desk()||!S.search)return;const i=document.querySelector('#hdrwrap .srch-field');if(i)i.blur();if(S.kb===false)return;S.kb=false;
+  const k=document.querySelector('.kbm');if(k)k.remove();document.documentElement.style.setProperty('--kbm','0px');parent.postMessage({protoKb:false,protoKbSet:false},'*')}
+function kbUp(){if(desk()||!S.search||S.kb!==false||CHAT.open)return;S.kb=true;const ac=document.getElementById('ac');if(ac&&!document.querySelector('.kbm'))ac.insertAdjacentHTML('afterend',keyboard());
+  document.documentElement.style.setProperty('--kbm','336px');parent.postMessage({protoKb:true,protoKbSet:true},'*')}
+document.addEventListener('focusin',e=>{if(e.target.classList&&e.target.classList.contains('srch-field'))kbUp()});
+function openChat(q,vto){kbDown();CHAT.open=true;
   if(q){CHAT.msgs.push({u:q},{typing:true});setTimeout(()=>{CHAT.msgs=CHAT.msgs.filter(m=>!m.typing);const h=reply(q,vto,CHAT.typedNow);CHAT.typedNow=false;const m={b:h};CHAT.msgs.push(m);if(!/<div/.test(h)&&!EXPORTING&&CFG.payload.settings['dynamic-bot-writing']!==false)stream(m);if(CHAT.typed)CHAT.focus=true;drawChat()},EXPORTING?0:900)}
   else CHAT.focus=true;
   drawChat();parent.postMessage({protoChat:true},'*')}
@@ -803,6 +811,13 @@ function resume(){if(!waiting()||S.search)return '';const md=S.resume||'fab',nm=
   if(md==='ext')return `<button class="ai-fab ai-fab--ext" data-resume="1" ${F('resume','Continue chat pill')} aria-label="${lbl}">${spk(20)}Continue chat<span class="ai-fab__dot"></span></button>`;
   if(md==='bar'&&!CHAT.barHidden)return `<div class="ai-resume" role="region" aria-label="Your chat with ${nm}" ${F('resume','peek bar')}><button class="ai-resume__open" data-resume="1" aria-label="${lbl}">${spk(20)}<span class="ai-resume__tx"><span class="ai-resume__t">${esc(CFG.payload.settings['chat-title'])}</span><span class="ai-resume__p">${esc(lastReply())}</span></span><span class="ai-resume__up" aria-hidden="true"></span></button><button class="ai-resume__x" data-resumex="1" aria-label="Hide"></button></div>`;
   return ''}
+/* PLP back to top (DS .btt, as live: 40px black circle) + the re-open button (Jake 11 Nov): panel “PLP back to top” — replace = while a chat is
+   waiting the agent button takes its place; both = both on the PLP, the agent button stacks 12 above it (DS --fab-lift); other pages agent only. */
+function syncBtt(){let b=document.getElementById('btt');const want=S.page==='plp'&&!S.search&&!((S.pltop||'replace')==='replace'&&waiting()&&S.resume!=='dot');
+  if(!want){if(b)b.remove();return}
+  if(!b){b=document.createElement('button');b.id='btt';b.className='btt';b.type='button';b.setAttribute('aria-label','Back to top');b.dataset.btt='1';document.body.appendChild(b)}
+  b.classList.toggle('is-on',EXPORTING||scrollY>400)}
+addEventListener('scroll',()=>{const b=document.getElementById('btt');if(b)b.classList.toggle('is-on',EXPORTING||scrollY>400)},{passive:true});
 function resumeDot(){const on=waiting()&&S.resume==='dot';document.querySelectorAll('.ag-ask,.ai-circle,.hd-sicon').forEach(el=>{el.classList.toggle('ai-dot',on);if(on)el.setAttribute('data-feat','resume');else if(el.dataset.feat==='resume')el.removeAttribute('data-feat')})}
 /* added-to-bag toast (DS .toast--inset): ADD TO BAG → “Added to Bag · View Bag” + close above the input, 6s; View Bag → the DS spinner, the agent
    collapses, then the bag. Rendered only while it shows (the DS entrance animation holds it visible otherwise). */
@@ -823,7 +838,7 @@ function closeChat(){const cm=document.getElementById('cm');
   if(!cm||EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches)return done();
   if(CHAT.closing)return;CHAT.closing=true;
   document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>{el.classList.remove('in');el.classList.add('out')});setTimeout(done,260)}
-function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();resumeDot();document.querySelectorAll('#chat .cm-car').forEach(c=>{railState(c);c.addEventListener('scroll',()=>railState(c),{passive:true})});
+function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();resumeDot();syncBtt();document.querySelectorAll('#chat .cm-car').forEach(c=>{railState(c);c.addEventListener('scroll',()=>railState(c),{passive:true})});
   const open=!!document.getElementById('cm');
   if(open&&!DRAWN&&!EXPORTING)document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>el.classList.add('in'));
   DRAWN=open;
@@ -895,6 +910,7 @@ document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.t
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
   {const r=e.target.closest('[data-rail]');if(r){const c=r.closest('.rail-nav').previousElementSibling,t=c.querySelector('.cm-tile');c.scrollBy({left:+r.dataset.rail*((t?t.offsetWidth:120)+10)*2,behavior:'smooth'});return}}
+  if(e.target.closest('[data-btt]')){scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});return}
   if(e.target.closest('[data-resume]')){e.preventDefault();CHAT.user=true;openChat('');return}
   if(e.target.closest('[data-resumex]')){e.preventDefault();CHAT.barHidden=true;drawChat();return}
   if(e.target.closest('.hd-burger')){parent.postMessage({protoMenu:1},'*');return}   /* prototype: the hamburger opens the shell's settings panel (phones) */
