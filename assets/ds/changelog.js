@@ -18,6 +18,21 @@ window.DG_CHANGELOG=[
  {
   "d": "2026-11-11",
   "v": "2026.11.11b",
+  "title": "Brand Centre: every brand page shows its sub-brands (membership + Deliver+) and its CTAs · Button page: every fascia",
+  "by": "Brand Centre sub-brands, Jake 11 Nov",
+  "added": [
+   "Brand pages (#b-<slug>) › Sub-brands: a kit per sub-brand — the membership (Premier Club, Premier, Royalty, Unlimited / Unlimited+) and Deliver+ (lockup on its ground, checkout lockup on white, live Ground / Ink / Link / Checkbox colours, SVG downloads, link to the component)",
+   "Brand pages › Sub-brands in the DS: the brand's live components — membership box, member delivery grid with the mini pill, Active pill, checkout banner + delivery method, bands, Join CTA, and every Deliver+ variant",
+   "Brand pages › CTAs: the full Button set in the brand's mode (default, disabled, spinner, added, checkout securely, small) + the programme's Join CTA · Button page (#button) › Every fascia: the same set for all 17 fascias (DG_ctaBlock)"
+  ],
+  "changed": [
+   "Deliver+ & Memberships page and the brand pages share one builder (window.DG_mx)",
+   "Catalogue: boohoo Premier Club box / band / Membership CTA on the refresh pink #F9D7EA with a black button (was the old beige / burgundy)"
+  ]
+ },
+ {
+  "d": "2026-11-11",
+  "v": "2026.11.11b",
   "title": "App chrome goes Liquid Glass · delivery grid in Figma",
   "by": "PDP delivery grid (projects/delivery-grid), Jake 11 Nov: app prototypes use the App Prototype's glass UI",
   "added": [

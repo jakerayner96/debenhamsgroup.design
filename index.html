@@ -1675,8 +1675,8 @@ window.buildFascias=function(h){const sec=document.getElementById(h);if(!sec||se
 /* Deliver+ & Memberships (Brand Centre › #memberships, 10 Nov 2026, Jake): every Deliver+ and membership component, every fascia, every programme, on one page.
    Built from the DS itself — membership.js (box, band, vars), delivery.js (member delivery grid + the mini pill), dplus-logos.js + the deliver-plus catalogue entry,
    the .mpill / .mbanner / .bd.mbr classes — each block in its fascia's mode (data-brand), so it renders exactly as the component pages do. Built on first visit. */
-window.buildMemberships=function(){const sec=document.getElementById('memberships');if(!sec||sec.dataset.mx)return;sec.dataset.mx='1';
-  const host=sec.querySelector('.mxhost');if(!host)return;
+/* shared by Brand Centre › Deliver+ & Memberships and every brand page (#b-<slug> › Sub-brands): one builder per programme / fascia */
+window.DG_mx=(function(){
   const it=(n,h)=>`<div class="fv${wide(h)?' wide':''}"><div class="fvc">${h}</div><span class="fvn">${n}</span></div>`;
   const grp=a=>`<div class="fvg">${a.join('')}</div>`;
   const W=(w,h)=>`<div style="width:${w}px">${h}</div>`;
@@ -1697,10 +1697,27 @@ window.buildMemberships=function(){const sec=document.getElementById('membership
       it('Join CTA on programme art (.bd.mbr / .bd.mbr-out)',`<div style="display:flex;gap:12px;padding:24px;${vars};background:var(--mb-bg) var(--mb-img) center/cover;color:var(--mb-fg)"><button class="bd mbr">Join ${p.pill}</button><button class="bd mbr-out">Learn more</button></div>`)]));
     if(p.b==='debenhams'&&!p.plus)parts.push(grp([it('PDP · Membership banner (add to bag)',cat('membership-banner','Debenhams Unlimited')),it('Bag · membership line',cat('bag-product-card','Membership'))]));
     return `<div class="fx" data-brand="${p.b}" data-mx="${p.b}"><div class="fl"><span>${p.n}</span><em>${(Object.fromEntries(FASCIAS))[p.b]||p.b} · membership</em></div><div class="canvas fxc">${parts.join('')}</div></div>`};
-  const dp=C.find(x=>x.slug==='deliver-plus');const off=new Set(dp.notOn||[]);
+  const dp=C.find(x=>x.slug==='deliver-plus');const dpOff=new Set(dp.notOn||[]);
   const dpBody=()=>{const groups=[];dp.variants.forEach(v=>{const g=groups[groups.length-1];if(v.col&&g&&g.col===v.col)g.items.push(v);else groups.push({col:v.col,items:[v]})});
     return groups.map(g=>g.col?`<div class="fvg${g.items.some(v=>wide(v.html))?' wide':''}">${g.items.map(v=>it(v.name,v.html)).join('')}</div>`:it(g.items[0].name,g.items[0].html)).join('')};
-  const dpBlocks=FASCIAS.filter(f=>!off.has(f[0])).map(([sl,nm])=>`<div class="fx" data-brand="${sl}" data-mx="${sl}"><div class="fl"><span>${nm}</span><em>Deliver+</em></div><div class="canvas fxc">${dpBody()}</div></div>`).join('');
+  const dpBlock=(sl,nm)=>`<div class="fx" data-brand="${sl}" data-mx="${sl}"><div class="fl"><span>${nm}</span><em>Deliver+</em></div><div class="canvas fxc">${dpBody()}</div></div>`;
+  return {it,grp,W,cat,PROG,progBlock,dpBlock,dpOff,hasDplus:sl=>!dpOff.has(sl)};
+})();
+/* CTAs per fascia (Jake 10 Nov 2026): the Button catalogue entry's states — default, disabled, spinner, added, checkout securely, small — in the fascia's mode,
+   plus the programme's Join CTA where it runs one. Used on every brand page (#b-<slug> › CTAs) and the Button page (#button › Every fascia). */
+window.DG_ctaBlock=function(sl,nm){const c=C.find(x=>x.slug==='button');if(!c)return '';const X=window.DG_mx;
+  const vs=c.variants.filter(v=>!/^Membership CTA/.test(v.name));
+  const join=X?X.PROG.filter(p=>p.b===sl).map(p=>X.it('Join CTA · '+p.n,`<div style="display:flex;gap:12px;padding:24px;${window.DG_memberVars?DG_memberVars(p.b,{plus:p.plus}):''};background:var(--mb-bg) var(--mb-img) center/cover;color:var(--mb-fg)"><button class="bd mbr">Join ${p.pill}</button><button class="bd mbr-out">Learn more</button></div>`)).join(''):'';
+  return `<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>CTAs</em></div><div class="canvas fxc">${vs.map(v=>X?X.it(v.name,v.html):v.html).join('')}${join}</div></div>`};
+window.buildButtonFascias=function(){const sec=document.getElementById('button');if(!sec||sec.dataset.bf)return;sec.dataset.bf='1';
+  const anchor=sec.querySelector('#b-props');if(!anchor)return;
+  anchor.insertAdjacentHTML('beforebegin',`<h2 id="b-fascias">Every fascia <code>the full CTA set · live from each mode</code></h2><div class="fxstack">${FASCIAS.map(([sl,nm])=>window.DG_ctaBlock(sl,nm)).join('')}</div>`);
+  sec.querySelectorAll('.fx').forEach(fx=>{if(window.dgLum(fx)<.5)fx.classList.add('dark')});if(window.hugBoxes)requestAnimationFrame(window.hugBoxes)};
+window.buildMemberships=function(){const sec=document.getElementById('memberships');if(!sec||sec.dataset.mx)return;sec.dataset.mx='1';
+  const host=sec.querySelector('.mxhost');if(!host)return;
+  const {it,PROG,progBlock}=window.DG_mx;
+  const off=window.DG_mx.dpOff;
+  const dpBlocks=FASCIAS.filter(f=>!off.has(f[0])).map(([sl,nm])=>window.DG_mx.dpBlock(sl,nm)).join('');
   const offList=FASCIAS.filter(f=>off.has(f[0])).map(f=>f[1]).join(', ');
   host.innerHTML=`<h2 id="mx-programmes">Every membership component, per programme</h2><p class="lede" style="margin-top:0">PDP box and member delivery grid, the membership pills (the mini one is the chip on the delivery grid and in checkout when a membership is active), checkout banner and delivery method, account / landing bands and the Join buttons — each programme in its own fascia. Warehouse and The Brand Room run no programme.</p>
     <div class="fxstack">${PROG.map(progBlock).join('')}</div>
@@ -1921,6 +1938,17 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
     ['body-md',14,14,'r','Default body','Free returns within 28 days. Star buys are final sale — check the label before you commit.'],['body-md-strong',14,14,'s','Emphasis','Order before 10pm for next-day delivery'],
     ['body-sm',12,12,'r','Compact body','Model wears a UK 8 and is 5\'9"'],['caption',12,12,'r','Captions, T&Cs, legal','Selected lines only. T&Cs apply.'],['micro',10,10,'r','Smallest legal labels','Prices include VAT']];
   const SW=[['--brand-primary','Brand primary'],['--brand-primary-dark','Primary dark'],['--surface-action','Action'],['--text-on-action','On action'],['--surface-page','Page'],['--text-primary','Text'],['--text-link','Link'],['--brand-neutral','Neutral']];
+  /* Deliver+ sub-brand kit (10 Nov 2026): lockup on its ground, checkout lockup on white, live colours, downloads */
+  const DPOFF=new Set(((window.DG_CATALOGUE||[]).find(c=>c.slug==='deliver-plus')||{}).notOn||[]);
+  const dpOn=sl=>!DPOFF.has(sl)&&String(window.DG_DPLUS_LOGOS||'').includes('dpl-'+sl+'\\"')||(!DPOFF.has(sl)&&String(window.DG_DPLUS_LOGOS||'').includes('dpl-'+sl+'"'));
+  const dpSrc=(html,sl)=>{const m=String(html||'').match(new RegExp('dpl-'+sl+'"[^>]*src="([^"]+)"'));return m?m[1]:''};
+  const dpCard=(sl,nm)=>{if(!dpOn(sl))return '';const a=dpSrc(window.DG_DPLUS_LOGOS,sl),b=dpSrc(window.DG_DPLUS_CO_LOGOS,sl);
+    const C2=[['--dplus-bg','Ground'],['--dplus-fg','Ink'],['--dplus-link','Link'],['--dplus-check','Checkbox']];
+    return `<div class="mscard" data-brand="${sl}"><div class="msbox" style="background:var(--dplus-bg);color:var(--dplus-fg);min-height:120px;display:flex;flex-direction:column;justify-content:center;gap:12px">${window.DG_DPLUS_LOGOS||''}<p style="margin:0">Peace of mind, guaranteed</p></div>
+      <div class="kbody"><b>Deliver+</b><small class="kn">${nm} · SEEL shopper protection</small>
+      <div class="krow"><span>Colours</span>${C2.map(([v,l])=>`<span class="msw"><i style="background:var(${v})"></i>${l} <code data-v="${v}"></code></span>`).join('')}</div>
+      <div class="krow"><span>Checkout</span><span style="background:#FFF;padding:8px 12px;border-radius:4px;display:inline-flex">${window.DG_DPLUS_CO_LOGOS||''}</span></div>
+      <div class="krow"><span>Assets</span>${a?`<a class="kbtn" href="${a}" download>Lockup <small>SVG</small></a>`:''}${b&&b!==a?`<a class="kbtn" href="${b}" download>Checkout lockup <small>SVG</small></a>`:''}<a class="kbtn" href="#c-deliver-plus">Component →</a></div></div></div>`};
   F.forEach(([sl,nm],i)=>{const has=HAS.includes(sl);
     const g=(GUIDES[sl]||[]).map(([t,u,sz])=>`<a class="kbtn" href="${u}" target="_blank" rel="noopener">${t} <small>PDF · ${sz}</small></a>`).join('');
     const prev=has?`<span class="kd"><img src="assets/brands/${sl}.svg" alt=""></span><span class="kl"><img src="assets/brands/${sl}.svg" alt=""></span>`:`<span class="kd none">Logo artwork to come</span>`;
@@ -1936,7 +1964,13 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
       <div class="kit"><div class="kprev">${prev}</div><div class="kbody"><div class="krow"><span>Download</span>${dl}</div></div></div>
       <h2>Guidelines</h2>
       <div class="krow">${g||'<em>Not on file yet.</em>'}</div>
-      ${MS.some(m=>m.b===sl)?`<h2>Membership <code>sub-brand</code></h2><div class="kits">${MS.filter(m=>m.b===sl).map(msCard).join('')}</div>`:''}
+      <h2 id="sub-${sl}">Sub-brands <code>memberships · Deliver+</code></h2>
+      <div class="kits">${MS.filter(m=>m.b===sl).map(msCard).join('')}${dpCard(sl,nm)}</div>
+      ${!MS.some(m=>m.b===sl)&&!dpOn(sl)?'<p><em>No membership or Deliver+ on '+nm+'.</em></p>':''}
+      <h2>Sub-brands in the DS <code>live components · <a href="#memberships" style="color:inherit">all programmes →</a></code></h2>
+      <div class="fxstack bsub" data-sub="${sl}"></div>
+      <h2>CTAs <code>live from the ${sl} mode · <a href="#c-button" style="color:inherit">Button component →</a></code></h2>
+      <div class="fxstack bcta" data-cta="${sl}"></div>
       <h2>Colour <code>live from the ${sl} mode</code></h2>
       <div class="bsw" data-brand="${sl}">${SW.map(([v,l])=>`<div><i style="background:var(${v})"></i><b>${l}</b><code data-v="${v}"></code></div>`).join('')}</div>
       <h2>Typography</h2>
@@ -1948,7 +1982,12 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   window.fillBrand=function(id){const sec=document.getElementById(id);if(!sec||sec.dataset.filled)return;sec.dataset.filled='1';
     sec.querySelectorAll('[data-v]').forEach(el=>{const src=el.closest('[data-brand]');let v=getComputedStyle(src).getPropertyValue(el.dataset.v).trim();
       if(el.dataset.v==='--font-family-base')v=v.split(',')[0].replace(/['"]/g,'');el.textContent=v.toUpperCase().startsWith('#')?v.toUpperCase():v});
-    const hero=sec.querySelector('.bhero');if(hero&&window.dgLum&&window.dgLum(hero)<.5)hero.classList.add('dark')};
+    const hero=sec.querySelector('.bhero');if(hero&&window.dgLum&&window.dgLum(hero)<.5)hero.classList.add('dark');
+    const sl=id.slice(2),nm=(F.find(f=>f[0]===sl)||[0,sl])[1],X=window.DG_mx;
+    const sub=sec.querySelector('[data-sub]');if(sub&&X){sub.innerHTML=X.PROG.filter(p=>p.b===sl).map(X.progBlock).join('')+(X.hasDplus(sl)&&dpOn(sl)?X.dpBlock(sl,nm):'');if(!sub.innerHTML)sub.innerHTML='<p><em>None on '+nm+'.</em></p>'}
+    const cta=sec.querySelector('[data-cta]');if(cta&&window.DG_ctaBlock)cta.innerHTML=window.DG_ctaBlock(sl,nm);
+    sec.querySelectorAll('.fx').forEach(fx=>{if(window.dgLum&&window.dgLum(fx)<.5)fx.classList.add('dark')});
+    if(window.hugBoxes)requestAnimationFrame(window.hugBoxes)};
 
   window.DG_IA_REG=[{h:'memberships',t:'Deliver+ & Memberships',k:'deliver+ deliver plus seel sub-brands loyalty unlimited unlimited+ premier premier club royalty subscription delivery membership pill chip active checkout banner band member box delivery grid',ic:'✦',s:'Brand Centre'},{h:'b-debenhamsgroup',t:'Debenhams Group',k:'group logo lockup monogram corporate dg',ic:'✦',s:'Brand Centre'},{h:'tools',t:'Planning and Tools',k:'trello board shipping scraper planning',ic:'☰',s:'Planning and Tools'}]
     .concat(P.map(x=>({h:x.pg,u:x.pg?null:(x.u||x.r),t:x.n,k:x.k,ic:'▸',s:'Project'})))
@@ -2036,6 +2075,7 @@ function route(){
   let h=(location.hash||'#home').slice(1);
   if(window.DG_LEGACY&&window.DG_LEGACY[h]){location.hash='#'+window.DG_LEGACY[h];return}
   if(h==='memberships'&&window.buildMemberships)window.buildMemberships();
+  if(h==='button'&&window.buildButtonFascias)window.buildButtonFascias();
   if(h.startsWith('c-')&&window.buildFascias){window.buildFascias(h);const _s=document.getElementById(h);if(_s&&window.fxShow)window.fxShow(window.DG_fxSel,_s)}
   if(h.startsWith('b-')&&document.getElementById(h)){window.setBrand(h.slice(2));if(window.fillBrand)window.fillBrand(h)}
   const pg=document.getElementById(h);
