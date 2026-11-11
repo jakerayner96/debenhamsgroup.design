@@ -9,11 +9,11 @@
 <script>
 /* Master prototype — the page. It has no page of its own: it opens the DS page template for state.page AS IT STANDS (fetched fresh, so
    whatever is banked in a template is in the master the moment it is pushed) and adds projects/master/master.js, the journey layer.
-     home → templates/home.html · plp → projects/plp-alignment/plp.html (mode=new) · pdp → templates/pdp.html · bag → templates/bag.html
+     home → templates/home.html · plp → projects/plp-alignment/plp.html (mode=new) · pdp → templates/pdp.html · bag → templates/bag.html · wishlist → templates/wishlist.html
    The template is written into this document (same window), so the shell's protocol (?s=, protoSet, protoPing → protoReady / protoPong)
    and the html2canvas export talk to the template directly. in: ?s={brand,page}. */
 (function(){
-  const SRC={home:'templates/home.html',plp:'projects/plp-alignment/plp.html',pdp:'templates/pdp.html',bag:'templates/bag.html'};
+  const SRC={home:'templates/home.html',plp:'projects/plp-alignment/plp.html',pdp:'templates/pdp.html',bag:'templates/bag.html',wishlist:'templates/wishlist.html'};
   let S={brand:'debenhams',page:'home'};
   try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes
   if(!SRC[S.page])S.page='home';

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../">
+<title>Wishlist · DS template</title>
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* DS page template — Wishlist. Wishlist 2026 (11 Nov 2026, Best App Ever HoBuVNEhf1qpL61XFipy0f · header + tabs + tiles 2101:44520 ·
+   flows 1187:352498 Wishlisting + Creating Collections · 1187:359355 My Items). Banked in the Master prototype.
+   Every visible piece is a DS component: header (header.js) · USP banners (usp.js) · centred title (.wl-title) · Tabs · fill (.tabs--fill: All Items · My Collections · Inspiration)
+   · sub-tab chips (.chip--sub) + share (.wl-share) · Wishlist tile (.wlt, DG_wishlist.html.tile) · Collection tile (.wlc / .wlc--insp) · "N Collections" + add (.wl-bar / .wl-add)
+   · intro copy (.wl-intro) · Empty state (.empty) · footer (footer.js, with the newsletter band "Let's get to know each other")
+   · modals (DS Modal, assets/ds/wishlist.js): Add to Collections + onboarding + Create New · Select a size (.sel-list) · Notify Me (.ntf) · Remove From Wishlist · Quick Add (quickadd.js) · toasts (toast.js).
+   URL: ?brand=<slug> · tab=items|collections|inspiration · sub=all|occasion|category · state=empty · insp=0|1 (Inspiration tab, default 1)
+        · intro=inspiration,collections|none (intro copy per tab, default inspiration) · marketing=0|1 (signed up to marketing emails: Notify Me sets straight away, default 0)
+        · reset=1 (clear this fascia's saved wishlist and re-seed) · or ?s={…} with the same keys (review shell). Store + flows: window.DG_wishlist. */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+.wl-pg{padding-bottom:var(--gap-10)}
+.wl-pg .empty{padding:var(--gap-16) var(--gap-4)}
+footer[data-ftr]{margin-top:var(--gap-6)}
+@media(min-width:1024px){
+  .wl-pg{max-width:var(--page-max);margin:0 auto;padding:var(--gap-6) var(--gap-10) var(--gap-12)}
+  .wl-pg .wl-title{height:56px;font-size:24px}
+  .wl-pg .tabs--fill{max-width:600px;margin:0 auto}
+  .wl-pg .wl-sub,.wl-pg .wl-bar,.wl-pg .wl-intro,.wl-pg .wl-back,.wl-pg .wl-grid,.wl-pg .wl-cgrid{padding-left:0;padding-right:0}
+  .wl-pg .wl-sub,.wl-pg .wl-intro,.wl-pg .wl-bar{padding-top:var(--gap-6)}
+  .wl-pg .wl-intro{text-align:center}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/ds/header.js"></script>
+<script src="assets/ds/nav-live.js"></script>
+<script src="assets/ds/nav.js"></script>
+<script src="assets/ds/usp-live.js"></script>
+<script src="assets/ds/usp.js"></script>
+<script src="assets/ds/footer.js"></script>
+<script src="assets/ds/taggstar.js"></script>
+<script src="assets/ds/toast.js"></script>
+<script src="assets/ds/quickadd.js"></script>
+<script src="assets/ds/wishlist.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script src="templates/feed.js"></script>
+<script src="assets/ds/export-masks.js"></script>
+<script>
+/* in: ?brand= … (see the header) or ?s={…}; {protoSet} / {protoPing}. out: {protoReady}, {protoPong,h}. Events out: dg:view-bag (View Bag on the bag toast),
+   dg:wishlist-pdp (a tile image), dg:wishlist-browse (Browse the shop / Shop Similar Products) — cancel them to take over (the master does). */
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const q=new URLSearchParams(location.search);
+const list=v=>v==null?null:v==='none'||v===''?[]:String(v).split(',');
+let S={brand:q.get('brand')||'debenhams',tab:q.get('tab')||'items',sub:q.get('sub')||'all',state:q.get('state')||'',insp:q.get('insp')!=='0',
+  intro:list(q.get('intro'))||['inspiration'],marketing:q.get('marketing')==='1',thresh:+(q.get('thresh')||6),view:null},EXPORTING=false;
+try{const s=q.get('s');if(s){const j=JSON.parse(s);if(typeof j.intro==='string')j.intro=list(j.intro);if(j.insp===0||j.insp==='0')j.insp=false;S=Object.assign(S,j)}}catch(e){}
+const W=window.DG_wishlist,H=W.html;
+const desk=()=>innerWidth>=1024;
+const NOTIFIED=new Set();   /* "You'll be notified" resets on refresh (Figma note) — memory only */
+
+/* ---- seed: about 8 saved items showing every tile state, 4 collections, the occasion + category groups. Products = the fascia's PLP set (templates/feed.js) ---- */
+const SKIP=/parfum|eau de|toilette|cologne|aftershave|spray|candle|diffuser|gift set|bundle/i;
+const COLS=['Cream','Brown','Black','Stone','Navy','Pink','Khaki','Red','Blue','Sage'];
+const COLW=/\b(black|navy|blue|pink|sage|ivory|grey|camel|emerald|rust|white|cream|khaki|brown|red|green|burgundy|beige|stone|olive|lilac|purple|tan|chocolate|charcoal|denim|mocha|nude|plum)\b/i;
+function sizesFor(name){if(/trainer|boot|shoe|sandal|heel|loafer|slipper|sneaker|mule|court/i.test(name))return S.brand==='boohooman'?['7','8','9','10','11']:['3','4','5','6','7'];
+  if(S.brand==='boohooman'||/\bmen|boxer|trunk/i.test(name))return ['S','M','L','XL','XXL'];
+  if(/beanie|scarf|hat\b|bag\b|earring|necklace|belt/i.test(name))return ['One Size'];return ['6','8','10','12','14']}
+function pool(){const out=[];const N=(window.PRODUCTS_ALL&&PRODUCTS_ALL[S.brand]||[]).length;
+  for(let i=0;i<N;i++){const p=DG_feedItem(S.brand,i);if(!p||SKIP.test(p.name))continue;const w=p.name.match(COLW);
+    out.push({id:S.brand+'-p'+i,i,brand:p.brand,name:p.name,img:new URL(p.img,document.baseURI).href,price:p.price,was:p.was||'',colour:w?w[0][0].toUpperCase()+w[0].slice(1).toLowerCase():COLS[out.length%COLS.length],size:null,sizes:sizesFor(p.name).map(l=>({l}))})}
+  const WEAR=/\b(dress|jumper|cardigan|blazer|trousers?|jacket|hoodie|sweatshirt|top|skirt|coat|jeans?|shirt|t-shirt|tee|joggers?|shorts?|knit|puffer|gilet|bodysuit|corset|playsuit|jumpsuit|boots?|trainers?|shoes?|heels?|sandals?|courts?|leggings?|co-ord|blouse|vest|bikini|suit|skort|beanie|trunks)\b/i;
+  const w=out.filter(x=>WEAR.test(x.name));return w.length>=16?w:out}   /* fashion first: home / beauty shots are not on the 2:3 product format */
+function seedData(){const P=pool();const it=P.slice(0,8).map(x=>JSON.parse(JSON.stringify(x)));const pick=k=>it[k%it.length];
+  const mid=x=>x.sizes[Math.min(2,x.sizes.length-1)].l;
+  const st=(k,f)=>{const x=pick(k);if(x)f(x)};
+  st(0,x=>{x.tag='Plus';x.sizes[Math.min(2,x.sizes.length-1)].oos=true;x.size=mid(x)});            /* PLUS tag · size set but out of stock → Notify Me */
+  st(1,x=>{x.size=null});                                                                       /* Select size → Quick Add */
+  st(2,x=>{x.size=mid(x)});                                                                     /* size 10 set → Add to Bag adds straight away */
+  st(3,x=>{x.size=x.sizes[Math.min(1,x.sizes.length-1)].l;x.stock=2});                          /* Only 2 left in stock */
+  st(4,x=>{x.ts={t:'bag',c:'In Demand.',d:'Added to bag 39 times in the last week.'}});          /* Taggstar */
+  st(5,x=>{x.oos=true;x.size=null});                                                            /* fully out of stock: Out of Stock + Shop Similar · Notify Me */
+  st(6,x=>{x.size=x.sizes[x.sizes.length>3?3:0].l});
+  it.forEach(x=>{if(x.sizes.length>2&&!x.sizes.some(s=>s.oos)){const k=x.sizes[1].l===x.size?x.sizes.length-1:1;x.sizes[k].oos=true}});   /* one size out of stock on every tile, never the chosen one (Select a size → Notify Me) */
+  const rest=P.slice(8).length?P.slice(8):P;const from=(start,n)=>Array.from({length:Math.min(n,rest.length)},(_,k)=>rest[(start+k)%rest.length].id);
+  const t0=Date.now();
+  const colls=[['Leisure stuff',0,0],["Bongo's Bingo",6,0],['Sam Birthday',15,4],["Charlie's Wedding",10,8]].map(([name,n,s],k)=>({id:'seed-'+k,name,items:from(s,n),t:t0-k*60000}));
+  return {items:it,pool:P,colls}}
+/* By Occasion / By Category (the AI groups the wishlist; seasonal occasions included). Categories list only when they have items. */
+const OCC=[['Autumn Inspo',14,1],['Nights Out',12,6],['NYE Party',8,13]];
+const CAT=[['Dresses',/dress/i,12],['Tops',/top|shirt|blouse|jumper|knit|cardigan|hoodie|tee|t-shirt|corset|bodysuit/i,7],['Shoes',/boot|shoe|heel|trainer|sandal|court|loafer|mule/i,6]];
+function groups(kind){const P=pool();
+  if(kind==='occasion')return OCC.map(([name,n,s],k)=>({id:'occ-'+k,name,items:Array.from({length:Math.min(n,P.length)},(_,j)=>P[(s+j)%P.length].id)}));
+  return CAT.map(([name,re,n],k)=>({id:'cat-'+k,name,items:P.filter(x=>re.test(x.name)).slice(0,n).map(x=>x.id)})).filter(g=>g.items.length)}
+const INSP=[['Club Night','@larsapippen',4,'club-night'],['My Autumn Look','@demisims',7,'autumn-look'],['Trending - Balloon Trousers','@ninoskavasqueza',12,'balloon-trousers'],['Dressing for that Special Dinner Date','@arbiakidadi',9,'dinner-date']]
+  .map(([name,handle,n,k],j)=>({id:'insp-'+j,name,handle,n,imgs:[1,2,3,4].map(i=>'templates/img/wishlist/insp/'+k+'-'+i+'.jpg'),from:3+j*5}));
+
+function ensureSeed(){document.documentElement.setAttribute('data-brand',S.brand);
+  if(q.get('reset')==='1'&&!ensureSeed.done){W.reset();ensureSeed.done=1}
+  W.seed(seedData())}
+
+/* ---- the page ---- */
+function header(){const dev=desk()?'desktop':'mobile';
+  return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header><div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`}
+const TABS=()=>[['items','All Items'],['collections','My Collections']].concat(S.insp?[['inspiration','Inspiration']]:[]);
+const tabs=()=>`<div class="tabs tabs--fill" role="tablist">${TABS().map(([k,l])=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${S.tab===k}"${S.tab===k?' class="on"':''}>${l}</button>`).join('')}</div>`;
+const intro=k=>S.intro.includes(k)?`<p class="wl-intro">${k==='inspiration'?'Discover edits, trends and seasonal favourites':'Create and edit collections to organise your wishlist'}</p>`:'';
+const tile=it=>H.tile(it,{notified:NOTIFIED.has(it.id)});
+const wishGlyph=()=>{const plt=S.brand==='plt',bm=['boohooman','karenmillen','warehouse','brandroom'].includes(S.brand);return 'assets/ds/icons/'+(plt?'plt-heart':bm?'bookmark':'heart-24')+'.svg'};
+function empty(){return `<div class="empty"><img src="${wishGlyph()}" alt=""><p>Your wishlist is empty</p><button class="bd pri" type="button" data-wl-p="browse">Browse the shop</button></div>`}
+function itemsPanel(){const items=S.state==='empty'?[]:W.items();if(!items.length)return empty();
+  const chips=items.length>S.thresh?[['all','All'],['occasion','By Occasion'],['category','By Category']].map(([k,l])=>`<button type="button" class="chip chip--sub${S.sub===k?' on':''}" data-sub="${k}">${l}</button>`).join(''):'';
+  const sub=items.length>S.thresh?S.sub:'all';
+  const row=`<div class="wl-sub">${chips}${sub==='all'?'<button class="wl-share" type="button" data-wl-p="share" aria-label="Share your wishlist"></button>':''}</div>`;
+  if(sub==='all')return row+`<div class="wl-grid">${items.map(tile).join('')}</div>`;
+  return row+`<div class="wl-cgrid">${groups(sub).map(g=>H.coll({id:g.id,name:g.name,n:g.items.length,imgs:g.items.map(id=>(W.item(id)||{}).img).filter(Boolean)})).join('')}</div>`}
+function collectionsPanel(){const C=W.collections();
+  return intro('collections')+`<div class="wl-bar"><span>${C.length} Collection${C.length===1?'':'s'}</span><button class="wl-add" type="button" data-wl-p="new" aria-label="Create New Collection"></button></div>`
+    +`<div class="wl-cgrid">${C.map(c=>H.coll({id:c.id,name:c.name,n:c.items.length,imgs:W.collImgs(c)},{more:true})).join('')}</div>`}
+function inspPanel(){return intro('inspiration')+`<div class="wl-cgrid">${INSP.map(c=>H.coll(c)).join('')}</div>`}
+/* a collection / occasion / category / inspiration card opened as an items grid */
+function detail(){const v=S.view;let name='',ids=[];
+  if(v.k==='coll'){const c=W.collection(v.id);if(!c){S.view=null;return panel()}name=c.name;ids=c.items}
+  else if(v.k==='insp'){const c=INSP.find(x=>x.id===v.id);const P=pool();name=c.name;ids=Array.from({length:Math.min(c.n,P.length)},(_,j)=>P[(c.from+j)%P.length].id)}
+  else{const g=groups(v.k).find(x=>x.id===v.id);if(!g){S.view=null;return panel()}name=g.name;ids=g.items}
+  const items=ids.map(id=>W.item(id)).filter(Boolean);
+  return `<div class="wl-back"><button type="button" data-wl-p="back" aria-label="Back"></button><b>${esc(name)}</b><span>${items.length} item${items.length===1?'':'s'}</span></div>`
+    +(items.length?`<div class="wl-grid">${items.map(tile).join('')}</div>`:`<div class="empty"><img src="${wishGlyph()}" alt=""><p>Nothing in ${esc(name)} yet</p><button class="bd pri" type="button" data-wl-p="browse">Browse the shop</button></div>`)}
+function panel(){if(S.view)return detail();if(S.tab==='collections')return collectionsPanel();if(S.tab==='inspiration'&&S.insp)return inspPanel();return itemsPanel()}
+function page(){if(S.tab==='inspiration'&&!S.insp)S.tab='items';
+  return header()+`<main class="wl-pg"><h1 class="wl-title">Wishlist</h1>${tabs()}<div data-slot="panel">${panel()}</div></main><footer data-ftr="${S.brand}"></footer>`}
+function render(){ensureSeed();document.documentElement.classList.toggle('exporting',EXPORTING);
+  document.getElementById('app').innerHTML=page();
+  if(window.DG_uspMount)DG_uspMount();
+  document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,S.brand));
+  document.dispatchEvent(new CustomEvent('dg:render'))}
+function repaint(){const p=document.querySelector('[data-slot="panel"]');if(!p)return render();p.innerHTML=panel()}
+
+/* ---- tile actions ---- */
+const fire=(type,detail)=>document.dispatchEvent(new CustomEvent(type,{detail,cancelable:true}));
+const goBag=()=>{if(fire('dg:view-bag',{}))location.href='templates/bag.html?brand='+S.brand};
+const bump=n=>document.querySelectorAll('.hd-count').forEach(b=>b.setAttribute('data-n',(+b.getAttribute('data-n')||0)+(n||1)));
+function easeOut(id,then){const el=document.querySelector(`.wlt[data-wl-id="${CSS.escape(id)}"]`);if(!el)return then();el.classList.add('is-out');setTimeout(then,300)}
+function removeItem(id,undo){const it=W.item(id);const was=W.collectionsOf(id);
+  easeOut(id,()=>{W.remove(id);repaint();
+    if(undo)DG_toast({msg:'Removed from Wishlist',action:'Undo',onAction:()=>{W.add(it);if(was.length)W.setCollections(id,was);repaint()}})})}
+/* Add to Bag with a size: adds straight away (bag toast), and the item leaves the wishlist and every collection */
+function addedToBag(id){bump();DG_toast({msg:'Added to Bag',action:'View Bag',onAction:goBag});easeOut(id,()=>{W.remove(id);repaint()})}
+function quickAdd(it){const peers=pool().filter(x=>x.id!==it.id).slice(0,3);
+  const p={brand:it.brand,name:it.name,price:it.price,was:it.was,pct:it.was?'20%':'',off:it.was?'Extra 25% Off Applied':'',
+    qa:{colourUi:'images',sizeUi:'buttons',colours:[{n:it.colour||'Original',img:it.img}].concat(peers.map(x=>({n:x.colour,img:x.img}))),
+        sizes:(it.sizes||[]).map((s,k)=>({l:s.l,oos:!!s.oos,stock:s.stock||(k===it.sizes.length-2?3:0)}))}};
+  quickAdd.for=it.id;DG_quickAdd.open({p,img:it.img,desk:matchMedia('(min-width:768px)').matches})}
+document.addEventListener('dg:quickadd',e=>{const id=quickAdd.for;if(!id||!W.has(id))return;quickAdd.for=null;
+  setTimeout(()=>{DG_toast({msg:'Added to Bag',action:'View Bag',onAction:goBag});easeOut(id,()=>{W.remove(id);repaint()})},2100)});   /* after the window's ✓ Added */
+document.addEventListener('dg:quickadd-view',e=>{if(window.MASTER)return;if(fire('dg:wishlist-pdp',{}))location.href='templates/pdp.html?brand='+S.brand});
+function notify(it){if(S.marketing){NOTIFIED.add(it.id);repaint();return}
+  const L=W.layer(H.notify(it,W.desk()),{up:true});
+  L.el.addEventListener('click',e=>{const t=e.target.closest('[data-wl]');if(!t)return;
+    if(t.dataset.wl==='chk'){const on=t.getAttribute('aria-checked')!=='true';t.setAttribute('aria-checked',on);t.classList.toggle('on',on);return}
+    if(t.dataset.wl==='notify-yes'){NOTIFIED.add(it.id);L.close();repaint()}})}
+function sizeSheet(it){const L=W.layer(H.sizes(it,W.desk()),{up:true});
+  L.el.addEventListener('click',e=>{const b=e.target.closest('[data-wl-size]');if(!b)return;const l=b.dataset.wlSize,s=(it.sizes||[]).find(x=>x.l===l);
+    W.update(it.id,{size:l});NOTIFIED.delete(it.id);L.close();repaint();if(s&&s.oos)setTimeout(()=>notify(W.item(it.id)),320)})}
+function collMenu(c){const L=W.layer(`<div class="mdl ${W.desk()?'mdl--sm':'mdl--up'} mdl--compact" role="dialog" aria-modal="true" aria-label="${esc(c.name)}"><div class="modal-hd"><div class="mt"><span>${esc(c.name)}</span></div><button class="modal-x" type="button" data-wl="close" aria-label="Close"></button></div><div class="mdl-bd"><div class="sel-list"><button type="button" data-m="rename">Rename</button><button type="button" data-m="share">Share</button><button type="button" data-m="delete">Delete</button></div></div></div>`,{up:true});
+  L.el.addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;const m=b.dataset.m;L.close();
+    if(m==='rename')setTimeout(()=>W.openCollections(null,{rename:c.id,renameOnly:true,done:repaint}),320);
+    if(m==='share')DG_toast({msg:'Link copied: '+c.name});
+    if(m==='delete'){W.deleteCollection(c.id);repaint();DG_toast({msg:'Collection deleted'})}})}
+document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;
+  const tab=t.closest('[data-tab]');if(tab){S.tab=tab.dataset.tab;S.view=null;render();scrollTo(0,0);return}
+  const sub=t.closest('[data-sub]');if(sub){S.sub=sub.dataset.sub;repaint();return}
+  const more=t.closest('[data-wl-c-more]');if(more){e.preventDefault();e.stopPropagation();const c=W.collection(more.closest('[data-wl-c]').dataset.wlC);if(c)collMenu(c);return}
+  const card=t.closest('.wl-pg [data-wl-c]');if(card){const id=card.dataset.wlC;S.view={k:id.startsWith('occ-')?'occasion':id.startsWith('cat-')?'category':id.startsWith('insp-')?'insp':'coll',id};repaint();scrollTo(0,0);return}
+  const p=t.closest('[data-wl-p]');if(p){e.preventDefault();const a=p.dataset.wlP;
+    if(a==='back'){S.view=null;repaint();return}
+    if(a==='share'){DG_toast({msg:'Link copied: Charlie H’s items'});return}
+    if(a==='new'){W.openCollections(null,{createOnly:true,done:repaint});return}
+    if(a==='browse'){if(fire('dg:wishlist-browse',{}))location.href='projects/plp-alignment/plp.html?brand='+S.brand+'&mode=new';return}}
+  const a=t.closest('.wlt [data-wl-t]');if(!a)return;e.preventDefault();e.stopPropagation();
+  const id=a.closest('.wlt').dataset.wlId,it=W.item(id),k=a.dataset.wlT;if(!it)return;
+  if(k==='coll')W.openCollections(id,{done:repaint});
+  else if(k==='del'){if(W.collectionsOf(id).length){const L=W.layer(H.confirm(W.desk()));L.el.addEventListener('click',ev=>{if(ev.target.closest('[data-wl="remove-yes"]')){L.close();removeItem(id,false)}})}else removeItem(id,true)}
+  else if(k==='size')sizeSheet(it);
+  else if(k==='notify')notify(it);
+  else if(k==='atb'){if(it.size)addedToBag(id);else quickAdd(it)}
+  else if(k==='pdp'){if(fire('dg:wishlist-pdp',{item:it}))location.href='templates/pdp.html?brand='+S.brand}
+  else if(k==='similar'){if(fire('dg:wishlist-browse',{item:it}))location.href='projects/plp-alignment/plp.html?brand='+S.brand+'&mode=new'}},true);
+/* Create New from the My Collections bar: the DS Create New Collection page; on CREATE it lands in My Collections */
+document.addEventListener('dg:wishlist-change',()=>{if(S.tab==='collections'&&!S.view)repaint()});
+
+(window.DG_taggstar?DG_taggstar.load():Promise.resolve()).then(render);render();
+let rz,lw=innerWidth;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if((lw>=1024)!==desk()){lw=innerWidth;render()}},150)});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+document.addEventListener('click',e=>{if(e.target.closest('a[href="#"],button'))e.preventDefault()});
+</script>
+</body>
+</html>

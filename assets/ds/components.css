@@ -1692,10 +1692,10 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dgrid-bulky{display:flex;align-items:flex-start;gap:var(--gap-2,8px);margin:0;font-family:var(--font-family-base);font-size:12px;line-height:16px;color:var(--text-primary)}
 .dgrid-bulky img{width:16px;height:16px;flex:none}
 /* modal */
-.dopts-layer,.sns-layer,.vs-layer,.bag-layer{position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--gap-4,16px) 0}
-.dopts-layer--up,.sns-layer--up,.vs-layer--up,.bag-layer--up{align-items:flex-end;padding:var(--gap-14,56px) 0 0}
-.dopts-layer>.mdl,.sns-layer>.mdl,.vs-layer>.mdl,.bag-layer>.mdl{z-index:3;max-height:100%;animation:mdlfade .3s ease-in-out both}
-.dopts-layer--up>.mdl,.sns-layer--up>.mdl,.vs-layer--up>.mdl,.bag-layer--up>.mdl{animation-name:mdlup}
+.dopts-layer,.sns-layer,.vs-layer,.bag-layer,.wl-layer{position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--gap-4,16px) 0}
+.dopts-layer--up,.sns-layer--up,.vs-layer--up,.bag-layer--up,.wl-layer--up{align-items:flex-end;padding:var(--gap-14,56px) 0 0}
+.dopts-layer>.mdl,.sns-layer>.mdl,.vs-layer>.mdl,.bag-layer>.mdl,.wl-layer>.mdl{z-index:3;max-height:100%;animation:mdlfade .3s ease-in-out both}
+.dopts-layer--up>.mdl,.sns-layer--up>.mdl,.vs-layer--up>.mdl,.bag-layer--up>.mdl,.wl-layer--up>.mdl{animation-name:mdlup}
 .dopts .mdl-bd{overflow-y:auto;gap:var(--gap-4,16px)}
 .dopts .mdl-bd [hidden]{display:none}
 .dopts [data-dg-mpanel]{display:flex;flex-direction:column;gap:var(--gap-4,16px)}
@@ -2145,11 +2145,11 @@ html.exporting .ai-fab,body.exporting .ai-fab{animation:none}
 .fcover-tag{display:inline-flex;align-items:center;padding:1.25cqw;border-radius:.417cqw;background:rgba(255,255,255,.04);font-family:'Geologica',var(--font-family-base);font-weight:300;font-size:1.667cqw;line-height:.6875;letter-spacing:-.02em}
 /* Wishlist collections (30 Oct 2026, App Prototype) — Best App Ever HoBuVNEhf1qpL61XFipy0f · 1128:222949 (Wishlisting + Creating Collections).
    Lives in the slide-up modal (.mdl.mdl--up): header "Add to Collections" / back + "Create New Collection", 18 SemiBold title, 16 close.
-   .coll-list   Create New, then the collections, most recently added to first · rows 50 tall, gap 3 (12px); many → the modal stops 93 from the top and the list ends on half a row
+   .coll-list   Create New, then the collections, most recently added to first · rows 50 tall, gap 3 (12px); many → the modal stops 56 from the top (.wl-layer--up, 11 Nov) and the list ends on half a row
    .coll-new    50 dashed --border-control square with Icons / Add 24 · "Create New" 16 regular
-   .coll-row    50 thumb · name 16 regular / "N items" 12 --text-secondary (gap 1) · gap 6 (24px) · Icons / Tick Circle Fill (in it) or Icons / Expand (not) 24
+   .coll-row    50 thumb · name 16 regular / "N items" 12 --text-primary (gap 1; black, not grey — Jake 12 Nov) · gap 6 (24px) · Icons / Tick Circle Fill (in it) or Icons / Expand (not) 24
    .coll-thumb  empty: --brand-light-2 → --brand-light-1 swatch · 1–3 items: the latest · 4+: a 2×2 of the latest (.q)
-   .coll-promo  first wishlist ever: white panel, 16 16 0 · NEW chip (brand light, 12 SemiBold, 4px 8px) + "Organise your wishlist" 16 SemiBold, body 14, collage under
+   .coll-promo  first wishlist ever: --surface-raised panel (sand on PLT), 16 16 0 · NEW chip (brand light, 12 SemiBold, 4px 8px) + "Organise your wishlist" 16 SemiBold, body 14, collage under
    Create: one .fld ("Name of collection") + CREATE; errors in --text-error under the field: "Please enter a collection name" · "A collection with this name already exists". Copy + imagery from Strapi. */
 .coll-list{display:flex;flex-direction:column;gap:12px;overflow-y:auto}
 .coll-new,.coll-row{display:flex;align-items:center;height:50px;padding:0;border:0;background:none;font:inherit;color:var(--text-primary);text-align:left;cursor:pointer;width:100%}
@@ -2159,14 +2159,14 @@ html.exporting .ai-fab,body.exporting .ai-fab{animation:none}
 .coll-row .m{flex:1;min-width:0;display:flex;align-items:center;gap:12px}
 .coll-row .t{display:flex;flex-direction:column;gap:4px;min-width:0}
 .coll-row .t b{font-size:16px;font-weight:var(--w-regular);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.coll-row .t span{font-size:12px;color:var(--text-secondary,#767676)}
+.coll-row .t span{font-size:12px;color:var(--text-primary)} /* 12 Nov: counts are black, grey is for T&Cs only */
 .coll-row::after{content:"";width:24px;height:24px;flex:none;background:url("icons/lib/icons-expand.svg") center/24px 24px no-repeat}
 .coll-row[aria-checked="true"]::after{background-image:url("icons/lib/icons-tick-circle-fill.svg")}
 .coll-thumb{width:40px;height:auto;aspect-ratio:var(--ratio-product);flex:none;object-fit:cover;background:linear-gradient(-45deg,var(--brand-light-2,#FFE4D2),var(--brand-light-1,#F1C59E))}
 .coll-thumb.q{display:grid;grid-template-columns:1fr 1fr;background:none}.coll-thumb.q img{width:20px;height:auto;aspect-ratio:var(--ratio-product);object-fit:cover;display:block} /* was square: product images are 2:3 */
-.coll-promo{background:#FFF;padding:16px 16px 0;display:flex;flex-direction:column;gap:8px}
+.coll-promo{background:var(--surface-raised);padding:16px 16px 0;display:flex;flex-direction:column;gap:8px}
 .coll-promo .h{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:var(--w-strong)}
-.coll-promo .h em{font-style:normal;font-size:12px;font-weight:var(--w-strong);padding:4px 8px;background:var(--brand-light-1,#F1C59E);color:#000}
+.coll-promo .h em{font-style:normal;font-size:12px;font-weight:var(--w-strong);padding:4px 8px;background:var(--wl-chip-on);color:var(--text-primary)}
 .coll-promo p{margin:0;font-size:14px}
 .coll-promo .art{align-self:center;padding:24px 19.5px}
 
@@ -2467,6 +2467,7 @@ select.rf-input:invalid{color:var(--rf-dim)}
 /* Stock alert · Text: the plain red line (no ground, no rule) — quick add + PDP stock under the options */
 .alert--text{background:none;border:0;padding:0;display:block;font-size:16px;line-height:normal;letter-spacing:.02em;color:var(--text-error)}
 .alert--text.sm{font-size:14px;letter-spacing:0}
+.alert--text.xs{font-size:12px;line-height:16px;letter-spacing:0;margin:0} /* 12 — Wishlist tile stock line (11 Nov) */
 /* Button · Added (.bd.done): the primary after it has added — tick + ADDED, no interaction */
 .bd.done{display:inline-flex;align-items:center;justify-content:center;gap:8px;pointer-events:none}
 .bd.done::before{content:"";width:24px;height:24px;flex:none;background:currentColor;-webkit-mask:url("icons/lib/icons-tick.svg") center/24px 24px no-repeat;mask:url("icons/lib/icons-tick.svg") center/24px 24px no-repeat}
@@ -2562,3 +2563,115 @@ li[data-k="bf"]>.persona-row>i{background:var(--season-bf)}
 /* grid: as many 264px+ columns as the container takes (4 up on a wide page, like the PDF; 1 on phones) */
 .persona-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,264px),1fr));gap:16px;align-items:stretch}
 @media (prefers-reduced-motion:reduce){.persona-meter i,.persona-row[aria-expanded="true"]+.persona-script{transition:none;animation:none}}
+
+/* ===== Wishlist 2026 (11 Nov 2026) — Best App Ever HoBuVNEhf1qpL61XFipy0f · header + tabs + tiles 2101:44520 · flows 1187:352498 / 1187:359355 =====
+   Page template templates/wishlist.html · behaviour + markup builders assets/ds/wishlist.js (DG_wishlist). Fascia colours: --wl-* (tokens.css).
+   Text is black (--text-primary); grey only for T&Cs (Jake 12 Nov). Spacing in gaps; product images 2:3. */
+/* Wishlist page header: centred title (44 tall, 18 strong) under the DS header + USP banners */
+.wl-title{margin:0;height:44px;display:flex;align-items:center;justify-content:center;font-family:var(--font-family-base);font-size:18px;line-height:22px;font-weight:var(--w-strong);color:var(--text-primary)}
+/* Tabs · fill (.tabs--fill): equal-width tabs, 50 tall, gap 4 (16px) page padding, no baseline. On = fascia action colour (--text-link) + 2px underline the tab's width */
+.tabs--fill{gap:0;border-bottom:0;padding:0 var(--gap-4,16px);overflow:visible}
+.tabs--fill button{flex:1 1 0;min-width:0;height:50px;padding:0 var(--gap-1,4px);margin:0;font-size:14px;line-height:22px;font-weight:var(--w-regular);color:var(--text-primary);text-align:center;border-bottom:2px solid transparent}
+.tabs--fill button:hover{color:var(--text-primary)}
+.tabs--fill button.on{font-weight:var(--w-mid);color:var(--text-link);border-bottom-color:var(--text-link)}
+/* Chip · sub-tab (.chip--sub): 30 tall, 12 regular black, gap 4 (16px) sides · off = page surface + 1px --wl-chip-line · on = --wl-chip-on fill. Corner = --radius-default (square on PLT) */
+.chip.chip--sub{height:30px;padding:0 var(--gap-4,16px);font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary);background:var(--surface-page);border:1px solid var(--wl-chip-line);border-radius:var(--radius-default);gap:0}
+.chip.chip--sub.on{background:var(--wl-chip-on);border-color:var(--wl-chip-on);color:var(--text-primary)}
+/* rows under the tabs: sub-tabs + share (.wl-sub) · intro copy (.wl-intro) · "N Collections" + add (.wl-bar) · detail back row (.wl-back) — each gap 4 (16px) down, gap 4 sides */
+.wl-sub,.wl-bar{display:flex;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-4,16px) var(--gap-4,16px) 0;min-height:30px}
+.wl-sub .wl-share{margin-left:auto}
+.wl-share{width:24px;height:24px;flex:none;padding:0;border:0;cursor:pointer;background:url("icons/lib/icons-share.svg") center/24px 24px no-repeat}
+.wl-intro{margin:0;padding:var(--gap-4,16px) var(--gap-4,16px) 0;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
+.wl-bar{justify-content:space-between;font-size:12px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}
+.wl-add{width:32px;height:32px;flex:none;padding:0;border:0;cursor:pointer;border-radius:var(--radius-default);background:var(--surface-action);display:grid;place-items:center}
+.wl-add::before{content:"";width:12px;height:12px;background:var(--text-on-action);-webkit-mask:url("icons/lib/icons-add.svg") center/12px 12px no-repeat;mask:url("icons/lib/icons-add.svg") center/12px 12px no-repeat}
+.wl-back{display:flex;align-items:center;gap:var(--gap-2,8px);padding:var(--gap-4,16px) var(--gap-4,16px) 0;font-size:14px;line-height:18px;color:var(--text-primary)}
+.wl-back button{width:24px;height:24px;flex:none;padding:0;border:0;cursor:pointer;background:url("icons/lib/icons-left.svg") center/16px 16px no-repeat}
+.wl-back b{font-weight:var(--w-strong)}.wl-back span{margin-left:auto;font-size:12px}
+/* grids: tiles 2 up (column gap 3 = 12px, row gap 4 = 16px) · collection tiles 2 up, gap 2 (8px) · both start gap 4 under the row above; 4 / 5 up on desktop */
+.wl-grid,.wl-cgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:var(--gap-4,16px) var(--gap-4,16px) 0}
+.wl-grid{column-gap:var(--gap-3,12px);row-gap:var(--gap-4,16px)}
+.wl-cgrid{gap:var(--gap-2,8px)}
+@media(min-width:768px){.wl-grid,.wl-cgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:1024px){.wl-grid,.wl-cgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.wl-grid{column-gap:var(--gap-4,16px);row-gap:var(--gap-6,24px)}.wl-cgrid{gap:var(--gap-4,16px)}}
+@media(min-width:1280px){.wl-grid,.wl-cgrid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+/* Wishlist tile (.wlt, Figma "Wardrobe Tile"): surface fill, Container Shadow 0 2 5 10%, clipped · media 2:3 cover · tiles in a row share a height, CTA pinned to the foot.
+   .wlt-acts top-right inset gap 2 (8px): 28 squares (circles off PLT, --radius-pill), gap 3 (12px): Add to collection (duplicate glyph) · Delete (trash) · 14 glyphs
+   .wlt-tag  the DS product tag (.badge) bottom-left inset 8 · .wlt-info padding 10, gap 1.5 (6px), every line 12 · brand line strong (--wl-brand) · name 2 lines, --wl-name-case
+   price = .price-blk--bag (sale now strong red, was regular struck) · Colour: / Size: values strong; size row = a button (12 chevron) → Select a size; no size = "Select size" (black, mid)
+   optional: stock (.alert--text.xs) · Taggstar (.sp-bag) · Out of Stock + Shop Similar Products (visually-similar 16, strong, --text-link)
+   .wlt-ft padding 0 10 10: one .bd.pri.md.full (40) Add to Bag / Notify Me, or .wlt-note "You'll be notified when it's available" (strong 12, 2 lines) */
+.wlt{display:flex;flex-direction:column;min-width:0;background:var(--surface-raised);box-shadow:0 2px 5px rgba(0,0,0,.1);overflow:hidden;border-radius:var(--radius-default);font-family:var(--font-family-base);color:var(--text-primary);transition:opacity var(--dur-slow,300ms) ease,transform var(--dur-slow,300ms) ease}
+.wlt.is-out{opacity:0;transform:scale(.96)}
+.wlt-media{position:relative;aspect-ratio:var(--ratio-product);background:var(--surface-media);overflow:hidden}
+.wlt-media>img{width:100%;height:100%;object-fit:cover;display:block}
+.wlt-media>a{display:block;width:100%;height:100%}.wlt-media>a>img{width:100%;height:100%;object-fit:cover;display:block}
+.wlt-acts{position:absolute;top:var(--gap-2,8px);right:var(--gap-2,8px);display:flex;flex-direction:column;gap:var(--gap-3,12px);z-index:1}
+.wlt-ic{width:28px;height:28px;padding:0;border:0;cursor:pointer;border-radius:var(--radius-pill);background:var(--surface-raised) center/14px 14px no-repeat}
+.wlt-ic--coll{background-image:url("icons/lib/duplicate.svg")}
+.wlt-ic--del{background-image:url("icons/lib/icons-delete.svg")}
+.wlt-tag{position:absolute;left:var(--gap-2,8px);bottom:var(--gap-2,8px);z-index:1}
+.wlt-info{flex:1;display:flex;flex-direction:column;gap:var(--gap-1_5,6px);padding:10px;font-size:12px;line-height:16px;font-weight:var(--w-regular)}
+.wlt-nm{display:flex;flex-direction:column;min-width:0}
+.wlt-nm b{display:var(--wl-brand,block);font-weight:var(--w-strong);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wlt-nm span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-transform:var(--wl-name-case,none)}
+.wlt .price-blk--bag .price{font-size:12px;line-height:16px}
+.wlt-kv{display:flex;align-items:center;gap:var(--gap-1,4px);margin:0;padding:0;border:0;background:none;font:inherit;font-size:12px;line-height:16px;color:var(--text-primary);text-align:left;min-width:0}
+.wlt-kv b{font-weight:var(--w-strong);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wlt-size{cursor:pointer}
+.wlt-size.is-empty b{font-weight:var(--w-mid)}
+.wlt-size::after{content:"";width:12px;height:12px;flex:none;background:url("icons/lib/icons-down.svg") center/12px 12px no-repeat}
+.wlt .sp-bag{margin:0}
+.wlt-oos{display:flex;flex-direction:column;gap:var(--gap-1_5,6px)}
+.wlt-similar{display:inline-flex;align-items:center;gap:var(--gap-1,4px);font-weight:var(--w-strong);color:var(--text-link);text-decoration:none;cursor:pointer}
+.wlt-similar::before{content:"";width:16px;height:16px;flex:none;background:var(--text-link);-webkit-mask:url("icons/lib/icons-visually-similar.svg") center/16px 16px no-repeat;mask:url("icons/lib/icons-visually-similar.svg") center/16px 16px no-repeat}
+.wlt-ft{padding:0 10px 10px}
+.wlt-ft .bd{font-size:14px;padding-block:8px}
+.wlt-note{margin:0;min-height:40px;display:flex;align-items:center;font-size:12px;line-height:16px;font-weight:var(--w-strong);color:var(--text-primary)}
+@media(min-width:1024px){.wlt-info,.wlt .wlt-kv{font-size:14px;line-height:18px}.wlt .price-blk--bag .price{font-size:14px;line-height:18px}}
+
+/* Collection tile (.wlc): --wl-tile-bg fill, padding gap 2 (8px), gap 2 · collage .wlc-art = 2×2 product images, each 2:3 (product image rule: Figma squares → 2:3),
+   the tile's full inner width · empty collection = a flat --wl-chip-on placeholder · name 12 strong · "N items" 12 black + ⋮ more (12) on the right.
+   .wlc--insp (Inspiration): + the creator handle line (12) between name and count, no ⋮. Tap = open as an items grid. */
+.wlc{display:flex;flex-direction:column;gap:var(--gap-2,8px);min-width:0;padding:var(--gap-2,8px);background:var(--wl-tile-bg);border-radius:var(--radius-default);font-family:var(--font-family-base);color:var(--text-primary);text-align:left;cursor:pointer;box-sizing:border-box}
+.wlc-art{display:grid;grid-template-columns:1fr 1fr;aspect-ratio:var(--ratio-product);overflow:hidden;background:var(--wl-chip-on)}
+.wlc-art img{width:100%;height:100%;object-fit:cover;display:block;min-height:0}
+.wlc-art.is-empty{display:block}
+.wlc-tx{display:flex;flex-direction:column;gap:var(--gap-1,4px);font-size:12px;line-height:16px;font-weight:var(--w-regular)}
+.wlc-tx b{font-weight:var(--w-strong)}
+.wlc-ft{display:flex;align-items:center;justify-content:space-between;gap:var(--gap-2,8px)}
+.wlc-more{width:16px;height:16px;flex:none;padding:0;border:0;cursor:pointer;background:url("icons/lib/icons-more.svg") center/12px 12px no-repeat;transform:rotate(90deg)}
+@media(min-width:1024px){.wlc-tx{font-size:14px;line-height:18px}}
+/* Add to Collections · onboarding fan (.coll-fan): three collection tiles fanned left → right, 120 wide, 90 apart so every name shows, slight turns (content from Strapi) */
+.coll-fan{position:relative;height:280px;width:300px;max-width:100%;align-self:center;margin:var(--gap-2,8px) 0}
+.coll-fan .wlc{position:absolute;width:120px;box-shadow:0 2px 8px rgba(0,0,0,.12);cursor:default}
+.coll-fan .wlc:nth-child(1){left:0;top:0;transform:rotate(-4deg)}
+.coll-fan .wlc:nth-child(2){left:90px;top:24px;transform:rotate(1deg)}
+.coll-fan .wlc:nth-child(3){left:180px;top:48px;transform:rotate(5deg)}
+.coll-promo .coll-fan .wlc-tx{font-size:12px;line-height:16px}
+/* the modal: list + SAVE + remove link; the body scrolls, the foot stays */
+.coll-mdl .mdl-bd{overflow-y:auto}
+.coll-mdl .mdl-ft{flex:none}
+.coll-mdl .coll-list{overflow:visible}
+
+/* Select list (.sel-list): one row per option, 50 tall, hairlines between, 14 · .on = strong · right-hand meta (.meta, strong) e.g. "Notify Me".
+   Select a size (out-of-stock sizes say Notify Me) · the collection ⋮ menu (Rename / Share / Delete). */
+.sel-list{display:flex;flex-direction:column}
+.sel-list>button{display:flex;align-items:center;justify-content:space-between;gap:var(--gap-4,16px);height:50px;padding:0;border:0;border-bottom:1px solid var(--border-subtle);background:none;font:inherit;font-size:14px;line-height:18px;font-weight:var(--w-regular);color:var(--text-primary);text-align:left;cursor:pointer}
+.sel-list>button:last-child{border-bottom:0}
+.sel-list>button.on{font-weight:var(--w-strong)}
+.sel-list .meta{font-weight:var(--w-strong)}
+
+/* Notify Me (.ntf, in the DS modal): product row (2:3 thumb 100, brand strong / name / price / Size / Colour, 14) · question · NOTIFY ME with the bell · consent (.chk-row--lg, T&Cs 12 grey) */
+.ntf-prod{display:flex;gap:var(--gap-4,16px);align-items:flex-start}
+.ntf-prod img{width:100px;height:auto;aspect-ratio:var(--ratio-product);object-fit:cover;flex:none;background:var(--surface-media);display:block}
+.ntf-tx{display:flex;flex-direction:column;gap:var(--gap-2,8px);min-width:0;font-size:14px;line-height:18px}
+.ntf-tx b{font-weight:var(--w-strong)}
+.ntf-q{margin:0;font-size:14px;line-height:18px}
+.bd .ico-bell{width:16px;height:16px;flex:none;background:currentColor;-webkit-mask:url("icons/lib/icons-notification.svg") center/16px 16px no-repeat;mask:url("icons/lib/icons-notification.svg") center/16px 16px no-repeat}
+.ntf-legal{margin:0;font-size:12px;line-height:16px;color:var(--text-secondary)}
+.ntf-legal a{color:inherit;text-decoration:underline}
+/* Wishlist modals layer (.wl-layer / --up: with the delivery, S&S, VS and bag layers above): leaving slides back down (fades on desktop) */
+.wl-layer>.mdl.mdl-anim-down{animation:mdldown .3s ease-in forwards}.wl-layer>.mdl.mdl-anim-fade-out{animation:mdlfadeout .3s ease-in forwards}
+.wl-layer>.mdl--alert{align-self:center}

@@ -512,3 +512,13 @@
 /* Persona card (11 Nov 2026): header tint + share meter follow the fascia. Declared on every [data-brand] so the var() resolves in that mode
    (on :root alone it would freeze to Debenhams). PLT: peach on sand, square via --radius-lg / --radius-pill. */
 :root,[data-brand]{--persona-hd:var(--brand-light-3);--persona-accent:var(--brand-primary-dark)}
+
+/* Wishlist 2026 (11 Nov 2026, Best App Ever 2101:44520): the Wishlist page's fascia colours, from the palette (Layer 0).
+   --wl-tile-bg   Collection tile fill = fascia Light 4 (PLT #FCF0EE) · --wl-chip-on  selected sub-tab chip = Light 2 (PLT #EAAFA4)
+   --wl-chip-line unselected chip keyline = Neutral Pressed (PLT #E5D4D1) · --wl-brand  brand line on the Wishlist tile (none where the fascia's card has no brand line)
+   --wl-name-case the tile's product name case (PLT UPPERCASE). Mono fascias step down a shade so the tile isn't mid grey.
+   Declared on [data-brand] as well as :root so a nested fascia scope (catalogue previews) resolves its own palette. */
+:root,[data-brand]{--wl-tile-bg:var(--light-4,var(--brand-light-4));--wl-chip-on:var(--light-2,var(--brand-light-2));--wl-chip-line:var(--neutral-pressed,var(--border-default));--wl-brand:block;--wl-name-case:none}
+[data-brand="boohooman"],[data-brand="warehouse"],[data-brand="brandroom"],[data-brand="coast"],[data-brand="principles"]{--wl-tile-bg:var(--neutral);--wl-chip-on:var(--light-4)}
+[data-brand="plt"]{--wl-brand:none;--wl-name-case:uppercase}
+[data-brand="warehouse"]{--wl-brand:none}

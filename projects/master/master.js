@@ -3,6 +3,8 @@
    It draws nothing of its own and restyles nothing: it only turns the templates' own DS pieces into links between the pages.
      header logo → Home · header bag → Bag · category nav / roundels / home tiles / breadcrumb / View all → PLP
      any product card (PLP grid, home + PDP + bag rails) → PDP · PDP Add to bag → DS toast “Added to Bag · View Bag” → Bag · wishlist hearts (wishlist.js) → “Added to Wishlist · Manage”
+     (Manage → Add to Collections; the first wishlist ever → the onboarding modal) · header wishlist icon → Wishlist (templates/wishlist.html, 11 Nov)
+     Wishlist: tile image → PDP · Add to Bag → “Added to Bag · View Bag” → Bag · Browse the shop / Shop Similar Products → PLP · Quick Add View product → PDP
    Inside the review shell it posts {protoNav:{page}} and the shell loads that page; opened on its own it navigates itself.
    PLP has its own configurator protocol (plpSet / plpReady), so for it this file also speaks the shell's (protoReady, protoPong). */
 (function(){
@@ -10,11 +12,12 @@
   const go=page=>{if(!page||page===M.page&&page!=='pdp')return;
     if(parent!==window)parent.postMessage({protoNav:{page}},'*');
     else{const s=Object.assign({},M.state||{},{page});location.href=location.pathname+'?s='+encodeURIComponent(JSON.stringify(s))}};
-  const IGNORE='.pc-iconbtn,.pc-add,.pc-qa,[data-qa-layer],.pcar-arr,.pcar-tabs,.chip,.wish,.sz,.cswatch,.acc-h,[data-sns-open],.dgrid-tabs,.dgrid-more,.hd-burger,input,select,textarea';
+  const IGNORE='.pc-iconbtn,.pc-add,.pc-qa,[data-qa-layer],[data-wl-layer],.wlt,.wlc,.pcar-arr,.pcar-tabs,.chip,.wish,.sz,.cswatch,.acc-h,[data-sns-open],.dgrid-tabs,.dgrid-more,.hd-burger,input,select,textarea';
   document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;
     const act=t.closest('[data-master-toast] .act');if(act){e.preventDefault();go('bag');return}
     if(t.closest('.hd-logo')){e.preventDefault();go('home');return}
     if(t.closest('.hd-count,[aria-label="Bag"]')){e.preventDefault();e.stopPropagation();go('bag');return}
+    if(t.closest('.hd [aria-label="Wishlist"]')){e.preventDefault();e.stopPropagation();go('wishlist');return}
     if(t.closest(IGNORE))return;
     if(M.page==='pdp'&&t.closest('.pdp-ctas .bd.pri')){e.preventDefault();added();return}
     if(t.closest('.pdp-gal'))return;
@@ -26,6 +29,10 @@
   document.addEventListener('dg:bundle',e=>added((e.detail.items||[]).length));
   /* Quick add (DS quickadd.js) bumps the header bag count itself; View product → PDP */
   document.addEventListener('dg:quickadd-view',()=>go('pdp'));
+  /* the Wishlist template asks before it navigates on its own (cancelable events) */
+  document.addEventListener('dg:view-bag',e=>{e.preventDefault();go('bag')});
+  document.addEventListener('dg:wishlist-pdp',e=>{e.preventDefault();go('pdp')});
+  document.addEventListener('dg:wishlist-browse',e=>{e.preventDefault();go('plp')});
   function added(n){n=n||1;const msg=(n>1?n+' items':'Item')+' added to bag';
     /* the DS toast drop-in (toast.js: bottom on phones, top-centre on desktop); inline fallback if a template doesn't load it */
     if(window.DG_toast)window.DG_toast({msg:n>1?msg:'Added to Bag',action:'View Bag',onAction:()=>go('bag')});
