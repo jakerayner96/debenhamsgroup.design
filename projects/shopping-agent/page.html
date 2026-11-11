@@ -205,14 +205,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .pc .pc-badges{position:absolute;left:12px;bottom:12px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
 .pc .badge{background:#FFF;border-color:#FFF;height:auto;padding:5px 10px;font-size:12px;border-radius:4px}
 .pc .sw{display:flex;gap:6px;margin-top:4px}.pc .sw i{width:22px;height:22px;border-radius:4px;border:1px solid var(--border-subtle)}.pc .sw i.on{outline:1.5px solid #000;outline-offset:1px}
-/* the agent's next best action: a row of the grid, placed below the filters or after row N (panel) */
-.nba{display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:8px;background:var(--surface-sunken)}
-/* title + body sit together (gap 1, 4px), the prompts a clear gap 4 (16px) below */
-.nba{gap:16px!important}.nba .grp{display:flex;flex-direction:column;gap:4px}
-.nba h3{margin:0;font-size:18px;font-weight:600}.nba p{margin:0;font-size:14px;font-weight:var(--w-regular,300);line-height:1.4;color:var(--text-primary,#000)}
-.nba .set{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.nba .sep{display:none;width:1px;height:28px;background:var(--border-subtle);margin:0 4px}@media(min-width:1024px){.nba .sep{display:block}}
-.grid .nba{grid-column:1/-1}
+/* the agent's next best action = the DS .ai-nba (components.css; Figma PLP Next best action), a full row of the grid (.ag-nba) */
 .pc-img .onimg.br{bottom:8px;right:8px;left:auto}
 
 /* ---------- Home: the Debenhams roundel row (its first module) — smaller, padded. Debenhams only: every other fascia opens on a full-width hero ---------- */
@@ -623,7 +616,7 @@ function pcard(p,i,k){
 function plp(){
   const d=desk(),cols=d?5:2,ids=[1,21,24,29,31,27,5,23,6,9,28,8,0,3,2,10,12,4,11,13];
   const NBA_ROW=d?3:4,NBA_Q='What’s the occasion?',NBA_OPTS=['Wedding guest','Party season','Workwear','Everyday'];   /* placeholder copy, after row 4 on mobile, row 3 on desktop (Jake 11 / 12 Nov) */
-  const nba=ON('nba')?`<div class="nba" ${F('nba','after row '+NBA_ROW)}><div class="grp"><h3>${esc(NBA_Q)}</h3><p>Select an option to start a chat with ${esc(E().name)}</p></div><div class="set">${NBA_OPTS.map(o=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(NBA_Q+' → '+o)}">${spk(14)}${esc(o)}</button>`).join('')}<span class="sep"></span><button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me decide what to wear">${spk(14)}Help me decide</button></div></div>`:'';
+  const nba=ON('nba')?`<div class="ai-nba ag-nba" ${F('nba','after row '+NBA_ROW)}><div class="grp"><h3>${esc(NBA_Q)}</h3><p>Select an option to start a chat with ${esc(E().name)}</p></div><div class="set">${NBA_OPTS.map(o=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(NBA_Q+' → '+o)}">${spk(14)}${esc(o)}</button>`).join('')}<span class="sep"></span><button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me decide what to wear">${spk(14)}Help me decide</button></div></div>`:'';
   const cards=ids.map((i,k)=>pcard(PR()[i],i,k));
   const row=NBA_ROW;
   if(nba&&row>0)cards.splice(Math.min(row*cols,cards.length),0,nba);

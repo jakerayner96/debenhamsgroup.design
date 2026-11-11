@@ -1947,6 +1947,7 @@ html.exporting .ai-fab,body.exporting .ai-fab{animation:none}
 .ai-nba .grp,.ai-cp .grp{display:flex;flex-direction:column;gap:4px}
 .ai-nba h3{margin:0;font-size:18px;font-weight:var(--w-strong,600)}.ai-nba p{margin:0;font-size:14px;font-weight:var(--w-regular,300);line-height:1.4;color:var(--text-primary)}
 .ai-nba .set,.ai-cp .set{display:flex;flex-wrap:wrap;gap:8px}
+.ai-nba .set{align-items:center}.ai-nba .sep{display:none;width:1px;height:28px;background:var(--border-subtle,#E7E7E7);margin:0 4px}@media(min-width:1024px){.ai-nba .sep{display:block}}   /* the rule before Help me decide (desktop) — Figma PLP Next best action, Separator on */
 .ai-cp{display:grid;grid-template-columns:1fr;font-family:var(--font-family-base)}
 @media(min-width:1024px){.ai-cp{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}   /* desktop: prompt panel | image, 50/50, full width (no outer margin) */
 .ai-cp .pan{display:flex;flex-direction:column;justify-content:center;gap:16px;padding:24px 16px;background:var(--ai-cp-bg,#F4F4F2);color:var(--ai-cp-fg,#000)}
