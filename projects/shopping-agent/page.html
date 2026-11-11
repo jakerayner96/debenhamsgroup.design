@@ -803,14 +803,15 @@ function openChat(q,vto){kbDown();CHAT.open=true;
   else CHAT.focus=true;
   drawChat();parent.postMessage({protoChat:true},'*')}
 /* RE-OPEN (Jake 11 Nov — feedback: once the chat is closed it isn't obvious how to get back to it). Closing keeps the conversation; once one has
-   started, a DS AI resume pattern (components.css .ai-fab / .ai-fab--ext / .ai-resume / .ai-dot) shows until the shopper reopens it. Ask / the AI
+   started, a DS AI resume pattern (components.css .ai-fab ± .counter / .ai-fab--ext ± .counter / .toast--resume; Figma 217:25657) shows until the shopper reopens it. Ask / the AI
    circle also reopen the same conversation; the refresh in the chat header is what starts again. */
 const waiting=()=>!CHAT.open&&!CHAT.closing&&CHAT.msgs.some(m=>m.b);
 function lastReply(){const m=[...CHAT.msgs].reverse().find(x=>x.b);if(!m)return '';const d=document.createElement('div');d.innerHTML=m.b;d.querySelectorAll('.cm-car,.rail-nav,.cm-qr,.cm-ctx,.cm-pd,.cm-look,.cm-look-cta,.cm-fit,button').forEach(x=>x.remove());return (d.textContent||'').replace(/\s+/g,' ').trim()}
-function resume(){if(!waiting()||S.search)return '';const md=S.resume||'fab',nm=esc(E().name),lbl=`Continue your chat with ${nm}`;
-  if(md==='fab')return `<button class="ai-fab" data-resume="1" ${F('resume','floating button')} aria-label="${lbl}">${spk(24)}<span class="ai-fab__dot"></span></button>`;
-  if(md==='ext')return `<button class="ai-fab ai-fab--ext" data-resume="1" ${F('resume','Continue chat pill')} aria-label="${lbl}">${spk(20)}Continue chat<span class="ai-fab__dot"></span></button>`;
-  if(md==='bar'&&!CHAT.barHidden)return `<div class="ai-resume" role="region" aria-label="Your chat with ${nm}" ${F('resume','peek bar')}><button class="ai-resume__open" data-resume="1" aria-label="${lbl}">${spk(20)}<span class="ai-resume__tx"><span class="ai-resume__t">${esc(CFG.payload.settings['chat-title'])}</span><span class="ai-resume__p">${esc(lastReply())}</span></span><span class="ai-resume__up" aria-hidden="true"></span></button><button class="ai-resume__x" data-resumex="1" aria-label="Hide"></button></div>`;
+function convTitle(){const u=CHAT.msgs.find(m=>m.u);return u?u.u:'Your chat with '+E().name}   /* production: Google's generated conversation title */
+function resume(){if(!waiting()||S.search)return '';const md=['fab','fabc','pill','pillc','toast'].includes(S.resume)?S.resume:'fab',nm=esc(E().name),lbl=`Continue your chat with ${nm}`,cnt='<span class="counter" aria-label="1 new reply">1</span>';
+  if(md==='fab'||md==='fabc')return `<button class="ai-fab" data-resume="1" ${F('resume',md==='fab'?'floating button':'floating button + counter')} aria-label="${lbl}">${spk(20)}${md==='fabc'?cnt:''}</button>`;
+  if(md==='pill'||md==='pillc')return `<button class="ai-fab ai-fab--ext" data-resume="1" ${F('resume',md==='pill'?'Open chat pill':'Open chat pill + counter')} aria-label="${lbl}">${spk(18)}Open chat${md==='pillc'?cnt:''}</button>`;
+  if(md==='toast'&&!CHAT.barHidden)return `<div class="toast toast--top toast--resume" role="status" ${F('resume','toast')}><span class="toast-msg">${esc(convTitle())}</span><span class="toast-end"><button type="button" class="act" data-resume="1" aria-label="${lbl}">Open</button><button type="button" class="toast-x" data-resumex="1" aria-label="Close"></button></span></div>`;
   return ''}
 /* PLP back to top (DS .btt, as live: 40px black circle) + the re-open button (Jake 11 Nov): panel “PLP back to top” — replace = while a chat is
    waiting the agent button takes its place; both = both on the PLP, the agent button stacks 12 above it (DS --fab-lift); other pages agent only. */
@@ -827,12 +828,11 @@ function navTarget(t){if(t.closest('[data-q],[data-resume],[data-btt],.pc-iconbt
   if(S.page==='plp'&&t.closest('.roundel'))return 'plp';
   return null}
 function go(to){S.page=to;S.search=false;S.q='';CHAT.open=false;parent.postMessage({protoPage:to,protoSearch:false},'*');render();scrollTo(0,0)}
-function syncBtt(){let b=document.getElementById('btt');const want=S.page==='plp'&&!S.search&&!((S.pltop||'replace')==='replace'&&waiting()&&S.resume!=='dot');
+function syncBtt(){let b=document.getElementById('btt');const want=S.page==='plp'&&!S.search&&S.bttShow!==false;   /* Figma 217:25657: on/off · black/white · under/over the agent button */
   if(!want){if(b)b.remove();return}
-  if(!b){b=document.createElement('button');b.id='btt';b.className='btt';b.type='button';b.setAttribute('aria-label','Back to top');b.dataset.btt='1';document.body.appendChild(b)}
-  b.classList.toggle('is-on',EXPORTING||scrollY>400)}
+  if(!b){b=document.createElement('button');b.id='btt';b.type='button';b.setAttribute('aria-label','Back to top');b.dataset.btt='1';document.body.appendChild(b)}
+  b.className='btt'+(S.bttStyle==='white'?' btt--light':'')+(S.bttOrder==='over'?' btt--over':'')+(EXPORTING||scrollY>400?' is-on':'')}
 addEventListener('scroll',()=>{const b=document.getElementById('btt');if(b)b.classList.toggle('is-on',EXPORTING||scrollY>400)},{passive:true});
-function resumeDot(){const on=waiting()&&S.resume==='dot';document.querySelectorAll('.ag-ask,.ai-circle,.hd-sicon').forEach(el=>{el.classList.toggle('ai-dot',on);if(on)el.setAttribute('data-feat','resume');else if(el.dataset.feat==='resume')el.removeAttribute('data-feat')})}
 /* added-to-bag toast (DS .toast--inset): ADD TO BAG → “Added to Bag · View Bag” + close above the input, 6s; View Bag → the DS spinner, the agent
    collapses, then the bag. Rendered only while it shows (the DS entrance animation holds it visible otherwise). */
 function hideToast(){clearTimeout(CHAT.toastT);const t=document.getElementById('cmtoast');const done=()=>{CHAT.toast=false;const x=document.getElementById('cmtoast');if(x)x.remove()};
@@ -852,7 +852,7 @@ function closeChat(){const cm=document.getElementById('cm');
   if(!cm||EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches)return done();
   if(CHAT.closing)return;CHAT.closing=true;
   document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>{el.classList.remove('in');el.classList.add('out')});setTimeout(done,260)}
-function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();resumeDot();syncBtt();document.querySelectorAll('#chat .cm-car').forEach(c=>{railState(c);c.addEventListener('scroll',()=>railState(c),{passive:true})});
+function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();syncBtt();document.querySelectorAll('#chat .cm-car').forEach(c=>{railState(c);c.addEventListener('scroll',()=>railState(c),{passive:true})});
   const open=!!document.getElementById('cm');
   if(open&&!DRAWN&&!EXPORTING)document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>el.classList.add('in'));
   DRAWN=open;

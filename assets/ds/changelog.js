@@ -2,6 +2,21 @@
    Every DS change adds to the top entry: added (new components / tokens / assets), changed, fixed, and which project drove it (by).
    Rendered on the site's Changelog page (index.html #changelog). Entries before 16 Oct 2026 are seeded from the git history of assets/ds. */
 window.DG_CHANGELOG=[
+ {
+  "d": "2026-11-11",
+  "v": "2026.11.11d",
+  "title": "Re-open chat: Jake's final five · back to top black / white, under / over · Status counter",
+  "by": "Shopping agent (Figma Zi4qRcAFTELiCvFIl29mJC 217:25657), Jake 11 Nov",
+  "added": [
+   "Status counter (.counter) — Figma Status Counter Small: 12px, --counter-bg (Debenhams #529C92), 1.5px white ring, white SemiBold 8.3 · catalogue Status counter",
+   "AI resume final five: floating button, floating button + counter, Open chat pill (.ai-fab--ext, SemiBold 14, 126×40), Open chat pill + counter, toast (.toast--resume: the DS toast with the generated conversation title · Open · close, persistent; phones bottom, desktop bottom right 400)",
+   "Back to top .btt--light (white + the floating button shadow, black chevron) and .btt--over (12 above the agent button); with the resume toast it sits 12 above the toast"
+  ],
+  "changed": [
+   "AI resume: the peek bar (.ai-resume), the launcher dot (.ai-dot) and the corner dot retired for the final five · back to top chevron 1px above centre (Figma)"
+  ],
+  "fixed": []
+ },
  {"d": "2026-11-11", "v": "2026.11.11d", "title": "Figma: App chrome — iOS & Android (new 📱 App Components page)", "by": "App Prototype (jakerayner96/plt-app-prototype) + Best App Ever Android Navigation 426:12029, Jake 11 Nov: tidy the app page, iOS + Android (glass and flat) chrome to design on", "added": ["Figma App / Status Bar (iOS 54 · Android 52 with punch-hole, dark / light ink) · App / System Bar · Bottom (iOS home indicator, Android gesture bar) · App / Nav Button (glass bubble / plain, icon / text capsule) · App / Nav Bar (iOS Glass, Android Glass, Android Flat × title only, back + title, back + title + action, title + action, back + action) · App / Home Header (logo, then search · AI · inbox · account, Show account) · App / Tab Bar (glass capsule / Material 3 flat × selected 1–5, swappable tab icons) · six 390 × 844 screen templates · App Icons / Nav Bar / Inbox (the app's envelope)", "Figma variable ai/fg (DG Group Design System, all brand modes) = --ai-fg: Debenhams #2E7F79, KM black, every other fascia surface/action"], "changed": ["Figma: the old App Components boards (flat App / Tab Bar, App / Nav Bar, Title and Controls, the 11 Nov glass chrome, PDP + unsorted screens) moved to 🗑 DUPLICATES — their instances keep working until swapped; the app tab / nav icons moved onto the new board · figma-lib.js: app-top → App / Nav Bar 14316:4898, app-tabbar → App / Tab Bar 14317:5293"], "fixed": []},
  {
   "d": "2026-11-11",
