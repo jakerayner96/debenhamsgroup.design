@@ -51,7 +51,7 @@ function R(){const primary=S.primary==='pw'?'pw':'link';
 
 function header(){
   const dev=desk()?'desktop':'mobile',usp=S.usp?`<div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`:'';
-  if(window.DG_headerHTML)return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${DG_headerHTML(S.brand,'main',dev)}</header>${usp}`;   /* DS header (header.js): each fascia's live header */
+  if(window.DG_headerHTML)return `<header class="hd${desk()?' hd--desktop':''}${((window.DG_HEADER||{})[S.brand]||{}).inv?' hd--inv':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${DG_headerHTML(S.brand,'main',dev)}</header>${usp}`;   /* DS header (header.js): each fascia's live header */
   let h=strip(desk()?V('header',1):V('header',0)).replace(/ style="[^"]*border[^"]*"/,'').replace(/assets\/brands\/debenhams\.svg/,`assets/brands/${S.brand}.svg`);
   h=h.replace(/<div class="hd-usp">[\s\S]*?<\/div><\/div>$/,'</div>');
   if(S.brand==='plt')h=h.replace('icons/search.svg','icons/plt-search.svg').replace('icons/account.svg','icons/plt-account.svg').replace('icons/heart-24.svg','icons/plt-heart.svg').replace('icons/bag.svg','icons/plt-bag.svg');

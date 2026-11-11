@@ -85,7 +85,7 @@ const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(docum
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
 
 function header(){const dev=desk()?'desktop':'mobile';
-  return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header><div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`}
+  return `<header class="hd${desk()?' hd--desktop':''}${((window.DG_HEADER||{})[S.brand]||{}).inv?' hd--inv':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header><div data-usp-banners data-usp-auto="${EXPORTING?0:5}"></div>`}
 /* AI generated imagery (EU AI Act Art. 50(4), 26 Oct 2026): S.ai (or a product's own p.ai) = indexes of the AI images. Each gets the DS strip on its slide
    (.ai-wrap + .badge-ai, copy from assets/ds/ai-strip.js in language S.aiLang, default en), its alt text appends the same language's "AI generated image" and the product tags lift (.main.has-ai). Never on thumbnails. */
 const AIS=p=>S.ai||p.ai||[];

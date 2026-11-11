@@ -42,7 +42,7 @@ function card(p,b,i){const tag=p.tag&&p.tag.length<14?p.tag:'';
     <div class="pc-info"><div class="pc-titles">${p.brand&&!['plt','warehouse'].includes(b)?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div>
     <div class="pc-price${p.was?' sale':''}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}${p.pct?`<span class="pct">${esc(p.pct)}</span>`:''}</div></div></article>`}
 function page(){const b=S.brand,ps=((window.PRODUCTS_ALL||{})[b]||[]),t=TERMS()[0],dev=desk()?'desktop':'mobile',ul=b==='plt';
-  return `<header class="hd${desk()?' hd--desktop':''}" data-hd-brand="${b}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(b,'main',dev):''}</header>
+  return `<header class="hd${desk()?' hd--desktop':''}${((window.DG_HEADER||{})[b]||{}).inv?' hd--inv':''}" data-hd-brand="${b}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(b,'main',dev):''}</header>
   <main class="pg">
     <div class="srch-bar${ul?' srch-bar--underline':''}"><div class="sb-field"><input value="${esc(t)}" aria-label="Search"><button class="sb-clr" aria-label="Clear"><img src="assets/ds/icons/lib/icons-clear.svg" alt=""></button><button class="sb-go" aria-label="Search"><img src="assets/ds/icons/${ul?'plt-search':'search'}.svg" alt=""></button></div><button class="sb-x" aria-label="Close search"><img src="assets/ds/icons/lib/icons-close.svg" alt=""></button></div>
     <div class="srch-sugg"><ul class="ss-terms">${TERMS().map(x=>`<li><button class="ss-term">${esc(x).replace(esc(t),`<b>${esc(t)}</b>`)}</button></li>`).join('')}</ul></div>
