@@ -1,10 +1,10 @@
 /* DG Group Design System — Google shopping agent drop-in (11 Nov 2026; from projects/shopping-agent, landed in the PLP template for every fascia).
    Mounts the agent's on-page entry points on any page, in the page's fascia (html[data-brand]), from DS pieces only:
      · Ask pill beside the search (.ai-pill--outline "Ask" — every option reads "Ask", Jake 20 Oct) · desktop: after the search field · mobile: beside the field when search opens (not in the header row)
-     · PLP Next Best Action (.ai-nba) as a full-width grid row after row 4 (8 products on mobile, 4 × cols on desktop)
+     · PLP Next Best Action (.ai-nba) as a full-width grid row: after row 4 on mobile (8 products), after row 3 on desktop 1024+ (Jake 12 Nov)
      · the chat window (.ag-layer > .mdl > .agent-chat): start screen, or the query as a user bubble + a mock reply (labelled mock) with product tiles and quick replies
    Production: every entry point calls window.googleAgent.sendQuery(text) — the window itself is Google's widget styled by salesAgentConfig.json.
-     DG_agent.mount({grid, after:4, products:[{n,img,now,was}], header:document}) → re-call after the grid re-renders
+     DG_agent.mount({grid, after:4, afterDesk:3, products:[{n,img,now,was}], header:document}) → re-call after the grid re-renders
      DG_agent.open(query?) · DG_agent.close()
    Names: Debenhams = Deb ("Ask Deb"); every other fascia speaks as the brand ("your boohoo Personal Assistant"). */
 (function(root){
@@ -16,7 +16,7 @@
   const name=b=>b==='debenhams'?'Deb':(BN[b]||'us');
   const NBA=b=>MEN.includes(b)?{q:'What are you shopping for?',a:['Wedding guest','Smart casual']}:{q:'What’s the occasion?',a:['Wedding guest','Party season']};
   const STARTERS=b=>MEN.includes(b)?['Find me an outfit for a wedding','Gifts for my dad under £50','What goes with my black jeans?']:['Find me an outfit for a wedding','Gifts for my mum under £50','What goes with a black midi dress?'];
-  let state={products:[],grid:null,after:4};
+  let state={products:[],grid:null,after:4,afterDesk:3};
   const send=q=>{try{root.googleAgent&&root.googleAgent.sendQuery&&root.googleAgent.sendQuery(q)}catch(e){}};
 
   /* Ask pill */
@@ -31,7 +31,7 @@
     return `<div class="ai-nba ag-nba" data-agent-nba><div class="grp"><h3>${esc(n.q)}</h3><p>Select an option to start a chat with ${esc(name(b))}</p></div><div class="set">${n.a.map(a=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" type="button" data-agent-q="${esc(a)}"><i class="ai-icon"></i>${esc(a)}</button>`).join('')}<button class="ai-pill ai-pill--outline ai-pill--wrap" type="button" data-agent-q="Help me decide"><i class="ai-icon"></i>Help me decide</button></div></div>`}
   function placeNba(){const g=state.grid;if(!g)return;let row=g.querySelector('[data-agent-nba]');if(!row){g.insertAdjacentHTML('beforeend',nbaRow());row=g.querySelector('[data-agent-nba]')}
     const cols=Math.max(1,(getComputedStyle(g).gridTemplateColumns||'').split(' ').filter(Boolean).length);
-    const cards=[...g.children].filter(c=>c!==row);const at=Math.min(cards.length,cols*state.after);
+    const cards=[...g.children].filter(c=>c!==row);const rows=matchMedia('(min-width:1024px)').matches?state.afterDesk:state.after;const at=Math.min(cards.length,cols*rows);
     if(cards[at-1]&&cards[at-1].nextElementSibling!==row)cards[at-1].after(row)}
 
   /* chat window */

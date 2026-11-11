@@ -622,7 +622,7 @@ function pcard(p,i,k){
 }
 function plp(){
   const d=desk(),cols=d?5:2,ids=[1,21,24,29,31,27,5,23,6,9,28,8,0,3,2,10,12,4,11,13];
-  const NBA_ROW=4,NBA_Q='What’s the occasion?',NBA_OPTS=['Wedding guest','Party season','Workwear','Everyday'];   /* placeholder copy, after row 4 (Jake 11 Nov) */
+  const NBA_ROW=d?3:4,NBA_Q='What’s the occasion?',NBA_OPTS=['Wedding guest','Party season','Workwear','Everyday'];   /* placeholder copy, after row 4 on mobile, row 3 on desktop (Jake 11 / 12 Nov) */
   const nba=ON('nba')?`<div class="nba" ${F('nba','after row '+NBA_ROW)}><div class="grp"><h3>${esc(NBA_Q)}</h3><p>Select an option to start a chat with ${esc(E().name)}</p></div><div class="set">${NBA_OPTS.map(o=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(NBA_Q+' → '+o)}">${spk(14)}${esc(o)}</button>`).join('')}<span class="sep"></span><button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me decide what to wear">${spk(14)}Help me decide</button></div></div>`:'';
   const cards=ids.map((i,k)=>pcard(PR()[i],i,k));
   const row=NBA_ROW;
