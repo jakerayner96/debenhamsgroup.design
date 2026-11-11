@@ -480,7 +480,7 @@ let S={brand:'debenhams',page:'home',labels:false,on:{},launcher:'niAsk',mCam:20
 try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}   // URLSearchParams already decodes
 if(S.sqn){S._sqn=S.sqn;S.q=S.sq||''}
 const OOS=['vto','shopSimilar'];   /* Virtual Try On + Shop Similar: NOT IN SCOPE this phase (Jake, 20 Oct) — never rendered */
-const ON=f=>!OOS.includes(f)&&S.on[f]!==false;
+const ON=f=>!OOS.includes(f);   /* every feature lives on its page (Jake 11 Nov): content prompts on every home, search suggestions in every search, NBA on every PLP, prompts on every PDP */
 let EXPORTING=false,BASE=null,CFG=null,CHAT={open:false,msgs:[]};
 
 /* ---- the sparkle: the dev build's shopping-agent-sparkle path, gradient in the agent primary ---- */
@@ -621,9 +621,10 @@ function pcard(p,i,k){
 }
 function plp(){
   const d=desk(),cols=d?5:2,ids=[1,21,24,29,31,27,5,23,6,9,28,8,0,3,2,10,12,4,11,13];
-  const nba=ON('nba')?`<div class="nba" ${F('nba',S.nbaRow?'after row '+S.nbaRow:'below filters')}><div class="grp"><h3>${esc(S.nbaQ)}</h3><p>Select an option to start a chat with ${esc(E().name)}</p></div><div class="set">${S.nbaOpts.filter(Boolean).map(o=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(S.nbaQ+' → '+o)}">${spk(14)}${esc(o)}</button>`).join('')}<span class="sep"></span><button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me decide what to wear">${spk(14)}Help me decide</button></div></div>`:'';
+  const NBA_ROW=4,NBA_Q='What’s the occasion?',NBA_OPTS=['Wedding guest','Party season','Workwear','Everyday'];   /* placeholder copy, after row 4 (Jake 11 Nov) */
+  const nba=ON('nba')?`<div class="nba" ${F('nba','after row '+NBA_ROW)}><div class="grp"><h3>${esc(NBA_Q)}</h3><p>Select an option to start a chat with ${esc(E().name)}</p></div><div class="set">${NBA_OPTS.map(o=>`<button class="ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(NBA_Q+' → '+o)}">${spk(14)}${esc(o)}</button>`).join('')}<span class="sep"></span><button class="ai-pill ai-pill--outline ai-pill--wrap" data-q="Help me decide what to wear">${spk(14)}Help me decide</button></div></div>`:'';
   const cards=ids.map((i,k)=>pcard(PR()[i],i,k));
-  const row=+S.nbaRow||0;
+  const row=NBA_ROW;
   if(nba&&row>0)cards.splice(Math.min(row*cols,cards.length),0,nba);
   const bc=`<nav class="bc" aria-label="Breadcrumb"><a href="#">Home</a><span class="sep">/</span><a href="#">${AG.BRANDS[BR()]&&AG.BRANDS[BR()].men?'Mens':'Womens'}</a><span class="sep">/</span><a href="#">Shop By Collection</a><span class="sep">/</span><span class="cur">Partywear</span></nav>`;
   const rnd=`<div class="rnd">${(AG.BRANDS[BR()]&&AG.BRANDS[BR()].men?CATS_M:CATS).map(([n,i])=>`<a class="roundel" href="#"><i><img src="${IMG(i)}" alt=""></i><span>${n}</span></a>`).join('')}</div>`;
@@ -813,6 +814,19 @@ function resume(){if(!waiting()||S.search)return '';const md=S.resume||'fab',nm=
   return ''}
 /* PLP back to top (DS .btt, as live: 40px black circle) + the re-open button (Jake 11 Nov): panel “PLP back to top” — replace = while a chat is
    waiting the agent button takes its place; both = both on the PLP, the agent button stacks 12 above it (DS --fab-lift); other pages agent only. */
+/* click through the prototype (Jake 11 Nov): logo → home · header nav, home tiles, breadcrumbs, roundels → PLP · a product card → PDP · bag icon → bag.
+   The shell's page follows (protoPage). */
+function navTarget(t){if(t.closest('[data-q],[data-resume],[data-btt],.pc-iconbtn,.pc-qa,.pc-add,.cm,.ac,.ag-sw,.hd-sicon,.hd-burger'))return null;
+  if(t.closest('#hdrwrap .hd-bar>img,#hdrwrap .hd-left>img'))return 'home';
+  const hb=t.closest('#hdrwrap .hd-icons button');if(hb)return /bag/i.test(hb.getAttribute('aria-label')||'')?'bag':null;
+  if(t.closest('#hdrwrap .hd-nav a'))return 'plp';
+  if(!t.closest('#body'))return null;
+  const bc=t.closest('.bc a');if(bc)return /^home$/i.test(bc.textContent.trim())?'home':'plp';
+  if(t.closest('.pc,.bag-item'))return 'pdp';
+  if(S.page==='home'&&t.closest('a'))return 'plp';
+  if(S.page==='plp'&&t.closest('.roundel'))return 'plp';
+  return null}
+function go(to){S.page=to;S.search=false;S.q='';CHAT.open=false;parent.postMessage({protoPage:to,protoSearch:false},'*');render();scrollTo(0,0)}
 function syncBtt(){let b=document.getElementById('btt');const want=S.page==='plp'&&!S.search&&!((S.pltop||'replace')==='replace'&&waiting()&&S.resume!=='dot');
   if(!want){if(b)b.remove();return}
   if(!b){b=document.createElement('button');b.id='btt';b.className='btt';b.type='button';b.setAttribute('aria-label','Back to top');b.dataset.btt='1';document.body.appendChild(b)}
@@ -910,6 +924,7 @@ document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.t
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
   {const r=e.target.closest('[data-rail]');if(r){const c=r.closest('.rail-nav').previousElementSibling,t=c.querySelector('.cm-tile');c.scrollBy({left:+r.dataset.rail*((t?t.offsetWidth:120)+10)*2,behavior:'smooth'});return}}
+  {const to=navTarget(e.target);if(to){e.preventDefault();go(to);return}}
   if(e.target.closest('[data-btt]')){scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});return}
   if(e.target.closest('[data-resume]')){e.preventDefault();CHAT.user=true;openChat('');return}
   if(e.target.closest('[data-resumex]')){e.preventDefault();CHAT.barHidden=true;drawChat();return}

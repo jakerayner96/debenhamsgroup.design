@@ -1158,7 +1158,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl-info{width:12px}.mdl-info::before{width:12px;height:12px;background:url("icons/lib/icons-info.svg") center/12px 12px no-repeat}
 /* .mdl-refresh: a 16px refresh / start-again action left of the close, the same line and size as the X (Ask Deb chat, 29 Oct) */
 .mdl-refresh{width:16px;height:25px;flex:none;margin-left:auto;padding:0;border:0;background:none;display:grid;place-items:center;cursor:pointer}
-.mdl-refresh::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-refresh-16.svg") center/16px 16px no-repeat}   /* 16 grid, 1px, the same 15px span as the close (Jake 11 Nov) */
+.mdl-refresh::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-new-chat-16.svg") center/16px 16px no-repeat}   /* new chat (the DS Icons / Edit glyph, 16 grid, 1px, the close's 15px span — Jake 11 Nov) */
 .mdl-refresh+.modal-x{margin-left:0}
 .modal-hd .mdl-refresh{margin-right:8px}   /* refresh ↔ close 24 apart (header gap 16 + 8) */
 .mdl-bd{display:flex;flex-direction:column;gap:24px;font-size:16px;font-weight:var(--w-regular);line-height:normal;min-height:0}
@@ -1840,7 +1840,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .ai-fab:hover{box-shadow:0 6px 20px rgba(0,0,0,.18),0 1px 3px rgba(0,0,0,.08)}.ai-fab:active{transform:scale(.96)}
 .ai-fab:focus-visible,.ai-resume:focus-within{outline:var(--border-w-focus,2px) solid var(--border-focus,#000);outline-offset:2px}
 .ai-fab .ai-icon{width:20px;height:20px}
-.ai-fab__dot{position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:var(--ai-fg);box-shadow:0 0 0 2px var(--surface-raised,#FFF)}
+.ai-fab__dot{position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:var(--ai-fg);box-shadow:none}   /* no ring (Jake 11 Nov) */
 .ai-fab--ext{display:inline-flex;align-items:center;gap:8px;width:auto;height:40px;padding:0 16px 0 12px;font-size:14px;font-weight:var(--w-mid,500);line-height:1;white-space:nowrap}
 .ai-fab--ext .ai-icon{width:18px;height:18px}
 .ai-fab--ext .ai-fab__dot{top:-1px;right:-1px}
@@ -1854,12 +1854,13 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .ai-resume__up::before,.ai-resume__x::before{content:"";width:16px;height:16px;background:var(--text-primary);-webkit-mask:url("icons/lib/icons-up.svg") center/contain no-repeat;mask:url("icons/lib/icons-up.svg") center/contain no-repeat}
 .ai-resume__x::before{width:12px;height:12px;-webkit-mask-image:url("icons/lib/icons-close-12.svg");mask-image:url("icons/lib/icons-close-12.svg")}
 .ai-dot{position:relative}
-.ai-dot::after{content:"";position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--ai-fg);box-shadow:0 0 0 2px var(--surface-raised,#FFF);pointer-events:none;animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both}
+.ai-dot::after{content:"";position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--ai-fg);box-shadow:none;pointer-events:none;animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both}
 @media(min-width:1024px){.ai-fab{right:24px;bottom:calc(24px + var(--fab-lift,0px))}.ai-resume{left:auto;right:24px;bottom:calc(24px + var(--fab-lift,0px));width:360px}}
 .ai-fab,.ai-resume{transition:box-shadow .15s,transform .15s,bottom .22s cubic-bezier(.2,.8,.2,1)}
 /* Back to top (.btt, PLP — as live: 40px black circle, white up chevron) — appears once the page has scrolled (.is-on), bottom right 16 (24 from 1024).
+   It sits ON the page (--z-raised): menus, modals and the agent window come up over it.
    The AI resume button stacks 12 above it while both show (--fab-lift); or a page shows only one of them (shopping agent: PLP option “Replace it”). */
-.btt{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:var(--z-sticky,200);display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:var(--surface-inverse,#0F0F0F);cursor:pointer;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s}
+.btt{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:var(--z-raised,10);display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:var(--surface-inverse,#0F0F0F);cursor:pointer;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s}
 .btt::before{content:"";width:16px;height:16px;background:var(--text-inverse,#FFF);-webkit-mask:url("icons/lib/icons-up-16.svg") center/16px 16px no-repeat;mask:url("icons/lib/icons-up-16.svg") center/16px 16px no-repeat}
 .btt.is-on{opacity:1;transform:none;pointer-events:auto}
 .btt:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#000);outline-offset:2px}
