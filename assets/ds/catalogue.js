@@ -655,10 +655,10 @@ const DG_CATALOGUE = [
   dev:{title:'Organisms/Footer', status:'match', note:'Dev: footerLinks · paymentMethods · countries · marketFlagCountry; Footer Link = the column groups; Newsletter Signup = our band. Dev runs a peach --color-footer-help-header-background #FFF1E8 on every fascia — ours uses --ft-band per brand.'} },
 
 { slug:'app-tabbar', name:'App tab bar', group:'Navigation', tier:'organism', css:'.app-tabbar · .app-tabbar--plt', figma:'aIHmkCaTy9c5EWOxAGw0So · 3824:9530 / 9893:28665 · PLT HoBuVNEhf1qpL61XFipy0f · 1128:225860',
-  summary:'The native app bottom bar. One standard bar for Debenhams and most fascias (bookmark in place of the heart on boohooMAN and Karen Millen); PLT runs its own labelled bar.',
+  summary:'The native app bottom bar, in Liquid Glass (11 Nov 2026, as the App Prototype): a floating glass capsule the page scrolls under. One standard bar for Debenhams and most fascias (bookmark in place of the heart on boohooMAN and Karen Millen); PLT runs its own labelled bar.',
   use:['Every app screen, pinned to the bottom of the viewport (apps are always shown at the fold).'],
   avoid:['A heart on boohooMAN or Karen Millen: their wishlist is the bookmark.','An Account tab on PLT: it has Home · Shop · Discover · Wishlist · Bag.'],
-  anatomy:['Standard: 83px white · 0 -0.5px #E8E8E8 top shadow · five 48×40 tabs, 28px icons, inactive 30% · 139×5 home indicator','PLT: 88px #FFFDF7 · 0.3px black top rule · 48×43 tabs with 10/14 Roboto Medium labels; only the icon dims'],
+  anatomy:['Capsule 60 high, 16 from each side, 12 off the bottom · glass: white 65% over an 18px blur + saturate 180%, 1px white 55% rim, 0 4 16 black 8% shadow (--glass-*)','Five tabs spread evenly, 28px icons at full ink · selected tab = a lighter pill, white 85%, 66 × 46','PLT: same capsule, 24px icons over 10/14 Roboto Medium labels','The flat white bar is retired: glass only (App Prototype, 29 Oct)'],
   variants:(()=>{const I='assets/ds/icons/app/';
     const std=(fav,sel)=>'<div class="app-tabbar" style="width:390px"><div class="tabs">'+['tab-home','tab-menusearch','tab-bag',fav,'tab-account'].map((t,i)=>'<button class="tab'+(i===sel?' on':'')+'" aria-label="'+t.replace('tab-','')+'"><img src="'+I+t+'.svg" alt=""></button>').join('')+'</div><span class="hi"></span></div>';
     const plt=sel=>'<div class="app-tabbar app-tabbar--plt" style="width:390px"><div class="tabs">'+[['plt-tab-home','Home'],['plt-tab-shop','Shop'],['plt-tab-discover','Discover'],['plt-tab-wishlist','Wishlist'],['plt-tab-bag','Bag']].map(([t,l],i)=>'<button class="tab'+(i===sel?' on':'')+'"><img src="'+I+t+'.svg" alt=""><span>'+l+'</span></button>').join('')+'</div></div>';
@@ -666,10 +666,10 @@ const DG_CATALOGUE = [
   dev:{title:'—', status:'ours', note:'App chrome; not in the web Storybook.'} },
 
 { slug:'app-top', name:'App top bar', group:'Navigation', tier:'organism', css:'.app-top · .sb · .nav', figma:'— (app PDP chrome, 16 Oct 2026)',
-  summary:'The native app top: iOS status row (9:41, signal, wifi, battery) and the PDP nav — back on the left, share and wishlist on the right. Pairs with the App tab bar.',
+  summary:'The native app top, in Liquid Glass (11 Nov 2026, as the App Prototype): the iOS status row and two floating glass circles over the full-bleed gallery — back on the left, share on the right. No bar. Pairs with the App tab bar.',
   use:['Top of every app PDP screen, sticky; the web header, USP bars, breadcrumb and footer are not shown in the app.'],
-  avoid:['The heart on boohooMAN, Karen Millen or Brand Room — use the bookmark (same rule as the tab bar); PLT uses plt-heart.'],
-  anatomy:['Status row 47px, SF 17 semibold time','Nav 44px, 12px sides, 40×40 buttons with 24px icons'],
+  avoid:['A solid bar over the gallery: the app is glass only.','The wishlist in the nav: it sits on the page, beside the Virtual Stylist chip (Jake, 16 Oct).'],
+  anatomy:['Status row 47px, SF 17 semibold time, over the image','Nav 52px, 16px sides: 44 × 44 glass circles (white 65%, 18px blur, 1px white 55% rim) on a puck shadow 0 1 6 black 12%','Back = 22px chevron, 1px left of centre · share = 24px'],
   variants:[{name:'Standard', html:'<div class="app-top" style="width:390px;position:relative"><div class="sb"><span>9:41</span><span class="sys"><svg width="18" height="12" viewBox="0 0 18 12" fill="#000"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></svg><svg width="28" height="13" viewBox="0 0 28 13"><rect x=".5" y=".5" width="24" height="12" rx="3.5" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="2" y="2" width="21" height="9" rx="2" fill="#000"/></svg></span></div><div class="nav"><button aria-label="Back"><img src="assets/ds/icons/lib/icons-left.svg" alt=""></button><span><button aria-label="Share"><img src="assets/ds/icons/lib/icons-share.svg" alt=""></button><button aria-label="Wishlist"><img src="assets/ds/icons/heart-24.svg" alt=""></button></span></div></div>'}],
   dev:{title:'—', status:'ours', note:'App chrome; not in the web Storybook.'} },
 

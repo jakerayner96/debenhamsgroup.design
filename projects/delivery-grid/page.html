@@ -7,7 +7,7 @@
 <title>PDP delivery grid · in situ</title>
 <style>
 /* No page of its own: the DS PDP template (templates/pdp.html) is embedded as it is, and the DS delivery grid + modal
-   (assets/ds/delivery.js + components.css) are injected into it. App view adds the DS app chrome (.app-top + .app-tabbar). */
+   (assets/ds/delivery.js + components.css) are injected into it. App view adds the DS app chrome (.app-top + .app-tabbar), Liquid Glass as the App Prototype (11 Nov): glass back + share over the gallery, floating glass tab bar. */
 html,body{margin:0;height:100%;background:#FFF;overflow:hidden}
 .emb{display:block;width:100%;height:100vh;border:0}
 </style>
@@ -39,14 +39,14 @@ let PICK=false;
 const ACC_OPEN={};
 const opts=()=>Object.assign({},S,{accOpen:ACC_OPEN,prog:prog(S.brand),desk:desk()&&!app(),sheet:'up',brand:S.brand,seller:(S.sized===true||S.sized==='true'||PICK)?(S.seller||'site'):null});
 
-/* app chrome: DS .app-top (status + nav) and .app-tabbar; the web header, USP bars, breadcrumb and footer go */
+/* app chrome: DS .app-top (status + glass back / share) and the glass .app-tabbar; the web header, USP bars, breadcrumb and footer go */
 const APP_HIDE='.hd,[data-usp-banners],.hd-usp,.bc,footer,[data-ftr]{display:none!important}';
 function appTop(){const b=S.brand;
   return `<div class="app-top" data-dgx><div class="sb"><span>9:41</span><span class="sys">
     <svg width="18" height="12" viewBox="0 0 18 12" fill="#000"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></svg>
     <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M4 7a5.8 5.8 0 0 1 8 0"/><circle cx="8" cy="10.2" r="1" fill="#000" stroke="none"/></svg>
     <svg width="28" height="13" viewBox="0 0 28 13"><rect x=".5" y=".5" width="24" height="12" rx="3.5" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="2" y="2" width="21" height="9" rx="2" fill="#000"/><path d="M26 4.5v4a2 2 0 0 0 0-4z" fill="#000" fill-opacity=".4"/></svg></span></div>
-    <div class="nav"><button aria-label="Back"><img src="${IC}lib/icons-left.svg" alt=""></button><span><button aria-label="Share"><img src="${IC}lib/icons-share.svg" alt=""></button><button aria-label="Wishlist"><img src="${IC}${WISH[b]||'heart-24'}.svg" alt=""></button></span></div></div>`}
+    <div class="nav"><button aria-label="Back"><img src="${IC}lib/icons-left.svg" alt=""></button><span><button aria-label="Share"><img src="${IC}lib/icons-share.svg" alt=""></button></span></div></div>`}
 function tabbar(){const b=S.brand;
   if(b==='plt')return `<div data-dgx style="position:sticky;bottom:0;z-index:5"><div class="app-tabbar app-tabbar--plt"><div class="tabs">${[['plt-tab-home','Home'],['plt-tab-shop','Shop'],['plt-tab-discover','Discover'],['plt-tab-wishlist','Wishlist'],['plt-tab-bag','Bag']].map(([t,l],i)=>`<button class="tab${i===1?' on':''}"><img src="${AP}${t}.svg" alt=""><span>${l}</span></button>`).join('')}</div></div></div>`;
   const fav=WISH[b]==='bookmark'?'tab-bookmark':'tab-wishlist';

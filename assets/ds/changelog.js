@@ -4,6 +4,20 @@
 window.DG_CHANGELOG=[
  {
   "d": "2026-11-11",
+  "v": "2026.11.11b",
+  "title": "App chrome goes Liquid Glass · delivery grid in Figma",
+  "by": "PDP delivery grid (projects/delivery-grid), Jake 11 Nov: app prototypes use the App Prototype's glass UI",
+  "added": [
+   "Glass tokens --glass-tint (white 65%), --glass-rim (white 55%), --glass-blur (18px blur + saturate 180%), --glass-puck, --glass-on and the .app-glass surface — measured from the App Prototype (jakerayner96/plt-app-prototype GlassView / GlassNavButton, its web build)"
+  ],
+  "changed": [
+   "App tab bar (.app-tabbar): the flat white 83px bar is replaced by the Liquid Glass capsule — 60 high, 16 from the sides, 12 off the bottom, five tabs spread evenly at full ink, the selected one in a lighter pill; PLT keeps its labels in the same capsule · by PDP delivery grid, Jake 11 Nov",
+   "App top bar (.app-top): no bar any more — the status row and 44 × 44 glass circles (back, share) float over the gallery on a puck shadow; the wishlist leaves the nav (it is on the page) · by PDP delivery grid, Jake 11 Nov",
+   "PDP delivery grid prototype, App view: uses the glass chrome"
+  ]
+ },
+ {
+  "d": "2026-11-11",
   "v": "2026.11.11",
   "title": "Quick Add modal · rail card min height 250 + inline size · Added to Bag quick add options",
   "by": "Product carousel prototype (projects/product-carousel), Jake 11 Nov",

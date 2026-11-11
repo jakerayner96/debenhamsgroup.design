@@ -1314,23 +1314,24 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .dplus-bag .x::before,.dplus-bag .x::after{content:"";position:absolute;width:14px;height:1.5px;background:currentColor;transform:rotate(45deg)}
 .dplus-bag .x::after{transform:rotate(-45deg)}
 
-/* App tab bar — the native-app bottom bar, 390 wide.
-   Standard (Debenhams + most fascias): DS aIHmkCaTy9c5EWOxAGw0So · App / Tab Bar 3824:9530 (as used in Account 2026 2136:198) —
-   83px white, 0 -0.5px #E8E8E8 top shadow, five 48×40 tabs (space-between, 15px sides) at y14, 28px icons, inactive 30% opacity, 139×5 home indicator 8px from the bottom.
-   Wishlist tab is the bookmark on boohooMAN and Karen Millen (DS rule; App / Tab Bar 9893:28665): use tab-bookmark.svg.
-   PLT: Best App Ever HoBuVNEhf1qpL61XFipy0f · 1128:225860 — 88px #FFFDF7, 0.3px black top rule, 16/14/29 padding, tabs 48×43 with a 10/14 Roboto Medium label;
-   only the icon dims (30%), labels stay black. Tabs: Home (PLT monogram) · Shop · Discover · Wishlist · Bag — no Account tab. */
-.app-tabbar{position:relative;width:100%;height:83px;background:#FFF;box-shadow:0 -0.5px 0 #E8E8E8;padding-top:14px;box-sizing:border-box}
-.app-tabbar .tabs{display:flex;justify-content:space-between;padding:0 15px}
-.app-tabbar .tab{width:48px;height:40px;display:flex;flex-direction:column;align-items:center;opacity:.3;background:none;border:0;padding:0;cursor:pointer;color:#000}
-.app-tabbar .tab.on{opacity:1}
-.app-tabbar .tab img{width:28px;height:28px;margin-top:-2px;display:block}
-.app-tabbar .hi{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:139px;height:5px;border-radius:99px;background:#000}
-.app-tabbar--plt{height:88px;background:#FFFDF7;box-shadow:inset 0 0.3px 0 #000;padding:16px 14px 29px}
-.app-tabbar--plt .tabs{padding:0}
-.app-tabbar--plt .tab{height:43px;opacity:1;gap:5px}
-.app-tabbar--plt .tab img{margin:0;opacity:.3}
-.app-tabbar--plt .tab.on img{opacity:1}
+/* App tab bar — the native-app bottom bar. LIQUID GLASS (11 Nov 2026, Jake: every app prototype uses the App Prototype's glass UI —
+   jakerayner96/plt-app-prototype, iOS 26 system tab bar / its web pill, measured from the app's web build):
+   a floating capsule 60 high, 16 in from each side and 12 off the bottom of the screen, glass fill (.app-glass: white 65% over an 18px blur +
+   saturate 180%, 1px white 55% rim), content scrolls under it. Five tabs spread evenly, 28px icons at full ink; the selected tab sits in a
+   lighter pill (white 85%, 66 × 46, fully round). No home indicator drawn — the device frame has it. The flat white bar is retired (glass only, 29 Oct).
+   Wishlist tab is the bookmark on boohooMAN and Karen Millen (DS rule): use tab-bookmark.svg.
+   PLT: same capsule; Home (PLT monogram) · Shop · Discover · Wishlist · Bag with 10/14 Roboto Medium labels under 24px icons — no Account tab. */
+:root{--glass-tint:rgba(255,255,255,.65);--glass-rim:rgba(255,255,255,.55);--glass-blur:blur(18px) saturate(180%);--glass-puck:0 1px 6px rgba(0,0,0,.12);--glass-on:rgba(255,255,255,.85)}
+.app-glass{background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim)}
+.app-tabbar{position:relative;width:100%;height:72px;padding:0 16px 12px;box-sizing:border-box;background:none;pointer-events:none}
+.app-tabbar .tabs{pointer-events:auto;height:60px;display:flex;align-items:center;justify-content:space-around;padding:0 7px;border-radius:999px;box-sizing:border-box;
+  background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.app-tabbar .tab{width:66px;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:999px;background:none;border:0;padding:0;cursor:pointer;color:#000}
+.app-tabbar .tab.on{background:var(--glass-on)}
+.app-tabbar .tab img{width:28px;height:28px;display:block}
+.app-tabbar .hi{display:none}
+.app-tabbar--plt .tab{gap:2px}
+.app-tabbar--plt .tab img{width:24px;height:24px}
 .app-tabbar--plt .tab span{font:500 10px/14px 'Roboto',system-ui,sans-serif;color:#000;white-space:nowrap}
 
 /* ---- C-19 Sign in (Sign-in prototype, 12 Oct 2026 · Social-Login P2RiX62irafEZQjyLRhRx7 112-6838 / 2032-1885 · Checkout 2026 WChEtDPH0LcErdYFS9SESn 1669-43380 / 1669-43700)
@@ -1709,15 +1710,19 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dopts-empty{margin:0;font-size:14px;color:var(--text-secondary)}
 .dopts-note{margin:var(--gap-2,8px) 0 0;font-size:12px;line-height:15px;color:var(--text-secondary)}
 
-/* App top bar (.app-top) — native-app status bar + PDP nav: 9:41 / island-safe status row (47px) then a 44px row: back · share + wishlist (24px icons).
-   Sticky to the top of an app screen; pairs with .app-tabbar at the bottom. 16 Oct 2026 (PDP delivery grid prototype). */
-.app-top{position:sticky;top:0;z-index:5;background:var(--surface-page);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif}
+/* App top bar (.app-top) — LIQUID GLASS (11 Nov 2026, App Prototype GlassNavButton): no bar. The iOS status row (47px, SF 17 semibold) and the
+   nav row float over the full-bleed gallery: 44 × 44 glass circles (.app-glass fill on a puck shadow 0 1 6 black 12% — glass alone vanishes on
+   white), 16 from the screen edges; back (22px chevron) left, share (24px) right. The wishlist is on the page (beside the Virtual Stylist chip),
+   not in the nav (Jake, 16 Oct). Sticky with no height, so the page starts under it. Pairs with .app-tabbar. */
+.app-top{position:sticky;top:0;z-index:5;height:0;overflow:visible;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif}
 .app-top .sb{height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 26px 0 40px;font-size:17px;font-weight:600;color:#000}
 .app-top .sb .sys{display:flex;gap:6px;align-items:center}.app-top .sb svg{display:block}
-.app-top .nav{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gap-3,12px)}
+.app-top .nav{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
 .app-top .nav span{display:flex;gap:var(--gap-2,8px)}
-.app-top .nav button{width:40px;height:40px;display:grid;place-items:center;padding:0;border:0;background:none;cursor:pointer}
+.app-top .nav button{width:44px;height:44px;display:grid;place-items:center;padding:0;border-radius:999px;cursor:pointer;box-sizing:border-box;
+  background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim);box-shadow:var(--glass-puck)}
 .app-top .nav img{width:24px;height:24px}
+.app-top .nav button[aria-label=Back] img{width:22px;height:22px;margin-left:-1px}
 
 /* PDP buy buttons (.pdp-ctas) — every PDP: Add to bag, then PayPal, then Apple Pay, stacked full width, gap 2 (8px). Order is fixed (Jake, 16 Oct 2026).
    PayPal carries the "Checkout" label (.pp-co, 20px #2C2E2F) after the wordmark, as live. Promoted from the Shopping agent PDP. */
