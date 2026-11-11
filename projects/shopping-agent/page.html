@@ -803,16 +803,12 @@ function openChat(q,vto){kbDown();CHAT.open=true;
   else CHAT.focus=true;
   drawChat();parent.postMessage({protoChat:true},'*')}
 /* RE-OPEN (Jake 11 Nov — feedback: once the chat is closed it isn't obvious how to get back to it). Closing keeps the conversation; once one has
-   started, a DS AI resume pattern (components.css .ai-fab ± .counter / .ai-fab--ext ± .counter / .toast--resume; Figma 217:25657) shows until the shopper reopens it. Ask / the AI
+   started, the DS AI resume button (components.css .ai-fab + .counter--dot; Figma 224:25664) shows until the shopper reopens it. Ask / the AI
    circle also reopen the same conversation; the refresh in the chat header is what starts again. */
 const waiting=()=>!CHAT.open&&!CHAT.closing&&CHAT.msgs.some(m=>m.b);
 function lastReply(){const m=[...CHAT.msgs].reverse().find(x=>x.b);if(!m)return '';const d=document.createElement('div');d.innerHTML=m.b;d.querySelectorAll('.cm-car,.rail-nav,.cm-qr,.cm-ctx,.cm-pd,.cm-look,.cm-look-cta,.cm-fit,button').forEach(x=>x.remove());return (d.textContent||'').replace(/\s+/g,' ').trim()}
-function convTitle(){const u=CHAT.msgs.find(m=>m.u);return u?u.u:'Your chat with '+E().name}   /* production: Google's generated conversation title */
-function resume(){if(!waiting()||S.search)return '';const md=['fab','fabc','pill','pillc','toast'].includes(S.resume)?S.resume:'fab',nm=esc(E().name),lbl=`Continue your chat with ${nm}`,cnt='<span class="counter" aria-label="1 new reply">1</span>';
-  if(md==='fab'||md==='fabc')return `<button class="ai-fab" data-resume="1" ${F('resume',md==='fab'?'floating button':'floating button + counter')} aria-label="${lbl}">${spk(20)}${md==='fabc'?cnt:''}</button>`;
-  if(md==='pill'||md==='pillc')return `<button class="ai-fab ai-fab--ext" data-resume="1" ${F('resume',md==='pill'?'Open chat pill':'Open chat pill + counter')} aria-label="${lbl}">${spk(18)}Open chat${md==='pillc'?cnt:''}</button>`;
-  if(md==='toast'&&!CHAT.barHidden)return `<div class="toast toast--top toast--resume" role="status" ${F('resume','toast')}><span class="toast-msg">${esc(convTitle())}</span><span class="toast-end"><button type="button" class="act" data-resume="1" aria-label="${lbl}">Open</button><button type="button" class="toast-x" data-resumex="1" aria-label="Close"></button></span></div>`;
-  return ''}
+function resume(){if(!waiting()||S.search)return '';const lbl=`Continue your chat with ${esc(E().name)}`;   /* chosen design (Figma 224:25664): the FAB + the counter dot */
+  return `<button class="ai-fab" data-resume="1" ${F('resume','floating button')} aria-label="${lbl}">${spk(20)}<span class="counter counter--dot" aria-hidden="true"></span></button>`}
 /* PLP back to top (DS .btt, as live: 40px black circle) + the re-open button (Jake 11 Nov): panel “PLP back to top” — replace = while a chat is
    waiting the agent button takes its place; both = both on the PLP, the agent button stacks 12 above it (DS --fab-lift); other pages agent only. */
 /* click through the prototype (Jake 11 Nov): logo → home · header nav, home tiles, breadcrumbs, roundels → PLP · a product card → PDP · bag icon → bag.
@@ -828,10 +824,10 @@ function navTarget(t){if(t.closest('[data-q],[data-resume],[data-btt],.pc-iconbt
   if(S.page==='plp'&&t.closest('.roundel'))return 'plp';
   return null}
 function go(to){S.page=to;S.search=false;S.q='';CHAT.open=false;parent.postMessage({protoPage:to,protoSearch:false},'*');render();scrollTo(0,0)}
-function syncBtt(){let b=document.getElementById('btt');const want=S.page==='plp'&&!S.search&&S.bttShow!==false;   /* Figma 217:25657: on/off · black/white · under/over the agent button */
+function syncBtt(){let b=document.getElementById('btt');const want=S.page==='plp'&&!S.search;
   if(!want){if(b)b.remove();return}
   if(!b){b=document.createElement('button');b.id='btt';b.type='button';b.setAttribute('aria-label','Back to top');b.dataset.btt='1';document.body.appendChild(b)}
-  b.className='btt'+(S.bttStyle==='white'?' btt--light':'')+(S.bttOrder==='over'?' btt--over':'')+(EXPORTING||scrollY>400?' is-on':'')}
+  b.className='btt btt--light btt--over'+(EXPORTING||scrollY>400?' is-on':'')}   /* white, 12 above the agent button (Figma 224:25664) */
 addEventListener('scroll',()=>{const b=document.getElementById('btt');if(b)b.classList.toggle('is-on',EXPORTING||scrollY>400)},{passive:true});
 /* added-to-bag toast (DS .toast--inset): ADD TO BAG → “Added to Bag · View Bag” + close above the input, 6s; View Bag → the DS spinner, the agent
    collapses, then the bag. Rendered only while it shows (the DS entrance animation holds it visible otherwise). */
@@ -893,7 +889,7 @@ function render(){
   if(window.DG_uspMount)DG_uspMount();
   if(!DEB())document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,BR()));
   galSync();wirePdp();
-  if(S.resumeDemo&&S.resumeDemo!==render._rd){render._rd=S.resumeDemo;const q='Wedding guest dresses under £100';CHAT.msgs=[{u:q},{b:KINDS[0](q)}];CHAT.open=false;CHAT.user=false;CHAT.barHidden=false;DRAWN=false}   /* panel: Re-open chat → Show it */
+  if(S.resumeDemo&&S.resumeDemo!==render._rd){render._rd=S.resumeDemo;const q='Wedding guest dresses under £100';CHAT.msgs=[{u:q},{b:KINDS[0](q)}];CHAT.open=false;CHAT.user=false;DRAWN=false}   /* panel: Re-open chat → Show it */
   if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
   drawChat();
   if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el&&el.closest('#ac')){scrollTo(0,0);document.getElementById('ac').scrollTop=0}else if(el)el.scrollIntoView({block:'center',behavior:'auto'})}   /* instant, no highlight; search panel features open from the top */
@@ -927,7 +923,6 @@ document.addEventListener('click',e=>{
   {const to=navTarget(e.target);if(to){e.preventDefault();go(to);return}}
   if(e.target.closest('[data-btt]')){scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});return}
   if(e.target.closest('[data-resume]')){e.preventDefault();CHAT.user=true;openChat('');return}
-  if(e.target.closest('[data-resumex]')){e.preventDefault();CHAT.barHidden=true;drawChat();return}
   if(e.target.closest('.hd-burger')){parent.postMessage({protoMenu:1},'*');return}   /* prototype: the hamburger opens the shell's settings panel (phones) */
   const tm=e.target.closest('[data-term]');if(tm){S.q=tm.dataset.term;const i=document.querySelector('#hdrwrap .srch-field');if(i)i.value=S.q;acRedraw();focusSearch();return}   /* autocomplete row → fills the field */
   if(!S.search&&e.target.closest('[data-opensearch]')){scrollTo(0,0);S.search=true;S.q='';parent.postMessage({protoSearch:true},'*');render();focusSearch();return}
@@ -944,7 +939,7 @@ document.addEventListener('click',e=>{
   const qb=e.target.closest('[data-q]');
   if(qb&&qb.dataset.vto&&S.vtoMode==='own'){e.preventDefault();const t=document.getElementById('ct');t.textContent='Opens the '+BN()+' Virtual Stylist (our own VTO)';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200);return}
   if(qb){e.preventDefault();CHAT.user=true;const q=qb.dataset.q;openChat(q?(qb.dataset.ctx&&/similar/i.test(q)?q:q):'',!!qb.dataset.vto);return}
-  if(e.target.closest('[data-close]')){CHAT.user=false;CHAT.barHidden=false;closeChat();return}   /* closing keeps the conversation (re-open: resume()); refresh starts again */
+  if(e.target.closest('[data-close]')){CHAT.user=false;closeChat();return}   /* closing keeps the conversation (re-open: resume()); refresh starts again */
   const a=e.target.closest('a[data-href],a[href]');
   if(a){e.preventDefault();const t=document.getElementById('ct');t.textContent='Link → '+(a.dataset.href||a.getAttribute('href'));t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800)}
   else if(e.target.closest('button'))e.preventDefault()});

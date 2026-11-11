@@ -1829,46 +1829,37 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .ai-pill.ai-pill--suggest{font-size:14px;font-weight:var(--w-regular,300);color:var(--text-primary);box-shadow:0 0 14px -4px rgba(0,0,0,.06)}
 .ai-pill.ai-pill--suggest:hover{box-shadow:var(--shadow-puck)}
 .ai-pill.ai-pill--ask{border:0;background:var(--surface-raised,#FFF);box-shadow:var(--shadow-ask);transition:box-shadow .15s,transform .15s}.ai-pill.ai-pill--ask:hover{box-shadow:var(--shadow-puck)}   /* Ask launcher beside search: soft 8% shadow, no outline */
-/* ===== AI resume — the way back into a closed conversation (shopping agent; final five from Figma Zi4qRcAFTELiCvFIl29mJC 217:25657, Jake 11 Nov) =====
+/* ===== AI resume — the way back into a closed conversation (shopping agent; chosen design, Figma Zi4qRcAFTELiCvFIl29mJC 224:25664, Jake 11 Nov) =====
    Shown once a conversation has started and the chat window is closed; tapping reopens the same conversation (the new chat icon in the chat header starts again).
-   .ai-fab                40px white circle, 20px AI sparkle, shadow 0 4 16 14% + 0 1 3 8% · bottom right 16 (24 from 1024)
-   .ai-fab .counter       + the Status Counter on the top-right corner (unread replies)
-   .ai-fab--ext           “Open chat” pill: 40 tall, sparkle 18 + SemiBold 14, padding 12 / 16, gap 8 (± .counter)
-   .toast--resume         the DS toast (Figma 5146-559): [generated conversation title] · Open · close — bottom on phones, bottom right on desktop; stays until opened or closed */
+   .ai-fab   40px white circle, 20px AI sparkle, shadow 0 4 16 14% + 0 1 3 8%, a .counter--dot on the top-right corner (a conversation is waiting) · bottom right 16 (24 from 1024)
+   On the PLP the white back to top (.btt--light.btt--over) sits 12 above it. */
 .ai-fab{position:fixed;right:16px;bottom:calc(16px + var(--fab-lift,0px) + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-sticky,200) + 1);display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08);cursor:pointer;font-family:var(--font-family-base);color:var(--text-primary);animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both;transition:box-shadow .15s,transform .15s,bottom .22s cubic-bezier(.2,.8,.2,1)}
 .ai-fab:hover{box-shadow:0 6px 20px rgba(0,0,0,.18),0 1px 3px rgba(0,0,0,.08)}.ai-fab:active{transform:scale(.96)}
 .ai-fab:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#000);outline-offset:2px}
 .ai-fab .ai-icon{width:20px;height:20px}
 .ai-fab>.counter{position:absolute;top:0;right:0}
-.ai-fab--ext{display:inline-flex;align-items:center;gap:8px;width:auto;height:40px;padding:0 16px 0 12px;font-size:14px;line-height:18px;font-weight:var(--w-strong,600);white-space:nowrap}
-.ai-fab--ext .ai-icon{width:18px;height:18px}
-/* Status Counter (Figma DS “Status Counter”, Size=Small): 12px circle, --counter-bg, 1.5px white ring outside, white SemiBold 8.3 figure */
+/* Status Counter (Figma DS “Status Counter”, Size=Small): 12px circle, --counter-bg, 1.5px white ring outside, white SemiBold 8.3 figure · .counter--dot = no figure */
 .counter{display:inline-grid;place-items:center;min-width:12px;height:12px;padding:0 1px;box-sizing:border-box;border-radius:var(--radius-pill);background:var(--counter-bg,var(--ai-fg));color:var(--text-inverse,#FFF);box-shadow:0 0 0 1.5px var(--surface-raised,#FFF);font-family:var(--font-family-base);font-size:8.31px;line-height:10px;font-weight:var(--w-strong,600);pointer-events:none}
+.counter--dot{width:12px;padding:0;font-size:0}
 :root:not([data-brand]),[data-brand="debenhams"]{--counter-bg:#529C92}   /* Debenhams: the mid aqua of the AI sparkle (Figma 217:25657) */
-/* the resume toast = the DS toast, persistent: phones bottom 16 in (the DS placement); desktop bottom right, 400 wide (it is a way back in, not a confirmation) */
-.toast.toast--top.toast--resume{position:fixed;z-index:calc(var(--z-sticky,200) + 1);animation-name:toastRise}
-.toast--resume .toast-msg{text-transform:capitalize;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.toast--resume .toast-x{background-image:url("icons/lib/icons-close-12.svg");opacity:1;filter:invert(47%)}   /* #767676 close (Figma) */
-@media(min-width:1024px){.toast.toast--top.toast--resume:not(.toast--prod):not(.toast--app){top:auto;bottom:24px;left:auto;right:24px;margin-left:0;width:400px}}
 @media(min-width:1024px){.ai-fab{right:24px;bottom:calc(24px + var(--fab-lift,0px))}}
 /* Back to top (.btt, PLP — as live: 40px black circle, white 16px up chevron, 1px above centre) — appears once the page has scrolled (.is-on), bottom right 16 (24 from 1024).
    It sits ON the page (--z-raised): menus, modals and the agent window come up over it.
    .btt--light  white, the FAB shadow, black chevron (Figma 217:25657 row 3)
    Order with the AI resume button: default = back to top at the bottom, the agent button 12 above it; .btt--over = back to top 12 above the agent button.
-   With the resume toast: back to top always 12 above the toast. */
+   The shopping agent uses the white one over the agent button (Figma 224:25664). */
 .btt{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:var(--z-raised,10);display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:var(--surface-inverse,#0F0F0F);cursor:pointer;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s,bottom .22s cubic-bezier(.2,.8,.2,1)}
 .btt::before{content:"";width:16px;height:16px;margin-top:-2px;background:var(--text-inverse,#FFF);-webkit-mask:url("icons/lib/icons-up-16.svg") center/16px 16px no-repeat;mask:url("icons/lib/icons-up-16.svg") center/16px 16px no-repeat}
 .btt--light{background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08)}.btt--light::before{background:var(--text-primary,#0F0F0F)}
 .btt.is-on{opacity:1;transform:none;pointer-events:auto}
 .btt:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#000);outline-offset:2px}
-:root:has(.btt.is-on:not(.btt--over)):not(:has(.toast--resume)){--fab-lift:52px}
+:root:has(.btt.is-on:not(.btt--over)){--fab-lift:52px}
 :root:has(.ai-fab) .btt--over{bottom:calc(68px + env(safe-area-inset-bottom,0px))}
-:root:has(.toast--resume) .btt{bottom:calc(78px + env(safe-area-inset-bottom,0px))}
-@media(min-width:1024px){.btt{right:24px;bottom:24px}:root:has(.ai-fab) .btt--over{bottom:76px}:root:has(.toast--resume) .btt{bottom:86px}}
+@media(min-width:1024px){.btt{right:24px;bottom:24px}:root:has(.ai-fab) .btt--over{bottom:76px}}
 @media(prefers-reduced-motion:reduce){.btt,.ai-fab{transition:none}}
 @keyframes aiFabIn{from{opacity:0;transform:translateY(12px) scale(.92)}}
 @media(prefers-reduced-motion:reduce){.ai-fab{animation:none}}
-html.exporting .ai-fab,body.exporting .ai-fab,body.exporting .toast--resume{animation:none}
+html.exporting .ai-fab,body.exporting .ai-fab{animation:none}
 .ai-pill--outline.ai-pill--suggest,.ai-pill--outline.ai-pill--suggest:hover{box-shadow:none}
 
 /* Search bar · open (.srch-bar, 26 Oct 2026, AI generated badge prototype) — the field the search overlay opens on, over .srch-sugg.
