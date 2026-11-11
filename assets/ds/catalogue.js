@@ -885,7 +885,7 @@ const DG_CATALOGUE = [
   ],
   dev:{title:'—', status:'ours', note:'Google Cloud Shopping Agent widget; styling delivered as salesAgentConfig.json (projects/shopping-agent HANDOFF.md section 3 maps each part to its key).'} },
 
-{ slug:'ai-resume', name:'AI resume (re-open chat)', group:'AI', tier:'molecule', css:'.ai-fab · .ai-fab__dot · .ai-fab--ext · .ai-resume (.ai-resume__open · __tx · __t · __p · __up · __x) · .ai-dot',
+{ slug:'ai-resume', name:'AI resume (re-open chat)', group:'AI', tier:'molecule', figma:'aIHmkCaTy9c5EWOxAGw0So · 14276:225 (Agent / Resume, ✅ Shopping Agent page)', css:'.ai-fab · .ai-fab__dot · .ai-fab--ext · .ai-resume (.ai-resume__open · __tx · __t · __p · __up · __x) · .ai-dot',
   summary:'The way back into a closed agent conversation. Feedback (11 Nov): once the chat window is closed it isn’t obvious how to get back to it. Shown only once a conversation has started and the window is closed; tapping it reopens the same conversation.',
   use:['Shopping agent: our front end shows it on close (Google’s widget has no minimised state). Closing must keep the session; the refresh in the chat header is what starts again.','Pick one pattern per site (projects/shopping-agent → Chat window → Re-open chat): floating button, Continue chat pill, peek bar, or a dot on the launcher. Ask / the AI circle always reopen the same conversation as well.'],
   avoid:['Showing it before a conversation has started — the launchers (Ask, prompts) do that job.','Stacking it with another floating button (visual search FAB): it hides while search is open.','A count badge — one conversation, so the dot only says “waiting”.'],
