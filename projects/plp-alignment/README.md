@@ -12,7 +12,8 @@ One core PLP template for **seven fascias** — Debenhams, boohoo, boohooMAN, PL
 | Header + USP banner | [3793-3545](https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=3793-3545) · [11982-37171](https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System?node-id=11982-37171) | **Built** → `.hd` + site C-05 (USP colours are per-fascia tokens) |
 | Sort & filter (A/B/C tests) | [1783-11572](https://www.figma.com/design/s7WDE3BkCxbgqJ4x4hoV80/Sort---Filter?node-id=1783-11572) | **Built** (combined pattern) → `.sf` + site C-06 |
 | AI-generated watermark + badge stacking | [25-11775](https://www.figma.com/design/d0zY0vt8hoz0gq8ycTimxS/AI-Generated-Watermark?node-id=25-11775) et al · [live demo](https://jakerayner96.github.io/ai-generated-badge/) | **Built** → `.badge` / `.badge-ai` + site C-07 |
-| Margins spec | PLP MASTER `GP04SeG99nevXl4yuwY3sM` · [291-18049](https://www.figma.com/design/GP04SeG99nevXl4yuwY3sM/PLP-MASTER--21.10-25-?node-id=291-18049) | **Applied**: 16px sides to 1439 · 95px at 1440+, containers scale |
+| **PLP master 2027 (current, 11 Nov 2026)** | `875yv62BXBCVjqIZBSkn32` · [PLP master 2027](https://www.figma.com/design/875yv62BXBCVjqIZBSkn32/PLP-master-2027) — every brand, mobile 390 + desktop 1440, captured from this template | **Current** — replaces PLP MASTER (21.10.25) as the PLP file |
+| Margins spec (old file) | PLP MASTER `GP04SeG99nevXl4yuwY3sM` · [291-18049](https://www.figma.com/design/GP04SeG99nevXl4yuwY3sM/PLP-MASTER--21.10-25-?node-id=291-18049) | **Applied**: 16px sides to 1439 · 95px at 1440+, containers scale |
 | Debenhams PLP m/d (older format ref) | [291-34498](https://www.figma.com/design/GP04SeG99nevXl4yuwY3sM/PLP-MASTER--21.10-25-?node-id=291-34498) · [318-19215](https://www.figma.com/design/GP04SeG99nevXl4yuwY3sM/PLP-MASTER--21.10-25-?node-id=318-19215) | Reference |
 | The Brand Room PLP | [780-116608](https://www.figma.com/design/NRsu568JGzwCDq4egvkUbn/The-Brand-Room?node-id=780-116608) · [552-16411](https://www.figma.com/design/NRsu568JGzwCDq4egvkUbn/The-Brand-Room?node-id=552-16411) | Palette + config extracted (mono, uppercase, bookmark, supplier brands) |
 | MAN PLP (Taggstar) | [3546-14580](https://www.figma.com/design/00YKWCHwTarfwWZ1HayFUI/Taggstar?node-id=3546-14580) / [3546-13842](https://www.figma.com/design/00YKWCHwTarfwWZ1HayFUI/Taggstar?node-id=3546-13842) | Taggstar bar built into card; deeper pass pending |
@@ -58,3 +59,14 @@ Mobile in NEW mode uses the combined Sort & Filter sheet (the A/B/C winner); LIV
 ## The loop
 
 Winner merges to main as **M-01 Master PLP**; the card/header/sort-filter/badges are already promoted (they're canonical Figma components, not options). Branch stays as the record.
+
+## 11 Nov 2026
+
+- **One format.** The Live tab is gone, so this is the new PLP for every fascia. `?mode` is ignored.
+- **Google shopping agent** (DS `assets/ds/agent.js`, from projects/shopping-agent):
+  - the Ask pill beside the desktop search (on mobile it sits beside the field once search opens);
+  - the Next Best Action as a full-width row after row 4;
+  - the Ask chat window, using a mock reply. Production calls `googleAgent.sendQuery`.
+  - Panel: Google agent On / Off · `?agent=off`.
+- **Wishlist and quick add per fascia:** DS catalogue *PLP card actions*. Hearts and bookmarks fill on tap (`wishlist.js`).
+- **Figma:** PLP master 2027 (`875yv62BXBCVjqIZBSkn32`).
