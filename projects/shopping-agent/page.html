@@ -811,7 +811,7 @@ function lastReply(){const m=[...CHAT.msgs].reverse().find(x=>x.b);if(!m)return 
 function resume(){if(!waiting()||S.search)return '';const lbl=`Continue your chat with ${esc(E().name)}`,dot='<span class="counter counter--dot" aria-hidden="true"></span>';
   /* desktop (Jake 11 Nov: the FAB and back to top are mobile only) — panel Chat window → Desktop re-open: bar · tab · rail · ask (DS .ai-dbar / .ai-dtab / .ai-drail / dot on Ask) */
   if(desk()){const o=S.dre||'bar',t=`Ask ${esc(E().name)}`;
-    if(o==='bar')return `<button class="ai-dbar" data-resume="1" ${F('resume','floating Ask Deb pill')} aria-label="${lbl}">${spk(18)}<span>${t}</span></button>`;
+    if(o==='bar')return CHAT.dbarX?'':`<div class="toast toast--top ai-dbar" role="status" ${F('resume','desktop toast')}><span class="toast-msg" data-resume="1">${spk(18)}${t}</span><span class="toast-end"><button class="act" data-resume="1" aria-label="${lbl}">Open</button><button class="toast-x" data-dbarx="1" aria-label="Dismiss"></button></span></div>`;
     if(o==='tab')return `<button class="ai-dtab" data-resume="1" ${F('resume','edge tab')} aria-label="${lbl}"><span class="ai-dtab__ic">${spk(20)}${dot}</span><span class="ai-dtab__t">${t}</span></button>`;
     if(o==='rail')return `<aside class="ai-drail" ${F('resume','docked rail')} aria-label="${t}"><button class="ai-drail__b" data-resume="1" aria-label="${lbl}">${spk(20)}${dot}</button><span class="ai-drail__t">${esc(E().name)}</span><button class="ai-drail__x" data-resume="1" aria-label="Open the chat"></button></aside>`;
     return ''}   /* ask: the dot goes on the header Ask (syncAskDot) */
@@ -820,7 +820,7 @@ function resume(){if(!waiting()||S.search)return '';const lbl=`Continue your cha
    waiting the agent button takes its place; both = both on the PLP, the agent button stacks 12 above it (DS --fab-lift); other pages agent only. */
 /* click through the prototype (Jake 11 Nov): logo → home · header nav, home tiles, breadcrumbs, roundels → PLP · a product card → PDP · bag icon → bag.
    The shell's page follows (protoPage). */
-function navTarget(t){if(t.closest('[data-q],[data-resume],[data-btt],.pc-iconbtn,.pc-qa,.pc-add,.cm,.ac,.ag-sw,.hd-sicon,.hd-burger'))return null;
+function navTarget(t){if(t.closest('[data-q],[data-resume],[data-dbarx],[data-btt],.pc-iconbtn,.pc-qa,.pc-add,.cm,.ac,.ag-sw,.hd-sicon,.hd-burger'))return null;
   if(t.closest('#hdrwrap .hd-bar>img,#hdrwrap .hd-left>img'))return 'home';
   const hb=t.closest('#hdrwrap .hd-icons button');if(hb)return /bag/i.test(hb.getAttribute('aria-label')||'')?'bag':null;
   if(t.closest('#hdrwrap .hd-nav a'))return 'plp';
@@ -931,6 +931,7 @@ document.addEventListener('click',e=>{
   {const r=e.target.closest('[data-rail]');if(r){const c=r.closest('.rail-nav').previousElementSibling,t=c.querySelector('.cm-tile');c.scrollBy({left:+r.dataset.rail*((t?t.offsetWidth:120)+10)*2,behavior:'smooth'});return}}
   {const to=navTarget(e.target);if(to){e.preventDefault();go(to);return}}
   if(e.target.closest('[data-btt]')){scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});return}
+  if(e.target.closest('[data-dbarx]')){CHAT.dbarX=true;const t=document.querySelector('.ai-dbar');if(t){t.classList.add('toast--out');setTimeout(drawChat,EXPORTING?0:280)}return}   /* desktop toast close: hidden until the chat is next closed (the header Ask still reopens it) */
   if(e.target.closest('[data-resume]')){e.preventDefault();CHAT.user=true;openChat('');return}
   if(e.target.closest('.hd-burger')){parent.postMessage({protoMenu:1},'*');return}   /* prototype: the hamburger opens the shell's settings panel (phones) */
   const tm=e.target.closest('[data-term]');if(tm){S.q=tm.dataset.term;const i=document.querySelector('#hdrwrap .srch-field');if(i)i.value=S.q;acRedraw();focusSearch();return}   /* autocomplete row → fills the field */
@@ -948,7 +949,7 @@ document.addEventListener('click',e=>{
   const qb=e.target.closest('[data-q]');
   if(qb&&qb.dataset.vto&&S.vtoMode==='own'){e.preventDefault();const t=document.getElementById('ct');t.textContent='Opens the '+BN()+' Virtual Stylist (our own VTO)';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200);return}
   if(qb){e.preventDefault();CHAT.user=true;const q=qb.dataset.q;openChat(q?(qb.dataset.ctx&&/similar/i.test(q)?q:q):'',!!qb.dataset.vto);return}
-  if(e.target.closest('[data-close]')){CHAT.user=false;closeChat();return}   /* closing keeps the conversation (re-open: resume()); refresh starts again */
+  if(e.target.closest('[data-close]')){CHAT.dbarX=false;CHAT.user=false;closeChat();return}   /* closing keeps the conversation (re-open: resume()); refresh starts again */
   const a=e.target.closest('a[data-href],a[href]');
   if(a){e.preventDefault();const t=document.getElementById('ct');t.textContent='Link → '+(a.dataset.href||a.getAttribute('href'));t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800)}
   else if(e.target.closest('button'))e.preventDefault()});
