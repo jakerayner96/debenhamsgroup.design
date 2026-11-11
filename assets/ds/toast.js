@@ -1,5 +1,5 @@
 /* DG Group Design System — top toast drop-in (9 Nov 2026, Virtual Stylist v2; Figma DS Toast 5146-559, Device=Web).
-   One spec: white 90% + blur, radius --radius-lg, shadow 0 0 20 10%, padding 16 · message 14/18 regular · action 13.33 strong in --text-link · 16 gap · 12px close.
+   One spec: solid white (--surface-raised; 11 Nov, as the Figma library), radius --radius-lg, shadow 0 0 20 10%, padding 16 · message 14/18 regular · action 13.33 strong in --text-link · 16 gap · 12px close.
    PLACEMENT (10 Nov 2026): phones + tablets (< 1024) float it at the BOTTOM, 16 in and 16 up (components.css), lifted above anything pinned to the
    bottom of the screen (--toast-bottom: sticky add-to-bag bars, cookie bars, [data-toast-avoid]). Desktop: top-centred UNDER THE USP BANNERS —
    --toast-top = the bottom of the lowest USP row in view (the sticky black bar once the page scrolls) + 16 — following that edge while it shows.

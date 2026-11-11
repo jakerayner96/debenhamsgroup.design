@@ -431,9 +431,8 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 
 /* added to bag in the chat = the DS toast, Top · actionable (.toast--top): over the top of the window, 16px in, 6s (29 Oct, replaces Google’s “Your cart was updated” toast) */
 .cm-in{position:relative}
-.cm .cm-toast{position:absolute;z-index:5;opacity:0;transform:translateY(8px);top:auto;bottom:100%;left:var(--chat-messenger-internal-chat-padding-x,24px);right:var(--chat-messenger-internal-chat-padding-x,24px);transition:opacity .25s,transform .25s;pointer-events:none}
-.cm .cm-toast.on{opacity:1;transform:none;pointer-events:auto}
-.cm .cm-toast span{flex:1}
+.cm .cm-toast{--toast-inset:var(--chat-messenger-internal-chat-padding-x,24px)}   /* DS .toast--inset: just above the input, 24px in (Jake 11 Nov) */
+.cm .cm-toast--settled{animation:none}   /* a chat redraw (a streamed reply) doesn't replay the entrance */
 /* toast — where a link would go */
 .ct{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;transition:.25s;background:#111;color:#fff;font:500 13px var(--font-family-base);padding:10px 16px;border-radius:8px;z-index:999;pointer-events:none;max-width:90vw;text-align:center}
 .ct.on{opacity:1;transform:translate(-50%,0)}
@@ -719,7 +718,7 @@ function chat(){
   return `${mob?'':'<div class="cm-scrim" data-close="1"></div>'}<div class="cm${mob?' mob':''}" id="cm" role="dialog" aria-label="${esc(st['chat-title'])}">
     <div class="cm-tb modal-hd">${CHAT.msgs.length||S.start==='google'?`<span class="mt">${esc(st['chat-title'])}</span>`:''}${CHAT.msgs.length?`<button class="mdl-refresh" data-reset="1" aria-label="Start a new chat"></button>`:''}<button class="modal-x" data-close="1" aria-label="Close"></button></div>
     <div class="cm-body" id="cmbody">${head}${msgs?`<div class="cm-msgs">${msgs}</div>`:''}</div>
-    <form class="cm-in" id="cmform"><div class="cm-box"><span class="plus">+</span><input class="cm-input" id="cminput" type="text" autocomplete="off" placeholder="${esc(st['placeholder-text'])}" value="${esc(txt)}" aria-label="Message ${name}"><button type="submit" class="send${txt?' on':''}" id="cmsend" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div><div class="toast toast--top cm-toast${CHAT.toast?' on':''}" id="cmtoast" role="status"><span>Item added to bag</span><button type="button" class="act" data-viewbag>View</button></div></form>
+    <form class="cm-in" id="cmform"><div class="cm-box"><span class="plus">+</span><input class="cm-input" id="cminput" type="text" autocomplete="off" placeholder="${esc(st['placeholder-text'])}" value="${esc(txt)}" aria-label="Message ${name}"><button type="submit" class="send${txt?' on':''}" id="cmsend" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>${CHAT.toast?`<div class="toast toast--top toast--inset cm-toast${Date.now()-CHAT.toastAt>400?' cm-toast--settled':''}" id="cmtoast" role="status"><span class="toast-msg">Added to Bag</span><span class="toast-end">${CHAT.toast==='busy'?'<span class="spin sm" aria-label="Opening your bag"></span>':'<button type="button" class="act" data-viewbag>View Bag</button>'}<button type="button" class="toast-x" data-toastx aria-label="Close"></button></span></div>`:''}</form>
     <div class="cm-disc">${esc(st['disclosure-text'])}</div>
     </div>`;
 }
@@ -805,6 +804,13 @@ function resume(){if(!waiting()||S.search)return '';const md=S.resume||'fab',nm=
   if(md==='bar'&&!CHAT.barHidden)return `<div class="ai-resume" role="region" aria-label="Your chat with ${nm}" ${F('resume','peek bar')}><button class="ai-resume__open" data-resume="1" aria-label="${lbl}">${spk(20)}<span class="ai-resume__tx"><span class="ai-resume__t">${esc(CFG.payload.settings['chat-title'])}</span><span class="ai-resume__p">${esc(lastReply())}</span></span><span class="ai-resume__up" aria-hidden="true"></span></button><button class="ai-resume__x" data-resumex="1" aria-label="Hide"></button></div>`;
   return ''}
 function resumeDot(){const on=waiting()&&S.resume==='dot';document.querySelectorAll('.ag-ask,.ai-circle,.hd-sicon').forEach(el=>{el.classList.toggle('ai-dot',on);if(on)el.setAttribute('data-feat','resume');else if(el.dataset.feat==='resume')el.removeAttribute('data-feat')})}
+/* added-to-bag toast (DS .toast--inset): ADD TO BAG → “Added to Bag · View Bag” + close above the input, 6s; View Bag → the DS spinner, the agent
+   collapses, then the bag. Rendered only while it shows (the DS entrance animation holds it visible otherwise). */
+function hideToast(){clearTimeout(CHAT.toastT);const t=document.getElementById('cmtoast');const done=()=>{CHAT.toast=false;const x=document.getElementById('cmtoast');if(x)x.remove()};
+  if(!t||EXPORTING)return done();t.classList.remove('cm-toast--settled');t.classList.add('toast--out');setTimeout(done,280)}
+function viewBag(){clearTimeout(CHAT.toastT);CHAT.toast='busy';CHAT.toastAt=0;drawChat();
+  setTimeout(()=>{CHAT.toast=false;CHAT.user=false;S.chat=false;closeChat();
+    setTimeout(()=>{S.page='bag';parent.postMessage({protoChat:false,protoPage:'bag'},'*');render();scrollTo(0,0)},300)},EXPORTING?0:900)}
 function stream(m){const n=m.b.split(/\s+/).length;m.cut=0;const i=CHAT.msgs.indexOf(m);
   const tick=()=>{m.cut+=2;const el=document.querySelector(`[data-mi="${i}"]`);if(m.cut>=n){m.cut=null;drawChat();return}
     if(el){el.innerHTML=words(m.b,m.cut);const body=document.getElementById('cmbody');if(body)body.scrollTop=body.scrollHeight}setTimeout(tick,45)};setTimeout(tick,45)}
@@ -899,9 +905,10 @@ document.addEventListener('click',e=>{
     if(EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches||!hw)return done();
     if(hw.classList.contains('closing'))return;hw.classList.remove('srch-in');hw.classList.add('closing');document.body.classList.add('closing-search');setTimeout(done,240);return}
   {const ah=e.target.closest('.acc-set .acc-h');if(ah){e.preventDefault();ah.parentNode.classList.toggle('open');return}}
-  if(e.target.closest('.cm-cart')){CHAT.toast=true;const t=document.getElementById('cmtoast');if(t)t.classList.add('on');clearTimeout(CHAT.toastT);CHAT.toastT=setTimeout(()=>{CHAT.toast=false;const x=document.getElementById('cmtoast');if(x)x.classList.remove('on')},6000);return}   /* production: our front end on the custom-cart add, Google’s own toast hidden */
+  if(e.target.closest('.cm-cart')){CHAT.toast='on';CHAT.toastAt=Date.now();clearTimeout(CHAT.toastT);drawChat();CHAT.toastT=setTimeout(hideToast,6000);return}   /* production: our front end on the custom-cart add, Google’s own toast hidden */
   if(e.target.closest('[data-reset]')){CHAT.msgs=[];CHAT.toast=false;CHAT.draft='';CHAT.focus=true;drawChat();return}   /* refresh = Google’s clear chat (restart): back to the start screen */
-  if(e.target.closest('[data-viewbag]')){CHAT.toast=false;CHAT.open=false;CHAT.user=false;S.chat=false;S.page='bag';parent.postMessage({protoChat:false},'*');render();scrollTo(0,0);return}
+  if(e.target.closest('[data-toastx]')){hideToast();return}
+  if(e.target.closest('[data-viewbag]')){viewBag();return}
   if(e.target.closest('#cmform'))return;
   const qb=e.target.closest('[data-q]');
   if(qb&&qb.dataset.vto&&S.vtoMode==='own'){e.preventDefault();const t=document.getElementById('ct');t.textContent='Opens the '+BN()+' Virtual Stylist (our own VTO)';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200);return}

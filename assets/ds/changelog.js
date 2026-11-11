@@ -8,9 +8,12 @@ window.DG_CHANGELOG=[
   "title": "AI resume: a way back into a closed agent chat · Ask back to the search bar's height",
   "by": "Shopping agent (projects/shopping-agent), Jake 11 Nov: feedback — once you close the chat it isn't obvious how to get back to it",
   "added": [
+   "Toast .toast--inset — the toast inside a panel, anchored just above its footer on every device (the agent chat, above the input; --toast-inset side margin); catalogue variants Inside a panel + busy (View Bag tapped → spinner) · by Shopping agent",
    "AI resume (catalogue: AI resume (re-open chat)) — .ai-fab (56px floating button, sparkle + --ai-fg dot), .ai-fab--ext (Continue chat pill), .ai-resume (peek bar: Ask Deb + the last reply, up chevron, close) and .ai-dot (dot on the launcher). Shown once a conversation has started and the window is closed; tapping reopens the same conversation. Figma: Agent / Resume set (Type = FAB / Continue chat / Peek bar / Dot), DS library 14276:225 · by Shopping agent"
   ],
-  "changed": [],
+  "changed": [
+   "Toast (.toast--top, toast.js): solid white (--surface-raised), no blur — matches the Figma library Toast (White, 100%) · by Shopping agent (Jake 11 Nov)"
+  ],
   "fixed": [
    "Shopping agent Ask pill: 44px again, the same height as the search bar (the 29 Oct .ai-pill--ask swap dropped the --outline class the size rule keyed on) · by Shopping agent"
   ]

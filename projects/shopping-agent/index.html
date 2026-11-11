@@ -251,7 +251,7 @@ function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search i
     '| Product carousel | Native | rich-content-config.tileConfig · --chat-messenger-product-carousel-* |',
     '| Product detail card | Native | rich-content-config.productDetailConfig (size picker: confirm) |',
     `| Re-open chat | Custom | our front end, outside Google’s widget: once a conversation has started and the window is closed, the DS ${{fab:'.ai-fab (56px floating button + dot)',ext:'.ai-fab--ext (Continue chat pill)',bar:'.ai-resume (peek bar with the last reply)',dot:'.ai-dot on the launcher'}[c.resume||'fab']} reopens the same conversation (window.googleAgent open, no new query). Closing must not clear the session; the header refresh does |`,
-    '| Added to bag toast | Custom | the DS toast, Top · actionable (.toast--top): “Item added to bag” + View (to the bag), 6s, sitting just above the chat input, 24px in. Our front end shows it on the custom-cart add; Google’s own “Your cart was updated” toast is hidden |',
+    '| Added to bag toast | Custom | the DS toast inside the window (.toast--top.toast--inset): “Added to Bag” + View Bag + close, solid white, 6s, just above the chat input, 24px in. View Bag → the DS spinner, the agent collapses, then the bag. Our front end shows it on the custom-cart add; Google’s own “Your cart was updated” toast is hidden |',
     `| ADD TO BAG | Native | settings.custom-cart + cart-button-text · --cart-button-background-color ${(c.agent.cartBg||AG.def(S.brand).cartBg)} · --cart-button-font-color ${(c.agent.cartFg||AG.def(S.brand).cartFg)} · corner radii ${(c.agent.cartRadius??AG.def(S.brand).cartRadius)}px |`,
     '| Quick-reply chips | Native | --chat-messenger-internal-chips-* |',
     '| Bullet list | Native (markdown text) | bot message styles |',
@@ -483,7 +483,7 @@ async function doExport(){const btns=[$('#exportbtn'),$('#exportbtn2')];btns.for
   }catch(err){console.error(err);status.textContent='Export failed: '+err.message}
   finally{btns.forEach(b=>b.disabled=false);exp.hidden=true;setTimeout(()=>status.textContent='',8000)}}
 /* the page tells us when the shopper opens / closes the chat, so the panel toggle stays true */
-addEventListener('message',e=>{if(e.source!==frame.contentWindow||!e.data)return;if('protoKb' in e.data)document.body.classList.toggle('kbup',!!e.data.protoKb);if(e.data.protoMenu&&matchMedia('(max-width:760px)').matches){$('#panel').classList.add('open');return}if('protoChat' in e.data&&S.cfg.chat!==e.data.protoChat){S.cfg.chat=e.data.protoChat;save();panel()}if('protoSearch' in e.data){S.cfg.search=e.data.protoSearch;save();panel()}});
+addEventListener('message',e=>{if(e.source!==frame.contentWindow||!e.data)return;if('protoKb' in e.data)document.body.classList.toggle('kbup',!!e.data.protoKb);if(e.data.protoMenu&&matchMedia('(max-width:760px)').matches){$('#panel').classList.add('open');return}if('protoChat' in e.data&&S.cfg.chat!==e.data.protoChat){S.cfg.chat=e.data.protoChat;save();panel()}if('protoSearch' in e.data){S.cfg.search=e.data.protoSearch;save();panel()}if(e.data.protoPage&&S.cfg.page!==e.data.protoPage){S.cfg.page=e.data.protoPage;save();panel()}});   /* View Bag in the agent toast lands on the bag */
 $('#exportbtn').onclick=doExport;$('#exportbtn2').onclick=doExport;
 </script>
 <script src="../../assets/ds/proto-shot.js"></script>   <!-- Screenshot button beside Export: PNG of what is on screen in the device frame -->

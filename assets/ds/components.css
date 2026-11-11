@@ -709,7 +709,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .msg--error i{background:var(--text-error)}.msg--error .body{background:var(--error-bg);font-weight:var(--w-regular);line-height:18px}
 .msg--warning i{background:var(--warning-bar)}.msg--warning .body{background:var(--warning-bg);font-weight:var(--w-regular);line-height:18px;color:#000}/* heads-up, not a failure = Figma "Safety Message Banner" (Order Emails 745:3513): Yellow bar on Light Yellow, 20px black info icon (Jake 2 Nov: black, not the Figma grey), one line of 14 regular black copy, no lead line (2 Nov 2026) */
 .toast{font-family:var(--font-family-base);position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#000;color:#FFF;font-size:14px;font-weight:var(--w-mid);padding:12px 20px;border-radius:var(--radius-default);z-index:var(--z-toast);white-space:nowrap;box-shadow:var(--shadow-float)}
-.toast--top{bottom:auto;top:var(--toast-top,16px);left:16px;right:16px;transform:none;background:rgba(255,255,255,.9);color:var(--text-primary);backdrop-filter:blur(3.5px);border-radius:var(--radius-lg);box-shadow:0 0 20px rgba(0,0,0,.1);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:normal;font-weight:var(--w-regular)}
+.toast--top{bottom:auto;top:var(--toast-top,16px);left:16px;right:16px;transform:none;background:var(--surface-raised,#FFF);color:var(--text-primary);border-radius:var(--radius-lg);box-shadow:0 0 20px rgba(0,0,0,.1);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:normal;font-weight:var(--w-regular)}
 .toast--top .act{font:inherit;font-weight:var(--w-strong);color:var(--text-link);background:none;border:none;padding:0;cursor:pointer;white-space:nowrap} /* the fascia font — a button doesn’t inherit it (3 Nov) */
 /* top toast to the DS Figma Toast 5146-559 (Device=Web, Jake 9 Nov): 14/18 message, 13.33 strong action in --text-link, 16 gap, 12px close; under the USP banners
    via --toast-top (assets/ds/toast.js DG_toast sets it and follows the sticky bar while it shows) */
@@ -768,6 +768,10 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 }
 @keyframes toastRise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes toastSink{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}
+/* .toast--inset (11 Nov 2026, shopping agent): the toast inside a panel — anchored just above the panel's footer (the agent chat's input), on every device;
+   the parent sets position:relative, --toast-inset = the side margin (default 16). Same anatomy, rises in / sinks out, never covers the input. */
+.toast.toast--top.toast--inset:not(.toast--app):not(.toast--glass){position:absolute;top:auto;bottom:100%;left:var(--toast-inset,16px);right:var(--toast-inset,16px);width:auto;margin:0;z-index:5;animation-name:toastRise}
+.toast.toast--top.toast--inset:not(.toast--app):not(.toast--glass).toast--out{animation-name:toastSink}
 /* busy state (Figma 13557-10294 “Added To Wishlist” + spinner): the action swaps for the small DS spinner while the save is in flight */
 .toast--top .toast-end .spin.sm{width:14px;height:14px}
 /* Wishlisted state (10 Nov 2026): the wishlist button shows the FILLED glyph once the item is saved (heart / bookmark / PLT heart, -fill.svg) and a small pop; assets/ds/wishlist.js toggles it */
