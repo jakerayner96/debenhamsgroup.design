@@ -4,7 +4,7 @@
 
 **Live:** https://jakerayner96.github.io/debenhamsgroup.design/projects/delivery-grid/
 
-**Figma:** "Debenhams · PDP Delivery Grid" `kgwbvFUR9kMyoLls1kpks9` (Debenhams Group team), page Delivery grid: **Components** `74:2` (Badge set · PDP box set, Format 1–4 × State · Delivery Options modal set, Format × Tab) and **Screens** `74:44` (per format: PDP → Click & Collect tab → See more → modal Click & Collect · Unlimited · delivery only, built from PDP backdrop + component instances). Captured from the DS code (30 Oct). Jake's 29 Oct explorations are on the Archive page.
+**Figma (11 Nov 2026):** project file "Debenhams · PDP Delivery Grid" `kgwbvFUR9kMyoLls1kpks9`, page Delivery grid, section **Delivery grid · final (11 Nov 2026)** `99:26205` — default loading state on the master PDP backdrops: mobile web (Delivery tab, Collection tab, Unlimited, delivery-only option) and the app in Liquid Glass (Delivery tab, Collection tab). Every box is an instance of the DS library **Delivery grid** (`aIHmkCaTy9c5EWOxAGw0So` 13771:39835, board 14260:15154; modal **Delivery grid / Options modal** 14272:16105); app chrome = DS **App glass chrome** (14265:4478). The 30 Oct four-format flows are on the Archive page.
 
 ## Rows (9 Nov)
 **Get It By, date only** won: Tomorrow / 4th Nov (+ badge) first, then the method name · cut-off. Formats 1, 2 and 4 (30 Oct explorations) are removed from the panel and from delivery.js. The modal rows match.
