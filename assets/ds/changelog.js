@@ -32,6 +32,7 @@ window.DG_CHANGELOG=[
    "Brand pages › CTAs: the full Button set in the brand's mode (default, disabled, spinner, added, checkout securely, small) + the programme's Join CTA · Button page (#button) › Every fascia: the same set for all 17 fascias (DG_ctaBlock)"
   ],
   "changed": [
+   "Deliver+ (Jake 11 Nov): radius 4px on every fascia, 0 on PLT (was 0 on all but the four group brands) · PLT lockup = the DELIVER+ wordmark alone on every banner (98 wide; checkout 134) — no PLT monogram · desktop bag banner stacks the logo over the copy (was side by side). Figma Deliver+ set: every lockup re-drawn from its source SVG (the importer had stretched some to the column width), stray black outlines removed (the light-ground keyline stays #E7E7E7), radius + stacking as code",
    "Membership in checkout (was Membership banner · checkout, Jake 11 Nov): NEW = the Active membership pill on the Delivery Method heading (.dmeth-hd + .mpill, from account-2026 checkout · Membership style: Pill) for every programme; OLD = the full-width banner, being PHASED OUT of checkout — now the programme's membership band · active (logo on its art) instead of the grey Antonio .mbanner (retired). Both shown on the component, the Deliver+ & Memberships page and each brand page",
    "Join CTA on programme art (.bd.mbr / .bd.mbr-out) removed from the DS pages, the Button catalogue and the Figma library — the CSS stays only for projects/membership-landing, its one user",
    "Deliver+ & Memberships page and the brand pages share one builder (window.DG_mx)",
