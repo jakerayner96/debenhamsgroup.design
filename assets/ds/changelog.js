@@ -13,8 +13,8 @@ window.DG_CHANGELOG=[
    "AI resume (catalogue: AI resume (re-open chat)) — .ai-fab (56px floating button, sparkle + --ai-fg dot), .ai-fab--ext (Continue chat pill), .ai-resume (peek bar: Ask Deb + the last reply, up chevron, close) and .ai-dot (dot on the launcher). Shown once a conversation has started and the window is closed; tapping reopens the same conversation. Figma: Agent / Resume set (Type = FAB / Continue chat / Peek bar / Dot), DS library 14276:225 · by Shopping agent"
   ],
   "changed": [
-   "Modal header start-again (.mdl-refresh) is now the new chat icon (icons-new-chat-16: the DS Icons / Edit glyph, 16 grid, 1px) · AI resume dots have no white ring · Back to top sits on the page layer (--z-raised) so the agent window and modals cover it · by Shopping agent (Jake 11 Nov)",
-   "AI resume .ai-fab is 40px (= the PLP back to top; sparkle 20, dot 8) and stacks 12 above .btt while it shows (--fab-lift); .ai-fab--ext 40px · Modal header refresh (.mdl-refresh) uses the 16-grid icons-refresh-16 (1px, the close's 15px span) and sits 24px from the close · by Shopping agent (Jake 11 Nov)",
+   "Modal header start-again (.mdl-refresh) is now the new chat icon (icons-new-chat-16: the DS Icons / Edit glyph, 16 grid, 1px), 20px from the close (Figma Agent Chat Header 213:7476) · AI resume dots have no white ring · Back to top sits on the page layer (--z-raised) so the agent window and modals cover it · by Shopping agent (Jake 11 Nov)",
+   "AI resume .ai-fab is 40px (= the PLP back to top; sparkle 20, dot 8) and stacks 12 above .btt while it shows (--fab-lift); .ai-fab--ext 40px · Modal header refresh (.mdl-refresh) uses the 16-grid icons-refresh-16 (1px, the close's 15px span) and sits 20px from the close · by Shopping agent (Jake 11 Nov)",
    "Toast (.toast--top, toast.js): solid white (--surface-raised), no blur — matches the Figma library Toast (White, 100%) · by Shopping agent (Jake 11 Nov)"
   ],
   "fixed": [

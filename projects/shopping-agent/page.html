@@ -250,7 +250,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
   background:var(--chat-messenger-internal-titlebar-background,#fff);border-radius:var(--chat-messenger-internal-chat-border-radius,0) 0 0 var(--chat-messenger-internal-chat-border-radius,0);
   display:flex;flex-direction:column;font-family:var(--chat-messenger-font-family);color:var(--chat-messenger-color--on-surface,#222);overflow:hidden}
 .cm.mob{border-radius:0}
-.cm-tb .mdl-refresh{margin-right:12px}   /* refresh ↔ close 24 apart (gap 12 + 12), Jake 11 Nov */
+.cm-tb .mdl-refresh{margin-right:8px}   /* new chat ↔ close 20 apart (gap 12 + 8) — Figma Agent Chat Header 213:7476 */
 .cm-tb{display:flex;align-items:flex-start;gap:12px;padding:var(--chat-messenger-internal-titlebar-padding,24px 24px 0 24px);flex:none;min-height:25px}
 /* title bar = the DS modal header (.modal-hd · .mt · .modal-x, 29 Oct): “Ask Deb” SemiBold 20/25 once chatting, no icon; 16px close on the title line, 24px in from the top and right */
 .cm-tb .mt{flex:1;min-width:0;font-family:var(--chat-messenger-internal-titlebar-title-font-family);font-size:var(--chat-messenger-internal-titlebar-title-font-size,20px);font-weight:var(--chat-messenger-internal-titlebar-title-font-weight,600);line-height:25px;color:var(--text-primary)}

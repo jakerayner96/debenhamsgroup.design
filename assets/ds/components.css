@@ -1160,7 +1160,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mdl-refresh{width:16px;height:25px;flex:none;margin-left:auto;padding:0;border:0;background:none;display:grid;place-items:center;cursor:pointer}
 .mdl-refresh::before{content:"";width:16px;height:16px;background:url("icons/lib/icons-new-chat-16.svg") center/16px 16px no-repeat}   /* new chat (the DS Icons / Edit glyph, 16 grid, 1px, the close's 15px span — Jake 11 Nov) */
 .mdl-refresh+.modal-x{margin-left:0}
-.modal-hd .mdl-refresh{margin-right:8px}   /* refresh ↔ close 24 apart (header gap 16 + 8) */
+.modal-hd .mdl-refresh{margin-right:4px}   /* new chat ↔ close 20 apart (header gap 16 + 4) — Figma Agent Chat Header 213:7476 */
 .mdl-bd{display:flex;flex-direction:column;gap:24px;font-size:16px;font-weight:var(--w-regular);line-height:normal;min-height:0}
 /* .mdl--compact: 16 between header, body and every block in it (the Added to Bag sheet, Figma review 13752:7583 – 13759:7583, 3 Nov 2026) */
 .mdl--compact,.mdl--compact .mdl-bd{gap:var(--gap-4,16px)}
