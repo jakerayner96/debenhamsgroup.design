@@ -1258,6 +1258,11 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mpill--plus{background:var(--mpill-grad-plus);color:#FFF}.mpill--plus i{background:var(--mpill-dot-plus)} /* Debenhams Unlimited+ only */
 /* --sm = the mini pill: 16px tall, 6px dot, 4px gap, programme name only (no "Active"). The member method badge on the PDP delivery grid + modal (29 Oct 2026) */
 .mpill--sm{height:16px;gap:4px;padding:0 6px 0 5px;vertical-align:1px}.mpill--sm i{width:6px;height:6px}
+/* Membership in checkout (11 Nov 2026, Jake): NEW = .dmeth-hd — the Delivery Method heading with the Active membership pill (.mpill) on the right (account-2026 checkout, Membership style: Pill).
+   The full-width banner is being PHASED OUT of checkout; where it still runs it is the programme's membership band · active (.member-band + .st), not the grey .mbanner below (retired). */
+.dmeth-hd{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--gap-2,8px) var(--gap-4,16px);margin-bottom:var(--gap-6,24px)}
+.dmeth-hd h3{margin:0;font-family:var(--font-family-base);font-size:18px;line-height:24px;font-weight:var(--w-strong);color:var(--text-primary)}
+/* RETIRED 11 Nov 2026 — kept for old prototypes only; use .dmeth-hd + .mpill (new) or the membership band · active (old, phasing out). */
 /* Membership banner on checkout (.mbanner) — the full-width "UNLIMITED · ACTIVE" bar above the delivery options, for an active member
    (Checkout 2026 WChEtDPH0LcErdYFS9SESn 3996:171295 "Unlimited Delivery Banner"). 22 Oct 2026, account-2026.
    14/16 padding · radius --radius-default · name Antonio Bold 24, caps, hug height (text box trimmed to cap height / baseline, as Figma) · status 13 caps on the right · no icon on any fascia.

@@ -29,6 +29,8 @@ window.DG_CHANGELOG=[
    "Brand pages › CTAs: the full Button set in the brand's mode (default, disabled, spinner, added, checkout securely, small) + the programme's Join CTA · Button page (#button) › Every fascia: the same set for all 17 fascias (DG_ctaBlock)"
   ],
   "changed": [
+   "Membership in checkout (was Membership banner · checkout, Jake 11 Nov): NEW = the Active membership pill on the Delivery Method heading (.dmeth-hd + .mpill, from account-2026 checkout · Membership style: Pill) for every programme; OLD = the full-width banner, being PHASED OUT of checkout — now the programme's membership band · active (logo on its art) instead of the grey Antonio .mbanner (retired). Both shown on the component, the Deliver+ & Memberships page and each brand page",
+   "Join CTA on programme art (.bd.mbr / .bd.mbr-out) removed from the DS pages, the Button catalogue and the Figma library — the CSS stays only for projects/membership-landing, its one user",
    "Deliver+ & Memberships page and the brand pages share one builder (window.DG_mx)",
    "Catalogue: boohoo Premier Club box / band / Membership CTA on the refresh pink #F9D7EA with a black button (was the old beige / burgundy)"
   ]

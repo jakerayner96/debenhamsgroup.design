@@ -758,6 +758,27 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .toast--app .act{margin-left:auto;font-weight:var(--w-strong);color:var(--text-link);background:none;border:none;cursor:pointer;white-space:nowrap}
 .toast--app .ico{width:20px;height:20px;flex:none;background:url("icons/lib/icons-wishlist.svg") center/20px 20px no-repeat}
 .toast--glass{background:var(--glass-toast,rgba(255,255,255,.9));-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);border:.5px solid rgba(255,255,255,.6);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+/* TOAST PLACEMENT (10 Nov 2026, Jake — the Principles “Added to wishlist · Manage” black bar → the DS floating white toast): one rule for every web toast
+   (.toast--top and the .toast--prod product toast). PHONES + TABLETS (< 1024): floats at the BOTTOM — 16 in from each side, 16 above the bottom edge
+   (+ the safe area), lifted above any bar pinned to the bottom (sticky ATB, cookie bar — toast.js sets --toast-bottom); rises 8px in, sinks out.
+   DESKTOP (≥ 1024): top-centred, 400 wide, under the USP banners (--toast-top), drops in / lifts out — as before. App toasts (.toast--app / --glass) keep the app rule (above the tab bar). */
+@media(max-width:1023px){
+  .toast.toast--top:not(.toast--app):not(.toast--glass){top:auto;bottom:calc(var(--toast-bottom,16px) + env(safe-area-inset-bottom,0px));animation-name:toastRise}
+  .toast.toast--top:not(.toast--app):not(.toast--glass).toast--out{animation-name:toastSink}
+}
+@keyframes toastRise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes toastSink{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}
+/* busy state (Figma 13557-10294 “Added To Wishlist” + spinner): the action swaps for the small DS spinner while the save is in flight */
+.toast--top .toast-end .spin.sm{width:14px;height:14px}
+/* Wishlisted state (10 Nov 2026): the wishlist button shows the FILLED glyph once the item is saved (heart / bookmark / PLT heart, -fill.svg) and a small pop; assets/ds/wishlist.js toggles it */
+.is-wished>img{animation:wishPop .36s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes wishPop{0%{transform:scale(.7)}60%{transform:scale(1.15)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.is-wished>img{animation:none}}
+/* .toast-demo: a static frame for showing the pattern in situ on the DS site — the toast inside is pinned to the frame, not the window */
+.toast-demo{position:relative;overflow:hidden;background:var(--surface-page,#FFF);box-shadow:0 0 0 1px var(--border-subtle,#E7E7E7)}
+.toast-demo .toast{position:absolute;animation:none}
+.toast-demo--phone .toast.toast--top{top:auto;bottom:16px;left:16px;right:16px;width:auto;margin:0}
+.toast-demo--desk .toast.toast--top{bottom:auto;top:var(--demo-top,16px);left:50%;right:auto;margin-left:-200px;width:400px;box-sizing:border-box}
 .alert{background:var(--error-bg);border-left:2px solid var(--text-error);padding:10px 12px;display:flex;gap:12px;align-items:center;font-size:14px}
 .empty{display:flex;flex-direction:column;align-items:center;gap:16px;padding:24px 16px;text-align:center}
 .empty img{width:32px;height:32px}
@@ -1233,6 +1254,11 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .mpill--plus{background:var(--mpill-grad-plus);color:#FFF}.mpill--plus i{background:var(--mpill-dot-plus)} /* Debenhams Unlimited+ only */
 /* --sm = the mini pill: 16px tall, 6px dot, 4px gap, programme name only (no "Active"). The member method badge on the PDP delivery grid + modal (29 Oct 2026) */
 .mpill--sm{height:16px;gap:4px;padding:0 6px 0 5px;vertical-align:1px}.mpill--sm i{width:6px;height:6px}
+/* Membership in checkout (11 Nov 2026, Jake): NEW = .dmeth-hd — the Delivery Method heading with the Active membership pill (.mpill) on the right (account-2026 checkout, Membership style: Pill).
+   The full-width banner is being PHASED OUT of checkout; where it still runs it is the programme's membership band · active (.member-band + .st), not the grey .mbanner below (retired). */
+.dmeth-hd{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--gap-2,8px) var(--gap-4,16px);margin-bottom:var(--gap-6,24px)}
+.dmeth-hd h3{margin:0;font-family:var(--font-family-base);font-size:18px;line-height:24px;font-weight:var(--w-strong);color:var(--text-primary)}
+/* RETIRED 11 Nov 2026 — kept for old prototypes only; use .dmeth-hd + .mpill (new) or the membership band · active (old, phasing out). */
 /* Membership banner on checkout (.mbanner) — the full-width "UNLIMITED · ACTIVE" bar above the delivery options, for an active member
    (Checkout 2026 WChEtDPH0LcErdYFS9SESn 3996:171295 "Unlimited Delivery Banner"). 22 Oct 2026, account-2026.
    14/16 padding · radius --radius-default · name Antonio Bold 24, caps, hug height (text box trimmed to cap height / baseline, as Figma) · status 13 caps on the right · no icon on any fascia.
@@ -1293,23 +1319,24 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .dplus-bag .x::before,.dplus-bag .x::after{content:"";position:absolute;width:14px;height:1.5px;background:currentColor;transform:rotate(45deg)}
 .dplus-bag .x::after{transform:rotate(-45deg)}
 
-/* App tab bar — the native-app bottom bar, 390 wide.
-   Standard (Debenhams + most fascias): DS aIHmkCaTy9c5EWOxAGw0So · App / Tab Bar 3824:9530 (as used in Account 2026 2136:198) —
-   83px white, 0 -0.5px #E8E8E8 top shadow, five 48×40 tabs (space-between, 15px sides) at y14, 28px icons, inactive 30% opacity, 139×5 home indicator 8px from the bottom.
-   Wishlist tab is the bookmark on boohooMAN and Karen Millen (DS rule; App / Tab Bar 9893:28665): use tab-bookmark.svg.
-   PLT: Best App Ever HoBuVNEhf1qpL61XFipy0f · 1128:225860 — 88px #FFFDF7, 0.3px black top rule, 16/14/29 padding, tabs 48×43 with a 10/14 Roboto Medium label;
-   only the icon dims (30%), labels stay black. Tabs: Home (PLT monogram) · Shop · Discover · Wishlist · Bag — no Account tab. */
-.app-tabbar{position:relative;width:100%;height:83px;background:#FFF;box-shadow:0 -0.5px 0 #E8E8E8;padding-top:14px;box-sizing:border-box}
-.app-tabbar .tabs{display:flex;justify-content:space-between;padding:0 15px}
-.app-tabbar .tab{width:48px;height:40px;display:flex;flex-direction:column;align-items:center;opacity:.3;background:none;border:0;padding:0;cursor:pointer;color:#000}
-.app-tabbar .tab.on{opacity:1}
-.app-tabbar .tab img{width:28px;height:28px;margin-top:-2px;display:block}
-.app-tabbar .hi{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:139px;height:5px;border-radius:99px;background:#000}
-.app-tabbar--plt{height:88px;background:#FFFDF7;box-shadow:inset 0 0.3px 0 #000;padding:16px 14px 29px}
-.app-tabbar--plt .tabs{padding:0}
-.app-tabbar--plt .tab{height:43px;opacity:1;gap:5px}
-.app-tabbar--plt .tab img{margin:0;opacity:.3}
-.app-tabbar--plt .tab.on img{opacity:1}
+/* App tab bar — the native-app bottom bar. LIQUID GLASS (11 Nov 2026, Jake: every app prototype uses the App Prototype's glass UI —
+   jakerayner96/plt-app-prototype, iOS 26 system tab bar / its web pill, measured from the app's web build):
+   a floating capsule 60 high, 16 in from each side and 12 off the bottom of the screen, glass fill (.app-glass: white 65% over an 18px blur +
+   saturate 180%, 1px white 55% rim), content scrolls under it. Five tabs spread evenly, 28px icons at full ink; the selected tab sits in a
+   lighter pill (white 85%, 66 × 46, fully round). No home indicator drawn — the device frame has it. The flat white bar is retired (glass only, 29 Oct).
+   Wishlist tab is the bookmark on boohooMAN and Karen Millen (DS rule): use tab-bookmark.svg.
+   PLT: same capsule; Home (PLT monogram) · Shop · Discover · Wishlist · Bag with 10/14 Roboto Medium labels under 24px icons — no Account tab. */
+:root{--glass-tint:rgba(255,255,255,.65);--glass-rim:rgba(255,255,255,.55);--glass-blur:blur(18px) saturate(180%);--glass-puck:0 1px 6px rgba(0,0,0,.12);--glass-on:rgba(255,255,255,.85)}
+.app-glass{background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim)}
+.app-tabbar{position:relative;width:100%;height:72px;padding:0 16px 12px;box-sizing:border-box;background:none;pointer-events:none}
+.app-tabbar .tabs{pointer-events:auto;height:60px;display:flex;align-items:center;justify-content:space-around;padding:0 7px;border-radius:999px;box-sizing:border-box;
+  background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.app-tabbar .tab{width:66px;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:999px;background:none;border:0;padding:0;cursor:pointer;color:#000}
+.app-tabbar .tab.on{background:var(--glass-on)}
+.app-tabbar .tab img{width:28px;height:28px;display:block}
+.app-tabbar .hi{display:none}
+.app-tabbar--plt .tab{gap:2px}
+.app-tabbar--plt .tab img{width:24px;height:24px}
 .app-tabbar--plt .tab span{font:500 10px/14px 'Roboto',system-ui,sans-serif;color:#000;white-space:nowrap}
 
 /* ---- C-19 Sign in (Sign-in prototype, 12 Oct 2026 · Social-Login P2RiX62irafEZQjyLRhRx7 112-6838 / 2032-1885 · Checkout 2026 WChEtDPH0LcErdYFS9SESn 1669-43380 / 1669-43700)
@@ -1688,15 +1715,19 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dopts-empty{margin:0;font-size:14px;color:var(--text-secondary)}
 .dopts-note{margin:var(--gap-2,8px) 0 0;font-size:12px;line-height:15px;color:var(--text-secondary)}
 
-/* App top bar (.app-top) — native-app status bar + PDP nav: 9:41 / island-safe status row (47px) then a 44px row: back · share + wishlist (24px icons).
-   Sticky to the top of an app screen; pairs with .app-tabbar at the bottom. 16 Oct 2026 (PDP delivery grid prototype). */
-.app-top{position:sticky;top:0;z-index:5;background:var(--surface-page);font-family:-apple-system,'SF Pro Text',system-ui,sans-serif}
+/* App top bar (.app-top) — LIQUID GLASS (11 Nov 2026, App Prototype GlassNavButton): no bar. The iOS status row (47px, SF 17 semibold) and the
+   nav row float over the full-bleed gallery: 44 × 44 glass circles (.app-glass fill on a puck shadow 0 1 6 black 12% — glass alone vanishes on
+   white), 16 from the screen edges; back (22px chevron) left, share (24px) right. The wishlist is on the page (beside the Virtual Stylist chip),
+   not in the nav (Jake, 16 Oct). Sticky with no height, so the page starts under it. Pairs with .app-tabbar. */
+.app-top{position:sticky;top:0;z-index:5;height:0;overflow:visible;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif}
 .app-top .sb{height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 26px 0 40px;font-size:17px;font-weight:600;color:#000}
 .app-top .sb .sys{display:flex;gap:6px;align-items:center}.app-top .sb svg{display:block}
-.app-top .nav{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gap-3,12px)}
+.app-top .nav{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
 .app-top .nav span{display:flex;gap:var(--gap-2,8px)}
-.app-top .nav button{width:40px;height:40px;display:grid;place-items:center;padding:0;border:0;background:none;cursor:pointer}
+.app-top .nav button{width:44px;height:44px;display:grid;place-items:center;padding:0;border-radius:999px;cursor:pointer;box-sizing:border-box;
+  background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim);box-shadow:var(--glass-puck)}
 .app-top .nav img{width:24px;height:24px}
+.app-top .nav button[aria-label=Back] img{width:22px;height:22px;margin-left:-1px}
 
 /* PDP buy buttons (.pdp-ctas) — every PDP: Add to bag, then PayPal, then Apple Pay, stacked full width, gap 2 (8px). Order is fixed (Jake, 16 Oct 2026).
    PayPal carries the "Checkout" label (.pp-co, 20px #2C2E2F) after the wordmark, as live. Promoted from the Shopping agent PDP. */
@@ -1793,6 +1824,36 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .ai-pill.ai-pill--suggest{font-size:14px;font-weight:var(--w-regular,300);color:var(--text-primary);box-shadow:0 0 14px -4px rgba(0,0,0,.06)}
 .ai-pill.ai-pill--suggest:hover{box-shadow:var(--shadow-puck)}
 .ai-pill.ai-pill--ask{border:0;background:var(--surface-raised,#FFF);box-shadow:var(--shadow-ask);transition:box-shadow .15s,transform .15s}.ai-pill.ai-pill--ask:hover{box-shadow:var(--shadow-puck)}   /* Ask launcher beside search: soft 8% shadow, no outline */
+/* ===== AI resume — the way back into a closed conversation (shopping agent, Jake 11 Nov) =====
+   Feedback: once the chat window is closed it isn't obvious how to get back to it. Shown only after a conversation has started and the window is closed;
+   tapping any of these reopens the same conversation (the refresh in the chat header is what starts again). Four patterns:
+   .ai-fab          56px white circle, the AI sparkle, an --ai-fg dot (= a conversation is waiting) · bottom right, 16px in (24px from 1024)
+   .ai-fab--ext     the same, extended: sparkle + “Continue chat”, 48px
+   .ai-resume       peek bar: sparkle · “Ask Deb” + the last reply on one line · up chevron · close (hides the bar, the chat is still there)
+   .ai-dot          just the dot, on the launcher that opened the chat (Ask pill / AI circle / header search icon) — no floating UI */
+.ai-fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-sticky,200) + 1);display:grid;place-items:center;width:56px;height:56px;padding:0;border:0;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08);cursor:pointer;font-family:var(--font-family-base);color:var(--text-primary);animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both;transition:box-shadow .15s,transform .15s}
+.ai-fab:hover{box-shadow:0 6px 20px rgba(0,0,0,.18),0 1px 3px rgba(0,0,0,.08)}.ai-fab:active{transform:scale(.96)}
+.ai-fab:focus-visible,.ai-resume:focus-within{outline:var(--border-w-focus,2px) solid var(--border-focus,#000);outline-offset:2px}
+.ai-fab .ai-icon{width:24px;height:24px}
+.ai-fab__dot{position:absolute;top:9px;right:9px;width:10px;height:10px;border-radius:50%;background:var(--ai-fg);box-shadow:0 0 0 2px var(--surface-raised,#FFF)}
+.ai-fab--ext{display:inline-flex;align-items:center;gap:8px;width:auto;height:48px;padding:0 20px 0 16px;font-size:15px;font-weight:var(--w-mid,500);line-height:1;white-space:nowrap}
+.ai-fab--ext .ai-icon{width:20px;height:20px}
+.ai-fab--ext .ai-fab__dot{top:-2px;right:-2px}
+.ai-resume{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-sticky,200) + 1);display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 8px 8px 16px;border-radius:var(--radius-lg,8px);background:rgba(255,255,255,.96);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);box-shadow:0 0 20px rgba(0,0,0,.12);font-family:var(--font-family-base);color:var(--text-primary);animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both}
+.ai-resume__open{display:flex;align-items:center;gap:12px;flex:1;min-width:0;padding:0;border:0;background:none;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.ai-resume .ai-icon{width:20px;height:20px}
+.ai-resume__tx{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.ai-resume__t{font-size:14px;line-height:18px;font-weight:var(--w-strong,600)}
+.ai-resume__p{font-size:13px;line-height:17px;font-weight:var(--w-regular,300);color:var(--text-secondary,#767676);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai-resume__up,.ai-resume__x{display:grid;place-items:center;flex:none;width:32px;height:32px;padding:0;border:0;background:none;cursor:pointer}
+.ai-resume__up::before,.ai-resume__x::before{content:"";width:16px;height:16px;background:var(--text-primary);-webkit-mask:url("icons/lib/icons-up.svg") center/contain no-repeat;mask:url("icons/lib/icons-up.svg") center/contain no-repeat}
+.ai-resume__x::before{width:12px;height:12px;-webkit-mask-image:url("icons/lib/icons-close-12.svg");mask-image:url("icons/lib/icons-close-12.svg")}
+.ai-dot{position:relative}
+.ai-dot::after{content:"";position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--ai-fg);box-shadow:0 0 0 2px var(--surface-raised,#FFF);pointer-events:none;animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both}
+@media(min-width:1024px){.ai-fab{right:24px;bottom:24px}.ai-resume{left:auto;right:24px;bottom:24px;width:360px}}
+@keyframes aiFabIn{from{opacity:0;transform:translateY(12px) scale(.92)}}
+@media(prefers-reduced-motion:reduce){.ai-fab,.ai-resume,.ai-dot::after{animation:none}}
+html.exporting .ai-fab,html.exporting .ai-resume,body.exporting .ai-fab,body.exporting .ai-resume,body.exporting .ai-dot::after{animation:none}
 .ai-pill--outline.ai-pill--suggest,.ai-pill--outline.ai-pill--suggest:hover{box-shadow:none}
 
 /* Search bar · open (.srch-bar, 26 Oct 2026, AI generated badge prototype) — the field the search overlay opens on, over .srch-sugg.
@@ -2187,9 +2248,9 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .vs-intro .mdl-bd{gap:var(--gap-6,24px);padding-bottom:12px;margin-bottom:-12px}   /* room for the photo shadow inside the scrolling body */
 .vs-intro .mdl-ft{gap:var(--gap-4,16px)}
 .vs-lede{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
-.vs-eg{display:flex;align-items:center;gap:28px}   /* Figma 23 from the tilted photo’s bounding box */
-.vs-eg-img{height:140px;aspect-ratio:2/3;flex:none;border-radius:var(--radius-lg);box-shadow:var(--shadow-pill);transform:rotate(-2deg);background:var(--surface-media,#F2F2F2) url("img/vs-example.jpg") center/cover no-repeat}
-.vs-eg-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--gap-3,12px);padding-bottom:var(--gap-1,4px)}
+.vs-eg{display:grid;grid-template-columns:minmax(0,1fr) minmax(max-content,1fr);align-items:center;gap:28px}   /* 50/50 split, full width (Jake 10 Nov): the gap stays 28 (Figma 23 from the tilted photo), the tips half never narrower than its longest line, the photo fills its half to the margin at 2:3 */
+.vs-eg-img{width:100%;aspect-ratio:2/3;border-radius:var(--radius-lg);box-shadow:var(--shadow-pill);transform:rotate(-2deg);background:var(--surface-media,#F2F2F2) url("img/vs-example.jpg") center/cover no-repeat}
+.vs-eg-tx{min-width:0;display:flex;flex-direction:column;gap:var(--gap-3,12px);padding-bottom:var(--gap-1,4px)}
 .vs-eg-h{margin:0;font-family:var(--font-family-base);font-size:14px;line-height:20px;font-weight:var(--w-strong,600);color:var(--text-primary)}
 .vs-tips{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-3,12px)}
 .vs-tips li{display:flex;align-items:center;gap:var(--gap-2,8px);font-size:14px;line-height:16px;font-weight:var(--w-regular);color:var(--text-primary)}

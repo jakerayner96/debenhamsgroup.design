@@ -1689,12 +1689,12 @@ window.DG_mx=(function(){
       it('PDP · Delivery grid, member (the mini pill on the member method)',W(358,window.DG_delivery?DG_delivery.grid({premier:true,prog:p.pill,brand:p.b}):''))]));
     parts.push(grp([it('Chip · mini pill (--sm) — delivery grid + modal',`<span class="mpill mpill--sm${plus}"><i></i><b>${p.pill}</b></span>`),
       it('Chip · Active pill — checkout delivery method',`<span class="mpill${plus}"><i></i><b>${p.pill}</b><span>Active</span></span>`),
-      it('Checkout · Membership banner (active)',W(342,`<div class="mbanner"><span class="nm">${p.banner||p.pill}</span><span class="st">Active</span></div>`)),
+      it('Checkout · NEW — Active pill on the Delivery Method heading',W(358,`<div class="dmeth-hd"><h3>Delivery Method</h3><span class="mpill${plus}"><i></i><b>${p.pill}</b><span>Active</span></span></div>`)),
+      it('Checkout · OLD banner — phasing out (the membership band · active)',W(358,window.DG_memberBandHTML?DG_memberBandHTML(p.b,{plus:p.plus,status:'Active'}):'')),
       it('Checkout · Delivery method, member',cat('delivery-method','Unlimited user · with radio'))]));
     parts.push(grp([it('Account · Membership band',W(358,window.DG_memberBandHTML?DG_memberBandHTML(p.b,{plus:p.plus}):'')),
       it('Account · Membership band · active',W(358,window.DG_memberBandHTML?DG_memberBandHTML(p.b,{plus:p.plus,status:'Active'}):'')),
-      it('Landing · Membership band (--lg)',W(600,window.DG_memberBandHTML?DG_memberBandHTML(p.b,{plus:p.plus,size:'lg'}):'')),
-      it('Join CTA on programme art (.bd.mbr / .bd.mbr-out)',`<div style="display:flex;gap:12px;padding:24px;${vars};background:var(--mb-bg) var(--mb-img) center/cover;color:var(--mb-fg)"><button class="bd mbr">Join ${p.pill}</button><button class="bd mbr-out">Learn more</button></div>`)]));
+      it('Landing · Membership band (--lg)',W(600,window.DG_memberBandHTML?DG_memberBandHTML(p.b,{plus:p.plus,size:'lg'}):''))]));
     if(p.b==='debenhams'&&!p.plus)parts.push(grp([it('PDP · Membership banner (add to bag)',cat('membership-banner','Debenhams Unlimited')),it('Bag · membership line',cat('bag-product-card','Membership'))]));
     return `<div class="fx" data-brand="${p.b}" data-mx="${p.b}"><div class="fl"><span>${p.n}</span><em>${(Object.fromEntries(FASCIAS))[p.b]||p.b} · membership</em></div><div class="canvas fxc">${parts.join('')}</div></div>`};
   const dp=C.find(x=>x.slug==='deliver-plus');const dpOff=new Set(dp.notOn||[]);
@@ -1707,7 +1707,7 @@ window.DG_mx=(function(){
    plus the programme's Join CTA where it runs one. Used on every brand page (#b-<slug> › CTAs) and the Button page (#button › Every fascia). */
 window.DG_ctaBlock=function(sl,nm){const c=C.find(x=>x.slug==='button');if(!c)return '';const X=window.DG_mx;
   const vs=c.variants.filter(v=>!/^Membership CTA/.test(v.name));
-  const join=X?X.PROG.filter(p=>p.b===sl).map(p=>X.it('Join CTA · '+p.n,`<div style="display:flex;gap:12px;padding:24px;${window.DG_memberVars?DG_memberVars(p.b,{plus:p.plus}):''};background:var(--mb-bg) var(--mb-img) center/cover;color:var(--mb-fg)"><button class="bd mbr">Join ${p.pill}</button><button class="bd mbr-out">Learn more</button></div>`)).join(''):'';
+  const join='';
   return `<div class="fx" data-brand="${sl}"><div class="fl"><span>${nm}</span><em>CTAs</em></div><div class="canvas fxc">${vs.map(v=>X?X.it(v.name,v.html):v.html).join('')}${join}</div></div>`};
 window.buildButtonFascias=function(){const sec=document.getElementById('button');if(!sec||sec.dataset.bf)return;sec.dataset.bf='1';
   const anchor=sec.querySelector('#b-props');if(!anchor)return;
@@ -1719,7 +1719,7 @@ window.buildMemberships=function(){const sec=document.getElementById('membership
   const off=window.DG_mx.dpOff;
   const dpBlocks=FASCIAS.filter(f=>!off.has(f[0])).map(([sl,nm])=>window.DG_mx.dpBlock(sl,nm)).join('');
   const offList=FASCIAS.filter(f=>off.has(f[0])).map(f=>f[1]).join(', ');
-  host.innerHTML=`<h2 id="mx-programmes">Every membership component, per programme</h2><p class="lede" style="margin-top:0">PDP box and member delivery grid, the membership pills (the mini one is the chip on the delivery grid and in checkout when a membership is active), checkout banner and delivery method, account / landing bands and the Join buttons — each programme in its own fascia. Warehouse and The Brand Room run no programme.</p>
+  host.innerHTML=`<h2 id="mx-programmes">Every membership component, per programme</h2><p class="lede" style="margin-top:0">PDP box and member delivery grid, the membership pills (the mini one is the chip on the delivery grid and in checkout when a membership is active), checkout banner and delivery method, account / landing bands — each programme in its own fascia. Checkout: the NEW Active pill on the Delivery Method heading; the OLD full-width banner (the membership band · active) is being phased out. Warehouse and The Brand Room run no programme.</p>
     <div class="fxstack">${PROG.map(progBlock).join('')}</div>
     <h2 id="mx-dplus">Deliver+ — every fascia</h2><p class="lede" style="margin-top:0">PDP banner (mobile, desktop, light ground), PDP + checkout modal, bag banner and checkout banner (added / not added). Not on ${offList}.</p>
     <div class="fxstack">${dpBlocks}</div>`;
@@ -1893,7 +1893,7 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   add(`<section class="page" id="memberships" data-crumb="Brand Centre / Deliver+ &amp; Memberships">
     <div class="kick"><a href="#brands" style="color:inherit">brand centre</a> <b>· sub-brands</b></div>
     <h1>Deliver+ &amp; Memberships</h1>
-    <p class="lede">Everything for the delivery programmes, on one page: each fascia's membership — Debenhams Unlimited and Unlimited+, boohoo Premier Club, boohooMAN Premier, PLT Royalty, Karen Millen Premier — with its kit (colours, icon, artwork), every component it appears in (PDP box, the delivery-grid chip, checkout pill and banner, account bands, Join buttons), and Deliver+ for every fascia that runs it. Figma: the Deliver+ &amp; Memberships page in the DS file.</p>
+    <p class="lede">Everything for the delivery programmes, on one page: each fascia's membership — Debenhams Unlimited and Unlimited+, boohoo Premier Club, boohooMAN Premier, PLT Royalty, Karen Millen Premier — with its kit (colours, icon, artwork), every component it appears in (PDP box, the delivery-grid chip, checkout pill (new) and banner (phasing out), account bands), and Deliver+ for every fascia that runs it. Figma: the Deliver+ &amp; Memberships page in the DS file.</p>
     <div class="cfilters mxchips" style="margin:8px 0 24px"></div>
     <h2 id="mx-kits">Programme kits</h2>
     <div class="kits">${MS.map(msCard).join('')}</div>
