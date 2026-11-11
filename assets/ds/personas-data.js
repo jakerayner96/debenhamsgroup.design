@@ -46,7 +46,7 @@ window.DG_PERSONAS={
 "Black Friday"
 ]
 ],
-"foot": "Portraits are original illustrations, not photographs of real people. Catch-all personas rotate their details on each run, so their portraits are placeholders. Cohort shares are behavioural: the typical customer from the last three months of orders, the other four from 12 months (10 Oct 2025 to 8 Oct 2026). They overlap and don't sum to 100%. Cards link to live results where a persona has been run.",
+"foot": "Portraits are original illustrations, not photographs of real people. Catch-all personas rotate their details on each run, so their portraits are placeholders. Cohort shares are behavioural: the typical customer from the last three months of orders, the other four from 12 months (10 Oct 2025 to 8 Oct 2026). They overlap and don't sum to 100%.",
 "source": "meet-our-customers.pdf (Chromium print, 9 Oct 2026) + the five linked \"test personas and scenarios\" pages",
 "pdf": "assets/ds/personas/meet-our-customers.pdf",
 "updated": "2026-11-11",
@@ -55,7 +55,7 @@ window.DG_PERSONAS={
 "the next six largest behavioural cohorts (built using the past 12 months of order data)",
 "a catch-all customer covering observed behaviours not reflected by the above two personas"
 ],
-"introNote": "Intro rewritten by Jake, 12 Nov 2026 (replaces the PDF intro line). Card copy is still the PDF word for word."
+"introNote": "Intro rewritten by Jake, 12 Nov 2026 (replaces the PDF intro line). Card copy is still the PDF word for word. 12 Nov: run results (finding, live-results link, run status) are off the cards; the footnote's \"Cards link to live results…\" sentence is dropped to match."
 },
 "brands": [
 {

@@ -2505,7 +2505,7 @@ select.rf-input:invalid{color:var(--rf-dim)}
 /* ===== Persona card (.persona) — 11 Nov 2026, Customer personas ("Meet our customers": 5 sites × 8 personas × 8 scenarios) =====
    Markup + data: assets/ds/personas.js DG_personaCard(p) over assets/ds/personas-data.js. Copy is the PDF word for word — never reword it.
    Anatomy: tinted header (portrait 72 in a 3px ring · tag pill · name, age 20 strong · role 14) → share figure 18 strong + meter → caption 12
-   → attribute chips 12 → description 14 → eight scenarios (season dot · title 14 · value 12 right) → finding (severity pill) + status line.
+   → attribute chips 12 → description 14 → "Scenarios we test / Budget" header → eight scenarios (season dot · title 14 · budget 12 right · chevron when it opens). No run results on the card.
    All card text is --text-primary (Jake 12 Nov 2026: grey is only for tiny captions / T&Cs). Portraits: line SVGs on the --persona-hd tint.
    Scenario rows open the test script (goal · Journey · What to watch for) when the data has one. Fascia: font, tint (--persona-hd), meter
    (--persona-accent), radius (--radius-lg / --radius-pill: square on PLT), surfaces (sand on PLT). Season keys --season-*, severity --sev-*. */
@@ -2529,11 +2529,15 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .persona-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
 .persona-chips li{padding:3px 10px;border-radius:var(--radius-pill);background:var(--surface-sunken);border:1px solid var(--border-subtle);font-size:12px;line-height:16px}
 .persona-desc{margin:0;max-width:none;font-size:14px;line-height:20px;color:var(--text-primary)}
+.persona-scen-hd{display:flex;justify-content:space-between;gap:12px;margin-bottom:-6px;padding-bottom:6px;border-bottom:1px solid var(--border-default);font-size:12px;line-height:16px;font-weight:var(--w-strong);color:var(--text-primary)}
 .persona-scen{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
 .persona-scen>li{border-top:1px solid var(--border-subtle);transition:opacity var(--dur-base) var(--ease-standard)}
 .persona-scen>li:first-child{border-top:0}
-.persona-row{appearance:none;display:grid;grid-template-columns:8px 1fr auto;align-items:baseline;gap:8px;width:100%;padding:7px 0;background:none;border:0;font:inherit;color:inherit;text-align:left;cursor:default}
+.persona-row{appearance:none;display:grid;grid-template-columns:8px 1fr auto auto;align-items:baseline;gap:8px;width:100%;padding:7px 0;background:none;border:0;font:inherit;color:inherit;text-align:left;cursor:default}
 .persona-row[aria-expanded]{cursor:pointer}
+.persona-row::after{content:"";width:10px}
+.persona-row[aria-expanded]::after{width:6px;height:6px;margin:0 2px;border-right:1.5px solid var(--text-primary);border-bottom:1.5px solid var(--text-primary);transform:translateY(-3px) rotate(45deg);transition:transform var(--dur-base) var(--ease-standard)}
+.persona-row[aria-expanded="true"]::after{transform:translateY(0) rotate(225deg)}
 .persona-row[aria-expanded]:hover span{text-decoration:underline;text-underline-offset:2px}
 .persona-row>i{width:8px;height:8px;border-radius:9999px;background:var(--season-everyday);transform:translateY(-1px)}
 .persona-row span{font-size:14px;line-height:18px}
@@ -2548,12 +2552,9 @@ li[data-k="bf"]>.persona-row>i{background:var(--season-bf)}
 .persona-script ol,.persona-script ul{margin:0;padding-left:18px}
 .persona-script li{margin:2px 0}
 @keyframes persona-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-.persona-ft{margin-top:auto;padding-top:12px;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:18px}
-.persona-find{margin:0;max-width:none;font-size:14px;line-height:18px;color:var(--text-primary)}
+/* severity pill (.persona-sev) — persona TEST REPORTS only (tools/persona-test/report.mjs), never on the card */
 .persona-sev{display:inline-flex;align-items:center;height:18px;padding:0 6px;margin-right:6px;border-radius:var(--radius-default,4px);background:var(--sev-high);color:#FFF;font-size:10px;font-weight:var(--w-strong);letter-spacing:.04em;vertical-align:1px}
 .persona-sev[data-sev="critical"]{background:var(--sev-critical)}.persona-sev[data-sev="medium"]{background:var(--sev-medium)}.persona-sev[data-sev="low"]{background:var(--sev-low)}
-a.persona-status{color:var(--text-primary);font-weight:var(--w-strong);text-decoration:underline;text-underline-offset:3px}
-span.persona-status{color:var(--text-primary)}
 /* season legend (.persona-legend) — the PDF key; buttons when it filters ([data-season] on any ancestor dims the other scenario types) */
 .persona-legend{display:flex;flex-wrap:wrap;gap:16px;margin:0;padding:0;list-style:none;font-family:var(--font-family-base);font-size:13px;line-height:18px}
 .persona-legend li,.persona-legend button{display:inline-flex;align-items:center;gap:6px;appearance:none;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:inherit}

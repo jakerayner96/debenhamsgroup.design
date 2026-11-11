@@ -5,6 +5,7 @@
    DG_personaLegend({filter})         → the season key (buttons when filter: true; toggles [data-season] on the closest [data-season-host])
    DG_persona(slug, id)               → look a persona up
    Scenario rows open their test script (goal · Journey · What to watch for) — one listener on document, wired on load.
+   No run results on the card (Jake 12 Nov 2026: finding + live-results status removed; they stay in the data for the persona tests).
    Copy comes from the data untouched: the PDF wording on the card, the linked scenario pages in the script. */
 (function(){
   var me=document.currentScript&&document.currentScript.src||'';
@@ -22,13 +23,11 @@
       var row='<button class="persona-row" type="button"'+(sc?' aria-expanded="false"':' tabindex="-1"')+'><i></i><span>'+esc(s.t)+'</span><em>'+esc(s.v)+'</em></button>';
       var body=sc?'<div class="persona-script"><p>'+esc(sc.g)+'</p><h6>Journey</h6><ol>'+sc.st.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ol><h6>What to watch for</h6><ul>'+sc.w.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div>':'';
       return '<li data-k="'+s.k+'">'+row+body+'</li>'}).join('');
-    var find=p.finding?'<p class="persona-find"><span class="persona-sev" data-sev="'+esc(p.finding.sev.toLowerCase())+'">'+esc(p.finding.sev)+'</span>'+esc(p.finding.text)+'</p>':'';
-    var st=p.status.url?'<a class="persona-status" href="'+esc(p.status.url)+'" target="_blank" rel="noopener">'+esc(p.status.text)+'</a>':'<span class="persona-status">'+esc(p.status.text)+'</span>';
     return '<article class="persona" data-kind="'+p.kind+'" data-id="'+esc(p.id)+'" id="'+(o.idPrefix||'pc-')+esc(o.slug||'')+'-'+esc(p.id)+'">'+
       '<header class="persona-hd">'+DG_personaAv(p)+(p.tag?'<span class="persona-tag">'+esc(p.tag)+'</span>':'')+'<div class="persona-id"><b>'+esc(p.label)+'</b><span>'+esc(p.role)+'</span></div></header>'+
       '<div class="persona-bd"><div class="persona-share"><b>'+esc(p.head)+'</b><span class="persona-meter" style="--p:'+fill(p)+'%"><i></i></span></div>'+
       '<p class="persona-sub">'+esc(p.headSub)+'</p><ul class="persona-chips">'+p.chips.map(function(c){return '<li>'+esc(c)+'</li>'}).join('')+'</ul>'+
-      '<p class="persona-desc">'+esc(p.desc)+'</p><ol class="persona-scen">'+scen+'</ol><div class="persona-ft">'+find+st+'</div></div></article>'};
+      '<p class="persona-desc">'+esc(p.desc)+'</p><div class="persona-scen-hd"><span>Scenarios we test</span><span>Budget</span></div><ol class="persona-scen">'+scen+'</ol></div></article>'};
   window.DG_personaGrid=function(slug,o){o=o||{};var b=DG_personaBrand(slug);if(!b)return '';
     return '<div class="persona-grid" data-brand="'+esc(slug)+'">'+b.personas.map(function(p){return DG_personaCard(p,{scripts:o.scripts,slug:slug,idPrefix:o.idPrefix})}).join('')+'</div>'};
   window.DG_personaLegend=function(o){o=o||{};var L=(D().meta||{}).legend||[];

@@ -62,7 +62,8 @@ img{max-width:100%;max-height:100%}
 .fact-v{font:700 132px/1 'Antonio';font-variant-numeric:tabular-nums}
 .fact-v.sm{font-size:88px;line-height:1.5;white-space:nowrap}
 .fact-l{font:300 18px/1.5 'Geologica';letter-spacing:.24em;text-transform:uppercase;color:#fff;margin-top:10px}
-.legend{position:absolute;left:100px;bottom:150px;display:flex;gap:44px;list-style:none;font:300 22px/1 'Geologica'}
+.how{position:absolute;left:100px;top:836px;width:1500px;font:300 20px/1.45 'Geologica';color:#fff}
+.legend{position:absolute;left:100px;bottom:96px;display:flex;gap:44px;list-style:none;font:300 22px/1 'Geologica'}
 .legend li{display:flex;align-items:center;gap:14px}
 .k{width:14px;height:14px;border-radius:50%;background:var(--season-everyday);flex:none}
 .k[data-k="christmas"]{background:var(--season-christmas)}.k[data-k="sale"]{background:var(--season-sale)}.k[data-k="bf"]{background:#050505;box-shadow:0 0 0 1.5px #fff}
@@ -110,8 +111,9 @@ img{max-width:100%;max-height:100%}
 .p .desc{font:300 24px/1.5 'Geologica';letter-spacing:-.01em;margin-top:32px;color:#e9e9e4}
 .p .scen{position:absolute;left:1300px;top:250px;width:520px;z-index:2}
 .p .scen .eyebrow{margin-bottom:12px}
+.shd{display:flex;justify-content:space-between;font:500 14px/1 'Geologica';letter-spacing:.2em;text-transform:uppercase;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.4)}
 .srow{display:grid;grid-template-columns:14px 1fr auto;gap:16px;align-items:baseline;padding:13px 0;border-top:1px solid rgba(255,255,255,.12);transition:opacity .3s}
-.srow:first-of-type{border-top:0}
+.shd+.srow{border-top:0}
 .srow .k{transform:translateY(-2px)}
 .srow b{font:300 22px/1.3 'Geologica'}
 .srow em{font:700 26px/1 'Antonio';font-style:normal;color:#fff;white-space:nowrap}
@@ -188,6 +190,7 @@ S.push({cls:'intro',html:`<div class="glow g1"></div><div class="header"><div cl
   <div class="lead reveal" style="--n:1"><p>${esc(M.intro)}</p><ul>${(M.introList||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
   <div class="facts">${M.stats.map(([v,l],i)=>`<div class="fact reveal" style="--n:${2+i}"><div class="fact-v${/\D/.test(v)?' sm':''}" data-count="${esc(v)}">${esc(v)}</div><div class="fact-l">${esc(l)}</div></div>`).join('')}</div>
   <div class="sites">${B.map((b,i)=>`<a class="reveal" style="--n:${5+i}" data-go="div-${b.slug}" title="${esc(b.name)}"><img src="${BASE}assets/brands/${b.slug}.svg" alt="${esc(b.name)}"></a>`).join('')}</div>
+  <p class="how reveal" style="--n:8">Each persona: who they are, how they shop, and the eight shopping scenarios we test our sites and prototypes with. The bar shows their share of the site’s customers. Budget is what they spend in that scenario (Rotates = changes on every test run).</p>
   <ul class="legend">${M.legend.map(([k,l],i)=>`<li class="reveal" style="--n:${8+i}"><span class="k" data-k="${k}"></span>${esc(l)}</li>`).join('')}</ul>`});
 B.forEach(b=>{
   const mx=Math.max(...b.personas.filter(p=>p.kind==='cohort').map(p=>p.share));
@@ -209,8 +212,7 @@ B.forEach(b=>{
         <div class="chips">${p.chips.map((c,j)=>`<span class="reveal" style="--n:${4+j*.6}">${esc(c)}</span>`).join('')}</div>
         <p class="desc reveal" style="--n:6">${esc(p.desc)}</p></div>
       <ul class="slegend reveal" style="--n:3">${M.legend.map(([k,l])=>`<li><button data-season="${k}"><span class="k" data-k="${k}"></span>${esc(l)}</button></li>`).join('')}</ul>
-      <div class="scen">${p.scen.map((s,j)=>`<div class="srow reveal" data-k="${s.k}" style="--n:${3+j*.5}"><span class="k" data-k="${s.k}"></span><b>${esc(s.t)}</b><em>${esc(s.v)}</em></div>`).join('')}</div>
-      <div class="end reveal" style="--n:8">${p.finding?`<div class="find"><span class="sev" data-sev="${p.finding.sev.toLowerCase()}">${esc(p.finding.sev)}</span>${esc(p.finding.text)}</div>`:''}${p.status.url?`<a class="status" href="${esc(p.status.url)}" target="_blank" rel="noopener">${esc(p.status.text)}</a>`:`<div class="status">${esc(p.status.text)}</div>`}</div>
+      <div class="scen"><div class="shd reveal" style="--n:3"><span>Scenarios we test</span><span>Budget</span></div>${p.scen.map((s,j)=>`<div class="srow reveal" data-k="${s.k}" style="--n:${3+j*.5}"><span class="k" data-k="${s.k}"></span><b>${esc(s.t)}</b><em>${esc(s.v)}</em></div>`).join('')}</div>
       <div class="mini">${b.personas.map(q=>`<a data-go="p-${b.slug}-${q.id}" class="${q.id===p.id?'on':''}" title="${esc(q.label)}">${av(q)}</a>`).join('')}</div>`})});
 });
 /* close: all 40, by site, + the PDF footnote */
