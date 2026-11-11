@@ -215,6 +215,7 @@ body:not(.mode-new) .hd-usp .s{line-height:12px}
 <script src="../../assets/ds/quickadd.js"></script>
 <script src="../../assets/ds/toast.js"></script>
 <script src="../../assets/ds/wishlist.js"></script>
+<script src="../../assets/ds/agent.js"></script>
 <script>
 /* Quick add (DS DG_quickAdd, 9 Nov 2026 — Figma Quick-Add i0Dgzx7sPX23ffsI55hhRp): when quick add is on for the PLP, the card's quick add
    (on-image bag-with-plus, "Add" under the image, or the mini price-row Add) adds straight away when there is nothing to choose,
@@ -291,7 +292,7 @@ const LIB=`${AST}/ds/icons/lib`;
 const grid=document.getElementById('grid'),catnav=document.getElementById('catnav'),
       deskbar=document.getElementById('deskbar'),mobsplit=document.getElementById('mobsplit'),mobbar=document.getElementById('mobbar'),
       seo=document.getElementById('seo'),search=document.getElementById('search'),showmore=document.getElementById('showmore');
-let MODE='live',view=2,CAT_OVERRIDE='auto',USP='new'; // USP: new = DS component · old = live rendering (new format only)
+let MODE='new',view=2,CAT_OVERRIDE='auto',USP='new'; // USP: new = DS component · old = live rendering (new format only)
 // Quick add is a PAGE setting, never per card: on/off for every product, plus one style for every product.
 // QA_ON: auto (fascia config) | on | off.  QA_STYLE: auto | image (button on the photo, takes the wishlist button's shape) | button (under the image) | mini (price row)
 let QA_ON='auto',QA_STYLE='auto';
@@ -705,8 +706,8 @@ function applyMcols(){
 }
 gtBtn.addEventListener('click',()=>{MCOLS=GT_NEXT[MCOLS];localStorage.setItem('plpMcols',MCOLS);applyMcols();});
 applyMcols();
-window.__setState=(brand,mode,cat,qaOn,qaStyle,usp)=>{ anat.hidden=true; if(mode)MODE=mode; if(cat)CAT_OVERRIDE=cat; if(qaOn)QA_ON=qaOn; if(qaStyle)QA_STYLE=qaStyle; if(usp)USP=usp; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
-addEventListener('message',e=>{ if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat,e.data.qaOn,e.data.qaStyle,e.data.usp); });
+window.__setState=(brand,mode,cat,qaOn,qaStyle,usp)=>{ anat.hidden=true; MODE='new'; if(cat)CAT_OVERRIDE=cat; if(qaOn)QA_ON=qaOn; if(qaStyle)QA_STYLE=qaStyle; if(usp)USP=usp; if(brand)document.documentElement.setAttribute('data-brand',brand); render(); };
+addEventListener('message',e=>{ if(e.data&&e.data.plpSet&&e.data.agent!==undefined) window.__setAgent(e.data.agent); if(e.data&&e.data.plpSet) window.__setState(e.data.brand,e.data.mode,e.data.cat,e.data.qaOn,e.data.qaStyle,e.data.usp); });
 matchMedia('(max-width:1023px)').addEventListener('change',render);
 /* mobile USP rotation — one cell at a time */
 let rotI=0;
@@ -718,12 +719,19 @@ setInterval(()=>{
 },4000);
 addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('drawer')?.classList.remove('open')});
 const q=new URLSearchParams(location.search);
-if(q.get('mode'))MODE=q.get('mode');
+/* one format (11 Nov 2026): the new PLP for every fascia — ?mode is ignored */
 if(q.get('brand'))document.documentElement.setAttribute('data-brand',q.get('brand'));
 if(q.get('qa')){const v=q.get('qa');if(v==='none'||v==='off')QA_ON='off';else{QA_ON='on';QA_STYLE=qaStyleOf(v)}} // ?qa=off|image|button|mini
 if(q.get('cat'))CAT_OVERRIDE=q.get('cat');
 if(q.get('usp'))USP=q.get('usp'); // ?usp=old|new
-if(window.PLP_PRESET){const P=window.PLP_PRESET;if(P.brand)document.documentElement.setAttribute('data-brand',P.brand);if(P.mode)MODE=P.mode;if(P.cat)CAT_OVERRIDE=P.cat;if(P.qaOn)QA_ON=P.qaOn;if(P.qaStyle)QA_STYLE=P.qaStyle;if(P.usp)USP=P.usp;} // exported zips bake the configuration in
+if(window.PLP_PRESET){const P=window.PLP_PRESET;if(P.brand)document.documentElement.setAttribute('data-brand',P.brand);if(P.cat)CAT_OVERRIDE=P.cat;if(P.qaOn)QA_ON=P.qaOn;if(P.qaStyle)QA_STYLE=P.qaStyle;if(P.usp)USP=P.usp;} // exported zips bake the configuration in
+/* Google shopping agent (11 Nov 2026, from projects/shopping-agent): Ask pill beside the search, Next Best Action after row 4, the chat window — DS assets/ds/agent.js. ?agent=off hides it. */
+let AGENT=q.get('agent')!=='off';if(window.PLP_PRESET&&window.PLP_PRESET.agent===false)AGENT=false;
+const _render=render;render=function(){_render();mountAgent()};
+function mountAgent(){document.querySelectorAll('.ag-ask,[data-agent-nba]').forEach(x=>x.remove());if(!AGENT||!window.DG_agent)return;
+  const b=document.documentElement.getAttribute('data-brand')||'debenhams';
+  DG_agent.mount({grid,after:4,products:(window.__plist||[]).slice(0,4).map((p,i)=>({n:p.name,now:p.price,was:p.was,img:`${IMG}/${b}/p${p.img!==undefined?p.img:i}.jpg`}))})}
+window.__setAgent=v=>{AGENT=!!v;mountAgent()};
 render();
 try{parent.postMessage({plpReady:1},'*')}catch(e){}
 </script>

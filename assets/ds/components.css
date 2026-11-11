@@ -2465,3 +2465,19 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .pc-iconbtn.qa-busy,.pc-iconbtn.qa-ok{color:var(--icon-primary)}
 /* Quick Add with a minimum height (DG_quickAdd o.minH — over the Added to Bag sheet, 11 Nov 2026): the body fills it, the CTAs sit at the foot */
 .mdl.qa .mdl-bd{flex:1}.mdl.qa .mdl-ft{margin-top:auto}
+
+/* ---------- Google shopping agent on the page (assets/ds/agent.js DG_agent, 11 Nov 2026 — the shopping-agent prototype's entry points, landed in the PLP template for every fascia) ----------
+   .ag-ask      the Ask pill (.ai-pill--outline) beside the search: after the desktop field, before the mobile header search icon (--sm: 32 tall)
+   .ag-nba      the Next Best Action (.ai-nba) as a full-width grid row after row 4
+   .ag-layer    the chat window: slide up on phones (.mdl--up behaviour), centred 480 on ≥ 768 · scrim closes it · Esc closes it */
+.hd-search+.ag-ask{flex:none;margin-left:calc(var(--gap-3,12px) * -1)}
+.ag-ask--sm{height:32px;padding:0 12px 0 10px;font-size:13px;gap:6px}.ag-ask--sm .ai-icon{width:16px;height:16px}
+.hd-icons>button.ag-ask{display:flex;align-self:center;width:auto;height:32px;padding:0 12px 0 10px;margin-right:4px;border:var(--ai-outline) solid transparent;background:linear-gradient(var(--surface-raised,#FFF),var(--surface-raised,#FFF)) padding-box,var(--ai-gradient) border-box;border-radius:var(--radius-pill)} /* the header icon-button reset (.hd-icons button) would flatten it */
+.ag-nba{grid-column:1/-1;margin:var(--gap-2,8px) var(--plp-margin,0)}
+.ag-layer{position:fixed;inset:0;z-index:calc(var(--z-modal,1000) + 4);display:flex;align-items:flex-end;justify-content:center}
+.ag-layer>.mdl-scrim{position:absolute;inset:0;z-index:0}
+.ag-layer>.ag-mdl{position:relative;z-index:1;width:100%;max-height:88vh;border-radius:var(--radius-lg,8px) var(--radius-lg,8px) 0 0;animation:mdlup .3s ease-in-out both}
+.ag-mdl .mdl-bd{overflow-y:auto;min-height:0;flex:1}
+.ag-mdl .ac-tile img.im{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--surface-media)}
+@media(min-width:768px){.ag-layer{align-items:center}.ag-layer>.ag-mdl{width:480px;max-height:80vh;border-radius:var(--radius-lg,8px)}}
+@media (prefers-reduced-motion:reduce){.ag-layer>.ag-mdl{animation:none}}

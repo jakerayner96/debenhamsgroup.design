@@ -17,6 +17,19 @@ window.DG_CHANGELOG=[
   ],
   "fixed": []
  },
+ {
+  "d": "2026-11-11",
+  "v": "2026.11.11e",
+  "title": "New PLP for every fascia (Live removed) · Google agent on the PLP · PLP card actions",
+  "by": "PLP alignment, Jake 11 Nov",
+  "added": [
+   "PLP card actions (catalogue · Product): each fascia's wishlist + quick add on the PLP image — Debenhams 32 circles · chips on boohoo / MAN (wishlist only) / PLT (PLT heart) / KM / Warehouse / Brand Room (bookmark) — default + wishlisted (-fill glyph). New icons/lib/icon-bookmark-fill.svg (wishlist.js on bookmark cards)",
+   "assets/ds/agent.js (DG_agent) — the Google shopping agent's on-page entry points from projects/shopping-agent, for any page in its fascia: the Ask pill beside the desktop search, the Next Best Action as a full-width grid row after row 4, and the Ask chat window (start screen · user bubble + mock reply with product tiles + quick replies); production = googleAgent.sendQuery. CSS .ag-ask · .ag-nba · .ag-layer"
+  ],
+  "changed": [
+   "PLP template (projects/plp-alignment/plp.html) + prototype: one format — the new PLP for every fascia; the Live tab and ?mode are gone. The Google agent is on by default (panel: Google agent On / Off · ?agent=off)"
+  ]
+ },
  {"d": "2026-11-11", "v": "2026.11.11d", "title": "Figma: App chrome — iOS & Android (new 📱 App Components page)", "by": "App Prototype (jakerayner96/plt-app-prototype) + Best App Ever Android Navigation 426:12029, Jake 11 Nov: tidy the app page, iOS + Android (glass and flat) chrome to design on", "added": ["Figma App / Status Bar (iOS 54 · Android 52 with punch-hole, dark / light ink) · App / System Bar · Bottom (iOS home indicator, Android gesture bar) · App / Nav Button (glass bubble / plain, icon / text capsule) · App / Nav Bar (iOS Glass, Android Glass, Android Flat × title only, back + title, back + title + action, title + action, back + action) · App / Home Header (logo, then search · AI · inbox · account, Show account) · App / Tab Bar (glass capsule / Material 3 flat × selected 1–5, swappable tab icons) · six 390 × 844 screen templates · App Icons / Nav Bar / Inbox (the app's envelope)", "Figma variable ai/fg (DG Group Design System, all brand modes) = --ai-fg: Debenhams #2E7F79, KM black, every other fascia surface/action"], "changed": ["Figma: the old App Components boards (flat App / Tab Bar, App / Nav Bar, Title and Controls, the 11 Nov glass chrome, PDP + unsorted screens) moved to 🗑 DUPLICATES — their instances keep working until swapped; the app tab / nav icons moved onto the new board · figma-lib.js: app-top → App / Nav Bar 14316:4898, app-tabbar → App / Tab Bar 14317:5293"], "fixed": []},
  {
   "d": "2026-11-11",
