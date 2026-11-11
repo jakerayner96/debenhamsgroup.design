@@ -45,6 +45,10 @@
   /* z-index */
   --z-base:0;--z-raised:10;--z-dropdown:100;--z-sticky:200;--z-banner:300;--z-overlay:400;--z-modal:500;--z-popover:600;--z-toast:700;--z-tooltip:800;
 
+  /* customer personas (11 Nov 2026, Meet our customers): scenario season keys + finding severity — the same on every fascia (PDF legend) */
+  --season-everyday:#8B8F98;--season-christmas:#2E7D5B;--season-sale:#B8650E;--season-bf:#0F0F0F;
+  --sev-critical:var(--text-error);--sev-high:#C2410C;--sev-medium:#B8650E;--sev-low:#767676;
+
   /* Layer 2 defaults: Debenhams (the default mode). Brand blocks below override. */
   --brand-name:'Debenhams';
   --font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;
@@ -504,3 +508,7 @@
   --rf-radius:8px;--rf-radius-card:14px;--rf-shadow:0 4px 28px rgba(0,0,0,.07);
   --rf-font:'Geologica',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;--rf-light:300;--rf-semi:600;
 }
+
+/* Persona card (11 Nov 2026): header tint + share meter follow the fascia. Declared on every [data-brand] so the var() resolves in that mode
+   (on :root alone it would freeze to Debenhams). PLT: peach on sand, square via --radius-lg / --radius-pill. */
+:root,[data-brand]{--persona-hd:var(--brand-light-3);--persona-accent:var(--brand-primary-dark)}
