@@ -1860,9 +1860,10 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 /* Desktop (Jake 11 Nov): the floating button and back to top are phone / tablet only — from 1024 neither shows; the agent's desktop way back
    in is one of the .ai-dresume options below (shopping agent panel → Chat window → Desktop re-open). */
 @media(min-width:1024px){.btt,.ai-fab{display:none!important}}
-/* AI resume · desktop options (benchmarks: LinkedIn / Messenger web minimised chat · Amazon Rufus peek + feedback edge tabs · Copilot in Edge /
+/* .ai-dbar right edge = the page container's (--page-max 1440, 40 gutter — Jake 11 Nov: right aligned to the PLP container).
+   AI resume · desktop options (benchmarks: LinkedIn / Messenger web minimised chat · Amazon Rufus peek + feedback edge tabs · Copilot in Edge /
    Gemini in Chrome / Shopify Sidekick docked rail · Rufus header button). All white, the floating button shadow, the Status Counter dot. */
-.ai-dbar{position:fixed;right:24px;bottom:0;z-index:calc(var(--z-sticky,200) + 1);display:flex;align-items:center;gap:12px;width:360px;height:52px;padding:0 16px;border:0;border-radius:var(--radius-lg,12px) var(--radius-lg,12px) 0 0;background:var(--surface-raised,#FFF);box-shadow:0 -2px 16px rgba(0,0,0,.12),0 0 1px rgba(0,0,0,.16);font-family:var(--font-family-base);color:var(--text-primary);text-align:left;cursor:pointer;animation:aiDbarIn .34s cubic-bezier(.2,.8,.2,1) both}
+.ai-dbar{position:fixed;right:calc(max(0px,(100vw - var(--page-max,1440px)) / 2) + var(--ai-dbar-gutter,40px));bottom:0;z-index:calc(var(--z-sticky,200) + 1);display:flex;align-items:center;gap:12px;width:360px;height:52px;padding:0 16px;border:0;border-radius:var(--radius-lg,12px) var(--radius-lg,12px) 0 0;background:var(--surface-raised,#FFF);box-shadow:0 -2px 16px rgba(0,0,0,.12),0 0 1px rgba(0,0,0,.16);font-family:var(--font-family-base);color:var(--text-primary);text-align:left;cursor:pointer;animation:aiDbarIn .34s cubic-bezier(.2,.8,.2,1) both}
 .ai-dbar:hover{box-shadow:0 -4px 20px rgba(0,0,0,.16),0 0 1px rgba(0,0,0,.16)}
 .ai-dbar__ic{position:relative;flex:none;display:grid;place-items:center;width:24px;height:24px}.ai-dbar__ic .ai-icon{width:20px;height:20px}
 .ai-dbar__ic>.counter{position:absolute;top:-4px;right:-7px}
