@@ -13,7 +13,8 @@ window.DG_CHANGELOG=[
   "changed": [
    "App tab bar (.app-tabbar): the flat white 83px bar is replaced by the Liquid Glass capsule — 60 high, 16 from the sides, 12 off the bottom, five tabs spread evenly at full ink, the selected one in a lighter pill; PLT keeps its labels in the same capsule · by PDP delivery grid, Jake 11 Nov",
    "App top bar (.app-top): no bar any more — the status row and 44 × 44 glass circles (back, share) float over the gallery on a puck shadow; the wishlist leaves the nav (it is on the page) · by PDP delivery grid, Jake 11 Nov",
-   "PDP delivery grid prototype, App view: uses the glass chrome"
+   "PDP delivery grid prototype, App view: uses the glass chrome",
+   "Figma (Debenhams Design System): Delivery grid 13771:39835 rebuilt from code in place (its instances keep working) — Device × Tab × Info × Customer, 16 variants, all on DS variables + Mobile text styles, from new parts Delivery grid / Badge, / Tab, / Row, / Returns line, / Seller line (board 14260:15154 on PDP); Icons / Order added; Membership pill Mini variants now hug their pill · App glass chrome board 14265:4478 on App Components: App / Glass Button, App / Top Bar · Glass, App / Tab Bar · Glass (Selected × 5, Wishlist icon swap) + Core variables glass/tint, glass/rim, glass/on · by PDP delivery grid, Jake 11 Nov"
   ]
  },
  {
