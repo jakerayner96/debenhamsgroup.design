@@ -55,7 +55,8 @@ img{max-width:100%;max-height:100%}
 .cover-shade{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,#050505 0%,#050505 34%,rgba(5,5,5,.82) 46%,rgba(5,5,5,0) 70%),linear-gradient(180deg,#050505 0%,rgba(5,5,5,0) 18%,rgba(5,5,5,0) 82%,#050505 100%)}
 
 /* 02 intro */
-.intro .lead{position:absolute;left:100px;top:300px;width:820px;font:300 40px/1.35 'Geologica';letter-spacing:-.015em}
+.intro .lead{position:absolute;left:100px;top:250px;width:820px;font:300 40px/1.35 'Geologica';letter-spacing:-.015em}
+.lead p{margin-bottom:22px}.lead ul{list-style:none;font-size:30px;line-height:1.4}.lead li{position:relative;padding-left:34px;margin-bottom:16px}.lead li::before{content:"";position:absolute;left:0;top:.62em;width:18px;height:2px;background:#fff}
 .facts{position:absolute;left:1060px;top:270px;width:760px;display:grid;grid-template-columns:1fr 1fr;gap:56px 60px}
 .fact{padding-left:28px;border-left:1px solid rgba(255,255,255,.3)}
 .fact-v{font:700 132px/1 'Antonio';font-variant-numeric:tabular-nums}
@@ -184,7 +185,7 @@ S.push({cls:'cover',html:`<div class="wall">${cols.map(c=>`<div class="wcol">${c
   <div class="foot reveal" style="--n:4">11.11.26 &nbsp;-&nbsp; jake.rayner@debenhamsgroup.com</div>`});
 /* 02 intro: the PDF intro, the four figures, the sites, the season key */
 S.push({cls:'intro',html:`<div class="glow g1"></div><div class="header"><div class="eyebrow reveal">${esc(M.eyebrow)}</div><div class="rule"></div></div>
-  <p class="lead reveal" style="--n:1">${esc(M.intro)}</p>
+  <div class="lead reveal" style="--n:1"><p>${esc(M.intro)}</p><ul>${(M.introList||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
   <div class="facts">${M.stats.map(([v,l],i)=>`<div class="fact reveal" style="--n:${2+i}"><div class="fact-v${/\D/.test(v)?' sm':''}" data-count="${esc(v)}">${esc(v)}</div><div class="fact-l">${esc(l)}</div></div>`).join('')}</div>
   <div class="sites">${B.map((b,i)=>`<a class="reveal" style="--n:${5+i}" data-go="div-${b.slug}" title="${esc(b.name)}"><img src="${BASE}assets/brands/${b.slug}.svg" alt="${esc(b.name)}"></a>`).join('')}</div>
   <ul class="legend">${M.legend.map(([k,l],i)=>`<li class="reveal" style="--n:${8+i}"><span class="k" data-k="${k}"></span>${esc(l)}</li>`).join('')}</ul>`});
