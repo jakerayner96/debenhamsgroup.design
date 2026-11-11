@@ -117,10 +117,10 @@
   --brand-dark-1:#F5C2DF;--brand-dark-2:#F0B2D5;--brand-dark-3:#E495C2;--brand-primary-dark:#CD6AA2;
   --nav-bg:#FFF;
 }
+/* Virtual Stylist intro, menswear sites (boohooMAN, Burton, Training Dept; Jake 11 Nov, Figma VTO 15959-22): the example photo is a menswear mirror selfie and the Use a full length photo tip shows the T-shirt, not the dress */
+[data-brand="boohooman"],[data-brand="burton"],[data-brand="trainingdept"]{--vs-example:url("img/vs-example-men.jpg");--vsi-dress:url("icons/lib/icons-size.svg")}
 [data-brand="boohooman"]{
   --text-on-action:#FFF; /* golden: primary ink is white */
-  --vs-example:url("img/vs-example-man.jpg"); /* Virtual Stylist intro example photo: a menswear mirror selfie (Jake, Figma VTO 15959-22, 11 Nov) */
-  --vsi-dress:url("icons/lib/icons-size.svg"); /* Virtual Stylist intro: Use a full length photo tip shows the T-shirt, not the dress (Jake 11 Nov) */
   --w-btn:600;--btn-outline:#000; /* golden button truth */
   --brand-name:'boohooMAN';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
   --w-regular:500;--w-mid:400;--w-strong:700;
