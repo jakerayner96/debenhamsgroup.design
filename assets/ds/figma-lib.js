@@ -8,8 +8,9 @@ window.DG_FIGMA_LIB={
  "url": "https://www.figma.com/design/aIHmkCaTy9c5EWOxAGw0So/Debenhams-Design-System",
  "pages": {
   "memberships": "14163:10",
+  "delivery-grid": "14362:46521",
   "foundations": "13047:955",
-  "colour": "13047:955",
+  "colour": "14362:110755",
   "type": "1540:6531",
   "spacing": "13047:955",
   "radius": "13047:955",
