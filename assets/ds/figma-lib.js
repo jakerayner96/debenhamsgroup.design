@@ -47,6 +47,7 @@ window.DG_FIGMA_LIB={
   "footer": "664:1064",
   "app-tabbar": "14317:5293",
   "app-top": "14316:4898",
+  "app-icons": "14315:4606",
   "seo-copy": "1410:10520",
   "view-toggle": "13817:19710",
   "search-suggestions": "2159:25256",
