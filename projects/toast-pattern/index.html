@@ -211,8 +211,17 @@ let S={brand:new URLSearchParams(location.search).get('brand')||'',w:390,fold:fa
 try{const s=JSON.parse(localStorage.getItem(P.store)||'null');if(s)S=Object.assign(S,s,{brand:S.brand||s.brand})}catch(e){}
 if(!P.brands.some(b=>b[0]===S.brand))S.brand=P.brands[0][0];
 Object.defineProperty(S,'cfg',{get(){return S.by[S.brand]||(S.by[S.brand]=P.initial(S.brand))},set(v){S.by[S.brand]=v},enumerable:false});
+/* SHARE URL (Jake 12 Nov 2026 — every prototype): the address bar always holds the whole view — fascia, device + width, fold, app, LIVE / NEW,
+   the panel shown or hidden, and every setting (page, open chat, options …) as the difference from the fascia's defaults (?s=, pictures left out).
+   Set it up, copy the URL from the browser, send it: it opens exactly like that for them. A link wins over what this browser had saved. */
+function cfgDiff(){const d=P.initial(S.brand)||{},c=S.cfg||{},o={};for(const k in c){const v=c[k];if(typeof v==='string'&&(v.startsWith('data:')||v.length>3000))continue;if(JSON.stringify(v)!==JSON.stringify(d[k]))o[k]=v}return o}
+function syncURL(){try{const q=new URLSearchParams();q.set('brand',S.brand);if(S.app)q.set('app','1');else q.set('w',String(S.w||0));if(S.fold)q.set('fold','1');if(S.ver&&S.ver!=='live')q.set('ver',S.ver);
+  try{if(ui&&ui.nopanel)q.set('panel','0')}catch(e){}const d=cfgDiff();if(Object.keys(d).length)q.set('s',JSON.stringify(d));history.replaceState(null,'','?'+q.toString()+location.hash)}catch(e){}}
+(()=>{const q=new URLSearchParams(location.search);if(!q.has('w')&&!q.has('app')&&!q.has('s'))return;   /* an old ?brand= link keeps what this browser saved */
+  S.app=q.get('app')==='1';if(q.has('w'))S.w=+q.get('w')||0;S.fold=q.get('fold')==='1';S.ver=q.get('ver')||'live';
+  let d={};try{d=JSON.parse(q.get('s')||'{}')}catch(e){}S.by[S.brand]=Object.assign(P.initial(S.brand),d)})();
 const $=s=>document.querySelector(s),frame=$('#frame'),stage=$('#stage'),win=$('#win'),preset=$('#preset');
-const save=()=>{try{localStorage.setItem(P.store,JSON.stringify({brand:S.brand,w:S.w,fold:S.fold,by:S.by}))}catch(e){}};
+const save=()=>{syncURL();try{localStorage.setItem(P.store,JSON.stringify({brand:S.brand,w:S.w,fold:S.fold,by:S.by}))}catch(e){}};
 const state=()=>Object.assign({brand:S.brand},S.cfg);
 const src=()=>P.page+'?s='+encodeURIComponent(JSON.stringify(state()))+'&_='+Date.now();
 function update(){save();try{frame.contentWindow.postMessage({protoSet:state()},'*')}catch(e){frame.src=src()}}
@@ -239,8 +248,8 @@ $('#hr').addEventListener('pointerdown',e=>{e.preventDefault();document.body.cla
 addEventListener('resize',apply);
 $('#mtab').onclick=()=>$('#panel').classList.add('open');$('#mclose').onclick=()=>$('#panel').classList.remove('open');
 /* desktop: hide the panel ( [ ) · full screen ( F , Esc exits) — the page fills the window; the choice is remembered */
-const UI=P.store+':ui';let ui={};try{ui=JSON.parse(localStorage.getItem(UI)||'{}')}catch(e){}
-function chrome(){document.body.classList.toggle('nopanel',!!ui.nopanel);$('#pnlbtn').classList.toggle('on',!!ui.nopanel);$('#pnlbtn').title=ui.nopanel?'Show the panel ( [ )':'Hide the panel ( [ )';try{localStorage.setItem(UI,JSON.stringify({nopanel:ui.nopanel}))}catch(e){};apply()}
+const UI=P.store+':ui';let ui={};try{ui=JSON.parse(localStorage.getItem(UI)||'{}')}catch(e){}if(new URLSearchParams(location.search).get('panel')==='0')ui.nopanel=true;
+function chrome(){setTimeout(syncURL);document.body.classList.toggle('nopanel',!!ui.nopanel);$('#pnlbtn').classList.toggle('on',!!ui.nopanel);$('#pnlbtn').title=ui.nopanel?'Show the panel ( [ )':'Hide the panel ( [ )';try{localStorage.setItem(UI,JSON.stringify({nopanel:ui.nopanel}))}catch(e){};apply()}
 function full(on){document.body.classList.toggle('full',on);$('#fsbtn').classList.toggle('on',on);
   try{if(on&&!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});if(!on&&document.fullscreenElement)document.exitFullscreen().catch(()=>{})}catch(e){}apply()}
 $('#pnlbtn').onclick=()=>{ui.nopanel=!ui.nopanel;chrome()};

@@ -272,6 +272,11 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .usp-cells{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
 @media(min-width:1024px){.usp-cells{max-width:var(--page-max,1440px);margin-inline:auto}}
 .usp-cells--alt>.hd-usp:nth-child(even){background:var(--usp-a-bg2,var(--usp-a-bg))}
+/* desktop cells wider than the page (Jake 12 Nov: boohooMAN's black bar looked clipped at 1464): the messages stay in the 1440 page, but the end cells'
+   colour carries on to the screen edges. --usp-bg mirrors each bar background; border-image outset paints past the cell without making the page scroll. */
+.hd-usp{--usp-bg:var(--usp-a-bg)}.usp--g05{--usp-bg:#FAFAFA}.usp--g1{--usp-bg:#F2F2F2}.usp--black,.usp--red{--usp-bg:#000}.hd-usp--b{--usp-bg:var(--usp-b-bg)}.hd-usp--top{--usp-bg:var(--usp-top-bg,var(--usp-a-bg))}
+.usp-cells--alt>.hd-usp:nth-child(even){--usp-bg:var(--usp-a-bg2,var(--usp-a-bg))}
+@media(min-width:1024px){.usp-cells>.hd-usp:first-child{border-image:linear-gradient(var(--usp-bg),var(--usp-bg)) fill 0/0/0 0 0 100vw}.usp-cells>.hd-usp:last-child{border-image:linear-gradient(var(--usp-bg),var(--usp-bg)) fill 0/0/0 100vw 0 0}}
 .hd-bar{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;gap:16px}
 .hd-left{display:flex;align-items:center;gap:16px;min-width:0}
 .hd-burger{width:24px;height:24px;min-width:24px;background:none;border:none;padding:0;cursor:pointer}
