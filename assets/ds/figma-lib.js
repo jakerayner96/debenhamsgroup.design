@@ -92,7 +92,7 @@ window.DG_FIGMA_LIB={
   "membership-pill": "14229:135",
   "ai-pill": "13817:2471",
   "entry-chip": "13817:2501",
-  "membership-banner-checkout": "14229:138",
+  "membership-banner-checkout": "14296:2360",
   "checkout-tile": "6440:7103",
   "agent-chat": "13807:16",
   "ai-modules": "13818:1012",
