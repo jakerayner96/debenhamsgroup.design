@@ -811,7 +811,7 @@ function lastReply(){const m=[...CHAT.msgs].reverse().find(x=>x.b);if(!m)return 
 function resume(){if(!waiting()||S.search)return '';const lbl=`Continue your chat with ${esc(E().name)}`,dot='<span class="counter counter--dot" aria-hidden="true"></span>';
   /* desktop (Jake 11 Nov: the FAB and back to top are mobile only) — panel Chat window → Desktop re-open: bar · tab · rail · ask (DS .ai-dbar / .ai-dtab / .ai-drail / dot on Ask) */
   if(desk()){const o=S.dre||'bar',t=`Ask ${esc(E().name)}`;
-    if(o==='bar'){const s=lastReply();return `<button class="ai-dbar" data-resume="1" ${F('resume','minimised chat bar')} aria-label="${lbl}"><span class="ai-dbar__ic">${spk(20)}${dot}</span><span class="ai-dbar__tx"><span class="ai-dbar__t">${t}</span><span class="ai-dbar__s">${esc(s||'Continue your chat')}</span></span><i class="ai-dbar__chev" aria-hidden="true"></i></button>`}
+    if(o==='bar')return `<button class="ai-dbar" data-resume="1" ${F('resume','floating Ask Deb pill')} aria-label="${lbl}">${spk(18)}<span>${t}</span></button>`;
     if(o==='tab')return `<button class="ai-dtab" data-resume="1" ${F('resume','edge tab')} aria-label="${lbl}"><span class="ai-dtab__ic">${spk(20)}${dot}</span><span class="ai-dtab__t">${t}</span></button>`;
     if(o==='rail')return `<aside class="ai-drail" ${F('resume','docked rail')} aria-label="${t}"><button class="ai-drail__b" data-resume="1" aria-label="${lbl}">${spk(20)}${dot}</button><span class="ai-drail__t">${esc(E().name)}</span><button class="ai-drail__x" data-resume="1" aria-label="Open the chat"></button></aside>`;
     return ''}   /* ask: the dot goes on the header Ask (syncAskDot) */
