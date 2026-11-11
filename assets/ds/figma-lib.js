@@ -72,7 +72,7 @@ window.DG_FIGMA_LIB={
   "member-band": "14229:144",
   "subscribe-save": "13772:180875",
   "membership-banner": "14229:150",
-  "ai-prompts": "13818:862",
+  "ai-prompts": "13807:61",
   "deliver-plus": "14144:244",
   "at-a-glance": "9045:92176",
   "pdp-gallery": "2176:18432",
