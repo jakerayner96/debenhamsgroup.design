@@ -60,9 +60,9 @@ body.exporting .ai-circle,body.exporting .ag-ask{box-shadow:none;border:1px soli
 @keyframes rowUp{from{padding-top:0}to{padding-top:8px}}
 @keyframes acIn{from{opacity:0}to{opacity:1}}
 body.exporting #hdrwrap.lifting .hd-bar{display:none;animation:none}
-.ag-sw:has(>.ai-pill--outline)>.hd-search{height:var(--ag-h)}
-.ag-sw>.ai-pill--outline{height:var(--ag-h);flex:none;padding:0 18px 0 14px;font-size:15px}
-.ag-mrow .ag-sw>.ai-pill--outline{font-size:14px;padding:0 16px 0 12px}
+.ag-sw:has(>.ai-pill--outline)>.hd-search,.ag-sw:has(>.ag-ask)>.hd-search{height:var(--ag-h)}
+.ag-sw>.ai-pill--outline,.ag-sw>.ag-ask{height:var(--ag-h);flex:none;padding:0 18px 0 14px;font-size:15px}   /* Ask = the search bar's height (44) */
+.ag-mrow .ag-sw>.ai-pill--outline,.ag-mrow .ag-sw>.ag-ask{font-size:14px;padding:0 16px 0 12px}
 .ai-open{font-weight:var(--w-strong,600)}
 .ai-cta{height:44px;justify-content:center;flex:1}
 .prompts-container[data-dir="column"] .prompt-link{width:100%}
@@ -491,7 +491,7 @@ const E=()=>Object.assign({},AG.def(BR()),S.agent||{});
 const ask=()=>'Ask '+E().name;
 /* data-feat = the feature (panel navigation + jump-to highlight); data-q = the query sent to the agent (window.googleAgent.sendQuery) */
 const F=(f,opt)=>`data-feat="${f}" data-tag="${esc(TAG[f]+(opt?' · '+opt:''))}"`;
-const TAG={launcher:'Entry point',pdpPrompts:'PDP prompts',shopSimilar:'Shop similar',vto:'Virtual try-on',nba:'Next best action',autocomplete:'Autocomplete',custom:'Custom prompts'};
+const TAG={resume:'Re-open chat',launcher:'Entry point',pdpPrompts:'PDP prompts',shopSimilar:'Shop similar',vto:'Virtual try-on',nba:'Next best action',autocomplete:'Autocomplete',custom:'Custom prompts'};
 const L=(k,v)=>({launcher:{outIcon:'icon beside',outAsk:'Ask beside',icon:'header icon'},pdpPrompts:{belowCta:'A',aboveGlance:'B'},shopSimilar:{image:'A',cta:'B',card:'C'},vto:{image:'A',cta:'B'},autocomplete:{replace:'A',above:'B',below:'C'},custom:{module:'A'}}[k]||{})[v]||'';
 
 /* ================= HEADER (DS header + USP drop-in) with the entry point per option =================
@@ -701,7 +701,8 @@ function wirePdp(){if(S.page!=='pdp')return;
 function applyVars(el,obj){for(const k in obj){if(k==='mobile'||typeof obj[k]!=='string')continue;el.style.setProperty(k,obj[k])}}
 function md(s){return esc(s).replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="#" data-href="$2">$1</a>')}
 function chat(){
-  if(!CHAT.open||!CFG)return '';
+  if(!CFG)return '';
+  if(!CHAT.open)return resume();
   const p=CFG.payload,st=p.settings,mob=innerWidth<768,c=p.components,zs=c.zeroState.payload,name=esc(E().name);
     const tc=c.text?`<div class="cm-text" data-c="text">${md(c.text.payload.text)}</div>`:'';
   let head;
@@ -793,6 +794,17 @@ function openChat(q,vto){CHAT.open=true;
   if(q){CHAT.msgs.push({u:q},{typing:true});setTimeout(()=>{CHAT.msgs=CHAT.msgs.filter(m=>!m.typing);const h=reply(q,vto,CHAT.typedNow);CHAT.typedNow=false;const m={b:h};CHAT.msgs.push(m);if(!/<div/.test(h)&&!EXPORTING&&CFG.payload.settings['dynamic-bot-writing']!==false)stream(m);if(CHAT.typed)CHAT.focus=true;drawChat()},EXPORTING?0:900)}
   else CHAT.focus=true;
   drawChat();parent.postMessage({protoChat:true},'*')}
+/* RE-OPEN (Jake 11 Nov — feedback: once the chat is closed it isn't obvious how to get back to it). Closing keeps the conversation; once one has
+   started, a DS AI resume pattern (components.css .ai-fab / .ai-fab--ext / .ai-resume / .ai-dot) shows until the shopper reopens it. Ask / the AI
+   circle also reopen the same conversation; the refresh in the chat header is what starts again. */
+const waiting=()=>!CHAT.open&&!CHAT.closing&&CHAT.msgs.some(m=>m.b);
+function lastReply(){const m=[...CHAT.msgs].reverse().find(x=>x.b);if(!m)return '';const d=document.createElement('div');d.innerHTML=m.b;d.querySelectorAll('.cm-car,.rail-nav,.cm-qr,.cm-ctx,.cm-pd,.cm-look,.cm-look-cta,.cm-fit,button').forEach(x=>x.remove());return (d.textContent||'').replace(/\s+/g,' ').trim()}
+function resume(){if(!waiting()||S.search)return '';const md=S.resume||'fab',nm=esc(E().name),lbl=`Continue your chat with ${nm}`;
+  if(md==='fab')return `<button class="ai-fab" data-resume="1" ${F('resume','floating button')} aria-label="${lbl}">${spk(24)}<span class="ai-fab__dot"></span></button>`;
+  if(md==='ext')return `<button class="ai-fab ai-fab--ext" data-resume="1" ${F('resume','Continue chat pill')} aria-label="${lbl}">${spk(20)}Continue chat<span class="ai-fab__dot"></span></button>`;
+  if(md==='bar'&&!CHAT.barHidden)return `<div class="ai-resume" role="region" aria-label="Your chat with ${nm}" ${F('resume','peek bar')}><button class="ai-resume__open" data-resume="1" aria-label="${lbl}">${spk(20)}<span class="ai-resume__tx"><span class="ai-resume__t">${esc(CFG.payload.settings['chat-title'])}</span><span class="ai-resume__p">${esc(lastReply())}</span></span><span class="ai-resume__up" aria-hidden="true"></span></button><button class="ai-resume__x" data-resumex="1" aria-label="Hide"></button></div>`;
+  return ''}
+function resumeDot(){const on=waiting()&&S.resume==='dot';document.querySelectorAll('.ag-ask,.ai-circle,.hd-sicon').forEach(el=>{el.classList.toggle('ai-dot',on);if(on)el.setAttribute('data-feat','resume');else if(el.dataset.feat==='resume')el.removeAttribute('data-feat')})}
 function stream(m){const n=m.b.split(/\s+/).length;m.cut=0;const i=CHAT.msgs.indexOf(m);
   const tick=()=>{m.cut+=2;const el=document.querySelector(`[data-mi="${i}"]`);if(m.cut>=n){m.cut=null;drawChat();return}
     if(el){el.innerHTML=words(m.b,m.cut);const body=document.getElementById('cmbody');if(body)body.scrollTop=body.scrollHeight}setTimeout(tick,45)};setTimeout(tick,45)}
@@ -805,7 +817,7 @@ function closeChat(){const cm=document.getElementById('cm');
   if(!cm||EXPORTING||matchMedia('(prefers-reduced-motion:reduce)').matches)return done();
   if(CHAT.closing)return;CHAT.closing=true;
   document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>{el.classList.remove('in');el.classList.add('out')});setTimeout(done,260)}
-function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();document.querySelectorAll('#chat .cm-car').forEach(c=>{railState(c);c.addEventListener('scroll',()=>railState(c),{passive:true})});
+function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();resumeDot();document.querySelectorAll('#chat .cm-car').forEach(c=>{railState(c);c.addEventListener('scroll',()=>railState(c),{passive:true})});
   const open=!!document.getElementById('cm');
   if(open&&!DRAWN&&!EXPORTING)document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>el.classList.add('in'));
   DRAWN=open;
@@ -846,6 +858,7 @@ function render(){
   if(window.DG_uspMount)DG_uspMount();
   if(!DEB())document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,BR()));
   galSync();wirePdp();
+  if(S.resumeDemo&&S.resumeDemo!==render._rd){render._rd=S.resumeDemo;const q='Wedding guest dresses under £100';CHAT.msgs=[{u:q},{b:KINDS[0](q)}];CHAT.open=false;CHAT.user=false;CHAT.barHidden=false;DRAWN=false}   /* panel: Re-open chat → Show it */
   if(S.chat&&!CHAT.open)CHAT.open=true;if(!S.chat&&CHAT.open&&!CHAT.user)CHAT.open=false;
   drawChat();
   if(S.focus&&S.focus.n!==render._n){render._n=S.focus.n;const el=document.querySelector(`[data-feat="${S.focus.f}"]`);if(el&&el.closest('#ac')){scrollTo(0,0);document.getElementById('ac').scrollTop=0}else if(el)el.scrollIntoView({block:'center',behavior:'auto'})}   /* instant, no highlight; search panel features open from the top */
@@ -876,6 +889,8 @@ document.addEventListener('input',e=>{if(e.target.id==='cminput'){CHAT.draft=e.t
 /* every agent entry point opens the chat with its query (window.googleAgent.sendQuery(q) in production) */
 document.addEventListener('click',e=>{
   {const r=e.target.closest('[data-rail]');if(r){const c=r.closest('.rail-nav').previousElementSibling,t=c.querySelector('.cm-tile');c.scrollBy({left:+r.dataset.rail*((t?t.offsetWidth:120)+10)*2,behavior:'smooth'});return}}
+  if(e.target.closest('[data-resume]')){e.preventDefault();CHAT.user=true;openChat('');return}
+  if(e.target.closest('[data-resumex]')){e.preventDefault();CHAT.barHidden=true;drawChat();return}
   if(e.target.closest('.hd-burger')){parent.postMessage({protoMenu:1},'*');return}   /* prototype: the hamburger opens the shell's settings panel (phones) */
   const tm=e.target.closest('[data-term]');if(tm){S.q=tm.dataset.term;const i=document.querySelector('#hdrwrap .srch-field');if(i)i.value=S.q;acRedraw();focusSearch();return}   /* autocomplete row → fills the field */
   if(!S.search&&e.target.closest('[data-opensearch]')){scrollTo(0,0);S.search=true;S.q='';parent.postMessage({protoSearch:true},'*');render();focusSearch();return}
@@ -891,7 +906,7 @@ document.addEventListener('click',e=>{
   const qb=e.target.closest('[data-q]');
   if(qb&&qb.dataset.vto&&S.vtoMode==='own'){e.preventDefault();const t=document.getElementById('ct');t.textContent='Opens the '+BN()+' Virtual Stylist (our own VTO)';t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200);return}
   if(qb){e.preventDefault();CHAT.user=true;const q=qb.dataset.q;openChat(q?(qb.dataset.ctx&&/similar/i.test(q)?q:q):'',!!qb.dataset.vto);return}
-  if(e.target.closest('[data-close]')){CHAT.user=false;CHAT.msgs=[];closeChat();return}
+  if(e.target.closest('[data-close]')){CHAT.user=false;CHAT.barHidden=false;closeChat();return}   /* closing keeps the conversation (re-open: resume()); refresh starts again */
   const a=e.target.closest('a[data-href],a[href]');
   if(a){e.preventDefault();const t=document.getElementById('ct');t.textContent='Link → '+(a.dataset.href||a.getAttribute('href'));t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800)}
   else if(e.target.closest('button'))e.preventDefault()});

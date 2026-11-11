@@ -139,6 +139,7 @@ body.fold.kbup .device .tb,body.fold.kbup .device .chin{display:none}   /* keybo
 .diff{max-height:150px;overflow:auto;border:1px solid var(--line);border-radius:7px;padding:6px 8px;background:#080808}
 .diff code,.rules code{font:10.5px ui-monospace,Menlo,monospace;color:#9FD3FF}
 .f .seg button{padding:5px 10px}
+.btn-sm{align-self:flex-start;padding:6px 12px;border:1px solid rgba(255,255,255,.35);border-radius:99px;color:var(--ink);font-size:11.5px;font-weight:700;cursor:pointer}.btn-sm:hover{background:rgba(255,255,255,.08)}
 /* collapsible card: the Agent config is folded by default */
 .card--fold .fold-h{cursor:pointer;margin:0;user-select:none}.card--fold .fold-h .chev{width:8px;height:8px;border:solid #9A9A9A;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin:-3px 4px 0 auto;transition:transform .15s;flex:none}
 .card--fold.open .fold-h{margin-bottom:8px}.card--fold.open .fold-h .chev{transform:rotate(-135deg);margin-top:3px}
@@ -249,6 +250,7 @@ function handoff(c){const lines=[];const ep={niAsk:'Not exposed: header search i
     '| User bubble | Native | --chat-messenger-internal-message-user-* |',
     '| Product carousel | Native | rich-content-config.tileConfig · --chat-messenger-product-carousel-* |',
     '| Product detail card | Native | rich-content-config.productDetailConfig (size picker: confirm) |',
+    `| Re-open chat | Custom | our front end, outside Google’s widget: once a conversation has started and the window is closed, the DS ${{fab:'.ai-fab (56px floating button + dot)',ext:'.ai-fab--ext (Continue chat pill)',bar:'.ai-resume (peek bar with the last reply)',dot:'.ai-dot on the launcher'}[c.resume||'fab']} reopens the same conversation (window.googleAgent open, no new query). Closing must not clear the session; the header refresh does |`,
     '| Added to bag toast | Custom | the DS toast, Top · actionable (.toast--top): “Item added to bag” + View (to the bag), 6s, sitting just above the chat input, 24px in. Our front end shows it on the custom-cart add; Google’s own “Your cart was updated” toast is hidden |',
     `| ADD TO BAG | Native | settings.custom-cart + cart-button-text · --cart-button-background-color ${(c.agent.cartBg||AG.def(S.brand).cartBg)} · --cart-button-font-color ${(c.agent.cartFg||AG.def(S.brand).cartFg)} · corner radii ${(c.agent.cartRadius??AG.def(S.brand).cartRadius)}px |`,
     '| Quick-reply chips | Native | --chat-messenger-internal-chips-* |',
@@ -316,6 +318,7 @@ function renderPanel(host,S,update){
     <div style="display:flex;flex-direction:column;gap:8px"><label class="sw"><input type="checkbox" id="t-chat"${c.chat?' checked':''}><i></i>Open</label>
       <label class="sw"><input type="checkbox" id="t-labels"${c.labels?' checked':''}><i></i>Label replies with their config key</label></div>
     <div class="f" style="margin-top:10px"><span>Start screen</span><span class="seg" id="startseg"><button data-v="agent" class="${c.start!=='google'?'on':''}">Agent</button><button data-v="google" class="${c.start==='google'?'on':''}">Google default</button></span><small>${c.start==='google'?'Google’s default: T&amp;Cs line, hero image, intro copy and the zero-state prompts — straight from the config, no custom_template.':'Sparkle, greeting, tagline and four starter prompts.'}</small></div>
+    <div class="f" style="margin-top:10px"><span>Re-open chat (after closing it)</span><span class="seg" id="resumeseg">${[['fab','FAB'],['ext','Continue pill'],['bar','Peek bar'],['dot','Dot only']].map(([v,n])=>`<button data-v="${v}" class="${(c.resume||'fab')===v?'on':''}">${n}</button>`).join('')}</span><small>${{fab:'A 56px floating button, bottom right, with the AI sparkle and a dot: a conversation is waiting.',ext:'The floating button, extended: sparkle + “Continue chat”.',bar:'A peek bar at the bottom: Ask Deb + the last reply on one line; tap to reopen, × to hide it.',dot:'No floating UI: a dot on the Ask pill / AI circle (desktop) or the header search icon (phones).'}[c.resume||'fab']} Closing keeps the conversation; Ask reopens it too; the refresh in the chat starts again.</small><button class="btn-sm" id="resumedemo" style="margin-top:8px">Show it: chat, then close</button></div>
     <p style="margin:8px 0 0">Type to the agent: replies alternate between text (written in word by word, <code>dynamic-bot-writing</code>) and a shopping component. With labels on, each reply shows what styles it in <code>salesAgentConfig.json</code>; amber = not in Google’s widget (custom_template or FDE build).</p>
 </div>
   <div class="card card--fold${c.cfgOpen?' open':''}" id="cfgcard"><h3 class="fold-h" id="cfgtoggle" role="button" aria-expanded="${!!c.cfgOpen}">Agent config <small>salesAgentConfig.json · ${changed.length} changed</small><i class="chev"></i></h3><div class="fold-b">
@@ -352,6 +355,8 @@ function renderPanel(host,S,update){
     host.querySelector('#phnote').innerHTML=(n>PHMAX?`<b style="color:#FF8A80">Over ${PHMAX}: clips below ~${from}px</b>`:`Fits from ~${from}px`)+` on every fascia (${ni?'not exposed, search open: field + Ask + X':'exposed: field + Ask'}). ${PHMAX} characters = no clipping from 360px (${NV?'NEW: 14px text':'LIVE: 16px text'}).`};
   if(phin){phUpd();phin.oninput=()=>{c.phM=phin.value;phUpd();update()}}
   const phd=host.querySelector('#phd');if(phd)phd.oninput=()=>{c.phD=phd.value;update()};
+  host.querySelectorAll('#resumeseg button').forEach(b=>b.onclick=()=>{c.resume=b.dataset.v;go()});
+  {const rd=host.querySelector('#resumedemo');if(rd)rd.onclick=()=>{c.chat=false;c.resumeDemo=Date.now();go()}}
   host.querySelectorAll('#startseg button').forEach(b=>b.onclick=()=>{c.start=b.dataset.v;c.chat=true;go()});
   host.querySelectorAll('#vsseg button').forEach(b=>b.onclick=()=>{c.vs=b.dataset.v;c.search=true;c.page=c.page||'home';go()});
   host.querySelectorAll('#vertog button').forEach(b=>b.onclick=()=>{S.ver=b.dataset.v;go()});

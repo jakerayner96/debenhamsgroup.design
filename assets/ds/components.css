@@ -1819,6 +1819,36 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .ai-pill.ai-pill--suggest{font-size:14px;font-weight:var(--w-regular,300);color:var(--text-primary);box-shadow:0 0 14px -4px rgba(0,0,0,.06)}
 .ai-pill.ai-pill--suggest:hover{box-shadow:var(--shadow-puck)}
 .ai-pill.ai-pill--ask{border:0;background:var(--surface-raised,#FFF);box-shadow:var(--shadow-ask);transition:box-shadow .15s,transform .15s}.ai-pill.ai-pill--ask:hover{box-shadow:var(--shadow-puck)}   /* Ask launcher beside search: soft 8% shadow, no outline */
+/* ===== AI resume — the way back into a closed conversation (shopping agent, Jake 11 Nov) =====
+   Feedback: once the chat window is closed it isn't obvious how to get back to it. Shown only after a conversation has started and the window is closed;
+   tapping any of these reopens the same conversation (the refresh in the chat header is what starts again). Four patterns:
+   .ai-fab          56px white circle, the AI sparkle, an --ai-fg dot (= a conversation is waiting) · bottom right, 16px in (24px from 1024)
+   .ai-fab--ext     the same, extended: sparkle + “Continue chat”, 48px
+   .ai-resume       peek bar: sparkle · “Ask Deb” + the last reply on one line · up chevron · close (hides the bar, the chat is still there)
+   .ai-dot          just the dot, on the launcher that opened the chat (Ask pill / AI circle / header search icon) — no floating UI */
+.ai-fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-sticky,200) + 1);display:grid;place-items:center;width:56px;height:56px;padding:0;border:0;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08);cursor:pointer;font-family:var(--font-family-base);color:var(--text-primary);animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both;transition:box-shadow .15s,transform .15s}
+.ai-fab:hover{box-shadow:0 6px 20px rgba(0,0,0,.18),0 1px 3px rgba(0,0,0,.08)}.ai-fab:active{transform:scale(.96)}
+.ai-fab:focus-visible,.ai-resume:focus-within{outline:var(--border-w-focus,2px) solid var(--border-focus,#000);outline-offset:2px}
+.ai-fab .ai-icon{width:24px;height:24px}
+.ai-fab__dot{position:absolute;top:9px;right:9px;width:10px;height:10px;border-radius:50%;background:var(--ai-fg);box-shadow:0 0 0 2px var(--surface-raised,#FFF)}
+.ai-fab--ext{display:inline-flex;align-items:center;gap:8px;width:auto;height:48px;padding:0 20px 0 16px;font-size:15px;font-weight:var(--w-mid,500);line-height:1;white-space:nowrap}
+.ai-fab--ext .ai-icon{width:20px;height:20px}
+.ai-fab--ext .ai-fab__dot{top:-2px;right:-2px}
+.ai-resume{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-sticky,200) + 1);display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 8px 8px 16px;border-radius:var(--radius-lg,8px);background:rgba(255,255,255,.96);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);box-shadow:0 0 20px rgba(0,0,0,.12);font-family:var(--font-family-base);color:var(--text-primary);animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both}
+.ai-resume__open{display:flex;align-items:center;gap:12px;flex:1;min-width:0;padding:0;border:0;background:none;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.ai-resume .ai-icon{width:20px;height:20px}
+.ai-resume__tx{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.ai-resume__t{font-size:14px;line-height:18px;font-weight:var(--w-strong,600)}
+.ai-resume__p{font-size:13px;line-height:17px;font-weight:var(--w-regular,300);color:var(--text-secondary,#767676);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai-resume__up,.ai-resume__x{display:grid;place-items:center;flex:none;width:32px;height:32px;padding:0;border:0;background:none;cursor:pointer}
+.ai-resume__up::before,.ai-resume__x::before{content:"";width:16px;height:16px;background:var(--text-primary);-webkit-mask:url("icons/lib/icons-up.svg") center/contain no-repeat;mask:url("icons/lib/icons-up.svg") center/contain no-repeat}
+.ai-resume__x::before{width:12px;height:12px;-webkit-mask-image:url("icons/lib/icons-close-12.svg");mask-image:url("icons/lib/icons-close-12.svg")}
+.ai-dot{position:relative}
+.ai-dot::after{content:"";position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--ai-fg);box-shadow:0 0 0 2px var(--surface-raised,#FFF);pointer-events:none;animation:aiFabIn .34s cubic-bezier(.2,.8,.2,1) both}
+@media(min-width:1024px){.ai-fab{right:24px;bottom:24px}.ai-resume{left:auto;right:24px;bottom:24px;width:360px}}
+@keyframes aiFabIn{from{opacity:0;transform:translateY(12px) scale(.92)}}
+@media(prefers-reduced-motion:reduce){.ai-fab,.ai-resume,.ai-dot::after{animation:none}}
+html.exporting .ai-fab,html.exporting .ai-resume,body.exporting .ai-fab,body.exporting .ai-resume,body.exporting .ai-dot::after{animation:none}
 .ai-pill--outline.ai-pill--suggest,.ai-pill--outline.ai-pill--suggest:hover{box-shadow:none}
 
 /* Search bar · open (.srch-bar, 26 Oct 2026, AI generated badge prototype) — the field the search overlay opens on, over .srch-sugg.

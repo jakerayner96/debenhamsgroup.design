@@ -4,6 +4,19 @@
 window.DG_CHANGELOG=[
  {
   "d": "2026-11-11",
+  "v": "2026.11.11c",
+  "title": "AI resume: a way back into a closed agent chat · Ask back to the search bar's height",
+  "by": "Shopping agent (projects/shopping-agent), Jake 11 Nov: feedback — once you close the chat it isn't obvious how to get back to it",
+  "added": [
+   "AI resume (catalogue: AI resume (re-open chat)) — .ai-fab (56px floating button, sparkle + --ai-fg dot), .ai-fab--ext (Continue chat pill), .ai-resume (peek bar: Ask Deb + the last reply, up chevron, close) and .ai-dot (dot on the launcher). Shown once a conversation has started and the window is closed; tapping reopens the same conversation · by Shopping agent"
+  ],
+  "changed": [],
+  "fixed": [
+   "Shopping agent Ask pill: 44px again, the same height as the search bar (the 29 Oct .ai-pill--ask swap dropped the --outline class the size rule keyed on) · by Shopping agent"
+  ]
+ },
+ {
+  "d": "2026-11-11",
   "v": "2026.11.11b",
   "title": "App chrome goes Liquid Glass · delivery grid in Figma",
   "by": "PDP delivery grid (projects/delivery-grid), Jake 11 Nov: app prototypes use the App Prototype's glass UI",

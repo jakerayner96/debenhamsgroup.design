@@ -101,3 +101,7 @@ Intro, as briefed: "Hi there – I'm Deb, your Debenhams Personal Assistant! Wha
 - Start screen option (Chat window → Start screen): **Agent** (sparkle, greeting, starters) or **Google default** (T&Cs line, hero `img/start-gifts.jpg` 2:1, intro copy, zero-state prompts — config only, no custom_template).
 - Chat product carousel tiles are the DS product card (`.pc.pc--compact`): brand · name · price (now + was), no % or code line; ADD TO BAG under.
 - Search field: camera ↔ search 20px apart.
+
+### 11 Nov — re-open the chat
+- Feedback: once the chat window is closed it isn't obvious how to get back to it. Closing now keeps the conversation (the header refresh starts again) and, once a conversation has started, a DS **AI resume** pattern shows until it's reopened. Panel → Chat window → **Re-open chat**: FAB (`.ai-fab`, default) · Continue pill (`.ai-fab--ext`) · Peek bar (`.ai-resume`, last reply + hide) · Dot only (`.ai-dot` on Ask / AI circle / the phone header search icon). **Show it: chat, then close** seeds a conversation and closes the window. Ask always reopens the same conversation too. Hidden while search is open.
+- Ask pill is 44px again (same as the search bar).
