@@ -217,7 +217,7 @@ const DG_CATALOGUE = [
   summary:'The payment provider renders these, so they are fixed across every fascia: navy set, #EFEFF1 grey, 8px radius.',
   use:['Card number, expiry, CVC inside checkout only.'],
   avoid:['Using this style for any field we render ourselves.'],
-  anatomy:['50px · fixed --field-grey / --field-border · 8px radius on all brands'],
+  anatomy:['50px · fixed --adyen-field-grey / --adyen-field-border · 8px radius on all brands'],
   variants:[{name:'Grey + white', html:'<div style="display:flex;flex-direction:column;gap:10px;width:280px"><div><div class="sfield-lbl">Card number</div><div class="sfield sfield--grey">•••• •••• •••• 4242</div></div><div class="sfield sfield--white">MM / YY</div></div>'}],
   dev:{title:'—', status:'ours', note:'PSP-owned; documented so the checkout looks intentional around it.'} },
 
