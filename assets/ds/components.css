@@ -1857,6 +1857,37 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 :root:has(.ai-fab) .btt--over{bottom:calc(68px + env(safe-area-inset-bottom,0px))}
 @media(min-width:1024px){.btt{right:24px;bottom:24px}:root:has(.ai-fab) .btt--over{bottom:76px}}
 @media(prefers-reduced-motion:reduce){.btt,.ai-fab{transition:none}}
+/* Desktop (Jake 11 Nov): the floating button and back to top are phone / tablet only — from 1024 neither shows; the agent's desktop way back
+   in is one of the .ai-dresume options below (shopping agent panel → Chat window → Desktop re-open). */
+@media(min-width:1024px){.btt,.ai-fab{display:none!important}}
+/* AI resume · desktop options (benchmarks: LinkedIn / Messenger web minimised chat · Amazon Rufus peek + feedback edge tabs · Copilot in Edge /
+   Gemini in Chrome / Shopify Sidekick docked rail · Rufus header button). All white, the floating button shadow, the Status Counter dot. */
+.ai-dbar{position:fixed;right:24px;bottom:0;z-index:calc(var(--z-sticky,200) + 1);display:flex;align-items:center;gap:12px;width:360px;height:52px;padding:0 16px;border:0;border-radius:var(--radius-lg,12px) var(--radius-lg,12px) 0 0;background:var(--surface-raised,#FFF);box-shadow:0 -2px 16px rgba(0,0,0,.12),0 0 1px rgba(0,0,0,.16);font-family:var(--font-family-base);color:var(--text-primary);text-align:left;cursor:pointer;animation:aiDbarIn .34s cubic-bezier(.2,.8,.2,1) both}
+.ai-dbar:hover{box-shadow:0 -4px 20px rgba(0,0,0,.16),0 0 1px rgba(0,0,0,.16)}
+.ai-dbar__ic{position:relative;flex:none;display:grid;place-items:center;width:24px;height:24px}.ai-dbar__ic .ai-icon{width:20px;height:20px}
+.ai-dbar__ic>.counter{position:absolute;top:-4px;right:-7px}
+.ai-dbar__tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.ai-dbar__t{font-size:14px;line-height:18px;font-weight:var(--w-strong,600)}
+.ai-dbar__s{font-size:12px;line-height:16px;color:var(--text-secondary,#767676);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai-dbar__chev{flex:none;width:16px;height:16px;background:var(--text-primary);-webkit-mask:url("icons/lib/icons-up-16.svg") center/16px no-repeat;mask:url("icons/lib/icons-up-16.svg") center/16px no-repeat}
+@keyframes aiDbarIn{from{transform:translateY(100%)}to{transform:none}}
+.ai-dtab{position:fixed;right:0;top:50%;z-index:calc(var(--z-sticky,200) + 1);display:flex;flex-direction:column;align-items:center;gap:10px;width:40px;padding:14px 0 16px;border:0;border-radius:var(--radius-lg,12px) 0 0 var(--radius-lg,12px);background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08);transform:translateY(-50%);font-family:var(--font-family-base);color:var(--text-primary);cursor:pointer;animation:aiDtabIn .34s cubic-bezier(.2,.8,.2,1) both}
+.ai-dtab:hover{width:44px}
+.ai-dtab__ic{position:relative;display:grid;place-items:center;width:20px;height:20px}.ai-dtab__ic .ai-icon{width:20px;height:20px}.ai-dtab__ic>.counter{position:absolute;top:-6px;right:-8px}
+.ai-dtab__t{writing-mode:vertical-rl;transform:rotate(180deg);font-size:14px;line-height:18px;font-weight:var(--w-strong,600);white-space:nowrap}
+@keyframes aiDtabIn{from{transform:translate(100%,-50%)}to{transform:translateY(-50%)}}
+.ai-drail{position:fixed;top:0;right:0;bottom:0;z-index:calc(var(--z-sticky,200) + 1);display:flex;flex-direction:column;align-items:center;gap:16px;width:64px;padding:20px 0;background:var(--surface-raised,#FFF);border-left:1px solid var(--border-subtle,#E7E7E7);font-family:var(--font-family-base);animation:aiDrailIn .3s cubic-bezier(.2,.8,.2,1) both}
+.ai-drail__b{position:relative;display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:var(--radius-pill);background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08);cursor:pointer}
+.ai-drail__b:hover{box-shadow:var(--shadow-pill)}.ai-drail__b .ai-icon{width:20px;height:20px}.ai-drail__b>.counter{position:absolute;top:0;right:0}
+.ai-drail__t{font-size:12px;line-height:16px;font-weight:var(--w-mid,500);color:var(--text-primary);margin-top:-10px}
+.ai-drail__x{width:40px;height:40px;padding:0;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;margin-top:auto}
+.ai-drail__x::before{content:"";width:16px;height:16px;background:var(--text-primary);-webkit-mask:url("icons/lib/icons-left.svg") center/16px no-repeat;mask:url("icons/lib/icons-left.svg") center/16px no-repeat}
+:root:has(.ai-drail) body{padding-right:64px}   /* docked: the page gives the rail its width (push, not cover) */
+@keyframes aiDrailIn{from{transform:translateX(100%)}to{transform:none}}
+.ai-pill>.counter{position:absolute;top:-2px;right:-2px}.ai-pill:has(>.counter){position:relative}   /* header Ask with a chat waiting */
+@media(max-width:1023px){.ai-dbar,.ai-dtab,.ai-drail{display:none!important}:root:has(.ai-drail) body{padding-right:0}}
+@media(prefers-reduced-motion:reduce){.ai-dbar,.ai-dtab,.ai-drail{animation:none}}
+
 @keyframes aiFabIn{from{opacity:0;transform:translateY(12px) scale(.92)}}
 @media(prefers-reduced-motion:reduce){.ai-fab{animation:none}}
 html.exporting .ai-fab,body.exporting .ai-fab{animation:none}
