@@ -16,4 +16,4 @@
 
 ## Notes
 - The cover footer (date · Jake's email) follows the AI badge deck convention. It is the only text that isn't from the PDF.
-- Portraits are the PDF's illustrations, rendered at 6× from the vector art (432 px). They are shown at 400 px or smaller, so they are never upscaled.
+- Portraits are clean line SVGs (`tools/personas/portraits.mjs`) on each site's tint, sharp at any size. They replaced the PDF's cartoons on 12 Nov 2026 (Jake).

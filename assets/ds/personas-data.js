@@ -3,6 +3,7 @@
    Card fields (label · role · tag · head · headSub · chips · desc · scen[t,v,k] · finding · status) are what the cards show — never reword them.
    `test` on each persona + `brands[].test` = the linked "test personas and scenarios" pages, verbatim: goal (g), journey (st), what to watch for (w),
    ground rules, test identity, agent questions. Used by the persona-test skill (tools/persona-test) to run a prototype against a site's personas.
+   Portraits: clean line SVGs from tools/personas/portraits.mjs (12 Nov 2026, replaced the PDF cartoons).
    Renderer: assets/ds/personas.js (DG_personaCard, DG_personaGrid). Component: Persona card (.persona) in components.css + catalogue.js. */
 window.DG_PERSONAS={
 "meta": {
@@ -143,7 +144,7 @@ window.DG_PERSONAS={
 "text": "See Helen's live results →",
 "url": "https://claude.ai/artifact/71bYgVdGQ2qvEWW6z6uRVN"
 },
-"img": "assets/ds/personas/portraits/debenhams-helen.png",
+"img": "assets/ds/personas/portraits/debenhams-helen.svg",
 "test": {
 "sub": "46 · Office manager · Married, two children · The typical Debenhams customer",
 "surname": "Claudeai",
@@ -415,7 +416,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/debenhams-donna.png",
+"img": "assets/ds/personas/portraits/debenhams-donna.svg",
 "test": {
 "sub": "38 · Teaching assistant · Married, two children · One order, with a code",
 "surname": "Claudeai",
@@ -687,7 +688,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/debenhams-claire.png",
+"img": "assets/ds/personas/portraits/debenhams-claire.svg",
 "test": {
 "sub": "44 · Office administrator · Married, two children · One women's fashion order",
 "surname": "Claudeai",
@@ -959,7 +960,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/debenhams-linda.png",
+"img": "assets/ds/personas/portraits/debenhams-linda.svg",
 "test": {
 "sub": "55 · Practice manager · Married, grown-up children · One home order",
 "surname": "Claudeai",
@@ -1231,7 +1232,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/debenhams-nicola.png",
+"img": "assets/ds/personas/portraits/debenhams-nicola.svg",
 "test": {
 "sub": "42 · Account manager · Divorced, one teenager · Repeat evening shopper",
 "surname": "Claudeai",
@@ -1503,7 +1504,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/debenhams-ahmed.png",
+"img": "assets/ds/personas/portraits/debenhams-ahmed.svg",
 "test": {
 "sub": "36 · Pharmacist · Married, first home · One furniture order",
 "surname": "Claudeai",
@@ -1775,7 +1776,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/debenhams-martin.png",
+"img": "assets/ds/personas/portraits/debenhams-martin.svg",
 "test": {
 "sub": "45 · Site manager · Married, grown-up son · One menswear order",
 "surname": "Claudeai",
@@ -2047,7 +2048,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/debenhams-joanne.png",
+"img": "assets/ds/personas/portraits/debenhams-joanne.svg",
 "test": {
 "sub": "Any age · Any role · The catch-all shopper",
 "surname": "Claudeai",
@@ -2348,7 +2349,7 @@ window.DG_PERSONAS={
 "text": "See Rebecca's live results →",
 "url": "https://claude.ai/artifact/KCPKBRqYwttVAhwNDYHso2"
 },
-"img": "assets/ds/personas/portraits/karenmillen-rebecca.png",
+"img": "assets/ds/personas/portraits/karenmillen-rebecca.svg",
 "test": {
 "sub": "39 · Events manager · Married, one child · The typical Karen Millen customer",
 "surname": "Claudeai",
@@ -2620,7 +2621,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/karenmillen-anneke.png",
+"img": "assets/ds/personas/portraits/karenmillen-anneke.svg",
 "test": {
 "sub": "36 · Marketing director · Lives in Amsterdam · International dress buyer",
 "surname": "Claudeai",
@@ -2892,7 +2893,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/karenmillen-caroline.png",
+"img": "assets/ds/personas/portraits/karenmillen-caroline.svg",
 "test": {
 "sub": "48 · Headteacher · Married, two teenagers · Full-price dress buyer",
 "surname": "Claudeai",
@@ -3164,7 +3165,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/karenmillen-natalie.png",
+"img": "assets/ds/personas/portraits/karenmillen-natalie.svg",
 "test": {
 "sub": "35 · Project manager · Lives with her partner · One app dress order",
 "surname": "Claudeai",
@@ -3436,7 +3437,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/karenmillen-amelia.png",
+"img": "assets/ds/personas/portraits/karenmillen-amelia.svg",
 "test": {
 "sub": "33 · Solicitor · Engaged · Repeat app buyer, petite",
 "surname": "Claudeai",
@@ -3708,7 +3709,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/karenmillen-louise.png",
+"img": "assets/ds/personas/portraits/karenmillen-louise.svg",
 "test": {
 "sub": "45 · NHS ward manager · Married, three children · Coat buyer",
 "surname": "Claudeai",
@@ -3980,7 +3981,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/karenmillen-gemma.png",
+"img": "assets/ds/personas/portraits/karenmillen-gemma.svg",
 "test": {
 "sub": "40 · Dental practice owner · Married, one child · Accessories and separates with a code",
 "surname": "Claudeai",
@@ -4252,7 +4253,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/karenmillen-emma.png",
+"img": "assets/ds/personas/portraits/karenmillen-emma.svg",
 "test": {
 "sub": "Any age · Any role · The catch-all shopper",
 "surname": "Claudeai",
@@ -4553,7 +4554,7 @@ window.DG_PERSONAS={
 "text": "See Courtney's live results →",
 "url": "https://claude.ai/artifact/ABB6Q9gbSSgHsNUa9RwyB6"
 },
-"img": "assets/ds/personas/portraits/boohoo-courtney.png",
+"img": "assets/ds/personas/portraits/boohoo-courtney.svg",
 "test": {
 "sub": "25 · Dental nurse · Lives with her boyfriend · The typical boohoo customer",
 "surname": "Claudeai",
@@ -4825,7 +4826,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohoo-danielle.png",
+"img": "assets/ds/personas/portraits/boohoo-danielle.svg",
 "test": {
 "sub": "27 · Nursery practitioner · Lives with her boyfriend · One order, no code",
 "surname": "Claudeai",
@@ -5097,7 +5098,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohoo-lena.png",
+"img": "assets/ds/personas/portraits/boohoo-lena.svg",
 "test": {
 "sub": "22 · Student · Lives in Berlin · International first-timer",
 "surname": "Claudeai",
@@ -5369,7 +5370,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohoo-shannon.png",
+"img": "assets/ds/personas/portraits/boohoo-shannon.svg",
 "test": {
 "sub": "23 · Hairdresser · Lives with her mum · Dress for a night out",
 "surname": "Claudeai",
@@ -5641,7 +5642,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohoo-jodie.png",
+"img": "assets/ds/personas/portraits/boohoo-jodie.svg",
 "test": {
 "sub": "22 · Call centre agent · Lives with her parents · Tops with a code",
 "surname": "Claudeai",
@@ -5913,7 +5914,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohoo-abbie.png",
+"img": "assets/ds/personas/portraits/boohoo-abbie.svg",
 "test": {
 "sub": "20 · Apprentice · Lives with her parents · App first-timer",
 "surname": "Claudeai",
@@ -6185,7 +6186,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohoo-kayleigh.png",
+"img": "assets/ds/personas/portraits/boohoo-kayleigh.svg",
 "test": {
 "sub": "28 · Care worker · Single mum of one · Repeat evening bargain shopper",
 "surname": "Claudeai",
@@ -6457,7 +6458,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohoo-chelsea.png",
+"img": "assets/ds/personas/portraits/boohoo-chelsea.svg",
 "test": {
 "sub": "Any age · Any role · The catch-all shopper",
 "surname": "Claudeai",
@@ -6758,7 +6759,7 @@ window.DG_PERSONAS={
 "text": "See Mia's live results →",
 "url": "https://claude.ai/artifact/JExHrtGBZQ9xXaaRMLsZtZ"
 },
-"img": "assets/ds/personas/portraits/plt-mia.png",
+"img": "assets/ds/personas/portraits/plt-mia.svg",
 "test": {
 "sub": "23 · Trainee accountant · Shares a flat · The typical PrettyLittleThing customer",
 "surname": "Claudeai",
@@ -7030,7 +7031,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/plt-chiara.png",
+"img": "assets/ds/personas/portraits/plt-chiara.svg",
 "test": {
 "sub": "24 · Fashion student · Lives in Milan · International one-off",
 "surname": "Claudeai",
@@ -7302,7 +7303,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/plt-keira.png",
+"img": "assets/ds/personas/portraits/plt-keira.svg",
 "test": {
 "sub": "21 · Retail assistant · Lives with her parents · UK one-off, no code",
 "surname": "Claudeai",
@@ -7574,7 +7575,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/plt-sofia.png",
+"img": "assets/ds/personas/portraits/plt-sofia.svg",
 "test": {
 "sub": "25 · Nurse · Lives in Madrid · International order with a code",
 "surname": "Claudeai",
@@ -7846,7 +7847,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/plt-tasha.png",
+"img": "assets/ds/personas/portraits/plt-tasha.svg",
 "test": {
 "sub": "24 · Beauty therapist · Shares a flat · Royalty superfan",
 "surname": "Claudeai",
@@ -8118,7 +8119,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/plt-leah.png",
+"img": "assets/ds/personas/portraits/plt-leah.svg",
 "test": {
 "sub": "24 · Marketing assistant · Shares a flat · UK mixed order with a code",
 "surname": "Claudeai",
@@ -8390,7 +8391,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/plt-holly.png",
+"img": "assets/ds/personas/portraits/plt-holly.svg",
 "test": {
 "sub": "25 · Recruitment consultant · Lives with her boyfriend · Dress with a code",
 "surname": "Claudeai",
@@ -8662,7 +8663,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/plt-amber.png",
+"img": "assets/ds/personas/portraits/plt-amber.svg",
 "test": {
 "sub": "Any age · Any role · The catch-all shopper",
 "surname": "Claudeai",
@@ -8963,7 +8964,7 @@ window.DG_PERSONAS={
 "text": "See Tyler's live results →",
 "url": "https://claude.ai/artifact/BbGqqZHqdr9UwriTwXunRt"
 },
-"img": "assets/ds/personas/portraits/boohooman-tyler.png",
+"img": "assets/ds/personas/portraits/boohooman-tyler.svg",
 "test": {
 "sub": "24 · Warehouse team leader · Lives with his girlfriend · The typical boohooMAN customer",
 "surname": "Claudeai",
@@ -9235,7 +9236,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohooman-connor.png",
+"img": "assets/ds/personas/portraits/boohooman-connor.svg",
 "test": {
 "sub": "22 · Trainee electrician · Lives with his parents · One order, no code",
 "surname": "Claudeai",
@@ -9507,7 +9508,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohooman-marco.png",
+"img": "assets/ds/personas/portraits/boohooman-marco.svg",
 "test": {
 "sub": "26 · Logistics coordinator · Lives in Milan · International first-timer",
 "surname": "Claudeai",
@@ -9779,7 +9780,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohooman-ryan.png",
+"img": "assets/ds/personas/portraits/boohooman-ryan.svg",
 "test": {
 "sub": "23 · Warehouse operative · Lives with his girlfriend · One UK order with a code",
 "surname": "Claudeai",
@@ -10051,7 +10052,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohooman-noah.png",
+"img": "assets/ds/personas/portraits/boohooman-noah.svg",
 "test": {
 "sub": "23 · Barista · Lives in Dublin · International app shopper",
 "surname": "Claudeai",
@@ -10323,7 +10324,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohooman-mateo.png",
+"img": "assets/ds/personas/portraits/boohooman-mateo.svg",
 "test": {
 "sub": "24 · Graphic designer · Lives in Barcelona · International order with a code",
 "surname": "Claudeai",
@@ -10595,7 +10596,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohooman-lewis.png",
+"img": "assets/ds/personas/portraits/boohooman-lewis.svg",
 "test": {
 "sub": "29 · Delivery driver · Lives with his partner · Repeat coded buyer, Tall",
 "surname": "Claudeai",
@@ -10867,7 +10868,7 @@ window.DG_PERSONAS={
 "text": "Not yet run live",
 "url": null
 },
-"img": "assets/ds/personas/portraits/boohooman-ashley.png",
+"img": "assets/ds/personas/portraits/boohooman-ashley.svg",
 "test": {
 "sub": "Any age · Any role · The catch-all shopper",
 "surname": "Claudeai",

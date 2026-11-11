@@ -17,3 +17,7 @@
 ## Open
 - Figma: the Persona card is not in the Debenhams Design System library yet (code only). Next: a board + component set (typical / cohort / catch-all × fascia), then figma-lib.js.
 - Scenario rows open the source pages' test script (goal · Journey · What to watch for). That text isn't on the PDF card, but it is the PDF's linked scenario pages word for word. Jake to confirm he wants it shown (it's `scripts:false` per card to switch off).
+
+## 12 Nov follow-up
+- Jake: no cartoons. Portraits are now clean faceless line SVGs (`tools/personas/portraits.mjs`, features per persona in its table: hair, glasses, beard, grey). Stock photos were not used: the PDF footnote (kept word for word) says the portraits are original illustrations, not photographs of real people.
+- Jake: card text black, not grey. Rule added to CLAUDE.md (grey only for tiny caption / T&Cs text).

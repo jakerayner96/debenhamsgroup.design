@@ -2506,11 +2506,12 @@ select.rf-input:invalid{color:var(--rf-dim)}
    Markup + data: assets/ds/personas.js DG_personaCard(p) over assets/ds/personas-data.js. Copy is the PDF word for word — never reword it.
    Anatomy: tinted header (portrait 72 in a 3px ring · tag pill · name, age 20 strong · role 14) → share figure 18 strong + meter → caption 12
    → attribute chips 12 → description 14 → eight scenarios (season dot · title 14 · value 12 right) → finding (severity pill) + status line.
+   All card text is --text-primary (Jake 12 Nov 2026: grey is only for tiny captions / T&Cs). Portraits: line SVGs on the --persona-hd tint.
    Scenario rows open the test script (goal · Journey · What to watch for) when the data has one. Fascia: font, tint (--persona-hd), meter
    (--persona-accent), radius (--radius-lg / --radius-pill: square on PLT), surfaces (sand on PLT). Season keys --season-*, severity --sev-*. */
 .persona{display:flex;flex-direction:column;background:var(--surface-raised);color:var(--text-primary);border:1px solid var(--border-subtle);border-radius:var(--radius-lg,8px);overflow:hidden;font-family:var(--font-family-base);font-weight:var(--w-regular,300);text-align:left;min-width:0}
 .persona-hd{position:relative;display:flex;align-items:flex-end;gap:12px;padding:12px 16px 14px;background:var(--persona-hd);min-height:96px}
-.persona-av{flex:none;display:block;width:72px;height:72px;border-radius:9999px;overflow:hidden;box-shadow:0 0 0 3px var(--surface-raised);background:var(--surface-sunken)}
+.persona-av{flex:none;display:block;width:72px;height:72px;border-radius:9999px;overflow:hidden;box-shadow:0 0 0 3px var(--surface-raised);background:var(--persona-hd)}
 .persona-av img{display:block;width:100%;height:100%;object-fit:cover}
 .persona-av--sm{width:40px;height:40px;box-shadow:0 0 0 2px var(--surface-raised)}
 .persona-av--lg{width:120px;height:120px;box-shadow:0 0 0 4px var(--surface-raised)}
@@ -2518,16 +2519,16 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .persona[data-kind="catchall"] .persona-tag{background:#5D6271}
 .persona-id{min-width:0;padding-bottom:2px}
 .persona-id b{display:block;font-size:20px;line-height:24px;font-weight:var(--w-strong)}
-.persona-id span{display:block;font-size:14px;line-height:18px;color:var(--text-secondary)}
+.persona-id span{display:block;font-size:14px;line-height:18px;color:var(--text-primary)}
 .persona-bd{display:flex;flex-direction:column;gap:12px;padding:16px;flex:1}
 .persona-share{display:flex;align-items:center;gap:12px}
 .persona-share b{font-size:18px;line-height:22px;font-weight:var(--w-strong);white-space:nowrap}
 .persona-meter{flex:1;height:6px;border-radius:var(--radius-pill);background:var(--surface-action-disabled,#E7E7E7);overflow:hidden}
 .persona-meter i{display:block;height:100%;width:var(--p,0%);background:var(--persona-accent);border-radius:inherit;transition:width .6s var(--ease-standard)}
-.persona-sub{margin:-8px 0 0;max-width:none;font-size:12px;line-height:16px;color:var(--text-secondary)}
+.persona-sub{margin:-8px 0 0;max-width:none;font-size:12px;line-height:16px;color:var(--text-primary)}
 .persona-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
 .persona-chips li{padding:3px 10px;border-radius:var(--radius-pill);background:var(--surface-sunken);border:1px solid var(--border-subtle);font-size:12px;line-height:16px}
-.persona-desc{margin:0;max-width:none;font-size:14px;line-height:20px;color:var(--text-secondary)}
+.persona-desc{margin:0;max-width:none;font-size:14px;line-height:20px;color:var(--text-primary)}
 .persona-scen{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
 .persona-scen>li{border-top:1px solid var(--border-subtle);transition:opacity var(--dur-base) var(--ease-standard)}
 .persona-scen>li:first-child{border-top:0}
@@ -2536,14 +2537,14 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .persona-row[aria-expanded]:hover span{text-decoration:underline;text-underline-offset:2px}
 .persona-row>i{width:8px;height:8px;border-radius:9999px;background:var(--season-everyday);transform:translateY(-1px)}
 .persona-row span{font-size:14px;line-height:18px}
-.persona-row em{font-style:normal;font-size:12px;line-height:18px;color:var(--text-secondary);white-space:nowrap}
+.persona-row em{font-style:normal;font-size:12px;line-height:18px;color:var(--text-primary);white-space:nowrap}
 li[data-k="christmas"]>.persona-row>i{background:var(--season-christmas)}
 li[data-k="sale"]>.persona-row>i{background:var(--season-sale)}
 li[data-k="bf"]>.persona-row>i{background:var(--season-bf)}
 .persona-script{display:none;margin:0 0 12px 16px;padding:12px;border-radius:var(--radius-default,4px);background:var(--surface-sunken);font-size:13px;line-height:18px;color:var(--text-primary)}
 .persona-row[aria-expanded="true"]+.persona-script{display:block;animation:persona-in .25s var(--ease-standard)}
 .persona-script p{margin:0 0 8px;color:var(--text-primary);font-size:13px;line-height:18px}
-.persona-script h6{margin:10px 0 4px;font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;font-weight:var(--w-strong);color:var(--text-secondary)}
+.persona-script h6{margin:10px 0 4px;font-size:11px;line-height:14px;letter-spacing:.06em;text-transform:uppercase;font-weight:var(--w-strong);color:var(--text-primary)}
 .persona-script ol,.persona-script ul{margin:0;padding-left:18px}
 .persona-script li{margin:2px 0}
 @keyframes persona-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
@@ -2552,7 +2553,7 @@ li[data-k="bf"]>.persona-row>i{background:var(--season-bf)}
 .persona-sev{display:inline-flex;align-items:center;height:18px;padding:0 6px;margin-right:6px;border-radius:var(--radius-default,4px);background:var(--sev-high);color:#FFF;font-size:10px;font-weight:var(--w-strong);letter-spacing:.04em;vertical-align:1px}
 .persona-sev[data-sev="critical"]{background:var(--sev-critical)}.persona-sev[data-sev="medium"]{background:var(--sev-medium)}.persona-sev[data-sev="low"]{background:var(--sev-low)}
 a.persona-status{color:var(--text-primary);font-weight:var(--w-strong);text-decoration:underline;text-underline-offset:3px}
-span.persona-status{color:var(--text-secondary)}
+span.persona-status{color:var(--text-primary)}
 /* season legend (.persona-legend) — the PDF key; buttons when it filters ([data-season] on any ancestor dims the other scenario types) */
 .persona-legend{display:flex;flex-wrap:wrap;gap:16px;margin:0;padding:0;list-style:none;font-family:var(--font-family-base);font-size:13px;line-height:18px}
 .persona-legend li,.persona-legend button{display:inline-flex;align-items:center;gap:6px;appearance:none;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:inherit}
