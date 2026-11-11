@@ -12,6 +12,7 @@ window.DG_CHANGELOG=[
    "Status counter .counter--dot — the 12px counter with no figure"
   ],
   "changed": [
+   "Agent chat: once the conversation scrolls, messages fade out under the title over 24px instead of a hard cut · by Shopping agent (Jake 11 Nov)",
    "AI resume = one design: .ai-fab (40px, AI sparkle) + .counter--dot on its corner; on the PLP the white back to top (.btt--light.btt--over) sits 12 above it. The Open chat pill (.ai-fab--ext) and the resume toast (.toast--resume) are retired"
   ],
   "fixed": []

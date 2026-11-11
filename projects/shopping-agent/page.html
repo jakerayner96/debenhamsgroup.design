@@ -257,6 +257,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 .cm-tb .acts{display:flex;gap:var(--chat-messenger-internal-titlebar-actions-gap,0)}
 .cm-tb .acts button{width:40px;height:40px;display:grid;place-items:center;background:none;border:0;color:var(--chat-messenger-internal-titlebar-button-color,#444746);cursor:pointer}
 .cm-body{flex:1;min-height:0;overflow-y:auto;padding:var(--chat-messenger-internal-chat-padding)}
+.cm-body.is-scrolled{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 24px);mask-image:linear-gradient(to bottom,transparent 0,#000 24px)}   /* scrolled content fades out under the title (24px white fade) instead of a hard cut — Jake 11 Nov */
 .cm-body>*{max-width:var(--chat-messenger-internal-message-list-max-width,1230px)}
 .cm-text{font-family:var(--chat-messenger-text-block-font-family);font-size:var(--chat-messenger-text-block-font-size);font-weight:var(--chat-messenger-text-block-font-weight);color:var(--chat-messenger-text-block-color);text-align:var(--chat-messenger-text-block-text-align);padding:var(--chat-messenger-text-block-padding);margin:var(--chat-messenger-text-block-margin);line-height:1.45}
 .cm-text a{color:var(--chat-messenger-text-block-link-color);text-decoration:underline}
@@ -853,6 +854,7 @@ function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat()
   if(open&&!DRAWN&&!EXPORTING)document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>el.classList.add('in'));
   DRAWN=open;
   const body=document.getElementById('cmbody');if(body&&CHAT.msgs.length)body.scrollTop=body.scrollHeight;
+  if(body){const fade=()=>body.classList.toggle('is-scrolled',body.scrollTop>2);fade();body.addEventListener('scroll',fade,{passive:true})}
   const inp=document.getElementById('cminput');if(inp&&CHAT.focus&&!EXPORTING){inp.focus();inp.setSelectionRange(inp.value.length,inp.value.length);CHAT.focus=false}}
 
 /* ================= render ================= */
