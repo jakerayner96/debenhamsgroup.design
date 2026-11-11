@@ -2293,7 +2293,7 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .vs-intro .mdl-ft{gap:var(--gap-4,16px)}
 .vs-lede{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-regular);color:var(--text-primary)}
 .vs-eg{display:grid;grid-template-columns:minmax(0,1fr) minmax(max-content,1fr);align-items:center;gap:28px}   /* 50/50 split, full width (Jake 10 Nov): the gap stays 28 (Figma 23 from the tilted photo), the tips half never narrower than its longest line, the photo fills its half to the margin at 2:3 */
-.vs-eg-img{width:100%;aspect-ratio:2/3;border-radius:var(--radius-lg);box-shadow:var(--shadow-pill);transform:rotate(-2deg);background:var(--surface-media,#F2F2F2) url("img/vs-example.jpg") center/cover no-repeat}
+.vs-eg-img{width:100%;aspect-ratio:2/3;border-radius:var(--radius-lg);box-shadow:var(--shadow-pill);transform:rotate(-2deg);background:var(--surface-media,#F2F2F2) var(--vs-example,url("img/vs-example.jpg")) center/cover no-repeat}
 .vs-eg-tx{min-width:0;display:flex;flex-direction:column;gap:var(--gap-3,12px);padding-bottom:var(--gap-1,4px)}
 .vs-eg-h{margin:0;font-family:var(--font-family-base);font-size:14px;line-height:20px;font-weight:var(--w-strong,600);color:var(--text-primary)}
 .vs-tips{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-3,12px)}

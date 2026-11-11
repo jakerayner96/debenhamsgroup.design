@@ -119,6 +119,7 @@
 }
 [data-brand="boohooman"]{
   --text-on-action:#FFF; /* golden: primary ink is white */
+  --vs-example:url("img/vs-example-man.jpg"); /* Virtual Stylist intro example photo: a menswear mirror selfie (Jake, Figma VTO 15959-22, 11 Nov) */
   --vsi-dress:url("icons/lib/icons-size.svg"); /* Virtual Stylist intro: Use a full length photo tip shows the T-shirt, not the dress (Jake 11 Nov) */
   --w-btn:600;--btn-outline:#000; /* golden button truth */
   --brand-name:'boohooMAN';--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;
