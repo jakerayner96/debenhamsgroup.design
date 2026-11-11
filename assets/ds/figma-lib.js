@@ -69,6 +69,7 @@ window.DG_FIGMA_LIB={
   "delivery-grid": "13771:39835",
   "pdp-ctas": "9144:1931",
   "member-box": "14229:129",
+  "plp-card-actions": "14334:1071",
   "member-band": "14229:144",
   "subscribe-save": "13772:180875",
   "membership-banner": "14229:150",
