@@ -709,7 +709,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .msg--error i{background:var(--text-error)}.msg--error .body{background:var(--error-bg);font-weight:var(--w-regular);line-height:18px}
 .msg--warning i{background:var(--warning-bar)}.msg--warning .body{background:var(--warning-bg);font-weight:var(--w-regular);line-height:18px;color:#000}/* heads-up, not a failure = Figma "Safety Message Banner" (Order Emails 745:3513): Yellow bar on Light Yellow, 20px black info icon (Jake 2 Nov: black, not the Figma grey), one line of 14 regular black copy, no lead line (2 Nov 2026) */
 .toast{font-family:var(--font-family-base);position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#000;color:#FFF;font-size:14px;font-weight:var(--w-mid);padding:12px 20px;border-radius:var(--radius-default);z-index:var(--z-toast);white-space:nowrap;box-shadow:var(--shadow-float)}
-.toast--top{bottom:auto;top:var(--toast-top,16px);left:16px;right:16px;transform:none;background:var(--surface-raised,#FFF);color:var(--text-primary);border-radius:var(--radius-lg);box-shadow:0 0 20px rgba(0,0,0,.1);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:normal;font-weight:var(--w-regular)}
+.toast--top{bottom:auto;top:var(--toast-top,16px);left:16px;right:16px;transform:none;background:var(--surface-raised,#FFF);color:var(--text-primary);border-radius:var(--radius-lg);box-shadow:var(--shadow-toast);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:normal;font-weight:var(--w-regular)}
 .toast--top .act{font:inherit;font-weight:var(--w-strong);color:var(--text-link);background:none;border:none;padding:0;cursor:pointer;white-space:nowrap} /* the fascia font — a button doesn’t inherit it (3 Nov) */
 /* top toast to the DS Figma Toast 5146-559 (Device=Web, Jake 9 Nov): 14/18 message, 13.33 strong action in --text-link, 16 gap, 12px close; under the USP banners
    via --toast-top (assets/ds/toast.js DG_toast sets it and follows the sticky bar while it shows) */
@@ -732,7 +732,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
    --edge a 40 × 60 image flush to the left edge — 60 tall. Card radius 8, shadow 0 0 20 12%, copy 14 light, View Bag 14 strong in the action colour.
    --toast-top = the bottom of the last USP row in view (or the sticky bar once scrolled) + 12 on phones / + 16 on desktop. Mobile: 16 in. Desktop: centred, 400 wide. */
 .toast.toast--prod{top:var(--toast-top,16px);bottom:auto;left:16px;right:16px;min-height:58px;box-sizing:border-box;padding:4px 16px 4px 4px;background:var(--surface-raised,#FFF);-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:var(--radius-lg);
-  box-shadow:0 0 20px rgba(0,0,0,.12);gap:var(--gap-3,12px);overflow:hidden;justify-content:flex-start;font-size:14px;line-height:18px;font-weight:var(--w-regular);animation:toastIn .36s cubic-bezier(.2,.8,.2,1) both}
+  box-shadow:var(--shadow-toast);gap:var(--gap-3,12px);overflow:hidden;justify-content:flex-start;font-size:14px;line-height:18px;font-weight:var(--w-regular);animation:toastIn .36s cubic-bezier(.2,.8,.2,1) both}
 .toast.toast--prod.toast--out{animation:toastOut .3s ease-in forwards}
 @keyframes toastUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes toastDown{from{opacity:1;transform:none}to{opacity:0;transform:translateY(24px)}}
@@ -2365,12 +2365,6 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .bsmp-wrap .pcar-arr{top:calc(12px + 174px / 2)}
 .bsmp-wrap .pcar-arr--prev{left:var(--gap-4,16px)}.bsmp-wrap .pcar-arr--next{right:var(--gap-4,16px)}
 .bsmp-wrap .pcar-arr[disabled]{opacity:0;pointer-events:none}
-/* Rewards banner (Debenhams Rewards, bag summary): grey gradient, REWARDS wordmark (Antonio bold), Earn £x.xx rewards in the rewards orange */
-.rwd{display:flex;align-items:center;justify-content:space-between;gap:var(--gap-4,16px);padding:var(--gap-4,16px) var(--gap-6,24px);border-radius:var(--radius-default);background:linear-gradient(90deg,rgba(242,242,242,.85),rgba(231,231,231,.85));font-family:var(--font-family-base);color:#000}
-.rwd-w{font:700 31.6px/1 'Antonio',var(--font-family-base);letter-spacing:-.63px;text-transform:uppercase;text-shadow:0 0 52px rgba(0,0,0,.25)}
-.rwd-t{display:flex;flex-direction:column;align-items:flex-end;gap:var(--gap-2,8px);text-align:right;font-size:16px;font-weight:var(--w-regular);white-space:nowrap}
-.rwd-t b{font-weight:700;background:linear-gradient(100deg,#EB5A07,#F57918 50%,#FF9829);-webkit-background-clip:text;background-clip:text;color:transparent}.rwd-t b i{font-style:normal;font-size:24px}
-.rwd-t small{font-size:12px}
 /* desktop: each section is a white panel, gap 6 (24px) in, on the --surface-sunken page */
 @media(min-width:1024px){
   .bag-pg{background:var(--surface-sunken)}

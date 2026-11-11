@@ -12,7 +12,7 @@
    Every visible piece is a DS component: header (header.js) · USP banners (usp.js) · Your Bag (n) · Order Total + free-delivery line + checkout (bag-summary.js top)
    · out-of-stock banner (.msg--error) · Your Gifts · Delivered by <seller> (n) — bag product cards (bag.js .bpc: standard, out of stock, quantity error, e-gift card,
    membership, XCover add / added, Subscribe & Save, Taskrabbit, Taggstar strip, free gift, complimentary sample, customised, pre-order) · Need A Top-Up? ·
-   Choose N free samples · Deliver+ bag banner (mobile) · bag summary (bag-summary.js: Rewards on Debenhams; desktop: free-delivery line on the card + Promo Code card)
+   Choose N free samples · Deliver+ bag banner (mobile) · bag summary (bag-summary.js; desktop: free-delivery line on the card + Promo Code card)
    · You Might Also Like (Product carousel) · footer (footer.js). Wishlist → Move to your Wishlist? · View Details → e-Gift Card Details (DS modals).
    Mobile: sections on the page, gap 6 (24px), hairline between sellers. Desktop: 1082 container, 676 | 390, white panels on --surface-sunken.
    Any fascia: ?brand=<slug>; S.bagOff = card / section types left out (the Master prototype's Bag contents card). */
@@ -102,7 +102,6 @@ function view(){const B=bag();return Object.assign({},B,{sellers:B.sellers.map(s
 function page(){const B=view(),d=desk(),L=DG_bag.lines(B),n=DG_bag.count(B),oos=B.sellers.some(s=>s.items.some(x=>x.type==='oos'));
   const tot=L.reduce((a,x)=>a+parseFloat(String(x.price).replace(/[^0-9.]/g,'')),0);
   const free=`<div class="thresh thresh--ok"><span class="tick"></span><span>${d?'You have qualified for 49p delivery':'You have qualified for free delivery!'}</span></div>`; /* Bag 2026: desktop card top 49p (the Delivery row), mobile top free */
-  const rewards=S.brand==='debenhams'&&on('rewards')?`<div class="rwd"><span class="rwd-w">Rewards</span><div class="rwd-t"><span>Earn <b>£<i>${Math.floor(tot*.05)}</i>.${String(Math.round(tot*5)%100).padStart(2,'0')}</b> rewards</span><small>when you complete this order</small></div></div>`:'';
   const banner=oos?DG_bag.oosBanner():'';
   const secs=[B.gifts.length&&on('gifts')?DG_bag.gifts(B.gifts):'',
     ...B.sellers.map((s,i)=>(i&&!d?'<hr class="bag-hr">':'')+DG_bag.seller(s.name,s.items,oos?s.items.length:0)),
@@ -111,7 +110,7 @@ function page(){const B=view(),d=desk(),L=DG_bag.lines(B),n=DG_bag.count(B),oos=
   const title=`<h1 class="bag-title">Your Bag (${n})</h1>`;
   const dplusOn=window.BAG_LIVE&&(BAG_LIVE[S.brand]||{}).dplus;
   const dp=!d&&dplusOn&&on('dplus')?`<div class="bag-dp" data-slot="dplus">${V('deliver-plus',5)}</div>`:'';
-  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML(S.brand,L,d,{thresh:d?free:'',rewards,promo:d}):'';
+  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML(S.brand,L,d,{thresh:d?free:'',promo:d}):'';
   const main=d?`<main class="bag-pg"><div class="bag-wrap">${title}${banner}<div class="bag-cols"><div class="bag-col" data-slot="items">${secs}</div><div class="bag-side" data-slot="summary">${sum}</div></div></div></main>`
     :`<main class="bag-pg"><div class="bag-head">${title}${window.DG_bagTopHTML?DG_bagTopHTML(S.brand,L,{after:banner+free}):''}</div>${secs}${dp}<div data-slot="summary">${sum}</div></main>`;
   return header()+main

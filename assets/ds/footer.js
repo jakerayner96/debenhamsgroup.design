@@ -25,21 +25,21 @@ const F = {
     ['Shopping with Debenhams', ['Download The App', 'Unlimited Delivery', 'Debenhams Deliver+', 'Gift Card Balance', 'DebenhamsPay+', 'Debenhams Mastercard', 'Clearpay', 'Klarna', 'PayPal', 'Student Beans', 'UNiDAYS', 'Beauty Club']],
     ['Customer Care', ['About Us', 'Return or Track Your Order', 'Frequently Asked Questions', 'Delivery Information', 'Returns Information', 'Contact Us']],
     ['Privacy & Legal', ['Privacy Policy', 'Terms & Conditions', 'About Cookies', 'Terms of Use', 'Concessionaire Brands', 'Product']],
-    ['More From Debenhams', ['The Debrief', 'Careers At Debenhams', 'Modern Slavery Statement', 'Beauty Showroom', 'Debenhams Rewards']],
+    ['More From Debenhams', ['The Debrief', 'Careers At Debenhams', 'Modern Slavery Statement', 'Beauty Showroom']],
     ['Grow With Debenhams', ['Sell on Debenhams', 'Delivered By Debenhams', 'Fulfilled By Debenhams']]] },
   boohoo: { name: 'boohoo', news: NEWS, social: ['instagram', 'pinterest', 'facebook', 'youtube', 'tiktok'], country: 'Boohoo United Kingdom | £ GBP', apps: true, pay: PAY_ALL, cols: [
     ['Shopping with boohoo', ['Premier Delivery', 'Gift Cards', 'Gift Card Balance', 'PayPal', 'Klarna', 'Clearpay', 'Student Beans', 'UNiDAYS', 'boohoo Collective', 'boohoo App', 'Size Guide']],
     ['Customer Care', ['Return Your Order', 'Frequently Asked Questions', 'Delivery Information', 'Returns Information', 'Contact Us']],
     ['Privacy & Legal', ['Privacy Policy', 'Terms & Conditions', 'About Cookies', 'Terms of Use', 'Product']],
-    ['More From boohoo', ['Modern Slavery Statement', 'Careers At boohoo', 'boohoo Rewards', 'Refer a friend', 'Listen Now: Overdressed & Oversharing Podcast']],
+    ['More From boohoo', ['Modern Slavery Statement', 'Careers At boohoo', 'Refer a friend', 'Listen Now: Overdressed & Oversharing Podcast']],
     ['Other Countries', ['United States', 'France', 'Ireland', 'Netherlands', 'Australia', 'Sweden', 'Germany', 'Rest of World']]] },
   boohooman: { name: 'BOOHOOMAN', caps: true, news: NEWS, social: ['instagram', 'pinterest', 'facebook', 'youtube', 'tiktok', 'x'], country: 'United Kingdom | £ GBP', apps: true, pay: PAY_ALL, cols: [
     ['How can we help?', ['Frequently Asked Questions', 'Contact Us', 'Track & Return My Order', 'Delivery Options', 'Returns Policy - Updated September 2026', 'Size Guide', 'Premier Delivery']],
-    ['Information', ["T&C's - Updated September 2026", 'Terms of Use', 'Gift Cards', 'Gift Card Balance', 'Klarna', 'Clearpay', 'PayPal', 'Deliver+', 'Privacy Notice - Updated June 2026', 'About Cookies', 'Student Discount', 'Key Worker Discount', 'BOOHOOMAN App', 'Refer A Friend', 'Ambassador Programme', 'Rewards']],
+    ['Information', ["T&C's - Updated September 2026", 'Terms of Use', 'Gift Cards', 'Gift Card Balance', 'Klarna', 'Clearpay', 'PayPal', 'Deliver+', 'Privacy Notice - Updated June 2026', 'About Cookies', 'Student Discount', 'Key Worker Discount', 'BOOHOOMAN App', 'Refer A Friend', 'Ambassador Programme']],
     ['About us', ['Investor Relations', 'Modern Slavery Statement', 'Careers']]] },
   plt: { name: 'PrettyLittleThing', caps: true, quiet: true, news: NEWS, social: ['instagram', 'facebook', 'youtube', 'tiktok', 'x'], country: 'PrettyLittleThing United Kingdom | GBP', apps: true, pay: PAY_ALL, cols: [
     ['Let us help you', ['Help', 'Returns', 'Delivery', 'Size Guide', 'Royalty', 'Gift Cards', 'Clearpay', 'Klarna', 'PayPal']],
-    ['About us', ['About Us', 'Diversity', 'Graduate & Student Discount', 'Student Beans', 'Modern Slavery Statement', 'PLT Rewards']],
+    ['About us', ['About Us', 'Diversity', 'Graduate & Student Discount', 'Student Beans', 'Modern Slavery Statement']],
     ['Information', ['Terms & Conditions', 'Privacy Policy', 'App Info', 'About Cookies', 'Terms of Use']],
     ['My account', ['Order History', 'Track My Order', 'Refer A Friend']]] },
   karenmillen: { name: 'Karen Millen', news: NEWS_KM, social: ['instagram', 'pinterest', 'facebook', 'youtube', 'tiktok'], country: 'Karen Millen UK £', apps: true, pay: PAY_ALL, cols: [

@@ -7,8 +7,8 @@
    Live has no Delivery row (delivery is priced at checkout); the optional Deliver+ add-on is the only extra row.
    renderBagSummary(brand, items, desk) returns the right-column html. renderBagTop(brand, items) is the mobile-only
    "Order Total + Checkout" strip live shows under "Your Bag (n)", above the items.
-   Options (2 Nov 2026, Bag 2026 Figma): DG_bagSummaryHTML(brand, items, desk, {thresh, rewards, promo}) — thresh = html at the top of the desktop card
-   (the free-delivery line over a hairline), rewards = html under the totals (Debenhams Rewards banner), promo:false drops the Promo Code card (mobile Bag 2026).
+   Options (2 Nov 2026, Bag 2026 Figma): DG_bagSummaryHTML(brand, items, desk, {thresh, promo}) — thresh = html at the top of the desktop card
+   (the free-delivery line over a hairline), promo:false drops the Promo Code card (mobile Bag 2026).
    DG_bagTopHTML(brand, items, {after}) — after = html between Order Total and the checkout button (threshold, out-of-stock banner). */
 (function(){
 const A=(window.DG_ASSET_BASE||''),I=A+'assets/ds/icons/pay/',W=A+'assets/ds/icons/payments/',L=A+'assets/ds/icons/pay/';
@@ -59,8 +59,8 @@ window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk,o){o=
     <div class="bs-cards">${(v26?c.cards26:c.cards).map(logo).join('')}</div>`;
   const promo=`<div class="bs-card bs-pr"><div class="bs-ph">Promo Code</div><div class="bs-pf"><span class="bs-in">Enter code here...</span><button type="button" class="bs-ap2">${c.applyUp?'APPLY':'Apply'}</button></div></div>`;
   const vars=`--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}`;
-  const pr=o.promo===false?'':promo,rw=o.rewards||'',th=o.thresh?`<div class="bs-th">${o.thresh}</div>`:'';
-  return `<div class="bs${desk?' bs--d':' bs--m'}${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="${vars}">${desk?`<div class="bs-card">${th}${sum}${rw}${pay}</div>${pr}`:`${pr}${pr?'<div class="bs-hr"></div>':''}<div class="bs-card bs-flat">${sum}${rw}${pay}</div>`}</div>`;
+  const pr=o.promo===false?'':promo,th=o.thresh?`<div class="bs-th">${o.thresh}</div>`:'';
+  return `<div class="bs${desk?' bs--d':' bs--m'}${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="${vars}">${desk?`<div class="bs-card">${th}${sum}${pay}</div>${pr}`:`${pr}${pr?'<div class="bs-hr"></div>':''}<div class="bs-card bs-flat">${sum}${pay}</div>`}</div>`;
 };
 window.DG_bagTopHTML=window.renderBagTop=function(brand,items,o){o=o||{};const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]);
   return `<div class="bs bs-top${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}"><div class="bs-ot">Order Total: <b>${gbp(t.goods)}</b></div>${o.after||''}<button type="button" class="bs-cta">${esc(c.cta[0])}</button></div>`};

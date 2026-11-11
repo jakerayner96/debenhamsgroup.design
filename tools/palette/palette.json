@@ -23,7 +23,8 @@
   },
   "accents": {
    "Deliver+ Light": "#E8F4F2",
-   "Deliver+ Dark": "#7BE7D8"
+   "Deliver+ Dark": "#7BE7D8",
+   "Deliver+ Logo": "#1A847D"
   },
   "extended": {
    "Red": "#C90000",
@@ -37,7 +38,7 @@
    "Green Dark": "#1F7A25",
    "Yellow Dark": "#7A5800",
    "PayPal Gold": "#FFC439",
-   "Navy": "#00112C",
+   "Checkout Pay Navy": "#00112C",
    "AI Light": "#9DEDE2",
    "AI Aqua": "#7BE7D8",
    "AI": "#70BEB3",
@@ -84,7 +85,8 @@
   },
   "accents": {
    "Deliver+ Light": "#F6E3EE",
-   "Deliver+ Dark": "#F9D7EA"
+   "Deliver+ Dark": "#F9D7EA",
+   "Deliver+ Logo": "#F9D7EA"
   },
   "extended": {
    "Red": "#C90000",
@@ -98,7 +100,7 @@
    "Green Dark": "#1F7A25",
    "Yellow Dark": "#7A5800",
    "PayPal Gold": "#FFC439",
-   "Navy": "#00112C",
+   "Checkout Pay Navy": "#00112C",
    "AI Light": "#9DEDE2",
    "AI Aqua": "#7BE7D8",
    "AI": "#70BEB3",
@@ -146,7 +148,8 @@
   "accents": {
    "Aggressive Green (MAN)": "#01FE8A",
    "Deliver+ Light": "#F2F2F2",
-   "Deliver+ Dark": "#000000"
+   "Deliver+ Dark": "#000000",
+   "Deliver+ Logo": "#000000"
   },
   "extended": {
    "Red": "#C90000",
@@ -160,7 +163,7 @@
    "Green Dark": "#1F7A25",
    "Yellow Dark": "#7A5800",
    "PayPal Gold": "#FFC439",
-   "Navy": "#00112C",
+   "Checkout Pay Navy": "#00112C",
    "AI Light": "#9DEDE2",
    "AI Aqua": "#7BE7D8",
    "AI": "#70BEB3",
@@ -209,7 +212,8 @@
    "Warm Peach (PLT)": "#F1C59E",
    "Light Cream (PLT)": "#FFE4D2",
    "Deliver+ Light": "#F3EAE8",
-   "Deliver+ Dark": "#550503"
+   "Deliver+ Dark": "#550503",
+   "Deliver+ Logo": "#550503"
   },
   "extended": {
    "Red": "#C90000",
@@ -223,7 +227,7 @@
    "Green Dark": "#1F7A25",
    "Yellow Dark": "#7A5800",
    "PayPal Gold": "#FFC439",
-   "Navy": "#00112C",
+   "Checkout Pay Navy": "#00112C",
    "AI Light": "#9DEDE2",
    "AI Aqua": "#7BE7D8",
    "AI": "#70BEB3",
@@ -270,7 +274,8 @@
   },
   "accents": {
    "Deliver+ Light": "#FAE9E1",
-   "Deliver+ Dark": "#D24508"
+   "Deliver+ Dark": "#D24508",
+   "Deliver+ Logo": "#D24508"
   },
   "extended": {
    "Red": "#C90000",
@@ -284,7 +289,7 @@
    "Green Dark": "#1F7A25",
    "Yellow Dark": "#7A5800",
    "PayPal Gold": "#FFC439",
-   "Navy": "#00112C",
+   "Checkout Pay Navy": "#00112C",
    "AI Light": "#9DEDE2",
    "AI Aqua": "#7BE7D8",
    "AI": "#70BEB3",
@@ -331,7 +336,8 @@
   },
   "accents": {
    "Deliver+ Light": "#FDFFF5",
-   "Deliver+ Dark": "#335C3D"
+   "Deliver+ Dark": "#335C3D",
+   "Deliver+ Logo": "#0A0A0A"
   },
   "extended": {
    "Red": "#C90000",
@@ -345,7 +351,7 @@
    "Green Dark": "#1F7A25",
    "Yellow Dark": "#7A5800",
    "PayPal Gold": "#FFC439",
-   "Navy": "#00112C",
+   "Checkout Pay Navy": "#00112C",
    "AI Light": "#9DEDE2",
    "AI Aqua": "#7BE7D8",
    "AI": "#70BEB3",
@@ -403,7 +409,7 @@
    "Green Dark": "#1F7A25",
    "Yellow Dark": "#7A5800",
    "PayPal Gold": "#FFC439",
-   "Navy": "#00112C",
+   "Checkout Pay Navy": "#00112C",
    "AI Light": "#9DEDE2",
    "AI Aqua": "#7BE7D8",
    "AI": "#70BEB3",
@@ -450,7 +456,8 @@
   },
   "accents": {
    "Deliver+ Light": "#E2EAF4",
-   "Deliver+ Dark": "#3B5469"
+   "Deliver+ Dark": "#3B5469",
+   "Deliver+ Logo": "#284D7B"
   },
   "extended": {
    "Red": "#C90000",
@@ -464,7 +471,7 @@
    "Green Dark": "#1F7A25",
    "Yellow Dark": "#7A5800",
    "PayPal Gold": "#FFC439",
-   "Navy": "#00112C",
+   "Checkout Pay Navy": "#00112C",
    "AI Light": "#9DEDE2",
    "AI Aqua": "#7BE7D8",
    "AI": "#70BEB3",
@@ -511,7 +518,8 @@
   },
   "accents": {
    "Deliver+ Light": "#FBF6F0",
-   "Deliver+ Dark": "#444444"
+   "Deliver+ Dark": "#444444",
+   "Deliver+ Logo": "#444444"
   },
   "extended": {
    "Red": "#C90000",
@@ -525,7 +533,7 @@
    "Green Dark": "#1F7A25",
    "Yellow Dark": "#7A5800",
    "PayPal Gold": "#FFC439",
-   "Navy": "#00112C",
+   "Checkout Pay Navy": "#00112C",
    "AI Light": "#9DEDE2",
    "AI Aqua": "#7BE7D8",
    "AI": "#70BEB3",
@@ -572,7 +580,8 @@
   },
   "accents": {
    "Deliver+ Light": "#E2E0DC",
-   "Deliver+ Dark": "#6B6152"
+   "Deliver+ Dark": "#6B6152",
+   "Deliver+ Logo": "#000000"
   },
   "extended": {
    "Red": "#C90000",
@@ -586,7 +595,7 @@
    "Green Dark": "#1F7A25",
    "Yellow Dark": "#7A5800",
    "PayPal Gold": "#FFC439",
-   "Navy": "#00112C",
+   "Checkout Pay Navy": "#00112C",
    "AI Light": "#9DEDE2",
    "AI Aqua": "#7BE7D8",
    "AI": "#70BEB3",
