@@ -120,7 +120,7 @@ function bundle(P){if(!window.DG_bundle)return '';
   return `<div data-slot="bundle">${DG_bundle.html({items:[{img:P.imgs[0],brand:P.brand,name:P.name,price:P.price,was:P.was,colour:P.colour,sizes:P.sizes,current:true}].concat(more)})}</div>`}
 function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams,d=desk();
   const crumbs=P.crumbs.map((c,i)=>i<P.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('');
-  const bnpl=strip(V('bnpl',0)).replace(/£23\.33/,'£'+(num(P.price)/3).toFixed(2));
+  const bnpl=strip(V('bnpl',0)).replace(/£23\.33/g,'£'+(num(P.price)/3).toFixed(2)).replace(/£17\.50/g,'£'+(num(P.price)/4).toFixed(2));   /* DS BNPL (Figma 2969:10048): logos + legal + See more → per-provider rows */
   const dplus=DPLUS.includes(S.brand)?strip(V('deliver-plus',d?1:0)):'';
   /* chip treatment per fascia from tokens --ai-tag-* (PLT: garnet square, 12 uppercase white, left-aligned — vto-prototype, 27 Oct 2026).
      Virtual Stylist (hanger), centred: between the gallery and the title on mobile, under the gallery on desktop (Jake 22 Oct 2026, from live KM).

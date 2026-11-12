@@ -1000,14 +1000,24 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .usp-box .r img{width:24px;height:24px;flex:none}
 .usp-box .t{font-size:14px;line-height:18px;font-weight:var(--w-regular)}
 .usp-box .s{font-size:12px;line-height:15px;color:var(--text-secondary)}
-.bnpl{background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:var(--radius-default);padding:16px;display:flex;flex-direction:column;gap:12px;font-size:14px}
+.bnpl{background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:var(--radius-default);padding:16px;display:flex;flex-direction:column;gap:12px;font-size:14px;color:var(--text-primary);text-align:left}
+/* BNPL (12 Nov 2026, Figma BNPL 2969:10048 is the truth): logos · legal 12/17 Grey 5 · See more 12 light underlined → .open = one row per provider + See less */
 .bnpl .chips{display:flex;gap:4px}
-.bnpl .pc{width:32px;height:22px;border-radius:calc(var(--radius-default)*.75);display:grid;place-items:center;overflow:hidden}
+.bnpl .pc{width:32px;height:22px;border-radius:calc(var(--radius-default)*.75);display:grid;place-items:center;overflow:hidden;flex:none;box-sizing:border-box}
 .bnpl .pc img{max-width:24px;max-height:11px;object-fit:contain}   /* DS Figma 12484:4028: each logo inset in its 32×22 badge, never edge to edge */
 .bnpl .pc--payplus{background:#003B61}.bnpl .pc--klarna{background:#FFB1D2}.bnpl .pc--clearpay{background:#B2FCE3}.bnpl .pc--paypal{background:#FFF;border:1px solid var(--border-subtle)}
-.bnpl .terms{font-weight:var(--w-regular)}.bnpl .small{font-size:12px;color:var(--text-secondary)}
-/* .bnpl--legal (Figma BNPL 2969:10048): logos · legal line 12/17 · See more on its own line, 14 underlined */
-.bnpl--legal .small{line-height:17px}.bnpl--legal .more{font-size:14px;line-height:18px;font-weight:var(--w-mid,400);color:var(--text-primary);text-decoration:underline;align-self:flex-start}
+.bnpl .terms{font-weight:var(--w-regular)}
+.bnpl .small{font-size:12px;line-height:17px;font-weight:var(--w-regular);color:var(--grey-5,#6B6B6B)}
+.bnpl .more{align-self:flex-start;padding:0;border:0;background:none;font:inherit;font-size:12px;line-height:15px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.bnpl-hd{font-size:14px;line-height:18px;font-weight:var(--w-mid,500)}
+.bnpl-rows{display:flex;flex-direction:column;gap:12px}
+.bnpl-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.bnpl-row .l{display:flex;align-items:center;gap:8px;min-width:0;font-size:14px;line-height:18px;font-weight:var(--w-regular)}
+.bnpl-row b{font-weight:var(--w-strong,600)}
+.bnpl-row a{flex:none;font-size:12px;line-height:15px;font-weight:var(--w-regular);color:var(--text-primary);text-decoration:underline;text-underline-offset:2px}
+.bnpl:not(.open):not(.bnpl--one) .bnpl-rows{display:none}
+.bnpl.open .chips,.bnpl.open .small{display:none}
+.bnpl--legal .more{font-size:12px;line-height:15px}  /* old class, now the same as the default */
 .thresh{display:flex;flex-direction:column;gap:12px;font-size:14px}
 .thresh b{font-weight:var(--w-strong)}
 .thresh .track{height:4px;border-radius:var(--radius-pill);background:var(--border-subtle);overflow:hidden}
