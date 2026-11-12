@@ -2517,7 +2517,7 @@ select.rf-input:invalid{color:var(--rf-dim)}
    .ag-nba      the Next Best Action (.ai-nba) as a full-width grid row after row 4
    .ag-layer    the chat window: slide up on phones (.mdl--up behaviour), centred 480 on ≥ 768 · scrim closes it · Esc closes it */
 .hd-search+.ag-ask{flex:none;margin-left:calc(var(--gap-3,12px) * -1)}
-@media(min-width:1024px){.ag-sw>.hd-search+.ag-ask{margin-left:0}}   /* in the search + Ask row (.ag-sw, gap 12) the row's gap spaces them — the pull-in above is only for the DS header bar (Jake 11 Nov: needs a gap) */
+.ag-sw>.hd-search+.ag-ask{margin-left:0}   /* in the search + Ask row (.ag-sw) the row's gap spaces them, every width (12 desktop, 10 mobile) — the pull-in above is only for the DS header bar (Jake 11 Nov: needs a gap; 12 Nov: on mobile too — it was desktop only, so on phones Ask overlapped the field by 2px) */
 .ag-ask--sm{height:32px;padding:0 12px 0 10px;font-size:13px;gap:6px}.ag-ask--sm .ai-icon{width:16px;height:16px}
 .hd-icons>button.ag-ask{display:flex;align-self:center;width:auto;height:32px;padding:0 12px 0 10px;margin-right:4px;border:var(--ai-outline) solid transparent;background:linear-gradient(var(--surface-raised,#FFF),var(--surface-raised,#FFF)) padding-box,var(--ai-gradient) border-box;border-radius:var(--radius-pill)} /* the header icon-button reset (.hd-icons button) would flatten it */
 .ag-nba{grid-column:1/-1;margin:var(--gap-2,8px) var(--plp-margin,0)}
