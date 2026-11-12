@@ -1660,6 +1660,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
    .dopts-hr before Northern Ireland, .dopts-grp section heads (one-list variant), .dopts-note 12px footnote. Rows gap 4 (16px). */
 .dgrid{display:flex;flex-direction:column;gap:var(--gap-4,16px);padding:var(--gap-4,16px);border:var(--border-w,1px) solid var(--border-subtle);border-radius:var(--radius-default);font-family:var(--font-family-base);color:var(--text-primary);text-align:left;background:var(--surface-page)}
 .dgrid--line{gap:var(--gap-3,12px)}
+.dgrid--wait .dgrid-ret{padding-top:0;border-top:0}  /* size first (12 Nov): no title, no methods, no divider — box icon + Select a size to see seller and delivery info, then returns */
 .dgrid-hd{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--gap-2,8px) var(--gap-4,16px)}
 .dgrid-hd h2{margin:0;font-size:16px;font-weight:var(--w-strong,600);line-height:20px}  /* = the other PDP box titles (.sns-hd b, Subscribe & Save), 29 Oct */
 /* tag beside the arrival line (James's PR, Home Delivery Top Up): 4px radius, 12px semibold · Fastest = error red on --error-bg · Cheapest = secondary on --surface-sunken */

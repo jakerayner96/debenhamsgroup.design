@@ -21,6 +21,7 @@
        sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date, brand, seller,
        retIn:'box'|'acc', sellerIn:'box'|'acc', ccLabel}
    Rows (9 Nov, Jake: the winning option, formats 1, 2 and 4 removed): "Get It By" · Tomorrow / 4th Nov (+ badge) / method · cut-off.
+   Size first (12 Nov): o.sizeFirst — until a size is picked the box is only the grey box icon + "Select a size to see seller and delivery info" (+ returns).
    Modal rows (12 Nov, Jake): method name / "Get it by 17th Nov" · cut-off | price — the method leads in the modal.
      The modal rows match; its title stays Delivery Options. */
 (function(root){
@@ -140,7 +141,11 @@
       <span class="s">${[cutoff(o,f),f.prem?`Free with ${esc(o.prog||'Premier')}`:money(f.p)].filter(Boolean).join(' · ')}${cc?` · or collect from ${cc.prem?'free':money(cc.p)}`:''}</span></div></div>${bulkyNote(o)}
       <button class="dgrid-more" data-dg-more="home">${M.collect.length?'Delivery &amp; collection options':'Delivery options'}</button>`}
 
-  function grid(o){o=Object.assign({layout:'tabs'},o);const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
+  /* size first (12 Nov, Jake): o.sizeFirst + no size picked (o.seller empty) → no title, no methods, no divider — the grey box icon
+     and "Select a size to see seller and delivery info", the returns line under it. Picking a size draws the full grid. */
+  const WAIT='Select a size to see seller and delivery info';
+  function wait(o){return `<section class="dgrid dgrid--wait" data-dg data-dg-wait aria-label="Delivery methods"><div class="dgrid-seller is-empty"><img src="${IC}icons-order.svg" alt=""><span>${WAIT}</span></div>${o.retIn!=='acc'?ret(o):''}</section>`}
+  function grid(o){if(o.sizeFirst&&!o.seller)return wait(o);o=Object.assign({layout:'tabs'},o);const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
     return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>${TITLE}</h2>${x.hd}</div>`}${x.body}${o.retIn!=='acc'?ret(o):''}${o.sellerIn!=='acc'?seller(o):''}</section>`}
 
   /* ---- modal ---- */

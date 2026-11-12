@@ -517,6 +517,7 @@ const DG_CATALOGUE = [
       {name:'B · tabs labelled Click & Collect (live on boohooMAN, KM, PLT)', col:'pdp', html:box({layout:'tabs',ccLabel:'Click & Collect'})},
       {name:'B · Premier customer', col:'pdp', html:box({layout:'tabs',premier:true})},
       {name:'C · one-liner', col:'pdp', html:box({layout:'line',known:true,pc:'M4 7BB',retIn:'box',sellerIn:'box'})},
+      {name:'Size first · before a size is picked (o.sizeFirst)', col:'pdp', html:box({sizeFirst:true,seller:null})},
       {name:'Bulky item', col:'pdp', html:'<div style="width:358px;display:flex;flex-direction:column;gap:16px">'+D.bulky()+D.grid(o({layout:'tabs',scen:'bulky',more2:'show'}))+'</div>'},
       {name:'Modal · Home Delivery', col:'modal', html:mdl({},'home')},
       {name:'Modal · Collection', col:'modal', html:mdl({},'collect')},

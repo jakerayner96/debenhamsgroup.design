@@ -176,7 +176,7 @@ const P={
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','README.md','../../assets/ds/delivery.js','../../assets/ds/subscribe.js'],
   store:'proto-delivery-grid-v3',   /* v3 (9 Nov): new defaults — Collection tab, Get It By date-only rows only, returns + seller in the box */
-  initial:()=>({ccLabel:'Collection',layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',retIn:'box',sellerIn:'box',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
+  initial:()=>({ccLabel:'Collection',layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',retIn:'box',sellerIn:'box',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site',sizeFirst:false}),
 };
 const PROG={debenhams:'Unlimited',boohoo:'Premier Club',boohooman:'Premier',plt:'Royalty',karenmillen:'Premier'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -216,6 +216,7 @@ function renderPanel(host,S,update){
 </div>
   <div class="card"><h3>Seller <small>Sold &amp; Delivered by</small></h3>
     <div class="f"><span>Size</span>${seg('sized',[['false','Not picked yet'],['true','Picked']])}<small>${c.sized?'Seller shows once a size is picked. Tapping a size in the preview does the same.':'Placeholder: “Select a size to see seller info” in grey, the box icon faded.'}</small></div>
+    <div class="f"><span>Delivery options</span>${seg('sizeFirst',[['false','Always shown'],['true','After a size is picked']])}<small>${c.sizeFirst?'Until a size is picked the box is only the grey box icon and “Select a size to see seller and delivery info” (no title, no methods, no divider), the returns line under it. Pick a size (here or in the preview) to see the grid.':'The delivery methods show before a size is picked.'}</small></div>
     <div class="f"><span>Sold by</span>${seg('seller',[['site',bn+' (the site)'],['amass','Marketplace seller']],!c.sized)}<small>${c.seller==='amass'?'AMASS ECOMMERCE — the name is a link that opens the seller modal (owner, address, VAT, company number).':'The site itself is never a link.'}</small></div></div>
 `;
   host.querySelectorAll('.opt[data-k]').forEach(x=>x.onclick=()=>{if(x.disabled)return;c[x.dataset.k]=x.dataset.v;re()});

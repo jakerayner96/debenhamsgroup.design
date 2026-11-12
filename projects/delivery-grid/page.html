@@ -76,7 +76,7 @@ function inject(){const d=D();if(!d||!d.body||!d.querySelector('.buy'))return;
     if(o.sellerIn==='acc'){const rr=set.querySelector('[data-dg-acc="ret"]');if(rr)rr.insertAdjacentHTML('afterend',DG.acc(o,'seller'));else set.insertAdjacentHTML('beforeend',DG.acc(o,'seller'))}}
   if(S.scen==='bulky'){const pr=buy.querySelector(':scope>.price-blk');if(pr)pr.insertAdjacentHTML('afterend',DG.bulky())}
   DG.wire(d,o,openModal);
-  d.querySelectorAll('.sz').forEach(z=>z.addEventListener('click',()=>{if(!PICK){PICK=true;DG.setSeller(d,opts())}}));
+  d.querySelectorAll('.sz').forEach(z=>z.addEventListener('click',()=>{if(!PICK){PICK=true;if(S.sizeFirst)inject();else DG.setSeller(d,opts())}   /* size first: the whole grid appears once a size is picked */}));
   if(app()){d.body.insertAdjacentHTML('afterbegin',appTop());d.body.insertAdjacentHTML('beforeend',tabbar())}
   if(S.open||openTab)openModal(openTab||S.open);
   watch(d);
