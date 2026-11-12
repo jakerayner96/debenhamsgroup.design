@@ -17,7 +17,7 @@
    CC_LIVE = what each fascia's live checkout tab says (Home Delivery / …), checked 10 Nov with an own-brand item in a guest bag. null = no collection tab on live.
    Seller line (under the returns line): o.seller null → placeholder "Select a size to see seller info" (grey) · 'site' → sold by the fascia
    itself (o.brand, plain text) · a SELLERS key / object → a marketplace seller, the name is a link that opens the seller modal.
-   o: {layout, scen:'std'|'cc'|'market'|'bulky', premier, prog, pr, prBadge:'fastest'|'home', badges, tab, modal, ni:'split'|'mixed',
+   o: {layout, scen:'std'|'cc'|'market'|'market2'|'bulky' (+ sizeFirst), premier, prog, pr, prBadge:'fastest'|'home', badges, tab, modal, ni:'split'|'mixed',
        sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date, brand, seller,
        retIn:'box'|'acc', sellerIn:'box'|'acc', ccLabel}
    Rows (9 Nov, Jake: the winning option, formats 1, 2 and 4 removed): "Get It By" · Tomorrow / 4th Nov (+ badge) / method · cut-off.
@@ -42,8 +42,12 @@
     {id:'evs', n:'Evri ParcelShop Click & Collect - Standard', s:'Evri ParcelShop, Standard',  p:3.99, d:3, c:1},
     {id:'evn', n:'Evri ParcelShop Click & Collect - Next Day', s:'Evri ParcelShop, Next Day',  p:5.99, d:1, cut:1, c:1}];
   /* marketplace / bulky: two home methods only (live Coast examples, 16 Oct) */
-  const MARKET=[{id:'mexp',n:'UK Express Delivery',s:'Express Delivery',p:4.99,d:2,cut:2},{id:'mstd',n:'UK Standard Delivery',s:'Standard Delivery',p:3.99,d:5}];
-  const BULKY=[{id:'bexp',n:'UK Express Delivery',s:'Express Delivery',p:9.99,d:4,cut:2},{id:'bstd',n:'UK Standard Delivery',s:'Standard Delivery',p:4.99,d:7}];
+  /* scenarios (12 Nov, Jake): every one has a next-day method, so Unlimited / Premier (next day free) changes each of them.
+     market = marketplace item, delivery only (no collection): two on the PDP + See more → the full list · market2 = only two methods: no See more, no modal */
+  const MARKET=[{id:'mnd',n:'UK Next Day Delivery',s:'Next Day Delivery',p:5.99,d:1,cut:2},{id:'mexp',n:'UK Express Delivery',s:'Express Delivery',p:4.99,d:2,cut:2},
+    {id:'mstd',n:'UK Standard Delivery',s:'Standard Delivery',p:3.99,d:5},{id:'mss',n:'UK Super Saver Delivery',s:'Super Saver Delivery',p:2.99,d:7}];
+  const MARKET2=[{id:'mnd',n:'UK Next Day Delivery',s:'Next Day Delivery',p:5.99,d:1,cut:2},{id:'mstd',n:'UK Standard Delivery',s:'Standard Delivery',p:3.99,d:5}];
+  const BULKY=[{id:'bnd',n:'UK Next Day Delivery',s:'Next Day Delivery',p:9.99,d:1,cut:2},{id:'bstd',n:'UK Standard Delivery',s:'Standard Delivery',p:4.99,d:7}];
   /* the fascia itself — never a link (the site is the seller) */
   const SITE={debenhams:'Debenhams',boohoo:'boohoo',boohooman:'boohooMAN',plt:'PrettyLittleThing',karenmillen:'Karen Millen',warehouse:'Warehouse',brandroom:'The Brand Room'};
   /* marketplace sellers (live Debenhams seller modal, 16 Oct 2026) */
@@ -64,6 +68,7 @@
   function methods(o){
     let home,collect;
     if(o.scen==='market'){home=MARKET;collect=[]}
+    else if(o.scen==='market2'){home=MARKET2;collect=[]}
     else if(o.scen==='bulky'){home=BULKY;collect=[]}
     else{home=HOME.map(m=>o.scen==='cc'&&m.was?Object.assign({},m,{p:m.was,was:0}):m);collect=COLLECT}
     const prem=m=>o.premier&&m.d===1?Object.assign({},m,{was:m.p,p:0,prem:1}):m;   /* Premier: next day (home + collect) free */
@@ -78,6 +83,7 @@
   function picks(o,list){const pool=pdpPool(list),f=fastest(pool),c=cheapest(pool),rows=[];
     if(f)rows.push({m:f,b:o.premier&&f.prem?o.prog||'Premier':'Fastest'});
     if(c&&c!==f)rows.push({m:c,b:'Cheapest'});
+    else if(pool.length===2)rows.push({m:pool.find(m=>m!==f),b:''});   /* only two methods (and the free member one is both fastest + cheapest): still show both */
     return rows}
   function rowsList(o){const M=methods(o),rows=picks(o,M.resp);
     if(o.pr&&rows.length===2&&rows.every(r=>r.m.c)){const h=fastest(pdpPool(M.home));if(h)rows.push({m:h,b:o.prBadge==='home'?'Fastest home delivery':'Fastest',third:1})}
@@ -165,6 +171,7 @@
     let body,title='Delivery Options';
     if(o.modal==='list'){body=homeBlock(o,M,1)+(M.collect.length?`<hr class="dopts-hr">`+collectBlock(o,M,1):'')}
     else if(o.modal==='tab'){title=tab==='collect'?'Collection Options':'Delivery Options';body=tab==='collect'?collectBlock(o,M,0):homeBlock(o,M,0)}
+    else if(!M.collect.length){body=homeBlock(o,M,0)}   /* delivery only (marketplace / bulky): no tabs */
     else{body=`<div class="tabs--seg dopts-seg" role="tablist"><button data-dg-seg="home" class="${tab==='home'?'on':''}">Delivery</button><button data-dg-seg="collect" class="${tab==='collect'?'on':''}">${CC(o)}</button></div>
       <div class="dopts-panes"><div data-dg-mpanel="home"${tab==='home'?'':' hidden'}>${homeBlock(o,M,0)}</div><div data-dg-mpanel="collect"${tab==='collect'?'':' hidden'}>${collectBlock(o,M,0)}</div></div>`}
     return `<div class="dopts-layer${lay==='mdl--up'?' dopts-layer--up':''}" data-dg-modal><div class="mdl-scrim" data-dg-close></div>

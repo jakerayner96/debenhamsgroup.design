@@ -37,7 +37,7 @@ const prog=b=>{const m=(window.DG_MEMBERSHIP||{})[b];return m?m.name.replace(/^D
 let PICK=false;
 /* accordion rows the reviewer opened stay open across panel changes */
 const ACC_OPEN={};
-const opts=()=>Object.assign({},S,{accOpen:ACC_OPEN,prog:prog(S.brand),desk:desk()&&!app(),sheet:'up',brand:S.brand,seller:(S.sized===true||S.sized==='true'||PICK)?(S.seller||'site'):null});
+const opts=()=>Object.assign({},S,{sizeFirst:S.scen==='size',more2:S.scen==='bulky'?'show':'hide',accOpen:ACC_OPEN,prog:prog(S.brand),desk:desk()&&!app(),sheet:'up',brand:S.brand,seller:(S.sized===true||S.sized==='true'||PICK)?(S.seller||'site'):null});
 
 /* app chrome: DS .app-top (status + glass back / share) and the glass .app-tabbar; the web header, USP bars, breadcrumb and footer go */
 const APP_HIDE='.hd,[data-usp-banners],.hd-usp,.bc,footer,[data-ftr]{display:none!important}';
@@ -76,7 +76,7 @@ function inject(){const d=D();if(!d||!d.body||!d.querySelector('.buy'))return;
     if(o.sellerIn==='acc'){const rr=set.querySelector('[data-dg-acc="ret"]');if(rr)rr.insertAdjacentHTML('afterend',DG.acc(o,'seller'));else set.insertAdjacentHTML('beforeend',DG.acc(o,'seller'))}}
   if(S.scen==='bulky'){const pr=buy.querySelector(':scope>.price-blk');if(pr)pr.insertAdjacentHTML('afterend',DG.bulky())}
   DG.wire(d,o,openModal);
-  d.querySelectorAll('.sz').forEach(z=>z.addEventListener('click',()=>{if(!PICK){PICK=true;if(S.sizeFirst)inject();else DG.setSeller(d,opts())}   /* size first: the whole grid appears once a size is picked */}));
+  d.querySelectorAll('.sz').forEach(z=>z.addEventListener('click',()=>{if(!PICK){PICK=true;if(S.scen==='size')inject();else DG.setSeller(d,opts())}   /* size first: the whole grid appears once a size is picked */}));
   if(app()){d.body.insertAdjacentHTML('afterbegin',appTop());d.body.insertAdjacentHTML('beforeend',tabbar())}
   if(S.open||openTab)openModal(openTab||S.open);
   watch(d);

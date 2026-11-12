@@ -176,7 +176,7 @@ const P={
   domains:{debenhams:'debenhams.com',boohoo:'boohoo.com',boohooman:'boohooman.com',plt:'prettylittlething.com',karenmillen:'karenmillen.com',warehouse:'warehousefashion.com',brandroom:'thebrandroom.com'},
   files:['page.html','README.md','../../assets/ds/delivery.js','../../assets/ds/subscribe.js'],
   store:'proto-delivery-grid-v3',   /* v3 (9 Nov): new defaults — Collection tab, Get It By date-only rows only, returns + seller in the box */
-  initial:()=>({ccLabel:'Collection',layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',retIn:'box',sellerIn:'box',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site',sizeFirst:false}),
+  initial:()=>({ccLabel:'Collection',layout:'tabs',modal:'toggle',open:'',scen:'std',premier:false,pr:true,prBadge:'fastest',badges:true,tab:'home',retIn:'box',sellerIn:'box',ni:'split',sort:'price',cut:'midnight',more2:'hide',ret:true,retDays:21,pc:'M4 7BB',known:true,sheet:'up',sized:false,seller:'site'}),
 };
 const PROG={debenhams:'Unlimited',boohoo:'Premier Club',boohooman:'Premier',plt:'Royalty',karenmillen:'Premier'};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -186,38 +186,26 @@ function renderPanel(host,S,update){
   const seg=(k,opts,dis)=>`<span class="seg" data-seg="${k}">${opts.map(([v,l])=>`<button data-v="${v}" class="${String(c[k])===String(v)?'on':''}"${dis?' disabled':''}>${l}</button>`).join('')}</span>`;
   const sw=(k,l,dis)=>`<label class="sw"${dis?' style="opacity:.4;pointer-events:none"':''}><input type="checkbox" data-sw="${k}"${c[k]?' checked':''}><i></i>${l}</label>`;
   const noProg=!PROG[b];if(noProg&&c.premier)c.premier=false;
-  const two=c.scen==='market'||c.scen==='bulky';
+  if(!['std','market','market2','bulky','size'].includes(c.scen))c.scen='std';   /* 12 Nov: the cc (collect first) scenario is gone */
   /* modal fixed (Jake, 16 Oct): Home Delivery / Collect Nearby toggle only, NI always its own section, priced low → high, slides up on mobile.
      PDP option fixed to B · tabs (Jake, 29 Oct): A (live + James's PR) and C (one-liner) dropped, so their PR / postcode rules go too */
-  Object.assign(c,{layout:'tabs',badges:true,ret:true,modal:'toggle',open:'',ni:'split',sort:'price',sheet:'up'});
+  Object.assign(c,{layout:'tabs',badges:true,ret:true,modal:'toggle',open:'',ni:'split',sort:'price',sheet:'up',
+    ccLabel:'Collection',tab:'home',cut:'midnight',seller:'site',sized:false});   /* fixed 12 Nov (Jake): Collection, Delivery first, Order by midnight, the site sells; pick a size in the preview */
   host.innerHTML=`<h1>PDP delivery grid</h1><p class="intro">The PDP <b>Delivery Methods</b> box, <b>option B</b> (Delivery / Collection tabs, Get It By date-only rows), with Paul's <b>Delivery Options</b> modal behind See more — on the DS PDP template, web (mobile + desktop) and app. Brief: Delivery Grid UX catch up, 16 Oct 2026; B chosen 29 Oct.</p>
-  <div class="card"><h3>PDP option <small>B · tabs</small></h3>
-    <p>Demi’s mockup: two tabs, checkout-style rows with the price on the right, Fastest / Cheapest badges, Premier view. See more opens the modal on the tab you’re in.</p>
-    <div class="f"><span>Collection tab label</span>${seg('ccLabel',[['Collection','Collection'],['Collect Nearby','Collect Nearby'],['Click & Collect','Click &amp; Collect']])}<small>${(()=>{const L=(window.DG_delivery&&DG_delivery.CC_LIVE)||{},v=L[b];return v===null?`Live ${bn} checkout: no collection tab (home delivery only).`:v?`Live ${bn} checkout: Home Delivery / <b>${esc(v)}</b>.`:''})()} Collection is Jake’s pick. Used for the tab, the modal toggle and the list heading.</small></div>
-    <div class="f"><span>First tab</span>${seg('tab',[['home','Delivery'],['collect',esc(c.ccLabel||'Collection')]])}</div>
-    <p style="margin-top:10px">Rows: <b>Get It By</b> · Tomorrow / 4th Nov first, then the method name (the winning format, 9 Nov).</p></div>
+  <div class="card"><h3>Customer <small>${bn}</small></h3>
+    ${seg('premier',[['false','Standard'],['true',noProg?'No programme':PROG[b]]],noProg)}
+    <p style="margin-top:8px">${noProg?`${bn} runs no delivery programme.`:c.premier?`${PROG[b]}: next day (home + collect) is Free with the was price, the badge becomes ${PROG[b]} — in every scenario below. Only when logged in or cookied.`:`Standard customer. Switch to ${PROG[b]} to see next day free in every scenario.`}</p></div>
+  <div class="card"><h3>Scenario</h3>
+    ${radio('scen','std','Standard','Full method list: Delivery / Collection tabs, fastest + cheapest of each, See more opens the modal.')}
+    ${radio('scen','market','Marketplace item · delivery only','No collection. The two (fastest + cheapest) on the PDP, See more opens the modal with all the delivery methods.')}
+    ${radio('scen','market2','Marketplace item · only two delivery methods','No collection. Both methods on the PDP, no See more, no modal.')}
+    ${radio('scen','bulky','Bulky item delivery','Surcharge caveat under the price and in the box; See more opens the modal, which repeats it.')}
+    ${radio('scen','size','Delivery not shown until a size is selected','The box is only the grey box icon + “Select a size to see seller and delivery info” and the returns line. Pick a size in the preview to see the grid.')}</div>
   <div class="card"><h3>In the box</h3>
     <p>${c.retIn==='acc'&&c.sellerIn==='acc'?'The box is <b>delivery only</b>: returns and seller info sit in the accordions under the product.':'Default: returns and seller info in the box. Move either to the accordion set to make the box delivery only.'}</p>
     <div class="f"><span>Returns info</span>${seg('retIn',[['box','In the box'],['acc','Accordion']])}<small>${c.retIn==='acc'?'In the Returns accordion (already on the PDP), off the box.':'Calendar line under the methods. The Returns accordion stays too.'}</small></div>
     <div class="f"><span>Seller info</span>${seg('sellerIn',[['box','In the box'],['acc','Accordion']])}<small>${c.sellerIn==='acc'?'A Seller Information accordion under Returns. Same placeholder / link rules.':'Sold &amp; Delivered by line at the bottom of the box.'}</small></div>
     <div class="f"><span>Return window (days)</span><input id="rd" type="number" min="1" value="${esc(c.retDays)}"></div></div>
-  <div class="card"><h3>Product &amp; response</h3>
-    ${radio('scen','std','Standard product','Full Debenhams method list; home delivery comes back first.')}
-    ${radio('scen','cc','Click &amp; collect comes back first','The live bug: the response leads with collect. With tabs each tab picks its own fastest + cheapest, so home delivery still shows.')}
-    ${radio('scen','market','Marketplace item · two methods','Only two methods, so live shows no See more.')}
-    ${radio('scen','bulky','Bulky item','Surcharge caveat upfront under the price, in the box and repeated in the modal.')}
-    <div class="f"><span>See more with only two methods</span>${seg('more2',[['hide','Hide (live)'],['show','Show']],!two)}<small>${two?'Show it so the modal can repeat the bulky caveat.':'Applies to marketplace / bulky.'}</small></div></div>
-  <div class="card"><h3>Customer <small>${bn}</small></h3>
-    ${seg('premier',[['false','Standard'],['true',noProg?'No programme':PROG[b]]],noProg)}
-    <p style="margin-top:8px">${noProg?`${bn} runs no delivery programme.`:`${PROG[b]}: next day (home + collect) shows Free with the was price; the badge becomes ${PROG[b]}. Only when logged in or cookied.`}</p>
-</div>
-  <div class="card"><h3>Rules</h3>
-    <div class="f"><span>Next-day cut-off copy</span>${seg('cut',[['midnight','Order by midnight'],['12am','Order by 12AM (live)']])}<small>Cut-offs vary 11pm / midnight by item; “12AM” reads as lunchtime to some.</small></div>
-</div>
-  <div class="card"><h3>Seller <small>Sold &amp; Delivered by</small></h3>
-    <div class="f"><span>Size</span>${seg('sized',[['false','Not picked yet'],['true','Picked']])}<small>${c.sized?'Seller shows once a size is picked. Tapping a size in the preview does the same.':'Placeholder: “Select a size to see seller info” in grey, the box icon faded.'}</small></div>
-    <div class="f"><span>Delivery options</span>${seg('sizeFirst',[['false','Always shown'],['true','After a size is picked']])}<small>${c.sizeFirst?'Until a size is picked the box is only the grey box icon and “Select a size to see seller and delivery info” (no title, no methods, no divider), the returns line under it. Pick a size (here or in the preview) to see the grid.':'The delivery methods show before a size is picked.'}</small></div>
-    <div class="f"><span>Sold by</span>${seg('seller',[['site',bn+' (the site)'],['amass','Marketplace seller']],!c.sized)}<small>${c.seller==='amass'?'AMASS ECOMMERCE — the name is a link that opens the seller modal (owner, address, VAT, company number).':'The site itself is never a link.'}</small></div></div>
 `;
   host.querySelectorAll('.opt[data-k]').forEach(x=>x.onclick=()=>{if(x.disabled)return;c[x.dataset.k]=x.dataset.v;re()});
   host.querySelectorAll('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(x=>x.onclick=()=>{const k=g.dataset.seg,v=x.dataset.v;c[k]=v==='true'?true:v==='false'?false:v;re()}));
