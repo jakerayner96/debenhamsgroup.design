@@ -21,6 +21,7 @@
        sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date, brand, seller,
        retIn:'box'|'acc', sellerIn:'box'|'acc', ccLabel}
    Rows (9 Nov, Jake: the winning option, formats 1, 2 and 4 removed): "Get It By" · Tomorrow / 4th Nov (+ badge) / method · cut-off.
+   Modal rows (12 Nov, Jake): method name / "Get it by 17th Nov" · cut-off | price — the method leads in the modal.
      The modal rows match; its title stays Delivery Options. */
 (function(root){
   const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -144,7 +145,11 @@
 
   /* ---- modal ---- */
   function sortL(o,l){const s=l.slice();s.sort(o.sort==='speed'?(a,b)=>(a.nom?99:a.d)-(b.nom?99:b.d)||a.p-b.p:(a,b)=>a.p-b.p||(a.nom?99:a.d)-(b.nom?99:b.d));return s}
-  const ul=(o,l)=>`<ul class="dmeth-list dmeth-list--sm">${l.map(m=>dmeth(o,m,m.n)).join('')}</ul>`;
+  /* modal row (12 Nov, Jake): the method leads (strong), "Get it by …" (· cut-off) under it — the PDP's Get It By words, never "Arrives" */
+  const getBy=(o,m)=>m.nom?'Get it on a day of your choice':'Get it by '+(m.d===1?'tomorrow':day(o,m.d));
+  const mmeth=(o,m)=>`<li class="dmeth"><div class="dmeth-l"><div class="dmeth-n">${esc(m.n)}</div><span class="dmeth-a"><span>${getBy(o,m)}</span>${cutoff(o,m)?` <span>${cutoff(o,m)}</span>`:''}</span></div>
+      <div class="dmeth-p"><b>${m.prem?'FREE':(m.from?'From ':'')+money(m.p)}</b>${m.was?`<s>${money(m.was)}</s>`:''}</div></li>`;
+  const ul=(o,l)=>`<ul class="dmeth-list dmeth-list--sm">${l.map(m=>mmeth(o,m)).join('')}</ul>`;
   function homeBlock(o,M,head){const uk=M.home.filter(m=>!m.ni),ni=M.home.filter(m=>m.ni);
     if(o.ni==='mixed'||!ni.length)return (head?`<h3 class="dopts-grp">Home delivery</h3>`:'')+ul(o,sortL(o,M.home));
     return (head?`<h3 class="dopts-grp">Home delivery</h3>`:'')+ul(o,sortL(o,uk))+`<hr class="dopts-hr">`+(head?`<h3 class="dopts-grp">Northern Ireland</h3>`:'')+ul(o,sortL(o,ni))}
