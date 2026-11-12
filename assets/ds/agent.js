@@ -6,14 +6,16 @@
    Production: every entry point calls window.googleAgent.sendQuery(text) — the window itself is Google's widget styled by salesAgentConfig.json.
      DG_agent.mount({grid, after:4, afterDesk:3, products:[{n,img,now,was}], header:document}) → re-call after the grid re-renders
      DG_agent.open(query?) · DG_agent.close()
-   Names: Debenhams = Deb ("Ask Deb"); every other fascia speaks as the brand ("your boohoo Personal Assistant"). */
+   Names: Debenhams = Deb ("Ask Deb"); boohoo = Jordan AI (the chat title "Ask Jordan AI", Jake 12 Nov); every other fascia speaks as the brand ("your boohooMAN Personal Assistant").
+   The page entry points always read "Ask"; the agent's name is in the chat window (title, greeting, input). */
 (function(root){
   if(root.DG_agent)return;
   const BN={debenhams:'Debenhams',boohoo:'boohoo',boohooman:'boohooMAN',plt:'PrettyLittleThing',karenmillen:'Karen Millen',warehouse:'Warehouse',brandroom:'The Brand Room',wallis:'Wallis',burton:'Burton',coast:'Coast',oasis:'Oasis',dorothyperkins:'Dorothy Perkins',misspap:'Misspap',dsgnstudio:'DSGN Studio',principles:'Principles'};
   const MEN=['boohooman','burton'];
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
   const brand=()=>document.documentElement.getAttribute('data-brand')||'debenhams';
-  const name=b=>b==='debenhams'?'Deb':(BN[b]||'us');
+  const AGENT={debenhams:'Deb',boohoo:'Jordan AI'};   /* the agent's own name, where it has one */
+  const name=b=>AGENT[b]||BN[b]||'us';
   const NBA=b=>MEN.includes(b)?{q:'What are you shopping for?',a:['Wedding guest','Smart casual']}:{q:'What’s the occasion?',a:['Wedding guest','Party season']};
   const STARTERS=b=>MEN.includes(b)?['Find me an outfit for a wedding','Gifts for my dad under £50','What goes with my black jeans?']:['Find me an outfit for a wedding','Gifts for my mum under £50','What goes with a black midi dress?'];
   let state={products:[],grid:null,after:4,afterDesk:3};
@@ -38,7 +40,7 @@
   function tiles(){const ps=(state.products||[]).slice(0,4);if(!ps.length)return '';
     return `<div class="ac-car">${ps.map(p=>`<div class="ac-tile">${p.img?`<img class="im" src="${esc(p.img)}" alt="">`:'<span class="im"></span>'}<span class="n">${esc(p.n||'')}</span>${p.now?`<div class="price-blk price-blk--sm"><div class="price"><span class="now${p.was?' sale':''}">${esc(p.now)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}</div></div>`:''}<button class="ac-cart" type="button">Add to bag</button></div>`).join('')}</div>`}
   function body(q){const b=brand(),who=name(b);
-    if(!q)return `<div class="ac-start"><h2><i class="ai-icon" style="width:24px;height:24px"></i><span>Hi there – I’m ${b==='debenhams'?'<b>Deb</b>, your Debenhams':'your <b>'+esc(BN[b]||b)+'</b>'} Personal Assistant!</span></h2><p>Whatever you’re looking for, I’ll help you find it.</p><div class="ac-starters">${STARTERS(b).map(s=>`<button class="ac-starter" type="button" data-agent-q="${esc(s)}"><i class="ai-icon"></i>${esc(s)}</button>`).join('')}</div></div>`;
+    if(!q)return `<div class="ac-start"><h2><i class="ai-icon" style="width:24px;height:24px"></i><span>Hi there – I’m ${AGENT[b]?'<b>'+esc(AGENT[b])+'</b>, your '+esc(BN[b]||b):'your <b>'+esc(BN[b]||b)+'</b>'} Personal Assistant!</span></h2><p>Whatever you’re looking for, I’ll help you find it.</p><div class="ac-starters">${STARTERS(b).map(s=>`<button class="ac-starter" type="button" data-agent-q="${esc(s)}"><i class="ai-icon"></i>${esc(s)}</button>`).join('')}</div></div>`;
     return `<div class="ac-user">${esc(q)}</div><div class="ac-bot"><span>Here are a few ideas to start with — tell me your size and budget and I’ll narrow them down. <em class="ac-disc">(mock reply — production: googleAgent.sendQuery)</em></span>${tiles()}<div class="ac-qr"><button class="ai-pill ai-pill--outline" type="button" data-agent-q="Show me more like these"><i class="ai-icon"></i>Show me more</button></div></div>`}
   function close(){document.querySelectorAll('.ag-layer').forEach(l=>l.remove())}
   function open(q){close();const b=brand();if(q)send(q);

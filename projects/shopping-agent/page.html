@@ -484,6 +484,7 @@ let gid=0;
 function spk(sz=18){return `<i class="ai-icon ai-icon--twinkle" style="width:${sz}px;height:${sz}px;animation-delay:-${(Math.random()*3.6).toFixed(2)}s"></i>`}   /* DS twinkle, staggered */
 const E=()=>Object.assign({},AG.def(BR()),S.agent||{});
 const ask=()=>'Ask '+E().name;
+const pageAsk=()=>E().agent?'Ask':ask();   /* on the page an agent with its own name (boohoo Jordan AI, Jake 12 Nov) reads just “Ask”; its name is in the chat window */
 /* data-feat = the feature (panel navigation + jump-to highlight); data-q = the query sent to the agent (window.googleAgent.sendQuery) */
 const F=(f,opt)=>`data-feat="${f}" data-tag="${esc(TAG[f]+(opt?' · '+opt:''))}"`;
 const TAG={resume:'Re-open chat',launcher:'Entry point',pdpPrompts:'PDP prompts',shopSimilar:'Shop similar',vto:'Virtual try-on',nba:'Next best action',autocomplete:'Autocomplete',custom:'Custom prompts'};
@@ -637,7 +638,7 @@ function pdp(){
   const GI=DP?DP.imgs:[0,1,2,3].map(()=>IMG(1));
   const glance=`<div class="glance-blk"><h3>At a Glance</h3>${V('at-a-glance',0).replace(/<li><i>✓<\/i>Regular fit<\/li><li><i>✓<\/i>Machine washable<\/li><li><i>✓<\/i>Recycled polyester<\/li>/,(DP&&DP.glance||['Delicate lace bodice','Pleated midi skirt','Shirt collar and button front','Long sleeves','Regular fit']).map(t=>`<li><i>✓</i>${t}</li>`).join(''))}</div>`;
   const prompts=ON('pdpPrompts')?`<div class="gap-wrap" ${F('pdpPrompts',L('pdpPrompts',S.pdpPos)+' · '+{aboveGlance:'above At a Glance',belowCta:'below the buy buttons'}[S.pdpPos]+' · '+S.pdpDir)}>
-    ${S.pdpHead?`<div class="gap-head">${spk(18)}${ask()}</div>`:''}
+    ${S.pdpHead?`<div class="gap-head">${spk(18)}${esc(pageAsk())}</div>`:''}
     <div class="prompts-container" data-dir="${S.pdpDir}" data-product-id="GZZ66300">${S.pdpPrompts.filter(Boolean).map(t=>`<div class="prompt-item"><button class="prompt-link ai-pill ai-pill--soft ai-pill--wrap" data-q="${esc(t)}" aria-label="${esc(t)}"><span class="prompt-link__icon">${spk(16,false)}</span><span class="prompt-link__text">${esc(t)}</span></button></div>`).join('')}
     ${S.pdpAsk?`<div class="prompt-item"><button class="prompt-link ai-pill ai-pill--outline ai-pill--wrap" data-q=""><span class="prompt-link__icon">${spk(16)}</span><span class="prompt-link__text">Ask anything</span></button></div>`:''}</div></div>`:'';
   const ssBtn=ON('shopSimilar')?`<button class="ai-pill ai-pill--soft" ${F('shopSimilar','A · on image')} data-q="Shop similar">${spk(16)}Shop similar</button>`:'';
@@ -708,7 +709,7 @@ function chat(){
   if(S.start==='google')head=[c.text&&{o:c.text.order,h:tc},
       c.hero&&{o:c.hero.order,h:`<div class="cm-hero"><img src="${A}img/${mob?'start-gifts-mobile':'start-gifts'}.jpg" alt=""></div>`},
       {o:c.zeroState.order,h:`<div class="cm-zero" data-c="zero">${zs.text.replace(/<(?!br\s*\/?>)/g,'&lt;')}${qr(...zs.prompts)}</div>`}].filter(Boolean).sort((a,b)=>a.o-b.o).map(x=>x.h).join('');
-  else head=`<div class="cm-start"><h2>${spk(24)}<span>${DEB()?`Hi there – I’m <b>${name}</b>, your Debenhams Personal Assistant!`:`Hi there – I’m your <b>${esc(BN())}</b> Personal Assistant!`}</span></h2><p>${esc(E().tagline)}</p>
+  else head=`<div class="cm-start"><h2>${spk(24)}<span>${DEB()?`Hi there – I’m <b>${name}</b>, your Debenhams Personal Assistant!`:(E().agent?`Hi there – I’m <b>${esc(E().agent)}</b>, your ${esc(BN())} Personal Assistant!`:`Hi there – I’m your <b>${esc(BN())}</b> Personal Assistant!`)}</span></h2><p>${esc(E().tagline)}</p>
     <div class="cm-starters">${sts.map(q=>`<button class="cm-starter" data-q="${esc(q)}">${spk(16)}<span>${esc(q)}</span></button>`).join('')}</div>${tc}</div>`;
   if(CHAT.msgs.length)head='';   /* once the conversation starts the start screen scrolls away, as in the Figma */
   const msgs=CHAT.msgs.map((m,i)=>m.u?`<div class="cm-u">${esc(m.u)}</div>`:m.typing?`<div class="cm-dots"><i></i><i></i><i></i></div>`:`<div class="cm-b" data-mi="${i}">${m.cut!=null?words(m.b,m.cut):m.b}</div>${S.labels&&m.cut==null?cfgTags(m.b):''}`).join('');
@@ -806,7 +807,7 @@ function lastReply(){const m=[...CHAT.msgs].reverse().find(x=>x.b);if(!m)return 
 function resume(){if(!waiting()||S.search||S.page==='bag')return '';   /* stays through the journey, not on the bag (Jake 12 Nov) */
   const lbl=`Continue your chat with ${esc(E().name)}`,dot='';   /* no dot: the FAB is the icon alone (Jake 12 Nov — a dot can come later, e.g. when the agent replies after the chat is collapsed) */
   /* desktop (Jake 11 Nov: the FAB and back to top are mobile only) — panel Chat window → Desktop re-open: bar · tab · rail · ask (DS .ai-dbar / .ai-dtab / .ai-drail / dot on Ask) */
-  if(desk()){const o=S.dre||'bar',t=`Ask ${esc(E().name)}`;
+  if(desk()){const o=S.dre||'bar',t=esc(pageAsk());
     if(o==='bar')return '';   /* the toast lives in the page container (syncDock), not in #chat */
     if(o==='tab')return `<button class="ai-dtab" data-resume="1" ${F('resume','edge tab')} aria-label="${lbl}"><span class="ai-dtab__ic">${spk(20)}${dot}</span><span class="ai-dtab__t">${t}</span></button>`;
     if(o==='rail')return `<aside class="ai-drail" ${F('resume','docked rail')} aria-label="${t}"><button class="ai-drail__b" data-resume="1" aria-label="${lbl}">${spk(20)}${dot}</button><span class="ai-drail__t">${esc(E().name)}</span><button class="ai-drail__x" data-resume="1" aria-label="Open the chat"></button></aside>`;
@@ -855,7 +856,7 @@ function syncDock(){const host=document.getElementById('body');let k=document.qu
   const want=host&&desk()&&(S.dre||'bar')==='bar'&&waiting()&&!S.search&&!CHAT.dbarX&&S.page!=='bag';
   if(!want){if(k)k.remove();return}
   if(k&&k.parentElement===host)return;if(k)k.remove();
-  const lbl=`Continue your chat with ${esc(E().name)}`,t=`Ask ${esc(E().name)}`;
+  const lbl=`Continue your chat with ${esc(E().name)}`,t=esc(pageAsk());
   host.insertAdjacentHTML('beforeend',`<div class="ai-dbar-dock ai-dbar-dock--page"><div class="toast toast--top ai-dbar" role="status" ${F('resume','desktop toast')}><span class="toast-msg" data-resume="1">${spk(18)}${t}</span><span class="toast-end"><button class="act" data-resume="1" aria-label="${lbl}">Open</button><button class="toast-x" data-dbarx="1" aria-label="Dismiss"></button></span></div></div>`)}   /* desktop re-open toast: sticky in the page container, above the footer (Jake 12 Nov) */
 function syncAskDot(){const on=false;   /* the dot on Ask option is gone (Jake 12 Nov: no dot) */document.querySelectorAll('#hdrwrap .ag-ask').forEach(b=>{const c=b.querySelector(':scope>.counter');if(on&&!c)b.insertAdjacentHTML('beforeend','<span class="counter counter--dot" aria-hidden="true"></span>');if(!on&&c)c.remove();b.setAttribute('aria-label',on?`Continue your chat with ${E().name}`:'Ask')})}
 function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();syncBtt();syncAskDot();syncDock();document.querySelectorAll('#chat .cm-car').forEach(c=>{railState(c);c.addEventListener('scroll',()=>railState(c),{passive:true})});
