@@ -484,7 +484,7 @@ let gid=0;
 function spk(sz=18){return `<i class="ai-icon ai-icon--twinkle" style="width:${sz}px;height:${sz}px;animation-delay:-${(Math.random()*3.6).toFixed(2)}s"></i>`}   /* DS twinkle, staggered */
 const E=()=>Object.assign({},AG.def(BR()),S.agent||{});
 const ask=()=>'Ask '+E().name;
-const pageAsk=()=>E().agent?'Ask':ask();   /* on the page an agent with its own name (boohoo Jordan AI, Jake 12 Nov) reads just “Ask”; its name is in the chat window */
+const pageAsk=()=>E().agent?'Ask':ask();   /* on the page an agent with its own name (boohooMAN Jordan AI, Jake 12 Nov) reads just “Ask”; its name is in the chat window */
 /* data-feat = the feature (panel navigation + jump-to highlight); data-q = the query sent to the agent (window.googleAgent.sendQuery) */
 const F=(f,opt)=>`data-feat="${f}" data-tag="${esc(TAG[f]+(opt?' · '+opt:''))}"`;
 const TAG={resume:'Re-open chat',launcher:'Entry point',pdpPrompts:'PDP prompts',shopSimilar:'Shop similar',vto:'Virtual try-on',nba:'Next best action',autocomplete:'Autocomplete',custom:'Custom prompts'};

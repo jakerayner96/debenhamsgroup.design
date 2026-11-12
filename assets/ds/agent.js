@@ -6,7 +6,7 @@
    Production: every entry point calls window.googleAgent.sendQuery(text) — the window itself is Google's widget styled by salesAgentConfig.json.
      DG_agent.mount({grid, after:4, afterDesk:3, products:[{n,img,now,was}], header:document}) → re-call after the grid re-renders
      DG_agent.open(query?) · DG_agent.close()
-   Names: Debenhams = Deb ("Ask Deb"); boohoo = Jordan AI (the chat title "Ask Jordan AI", Jake 12 Nov); every other fascia speaks as the brand ("your boohooMAN Personal Assistant").
+   Names: Debenhams = Deb ("Ask Deb"); boohooMAN = Jordan AI (the chat title "Ask Jordan AI", Jake 12 Nov); every other fascia speaks as the brand ("your boohoo Personal Assistant").
    The page entry points always read "Ask"; the agent's name is in the chat window (title, greeting, input). */
 (function(root){
   if(root.DG_agent)return;
@@ -14,7 +14,7 @@
   const MEN=['boohooman','burton'];
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
   const brand=()=>document.documentElement.getAttribute('data-brand')||'debenhams';
-  const AGENT={debenhams:'Deb',boohoo:'Jordan AI'};   /* the agent's own name, where it has one */
+  const AGENT={debenhams:'Deb',boohooman:'Jordan AI'};   /* the agent's own name, where it has one */
   const name=b=>AGENT[b]||BN[b]||'us';
   const NBA=b=>MEN.includes(b)?{q:'What are you shopping for?',a:['Wedding guest','Smart casual']}:{q:'What’s the occasion?',a:['Wedding guest','Party season']};
   const STARTERS=b=>MEN.includes(b)?['Find me an outfit for a wedding','Gifts for my dad under £50','What goes with my black jeans?']:['Find me an outfit for a wedding','Gifts for my mum under £50','What goes with a black midi dress?'];
