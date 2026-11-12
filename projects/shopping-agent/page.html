@@ -804,14 +804,14 @@ function openChat(q,vto){kbDown();CHAT.open=true;
 const waiting=()=>!CHAT.open&&!CHAT.closing&&CHAT.msgs.some(m=>m.u||m.b);   /* a conversation = a query was sent (a prompt tap counts, even closed at once); Ask → start screen → close doesn't */
 function lastReply(){const m=[...CHAT.msgs].reverse().find(x=>x.b);if(!m)return '';const d=document.createElement('div');d.innerHTML=m.b;d.querySelectorAll('.cm-car,.rail-nav,.cm-qr,.cm-ctx,.cm-pd,.cm-look,.cm-look-cta,.cm-fit,button').forEach(x=>x.remove());return (d.textContent||'').replace(/\s+/g,' ').trim()}
 function resume(){if(!waiting()||S.search||S.page==='bag')return '';   /* stays through the journey, not on the bag (Jake 12 Nov) */
-  const lbl=`Continue your chat with ${esc(E().name)}`,dot='<span class="counter counter--dot" aria-hidden="true"></span>';
+  const lbl=`Continue your chat with ${esc(E().name)}`,dot='';   /* no dot: the FAB is the icon alone (Jake 12 Nov — a dot can come later, e.g. when the agent replies after the chat is collapsed) */
   /* desktop (Jake 11 Nov: the FAB and back to top are mobile only) — panel Chat window → Desktop re-open: bar · tab · rail · ask (DS .ai-dbar / .ai-dtab / .ai-drail / dot on Ask) */
   if(desk()){const o=S.dre||'bar',t=`Ask ${esc(E().name)}`;
     if(o==='bar')return '';   /* the toast lives in the page container (syncDock), not in #chat */
     if(o==='tab')return `<button class="ai-dtab" data-resume="1" ${F('resume','edge tab')} aria-label="${lbl}"><span class="ai-dtab__ic">${spk(20)}${dot}</span><span class="ai-dtab__t">${t}</span></button>`;
     if(o==='rail')return `<aside class="ai-drail" ${F('resume','docked rail')} aria-label="${t}"><button class="ai-drail__b" data-resume="1" aria-label="${lbl}">${spk(20)}${dot}</button><span class="ai-drail__t">${esc(E().name)}</span><button class="ai-drail__x" data-resume="1" aria-label="Open the chat"></button></aside>`;
     return ''}   /* ask: the dot goes on the header Ask (syncAskDot) */
-  return `<button class="ai-fab" data-resume="1" ${F('resume','floating button')} aria-label="${lbl}">${spk(20)}<span class="counter counter--dot" aria-hidden="true"></span></button>`}
+  return `<button class="ai-fab" data-resume="1" ${F('resume','floating button')} aria-label="${lbl}">${spk(20)}</button>`}
 /* PLP back to top (DS .btt, as live: 40px black circle) + the re-open button (Jake 11 Nov): panel “PLP back to top” — replace = while a chat is
    waiting the agent button takes its place; both = both on the PLP, the agent button stacks 12 above it (DS --fab-lift); other pages agent only. */
 /* click through the prototype (Jake 11 Nov): logo → home · header nav, home tiles, breadcrumbs, roundels → PLP · a product card → PDP · bag icon → bag.
@@ -857,7 +857,7 @@ function syncDock(){const host=document.getElementById('body');let k=document.qu
   if(k&&k.parentElement===host)return;if(k)k.remove();
   const lbl=`Continue your chat with ${esc(E().name)}`,t=`Ask ${esc(E().name)}`;
   host.insertAdjacentHTML('beforeend',`<div class="ai-dbar-dock ai-dbar-dock--page"><div class="toast toast--top ai-dbar" role="status" ${F('resume','desktop toast')}><span class="toast-msg" data-resume="1">${spk(18)}${t}</span><span class="toast-end"><button class="act" data-resume="1" aria-label="${lbl}">Open</button><button class="toast-x" data-dbarx="1" aria-label="Dismiss"></button></span></div></div>`)}   /* desktop re-open toast: sticky in the page container, above the footer (Jake 12 Nov) */
-function syncAskDot(){const on=desk()&&(S.dre||'bar')==='ask'&&waiting()&&!S.search;document.querySelectorAll('#hdrwrap .ag-ask').forEach(b=>{const c=b.querySelector(':scope>.counter');if(on&&!c)b.insertAdjacentHTML('beforeend','<span class="counter counter--dot" aria-hidden="true"></span>');if(!on&&c)c.remove();b.setAttribute('aria-label',on?`Continue your chat with ${E().name}`:'Ask')})}
+function syncAskDot(){const on=false;   /* the dot on Ask option is gone (Jake 12 Nov: no dot) */document.querySelectorAll('#hdrwrap .ag-ask').forEach(b=>{const c=b.querySelector(':scope>.counter');if(on&&!c)b.insertAdjacentHTML('beforeend','<span class="counter counter--dot" aria-hidden="true"></span>');if(!on&&c)c.remove();b.setAttribute('aria-label',on?`Continue your chat with ${E().name}`:'Ask')})}
 function drawChat(){document.getElementById('chat').innerHTML=chat();styleChat();syncBtt();syncAskDot();syncDock();document.querySelectorAll('#chat .cm-car').forEach(c=>{railState(c);c.addEventListener('scroll',()=>railState(c),{passive:true})});
   const open=!!document.getElementById('cm');
   if(open&&!DRAWN&&!EXPORTING)document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>el.classList.add('in'));
