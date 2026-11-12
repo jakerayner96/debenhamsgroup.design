@@ -2693,3 +2693,12 @@ li[data-k="bf"]>.persona-row>i{background:var(--season-bf)}
 /* Wishlist modals layer (.wl-layer / --up: with the delivery, S&S, VS and bag layers above): leaving slides back down (fades on desktop) */
 .wl-layer>.mdl.mdl-anim-down{animation:mdldown .3s ease-in forwards}.wl-layer>.mdl.mdl-anim-fade-out{animation:mdlfadeout .3s ease-in forwards}
 .wl-layer>.mdl--alert{align-self:center}
+
+/* PDP sticky Add to bag (12 Nov, Jake — mobile web): phones + tablets. Once the page's Add to bag scrolls up out of view the same button docks
+   at the bottom (white, 12 / 16 padding + safe area, soft top shadow), and goes again when you scroll back to it. While it shows :root --fab-lift =
+   its height, so the agent re-open FAB (.ai-fab) rides 16 above it. Drop-in assets/ds/pdp-sticky.js DG_pdpSticky.mount(root). */
+.pdp-sticky{position:fixed;left:0;right:0;bottom:0;z-index:var(--z-sticky,200);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:var(--surface-raised,#FFF);box-shadow:0 -4px 16px rgba(0,0,0,.08);transform:translateY(110%);transition:transform .25s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.pdp-sticky.is-on{transform:none;pointer-events:auto}
+.pdp-sticky>.bd{width:100%}
+@media(min-width:1024px){.pdp-sticky{display:none}}
+@media(prefers-reduced-motion:reduce){.pdp-sticky{transition:none}}

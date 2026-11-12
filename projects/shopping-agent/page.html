@@ -438,6 +438,7 @@ body.searching #body,body.searching .pgfoot{pointer-events:none}
 <div class="ct" id="ct"></div>
 <script src="assets/ds/delivery.js"></script>
 <script src="assets/ds/subscribe.js"></script>
+<script src="assets/ds/pdp-sticky.js"></script>
 <script src="assets/ds/dplus-logos.js"></script>   <!-- Deliver+ lockups: the catalogue reads them when it loads -->
 <script src="assets/ds/catalogue.js"></script>
 <script src="assets/ds/bag-summary.js"></script>
@@ -688,7 +689,8 @@ function pdp(){
 const DG_OPTS=()=>({fmt:3,layout:'tabs',tab:'home',retIn:'acc',sellerIn:'acc',scen:'std',pr:true,prBadge:'fastest',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:BR()});
 const PDPP=()=>!DEB()&&window.DG_PDP_PRODUCTS&&DG_PDP_PRODUCTS[BR()]||null;
 const SNS=()=>{const DP=PDPP(),p=DP||PR()[1];return {brand:p.brand,name:p.name,price:p.price,img:DP?DP.imgs[0]:IMG(1),size:(document.querySelector('.sz.on')||{}).textContent||'M',colour:DP?DP.colour:'Hot Pink',pct:5}};
-function wirePdp(){if(S.page!=='pdp')return;
+function wirePdp(){if(S.page!=='pdp'||desk()){if(window.DG_pdpSticky)DG_pdpSticky.unmount();if(S.page!=='pdp')return}else if(window.DG_pdpSticky)DG_pdpSticky.mount(document.getElementById('body'));   /* mobile web sticky Add to bag (DS pdp-sticky.js): the re-open FAB rides above it (Jake 12 Nov) */
+  
   if(window.DG_delivery)DG_delivery.mount(document,DG_OPTS());
   if(window.DG_subscribe)document.querySelectorAll('[data-sns-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-sns-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_subscribe.modal(SNS(),{desk:innerWidth>=600}));DG_subscribe.wire(document.querySelector('[data-sns-modal]'))})}
 
@@ -799,7 +801,7 @@ function openChat(q,vto){kbDown();CHAT.open=true;
 /* RE-OPEN (Jake 11 Nov — feedback: once the chat is closed it isn't obvious how to get back to it). Closing keeps the conversation; once one has
    started, the DS AI resume button (components.css .ai-fab + .counter--dot; Figma 224:25664) shows until the shopper reopens it. Ask / the AI
    circle also reopen the same conversation; the refresh in the chat header is what starts again. */
-const waiting=()=>!CHAT.open&&!CHAT.closing&&CHAT.msgs.some(m=>m.b);
+const waiting=()=>!CHAT.open&&!CHAT.closing&&CHAT.msgs.some(m=>m.u||m.b);   /* a conversation = a query was sent (a prompt tap counts, even closed at once); Ask → start screen → close doesn't */
 function lastReply(){const m=[...CHAT.msgs].reverse().find(x=>x.b);if(!m)return '';const d=document.createElement('div');d.innerHTML=m.b;d.querySelectorAll('.cm-car,.rail-nav,.cm-qr,.cm-ctx,.cm-pd,.cm-look,.cm-look-cta,.cm-fit,button').forEach(x=>x.remove());return (d.textContent||'').replace(/\s+/g,' ').trim()}
 function resume(){if(!waiting()||S.search||S.page==='bag')return '';   /* stays through the journey, not on the bag (Jake 12 Nov) */
   const lbl=`Continue your chat with ${esc(E().name)}`,dot='<span class="counter counter--dot" aria-hidden="true"></span>';

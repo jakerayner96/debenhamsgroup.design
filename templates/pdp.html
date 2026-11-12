@@ -62,6 +62,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="assets/ds/bundle.js"></script>
 <script src="assets/ds/export-masks.js"></script>
 <script src="assets/ds/toast.js"></script>
+<script src="assets/ds/pdp-sticky.js"></script>
 <script src="assets/ds/wishlist.js"></script>
 <script src="templates/products.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
@@ -160,6 +161,7 @@ function wire(){
   if(window.DG_gallery)DG_gallery(document.querySelector('.pdp-gal'),{endless:!EXPORTING});
   if(window.DG_bundle)DG_bundle.wire(document);
   if(window.DG_delivery)DG_delivery.mount(document,DG_OPTS());
+  if(window.DG_pdpSticky)DG_pdpSticky.mount(document);   /* sticky Add to bag once the buy button scrolls away, phones (12 Nov) */
   if(window.DG_subscribe){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams;document.querySelectorAll('[data-sns-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-sns-modal]').forEach(x=>x.remove());document.body.insertAdjacentHTML('beforeend',DG_subscribe.modal(SNS(P),{desk:innerWidth>=600}));DG_subscribe.wire(document.querySelector('[data-sns-modal]'))})}
   document.querySelectorAll('.acc-h').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
   document.querySelectorAll('.sz').forEach(z=>z.onclick=()=>{document.querySelectorAll('.sz').forEach(x=>x.classList.toggle('on',x===z));const l=document.querySelector('.sizes-head b');if(l)l.textContent=z.textContent;
