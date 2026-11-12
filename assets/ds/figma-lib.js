@@ -108,7 +108,7 @@ window.DG_FIGMA_LIB={
   "membership-banner-checkout": "14296:2360",
   "checkout-tile": "6440:7103",
   "agent-chat": "13807:16",
-  "ai-modules": "13818:1012",
+  "ai-modules": "14401:10",
   "account-card": "12463:126434",
   "account-row": "12463:126438",
   "sign-in": "13818:4429"
