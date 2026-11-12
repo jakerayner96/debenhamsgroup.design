@@ -1325,7 +1325,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .dplus-bag .x::after{transform:rotate(-45deg)}
 
 /* App tab bar — the native-app bottom bar. LIQUID GLASS (11 Nov 2026, Jake: every app prototype uses the App Prototype's glass UI —
-   jakerayner96/plt-app-prototype, iOS 26 system tab bar / its web pill, measured from the app's web build):
+   jakerayner96/app-master-prototype, iOS 26 system tab bar / its web pill, measured from the app's web build):
    a floating capsule 60 high, 16 in from each side and 12 off the bottom of the screen, glass fill (.app-glass: white 65% over an 18px blur +
    saturate 180%, 1px white 55% rim), content scrolls under it. Five tabs spread evenly, 28px icons at full ink; the selected tab sits in a
    lighter pill (white 85%, 66 × 46, fully round). No home indicator drawn — the device frame has it. The flat white bar is retired (glass only, 29 Oct).
