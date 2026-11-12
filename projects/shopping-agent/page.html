@@ -801,7 +801,8 @@ function openChat(q,vto){kbDown();CHAT.open=true;
    circle also reopen the same conversation; the refresh in the chat header is what starts again. */
 const waiting=()=>!CHAT.open&&!CHAT.closing&&CHAT.msgs.some(m=>m.b);
 function lastReply(){const m=[...CHAT.msgs].reverse().find(x=>x.b);if(!m)return '';const d=document.createElement('div');d.innerHTML=m.b;d.querySelectorAll('.cm-car,.rail-nav,.cm-qr,.cm-ctx,.cm-pd,.cm-look,.cm-look-cta,.cm-fit,button').forEach(x=>x.remove());return (d.textContent||'').replace(/\s+/g,' ').trim()}
-function resume(){if(!waiting()||S.search)return '';const lbl=`Continue your chat with ${esc(E().name)}`,dot='<span class="counter counter--dot" aria-hidden="true"></span>';
+function resume(){if(!waiting()||S.search||S.page==='bag')return '';   /* stays through the journey, not on the bag (Jake 12 Nov) */
+  const lbl=`Continue your chat with ${esc(E().name)}`,dot='<span class="counter counter--dot" aria-hidden="true"></span>';
   /* desktop (Jake 11 Nov: the FAB and back to top are mobile only) — panel Chat window → Desktop re-open: bar · tab · rail · ask (DS .ai-dbar / .ai-dtab / .ai-drail / dot on Ask) */
   if(desk()){const o=S.dre||'bar',t=`Ask ${esc(E().name)}`;
     if(o==='bar')return '';   /* the toast lives in the page container (syncDock), not in #chat */
@@ -849,7 +850,7 @@ function closeChat(){const cm=document.getElementById('cm');
   if(CHAT.closing)return;CHAT.closing=true;
   document.querySelectorAll('#chat .cm,#chat .cm-scrim').forEach(el=>{el.classList.remove('in');el.classList.add('out')});setTimeout(done,260)}
 function syncDock(){const host=document.getElementById('body');let k=document.querySelector('.ai-dbar-dock');
-  const want=host&&desk()&&(S.dre||'bar')==='bar'&&waiting()&&!S.search&&!CHAT.dbarX;
+  const want=host&&desk()&&(S.dre||'bar')==='bar'&&waiting()&&!S.search&&!CHAT.dbarX&&S.page!=='bag';
   if(!want){if(k)k.remove();return}
   if(k&&k.parentElement===host)return;if(k)k.remove();
   const lbl=`Continue your chat with ${esc(E().name)}`,t=`Ask ${esc(E().name)}`;
