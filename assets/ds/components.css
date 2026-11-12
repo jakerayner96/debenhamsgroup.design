@@ -1857,22 +1857,23 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 :root:not([data-brand]),[data-brand="debenhams"]{--counter-bg:#529C92}   /* Debenhams: the mid aqua of the AI sparkle (Figma 217:25657) */
 @media(min-width:1024px){.ai-fab{right:24px;bottom:calc(24px + var(--fab-lift,0px))}}
 /* Back to top (.btt, PLP — as live: 40px black circle, white 16px up chevron, 1px above centre) — appears once the page has scrolled (.is-on), bottom right 16 (24 from 1024).
+   Every breakpoint (Jake 12 Nov: desktop has one too). Desktop: the product grid's right edge + 16 (as the agent's re-open toast, so they line up), bottom 16; the toast rides 12 above it.
    It sits ON the page (--z-raised): menus, modals and the agent window come up over it.
-   .btt--light  white, the FAB shadow, black chevron (Figma 217:25657 row 3)
+   .btt--light  the fascia's floating back to top: --btt-bg / --btt-fg / --btt-shadow — white, the FAB shadow, black chevron (Figma 217:25657 row 3); PLT oxblood --primary, white chevron (tokens.css)
    Order with the AI resume button: default = back to top at the bottom, the agent button 12 above it; .btt--over = back to top 12 above the agent button.
    The shopping agent uses the white one over the agent button (Figma 224:25664). */
 .btt{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:var(--z-raised,10);display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:var(--surface-inverse,#0F0F0F);cursor:pointer;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s,bottom .22s cubic-bezier(.2,.8,.2,1)}
 .btt::before{content:"";width:16px;height:16px;margin-top:-2px;background:var(--text-inverse,#FFF);-webkit-mask:url("icons/lib/icons-up-16.svg") center/16px 16px no-repeat;mask:url("icons/lib/icons-up-16.svg") center/16px 16px no-repeat}
-.btt--light{background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08)}.btt--light::before{background:var(--text-primary,#0F0F0F)}
+.btt--light{background:var(--btt-bg,var(--surface-raised,#FFF));box-shadow:var(--btt-shadow,0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08))}.btt--light::before{background:var(--btt-fg,var(--text-primary,#0F0F0F))}
 .btt.is-on{opacity:1;transform:none;pointer-events:auto}
 .btt:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#000);outline-offset:2px}
 :root:has(.btt.is-on:not(.btt--over)){--fab-lift:52px}
 :root:has(.ai-fab) .btt--over{bottom:calc(68px + env(safe-area-inset-bottom,0px))}
-@media(min-width:1024px){.btt{right:24px;bottom:24px}:root:has(.ai-fab) .btt--over{bottom:76px}}
+@media(min-width:1024px){.btt{right:calc(max(0px,(100vw - var(--page-max,1440px)) / 2) + var(--ai-dbar-gutter,40px) + 16px);bottom:16px}:root:has(.ai-fab) .btt--over{bottom:76px}}
 @media(prefers-reduced-motion:reduce){.btt,.ai-fab{transition:none}}
-/* Desktop (Jake 11 Nov): the floating button and back to top are phone / tablet only — from 1024 neither shows; the agent's desktop way back
-   in is one of the .ai-dresume options below (shopping agent panel → Chat window → Desktop re-open). */
-@media(min-width:1024px){.btt,.ai-fab{display:none!important}}
+/* Desktop (Jake 11 Nov): the floating agent button is phone / tablet only — from 1024 the agent's desktop way back in is one of the .ai-dresume
+   options below (shopping agent panel → Chat window → Desktop re-open). Back to top shows on desktop too (Jake 12 Nov). */
+@media(min-width:1024px){.ai-fab{display:none!important}}
 /* .ai-dbar (Jake 11 Nov, Figma Zi4qRcAFTELiCvFIl29mJC 230:27026): the DS toast (.toast.toast--top) as the desktop way back into the chat —
    sparkle 18 + Ask Deb (15 medium) · Open + close. Put it in .ai-dbar-dock, the last child of the page container: it sticks 16 off the
    screen bottom, 16 in from the container's right, and stops 16 above the container's end (never over the footer). Close hides it until
@@ -1885,6 +1886,7 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .ai-dbar-dock{position:sticky;bottom:0;z-index:calc(var(--z-raised,10) + 1);height:var(--ai-dbar-inset,16px)}   /* the last child of the page container (no overflow:hidden between it and the page): sticks so the toast is 16 off the screen bottom while the container is on screen, then stops 16 above the container's end — never over the footer (Jake 12 Nov). A 16px tall strip, not a margin: a margin would collapse out of the container */
 .ai-dbar-dock--page{max-width:var(--page-max,1440px);margin-inline:auto;padding-inline:var(--ai-dbar-gutter,40px);box-sizing:border-box}   /* when the container isn't the gutter-padded .wrap (e.g. the home page) */
 .ai-dbar-dock>.toast.toast--top.ai-dbar{position:absolute;right:var(--ai-dbar-inset,16px);bottom:100%}
+@media(min-width:1024px){:root:has(.btt.is-on) .ai-dbar-dock{height:calc(var(--ai-dbar-inset,16px) + 52px)}:root:has(.btt.is-on) .toast.toast--top.ai-dbar{bottom:68px}:root:has(.btt.is-on) .ai-dbar-dock>.toast.toast--top.ai-dbar{bottom:100%}}   /* desktop + back to top (Jake 12 Nov): back to top stays fixed in the corner (it never leaves, even over the footer); the re-open toast rides 12 above it */
 .ai-dbar-dock--page>.toast.toast--top.ai-dbar{right:calc(var(--ai-dbar-gutter,40px) + var(--ai-dbar-inset,16px))}
 .ai-dtab{position:fixed;right:0;top:50%;z-index:calc(var(--z-sticky,200) + 1);display:flex;flex-direction:column;align-items:center;gap:10px;width:40px;padding:14px 0 16px;border:0;border-radius:var(--radius-lg,12px) 0 0 var(--radius-lg,12px);background:var(--surface-raised,#FFF);box-shadow:0 4px 16px rgba(0,0,0,.14),0 1px 3px rgba(0,0,0,.08);transform:translateY(-50%);font-family:var(--font-family-base);color:var(--text-primary);cursor:pointer;animation:aiDtabIn .34s cubic-bezier(.2,.8,.2,1) both}
 .ai-dtab:hover{width:44px}

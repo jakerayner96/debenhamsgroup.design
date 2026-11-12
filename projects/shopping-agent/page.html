@@ -830,7 +830,7 @@ function go(to){S.page=to;S.search=false;S.q='';CHAT.open=false;parent.postMessa
 function syncBtt(){let b=document.getElementById('btt');const want=S.page==='plp'&&!S.search;
   if(!want){if(b)b.remove();return}
   if(!b){b=document.createElement('button');b.id='btt';b.type='button';b.setAttribute('aria-label','Back to top');b.dataset.btt='1';document.body.appendChild(b)}
-  b.className='btt btt--light btt--over'+(EXPORTING||scrollY>400?' is-on':'')}   /* white, 12 above the agent button (Figma 224:25664) */
+  b.className='btt btt--light btt--over'+(EXPORTING||scrollY>400?' is-on':'')}   /* the fascia's floating back to top (--btt-*: white, PLT oxblood) · phone: 12 above the agent button (Figma 224:25664) · desktop: under the re-open toast, which rides 12 above it */
 addEventListener('scroll',()=>{const b=document.getElementById('btt');if(b)b.classList.toggle('is-on',EXPORTING||scrollY>400)},{passive:true});
 /* added-to-bag toast (DS .toast--inset): ADD TO BAG → “Added to Bag · View Bag” + close above the input, 6s; View Bag → the DS spinner, the agent
    collapses, then the bag. Rendered only while it shows (the DS entrance animation holds it visible otherwise). */

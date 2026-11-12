@@ -242,6 +242,7 @@
 /* PLT Virtual Stylist chip: filled garnet rectangle, square, Roboto 12 uppercase white, white hanger, left-aligned under the gallery, 36 tall */
 /* Product carousel: no column gap on PLT + The Brand Room (images touch, as PLT live); card text inset 4px so neighbours never touch (2 Nov 2026) */
 [data-brand="plt"],[data-brand="brandroom"]{--pcar-gap-x:0px;--pcar-info-x:4px}
+[data-brand="plt"]{--btt-bg:var(--primary,#550503);--btt-fg:#FFF}   /* back to top (.btt--light): PLT oxblood, white chevron — every other fascia white (Jake 12 Nov) */
 [data-brand="plt"]{--ai-tag-bg:#550503;--ai-tag-fg:#FFF;--ai-tag-icon:#FFF;--ai-tag-radius:0;--ai-tag-size:12px;--ai-tag-weight:400;--ai-tag-case:uppercase;--ai-tag-shadow:var(--shadow-pill);--ai-tag-align:flex-start}
 [data-brand="boohoo"],[data-brand="boohooman"],[data-brand="warehouse"],[data-brand="brandroom"]{
   --action-buy:#000;--action-buy-pressed:#000;--action-buy-disabled:#000;
