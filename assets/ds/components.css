@@ -1711,9 +1711,10 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dopts .mdl-bd .dopts-panes>[hidden]{display:flex;visibility:hidden}
 .dgrid-panes>[hidden]{display:flex;visibility:hidden}
 /* modal tabs: full width, half each, on a 1px keyline, 16/20 = never smaller than the method names (29 Oct) · rows = the page grid's own type: 14/20, price 14 semibold, was 12 light grey */
-.dopts-seg{display:flex;flex:none;border-bottom:var(--border-w,1px) solid var(--border-subtle)}
-.dopts-seg button{flex:1;margin-bottom:calc(-1 * var(--border-w,1px));padding:var(--gap-3,12px) 0 10px;border:0;border-bottom:2px solid transparent;background:none;font:inherit;font-size:14px;line-height:18px;font-weight:var(--w-regular,300);color:var(--text-primary);text-align:center;cursor:pointer}
-.dopts-seg button.on{border-bottom-color:var(--text-primary);font-weight:var(--w-mid,500)}
+/* Tabs · segmented (.tabs--seg, 12 Nov 2026): equal-width underlined tabs on a 1px baseline, 2–4 tabs · Figma Tabs / Segmented 14412:940 · .dopts-seg (delivery modal) is the same component */
+.dopts-seg,.tabs--seg{display:flex;flex:none;border-bottom:var(--border-w,1px) solid var(--border-subtle)}
+.dopts-seg button,.tabs--seg button{flex:1;margin-bottom:calc(-1 * var(--border-w,1px));padding:var(--gap-3,12px) 0 10px;border:0;border-bottom:2px solid transparent;background:none;font:inherit;font-size:14px;line-height:18px;font-weight:var(--w-regular,300);color:var(--text-primary);text-align:center;cursor:pointer}
+.dopts-seg button.on,.tabs--seg button.on{border-bottom-color:var(--text-primary);font-weight:var(--w-mid,500)}
 .dopts-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--gap-4,16px)}
 .dopts-row{display:flex;justify-content:space-between;align-items:center;gap:var(--gap-4,16px);font-size:14px;line-height:20px}
 .dopts-row .l{display:flex;flex-direction:column;gap:2px;min-width:0}.dopts-row .l b{font-weight:var(--w-strong,600)}

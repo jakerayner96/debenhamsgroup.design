@@ -155,7 +155,7 @@
     let body,title='Delivery Options';
     if(o.modal==='list'){body=homeBlock(o,M,1)+(M.collect.length?`<hr class="dopts-hr">`+collectBlock(o,M,1):'')}
     else if(o.modal==='tab'){title=tab==='collect'?'Collection Options':'Delivery Options';body=tab==='collect'?collectBlock(o,M,0):homeBlock(o,M,0)}
-    else{body=`<div class="dopts-seg" role="tablist"><button data-dg-seg="home" class="${tab==='home'?'on':''}">Delivery</button><button data-dg-seg="collect" class="${tab==='collect'?'on':''}">${CC(o)}</button></div>
+    else{body=`<div class="tabs--seg dopts-seg" role="tablist"><button data-dg-seg="home" class="${tab==='home'?'on':''}">Delivery</button><button data-dg-seg="collect" class="${tab==='collect'?'on':''}">${CC(o)}</button></div>
       <div class="dopts-panes"><div data-dg-mpanel="home"${tab==='home'?'':' hidden'}>${homeBlock(o,M,0)}</div><div data-dg-mpanel="collect"${tab==='collect'?'':' hidden'}>${collectBlock(o,M,0)}</div></div>`}
     return `<div class="dopts-layer${lay==='mdl--up'?' dopts-layer--up':''}" data-dg-modal><div class="mdl-scrim" data-dg-close></div>
       <div class="mdl ${lay} dopts" role="dialog" aria-modal="true" aria-label="${title}"><div class="modal-hd"><span class="mt">${title}</span><button class="modal-x" data-dg-close aria-label="Close"></button></div>
