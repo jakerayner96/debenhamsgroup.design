@@ -17,7 +17,7 @@
    CC_LIVE = what each fascia's live checkout tab says (Home Delivery / …), checked 10 Nov with an own-brand item in a guest bag. null = no collection tab on live.
    Seller line (under the returns line): o.seller null → placeholder "Select a size to see seller info" (grey) · 'site' → sold by the fascia
    itself (o.brand, plain text) · a SELLERS key / object → a marketplace seller, the name is a link that opens the seller modal.
-   o: {layout, scen:'std'|'cc'|'market'|'market2'|'bulky' (+ sizeFirst), premier, prog, pr, prBadge:'fastest'|'home', badges, tab, modal, ni:'split'|'mixed',
+   o: {layout, scen:'std'|'cc'|'market'|'market2'|'bulky'|'noaddr' (+ sizeFirst), premier, prog, pr, prBadge:'fastest'|'home', badges, tab, modal, ni:'split'|'mixed',
        sort:'price'|'speed', cut:'midnight'|'12am', more2:'hide'|'show', ret, retDays, pc, known, sheet:'alert'|'up', desk, today:Date, brand, seller,
        retIn:'box'|'acc', sellerIn:'box'|'acc', ccLabel}
    Rows (9 Nov, Jake: the winning option, formats 1, 2 and 4 removed): "Get It By" · Tomorrow / 4th Nov (+ badge) / method · cut-off.
@@ -151,7 +151,10 @@
      and "Select a size to see seller and delivery info", the returns line under it. Picking a size draws the full grid. */
   const WAIT='Select a size to see seller and delivery info';
   function wait(o){return `<section class="dgrid dgrid--wait" data-dg data-dg-wait aria-label="Delivery methods"><div class="dgrid-seller is-empty"><img src="${IC}icons-order.svg" alt=""><span>${WAIT}</span></div>${o.retIn!=='acc'?ret(o):''}</section>`}
-  function grid(o){if(o.sizeFirst&&!o.seller)return wait(o);o=Object.assign({layout:'tabs'},o);const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
+  /* no delivery to the default address (12 Nov, Jake, from live): title, the line in the bulky-note style (.dgrid-note, not the yellow banner), no methods, no See more */
+  const NOADDR='We may not offer delivery to your default delivery address';
+  function noAddr(o){return `<section class="dgrid" data-dg aria-label="Delivery methods"><div class="dgrid-hd"><h2>${TITLE}</h2></div><p class="dgrid-note">${NOADDR}</p>${o.retIn!=='acc'?ret(o):''}${o.sellerIn!=='acc'?seller(o):''}</section>`}
+  function grid(o){if(o.sizeFirst&&!o.seller)return wait(o);if(o.scen==='noaddr')return noAddr(o);o=Object.assign({layout:'tabs'},o);const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
     return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>${TITLE}</h2>${x.hd}</div>`}${x.body}${o.retIn!=='acc'?ret(o):''}${o.sellerIn!=='acc'?seller(o):''}</section>`}
 
   /* ---- modal ---- */
