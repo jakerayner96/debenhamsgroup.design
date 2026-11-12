@@ -1338,6 +1338,12 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
    PLT: same capsule; Home (PLT monogram) · Shop · Discover · Wishlist · Bag with 10/14 Roboto Medium labels under 24px icons — no Account tab. */
 :root{--glass-tint:rgba(255,255,255,.65);--glass-rim:rgba(255,255,255,.55);--glass-blur:blur(18px) saturate(180%);--glass-puck:0 1px 6px rgba(0,0,0,.12);--glass-on:rgba(255,255,255,.85)}
 .app-glass{background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim)}
+/* App toast · glass (12 Nov, Jake): the App Master Prototype's toast on iOS 26 — the system Liquid Glass capsule, 16 in, 16 above the tab bar, 52 min, padding 14 / 20, gap 12, 14/20; action in the brand CTA colour. The white card .toast--app stays for iOS 18 / Android */
+.toast--app.toast--app-glass{border-radius:26px;padding:14px 20px;background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim);box-shadow:var(--glass-puck)}
+.toast--app.toast--app-glass .act{color:var(--btn-primary-bg,var(--text-link))}
+/* AI resume FAB · app glass (12 Nov): the app's 44 glass nav bubble on the puck shadow, AI icon 22, the counter dot; rides 12 above a toast / the PDP sticky Add to bag */
+.ai-fab.ai-fab--glass{width:44px;height:44px;background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim);box-shadow:var(--glass-puck)}
+.ai-fab.ai-fab--glass .ai-icon{width:22px;height:22px}
 .app-tabbar{position:relative;width:100%;height:72px;padding:0 16px 12px;box-sizing:border-box;background:none;pointer-events:none}
 .app-tabbar .tabs{pointer-events:auto;height:60px;display:flex;align-items:center;justify-content:space-around;padding:0 7px;border-radius:999px;box-sizing:border-box;
   background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim);box-shadow:0 4px 16px rgba(0,0,0,.08)}
