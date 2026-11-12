@@ -1343,7 +1343,8 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .toast--app.toast--app-glass .act{color:var(--btn-primary-bg,var(--text-link))}
 /* AI resume FAB · app glass (12 Nov): the app's 44 glass nav bubble on the puck shadow, AI icon 22, the counter dot; rides 12 above a toast / the PDP sticky Add to bag */
 .ai-fab.ai-fab--glass{width:44px;height:44px;background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim);box-shadow:var(--glass-puck)}
-.ai-fab.ai-fab--glass .ai-icon{width:22px;height:22px}
+.ai-fab.ai-fab--glass .ai-icon{width:22px;height:22px;--ai-icon-bg:linear-gradient(107deg,var(--ai-glass-a,var(--ai-icon-a,var(--ai-fg))) 0%,var(--ai-glass-b,var(--ai-icon-b,var(--ai-fg))) 100%);--ai-icon-mask:url("icons/ai.svg") center/contain no-repeat}   /* the app header entry point's colour (--ai-glass-*, Debenhams: a touch darker); other fascias fall back to their icon colour */
+.ai-fab.ai-fab--glass>.counter{box-shadow:none}   /* app: a plain dot, no white ring (Jake 12 Nov) */
 .app-tabbar{position:relative;width:100%;height:72px;padding:0 16px 12px;box-sizing:border-box;background:none;pointer-events:none}
 .app-tabbar .tabs{pointer-events:auto;height:60px;display:flex;align-items:center;justify-content:space-around;padding:0 7px;border-radius:999px;box-sizing:border-box;
   background:var(--glass-tint);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-rim);box-shadow:0 4px 16px rgba(0,0,0,.08)}

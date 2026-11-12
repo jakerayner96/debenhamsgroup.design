@@ -68,7 +68,7 @@
   --mpill-bg:#F2F2F2;--mpill-fg:#000;--mpill-dot:#000;--mpill-dot-plus:#7BE7D8;--mpill-grad-plus:linear-gradient(115deg,#000 0%,#00787D 100%); /* --mpill-dot is THE active-membership dot: checkout pill + account row "Active" status. Unlimited+: aqua dot inside the gradient pill; on the account row the dot IS the gradient (--mpill-grad-plus). Not active #D6D6D6 stays fixed; expiring = --text-error (#C90000) */
   --co-tile-bg:var(--surface-raised);--co-tile-border:#B5B5B5;
   /* AI — one look for every agent / AI surface, every fascia (Figma PLP Reviews jNQsrePXxw0j0AksixkseD · AI Gradient 265:3677 · Icons / AI 27:37643) */
-  --ai-gradient:linear-gradient(107deg,#70BEB3 0%,#9DEDE2 99.4%);--ai-a:#70BEB3;--ai-b:#9DEDE2;--ai-icon-a:#529C92;--ai-icon-b:#70BEB3;--ai-outline:1.5px;
+  --ai-gradient:linear-gradient(107deg,#70BEB3 0%,#9DEDE2 99.4%);--ai-a:#70BEB3;--ai-b:#9DEDE2;--ai-icon-a:#529C92;--ai-icon-b:#70BEB3;--ai-glass-a:#00656A;--ai-glass-b:#1E8A80;--ai-outline:1.5px;
   --surface-page:#FFF;
   /* buttons (colour-alignment brand-colours): Debenhams primary = Primary Aqua + black ink;
      CTA Aqua teal carries links, checks, focus — not the button fill */
