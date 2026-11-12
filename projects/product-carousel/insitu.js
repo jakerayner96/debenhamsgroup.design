@@ -46,7 +46,7 @@ if(window.DG_USP_LIVE&&DG_USP_LIVE.debenhams)DG_USP_LIVE.debenhams.forEach(r=>(r
 /* PDP buy column, as the Figma PDP (13796:18062): price · Size Selector (Size: · Size Guide + Icons / Measure · M out of stock, none chosen) ·
    PayPal word mark · Ask Deb prompts (hugging) · DS Membership box · BNPL logos + legal · At A Glance chips */
 const FIG_SIZES=`<div class="sizes"><div class="sizes-head"><span>Size:</span><span class="guide"><img src="assets/ds/icons/lib/icons-measure.svg" alt="">Size Guide</span></div><div class="set">${['XS','S','M','L','XL'].map(z=>`<button class="sz${z==='M'?' oos oos--strike':''}">${z}</button>`).join('')}</div></div>`;
-const FIG_BNPL=`<div class="bnpl bnpl--legal"><div class="chips"><span class="pc pc--paypal"><img src="assets/ds/icons/payments/bnpl-paypal-logo.svg" alt="PayPal"></span><span class="pc pc--payplus"><img src="assets/ds/icons/payments/bnpl-payplus-glyph.svg" alt="Pay+"></span><span class="pc pc--klarna"><img src="assets/ds/icons/payments/bnpl-klarna-word.svg" alt="Klarna"></span><span class="pc pc--clearpay"><img src="assets/ds/icons/payments/clearpay-lockup-mini.svg" alt="Clearpay"></span></div><div class="small">18+, T&amp;C apply. Credit subject to status</div><a class="more" href="#">See more</a></div>`;
+/* BNPL: the DS .bnpl from the PDP template is the Figma BNPL (2969:10048) since 12 Nov — only its amounts follow the Figma price */
 function pdpProduct(x){const P=PC.pdpItem;if(!P)return;const q=s=>x.querySelector(s);
   const br=q('.buy .pbrand'),nm=q('.buy .pname');if(br)br.textContent=P.brand||'';if(nm)nm.textContent=P.name;
   x.querySelectorAll('.galwrap img').forEach(im=>{im.src=P.img;im.removeAttribute('style');im.alt=P.name});
@@ -62,7 +62,7 @@ function figPdp(x){pdpProduct(x);if(!FM())return;const q=s=>x.querySelector(s);
   const sz=PC.pdpItem?null:q('.buy .sizes');if(sz)sz.outerHTML=FIG_SIZES;
   x.querySelectorAll('.buy .ctas .pp-co').forEach(e=>e.remove());
   const unl=q('.buy .unl');if(unl&&window.DG_memberBoxHTML)unl.outerHTML=DG_memberBoxHTML('debenhams');
-  const bn=q('.buy .bnpl');if(bn)bn.outerHTML=FIG_BNPL;
+  const bn=q('.buy .bnpl');if(bn)bn.innerHTML=bn.innerHTML.replace(/£\d+\.\d\d(?=<\/b>)/g,(m,i,str)=>/4 instalments of <b>$/.test(str.slice(0,i))?'£24.50':'£32.67');
   const sns=q('.buy .sns');if(sns)sns.innerHTML=sns.innerHTML.replace(/£\d+\.\d\d(?=<\/b>|<\/span>)/,'£93.10');
   x.querySelectorAll('.acc-set .glance').forEach(u=>{u.classList.add('glance--chips');u.innerHTML=u.innerHTML.replace('Regular fit','Relaxed fit')});
   x.querySelectorAll('.acc-set .acc-h').forEach(h=>{if(/^At a Glance/.test(h.textContent))h.firstChild.textContent='At A Glance'})}

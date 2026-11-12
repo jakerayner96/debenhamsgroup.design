@@ -671,7 +671,7 @@ function pdp(){
     ${DEB()?`<div class="unl"><div><img src="assets/brands/memberships/unlimited-logo.svg" alt="Debenhams Unlimited"><p>Enjoy unlimited delivery for an entire year for just £10.00</p></div><button>ADD</button></div>`:(window.DG_memberBoxHTML?DG_memberBoxHTML(BR()):'')}
     ${DPLUS.includes(BR())?strip(V('deliver-plus',d?1:0)):''}
     ${window.DG_delivery?DG_delivery.grid(DG_OPTS()):''}
-    ${strip(V('bnpl',0))}
+    ${strip(V('bnpl',0)).replace(/£23\.33/g,'£'+(parseFloat(String(p.price).replace(/[^0-9.]/g,''))/3).toFixed(2)).replace(/£17\.50/g,'£'+(parseFloat(String(p.price).replace(/[^0-9.]/g,''))/4).toFixed(2))}
     ${window.DG_subscribe?DG_subscribe.box(SNS()):''}</div>`;
   /* prompts: below the buy buttons, or above At a Glance; At a Glance itself can be switched off */
   const glanceSlot=S.pdpPos!=='belowCta'?prompts:'';   /* above At a Glance = above the accordions */
