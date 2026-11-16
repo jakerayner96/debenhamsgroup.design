@@ -7,7 +7,7 @@
       (the outgoing one stays solid underneath as .was). Pauses while the tab is hidden; stops once the row leaves the page.
    4. Swipe: on any .usp-stack with 2+ messages, swipe left = next, right = previous (restarts the 5s timer; the swipe never fires the link).
    5. Render (drop-in): with assets/ds/usp-live.js loaded, <div data-usp-banners="plt"></div> fills itself with that fascia's live rows
-      (data-usp-pos="below" (default) | "above" — rows set to that position; data-usp-caveats="on"; data-usp-auto="0–5"; re-renders at the
+      (data-usp-pos="below" (default) | "above" — rows set to that position; data-usp-caveats="on"; data-usp-auto="0–5"; data-usp-calm="on" (one row, one message, still — 16 Nov 2026); re-renders at the
       1024 breakpoint). Or DG_uspHTML(rows, {brand, desk, caveats, auto, link}) → {above, below} HTML. Countdown digits: black on light bars; on black bars white, or red when the row sets cd:'red'. */
 (function(){
   const pad=n=>String(n).padStart(2,'0');
@@ -61,9 +61,13 @@
     return '<div class="usp-row1'+st+' usp-stack"'+(ms?' data-rotate="'+ms+'"':'')+'>'+L.map((m,j)=>bar(m,r.colour,j===cur,o)).join('')+'</div>'}
   window.DG_uspHTML=function(rows,o){o=Object.assign({brand:document.documentElement.dataset.brand,desk:innerWidth>=1024,caveats:false,auto:5,link:'live',flag:false},o||{});
     if(typeof rows==='string'){o.brand=rows;rows=(window.DG_USP_LIVE||{})[rows]||[]}
+    /* calm (16 Nov 2026, Conversion master): ONE row, ONE message, no rotation, no countdown, no code chip, below the menu.
+       The conversion audit measured 4 promo layers (app banner, 2 USP rows, countdown) before content on live mobile. */
+    if(o.calm){const r=(rows||[]).filter(r=>r&&r.on!==false)[0];if(!r)return {above:'',below:''};const m=Object.assign({},(r.items&&r.items[0])||r);
+      m.type=m.type==='double'?'double':'text';delete m.code;rows=[{colour:o.calmColour||'g05',pos:'below',sticky:false,items:[m]}];o.auto=0}
     const out={above:'',below:''};(rows||[]).forEach(r=>{if(r&&r.on!==false)out[r.pos==='above'?'above':'below']+=rowHTML(r,o)});return out};
   function mount(){document.querySelectorAll('[data-usp-banners]').forEach(el=>{const d=el.dataset,brand=d.uspBanners||document.documentElement.dataset.brand;
-    el.innerHTML=window.DG_uspHTML(brand,{brand,caveats:d.uspCaveats==='on',auto:d.uspAuto!=null?+d.uspAuto:5})[d.uspPos==='above'?'above':'below'];el.classList.add('usps');window.DG_usp(el)})}
+    el.innerHTML=window.DG_uspHTML(brand,{brand,caveats:d.uspCaveats==='on',auto:d.uspAuto!=null?+d.uspAuto:5,calm:d.uspCalm==='on'})[d.uspPos==='above'?'above':'below'];el.classList.add('usps');window.DG_usp(el)})}
   window.DG_uspMount=mount;
   matchMedia('(min-width:1024px)').addEventListener('change',()=>{if(document.querySelector('[data-usp-banners]'))mount()});
   let t;addEventListener('resize',()=>{clearTimeout(t);t=setTimeout(()=>wrap(),120)});

@@ -40,7 +40,11 @@ const WAL={
   klarna:c=>`<button type="button" class="bs-w bs-kl"${c.kl?` style="background:${c.kl}"`:''}><span>Pay with</span><img src="${W}klarna-badge.svg" alt="Klarna" style="height:26px"></button>`
 };
 window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk,o){o=o||{};
-  const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]),pct=t.sub?Math.round(t.disc/t.sub*100):0;
+  const B=window.BAG_LIVE;let c=B[brand]||B.debenhams;
+  /* o.clean (16 Nov 2026, Conversion master): ONE "Checkout securely" CTA (no "with / without Deliver+" pair), no pre-added Worry-Free row, express wallets kept.
+     The personas' typical customer on all 5 sites hit HIGH/CRITICAL on pre-added ancillaries; Deliver+ is offered once, opt-in, in checkout. */
+  if(o.clean)c=Object.assign({},c,{cta:['Checkout securely'],dplus:null,wf:null});
+  const t=sums(c,items||[]),pct=t.sub?Math.round(t.disc/t.sub*100):0;
   /* Bag 2026 (CYyGeUDy4w02enV7uFxZ6W desktop 1337:256981 / mobile 1337:257572, Jake 3 Nov) — the default: Subtotal · Delivery (now strong + struck was) ·
      Worry-Free Purchase® · Discounts (link + chevron) · optional rows (o.extra = [[label, value]] — Sales Tax, Gift Card, Donation) · hairline · Order Total.
      o.wf = a fixed Worry-Free amount, o.pay3 = the pay-in-3 amount (else 4% of the subtotal / total ÷ 3). o.live:true keeps the 6 Oct live capture (Discount · Deliver+ add-on · Discounts included). */
@@ -62,6 +66,6 @@ window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk,o){o=
   const pr=o.promo===false?'':promo,th=o.thresh?`<div class="bs-th">${o.thresh}</div>`:'';
   return `<div class="bs${desk?' bs--d':' bs--m'}${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="${vars}">${desk?`<div class="bs-card">${th}${sum}${pay}</div>${pr}`:`${pr}${pr?'<div class="bs-hr"></div>':''}<div class="bs-card bs-flat">${sum}${pay}</div>`}</div>`;
 };
-window.DG_bagTopHTML=window.renderBagTop=function(brand,items,o){o=o||{};const B=window.BAG_LIVE,c=B[brand]||B.debenhams,t=sums(c,items||[]);
+window.DG_bagTopHTML=window.renderBagTop=function(brand,items,o){o=o||{};const B=window.BAG_LIVE;let c=B[brand]||B.debenhams;if(o.clean)c=Object.assign({},c,{cta:['Checkout securely'],dplus:null});const t=sums(c,items||[]);
   return `<div class="bs bs-top${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}"><div class="bs-ot">Order Total: <b>${gbp(t.goods)}</b></div>${o.after||''}<button type="button" class="bs-cta">${esc(c.cta[0])}</button></div>`};
 })();

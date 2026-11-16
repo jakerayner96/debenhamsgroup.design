@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><link rel="icon" href="/debenhamsgroup.design/assets/brands/favicon.svg?v=2" type="image/svg+xml"><link rel="icon" href="/debenhamsgroup.design/assets/brands/favicon-32.png?v=2" sizes="32x32"><link rel="apple-touch-icon" href="/debenhamsgroup.design/assets/brands/favicon-180.png?v=2"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../">
+<title>Checkout · DS template</title>
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* DS page template — Checkout. Checkout 2026 (16 Nov 2026, Conversion master; DS Figma aIHmkCaTy9c5EWOxAGw0So · mobile 9319:14124 · desktop 9387:8824 ·
+   components 13557:9667 · order confirmation 6924:3137). Slots into the Master prototype after the Bag. No USP banners, no main nav: the checkout header (header.js 'checkout').
+   Every visible piece is a DS component (components.css "Checkout 2026" block + .co-tile, .dmeth, .mpill, .acc-set, .promo, .fld, .chk-row, .rad-row, .pay, .bd.pay,
+   .pay-opts, .bag-item, .bs-sum, .msg, .mdl, .pdp-sticky). Nothing is restyled here.
+   ?s={"co":"live"|"new"} (default new) · {"step":"confirm"} order confirmation · {"member":true} active membership (pill) · any fascia ?brand=<slug>.
+     live = the Figma board as it stands (the baseline).
+     new  = the decluttered conversion version: Your Bag + Order Total → Express Checkout (PayPal · Apple Pay · Klarna) → Delivery as one-line rows
+            (Arrives by … · method · Change → the delivery-method modal, membership the only opt-in row there, never pre-selected) → Payment (Card open,
+            the rest as tiles; one "promo code or gift card" row; one optional Extras row) → an order summary that reads top to bottom → Pay + trust strip + legal.
+            Sticky Pay bar on mobile. Never pre-adds Deliver+ / Unlimited / Premier / Royalty: opt-in only. */
+html,body{margin:0;background:var(--surface-sunken)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/ds/header.js"></script>
+<script src="assets/ds/dplus-logos.js"></script>
+<script src="assets/ds/membership.js"></script>
+<script src="assets/ds/bag-summary.js"></script>
+<script src="assets/ds/footer.js"></script>
+<script src="templates/products.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script src="templates/feed.js"></script>
+<script src="assets/ds/export-masks.js"></script>
+<script>
+/* in: ?brand=<slug> or ?s={brand,co,step,member,…}; {protoSet} / {protoPing}. out: {protoReady}, {protoPong,h}.
+   events (cancelable, for the Master journey layer): dg:checkout-pay (Pay / express pay → else the confirmation step in place) · dg:continue-shopping · dg:edit-bag */
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const q=new URLSearchParams(location.search);
+let S={brand:q.get('brand')||'debenhams',co:'new',step:'checkout'},EXPORTING=false;
+try{const s=q.get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
+const desk=()=>innerWidth>=1024;
+const live=()=>S.co==='live';
+const A='assets/ds/',LIB=A+'icons/lib/icons-',PAY=A+'icons/pay/',PM=A+'icons/payments/';
+const FN={debenhams:'Debenhams',boohoo:'boohoo',boohooman:'boohooMAN',plt:'PrettyLittleThing',karenmillen:'Karen Millen',warehouse:'Warehouse',brandroom:'The Brand Room'};
+/* pence in, £ out — every sum is in whole pence so the summary always adds up */
+const pn=s=>Math.round((parseFloat(String(s??'').replace(/[^0-9.]/g,''))||0)*100);
+const gbp=p=>'£'+(p/100).toFixed(2);
+const ic=(n,alt)=>`<img src="${LIB}${n}.svg" alt="${alt||''}"${alt?'':' aria-hidden="true"'}>`;
+const logo=k=>`<img src="${PAY}${k==='revolut'?'revolut-pay':k}.png" alt="" aria-hidden="true">`;
+
+/* ---- membership: the fascia's programme (membership.js); gated like Deliver+ (no programme on Warehouse / The Brand Room) ---- */
+const MPILL={debenhams:'Unlimited',boohoo:'Premier',boohooman:'Premier',plt:'Royalty',karenmillen:'Premier'};
+const MNAME={debenhams:'Debenhams Unlimited',boohoo:'boohoo Premier Club',boohooman:'boohooMAN Premier',plt:'PLT Royalty',karenmillen:'Karen Millen Premier'};
+function memb(){const b=S.brand,m=(window.DG_MEMBERSHIP||{})[b];
+  if(!m||!MPILL[b]||(window.DG_hasDplus&&!DG_hasDplus(b)))return null;
+  const pr=(String(m.copy||'').match(/£\d+\.\d\d/)||['£9.99'])[0];
+  return {pill:MPILL[b],name:MNAME[b],price:pn(pr),copy:m.copy}}
+const memAdded=()=>!S.member&&(S.meth==='mem'||!!S.addMem);   /* opt-in only: the row (new) or GET UNLIMITED (live) */
+
+/* ---- the bag: the fascia's PDP product (templates/products.js, as the PDP template) + one wear item from the feed (as the Bag template) ---- */
+const VAR=['10','12','M','8','S'];
+function items(){const b=S.brand,p=(window.DG_PDP_PRODUCTS||{})[b]||(window.DG_PDP_PRODUCTS||{}).debenhams||{};
+  const a={img:(p.imgs||[])[0]||'',brand:p.brand||FN[b],name:p.name||'Product',price:p.price||'£20.00',was:p.was,size:(p.sizes||[])[1]||'One Size',colour:p.colour||'Black',qty:1};
+  const W=/dress|top|jumper|cardigan|coat|jacket|blazer|trouser|jean|skirt|knit|hoodie|shirt|tee|t-shirt/i;let x=null;
+  for(let i=3;i<40&&!x;i++){const f=window.DG_feedItem&&DG_feedItem(b,i);if(f&&W.test(f.name)&&f.name!==a.name)x=f}
+  const out=[a];if(x)out.push({img:x.img,brand:x.brand||FN[b],name:x.name,price:x.price,was:x.was,size:VAR[1],colour:'Black',qty:2});
+  return out}
+/* ---- delivery methods (Figma 9319:14124) — arrival dates from Mon 16 Nov 2026 so every export reads the same ---- */
+const METH=[
+  {id:'ss',n:'Super Saver Delivery',d:'5-7 working days',p:0,was:299,days:7,mfree:true},
+  {id:'std',n:'Standard Delivery',d:'Up to 4 working days',p:399,days:4,mfree:true},
+  {id:'nd',n:'Next Day Delivery',d:'Order before 11pm or 9pm on Saturday',p:499,days:1,mfree:true},
+  {id:'exp',n:'Express Delivery',d:'Delivered within 2 working days',p:599,days:2},
+  {id:'dpd',n:'Premium DPD Next Day Delivery',d:'Order by 9pm Sunday - Friday or 8pm Saturday',p:699,days:1}];
+const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function arrive(n){if(n===1)return 'Arrives tomorrow';const d=new Date(2026,10,16);let k=0;while(k<n){d.setDate(d.getDate()+1);if(d.getDay()%6)k++}
+  return `Arrives by ${DAYS[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]}`}
+const mprice=m=>(S.member||memAdded())&&m.mfree?0:m.p;
+function method(){if(S.meth==='mem'&&memb()&&!S.member)return Object.assign({},METH[2],{id:'mem',n:METH[2].n,via:memb().pill});return METH.find(m=>m.id===S.meth)||METH[0]}
+/* ---- payment methods ---- */
+function PMS(){const b=S.brand,L=(window.BAG_LIVE||{})[b]||{},w=L.wallets||['paypal','paylater','apple','klarna'];
+  return [{id:'card',l:'Card',lg:'card'},w.includes('apple')&&{id:'apple',l:'Apple Pay',lg:'apple-pay'},{id:'gpay',l:'Google Pay',lg:'google-pay'},
+    b==='debenhams'&&{id:'payplus',l:'DebenhamsPay+',lg:'payplus'},{id:'paypal',l:'PayPal',lg:'paypal'},{id:'paylater',l:'Pay Later',lg:'paypal'},
+    w.includes('klarna')&&{id:'klarna',l:'Klarna',lg:'klarna'},{id:'clearpay',l:'Clearpay',lg:'clearpay'}].filter(Boolean)}
+const payId=()=>S.pay!==undefined?S.pay:(live()?null:'card');
+
+/* ---- the sums (pence). Subtotal = item prices × qty; each discount a named line; delivery = the method; extras opt-in ---- */
+function sums(){const I=items(),m=memb(),me=method();
+  const sub=I.reduce((a,x)=>a+pn(x.price)*x.qty,0),mark=I.reduce((a,x)=>a+(x.was?(pn(x.was)-pn(x.price))*x.qty:0),0);
+  const disc=[{n:`Enjoy 20% Off ${I[0].brand}`,p:Math.round(pn(I[0].price)*0.2)}];
+  if(S.code!==null&&S.code!==''){disc.push({n:`Promo code ${S.code||'WELCOME'}`,p:500})}
+  const del=mprice(me),mem=memAdded()&&m?m.price:0;
+  const L=(window.BAG_LIVE||{})[S.brand]||{},dp=S.dplus&&window.DG_hasDplus&&DG_hasDplus(S.brand)&&L.dplus?Math.round((L.dprice||2.99)*100):0;
+  const prot=S.protect?399:0,dsum=disc.reduce((a,d)=>a+d.p,0);
+  const pre=sub-dsum+del+mem+dp+prot,round=Math.ceil(pre/100)*100-pre||100,char=S.charity?round:0;
+  return {I,sub,mark,disc,dsum,del,me,mem,m,dp,dpName:L.dplus,prot,round,char,pre,tot:pre+char,saved:mark+dsum,n:I.reduce((a,x)=>a+x.qty,0)}}
+
+/* ---- shared pieces ---- */
+function header(){const dev=desk()?'desktop':'mobile';
+  return `<header class="hd hd--checkout${desk()?' hd--desktop':''}" data-hd-brand="${S.brand}" data-hd-kind="checkout" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'checkout',dev):''}</header>`}
+const ADDR=['Jake Rayner','1 Park Lane','Manchester','United Kingdom','M14AE','07123456789'];
+const addrHTML=(lines)=>`<address><b>${esc(lines[0])}</b>${lines.slice(1).map(esc).join('<br>')}</address>`;
+const chk=(k,on,label,o)=>`<label class="chk-row${o&&o.lg?' chk-row--lg':''}"><input class="ck-in" type="checkbox" id="ck-${k}" data-ck="chk" data-k="${k}"${on?' checked':''}><span class="chk" aria-hidden="true"></span><span class="ck-p">${label}</span></label>`;
+const radio=(name,val,on,label,id)=>`<label class="rad-row"><input class="ck-in" type="radio" name="${name}" id="${id}" value="${val}" data-ck="${name}"${on?' checked':''}><span class="rad" aria-hidden="true"></span><span class="ck-p">${label}</span></label>`;
+const acc=(k,title,body,sub)=>{const o=!!(S.open||{})[k];return `<div class="acc${o?' open':''}"><button type="button" class="acc-h" data-ck="acc" data-k="${k}" aria-expanded="${o}" aria-controls="ck-acc-${k}">${sub?`<span class="ck-acc-t">${title}<small>${sub}</small></span>`:title}<img src="${LIB}down.svg" alt="" aria-hidden="true"></button><div class="acc-b" id="ck-acc-${k}"><div class="ck-acc-body">${body}</div></div></div>`};
+const priceHTML=x=>x.was?`<span class="sale">${esc(x.price)}</span><s>${esc(x.was)}</s>`:`<b>${esc(x.price)}</b>`;
+/* order line = the DS bag line item (.bag-item), summary size (.bag-item--sum): 2:3 thumb */
+const line=x=>`<div class="bag-item bag-item--sum"><img src="${esc(x.img)}" alt="" loading="${EXPORTING?'eager':'lazy'}"><div class="info"><div class="b">${esc(x.brand)}</div><div class="n">${esc(x.name)}</div><div class="v">Size ${esc(x.size)} · ${esc(x.colour)}</div><div class="q"><span>Qty ${x.qty}</span><span>${priceHTML(x)}</span></div></div></div>`;
+const legal=()=>`<div class="ck-legal">${chk('mkt',S.mkt!==false,`We will share our latest offers, promotions and collections via email and SMS from ${esc(FN[S.brand])} and our family of brands unless you untick this box.`,{lg:1})}
+  <p class="ck-fine">We will use your information in accordance with our <a href="#">privacy notice</a>. By continuing I confirm that I am over the age of 18.</p></div>`;
+const payBtn=t=>`<button type="button" class="bd pay" data-ck="paynow">Pay ${gbp(t.tot)}</button>`;
+const cardForm=()=>`<div class="ck-card"><label class="fld"><input id="ck-cc" inputmode="numeric" autocomplete="cc-number" placeholder=" "><span class="lbl">Card number</span></label>
+  <div class="ck-card-2"><label class="fld"><input id="ck-exp" inputmode="numeric" autocomplete="cc-exp" placeholder=" "><span class="lbl">Expiry date (MM/YY)</span></label><label class="fld"><input id="ck-cvc" inputmode="numeric" autocomplete="cc-csc" placeholder=" "><span class="lbl">Security code</span></label></div>
+  <label class="fld"><input id="ck-name" autocomplete="cc-name" placeholder=" "><span class="lbl">Name on card</span></label></div>`;
+const bagBar=t=>{const o=!!S.bagOpen;return `<button type="button" class="ck-bagbar" data-ck="bag" aria-expanded="${o}" aria-controls="ck-bag"><span><b>Your Bag (${t.n})</b><span>Order Total: <b>${gbp(t.tot)}</b></span></span>${ic('down')}</button>${o?`<div class="ck-bagbar-b" id="ck-bag">${t.I.map(line).join('')}</div>`:''}`};
+
+/* ================= LIVE: the Figma board as it stands ================= */
+function liveDelivery(t){const m=t.m,cc=S.tab==='cc';
+  const tabs=`<div class="co-tiles co-tiles--seg" role="radiogroup" aria-label="Delivery type">${[['home','Home Delivery','delivery'],['cc','Click &amp; Collect','location']].map(([v,l,i])=>`<label class="co-tile${(S.tab||'home')===v?' on':''}"><input class="ck-in" type="radio" name="tab" id="ck-tab-${v}" value="${v}" data-ck="tab"${(S.tab||'home')===v?' checked':''}>${ic(i)}${l}</label>`).join('')}</div>`;
+  const addr=cc?`<div class="promo"><label class="fld"><input id="ck-pc" placeholder=" "><span class="lbl">Enter postcode or town</span></label><button type="button" class="bd sec">Search</button></div>`
+    :`<div class="ck-hd"><h3 class="ck-h2">Delivery Address</h3><button type="button" class="bd xs">Add New</button></div><div class="ck-addr">${addrHTML(ADDR)}<button type="button" class="bd xs">Change</button></div>`;
+  const up=m&&!S.member?`<div class="ck-blk"><h3 class="ck-h2">${esc(m.pill)} Delivery</h3><p class="ck-p">${esc(m.copy)}</p><button type="button" class="bd sec" data-ck="join" aria-pressed="${!!S.addMem}">${S.addMem?'Added':'Get '+esc(m.pill)}</button></div>`:'';
+  const list=`<ul class="dmeth-list" role="radiogroup" aria-label="Delivery method">${METH.map(x=>{const on=t.me.id===x.id,p=mprice(x);
+    return `<li><label class="dmeth"><input class="ck-in" type="radio" name="meth" id="ck-m-${x.id}" value="${x.id}" data-ck="meth"${on?' checked':''}><span class="rad" aria-hidden="true"></span><span class="dmeth-l"><span class="dmeth-n">UK ${esc(x.n)}</span><span class="dmeth-a">${esc(x.d)}</span></span><span class="dmeth-p"><b>${p?gbp(p):'FREE'}</b>${!p&&x.was?`<s>${gbp(x.was)}</s>`:''}</span></label></li>`}).join('')}</ul>`;
+  return `<section class="ck-panel" aria-labelledby="ck-h-del"><div class="ck-blk"><h2 class="ck-h1" id="ck-h-del">Delivery</h2>${tabs}${addr}</div>${up}
+    <div class="ck-blk"><div class="dmeth-hd"><h3>Delivery Method</h3>${S.member&&m?`<span class="mpill"><i></i><b>${esc(m.pill)}</b><span>Active</span></span>`:''}</div>${list}
+      <p class="ck-p"><b>Priority Delivery Support</b><br>Fast, hassle-free support if your order is lost, damaged or stolen during transit or immediately after delivery.</p>
+      ${chk('protect',S.protect,'Protect my package for <b>£3.99</b>')}</div></section>`}
+function livePayment(t){const pid=payId();
+  const promo=acc('promo','Promo Code',`<div class="promo"><label class="fld"><input id="ck-code" placeholder=" "><span class="lbl">Promo code</span></label><button type="button" class="bd sec">Apply</button></div>`);
+  const gift=acc('gift','Redeem Gift Card',`<label class="fld"><input id="ck-gc" inputmode="numeric" placeholder=" "><span class="lbl">Gift card number</span></label><div class="promo"><label class="fld fld--pin"><input id="ck-pin" inputmode="numeric" placeholder=" "><span class="lbl">PIN</span></label><button type="button" class="bd sec">Apply</button></div>`);
+  const charity=`<div class="ck-blk"><h3 class="ck-h2">Charity Donation</h3><p class="ck-p">Change lives with just <b>${gbp(t.round)}!</b> Your support will help British Heart Foundation do amazing things!</p>
+    <div role="radiogroup" aria-label="Charity donation">${radio('charity','1',!!S.charity,`Yes, round up my total to <b>${gbp(t.pre+t.round)}</b>`,'ck-ch-1')}${radio('charity','0',!S.charity,'No, thank you','ck-ch-0')}</div>
+    <p class="ck-fine">Every penny you give goes to charity: 95% to British Heart Foundation (registered charity no. 296645) and 5% goes to Pennies (registered charity no. 1122489)</p></div>`;
+  const bill=`<div class="ck-blk"><h3 class="ck-h2">Billing Address</h3>${chk('bill',S.bill!==false,'Use delivery address as billing address')}</div>`;
+  const opts=`<div class="ck-blk"><h3 class="ck-h2" id="ck-h-pm">Payment Method</h3><div class="ck-optlist" role="radiogroup" aria-labelledby="ck-h-pm">${PMS().filter(x=>x.id!=='paylater').map(x=>{const on=pid===x.id;
+    return `<div class="ck-opt${on?' on':''}"><label class="ck-opt-h"><input class="ck-in" type="radio" name="pay" id="ck-p-${x.id}" value="${x.id}" data-ck="pay"${on?' checked':''}><span class="rad" aria-hidden="true"></span><span class="ck-opt-lg">${x.lg==='card'?ic('card'):`<span class="pchip" aria-hidden="true">${logo(x.lg)}</span>`}</span><span>${esc(x.l)}</span></label>${on?`<div class="ck-opt-b">${x.id==='card'?cardForm():''}${payBtn(t)}</div>`:''}</div>`}).join('')}</div></div>`;
+  const sumM=desk()?'':`<div class="ck-blk">${liveSummary(t)}</div>`;
+  return `<section class="ck-panel" aria-labelledby="ck-h-pay"><div class="ck-blk"><h2 class="ck-h1" id="ck-h-pay">Payment</h2><div class="acc-set">${promo}${gift}</div></div>${charity}${bill}${opts}${sumM}<div class="ck-blk">${legal()}</div></section>`}
+/* live summary = the DS order summary (.bs-sum, "Discounts included:" after the total — the bit that doesn't read) */
+function liveSummary(t){const r=(l,v,c)=>`<div class="bs-r${c?' '+c:''}"><span>${l}</span><span>${v}</span></div>`;
+  const extra=[t.mem&&[esc(t.m.name),gbp(t.mem)],t.prot&&['Priority Delivery Support',gbp(t.prot)],t.char&&['Charity Donation',gbp(t.char)],t.dp&&[esc(t.dpName),gbp(t.dp)]].filter(Boolean);
+  return `<div class="bs-sum" role="group" aria-label="Order Summary"><div class="bs-h">Order Summary</div>${r('Subtotal',gbp(t.sub))}${r('Delivery',t.del?gbp(t.del):'<b>FREE</b>')}${r('Discounts','-'+gbp(t.dsum))}${extra.map(x=>r(x[0],x[1])).join('')}${r('Order Total',`<b>${gbp(t.tot)}</b>`,'bs-tot')}</div>
+    <div class="bs-di"><b>Discounts included:</b>${t.disc.map(d=>r(esc(d.n),'-'+gbp(d.p))).join('')}</div>`}
+function liveSide(t){return `<section class="ck-panel" aria-labelledby="ck-h-bag"><div class="ck-hd"><h2 class="ck-h2" id="ck-h-bag">Your Bag (${t.n})</h2><button type="button" class="bd xs" data-ck="editbag">Edit Bag</button></div>
+    <div class="bag-sec-hd">${ic('order')}<span class="bag-seller">Delivered by <b>${esc(FN[S.brand])}</b></span></div>${t.I.map(line).join('')}</section>
+    <section class="ck-panel">${liveSummary(t)}</section>`}
+function livePage(t){const d=desk();
+  return d?`<main class="ck-pg"><div class="ck-wrap ck-cols"><div class="ck-main">${liveDelivery(t)}${livePayment(t)}</div><aside class="ck-side" aria-label="Your order">${liveSide(t)}</aside></div></main>`
+    :`<main class="ck-pg">${bagBar(t)}${liveDelivery(t)}${livePayment(t)}</main>`}
+
+/* ================= NEW: the conversion checkout ================= */
+function express(){const L=(window.BAG_LIVE||{})[S.brand]||{},w=L.wallets||[];
+  const b=[`<button type="button" class="pay pay--paypal" data-ck="paynow" data-v="paypal"><img src="${PM}paypal-wordmark.svg" alt="PayPal"></button>`,
+    w.includes('apple')?`<button type="button" class="pay pay--apple" data-ck="paynow" data-v="apple"><img src="${PM}applepay-onblack.svg" alt="Apple Pay"></button>`:'',
+    w.includes('klarna')?`<button type="button" class="pay pay--klarna" data-ck="paynow" data-v="klarna"><img src="${PM}klarna-badge.svg" alt="Klarna"></button>`
+      :`<button type="button" class="pay pay--paylater" data-ck="paynow" data-v="paylater"><img src="${PM}paypal-monogram.png" alt="" aria-hidden="true">Pay Later</button>`].filter(Boolean);
+  return `<section class="ck-panel" aria-label="Express Checkout"><div class="ck-blk"><div class="ck-or" aria-hidden="true">Express Checkout</div><div class="ck-xp">${b.join('')}</div></div></section>`}
+function newDelivery(t){const m=t.m,me=t.me,p=t.del;
+  const pill=S.member&&m?`<span class="mpill"><i></i><b>${esc(m.pill)}</b><span>Active</span></span>`:'';
+  const methLine=`<div class="ck-line"><div><b>${esc(arrive(me.days))}</b><span>${esc(me.n)}${me.via?` with ${esc(me.via)}`:''} · <b>${p?gbp(p):'FREE'}</b>${!p&&me.was&&!me.via&&!S.member?`<s>${gbp(me.was)}</s>`:''}</span></div><button type="button" class="bd xs" data-ck="mopen" aria-haspopup="dialog">Change</button></div>`;
+  const addrLine=`<div class="ck-line"><div><b>${esc(ADDR[0])}</b><span>${esc(ADDR.slice(1,5).join(', '))}</span></div><button type="button" class="bd xs">Change</button></div>`;
+  return `<section class="ck-panel" aria-labelledby="ck-h-del"><div class="ck-blk"><div class="ck-hd"><h2 class="ck-h1" id="ck-h-del">Delivery</h2>${pill}</div><div class="ck-lines">${methLine}${addrLine}</div></div></section>`}
+/* the delivery-method modal: DS modal on the delivery-options layer — slide up on phones, small centred dialog on desktop */
+function methodModal(t){if(!S.mOpen)return '';const m=t.m,d=desk(),lay=d?'mdl--sm':'mdl--up';
+  const rows=[...(m&&!S.member?[{id:'mem',n:m.name,dd:'Unlimited Next Day Delivery for a year',a:arrive(1),p:m.price}]:[]),...METH.map(x=>({id:x.id,n:x.n,a:arrive(x.days),p:mprice(x),was:!mprice(x)&&!S.member&&!memAdded()?x.was:0}))];
+  const cur=S.meth||'ss';
+  return `<div class="dopts-layer${d?'':' dopts-layer--up'}" data-ck-modal><div class="mdl-scrim" data-ck="mclose"></div><div class="mdl ${lay}" role="dialog" aria-modal="true" aria-labelledby="ck-mt">
+    <div class="modal-hd"><div class="mt"><span id="ck-mt">Delivery Method</span>${S.member&&m?`<span class="mpill"><i></i><b>${esc(m.pill)}</b><span>Active</span></span>`:''}</div><button type="button" class="modal-x" data-ck="mclose" aria-label="Close"></button></div>
+    <div class="mdl-bd"><ul class="dmeth-list" role="radiogroup" aria-labelledby="ck-mt">${rows.map(x=>`<li><label class="dmeth"><input class="ck-in" type="radio" name="meth" id="ck-m-${x.id}" value="${x.id}" data-ck="meth"${cur===x.id?' checked':''}><span class="rad" aria-hidden="true"></span><span class="dmeth-l"><span class="dmeth-n">${esc(x.n)}</span>${x.dd?`<span class="dmeth-d">${esc(x.dd)}</span>`:''}<span class="dmeth-a">${esc(x.a)}</span></span><span class="dmeth-p"><b>${x.p?gbp(x.p):'FREE'}</b>${x.was?`<s>${gbp(x.was)}</s>`:''}</span></label></li>`).join('')}</ul></div>
+    <div class="mdl-ft"><button type="button" class="bd pri" data-ck="mclose">Done</button></div></div></div>`}
+function newPayment(t){const pid=payId();
+  const tiles=`<div class="co-tiles" role="radiogroup" aria-labelledby="ck-h-pm">${PMS().map(x=>{const on=pid===x.id;
+    return `<label class="co-tile${on?' on':''}"><input class="ck-in" type="radio" name="pay" id="ck-p-${x.id}" value="${x.id}" data-ck="pay"${on?' checked':''}>${x.lg==='card'?ic('card'):logo(x.lg)}${esc(x.l)}</label>`}).join('')}</div>`;
+  const card=pid==='card'?cardForm():'';
+  const code=S.code!==null&&S.code!=='';
+  const promoBody=(code?`<div class="msg msg--success"><i></i><div class="body"><span style="flex:1">Promo code ${esc(S.code||'WELCOME')} applied: £5.00 off</span><button type="button" class="x" data-ck="rmcode" aria-label="Remove promo code"></button></div></div>`:'')
+    +`<div class="promo"><label class="fld"><input id="ck-code" placeholder=" "><span class="lbl">Promo code or gift card</span></label><button type="button" class="bd sec">Apply</button></div>`;
+  const extrasSub=[S.protect&&'Package protection',S.charity&&'Charity round-up'].filter(Boolean).join(' · ')||'Optional';
+  const extras=chk('protect',S.protect,'Protect my package for <b>£3.99</b>: priority support if it’s lost, damaged or stolen')+chk('charity',S.charity,`Round up to <b>${gbp(t.pre+t.round)}</b> for British Heart Foundation`)
+    +`<p class="ck-fine">95% to British Heart Foundation (registered charity no. 296645) and 5% to Pennies (registered charity no. 1122489).</p>`;
+  return `<section class="ck-panel" aria-labelledby="ck-h-pay"><div class="ck-blk"><h2 class="ck-h1" id="ck-h-pay">Payment</h2><h3 class="ck-h2" id="ck-h-pm">Payment Method</h3>${tiles}${card}${chk('bill',S.bill!==false,'Use delivery address as billing address')}</div>
+    <div class="acc-set">${acc('promo','Add a promo code or gift card',promoBody,code?esc(S.code||'WELCOME')+' applied':'')}${acc('extras','Extras',extras,extrasSub)}</div></section>`}
+/* the conversion summary: items → Subtotal → Delivery (method + price) → each discount, named, red, minus → Order Total (+ saved once). Nothing after it but Pay + legal. */
+function newSummary(t){const me=t.me,r=(l,v,c)=>`<div class="ck-r${c?' '+c:''}"><dt>${l}</dt><dd>${v}</dd></div>`;
+  const rows=[r('Subtotal',gbp(t.sub)),r(`Delivery<small>${esc(me.n)}${me.via?` with ${esc(me.via)}`:''}</small>`,t.del?gbp(t.del):'FREE'),
+    t.mem?r(`${esc(t.m.name)}<small>12 months</small>`,gbp(t.mem)):'',t.dp?r(esc(t.dpName),gbp(t.dp)):'',
+    t.prot?r('Package protection',gbp(t.prot)):'',t.char?r('Charity round-up',gbp(t.char)):'',
+    ...t.disc.map(d=>r(esc(d.n),'−'+gbp(d.p),'ck-r--disc'))].join('');
+  return `<div class="ck-sum"><h2 class="ck-h2" id="ck-h-sum">Order Summary</h2><div class="ck-sum-items" role="list" aria-label="Items">${t.I.map(x=>`<div role="listitem">${line(x)}</div>`).join('')}</div>
+    <dl class="ck-rows" aria-labelledby="ck-h-sum">${rows}<div class="ck-tot"><dt>Order Total${t.saved?`<span class="ck-saved">You’ve saved ${gbp(t.saved)}</span>`:''}</dt><dd>${gbp(t.tot)}</dd></div></dl></div>`}
+function trust(){const L=(window.BAG_LIVE||{})[S.brand]||{},cards=(L.cards26||['visa','mastercard','amex','apple-pay','google-pay','paypal','klarna','clearpay']).filter(k=>S.brand==='debenhams'||k!=='payplus');
+  return `<div class="ck-trust"><ul><li>${ic('lock')}Secure, encrypted payment</li><li>${ic('return')}Return within 21 days</li></ul><div class="pay-opts" aria-hidden="true">${cards.map(k=>`<span class="pchip">${logo(k)}</span>`).join('')}</div></div>`}
+function newSide(t){return `<section class="ck-panel" aria-label="Order Summary">${newSummary(t)}<div class="ck-pay" data-ck-paybox>${payBtn(t)}${trust()}</div>${legal()}</section>`}
+function newPage(t){const d=desk(),main=express()+newDelivery(t)+newPayment(t);
+  return (d?`<main class="ck-pg"><div class="ck-wrap ck-cols"><div class="ck-main">${main}</div><aside class="ck-side" aria-label="Your order">${newSide(t)}</aside></div></main>`
+    :`<main class="ck-pg">${bagBar(t)}${main}${newSide(t)}</main>`
+     +(EXPORTING?'':`<div class="pdp-sticky is-on" data-ck-sticky>${payBtn(t)}</div>`))+methodModal(t)}
+
+/* ================= Order confirmation (Figma 6924:3137) ================= */
+function confirmPage(t){const me=t.me,pid=payId(),pm=(PMS().find(x=>x.id===pid)||{l:'Credit Card'});
+  const r=(l,v,c)=>`<div class="ck-r${c?' '+c:''}"><dt>${l}</dt><dd>${v}</dd></div>`;
+  const rows=[r('Subtotal',gbp(t.sub)),r(`Delivery<small>${esc(me.n)}</small>`,t.del?gbp(t.del):'FREE'),t.mem?r(esc(t.m.name),gbp(t.mem)):'',t.prot?r('Package protection',gbp(t.prot)):'',t.char?r('Charity round-up',gbp(t.char)):'',...t.disc.map(d=>r(esc(d.n),'−'+gbp(d.p),'ck-r--disc'))].join('');
+  return `<main class="ck-pg"><section class="ck-conf" aria-labelledby="ck-h-ty"><div class="ck-conf-hd"><h1 class="ck-h1" id="ck-h-ty">Thank You</h1><p class="ck-p"><b>Order Number:</b> DUX010559282</p>
+    <p class="ck-p">We sent an email to <b>jake.rayner@email.com</b> with your order confirmation and receipt</p><button type="button" class="bd sec" data-ck="continue">Continue shopping</button></div>
+    <div class="ck-blk"><div class="ck-conf-grid"><div><h3>Delivery Address</h3>${`<address>${ADDR.slice(1,5).map(esc).join('<br>')}</address>`}</div><div><h3>Billing Address</h3><address>${ADDR.slice(1,5).map(esc).join('<br>')}</address></div><div><h3>Payment Method</h3><p>${esc(pm.id==='card'?'Credit Card':pm.l)}</p></div></div></div>
+    <div class="ck-blk"><div class="bag-sec-hd">${ic('order')}<span class="bag-seller">Delivered by <b>${esc(FN[S.brand])}</b></span></div><p class="ck-p">${esc(arrive(me.days))} · ${esc(me.n)}</p>${t.I.map(line).join('')}</div>
+    <div class="ck-blk"><dl class="ck-rows" aria-label="Order Summary">${rows}<div class="ck-tot"><dt>Order Total${t.saved?`<span class="ck-saved">You saved ${gbp(t.saved)}</span>`:''}</dt><dd>${gbp(t.tot)}</dd></div></dl></div>
+  </section></main><footer data-ftr="${S.brand}"></footer>`}
+
+/* ================= render + protocol ================= */
+let FOCUS=null;
+function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
+  const t=sums();
+  document.getElementById('app').innerHTML=header()+(S.step==='confirm'?confirmPage(t):live()?livePage(t):newPage(t));
+  document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,S.brand));
+  if(FOCUS){const el=document.getElementById(FOCUS);if(el)el.focus({preventScroll:true});FOCUS=null}
+  watchPay();document.dispatchEvent(new CustomEvent('dg:render'))}
+/* sticky Pay bar (mobile): off while the Pay button in the summary is on screen */
+let IO;function watchPay(){if(IO)IO.disconnect();const box=document.querySelector('[data-ck-paybox]'),bar=document.querySelector('[data-ck-sticky]');if(!box||!bar||!window.IntersectionObserver)return;
+  IO=new IntersectionObserver(es=>es.forEach(e=>bar.classList.toggle('is-on',!e.isIntersecting)));IO.observe(box)}
+const set=(o,id)=>{Object.assign(S,o);FOCUS=id||null;const y=scrollY;render();scrollTo(0,y)};
+const fire=(n,d)=>document.dispatchEvent(new CustomEvent(n,{cancelable:true,detail:d||{}}));
+document.addEventListener('change',e=>{const t=e.target;if(!t.dataset||!t.dataset.ck)return;const a=t.dataset.ck;
+  if(a==='chk'){set({[t.dataset.k]:t.checked},t.id);return}
+  if(a==='meth'){set({meth:t.value},t.id);return}
+  if(a==='pay'){set({pay:t.value},t.id);return}
+  if(a==='tab'){set({tab:t.value},t.id);return}
+  if(a==='charity'){set({charity:t.value==='1'},t.id)}});
+document.addEventListener('click',e=>{const t=e.target.closest('[data-ck]');if(!t||t.matches('input'))return;const a=t.dataset.ck;e.preventDefault();
+  if(a==='bag'){set({bagOpen:!S.bagOpen});return}
+  if(a==='acc'){const o=Object.assign({},S.open||{});o[t.dataset.k]=!o[t.dataset.k];const id='ck-acch-'+t.dataset.k;t.id=id;set({open:o});const h=document.querySelector(`[data-ck="acc"][data-k="${t.dataset.k}"]`);if(h)h.focus({preventScroll:true});return}
+  if(a==='join'){set({addMem:!S.addMem});return}
+  if(a==='mopen'){set({mOpen:true});const x=document.querySelector('[data-ck-modal] input:checked');if(x)x.focus({preventScroll:true});return}
+  if(a==='mclose'){set({mOpen:false});const c=document.querySelector('[data-ck="mopen"]');if(c)c.focus({preventScroll:true});return}
+  if(a==='rmcode'){set({code:''});return}
+  if(a==='paynow'){if(t.dataset.v)S.pay=t.dataset.v;if(fire('dg:checkout-pay',{total:sums().tot,method:payId()}))set({step:'confirm',mOpen:false});scrollTo(0,0);return}
+  if(a==='continue'){fire('dg:continue-shopping');return}
+  if(a==='editbag'){fire('dg:edit-bag')}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.mOpen)set({mOpen:false})});
+render();
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const d=desk();if(d!==render.d){render.d=d;render()}},150)});render.d=desk();
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+document.addEventListener('click',e=>{if(e.target.closest('a[href="#"],button'))e.preventDefault()});
+</script>
+</body>
+</html>

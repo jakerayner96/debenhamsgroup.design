@@ -110,9 +110,9 @@ function page(){const B=view(),d=desk(),L=DG_bag.lines(B),n=DG_bag.count(B),oos=
   const title=`<h1 class="bag-title">Your Bag (${n})</h1>`;
   const dplusOn=window.BAG_LIVE&&(BAG_LIVE[S.brand]||{}).dplus;
   const dp=!d&&dplusOn&&on('dplus')?`<div class="bag-dp" data-slot="dplus">${V('deliver-plus',5)}</div>`:'';
-  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML(S.brand,L,d,{thresh:d?free:'',promo:d}):'';
+  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML(S.brand,L,d,{thresh:d?free:'',promo:d,clean:!!S.clean}):'';
   const main=d?`<main class="bag-pg"><div class="bag-wrap">${title}${banner}<div class="bag-cols"><div class="bag-col" data-slot="items">${secs}</div><div class="bag-side" data-slot="summary">${sum}</div></div></div></main>`
-    :`<main class="bag-pg"><div class="bag-head">${title}${window.DG_bagTopHTML?DG_bagTopHTML(S.brand,L,{after:banner+free}):''}</div>${secs}${dp}<div data-slot="summary">${sum}</div></main>`;
+    :`<main class="bag-pg"><div class="bag-head">${title}${window.DG_bagTopHTML?DG_bagTopHTML(S.brand,L,{after:banner+free,clean:!!S.clean}):''}</div>${secs}${dp}<div data-slot="summary">${sum}</div></main>`;
   return header()+main
     +(window.DG_pcarHTML&&on('recs')?`<section class="recs" data-slot="recs">${DG_pcarHTML({title:'You Might Also Like',per:4,round:S.brand==='plt',eager:EXPORTING,items:DG_feed(S.brand,5,10,3)})}</section>`:'')
     +`<footer data-ftr="${S.brand}"></footer>`}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><link rel="icon" href="/debenhamsgroup.design/assets/brands/favicon.svg?v=2" type="image/svg+xml"><link rel="icon" href="/debenhamsgroup.design/assets/brands/favicon-32.png?v=2" sizes="32x32"><link rel="apple-touch-icon" href="/debenhamsgroup.design/assets/brands/favicon-180.png?v=2"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../">
+<title>Home 2.0 · DS template</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* DS page template — Home 2.0 (16 Nov 2026, Conversion master). The personalised home from Figma "Homepage 2.0" (Hd0yRD6JgyyyJMWhWzFcNe):
+   header (header.js) · USP banners in calm mode (usp.js data-usp-calm: one row, one message, still) · the profile's module stack
+   (assets/ds/home2.js DG_h2HTML, data assets/ds/home2-profiles.js) · footer (footer.js).
+   in: ?s={"brand":…,"profile":"<profile id>"} — no profile = the brand's default home (brand-<slug>). Replaces templates/home.html (live captures) in the Conversion master. */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+footer[data-ftr]{margin-top:0}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/ds/header.js"></script>
+<script src="assets/ds/nav-live.js"></script>
+<script src="assets/ds/nav.js"></script>
+<script src="assets/ds/usp-live.js"></script>
+<script src="assets/ds/usp.js"></script>
+<script src="assets/ds/footer.js"></script>
+<script src="assets/ds/dplus-logos.js"></script>
+<script src="assets/ds/carousel.js"></script>
+<script src="assets/ds/ai-prompts.js"></script>
+<script src="assets/ds/toast.js"></script>
+<script src="assets/ds/export-masks.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script src="templates/feed.js"></script>
+<script src="assets/ds/home2.js"></script>
+<script src="assets/ds/home2-profiles.js"></script>
+<script>
+const q=new URLSearchParams(location.search);
+let S={brand:q.get('brand')||'debenhams',profile:q.get('profile')||''},EXPORTING=false;
+try{const s=q.get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
+const desk=()=>innerWidth>=1024;
+function profile(){const L=((window.DG_H2_PROFILES||{}).list)||[];
+  return L.find(p=>p.id===S.profile&&p.brand===S.brand)||L.find(p=>p.id==='brand-'+S.brand)||L.find(p=>p.brand===S.brand)||L[0]||{modules:[]}}
+function header(){const dev=desk()?'desktop':'mobile';
+  return `<header class="hd${desk()?' hd--desktop':''}${((window.DG_HEADER||{})[S.brand]||{}).inv?' hd--inv':''}" data-hd-brand="${S.brand}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(S.brand,'main',dev):''}</header><div data-usp-banners data-usp-calm="${S.uspLive?'off':'on'}" data-usp-auto="${EXPORTING?0:5}"></div>`}
+function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);
+  const P=profile();window.H2_PROFILE=P;
+  document.getElementById('app').innerHTML=header()+`<main data-slot="home">${window.DG_h2HTML?DG_h2HTML(P,{brand:S.brand,desk:desk(),eager:EXPORTING}):''}</main><footer data-ftr="${S.brand}"></footer>`;
+  if(window.DG_uspMount)DG_uspMount();
+  document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,S.brand));
+  window.DG_pcar&&DG_pcar(document);window.DG_h2Mount&&DG_h2Mount(document);
+  if(EXPORTING)document.querySelectorAll('.h2-mod.rv').forEach(m=>m.classList.add('in'));
+  document.dispatchEvent(new CustomEvent('dg:render'))}
+render();
+document.addEventListener('click',e=>{if(e.target.closest('a[href="#"]'))e.preventDefault()});
+let rz,lw=innerWidth;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if((lw>=1024)!==desk()){lw=innerWidth;render()}},150)});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+</script>
+</body>
+</html>
