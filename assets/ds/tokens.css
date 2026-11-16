@@ -12,7 +12,7 @@
 :root{
   /* text — body floor is Grey 5 (AA); Grey 4 and below never used for body text */
   --text-primary:#0F0F0F;--text-secondary:#767676;--text-disabled:#B5B5B5;--text-inverse:#FFF;
-  --text-error:#C90000; /* THE sale + error red, every fascia (Jake 23 Oct 2026: PLT's red everywhere for AA — 6.03:1 on white, 5.52:1 on Light Red #FFF2F2; was #D33F3F, 4.23:1 on Light Red) */--text-success:#1F7A25;--text-warning:#7A5800;
+  --text-error:#C90000; /* THE sale + error red, every fascia (Jake 23 Oct 2026: PLT's red everywhere for AA — 6.03:1 on white, 5.52:1 on Light Red #FFF2F2; was #D33F3F, 4.23:1 on Light Red) */--price-sale-dark:#FF5252; /* sale price on dark surfaces (email dark mode) — 6.0:1 on #0F0F0F, 4.9:1 on #242424 (AA). Figma Core price/sale-dark. 16 Nov 2026 */--text-success:#1F7A25;--text-warning:#7A5800;
   /* surface */
   --surface-sunken:#FAFAFA;--surface-raised:#FFF;--surface-inverse:#0F0F0F;--surface-overlay:rgba(0,0,0,.6);
   --surface-action-disabled:#E7E7E7;--surface-error:#FFF2F2;--surface-success:#EAF6EA;--surface-warning:#FFFBE6;
