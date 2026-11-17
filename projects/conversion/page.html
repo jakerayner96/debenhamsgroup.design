@@ -22,6 +22,7 @@
   if(!NEW[S.page])S.page='home';
   const now=S.ver!=='live',T=Object.assign({},S);
   if(S.page==='bag'&&now){T.clean=true;T.bagOff=['oos','qtyerr','dplus','member','xcover','taskrabbit','topup','samples','ts','rewards','gifts','sample','gift'].concat(S.bagOff||[])}
+  if(S.page==='pdp'&&now)T.dplusOff=true;   /* 2027: Deliver+ lives in checkout only (Jake 17 Nov) */
   if(S.page==='checkout')T.co=now?'new':'live';
   const sp=new URLSearchParams();sp.set('s',JSON.stringify(T));sp.set('brand',S.brand);if(S.page==='plp')sp.set('mode','new');if(S.profile)sp.set('profile',S.profile);
   history.replaceState(null,'',location.pathname+'?'+new URLSearchParams({s:JSON.stringify(S)}).toString());

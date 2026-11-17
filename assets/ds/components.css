@@ -289,6 +289,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .hd-icons button{width:38px;height:40px;display:grid;place-items:center;background:none;border:none;cursor:pointer;padding:0} /* production: 24 icon + 7px side padding, py-2 */
 .hd-icons img{width:var(--hd-icon,24px);height:var(--hd-icon,24px);display:block;object-fit:none} /* native glyph size inside the 24 box (bookmark 15×21, bag 20×23) — matches production, no optical fudge */
 .hd-icons img.favic{width:var(--hd-favic,24px);height:var(--hd-favic,24px)}
+/* .hd--compact (17 Nov 2026, Conversion master 2027): 20px header icons in 34px hit areas (was 24 in 38) — calmer chrome, closer to Nike / Zara / Vans. Glyphs scale to fit. */
+.hd--compact .hd-icons img,.hd--compact .hd-burger img,.hd--compact .hd-search img{width:20px;height:20px;object-fit:contain}
+.hd--compact .hd-icons button{width:34px}
 .hd-icons button:focus-visible,.hd-burger:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 /* desktop bar (≥1024): logo · centred pill search · icons */
 .hd-bar--desktop{height:88px;padding:16px var(--plp-margin,16px);max-width:2000px;margin:0 auto}
@@ -3008,7 +3011,7 @@ label.chk-row,label.rad-row,label.dmeth{cursor:pointer}
 .ck-line>div{display:flex;flex-direction:column;gap:2px;min-width:0;font-size:14px;line-height:20px}
 .ck-line b{font-weight:var(--w-strong)}.ck-line s{margin-left:var(--gap-1,4px)}
 .ck-line .bd.xs{flex:none}
-button.co-tile,label.co-tile{width:100%;cursor:pointer;font-family:var(--font-family-base);color:var(--text-primary)}
+button.co-tile,label.co-tile{width:100%;box-sizing:border-box;cursor:pointer;font-family:var(--font-family-base);color:var(--text-primary)}
 .co-tile img{height:20px;width:auto;display:block;flex:none}
 .co-tile.on,.co-tile:has(.ck-in:checked){border-color:var(--text-primary)}
 .co-tile:has(.ck-in:focus-visible),.ck-opt:has(.ck-in:focus-visible){outline:var(--border-w-focus,2px) solid var(--border-focus);outline-offset:2px}
@@ -3077,3 +3080,91 @@ button.co-tile,label.co-tile{width:100%;cursor:pointer;font-family:var(--font-fa
   .ck-conf{width:680px;max-width:calc(100% - 64px);margin:0 auto;padding:var(--gap-10,40px);border-radius:var(--radius-default)}
   .ck-conf-grid{grid-template-columns:repeat(3,1fr)}
 }
+/* ===== Checkout 2026 — the Checkout 2026 Figma file (17 Nov 2026, Conversion master) =====
+   Figma WChEtDPH0LcErdYFS9SESn: mobile Guest 1651:33726 + the latest Deliver+ variant 3996:169253 (14 Aug) · desktop Guest 2062:35273 / 2008:26331. Used by templates/checkout.html (co:"new").
+   Built from DS pieces (.chk-row/.chk, .co-tile(s), .promo/.fld, .msg--success, .acc-set, .pay, .bd.pay, .pchip, .bag-sec-hd) plus:
+   .c26           page on --surface-sunken; mobile = white sections 8 apart, desktop = .c26-cols 676 | 390 cards (radius 4, 24 in), 48 under the header
+   .c26-bag       mobile Your Bag bar: Your Bag (n) / Order Total: £ + chevron, expands to .c26-items; Express Checkout under it (.c26-xp)
+   .c26-or        labelled hairline divider · .c26-xp-row three express buttons 50 tall, equal width (PayPal silver · Apple Pay · Klarna pink)
+   .c26-card      white section (Delivery & Address, Make a Donation?, Payment, desktop Your Bag) · .c26-h 16 / 18 strong · .c26-h3 14 / 16 strong · .c26-p 14
+   .c26-row       line + "Change" (.c26-act: 12 strong link) · .c26-price strong price + struck was
+   .c26-dplus     Deliver+ checkout banner: "Your peace of mind, guaranteed" / "Add Deliver+ order protection +£3.90" / Learn more + checkbox on the right — opt-in, never pre-ticked
+   .c26-seel      Worry-Free Purchase® (Seel) on fascias without Deliver+ · .c26-cap 12 caption (the only grey)
+   .c26-cardp     card panel on --surface-sunken: .fld-stack fields (label above), card logos, two-up expiry / CVC with hints, Pay (navy, lock)
+   .c26-sum       Order Summary on --surface-sunken (mobile) / white (desktop): .c26-rows dl, .c26-disc Discounts link that expands the named lines, hairline, .c26-tot
+   .c26-item      bag line: 68×102 thumb (2:3) + brand - name / size / colour / price */
+.c26{background:var(--surface-sunken);display:flex;flex-direction:column;gap:8px;padding-bottom:24px;font-size:14px;color:var(--text-primary)}
+.c26 hr{border:0;border-top:1px solid var(--border-subtle);margin:0;width:100%}
+.c26-h{margin:0;font-size:16px;line-height:normal;font-weight:var(--w-strong)}
+.c26-h3{margin:0;font-size:14px;font-weight:var(--w-strong)}
+.c26-p{margin:0;font-size:14px;line-height:normal;font-weight:var(--w-regular)}
+.c26-cap{margin:0;font-size:12px;line-height:normal;color:var(--text-secondary);display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.c26-act{background:none;border:0;padding:0;font:inherit;font-size:12px;font-weight:var(--w-strong);color:var(--text-link);text-decoration:none;cursor:pointer;white-space:nowrap}
+.c26-p .c26-act,.c26 .chk-row .c26-act{font-size:inherit}
+.c26-card{background:var(--surface-raised);padding:16px;display:flex;flex-direction:column;gap:16px}
+.c26-bag{background:var(--surface-sunken);padding:12px 16px;display:flex;flex-direction:column;gap:16px;margin-bottom:-8px}
+.c26-bag-h{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:0;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.c26-bag-h>span{display:flex;flex-direction:column;gap:4px;font-weight:var(--w-regular)}.c26-bag-h b{font-weight:var(--w-strong)}
+.c26-bag-h img{width:16px;height:16px}
+.c26-or{display:flex;align-items:center;gap:16px;font-size:14px;font-weight:var(--w-regular)}.c26-or i{flex:1;height:1px;background:var(--border-subtle)}
+.c26-xp{display:flex;flex-direction:column;gap:16px}
+.c26-xp-row{display:flex;gap:8px}.c26-xp-row .pay{flex:1;min-width:0;border-radius:4px}
+.pay--klarna-pink{background:#FFA8CD}.pay--klarna-pink:active{background:#FF8FBE}.pay--klarna-pink img{height:33px}
+.c26-items{display:flex;flex-direction:column;gap:12px}
+.c26-item{display:flex;gap:16px;align-items:flex-start}
+.c26-item>img{width:68px;aspect-ratio:var(--ratio-product,2/3);object-fit:cover;flex:none;background:var(--surface-media)}
+.c26-item>div{display:flex;flex-direction:column;gap:8px;font-weight:var(--w-regular)}.c26-item p{margin:0}.c26-item b{font-weight:var(--w-strong)}
+.c26-ip{display:flex;gap:8px}.c26-ip .sale{color:var(--text-sale,#E90000)}.c26-ip s{font-weight:var(--w-regular)}
+.c26-rows{display:flex;flex-direction:column;gap:12px;margin:0}
+.c26-row{display:flex;align-items:center;gap:8px}.c26-row>div{flex:1;display:flex;flex-direction:column;gap:4px;font-weight:var(--w-regular)}.c26-row p{margin:0}.c26-row b{font-weight:var(--w-strong)}
+.c26-price{display:inline-flex;gap:4px;align-items:center}.c26-price b{font-weight:var(--w-strong)}.c26-price s{font-weight:var(--w-regular)}
+.c26-dplus{display:flex;align-items:center;gap:16px;position:relative;cursor:pointer}
+.c26-dplus>span:first-child{flex:1;display:flex;flex-direction:column;gap:2px}
+.c26-dplus b{font-weight:var(--w-strong)}.c26-dplus>span>b{font-size:14px;letter-spacing:-.01em}
+.c26-dplus small{font-size:12px;line-height:1.4;font-weight:var(--w-regular)}.c26-dplus .c26-act{line-height:1.4;align-self:flex-start}
+.c26-seel{display:flex;flex-direction:column;gap:8px}
+.c26-logos{display:flex;gap:24px;align-items:flex-start}.c26-logos img{width:auto;display:block}
+.c26 .promo .bd.sec{border-color:var(--text-link-disabled,#70BEB3);background:var(--surface-raised)}
+.c26 .msg{margin-top:-4px}
+.c26-gift{margin:-8px 0}.c26-gift .acc-h{height:44px;padding:0;font-size:14px;font-weight:var(--w-strong)}
+.c26 .co-tile{gap:8px;background:var(--surface-raised);border-color:var(--border-control,#B5B5B5);border-radius:4px;position:relative}
+.c26 .co-tile.on{border-color:var(--text-primary)}
+.c26 .co-tile img{height:20px}.c26-pl{font:500 15px/1 'Helvetica Neue',Arial,sans-serif;color:#2C2E2F}
+.c26-cardp{background:var(--surface-sunken);border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:16px}
+.c26-two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.c26-cards{gap:4px;margin-top:-8px}.c26-cards .pchip{flex:none;width:30px}
+.c26-cardp .bd.pay{width:100%;height:50px;font-size:16px}.c26-cardp .bd.pay img,.c26-card>.bd.pay img{width:20px;height:20px;filter:invert(1)}
+.c26-card>.bd.pay{width:100%;height:50px}
+.c26-bill{display:flex;flex-direction:column;gap:12px}
+.c26-sum{background:var(--surface-sunken);padding:16px;display:flex;flex-direction:column;gap:24px}
+.c26-sum .c26-h{font-size:14px}
+.c26-sum .c26-rows{gap:8px}
+.c26-r{display:flex;justify-content:space-between;align-items:center;gap:16px;font-weight:var(--w-regular)}.c26-r dt,.c26-r dd{margin:0}
+.c26-sum hr{margin:8px 0}
+.c26-tot{font-weight:var(--w-strong)}
+.c26-disc{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:0;font:inherit;font-weight:var(--w-strong);color:var(--text-link);cursor:pointer}.c26-disc img{width:12px;height:12px}
+.c26-disc-b{display:flex;flex-direction:column;gap:4px;align-items:flex-end;font-size:12px;margin-top:-4px}.c26-disc-b .c26-r{gap:16px;justify-content:flex-end}
+.c26-legal{display:flex;flex-direction:column;gap:12px}.c26-legal .chk-row{gap:16px;align-items:center}
+/* Field, label above (Figma "Input field" 50 tall, #B5B5B5 keyline, label 14 over it, optional icon + 12 hint) — the Checkout 2026 card form */
+.fld-stack{display:flex;flex-direction:column;gap:12px;min-width:0}
+.fld-stack>label{font-size:14px;font-weight:var(--w-regular)}
+.fld-stack-in{display:flex;align-items:center;gap:8px;height:50px;padding:0 16px;background:var(--surface-raised);border:1px solid var(--border-control,#B5B5B5);border-radius:4px;box-sizing:border-box}
+.fld-stack-in:focus-within{border-color:var(--border-focus)}
+.fld-stack-in input{flex:1;min-width:0;border:0;outline:0;background:none;font:inherit;font-size:14px;color:var(--text-primary)}
+.fld-stack-in img{width:24px;height:24px;flex:none}
+.fld-stack small{font-size:12px;margin-top:-4px}
+@media(min-width:1024px){
+  .c26{padding:48px 24px 48px;gap:0}
+  .c26-cols{display:flex;gap:24px;align-items:flex-start;justify-content:center}
+  .c26-main{width:676px;display:flex;flex-direction:column;gap:24px}
+  .c26-side{width:390px;flex:none;background:var(--surface-raised);border-radius:4px;overflow:hidden;position:sticky;top:24px}
+  .c26-card{padding:24px;border-radius:4px}
+  .c26-h,.c26-sum .c26-h{font-size:18px}.c26-h3{font-size:16px}
+  .c26-gift .acc-h{font-size:16px}
+  .c26-sum{background:var(--surface-raised);padding:24px}
+  .c26-sum .c26-rows{font-size:16px}.c26-side .c26-card{gap:24px}
+  .c26-side>hr{margin:0}
+}
+.c26 .co-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+.c26 .co-tile{min-width:0;overflow:hidden}
+.c26-cp{display:inline-flex;align-items:center;justify-content:center;background:#B2FCE3;border-radius:999px;padding:6px 8px;width:67px;box-sizing:border-box}.c26 .c26-cp img{height:auto;width:100%}

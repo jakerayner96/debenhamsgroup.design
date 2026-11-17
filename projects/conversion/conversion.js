@@ -14,6 +14,10 @@
   /* 2027: one calm USP row on every page (the audit counted 4 promo layers before content on live mobile) */
   const calm=()=>{if(M.ver==='live')return;const L=document.querySelectorAll('[data-usp-banners]');if(!L.length)return;let ch=0;
     L.forEach(el=>{if(el.dataset.uspPos==='above'){el.style.display='none';return}if(el.dataset.uspCalm!=='on'){el.dataset.uspCalm='on';ch=1}});if(ch&&window.DG_uspMount)DG_uspMount()};
+  /* 2027: compact header icons (DS .hd--compact) and no Deliver+ outside checkout — footer links included (Jake 17 Nov) */
+  const tidy=()=>{if(M.ver==='live')return;document.querySelectorAll('header.hd,.hd').forEach(h=>{if(!h.classList.contains('hd--checkout'))h.classList.add('hd--compact')});
+    if(M.page!=='checkout')document.querySelectorAll('footer a,footer li,[data-ftr] a').forEach(a=>{if(/deliver\+/i.test(a.textContent)&&a.children.length<2)(a.closest('li')||a).remove()})};
+  document.addEventListener('dg:render',()=>setTimeout(tidy));addEventListener('load',()=>setTimeout(tidy,40));setTimeout(tidy,350);
   document.addEventListener('dg:render',()=>setTimeout(calm));addEventListener('load',()=>setTimeout(calm,30));setTimeout(calm,300);
   /* page fade-in: no white flash between pages */
   try{const st=document.createElement('style');st.textContent='@media(prefers-reduced-motion:no-preference){body{animation:cvIn .24s cubic-bezier(.2,0,0,1)}}@keyframes cvIn{from{opacity:0;transform:translateY(6px)}}';document.head.appendChild(st)}catch(e){}

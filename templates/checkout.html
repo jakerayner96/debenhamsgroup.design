@@ -90,12 +90,12 @@ const payId=()=>S.pay!==undefined?S.pay:(live()?null:'card');
 function sums(){const I=items(),m=memb(),me=method();
   const sub=I.reduce((a,x)=>a+pn(x.price)*x.qty,0),mark=I.reduce((a,x)=>a+(x.was?(pn(x.was)-pn(x.price))*x.qty:0),0);
   const disc=[{n:`Enjoy 20% Off ${I[0].brand}`,p:Math.round(pn(I[0].price)*0.2)}];
-  if(S.code!==null&&S.code!==''){disc.push({n:`Promo code ${S.code||'WELCOME'}`,p:500})}
+  if(live()?(S.code!==null&&S.code!==''):!!S.code){disc.push({n:`Promo code ${S.code||'WELCOME'}`,p:500})}
   const del=mprice(me),mem=memAdded()&&m?m.price:0;
-  const L=(window.BAG_LIVE||{})[S.brand]||{},dp=S.dplus&&window.DG_hasDplus&&DG_hasDplus(S.brand)&&L.dplus?Math.round((L.dprice||2.99)*100):0;
-  const prot=S.protect?399:0,dsum=disc.reduce((a,d)=>a+d.p,0);
+  const L=(window.BAG_LIVE||{})[S.brand]||{},dpUnit=live()?Math.round((L.dprice||2.99)*100):390,dp=S.dplus&&window.DG_hasDplus&&DG_hasDplus(S.brand)&&L.dplus?dpUnit:0;
+  const wfUnit=Math.round(sub*0.04),prot=S.protect?(live()?399:wfUnit):0,dsum=disc.reduce((a,d)=>a+d.p,0);
   const pre=sub-dsum+del+mem+dp+prot,round=Math.ceil(pre/100)*100-pre||100,char=S.charity?round:0;
-  return {I,sub,mark,disc,dsum,del,me,mem,m,dp,dpName:L.dplus,prot,round,char,pre,tot:pre+char,saved:mark+dsum,n:I.reduce((a,x)=>a+x.qty,0)}}
+  return {dpUnit,wfUnit,I,sub,mark,disc,dsum,del,me,mem,m,dp,dpName:L.dplus,prot,round,char,pre,tot:pre+char,saved:mark+dsum,n:I.reduce((a,x)=>a+x.qty,0)}}
 
 /* ---- shared pieces ---- */
 function header(){const dev=desk()?'desktop':'mobile';
@@ -151,18 +151,72 @@ function livePage(t){const d=desk();
   return d?`<main class="ck-pg"><div class="ck-wrap ck-cols"><div class="ck-main">${liveDelivery(t)}${livePayment(t)}</div><aside class="ck-side" aria-label="Your order">${liveSide(t)}</aside></div></main>`
     :`<main class="ck-pg">${bagBar(t)}${liveDelivery(t)}${livePayment(t)}</main>`}
 
-/* ================= NEW: the conversion checkout ================= */
-function express(){const L=(window.BAG_LIVE||{})[S.brand]||{},w=L.wallets||[];
-  const b=[`<button type="button" class="pay pay--paypal" data-ck="paynow" data-v="paypal"><img src="${PM}paypal-wordmark.svg" alt="PayPal"></button>`,
+/* ================= NEW: Checkout 2026 — the Checkout 2026 Figma file (WChEtDPH0LcErdYFS9SESn), 17 Nov 2026 =================
+   mobile = NEW CHECKOUT 2026 - Mobile & Flows (1626:18467, Guest 1651:33726) with the latest Deliver+ variant (Unlimited/Deliver+/Unlimited+ 14.08.26, 3996:169253)
+   desktop = NEW CHECKOUT 2026 - Desktop (Guest 2062:35273, "Name And Delivery Complete, Code Applied" 2008:26331)
+   Order: Your Bag (n) + Order Total + Express Checkout → Arrives by / method / Change · name + address / Change → Deliver+ order protection (opt-in, one line)
+   → Make a Donation? (Pennies) → Payment (promo · Redeem Gift Card · 8 tiles · card panel + Pay · Billing Address) → Order Summary (Discounts expands) → consent + legal.
+   Desktop: two cards columns 676 | 390 — left Delivery & Address, Pennies, Payment; right Your Bag (items + Express Checkout) then Order Summary. */
+const C26_IMG='assets/ds/img/checkout/';
+function c26Express(){const L=(window.BAG_LIVE||{})[S.brand]||{},w=L.wallets||['paypal','apple','klarna'];
+  const b=[`<button type="button" class="pay pay--silver" data-ck="paynow" data-v="paypal"><img src="${PM}paypal-wordmark.svg" alt="PayPal" style="height:20px"></button>`,
     w.includes('apple')?`<button type="button" class="pay pay--apple" data-ck="paynow" data-v="apple"><img src="${PM}applepay-onblack.svg" alt="Apple Pay"></button>`:'',
-    w.includes('klarna')?`<button type="button" class="pay pay--klarna" data-ck="paynow" data-v="klarna"><img src="${PM}klarna-badge.svg" alt="Klarna"></button>`
-      :`<button type="button" class="pay pay--paylater" data-ck="paynow" data-v="paylater"><img src="${PM}paypal-monogram.png" alt="" aria-hidden="true">Pay Later</button>`].filter(Boolean);
-  return `<section class="ck-panel" aria-label="Express Checkout"><div class="ck-blk"><div class="ck-or" aria-hidden="true">Express Checkout</div><div class="ck-xp">${b.join('')}</div></div></section>`}
-function newDelivery(t){const m=t.m,me=t.me,p=t.del;
-  const pill=S.member&&m?`<span class="mpill"><i></i><b>${esc(m.pill)}</b><span>Active</span></span>`:'';
-  const methLine=`<div class="ck-line"><div><b>${esc(arrive(me.days))}</b><span>${esc(me.n)}${me.via?` with ${esc(me.via)}`:''} · <b>${p?gbp(p):'FREE'}</b>${!p&&me.was&&!me.via&&!S.member?`<s>${gbp(me.was)}</s>`:''}</span></div><button type="button" class="bd xs" data-ck="mopen" aria-haspopup="dialog">Change</button></div>`;
-  const addrLine=`<div class="ck-line"><div><b>${esc(ADDR[0])}</b><span>${esc(ADDR.slice(1,5).join(', '))}</span></div><button type="button" class="bd xs">Change</button></div>`;
-  return `<section class="ck-panel" aria-labelledby="ck-h-del"><div class="ck-blk"><div class="ck-hd"><h2 class="ck-h1" id="ck-h-del">Delivery</h2>${pill}</div><div class="ck-lines">${methLine}${addrLine}</div></div></section>`}
+    w.includes('klarna')?`<button type="button" class="pay pay--klarna-pink" data-ck="paynow" data-v="klarna"><img src="${C26_IMG}klarna-word.svg" alt="Klarna"></button>`
+      :`<button type="button" class="pay pay--silver" data-ck="paynow" data-v="paylater"><img src="${PM}paypal-monogram.png" alt="" aria-hidden="true" style="height:18px">Pay Later</button>`].filter(Boolean);
+  return `<div class="c26-xp"><div class="c26-or" aria-hidden="true"><i></i><span>Express Checkout</span><i></i></div><div class="c26-xp-row">${b.join('')}</div></div>`}
+const c26Price=(p,was)=>`<span class="c26-price"><b>${p?gbp(p):'FREE'}</b>${was&&was>p?`<s>${gbp(was)}</s>`:''}</span>`;
+/* mobile top: Your Bag bar (collapsible) with Express Checkout under it */
+function c26Bag(t){const o=!!S.bagOpen;
+  return `<section class="c26-bag" aria-label="Your Bag"><button type="button" class="c26-bag-h" data-ck="bag" aria-expanded="${o}" aria-controls="c26-bag-b"><span><b>Your Bag (${t.n})</b><span>Order Total: <b>${gbp(t.tot)}</b></span></span><img src="${LIB}down.svg" alt="" aria-hidden="true"${o?' style="transform:rotate(180deg)"':''}></button>
+    ${o?`<div class="c26-items" id="c26-bag-b">${c26Items(t)}</div>`:''}${c26Express()}</section>`}
+function c26Items(t){return `<div class="bag-sec-hd">${ic('order')}<span class="bag-seller">Delivered by <b>${esc(FN[S.brand])}</b></span></div>${t.I.map(x=>`<div class="c26-item"><img src="${esc(x.img)}" alt="" loading="${EXPORTING?'eager':'lazy'}"><div><p><b>${esc(x.brand)}</b> - ${esc(x.name)}</p><p>${esc(x.size)} / ${esc(x.colour)}${x.qty>1?` · Qty ${x.qty}`:''}</p><p class="c26-ip">${x.was?`<b class="sale">${esc(x.price)}</b><s>${esc(x.was)}</s>`:`<b>${esc(x.price)}</b>`}</p></div></div>`).join('')}`}
+/* Delivery & Address (pre-populated) + the Deliver+ checkout banner (14 Aug latest variant) — never pre-ticked */
+function c26Delivery(t){const me=t.me,L=(window.BAG_LIVE||{})[S.brand]||{},hasD=window.DG_hasDplus?DG_hasDplus(S.brand)&&!!L.dplus:!!L.dplus;
+  const meth=`<div class="c26-row"><div><p>${esc(me.n)}${me.via?` with ${esc(me.via)}`:''}</p>${c26Price(t.del,me.via||S.member?0:me.was)}</div><button type="button" class="c26-act" data-ck="mopen">Change</button></div>`;
+  const addr=`<div class="c26-row"><div><p><b>${esc(ADDR[0])}</b></p><p>${esc(ADDR.slice(1,5).join(', '))}</p></div><button type="button" class="c26-act">Change</button></div>`;
+  const prot=hasD?`<label class="c26-dplus"><span><b>Your peace of mind, guaranteed</b><small>Add Deliver+ order protection <b>+${gbp(t.dpUnit)}</b></small><a href="#" class="c26-act">Learn more</a></span><input class="ck-in" type="checkbox" id="ck-dplus" data-ck="chk" data-k="dplus"${S.dplus?' checked':''}><span class="chk" aria-hidden="true"></span></label>`
+    :`<div class="c26-seel">${chk('protect',S.protect,`<b>Worry-Free Purchase®</b> for ${gbp(t.wfUnit)}`)}<p class="c26-cap">Extend your return window to 35 days and get a full refund if the order doesn’t arrive as described, including loss &amp; damage in transit.</p><p class="c26-cap">Powered by <img src="${C26_IMG}seel.png" alt="Seel" height="16"> <a href="#" class="c26-act">What’s Covered?</a></p></div>`;
+  return `<section class="c26-card" aria-labelledby="c26-h-del"><h2 class="c26-h" id="c26-h-del">${esc(arrive(me.days))}</h2><div class="c26-rows">${meth}<hr>${addr}</div>${prot}</section>`}
+function c26Pennies(t){return `<section class="c26-card" aria-labelledby="c26-h-don"><h2 class="c26-h" id="c26-h-don">Make a Donation?</h2>
+  <p class="c26-p">Change lives with just <b>${gbp(t.round)}!</b> Your support will help British Heart Foundation do amazing things!</p>
+  ${chk('charity',S.charity,`Yes, round up my total to <b>${gbp(t.pre+t.round)}</b>`)}
+  <p class="c26-cap">Every penny you give goes to charity: 95% to British Heart Foundation (registered charity no. 296645) and 5% goes to Pennies (registered charity no. 1122489)</p>
+  <div class="c26-logos"><img src="${C26_IMG}pennies.png" alt="Pennies" height="26"><img src="${C26_IMG}bhf.png" alt="Proud to support British Heart Foundation" height="31"></div></section>`}
+/* payment tiles: logo-only tiles as Figma (Card = icon + label, Pay Later = monogram + label) */
+function c26Tile(x){const L={card:`${ic('card')}<span>Card</span>`,apple:`<img src="${PM}applepay-onwhite.svg" alt="Apple Pay" style="height:20px">`,
+  paypal:`<img src="${PM}paypal-wordmark.svg" alt="PayPal" style="height:18px">`,paylater:`<img src="${PM}paypal-monogram.png" alt="" aria-hidden="true" style="height:20px"><span class="c26-pl">Pay Later</span>`,
+  payplus:`<img src="${C26_IMG}debenhamspay.svg" alt="DebenhamsPay+" style="height:16px">`,gpay:`<img src="${PM}gpay-word-long.svg" alt="Google Pay" style="height:20px">`,
+  klarna:`<img src="${PM}klarna-badge.svg" alt="Klarna" style="height:22px">`,clearpay:`<span class="c26-cp"><img src="${PM}clearpay-lockup-mini.svg" alt="Clearpay"></span>`}[x.id]||esc(x.l);
+  const on=payId()===x.id;return `<label class="co-tile${on?' on':''}"><input class="ck-in" type="radio" name="pay" id="ck-p-${x.id}" value="${x.id}" data-ck="pay"${on?' checked':''} aria-label="${esc(x.l)}">${L}</label>`}
+const C26_ORDER=['card','apple','paypal','paylater','payplus','gpay','klarna','clearpay'];
+function c26Payment(t){const pid=payId(),P=PMS().sort((a,b)=>C26_ORDER.indexOf(a.id)-C26_ORDER.indexOf(b.id));
+  const code=S.code!==null&&S.code!==''&&S.code!==undefined;
+  const promo=`<div class="promo"><label class="fld${code?' fld--filled':''}"><input id="ck-code" placeholder=" " value="${code?esc(S.code):''}"><span class="lbl">Enter promo code...</span></label><button type="button" class="bd sec" data-ck="apply">Apply</button></div>`
+    +(code?`<div class="msg msg--success"><i></i><div class="body">${ic('tick-circle-outline')}<span style="flex:1"><b>${esc(S.code)}</b> applied</span><button type="button" class="x" data-ck="rmcode" aria-label="Remove ${esc(S.code)}">${ic('close-12')}</button></div></div>`:'');
+  const gift=acc('gift','Redeem Gift Card',`<div class="promo"><label class="fld"><input id="ck-gc" inputmode="numeric" placeholder=" "><span class="lbl">Gift card number</span></label><button type="button" class="bd sec">Apply</button></div>`);
+  const L=(window.BAG_LIVE||{})[S.brand]||{},cards=['visa','mastercard','amex','maestro','visa-electron'];
+  const f=(id,l,hint,o)=>`<div class="fld-stack"><label for="${id}">${l}</label><span class="fld-stack-in"><input id="${id}" ${o||''}>${hint&&hint.icon?ic('card'):''}</span>${hint&&hint.t?`<small>${hint.t}</small>`:''}</div>`;
+  const card=pid==='card'?`<div class="c26-cardp">${f('ck-name','Name on card',null,'autocomplete="cc-name"')}${f('ck-cc','Card Number',{icon:1},'inputmode="numeric" autocomplete="cc-number"')}
+      <div class="pay-opts c26-cards" aria-hidden="true">${cards.map(k=>`<span class="pchip">${logo(k)}</span>`).join('')}</div>
+      <div class="c26-two">${f('ck-exp','Expiry Date',{icon:1,t:'Front of card in MM/YY format'},'inputmode="numeric" autocomplete="cc-exp"')}${f('ck-cvc','Security Code',{icon:1,t:'3 digits on back of card'},'inputmode="numeric" autocomplete="cc-csc"')}</div>
+      <button type="button" class="bd pay" data-ck="paynow">${ic('lock-fill')}Pay</button></div>`
+    :pid?`<button type="button" class="bd pay" data-ck="paynow">${ic('lock-fill')}Continue with ${esc((P.find(x=>x.id===pid)||{}).l||'')}</button>`:'';
+  return `<section class="c26-card" aria-labelledby="c26-h-pay"><h2 class="c26-h" id="c26-h-pay">Payment</h2>${promo}<div class="acc-set c26-gift">${gift}</div>
+    <div class="co-tiles" role="radiogroup" aria-label="Payment method">${P.map(c26Tile).join('')}</div>${card}
+    <div class="c26-bill"><h3 class="c26-h3">Billing Address</h3>${chk('bill',S.bill!==false,'Use delivery address as billing address')}</div></section>`}
+/* Order Summary — Subtotal · Delivery · opt-ins · Discounts (link, expands to the named lines) · hairline · Order Total; then consent + legal */
+function c26Summary(t){const r=(l,v,c)=>`<div class="c26-r${c?' '+c:''}"><dt>${l}</dt><dd>${v}</dd></div>`,o=!!S.discOpen;
+  const rows=[r('Subtotal',gbp(t.sub)),r('Delivery',c26Price(t.del,t.me.via||S.member?0:t.me.was)),
+    t.dp?r('Deliver+ order protection',gbp(t.dp)):'',t.prot?r('Worry-Free Purchase®',gbp(t.prot)):'',t.mem?r(esc(t.m.name),gbp(t.mem)):'',t.char?r('Donation',gbp(t.char)):''].join('');
+  const disc=t.dsum?`<div class="c26-r"><dt><button type="button" class="c26-disc" data-ck="disc" aria-expanded="${o}" aria-controls="c26-disc-b">Discounts <img src="${LIB}down.svg" alt="" aria-hidden="true"${o?' style="transform:rotate(180deg)"':''}></button></dt><dd>-${gbp(t.dsum)}</dd></div>
+    ${o?`<div id="c26-disc-b" class="c26-disc-b">${t.disc.map(d=>r(esc(d.n),'-'+gbp(d.p))).join('')}</div>`:''}`:'';
+  return `<section class="c26-sum" aria-labelledby="c26-h-sum"><h2 class="c26-h" id="c26-h-sum">Order Summary</h2><dl class="c26-rows">${rows}${disc}<hr><div class="c26-r c26-tot"><dt>Order Total</dt><dd>${gbp(t.tot)}</dd></div></dl>
+    <div class="c26-legal">${chk('mkt',S.mkt!==false,`We will share our latest offers, promotions and collections via email and SMS from ${esc(FN[S.brand])} and our <a href="#" class="c26-act">family of brands</a> unless you untick this box.`)}
+    <p class="c26-p">By continuing I confirm that I am over the age of 18 and by entering my email address, I consent to receive an automated one-time verification code from ${esc(FN[S.brand])} at the phone number associated with my account. Message and data rates may apply.</p>
+    <p class="c26-p">We will use your information in accordance with our <a href="#" class="c26-act">Terms of use</a> and <a href="#" class="c26-act">Privacy policy</a>.</p></div></section>`}
+function newPage(t){const d=desk(),left=c26Delivery(t)+c26Pennies(t)+c26Payment(t);
+  return (d?`<main class="c26"><div class="c26-cols"><div class="c26-main">${left}</div><aside class="c26-side" aria-label="Your order"><section class="c26-card" aria-labelledby="c26-h-bag"><h2 class="c26-h" id="c26-h-bag">Your Bag (${t.n})</h2>${c26Items(t)}${c26Express()}</section><hr>${c26Summary(t)}</aside></div></main>`
+    :`<main class="c26">${c26Bag(t)}${left}${c26Summary(t)}</main>`)+methodModal(t)}
 /* the delivery-method modal: DS modal on the delivery-options layer — slide up on phones, small centred dialog on desktop */
 function methodModal(t){if(!S.mOpen)return '';const m=t.m,d=desk(),lay=d?'mdl--sm':'mdl--up';
   const rows=[...(m&&!S.member?[{id:'mem',n:m.name,dd:'Unlimited Next Day Delivery for a year',a:arrive(1),p:m.price}]:[]),...METH.map(x=>({id:x.id,n:x.n,a:arrive(x.days),p:mprice(x),was:!mprice(x)&&!S.member&&!memAdded()?x.was:0}))];
@@ -171,33 +225,6 @@ function methodModal(t){if(!S.mOpen)return '';const m=t.m,d=desk(),lay=d?'mdl--s
     <div class="modal-hd"><div class="mt"><span id="ck-mt">Delivery Method</span>${S.member&&m?`<span class="mpill"><i></i><b>${esc(m.pill)}</b><span>Active</span></span>`:''}</div><button type="button" class="modal-x" data-ck="mclose" aria-label="Close"></button></div>
     <div class="mdl-bd"><ul class="dmeth-list" role="radiogroup" aria-labelledby="ck-mt">${rows.map(x=>`<li><label class="dmeth"><input class="ck-in" type="radio" name="meth" id="ck-m-${x.id}" value="${x.id}" data-ck="meth"${cur===x.id?' checked':''}><span class="rad" aria-hidden="true"></span><span class="dmeth-l"><span class="dmeth-n">${esc(x.n)}</span>${x.dd?`<span class="dmeth-d">${esc(x.dd)}</span>`:''}<span class="dmeth-a">${esc(x.a)}</span></span><span class="dmeth-p"><b>${x.p?gbp(x.p):'FREE'}</b>${x.was?`<s>${gbp(x.was)}</s>`:''}</span></label></li>`).join('')}</ul></div>
     <div class="mdl-ft"><button type="button" class="bd pri" data-ck="mclose">Done</button></div></div></div>`}
-function newPayment(t){const pid=payId();
-  const tiles=`<div class="co-tiles" role="radiogroup" aria-labelledby="ck-h-pm">${PMS().map(x=>{const on=pid===x.id;
-    return `<label class="co-tile${on?' on':''}"><input class="ck-in" type="radio" name="pay" id="ck-p-${x.id}" value="${x.id}" data-ck="pay"${on?' checked':''}>${x.lg==='card'?ic('card'):logo(x.lg)}${esc(x.l)}</label>`}).join('')}</div>`;
-  const card=pid==='card'?cardForm():'';
-  const code=S.code!==null&&S.code!=='';
-  const promoBody=(code?`<div class="msg msg--success"><i></i><div class="body"><span style="flex:1">Promo code ${esc(S.code||'WELCOME')} applied: £5.00 off</span><button type="button" class="x" data-ck="rmcode" aria-label="Remove promo code"></button></div></div>`:'')
-    +`<div class="promo"><label class="fld"><input id="ck-code" placeholder=" "><span class="lbl">Promo code or gift card</span></label><button type="button" class="bd sec">Apply</button></div>`;
-  const extrasSub=[S.protect&&'Package protection',S.charity&&'Charity round-up'].filter(Boolean).join(' · ')||'Optional';
-  const extras=chk('protect',S.protect,'Protect my package for <b>£3.99</b>: priority support if it’s lost, damaged or stolen')+chk('charity',S.charity,`Round up to <b>${gbp(t.pre+t.round)}</b> for British Heart Foundation`)
-    +`<p class="ck-fine">95% to British Heart Foundation (registered charity no. 296645) and 5% to Pennies (registered charity no. 1122489).</p>`;
-  return `<section class="ck-panel" aria-labelledby="ck-h-pay"><div class="ck-blk"><h2 class="ck-h1" id="ck-h-pay">Payment</h2><h3 class="ck-h2" id="ck-h-pm">Payment Method</h3>${tiles}${card}${chk('bill',S.bill!==false,'Use delivery address as billing address')}</div>
-    <div class="acc-set">${acc('promo','Add a promo code or gift card',promoBody,code?esc(S.code||'WELCOME')+' applied':'')}${acc('extras','Extras',extras,extrasSub)}</div></section>`}
-/* the conversion summary: items → Subtotal → Delivery (method + price) → each discount, named, red, minus → Order Total (+ saved once). Nothing after it but Pay + legal. */
-function newSummary(t){const me=t.me,r=(l,v,c)=>`<div class="ck-r${c?' '+c:''}"><dt>${l}</dt><dd>${v}</dd></div>`;
-  const rows=[r('Subtotal',gbp(t.sub)),r(`Delivery<small>${esc(me.n)}${me.via?` with ${esc(me.via)}`:''}</small>`,t.del?gbp(t.del):'FREE'),
-    t.mem?r(`${esc(t.m.name)}<small>12 months</small>`,gbp(t.mem)):'',t.dp?r(esc(t.dpName),gbp(t.dp)):'',
-    t.prot?r('Package protection',gbp(t.prot)):'',t.char?r('Charity round-up',gbp(t.char)):'',
-    ...t.disc.map(d=>r(esc(d.n),'−'+gbp(d.p),'ck-r--disc'))].join('');
-  return `<div class="ck-sum"><h2 class="ck-h2" id="ck-h-sum">Order Summary</h2><div class="ck-sum-items" role="list" aria-label="Items">${t.I.map(x=>`<div role="listitem">${line(x)}</div>`).join('')}</div>
-    <dl class="ck-rows" aria-labelledby="ck-h-sum">${rows}<div class="ck-tot"><dt>Order Total${t.saved?`<span class="ck-saved">You’ve saved ${gbp(t.saved)}</span>`:''}</dt><dd>${gbp(t.tot)}</dd></div></dl></div>`}
-function trust(){const L=(window.BAG_LIVE||{})[S.brand]||{},cards=(L.cards26||['visa','mastercard','amex','apple-pay','google-pay','paypal','klarna','clearpay']).filter(k=>S.brand==='debenhams'||k!=='payplus');
-  return `<div class="ck-trust"><ul><li>${ic('lock')}Secure, encrypted payment</li><li>${ic('return')}Return within 21 days</li></ul><div class="pay-opts" aria-hidden="true">${cards.map(k=>`<span class="pchip">${logo(k)}</span>`).join('')}</div></div>`}
-function newSide(t){return `<section class="ck-panel" aria-label="Order Summary">${newSummary(t)}<div class="ck-pay" data-ck-paybox>${payBtn(t)}${trust()}</div>${legal()}</section>`}
-function newPage(t){const d=desk(),main=express()+newDelivery(t)+newPayment(t);
-  return (d?`<main class="ck-pg"><div class="ck-wrap ck-cols"><div class="ck-main">${main}</div><aside class="ck-side" aria-label="Your order">${newSide(t)}</aside></div></main>`
-    :`<main class="ck-pg">${bagBar(t)}${main}${newSide(t)}</main>`
-     +(EXPORTING?'':`<div class="pdp-sticky is-on" data-ck-sticky>${payBtn(t)}</div>`))+methodModal(t)}
 
 /* ================= Order confirmation (Figma 6924:3137) ================= */
 function confirmPage(t){const me=t.me,pid=payId(),pm=(PMS().find(x=>x.id===pid)||{l:'Credit Card'});
@@ -236,6 +263,8 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-ck]');if(!
   if(a==='mopen'){set({mOpen:true});const x=document.querySelector('[data-ck-modal] input:checked');if(x)x.focus({preventScroll:true});return}
   if(a==='mclose'){set({mOpen:false});const c=document.querySelector('[data-ck="mopen"]');if(c)c.focus({preventScroll:true});return}
   if(a==='rmcode'){set({code:''});return}
+  if(a==='disc'){set({discOpen:!S.discOpen});return}
+  if(a==='apply'){const v=(document.getElementById('ck-code')||{}).value;set({code:(v||'FREEDEL').trim().toUpperCase()});return}
   if(a==='paynow'){if(t.dataset.v)S.pay=t.dataset.v;if(fire('dg:checkout-pay',{total:sums().tot,method:payId()}))set({step:'confirm',mOpen:false});scrollTo(0,0);return}
   if(a==='continue'){fire('dg:continue-shopping');return}
   if(a==='editbag'){fire('dg:edit-bag')}});

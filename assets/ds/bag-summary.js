@@ -66,6 +66,8 @@ window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk,o){o=
   const pr=o.promo===false?'':promo,th=o.thresh?`<div class="bs-th">${o.thresh}</div>`:'';
   return `<div class="bs${desk?' bs--d':' bs--m'}${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="${vars}">${desk?`<div class="bs-card">${th}${sum}${pay}</div>${pr}`:`${pr}${pr?'<div class="bs-hr"></div>':''}<div class="bs-card bs-flat">${sum}${pay}</div>`}</div>`;
 };
-window.DG_bagTopHTML=window.renderBagTop=function(brand,items,o){o=o||{};const B=window.BAG_LIVE;let c=B[brand]||B.debenhams;if(o.clean)c=Object.assign({},c,{cta:['Checkout securely'],dplus:null});const t=sums(c,items||[]);
+window.DG_bagTopHTML=window.renderBagTop=function(brand,items,o){o=o||{};const B=window.BAG_LIVE;let c=B[brand]||B.debenhams;if(o.clean)c=Object.assign({},c,{cta:['Checkout securely'],dplus:null,wf:null});const t=sums(c,items||[]);
+  /* 17 Nov 2026 fix: the strip shows the SAME Order Total as the summary below it (Bag 2026: + delivery + Worry-Free) — it showed goods only, so the two totals disagreed */
+  if(!o.live){const dn=c.delNow!=null?c.delNow:c.del,wf=c.wf?Math.round(t.sub*c.wfRate*100)/100:0;t.goods=t.sub-t.disc+dn+wf}
   return `<div class="bs bs-top${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}"><div class="bs-ot">Order Total: <b>${gbp(t.goods)}</b></div>${o.after||''}<button type="button" class="bs-cta">${esc(c.cta[0])}</button></div>`};
 })();

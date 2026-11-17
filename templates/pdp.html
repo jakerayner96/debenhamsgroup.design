@@ -121,7 +121,7 @@ function bundle(P){if(!window.DG_bundle)return '';
 function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.debenhams,d=desk();
   const crumbs=P.crumbs.map((c,i)=>i<P.crumbs.length-1?`<a href="#">${esc(c)}</a><span class="sep">/</span>`:`<span class="cur">${esc(c)}</span>`).join('');
   const bnpl=strip(V('bnpl',0)).replace(/£23\.33/g,'£'+(num(P.price)/3).toFixed(2)).replace(/£17\.50/g,'£'+(num(P.price)/4).toFixed(2));   /* DS BNPL (Figma 2969:10048): logos + legal + See more → per-provider rows */
-  const dplus=DPLUS.includes(S.brand)?strip(V('deliver-plus',d?1:0)):'';
+  const dplus=DPLUS.includes(S.brand)&&!S.dplusOff?strip(V('deliver-plus',d?1:0)):'';   /* {dplusOff:true} drops the Deliver+ row (Conversion master 2027: Deliver+ is offered in checkout only, 17 Nov 2026) */
   /* chip treatment per fascia from tokens --ai-tag-* (PLT: garnet square, 12 uppercase white, left-aligned — vto-prototype, 27 Oct 2026).
      Virtual Stylist (hanger), centred: between the gallery and the title on mobile, under the gallery on desktop (Jake 22 Oct 2026, from live KM).
      Shop Similar is a Google feature not launched yet: it stays in the DS (catalogue AI tag chip) but is off the default PDP. */
