@@ -1989,6 +1989,11 @@ html.exporting .ai-fab,body.exporting .ai-fab{animation:none}
 /* Wishlist = the DS Icon Only Button (Figma 3504-281, Jake 3 Nov): Large 44 (20 glyph) beside the PDP title, Small 32 (16 glyph) on imagery; white circle, shadow 0 0 14 -4 25% */
 .wl-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;padding:0;border:0;border-radius:50%;background:#FFF;box-shadow:var(--shadow-pill);cursor:pointer}.wl-btn img{width:20px;height:20px;object-fit:contain}
 .wl-btn--sm{width:32px;height:32px}.wl-btn--sm img{width:16px;height:16px}
+/* Beside a CTA (17 Nov 2026, Virtual Stylist result sheet): .buy-row = the CTA (flex 1) + a 50px square wishlist (.wl-btn--cta), the CTA's height and corner radius, a 1px border, no shadow.
+   .wl-btn--inv on dark grounds (dark sheets): #242424 fill (the dark size tile), white glyph. Same toggle / toast / collections as every wishlist button (wishlist.js). */
+.buy-row{display:flex;gap:var(--gap-2,8px);align-items:stretch}.buy-row>.bd,.buy-row>.rs-atb{flex:1;min-width:0}
+.wl-btn--cta{width:50px;height:50px;border-radius:var(--radius-default,4px);box-shadow:none;border:1px solid var(--border-default,#E0E0E0)}.wl-btn--cta img{width:24px;height:24px}
+.wl-btn--inv{background:#242424;border-color:transparent}.wl-btn--inv img{filter:brightness(0) invert(1)}
 /* Tooltip (.tip) — "something new here" coach mark. Figma HoBuVNEhf1qpL61XFipy0f 135:8952 (Best App Ever), nib flipped to point up:
    a flat bubble on the fascia's page colour, centred copy — "NEW!" semibold over 12/16 text in the fascia's regular weight (--w-regular; Figma = Roboto Light for PLT) — a 24px diamond nib and a 12px close top right.
    Each fascia's font (--font-family-base) and page colour (--surface-page, e.g. PLT cream #FFFDF7); 8px corners on every fascia, hugs its copy — one line per row, no wrapping (Jake, 19 Oct)
