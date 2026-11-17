@@ -190,13 +190,13 @@ const P={
 };
 /* Fill the left panel. Call update() after changing S.cfg to push the change into the frame. */
 function renderPanel(host,S,update){
-  const c=S.cfg,FIT=[['none','Today','No rule: the AI Generated strip squeezes into whatever width the card gets. On narrow cards the copy is cut off.'],
-    ['swap','A · Swap to a real shot','A card narrower than 144px shows the product’s own non-AI photo and no strip. The layout never changes.'],
-    ['widen','B · Widen the card','Every card in a placement with an AI image is at least 144px. The mobile grid drops to 2 across.']];
+  const c=S.cfg,M=({brandroom:152,boohoo:160,boohooman:160,burton:160,misspap:160})[S.brand]||144,FIT=[['none','Today','No rule: the AI Generated strip squeezes into whatever width the card gets. On narrow cards the copy is cut off.'],
+    ['swap','A · Swap to a real shot',`A card narrower than ${M}px shows the product’s own non-AI photo and no strip. The layout never changes.`],
+    ['widen','B · Widen the card',`Every card in a placement with an AI image is at least ${M}px. The mobile grid drops to 2 across.`]];
   const LANG=[['en','English'],['fr','French'],['nl','Dutch'],['pl','Polish'],['de','German'],['sv','Swedish']];
   const WH=[['all','Every card'],['alt','Every other card'],['one','First card only']];
-  host.innerHTML=`<h1>${P.title}</h1><p class="intro">Product carousel cards with AI-generated images. The strip’s longest copy (Polish) needs 144px, so pick what a narrower card does.</p>
-  <div class="card"><h3>Fallback under 144px</h3><div class="opts">${FIT.map(([v,t,d])=>`<button class="opt${c.fit===v?' on':''}" data-fit="${v}"><i></i><div><b>${t}</b><span>${d}</span></div></button>`).join('')}</div></div>
+  host.innerHTML=`<h1>${P.title}</h1><p class="intro">Product carousel cards with AI-generated images. The strip’s longest copy (Polish) needs ${M}px, so pick what a narrower card does.</p>
+  <div class="card"><h3>Fallback under ${M}px</h3><div class="opts">${FIT.map(([v,t,d])=>`<button class="opt${c.fit===v?' on':''}" data-fit="${v}"><i></i><div><b>${t}</b><span>${d}</span></div></button>`).join('')}</div></div>
   <div class="card"><h3>Strip language</h3><div class="chips2">${LANG.map(([v,t])=>`<button class="${c.lang===v?'on':''}" data-lang="${v}">${t}</button>`).join('')}</div></div>
   <div class="card"><h3>AI images in the feed</h3><div class="chips2">${WH.map(([v,t])=>`<button class="${c.which===v?'on':''}" data-wh="${v}">${t}</button>`).join('')}</div></div>
   <div class="card"><h3>At this width</h3><table class="ro" id="ro"><tr><td>Measuring…</td></tr></table></div>`;
