@@ -2416,7 +2416,7 @@ html.exporting .ai-fab,body.exporting .ai-fab{animation:none}
    .coll-new    50 dashed --border-control square with Icons / Add 24 · "Create New" 16 regular
    .coll-row    50 thumb · name 16 regular / "N items" 12 --text-primary (gap 1; black, not grey — Jake 12 Nov) · gap 6 (24px) · Icons / Tick Circle Fill (in it) or Icons / Expand (not) 24
    .coll-thumb  empty: --brand-light-2 → --brand-light-1 swatch · 1–3 items: the latest · 4+: a 2×2 of the latest (.q)
-   .coll-promo  first wishlist ever: --surface-raised panel (sand on PLT), 16 16 0 · NEW chip (brand light, 12 SemiBold, 4px 8px) + "Organise your wishlist" 16 SemiBold, body 14, collage under
+   .coll-promo  first wishlist ever: --surface-raised panel (sand on PLT), 16 16 0 · NEW chip (primary CTA fill + label: --surface-action / --text-on-action, 12 SemiBold, 4px 8px) + "Organise your wishlist" 16 SemiBold, body 14, collage under
    Create: one .fld ("Name of collection") + CREATE; errors in --text-error under the field: "Please enter a collection name" · "A collection with this name already exists". Copy + imagery from Strapi. */
 .coll-list{display:flex;flex-direction:column;gap:12px;overflow-y:auto}
 .coll-new,.coll-row{display:flex;align-items:center;height:50px;padding:0;border:0;background:none;font:inherit;color:var(--text-primary);text-align:left;cursor:pointer;width:100%}
@@ -2433,7 +2433,7 @@ html.exporting .ai-fab,body.exporting .ai-fab{animation:none}
 .coll-thumb.q{display:grid;grid-template-columns:1fr 1fr;background:none}.coll-thumb.q img{width:20px;height:auto;aspect-ratio:var(--ratio-product);object-fit:cover;display:block} /* was square: product images are 2:3 */
 .coll-promo{background:var(--surface-raised);padding:16px 16px 0;display:flex;flex-direction:column;gap:8px}
 .coll-promo .h{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:var(--w-strong)}
-.coll-promo .h em{font-style:normal;font-size:12px;font-weight:var(--w-strong);padding:4px 8px;background:var(--wl-chip-on);color:var(--text-primary)}
+.coll-promo .h em{font-style:normal;font-size:12px;font-weight:var(--w-strong);padding:4px 8px;background:var(--surface-action);color:var(--text-on-action)}   /* NEW = the fascia primary CTA fill + label colour (Jake 17 Nov) */
 .coll-promo p{margin:0;font-size:14px}
 .coll-promo .art{align-self:center;padding:24px 19.5px}
 
