@@ -2436,6 +2436,7 @@ html.exporting .ai-fab,body.exporting .ai-fab{animation:none}
 .coll-promo .h em{font-style:normal;font-size:12px;font-weight:var(--w-strong);padding:4px 8px;background:var(--surface-action);color:var(--text-on-action)}   /* NEW = the fascia primary CTA fill + label colour (Jake 17 Nov) */
 .coll-promo p{margin:0;font-size:14px}
 .coll-promo .art{align-self:center;padding:24px 19.5px}
+.coll-promo .coll-art{display:block;align-self:center;width:294px;max-width:100%;height:auto;aspect-ratio:294/369} /* the per-fascia intro image (img/wl-intro/<brand>.png, Figma 2156:20373 EXPORT frames — padding is in the image) · Jake 17 Nov */
 
 
 /* ===== Request form (.rf) — 2 Nov 2026, Screenshot Brief (look of the UX Design Request form, jakerayner96.github.io/UX-Design-Request) =====

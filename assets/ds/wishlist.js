@@ -152,11 +152,15 @@
   /* Remove From Wishlist confirm (only when the item is in a collection) */
   H.confirm=d=>`<div class="mdl ${d?'mdl--sm':'mdl--alert'}" role="dialog" aria-modal="true" aria-label="Remove From Wishlist">${hd('Remove From Wishlist')}<div class="mdl-bd"><p style="margin:0;font-size:14px">This will also remove the item from any collections it’s included in.</p></div><div class="mdl-ft"><button class="bd pri" type="button" data-wl="remove-yes">Remove</button><button class="bd sec" type="button" data-wl="close">Cancel</button></div></div>`;
   /* Add to Collections (list · onboarding · create) */
+  /* onboarding art = the per-fascia intro image (Figma Best App Ever 2156:20373 "Wishlist Collections - Intro Image Template", one EXPORT per brand, 294 × 369 @3x · Jake 17 Nov: implement exactly).
+     O().promo (custom collections) still draws the DS fan instead. Debenhams Outlet uses Debenhams. */
+  const ART={plt:1,debenhams:1,boohoo:1,boohooman:1,burton:1,dorothyperkins:1,misspap:1,oasis:1,principles:1,wallis:1,warehouse:1,brandroom:1,trainingdept:1,karenmillen:1,coast:1,dsgnstudio:1,debenhamsoutlet:'debenhams'};
+  const INTRO=()=>{const b=brand(),k=ART[b]===1?b:(ART[b]||'debenhams');return O().promo?`<div class="coll-fan" aria-hidden="true">${PROMO().map(c=>H.coll(c)).join('')}</div>`:`<img class="coll-art" src="${DS}img/wl-intro/${k}.png" width="294" height="369" alt="" aria-hidden="true">`};
   const PROMO=()=>(O().promo||[['Sam’s Birthday',11,'dinner-date'],['Autumn Inspo',14,'autumn-look'],['NYE Party',8,'club-night']].map(([name,n,k])=>({name,n,imgs:[1,2,3,4].map(i=>ROOT+'templates/img/wishlist/insp/'+k+'-'+i+'.jpg')})));
   H.collections=(m,d)=>{const C=S.collections();const cls=`mdl ${d?'mdl--sm':'mdl--up'} coll-mdl`;
     if(m.page==='create'){const t=m.rename?'Rename Collection':'Create New Collection';
       return `<div class="${cls}" role="dialog" aria-modal="true" aria-label="${t}">${hd(t,true)}<div class="mdl-bd"><div><label class="fld${m.err?' invalid':''}"><input data-wl-in placeholder=" " value="${esc(m.val||'')}" maxlength="40" autocomplete="off"><span class="lbl">Name of collection</span></label>${m.err?`<div class="fld-err">${esc(m.err)}</div>`:''}</div></div><div class="mdl-ft"><button class="bd pri" type="button" data-wl="create">${m.rename?'Save':'Create'}</button></div></div>`}
-    const promo=m.onboard?`<div class="coll-promo"><div class="h"><em>NEW</em>Organise your wishlist</div><p>Create Collections and group your fave items by occasion, style or whatever you want.</p><div class="coll-fan" aria-hidden="true">${PROMO().map(c=>H.coll(c)).join('')}</div></div>`:'';
+    const promo=m.onboard?`<div class="coll-promo"><div class="h"><em>NEW</em>Organise your wishlist</div><p>Create Collections and group your fave items by occasion, style or whatever you want.</p>${INTRO()}</div>`:'';
     const rows=C.map(c=>{const im=collImgs(c);const n=c.items.length;
       const th=im.length>=4?`<span class="coll-thumb q">${im.slice(0,4).map(s=>img(s)).join('')}</span>`:im.length?img(im[0],'coll-thumb'):'<span class="coll-thumb"></span>';
       return `<button class="coll-row" type="button" role="checkbox" aria-checked="${m.ticks.has(c.id)}" data-wl-coll="${esc(c.id)}"><span class="m">${th}<span class="t"><b>${esc(c.name)}</b><span>${n} item${n===1?'':'s'}</span></span></span></button>`}).join('');
