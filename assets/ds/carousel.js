@@ -38,7 +38,10 @@
           swatches:true / false overrides the level's swatches · qaShape:'square' = the square quick add on any fascia
         · tall (min-height 250 so brand + name always fit — Jake 11 Nov, Figma 13943:31066) · inlineSize (items with sizes[] get "Select size ⌄" under the price — "Size: 10 ⌄" once chosen,
           a native select — data-qsz = item.i; item.size = the chosen one) · item.noQa drops the quick add on that card (a multi-variant product when quick add goes straight to the bag)
-        items[]: {img, brand, name, price, was, pct, sponsored, swatches:[{c, name, img}], href, i}
+        · aiLang (AI strip copy, assets/ds/ai-strip.js: en fr nl pl de sv) · aiFit (17 Nov 2026 — what an AI card does when the slot is narrower than --ai-card-min 144px,
+          the narrowest card the longest strip copy fits): 'swap' (that card shows item.real, the product's own non-AI shot, with no strip) · 'widen' (every card in the
+          placement is at least 144px: rails keep their card width or grow to 144, the grid drops columns — 2 across on mobile) · unset = the strip squeezes (today)
+        items[]: {img, brand, name, price, was, pct, sponsored, swatches:[{c, name, img}], href, i, ai (img is AI generated: the strip + alt suffix), real (non-AI shot for aiFit 'swap')}
      Card (DG_pcarCard) = the DS product card format, always: (Sponsored) · brand (never blank — the item's, else o.brand) · name, 2 lines · rail price
      now · was · -X% · colour swatches (buttons: a tap selects the colour and swaps the image to its shot, data-img). No wishlist on rail cards. */
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -51,11 +54,14 @@
   window.DG_pcarCard=function(p,o){o=o||{};const at=`${p.href?` data-href="${esc(p.href)}"`:''}${p.i!=null?` data-i="${esc(p.i)}"`:''}`;
     const sq=o.qaShape==='square'||(o.qaShape!=='round'&&['boohooman','karenmillen','brandroom'].includes(document.documentElement.dataset.brand))?' pc-iconbtn--sq':'';
     const qa=o.qa&&!p.noQa?`<div class="pc-actions pc-actions--qa"><button type="button" class="pc-iconbtn${sq}${p.added?' on':''}${p.pop?' pop':''}" data-qa="${esc(p.i)}" aria-label="${p.added?'Added':'Quick add'} ${esc(p.name)}"${p.added?' disabled':''}><img src="assets/ds/icons/${p.added?'lib/icons-tick':'quick-add-16'}.svg" alt=""></button></div>`:'';
-    const img=`<div class="pc-img"><img class="ph" src="${esc(p.img)}" alt="${esc(((p.brand||o.brand)?(p.brand||o.brand)+' ':'')+p.name)}" loading="${o.eager?'eager':'lazy'}">${qa}</div>`;
-    if(o.look)return `<article class="pc"${at}>${img}</article>`;
-    return `<article class="pc${o.compact?' pc--compact':''}${o.tall?' pc--tall':''}"${at}>${img}${DG_pcarInfo(p,o)}</article>`};
+    const alt0=((p.brand||o.brand)?(p.brand||o.brand)+' ':'')+p.name,L=o.aiLang||'en',ai=!!p.ai;
+    const aiAlt=ai?' · '+(window.DG_aiAlt?DG_aiAlt(L):'AI generated image'):'';
+    const img=`<div class="pc-img"><img class="ph" src="${esc(p.img)}" alt="${esc(alt0+aiAlt)}" loading="${o.eager?'eager':'lazy'}">${ai&&p.real?`<img class="ph ph--real" src="${esc(p.real)}" alt="${esc(alt0)}" loading="lazy">`:''}${ai?(window.DG_aiStrip?DG_aiStrip(L):'<span class="badge-ai"><b>AI</b> Generated</span>'):''}${qa}</div>`;
+    const cls=ai?' pc--ai'+(p.real?' pc--ai-real':''):'';
+    if(o.look)return `<article class="pc${cls}"${at}>${img}</article>`;
+    return `<article class="pc${o.compact?' pc--compact':''}${o.tall?' pc--tall':''}${cls}"${at}>${img}${DG_pcarInfo(p,o)}</article>`};
   window.DG_pcarHTML=function(o){o=o||{};const grid=!!o.grid,tabs=o.tabs&&o.tabs.length?o.tabs:null,hd=o.title||o.sub||tabs||o.all;
-    const cls=['pcar','pcar--'+(o.size||'md'),grid&&'pcar--grid',o.look&&'pcar--look',o.full&&'pcar--full',o.fixed&&'pcar--fixed',o.arrows===false&&'pcar--no-arr',o.bleed!==false&&'pcar--bleed'].filter(Boolean).join(' ');
+    const cls=['pcar','pcar--'+(o.size||'md'),grid&&'pcar--grid',o.look&&'pcar--look',o.full&&'pcar--full',o.fixed&&'pcar--fixed',o.arrows===false&&'pcar--no-arr',o.bleed!==false&&'pcar--bleed',(o.items||[]).some(p=>p.ai)&&'has-ai',o.aiFit&&'pcar--ai-'+o.aiFit].filter(Boolean).join(' ');
     return `<section class="${cls}" style="--pcar-per:${o.per||5}${o.card?';--pcar-card:'+o.card+'px':''}"${o.id?` data-pl="${esc(o.id)}"`:''}>${hd?`<header class="pcar-hd">${o.title||o.sub?`<div class="pcar-tt">${o.title?`<h2 class="pcar-t">${esc(o.title)}</h2>`:''}${o.sub?`<p class="pcar-sub">${esc(o.sub)}</p>`:''}</div>`:''}${tabs?`<div class="pcar-tabs">${tabs.map((t,i)=>`<button class="chip${i===(o.tab||0)?' on':''}" aria-pressed="${i===(o.tab||0)}">${esc(t)}</button>`).join('')}</div>`:''}${o.all?`<a class="pcar-all" href="#">${esc(o.all===true?'View all':o.all)}</a>`:''}</header>`:''}
   <div class="pcar-body">${grid?'':'<button class="pcar-arr pcar-arr--prev" disabled></button>'}<div class="pcar-track">${(o.items||[]).map(p=>DG_pcarCard(p,o)).join('')}</div>${grid?'':'<button class="pcar-arr pcar-arr--next"></button>'}</div></section>`};
   /* swatch taps (any rail card): select the colour, swap the image to its shot (data-img). With no shot, the colour tints the image as a stand-in (sample feeds). */

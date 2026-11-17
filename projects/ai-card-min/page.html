@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../../">
+<title>AI card minimum · page</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* Page scaffolding only — every visible piece is a DS component: Product carousel (.pcar, DG_pcarHTML) + AI Generated strip (.badge-ai). */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+.wrap{padding:var(--gap-6,24px) 16px;display:flex;flex-direction:column;gap:var(--gap-10,40px)}
+.wrap .pcar{--pcar-bleed:16px}
+.mb{padding:0 var(--gap-6,24px);margin:0 -16px}.mb .pcar{--pcar-bleed:var(--gap-6,24px)}  /* mini bag / added-to-bag sheet: gap 6 (24px) sides */
+@media(min-width:1024px){.wrap{padding:var(--gap-10,40px) 40px;max-width:1440px;margin:0 auto}.wrap .pcar{--pcar-bleed:40px}.mb{max-width:480px;margin:0}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="projects/plp-alignment/data.js"></script>
+<script src="templates/feed.js"></script>
+<script src="assets/ds/ai-strip.js"></script>
+<script src="assets/ds/catalogue.js"></script>
+<script src="assets/ds/carousel.js"></script>
+<script>
+/* AI card minimum (17 Nov 2026). Three real placements of the DS Product carousel with AI-generated product images, so the fallback
+   for cards narrower than --ai-card-min (144px) can be chosen by eye: today (strip squeezes) · swap (non-AI shot) · widen (144px floor). */
+let S={brand:'debenhams',fit:'none',lang:'pl',which:'all'},EXPORTING=false;
+try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}
+const PL=[
+  {id:'rail',  o:{size:'md',title:'Top Sellers',per:5}, start:7, n:10},
+  {id:'grid',  o:{size:'sm',grid:true,per:3,bleed:false,title:'Handpicked For You'}, start:3, n:6},
+  {id:'mini',  o:{size:'sm',per:3,card:140,fixed:true,title:'Complete Your Look'}, start:12, n:6, mb:true}];
+function items(p){return DG_feed(S.brand,p.start,p.n,1).map((x,k)=>{const ai=S.which==='all'||(S.which==='alt'&&k%2===0)||(S.which==='one'&&k===0);
+  return ai?Object.assign(x,{ai:true,real:x.img}):x})}   /* stand-in: the feed has one shot per product, so the "real" shot is the same photo without the strip */
+function render(){
+  document.documentElement.setAttribute('data-brand',S.brand);
+  const fit=S.fit==='none'?undefined:S.fit;
+  document.getElementById('app').innerHTML=`<div class="wrap">${PL.map(p=>{const h=DG_pcarHTML(Object.assign({},p.o,{id:p.id,items:items(p),aiLang:S.lang,aiFit:fit,eager:EXPORTING,round:S.brand==='plt'}));return p.mb?`<div class="mb">${h}</div>`:h}).join('')}</div>`;
+  if(window.DG_pcar)DG_pcar(document);
+  requestAnimationFrame(report);
+}
+/* tell the shell how wide each placement's cards are and whether the strip fits */
+function report(){const min=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ai-card-min'))||144;
+  const out=PL.map(p=>{const sec=document.querySelector(`.pcar[data-pl="${p.id}"]`),im=sec&&sec.querySelector('.pc--ai .pc-img');const w=im?Math.round(im.getBoundingClientRect().width):0;
+    const strip=im&&im.querySelector('.badge-ai'),shown=strip&&getComputedStyle(strip).display!=='none';let clip=false;
+    if(shown){const m=strip.cloneNode(true);m.style.cssText='position:absolute;visibility:hidden;width:max-content';im.appendChild(m);clip=m.getBoundingClientRect().width>strip.getBoundingClientRect().width+.5;m.remove()}
+    return {id:p.id,name:p.o.title,w,fits:w>=min,shown:!!shown,clip:!!clip,cols:p.o.grid?getComputedStyle(sec.querySelector('.pcar-track')).gridTemplateColumns.split(' ').length:0}});
+  parent.postMessage({protoInfo:out},'*')}
+render();
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>{parent.postMessage({protoReady:1},'*');document.fonts&&document.fonts.ready.then(report)});
+</script>
+</body>
+</html>

@@ -1313,9 +1313,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 /* ---- C-17 AI Generated strip — proposal rules (EU AI Act Art. 50(4)) ---- */
 .badge-ai{height:var(--ai-h);display:flex;align-items:center;justify-content:center;gap:0;white-space:pre;padding:0 8px;font-size:max(10px,var(--ai-fs,10px))} /* white-space:pre keeps the copy's own spaces (no flex gap), so "KI-generiert" never splits; copy: assets/ds/ai-strip.js */ /* live text, never raster; 10px is the legal floor; fixed strip height */
 .pc-badges.has-ai{bottom:calc(var(--ai-h) + 8px)} /* every other badge shifts up by exactly the strip height */
-/* narrow images (3-col PLP tiles, ~130px): the longest copy (Polish "WYGENEROWANE PRZEZ AI") still fits on one line — tracking and side padding tighten, size stays 10px */
+/* narrow images (<180px): tracking and side padding tighten, size stays 10px. The longest copy (Polish "WYGENEROWANE PRZEZ AI") still needs 142–153px by font (--ai-card-min) — below that it is cut off, so product carousels set aiFit (17 Nov 2026) */
 .pc-img,.ai-wrap{container-type:inline-size}
-@container (max-width:150px){.badge-ai{letter-spacing:0;padding:0 4px}}
+@container (max-width:179.98px){.badge-ai{letter-spacing:0;padding:0 4px}} /* was 150px: at full tracking the Polish copy needs 155–174px (Montserrat widest), so 151–179px images clipped it (17 Nov 2026) */
 /* AI image host (.ai-wrap, 26 Oct 2026, AI generated badge prototype) — makes any image a host for the strip: home rail cards, editorial tiles,
    search rails, PDP gallery slides. <span class="ai-wrap"><img alt="… · AI generated image"><span class="badge-ai"><b>AI</b> Generated</span></span>.
    Alt text appends "AI generated image". Never on thumbnails, bag, mini bag or checkout: the strip would fall under the 10px legal floor (legal sign-off). */
@@ -1325,6 +1325,18 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .pdp-gal .slides .ai-wrap{scroll-snap-align:start}
 .pdp-gal .main.has-ai .ptags{bottom:calc(var(--ai-h) + var(--gap-3,12px))} /* PDP product tags lift by exactly the strip height */
 @media(min-width:1024px){.pdp-gal .main.has-ai .ptags{bottom:calc(var(--ai-h) + var(--gap-4,16px))}}
+
+/* AI cards in the product carousel (.pcar .pc--ai, 17 Nov 2026, AI card minimum — projects/ai-card-min). DG_pcarCard(item.ai) puts the strip in .pc-img.
+   --ai-card-min (144px) = the narrowest card the longest strip copy fits. Below it the placement's aiFit decides:
+   .pcar--ai-swap  — that card shows its own non-AI shot (.ph--real), no strip · .pcar--ai-widen — every card at least 144px, the grid drops columns. */
+.pc-img>img.ph--real{display:none}
+/* container queries cannot read --ai-card-min, so the per-fascia widths are repeated here: 144 · Brand Room 152 · Montserrat fascias 160 */
+@container (max-width:143.98px){.pcar--ai-swap .pc--ai-real .pc-img>img.ph:not(.ph--real),.pcar--ai-swap .pc--ai-real .pc-img>.badge-ai{display:none}.pcar--ai-swap .pc--ai-real .pc-img>img.ph--real{display:block}}
+@container (max-width:151.98px){[data-brand="brandroom"] .pcar--ai-swap .pc--ai-real .pc-img>img.ph:not(.ph--real),[data-brand="brandroom"] .pcar--ai-swap .pc--ai-real .pc-img>.badge-ai{display:none}[data-brand="brandroom"] .pcar--ai-swap .pc--ai-real .pc-img>img.ph--real{display:block}}
+@container (max-width:159.98px){[data-brand="boohoo"] .pcar--ai-swap .pc--ai-real .pc-img>img.ph:not(.ph--real),[data-brand="boohoo"] .pcar--ai-swap .pc--ai-real .pc-img>.badge-ai,[data-brand="boohooman"] .pcar--ai-swap .pc--ai-real .pc-img>img.ph:not(.ph--real),[data-brand="boohooman"] .pcar--ai-swap .pc--ai-real .pc-img>.badge-ai,[data-brand="burton"] .pcar--ai-swap .pc--ai-real .pc-img>img.ph:not(.ph--real),[data-brand="burton"] .pcar--ai-swap .pc--ai-real .pc-img>.badge-ai,[data-brand="misspap"] .pcar--ai-swap .pc--ai-real .pc-img>img.ph:not(.ph--real),[data-brand="misspap"] .pcar--ai-swap .pc--ai-real .pc-img>.badge-ai{display:none}[data-brand="boohoo"] .pcar--ai-swap .pc--ai-real .pc-img>img.ph--real,[data-brand="boohooman"] .pcar--ai-swap .pc--ai-real .pc-img>img.ph--real,[data-brand="burton"] .pcar--ai-swap .pc--ai-real .pc-img>img.ph--real,[data-brand="misspap"] .pcar--ai-swap .pc--ai-real .pc-img>img.ph--real{display:block}}
+.pcar--ai-widen.has-ai:not(.pcar--grid) .pcar-track>*{min-width:var(--ai-card-min)}
+.pcar--ai-widen.has-ai.pcar--grid .pcar-track{grid-template-columns:repeat(auto-fill,minmax(max(var(--ai-card-min),calc((100% - var(--pcar-gap) * (var(--pcar-cols,3) - 1)) / var(--pcar-cols,3))),1fr))}
+@media(min-width:1024px){.pcar--ai-widen.has-ai.pcar--grid .pcar-track{grid-template-columns:repeat(auto-fill,minmax(max(var(--ai-card-min),calc((100% - var(--pcar-gap) * (var(--pcar-per) - 1)) / var(--pcar-per))),1fr))}}
 
 /* ---- C-18 Square tile rail (Brand Room brand/category rail) ---- */
 .tile-rail{display:flex;gap:1px;overflow-x:auto;scrollbar-width:none;padding:0}
