@@ -155,7 +155,7 @@
   --radius-default:0px;--radius-lg:0px;--radius-pill:0px; /* square-radius mode */
   --mbanner-bg:var(--surface-media);--mbanner-fg:var(--text-primary);--mbanner-st-w:400; /* Royalty Delivery banner: sand, square (radius 0 from the mode), regular ACTIVE, no icon — live PLT checkout */
   --mpill-bg:#FAF5E7;--mpill-fg:#333;--mpill-dot:var(--brand-primary); /* Royalty pill: square, sand like the Add new ghost button, garnet dot (Jake 14 Oct 2026) */
-  --co-tile-bg:#FAF5E7;--co-tile-border:transparent; /* checkout tiles: sand fill, no outline (2290:437863) */
+  --co-tile-bg:#FAF5E7;--co-tile-border:transparent;--coll-fan-bg:#FAF5E7; /* Add to Collections fan cards: sand (Jake 17 Nov) */ /* checkout tiles: sand fill, no outline (2290:437863) */
   --surface-page:#FFFDF7;--text-on-action:#FFF;
   --brand-primary:#550503;--surface-action:#550503;--surface-action-hover:#360502;--surface-action-pressed:#360502;
   --border-action:#360502;--border-focus:#360502;--text-link:#550503;--text-link-hover:#360502;--icon-action:#550503;

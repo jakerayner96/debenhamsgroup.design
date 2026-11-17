@@ -937,7 +937,7 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .nav-btn:hover,.nav-btn:active{box-shadow:none}.nav-btn:focus-visible{outline:var(--border-w-focus,2px) solid var(--border-focus,#2797FF);outline-offset:2px}
 .nav-btn::before{content:"";width:16px;height:16px;background:var(--text-primary);-webkit-mask:var(--nav-ic,url(icons/lib/icons-right.svg)) center/contain no-repeat;mask:var(--nav-ic,url(icons/lib/icons-right.svg)) center/contain no-repeat}
 .nav-btn--left{--nav-ic:url(icons/lib/icons-left.svg)}.nav-btn--left::before{transform:translateX(-1px)}.nav-btn--right::before{transform:translateX(1px)}
-.nav-btn--up{--nav-ic:url(icons/lib/icons-up.svg)}.nav-btn--down{--nav-ic:url(icons/lib/icons-down.svg)}.nav-btn--close{--nav-ic:url(icons/lib/icons-close.svg)}.nav-btn--close::before{width:12px;height:12px}
+.nav-btn--up{--nav-ic:url(icons/lib/icons-up.svg)}.nav-btn--down{--nav-ic:url(icons/lib/icons-down.svg)}.nav-btn--close{--nav-ic:url(icons/lib/icons-close.svg)}.nav-btn--close::before{width:12px;height:12px}.nav-btn--share{--nav-ic:url(icons/lib/icons-share.svg)}.nav-btn--share::before{width:18px;height:18px;margin-top:-1px} /* share (Virtual Stylist result rail, 17 Nov) */
 .nav-btn>img{display:none} /* old markup with an <img> glyph: the mask draws it */
 /* the PDP gallery arrows are the Navigation Button */
 @media(min-width:1024px){.pdp-gal .nav{box-shadow:0 0 14px rgba(0,0,0,.1)!important;transition:box-shadow .15s}.pdp-gal .nav:hover,.pdp-gal .nav:active{box-shadow:none!important}}
@@ -1992,7 +1992,7 @@ html.exporting .ai-fab,body.exporting .ai-fab{animation:none}
 /* Beside a CTA (17 Nov 2026, Virtual Stylist result sheet): .buy-row = the CTA (flex 1) + a 50px square wishlist (.wl-btn--cta), the CTA's height and corner radius, a 1px border, no shadow.
    .wl-btn--inv on dark grounds (dark sheets): #242424 fill (the dark size tile), white glyph. Same toggle / toast / collections as every wishlist button (wishlist.js). */
 .buy-row{display:flex;gap:var(--gap-2,8px);align-items:stretch}.buy-row>.bd,.buy-row>.rs-atb{flex:1;min-width:0}
-.wl-btn--cta{width:50px;height:50px;border-radius:var(--radius-default,4px);box-shadow:none;border:1px solid var(--border-default,#E0E0E0)}.wl-btn--cta img{width:24px;height:24px}
+.wl-btn--cta{width:50px;height:50px;border-radius:var(--radius-default,4px);box-shadow:none;background:var(--surface-raised,#FFF);border:1px solid var(--border-default,#E0E0E0)}.wl-btn--cta img{width:24px;height:24px}
 .wl-btn--inv{background:#242424;border-color:transparent}.wl-btn--inv img{filter:brightness(0) invert(1)}
 /* Tooltip (.tip) — "something new here" coach mark. Figma HoBuVNEhf1qpL61XFipy0f 135:8952 (Best App Ever), nib flipped to point up:
    a flat bubble on the fascia's page colour, centred copy — "NEW!" semibold over 12/16 text in the fascia's regular weight (--w-regular; Figma = Roboto Light for PLT) — a 24px diamond nib and a 12px close top right.
@@ -2897,7 +2897,7 @@ li[data-k="bf"]>.persona-row>i{background:var(--season-bf)}
 @media(min-width:1024px){.wlc-tx{font-size:14px;line-height:18px}}
 /* Add to Collections · onboarding fan (.coll-fan): three collection tiles fanned left → right, 120 wide, 90 apart so every name shows, slight turns (content from Strapi) */
 .coll-fan{position:relative;height:280px;width:300px;max-width:100%;align-self:center;margin:var(--gap-2,8px) 0}
-.coll-fan .wlc{position:absolute;width:120px;box-shadow:0 2px 8px rgba(0,0,0,.12);cursor:default}
+.coll-fan .wlc{position:absolute;width:120px;background:var(--coll-fan-bg,var(--surface-raised,#FFF));box-shadow:var(--shadow-tile,0 2px 10px rgba(0,0,0,.1));cursor:default}   /* white on the white modal with the shadow, PLT sand (--coll-fan-bg) — not the fascia tile tint (Jake 17 Nov) */
 .coll-fan .wlc:nth-child(1){left:0;top:0;transform:rotate(-4deg)}
 .coll-fan .wlc:nth-child(2){left:90px;top:24px;transform:rotate(1deg)}
 .coll-fan .wlc:nth-child(3){left:180px;top:48px;transform:rotate(5deg)}
