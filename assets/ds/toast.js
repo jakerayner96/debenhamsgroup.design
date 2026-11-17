@@ -15,7 +15,7 @@
   /* bottom offset on phones: the tallest bar pinned to the bottom edge (fixed / sticky, under half the screen) + 12, else 16 */
   function toastBottom(){let h=0;
     document.querySelectorAll('[data-toast-avoid],[class*="sticky"],[class*="-bar"],[class*="cookie"],.tabbar').forEach(el=>{if(el.closest('[data-dg-toast]'))return;
-      const cs=getComputedStyle(el);if(cs.position!=='fixed'&&cs.position!=='sticky')return;const b=el.getBoundingClientRect();
+      const cs=getComputedStyle(el);if(!el.matches('[data-toast-avoid]')&&cs.position!=='fixed'&&cs.position!=='sticky')return;   /* [data-toast-avoid] always counts (17 Nov: the VS result sheet is absolute inside a fixed overlay) */const b=el.getBoundingClientRect();
       if(!b.height||b.height>innerHeight/2||Math.abs(b.bottom-innerHeight)>2)return;h=Math.max(h,innerHeight-b.top)});
     return h?Math.round(h)+12:16}
   let cur=null;
