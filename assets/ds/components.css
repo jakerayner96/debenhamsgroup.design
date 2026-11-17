@@ -289,9 +289,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .hd-icons button{width:38px;height:40px;display:grid;place-items:center;background:none;border:none;cursor:pointer;padding:0} /* production: 24 icon + 7px side padding, py-2 */
 .hd-icons img{width:var(--hd-icon,24px);height:var(--hd-icon,24px);display:block;object-fit:none} /* native glyph size inside the 24 box (bookmark 15×21, bag 20×23) — matches production, no optical fudge */
 .hd-icons img.favic{width:var(--hd-favic,24px);height:var(--hd-favic,24px)}
-/* .hd--compact (17 Nov 2026, Conversion master 2027): 20px header icons in 34px hit areas (was 24 in 38) — calmer chrome, closer to Nike / Zara / Vans. Glyphs scale to fit. */
+/* .hd--compact (17 Nov 2026, Conversion master 2027): 20px header icons (glyph ink ~17px) in 40×44 tap areas (was 24 in 38×40) — calmer chrome, closer to Nike / Zara / Vans. Glyphs scale to fit. */
 .hd--compact .hd-icons img,.hd--compact .hd-burger img,.hd--compact .hd-search img{width:20px;height:20px;object-fit:contain}
-.hd--compact .hd-icons button{width:34px}
+.hd--compact .hd-icons button{width:40px;height:44px}
 .hd-icons button:focus-visible,.hd-burger:focus-visible{outline:var(--border-w-focus) solid var(--border-focus);outline-offset:2px}
 /* desktop bar (≥1024): logo · centred pill search · icons */
 .hd-bar--desktop{height:88px;padding:16px var(--plp-margin,16px);max-width:2000px;margin:0 auto}

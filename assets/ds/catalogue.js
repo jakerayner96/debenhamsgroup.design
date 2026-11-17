@@ -1297,7 +1297,7 @@ const DG_TOKEN_MAP = [
  {dev:'grey-1 … grey-6 (fixed utilities)', ours:'Grey 1–6 primitives', note:'F2F2F2 · E7E7E7 · B5B5B5 · 767676 · 6B6B6B · 323232 — identical ramp ✓.'},
 { slug:'field-stacked', name:'Field, label above', group:'Forms', tier:'atom', css:'.fld-stack > label + .fld-stack-in (input + optional icon) + small hint', figma:'Checkout 2026 WChEtDPH0LcErdYFS9SESn · Input field (card form)', by:'Conversion master 2027, 17 Nov 2026',
   html:`<div style="max-width:358px"><div class="fld-stack"><label for="cat-fs">Card Number</label><span class="fld-stack-in"><input id="cat-fs"><img src="assets/ds/icons/lib/icons-card.svg" alt=""></span></div></div>` },
-{ slug:'header-compact', name:'Header, compact icons', group:'Navigation', tier:'organism', css:'.hd.hd--compact — 20px icons in 34px hit areas', figma:'—', by:'Conversion master 2027 (Jake 17 Nov: menu icons could be smaller)',
+{ slug:'header-compact', name:'Header, compact icons', group:'Navigation', tier:'organism', css:'.hd.hd--compact — 20px icons in 40×44 tap areas', figma:'—', by:'Conversion master 2027 (Jake 17 Nov: menu icons could be smaller)',
   html:`<header data-hd class="hd--compact"></header>` },
 ];
 
