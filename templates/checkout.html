@@ -33,6 +33,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="projects/plp-alignment/data.js"></script>
 <script src="templates/feed.js"></script>
 <script src="assets/ds/export-masks.js"></script>
+<script src="assets/ds/journey.js"></script>
 <script>
 /* in: ?brand=<slug> or ?s={brand,co,step,member,…}; {protoSet} / {protoPing}. out: {protoReady}, {protoPong,h}.
    events (cancelable, for the Master journey layer): dg:checkout-pay (Pay / express pay → else the confirmation step in place) · dg:continue-shopping · dg:edit-bag */
@@ -42,6 +43,9 @@ let S={brand:q.get('brand')||'debenhams',co:'new',step:'checkout'},EXPORTING=fal
 try{const s=q.get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
 const desk=()=>innerWidth>=1024;
 const live=()=>S.co==='live';
+/* S.journey (18 Nov 2026, Conversion master 2027 · CTO persona run): the basket, methods, dates, codes and sums come from DS journey.js,
+   the same source as the PDP grid and the bag, so the three can never disagree */
+const J=()=>!!(S.journey&&window.DG_journey&&!live());
 const A='assets/ds/',LIB=A+'icons/lib/icons-',PAY=A+'icons/pay/',PM=A+'icons/payments/';
 const FN={debenhams:'Debenhams',boohoo:'boohoo',boohooman:'boohooMAN',plt:'PrettyLittleThing',karenmillen:'Karen Millen',warehouse:'Warehouse',brandroom:'The Brand Room'};
 /* pence in, £ out — every sum is in whole pence so the summary always adds up */
@@ -61,24 +65,25 @@ const memAdded=()=>!S.member&&(S.meth==='mem'||!!S.addMem);   /* opt-in only: th
 
 /* ---- the bag: the fascia's PDP product (templates/products.js, as the PDP template) + one wear item from the feed (as the Bag template) ---- */
 const VAR=['10','12','M','8','S'];
-function items(){const b=S.brand,p=(window.DG_PDP_PRODUCTS||{})[b]||(window.DG_PDP_PRODUCTS||{}).debenhams||{};
+function items(){if(J())return DG_journey.basket(S.brand);const b=S.brand,p=(window.DG_PDP_PRODUCTS||{})[b]||(window.DG_PDP_PRODUCTS||{}).debenhams||{};
   const a={img:(p.imgs||[])[0]||'',brand:p.brand||FN[b],name:p.name||'Product',price:p.price||'£20.00',was:p.was,size:(p.sizes||[])[1]||'One Size',colour:p.colour||'Black',qty:1};
   const W=/dress|top|jumper|cardigan|coat|jacket|blazer|trouser|jean|skirt|knit|hoodie|shirt|tee|t-shirt/i;let x=null;
   for(let i=3;i<40&&!x;i++){const f=window.DG_feedItem&&DG_feedItem(b,i);if(f&&W.test(f.name)&&f.name!==a.name)x=f}
   const out=[a];if(x)out.push({img:x.img,brand:x.brand||FN[b],name:x.name,price:x.price,was:x.was,size:VAR[1],colour:'Black',qty:2});
   return out}
 /* ---- delivery methods (Figma 9319:14124) — arrival dates from Mon 16 Nov 2026 so every export reads the same ---- */
-const METH=[
+let METH=[
   {id:'ss',n:'Super Saver Delivery',d:'5-7 working days',p:0,was:299,days:7,mfree:true},
   {id:'std',n:'Standard Delivery',d:'Up to 4 working days',p:399,days:4,mfree:true},
   {id:'nd',n:'Next Day Delivery',d:'Order before 11pm or 9pm on Saturday',p:499,days:1,mfree:true},
   {id:'exp',n:'Express Delivery',d:'Delivered within 2 working days',p:599,days:2},
   {id:'dpd',n:'Premium DPD Next Day Delivery',d:'Order by 9pm Sunday - Friday or 8pm Saturday',p:699,days:1}];
 const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-function arrive(n){if(n===1)return 'Arrives tomorrow';const d=new Date(2026,10,16);let k=0;while(k<n){d.setDate(d.getDate()+1);if(d.getDay()%6)k++}
+if(J())METH=DG_journey.METH;
+function arrive(n){if(J())return DG_journey.arrive(n);if(n===1)return 'Arrives tomorrow';const d=new Date(2026,10,16);let k=0;while(k<n){d.setDate(d.getDate()+1);if(d.getDay()%6)k++}
   return `Arrives by ${DAYS[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]}`}
 const mprice=m=>(S.member||memAdded())&&m.mfree?0:m.p;
-function method(){if(S.meth==='mem'&&memb()&&!S.member)return Object.assign({},METH[2],{id:'mem',n:METH[2].n,via:memb().pill});return METH.find(m=>m.id===S.meth)||METH[0]}
+function method(){if(S.meth==='mem'&&memb()&&!S.member)return Object.assign({},METH.find(x=>x.id==='nd'),{id:'mem',via:memb().pill});return METH.find(m=>m.id===S.meth)||METH[0]}
 /* ---- payment methods ---- */
 function PMS(){const b=S.brand,L=(window.BAG_LIVE||{})[b]||{},w=L.wallets||['paypal','paylater','apple','klarna'];
   return [{id:'card',l:'Card',lg:'card'},w.includes('apple')&&{id:'apple',l:'Apple Pay',lg:'apple-pay'},{id:'gpay',l:'Google Pay',lg:'google-pay'},
@@ -87,7 +92,7 @@ function PMS(){const b=S.brand,L=(window.BAG_LIVE||{})[b]||{},w=L.wallets||['pay
 const payId=()=>S.pay!==undefined?S.pay:(live()?null:'card');
 
 /* ---- the sums (pence). Subtotal = item prices × qty; each discount a named line; delivery = the method; extras opt-in ---- */
-function sums(){const I=items(),m=memb(),me=method();
+function sums(){if(J())return jsums();const I=items(),m=memb(),me=method();
   const sub=I.reduce((a,x)=>a+pn(x.price)*x.qty,0),mark=I.reduce((a,x)=>a+(x.was?(pn(x.was)-pn(x.price))*x.qty:0),0);
   const disc=[{n:`Enjoy 20% Off ${I[0].brand}`,p:Math.round(pn(I[0].price)*0.2)}];
   if(live()?(S.code!==null&&S.code!==''):!!S.code){disc.push({n:`Promo code ${S.code||'WELCOME'}`,p:500})}
@@ -96,6 +101,13 @@ function sums(){const I=items(),m=memb(),me=method();
   const wfUnit=Math.round(sub*0.04),prot=S.protect?(live()?399:wfUnit):0,dsum=disc.reduce((a,d)=>a+d.p,0);
   const pre=sub-dsum+del+mem+dp+prot,round=Math.ceil(pre/100)*100-pre||100,char=S.charity?round:0;
   return {dpUnit,wfUnit,I,sub,mark,disc,dsum,del,me,mem,m,dp,dpName:L.dplus,prot,round,char,pre,tot:pre+char,saved:mark+dsum,n:I.reduce((a,x)=>a+x.qty,0)}}
+
+/* journey sums: DS journey.js does the maths once (Subtotal full prices · Discounts sale + codes · Delivery), checkout adds its opt-ins on top */
+function jsums(){const I=items(),m=memb(),L=(window.BAG_LIVE||{})[S.brand]||{},mem=memAdded()&&m?m.price:0;
+  const j=DG_journey.sums(I,{meth:S.meth==='mem'?'nd':(S.meth||'ss'),codes:S.codes||[],member:S.member||memAdded()}),me=method();
+  const dpUnit=390,dp=S.dplus&&window.DG_hasDplus&&DG_hasDplus(S.brand)&&L.dplus?dpUnit:0,wfUnit=Math.round(j.sub*0.04),prot=S.protect?wfUnit:0;
+  const pre=j.total+mem+dp+prot,round=Math.ceil(pre/100)*100-pre||100,char=S.charity?round:0;
+  return {dpUnit,wfUnit,I,sub:j.sub,mark:j.mark,disc:j.disc,dsum:j.dsum,del:j.del,jwas:j.was,me,mem,m,dp,dpName:L.dplus,prot,round,char,pre,tot:pre+char,saved:j.dsum,n:j.n}}
 
 /* ---- shared pieces ---- */
 function header(){const dev=desk()?'desktop':'mobile';
@@ -145,7 +157,7 @@ function liveSummary(t){const r=(l,v,c)=>`<div class="bs-r${c?' '+c:''}"><span>$
   return `<div class="bs-sum" role="group" aria-label="Order Summary"><div class="bs-h">Order Summary</div>${r('Subtotal',gbp(t.sub))}${r('Delivery',t.del?gbp(t.del):'<b>FREE</b>')}${r('Discounts','-'+gbp(t.dsum))}${extra.map(x=>r(x[0],x[1])).join('')}${r('Order Total',`<b>${gbp(t.tot)}</b>`,'bs-tot')}</div>
     <div class="bs-di"><b>Discounts included:</b>${t.disc.map(d=>r(esc(d.n),'-'+gbp(d.p))).join('')}</div>`}
 function liveSide(t){return `<section class="ck-panel" aria-labelledby="ck-h-bag"><div class="ck-hd"><h2 class="ck-h2" id="ck-h-bag">Your Bag (${t.n})</h2><button type="button" class="bd xs" data-ck="editbag">Edit Bag</button></div>
-    <div class="bag-sec-hd">${ic('order')}<span class="bag-seller">Delivered by <b>${esc(FN[S.brand])}</b></span></div>${t.I.map(line).join('')}</section>
+    <div class="bag-sec-hd">${ic('order')}<span class="bag-seller">Sold and sent by <b>${esc(FN[S.brand])}</b></span></div>${t.I.map(line).join('')}</section>
     <section class="ck-panel">${liveSummary(t)}</section>`}
 function livePage(t){const d=desk();
   return d?`<main class="ck-pg"><div class="ck-wrap ck-cols"><div class="ck-main">${liveDelivery(t)}${livePayment(t)}</div><aside class="ck-side" aria-label="Your order">${liveSide(t)}</aside></div></main>`
@@ -169,14 +181,18 @@ const c26Price=(p,was)=>`<span class="c26-price"><b>${p?gbp(p):'FREE'}</b>${was&
 function c26Bag(t){const o=!!S.bagOpen;
   return `<section class="c26-bag" aria-label="Your Bag"><button type="button" class="c26-bag-h" data-ck="bag" aria-expanded="${o}" aria-controls="c26-bag-b"><span><b>Your Bag (${t.n})</b><span>Order Total: <b>${gbp(t.tot)}</b></span></span><img src="${LIB}down.svg" alt="" aria-hidden="true"${o?' style="transform:rotate(180deg)"':''}></button>
     ${o?`<div class="c26-items" id="c26-bag-b">${c26Items(t)}</div>`:''}${c26Express()}</section>`}
-function c26Items(t){return `<div class="bag-sec-hd">${ic('order')}<span class="bag-seller">Delivered by <b>${esc(FN[S.brand])}</b></span></div>${t.I.map(x=>`<div class="c26-item"><img src="${esc(x.img)}" alt="" loading="${EXPORTING?'eager':'lazy'}"><div><p><b>${esc(x.brand)}</b> - ${esc(x.name)}</p><p>${esc(x.size)} / ${esc(x.colour)}${x.qty>1?` · Qty ${x.qty}`:''}</p><p class="c26-ip">${x.was?`<b class="sale">${esc(x.price)}</b><s>${esc(x.was)}</s>`:`<b>${esc(x.price)}</b>`}</p></div></div>`).join('')}`}
+function c26Items(t){if(J())return DG_journey.sellers(t.I,S.brand).map(g=>`<div class="bag-sec-hd">${ic('order')}<span class="bag-seller">${DG_journey.SOLD} <b>${esc(g.name)}</b></span></div>${g.items.map(c26Item).join('')}`).join('');return `<div class="bag-sec-hd">${ic('order')}<span class="bag-seller">Sold and sent by <b>${esc(FN[S.brand])}</b></span></div>${t.I.map(x=>c26Item(x)).join('')}`}
+const c26Item=x=>`<div class="c26-item"><img src="${esc(x.img)}" alt="" loading="${EXPORTING?'eager':'lazy'}"><div><p><b>${esc(x.brand)}</b> - ${esc(x.name)}</p><p>${esc(x.size)} / ${esc(x.colour)}${x.qty>1?` · Qty ${x.qty}`:''}</p><p class="c26-ip">${x.was?`<b class="sale">${esc(x.price)}</b><s>${esc(x.was)}</s>`:`<b>${esc(x.price)}</b>`}</p></div></div>`;
 /* Delivery & Address (pre-populated) + the Deliver+ checkout banner (14 Aug latest variant) — never pre-ticked */
 function c26Delivery(t){const me=t.me,L=(window.BAG_LIVE||{})[S.brand]||{},hasD=window.DG_hasDplus?DG_hasDplus(S.brand)&&!!L.dplus:!!L.dplus;
-  const meth=`<div class="c26-row"><div><p>${esc(me.n)}${me.via?` with ${esc(me.via)}`:''}</p>${c26Price(t.del,me.via||S.member?0:me.was)}</div><button type="button" class="c26-act" data-ck="mopen">Change</button></div>`;
+  const meth=`<div class="c26-row"><div><p>${esc(me.n)}${me.via?` with ${esc(me.via)}`:''}</p>${c26Price(t.del,J()?t.jwas:me.via||S.member?0:me.was)}</div><button type="button" class="c26-act" data-ck="mopen">Change</button></div>`;
   const addr=`<div class="c26-row"><div><p><b>${esc(ADDR[0])}</b></p><p>${esc(ADDR.slice(1,5).join(', '))}</p></div><button type="button" class="c26-act">Change</button></div>`;
-  const prot=hasD?`<label class="c26-dplus"><span><b>Your peace of mind, guaranteed</b><small>Add Deliver+ order protection <b>+${gbp(t.dpUnit)}</b></small><a href="#" class="c26-act">Learn more</a></span><input class="ck-in" type="checkbox" id="ck-dplus" data-ck="chk" data-k="dplus"${S.dplus?' checked':''}><span class="chk" aria-hidden="true"></span></label>`
+  const prot=hasD?`<label class="c26-dplus"><span><b>Your peace of mind, guaranteed</b><small>Add Deliver+ order protection <b>+${gbp(t.dpUnit)}</b></small>${J()?'<small class="c26-cap">A refund or replacement if a parcel is lost, stolen or damaged. Optional.</small>':''}<a href="#" class="c26-act">Learn more</a></span><input class="ck-in" type="checkbox" id="ck-dplus" data-ck="chk" data-k="dplus"${S.dplus?' checked':''}><span class="chk" aria-hidden="true"></span></label>`
     :`<div class="c26-seel">${chk('protect',S.protect,`<b>Worry-Free Purchase®</b> for ${gbp(t.wfUnit)}`)}<p class="c26-cap">Extend your return window to 35 days and get a full refund if the order doesn’t arrive as described, including loss &amp; damage in transit.</p><p class="c26-cap">Powered by <img src="${C26_IMG}seel.png" alt="Seel" height="16"> <a href="#" class="c26-act">What’s Covered?</a></p></div>`;
-  return `<section class="c26-card" aria-labelledby="c26-h-del"><h2 class="c26-h" id="c26-h-del">${esc(arrive(me.days))}</h2><div class="c26-rows">${meth}<hr>${addr}</div>${prot}</section>`}
+  const mk=J()?DG_journey.sellers(t.I,S.brand).filter(g=>!g.site):[];
+  const split=mk.map(g=>`<hr><div class="c26-row"><div><p><b>${esc(g.name)} parcel</b></p><p>${esc(g.note)}</p></div></div>`).join('');
+  const parcel=J()&&mk.length?`<p class="c26-p"><b>${esc(FN[S.brand])} parcel</b></p>`:'';
+  return `<section class="c26-card" aria-labelledby="c26-h-del"><h2 class="c26-h" id="c26-h-del">${esc(arrive(me.days))}</h2><div class="c26-rows">${parcel}${meth}${split}<hr>${addr}</div>${prot}</section>`}
 function c26Pennies(t){return `<section class="c26-card" aria-labelledby="c26-h-don"><h2 class="c26-h" id="c26-h-don">Make a Donation?</h2>
   <p class="c26-p">Change lives with just <b>${gbp(t.round)}!</b> Your support will help British Heart Foundation do amazing things!</p>
   ${chk('charity',S.charity,`Yes, round up my total to <b>${gbp(t.pre+t.round)}</b>`)}
@@ -185,13 +201,13 @@ function c26Pennies(t){return `<section class="c26-card" aria-labelledby="c26-h-
 /* payment tiles: logo-only tiles as Figma (Card = icon + label, Pay Later = monogram + label) */
 function c26Tile(x){const L={card:`${ic('card')}<span>Card</span>`,apple:`<img src="${PM}applepay-onwhite.svg" alt="Apple Pay" style="height:20px">`,
   paypal:`<img src="${PM}paypal-wordmark.svg" alt="PayPal" style="height:18px">`,paylater:`<img src="${PM}paypal-monogram.png" alt="" aria-hidden="true" style="height:20px"><span class="c26-pl">Pay Later</span>`,
-  payplus:`<img src="${C26_IMG}debenhamspay.svg" alt="DebenhamsPay+" style="height:16px">`,gpay:`<img src="${PM}gpay-word-long.svg" alt="Google Pay" style="height:20px">`,
+  payplus:`<img src="${C26_IMG}debenhamspay.svg" alt="DebenhamsPay+" style="height:16px">`,gpay:`<span style="display:inline-flex;align-items:center;gap:4px"><img src="${PM}gpay-g-long.svg" alt="" aria-hidden="true" style="height:18px"><img src="${PM}gpay-word.svg" alt="Google Pay" style="height:18px"></span>`,
   klarna:`<img src="${PM}klarna-badge.svg" alt="Klarna" style="height:22px">`,clearpay:`<span class="c26-cp"><img src="${PM}clearpay-lockup-mini.svg" alt="Clearpay"></span>`}[x.id]||esc(x.l);
   const on=payId()===x.id;return `<label class="co-tile${on?' on':''}"><input class="ck-in" type="radio" name="pay" id="ck-p-${x.id}" value="${x.id}" data-ck="pay"${on?' checked':''} aria-label="${esc(x.l)}">${L}</label>`}
 const C26_ORDER=['card','apple','paypal','paylater','payplus','gpay','klarna','clearpay'];
 function c26Payment(t){const pid=payId(),P=PMS().sort((a,b)=>C26_ORDER.indexOf(a.id)-C26_ORDER.indexOf(b.id));
   const code=S.code!==null&&S.code!==''&&S.code!==undefined;
-  const promo=`<div class="promo"><label class="fld${code?' fld--filled':''}"><input id="ck-code" placeholder=" " value="${code?esc(S.code):''}"><span class="lbl">Enter promo code...</span></label><button type="button" class="bd sec" data-ck="apply">Apply</button></div>`
+  const promo=J()?jPromo():`<div class="promo"><label class="fld${code?' fld--filled':''}"><input id="ck-code" placeholder=" " value="${code?esc(S.code):''}"><span class="lbl">Enter promo code...</span></label><button type="button" class="bd sec" data-ck="apply">Apply</button></div>`
     +(code?`<div class="msg msg--success"><i></i><div class="body">${ic('tick-circle-outline')}<span style="flex:1"><b>${esc(S.code)}</b> applied</span><button type="button" class="x" data-ck="rmcode" aria-label="Remove ${esc(S.code)}">${ic('close-12')}</button></div></div>`:'');
   const gift=acc('gift','Redeem Gift Card',`<div class="promo"><label class="fld"><input id="ck-gc" inputmode="numeric" placeholder=" "><span class="lbl">Gift card number</span></label><button type="button" class="bd sec">Apply</button></div>`);
   const L=(window.BAG_LIVE||{})[S.brand]||{},cards=['visa','mastercard','amex','maestro','visa-electron'];
@@ -204,16 +220,22 @@ function c26Payment(t){const pid=payId(),P=PMS().sort((a,b)=>C26_ORDER.indexOf(a
   return `<section class="c26-card" aria-labelledby="c26-h-pay"><h2 class="c26-h" id="c26-h-pay">Payment</h2>${promo}<div class="acc-set c26-gift">${gift}</div>
     <div class="co-tiles" role="radiogroup" aria-label="Payment method">${P.map(c26Tile).join('')}</div>${card}
     <div class="c26-bill"><h3 class="c26-h3">Billing Address</h3>${chk('bill',S.bill!==false,'Use delivery address as billing address')}</div></section>`}
+/* journey promo: the field is always empty after Apply; each applied code is a chip with remove; FREEDEL + FASHION can sit together */
+function jPromo(){const C=S.codes||[],m=S.cmsg;
+  return `<div class="promo"><label class="fld"><input id="ck-code" placeholder=" " value="" autocomplete="off"><span class="lbl">Enter promo code...</span></label><button type="button" class="bd sec" data-ck="apply">Apply</button></div>`
+    +(m&&m.err?`<div class="msg msg--error" role="alert"><i></i><div class="body">${ic('alert')}<span style="flex:1">${esc(m.t)}</span></div></div>`:'')
+    +C.map(c=>`<div class="msg msg--success"><i></i><div class="body">${ic('tick-circle-outline')}<span style="flex:1"><b>${esc(c)}</b> applied · ${esc((DG_journey.CODES[c]||{}).label||'')}</span><button type="button" class="x" data-ck="rmcode" data-v="${esc(c)}" aria-label="Remove ${esc(c)}">${ic('close-12')}</button></div></div>`).join('')
+    +(m&&!m.err&&m.t?`<p class="c26-p" role="status">${esc(m.t)}</p>`:'')}
 /* Order Summary — Subtotal · Delivery · opt-ins · Discounts (link, expands to the named lines) · hairline · Order Total; then consent + legal */
 function c26Summary(t){const r=(l,v,c)=>`<div class="c26-r${c?' '+c:''}"><dt>${l}</dt><dd>${v}</dd></div>`,o=!!S.discOpen;
-  const rows=[r('Subtotal',gbp(t.sub)),r('Delivery',c26Price(t.del,t.me.via||S.member?0:t.me.was)),
+  const rows=[r('Subtotal',gbp(t.sub)),r('Delivery',c26Price(t.del,J()?t.jwas:t.me.via||S.member?0:t.me.was)),
     t.dp?r('Deliver+ order protection',gbp(t.dp)):'',t.prot?r('Worry-Free Purchase®',gbp(t.prot)):'',t.mem?r(esc(t.m.name),gbp(t.mem)):'',t.char?r('Donation',gbp(t.char)):''].join('');
   const disc=t.dsum?`<div class="c26-r"><dt><button type="button" class="c26-disc" data-ck="disc" aria-expanded="${o}" aria-controls="c26-disc-b">Discounts <img src="${LIB}down.svg" alt="" aria-hidden="true"${o?' style="transform:rotate(180deg)"':''}></button></dt><dd>-${gbp(t.dsum)}</dd></div>
     ${o?`<div id="c26-disc-b" class="c26-disc-b">${t.disc.map(d=>r(esc(d.n),'-'+gbp(d.p))).join('')}</div>`:''}`:'';
   return `<section class="c26-sum" aria-labelledby="c26-h-sum"><h2 class="c26-h" id="c26-h-sum">Order Summary</h2><dl class="c26-rows">${rows}${disc}<hr><div class="c26-r c26-tot"><dt>Order Total</dt><dd>${gbp(t.tot)}</dd></div></dl>
-    <div class="c26-legal">${chk('mkt',S.mkt!==false,`We will share our latest offers, promotions and collections via email and SMS from ${esc(FN[S.brand])} and our <a href="#" class="c26-act">family of brands</a> unless you untick this box.`)}
+    <div class="c26-legal">${chk('mkt',S.mkt===true,`Email me offers and new collections from ${esc(FN[S.brand])}. Unsubscribe at any time.`)}
     <p class="c26-p">By continuing I confirm that I am over the age of 18 and by entering my email address, I consent to receive an automated one-time verification code from ${esc(FN[S.brand])} at the phone number associated with my account. Message and data rates may apply.</p>
-    <p class="c26-p">We will use your information in accordance with our <a href="#" class="c26-act">Terms of use</a> and <a href="#" class="c26-act">Privacy policy</a>.</p></div></section>`}
+    <p class="c26-p">We will use your information in accordance with our <a href="#" class="c26-act">Terms of use</a> and <a href="#" class="c26-act">Privacy policy</a>.</p></div></section>${J()?DG_journey.help():''}`}
 function newPage(t){const d=desk(),left=c26Delivery(t)+c26Pennies(t)+c26Payment(t);
   return (d?`<main class="c26"><div class="c26-cols"><div class="c26-main">${left}</div><aside class="c26-side" aria-label="Your order"><section class="c26-card" aria-labelledby="c26-h-bag"><h2 class="c26-h" id="c26-h-bag">Your Bag (${t.n})</h2>${c26Items(t)}${c26Express()}</section><hr>${c26Summary(t)}</aside></div></main>`
     :`<main class="c26">${c26Bag(t)}${left}${c26Summary(t)}</main>`)+methodModal(t)}
@@ -233,7 +255,8 @@ function confirmPage(t){const me=t.me,pid=payId(),pm=(PMS().find(x=>x.id===pid)|
   return `<main class="ck-pg"><section class="ck-conf" aria-labelledby="ck-h-ty"><div class="ck-conf-hd"><h1 class="ck-h1" id="ck-h-ty">Thank You</h1><p class="ck-p"><b>Order Number:</b> DUX010559282</p>
     <p class="ck-p">We sent an email to <b>jake.rayner@email.com</b> with your order confirmation and receipt</p><button type="button" class="bd sec" data-ck="continue">Continue shopping</button></div>
     <div class="ck-blk"><div class="ck-conf-grid"><div><h3>Delivery Address</h3>${`<address>${ADDR.slice(1,5).map(esc).join('<br>')}</address>`}</div><div><h3>Billing Address</h3><address>${ADDR.slice(1,5).map(esc).join('<br>')}</address></div><div><h3>Payment Method</h3><p>${esc(pm.id==='card'?'Credit Card':pm.l)}</p></div></div></div>
-    <div class="ck-blk"><div class="bag-sec-hd">${ic('order')}<span class="bag-seller">Delivered by <b>${esc(FN[S.brand])}</b></span></div><p class="ck-p">${esc(arrive(me.days))} · ${esc(me.n)}</p>${t.I.map(line).join('')}</div>
+    ${J()?DG_journey.sellers(t.I,S.brand).map(g=>`<div class="ck-blk"><div class="bag-sec-hd">${ic('order')}<span class="bag-seller">${DG_journey.SOLD} <b>${esc(g.name)}</b></span></div><p class="ck-p">${esc(g.site?arrive(me.days)+' · '+me.n:g.note)}</p>${g.items.map(line).join('')}<p class="ck-p">${DG_journey.returns(g)}</p></div>`).join('')
+      :`<div class="ck-blk"><div class="bag-sec-hd">${ic('order')}<span class="bag-seller">Sold and sent by <b>${esc(FN[S.brand])}</b></span></div><p class="ck-p">${esc(arrive(me.days))} · ${esc(me.n)}</p>${t.I.map(line).join('')}</div>`}
     <div class="ck-blk"><dl class="ck-rows" aria-label="Order Summary">${rows}<div class="ck-tot"><dt>Order Total${t.saved?`<span class="ck-saved">You saved ${gbp(t.saved)}</span>`:''}</dt><dd>${gbp(t.tot)}</dd></div></dl></div>
   </section></main><footer data-ftr="${S.brand}"></footer>`}
 
@@ -262,13 +285,14 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-ck]');if(!
   if(a==='join'){set({addMem:!S.addMem});return}
   if(a==='mopen'){set({mOpen:true});const x=document.querySelector('[data-ck-modal] input:checked');if(x)x.focus({preventScroll:true});return}
   if(a==='mclose'){set({mOpen:false});const c=document.querySelector('[data-ck="mopen"]');if(c)c.focus({preventScroll:true});return}
-  if(a==='rmcode'){set({code:''});return}
+  if(a==='rmcode'){if(J()){set({codes:(S.codes||[]).filter(c=>c!==t.dataset.v),cmsg:null});return}set({code:''});return}
   if(a==='disc'){set({discOpen:!S.discOpen});return}
+  if(a==='apply'&&J()){const r=DG_journey.code(S.codes,(document.getElementById('ck-code')||{}).value||'FREEDEL');set(Object.assign({codes:r.codes,cmsg:r.msg},r.picked?{meth:r.picked}:{}),'ck-code');return}
   if(a==='apply'){const v=(document.getElementById('ck-code')||{}).value;set({code:(v||'FREEDEL').trim().toUpperCase()});return}
   if(a==='paynow'){if(t.dataset.v)S.pay=t.dataset.v;if(fire('dg:checkout-pay',{total:sums().tot,method:payId()}))set({step:'confirm',mOpen:false});scrollTo(0,0);return}
   if(a==='continue'){fire('dg:continue-shopping');return}
   if(a==='editbag'){fire('dg:edit-bag')}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.mOpen)set({mOpen:false})});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.mOpen)set({mOpen:false});if(e.key==='Enter'&&e.target.id==='ck-code'){e.preventDefault();const b=document.querySelector('[data-ck="apply"]');if(b)b.click()}});
 render();
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const d=desk();if(d!==render.d){render.d=d;render()}},150)});render.d=desk();
 addEventListener('message',e=>{const d=e.data||{};

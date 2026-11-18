@@ -1299,6 +1299,16 @@ const DG_TOKEN_MAP = [
   html:`<div style="max-width:358px"><div class="fld-stack"><label for="cat-fs">Card Number</label><span class="fld-stack-in"><input id="cat-fs"><img src="assets/ds/icons/lib/icons-card.svg" alt=""></span></div></div>` },
 { slug:'header-compact', name:'Header, compact icons', group:'Navigation', tier:'organism', css:'.hd.hd--compact — 20px icons in 40×44 tap areas', figma:'—', by:'Conversion master 2027 (Jake 17 Nov: menu icons could be smaller)',
   html:`<header data-hd class="hd--compact"></header>` },
+{ slug:'help-strip', name:'Help strip', group:'Feedback', tier:'molecule', css:'.help-strip · .help-strip--flat · .help-acts · .help-act', figma:'—', by:'Conversion master 2027 (CTO persona run 18 Nov: Contact Us had no phone, form or chat)',
+  summary:'Every page that takes money says how to reach a person: Need a hand? + hours, then Chat with us · Email us · Help centre. Drop-in: DG_journey.help({flat}).',
+  use:['Under the order summary in the bag and checkout.','--flat on the page (bag mobile); the card on --surface-sunken pages (checkout, bag desktop column).'],
+  avoid:['A phone number nobody answers — add Call us only with real hours.','Grey body text: the hours line is black, hierarchy comes from size and weight.'],
+  html:`<section class="help-strip" style="width:358px"><h2>Need a hand?</h2><p>Real people, 8am to 10pm, every day.</p><div class="help-acts"><button class="help-act"><img src="assets/ds/icons/lib/icons-support.svg" alt=""><span>Chat with us</span></button><button class="help-act"><img src="assets/ds/icons/lib/icons-email.svg" alt=""><span>Email us</span></button><button class="help-act"><img src="assets/ds/icons/lib/icons-question.svg" alt=""><span>Help centre</span></button></div></section>` },
+{ slug:'search-understood', name:'Search understood', group:'Navigation', tier:'molecule', css:'.srch-understood · .su-chips · .su-chip', figma:'—', by:'Conversion master 2027 (CTO persona run 18 Nov: results that miss the ask)',
+  summary:'Under the open search bar on the results: the count for the query, then what we read it as (a category, an occasion, a size) as chips you can remove. Page template: templates/search.html.',
+  use:['One chip per thing the words mean: “double duvet set” = Duvet sets + Double; “teen skincare” = Skincare + Teen.','Removing a chip widens the results.'],
+  avoid:['More than three chips.','Sponsored results in the first row; label every one with the DS badge.'],
+  html:`<div class="srch-understood" style="width:358px"><p><b>8 results</b> for “party dress”</p><div class="su-chips"><button class="su-chip"><span>Dresses</span><img src="assets/ds/icons/lib/icons-close.svg" alt=""></button><button class="su-chip"><span>Party &amp; occasion</span><img src="assets/ds/icons/lib/icons-close.svg" alt=""></button></div></div>` },
 ];
 
 /* our data-brand slug ↔ dev fascia global */

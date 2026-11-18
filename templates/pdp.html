@@ -67,6 +67,7 @@ body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-
 <script src="templates/products.js"></script>
 <script src="projects/plp-alignment/data.js"></script>
 <script src="templates/feed.js"></script>
+<script src="assets/ds/journey.js"></script>
 <script>
 /* in: ?brand=<slug> or ?s={"brand":…}; {protoSet} / {protoPing} as the review shell expects. out: {protoReady}, {protoPong,h}. */
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -80,7 +81,7 @@ const wishIcon=b=>IC+(WISH[b]||'heart-24')+'.svg';
 /* delivery grid (DS delivery.js) = option B, Delivery / Collection tabs (projects/delivery-grid, Jake 29 Oct): fastest + cheapest per tab, badges, returns line */
 /* seller line: grey placeholder until a size is picked, then sold by the fascia ('site'; a marketplace key, e.g. 'amass', makes it a link → seller modal) */
 let SELLER=null;
-const DG_OPTS=()=>({layout:'tabs',tab:'home',retIn:S.dgRet||'box',sellerIn:S.dgSeller||'box',ccLabel:S.dgCC||'Collection',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER});
+const DG_OPTS=()=>({layout:'tabs',tab:'home',retIn:S.dgRet||'box',sellerIn:S.dgSeller||'box',ccLabel:S.dgCC||'Collection',scen:'std',badges:true,ni:'split',sort:'price',cut:'midnight',modal:'toggle',ret:true,retDays:21,desk:desk(),sheet:'up',brand:S.brand,seller:SELLER,journey:!!S.journey});   /* S.journey: dates + returns from DS journey.js (the same as the bag and checkout) */
 /* Subscribe & Save: the product at 5% off, size = the first size until one is picked; centred modal from 600px, bottom sheet on phones */
 const SNS=P=>({brand:P.brand,name:P.name,price:P.price,img:P.imgs[0],size:(document.querySelector('.sz.on')||{}).textContent||P.sizes[0],colour:P.colour,pct:5});
 const DPLUS=['debenhams','boohoo','boohooman','plt','karenmillen','warehouse'];   /* every fascia but The Brand Room runs Deliver+ (bag-summary.js BAG_LIVE) */
@@ -137,7 +138,7 @@ function page(){const P=(window.DG_PDP_PRODUCTS||{})[S.brand]||DG_PDP_PRODUCTS.d
       <div class="sizes"><div class="sizes-head"><span>Size: <b>Select a size</b></span><span class="guide">Size guide</span></div><div class="set">${P.sizes.map(z=>`<button class="sz">${esc(z)}</button>`).join('')}</div></div>
       <div class="pdp-ctas" data-slot="ctas"><button class="bd pri">Add to bag</button><button class="pay pay--paypal"><img src="assets/ds/icons/payments/paypal-wordmark.svg" alt="PayPal"><span class="pp-co">Checkout</span></button><button class="pay pay--apple"><img src="assets/ds/icons/payments/applepay-onblack.svg" alt="Apple Pay"></button></div>
       ${window.DG_aiPromptsHTML?DG_aiPromptsHTML(S.brand,{sku:P.sku||''}):''}
-      ${window.DG_memberBoxHTML?DG_memberBoxHTML(S.brand):''}
+      ${window.DG_memberBoxHTML&&!S.memberOff?DG_memberBoxHTML(S.brand):''}
       ${dplus}
       ${window.DG_delivery?DG_delivery.grid(DG_OPTS()):''}
       ${bnpl}

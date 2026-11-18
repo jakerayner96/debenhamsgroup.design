@@ -28,6 +28,7 @@
   document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;
     const act=t.closest('[data-master-toast] .act');if(act){e.preventDefault();go('bag');return}
     if(t.closest('.hd-logo')){e.preventDefault();go('home');return}
+    if(M.page!=='search'&&t.closest('.hd-search,.hd [aria-label="Search"],.hd-icons .ic-search')){e.preventDefault();e.stopPropagation();go('search');return}
     const h2=t.closest('[data-h2-go]');if(h2){e.preventDefault();e.stopPropagation();go(h2.dataset.h2Go);return}
     if(M.page==='bag'&&t.closest('.bs-cta,.bs-w')){e.preventDefault();e.stopPropagation();go('checkout');return}
     if(t.closest('.hd-count,[aria-label="Bag"]')){e.preventDefault();e.stopPropagation();go('bag');return}

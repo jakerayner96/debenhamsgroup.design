@@ -3169,3 +3169,25 @@ button.co-tile,label.co-tile{width:100%;box-sizing:border-box;cursor:pointer;fon
 .c26 .co-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
 .c26 .co-tile{min-width:0;overflow:hidden}
 .c26-cp{display:inline-flex;align-items:center;justify-content:center;background:#B2FCE3;border-radius:999px;padding:6px 8px;width:67px;box-sizing:border-box}.c26 .c26-cp img{height:auto;width:100%}
+
+/* ===================== Journey fixes — the CTO persona run (18 Nov 2026, Conversion master 2027) =====================
+   Search understood (.srch-understood): under the open search bar, the result count + what we searched for, as chips you can remove
+   (one category, one occasion). Results stay inside them. 14 regular, count strong; chips = the Search suggestions chip (40px, pill, --surface-media). */
+.srch-understood{display:flex;flex-direction:column;gap:var(--gap-3,12px);font-family:var(--font-family-base)}
+.srch-understood p{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-regular,400);color:var(--text-primary)}
+.srch-understood p b{font-weight:var(--w-strong,600)}
+.su-chips{display:flex;gap:var(--gap-2,8px);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 calc(-1 * var(--gap-4,16px));padding:0 var(--gap-4,16px)}.su-chips::-webkit-scrollbar{display:none}
+.su-chip{flex:none;display:inline-flex;align-items:center;gap:var(--gap-2,8px);height:40px;padding:0 12px 0 16px;border:0;border-radius:var(--radius-pill);background:var(--surface-media,#F2F2F2);font:var(--w-regular,400) 14px/1.2 var(--font-family-base);color:var(--text-primary);cursor:pointer}
+.su-chip img{width:16px;height:16px;flex:none}
+/* Help strip (.help-strip): every page that takes money says how to reach a person — the run found Contact Us with no phone, form or chat.
+   Title 16 strong · one line 14 · three actions (icon 24, 1pt lib icons-support / -email / -question, label 14) on one row, 44px tap height.
+   Default = a raised card (checkout, bag desktop column); .help-strip--flat = no card, on the page (bag mobile). */
+.help-strip{background:var(--surface-raised,#FFF);padding:var(--gap-4,16px);display:flex;flex-direction:column;gap:var(--gap-2,8px);font-family:var(--font-family-base);color:var(--text-primary)}
+.help-strip--flat{background:none;padding:var(--gap-6,24px) var(--gap-4,16px)}
+.help-strip h2{margin:0;font-size:16px;line-height:20px;font-weight:var(--w-strong,600)}
+.help-strip p{margin:0;font-size:14px;line-height:20px;font-weight:var(--w-regular,400)}
+.help-acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap-2,8px);margin-top:var(--gap-2,8px)}
+.help-act{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:72px;padding:8px 4px;border:var(--border-w,1px) solid var(--border-subtle,#E5E5E5);border-radius:var(--radius-default,4px);background:none;font:var(--w-regular,400) 14px/18px var(--font-family-base);color:var(--text-primary);cursor:pointer;text-align:center}
+.help-act img{width:24px;height:24px;flex:none}
+/* bag seller section: the arrival line under "Sold and sent by" (marketplace parcels say when and who sends them) */
+.bag-sec-note{margin:var(--gap-1,4px) 0 0;font-size:14px;line-height:20px;font-weight:var(--w-regular,400);color:var(--text-primary)}

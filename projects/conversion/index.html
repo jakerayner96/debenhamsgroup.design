@@ -191,8 +191,9 @@ const P={
 /* page → [2027 template, Today template, what changes] */
 const PAGES=[
   ['home','Home','templates/home2.html','templates/home.html','Homepage 2.0: a personalised home per customer, live text on clean imagery, one calm USP row'],
+  ['search','Search','templates/search.html','templates/search.html','Search reads the words: category + occasion as chips, one labelled sponsored card, never first'],
   ['plp','PLP','projects/plp-alignment/plp.html','projects/plp-alignment/plp.html','P-05 PLP new format, one calm USP row'],
-  ['pdp','PDP','templates/pdp.html','templates/pdp.html','The master PDP, one calm USP row'],
+  ['pdp','PDP','templates/pdp.html','templates/pdp.html','The master PDP: no Unlimited box or Deliver+, dates from the same source as checkout'],
   ['bag','Bag','templates/bag.html','templates/bag.html','One Checkout securely CTA, nothing pre-added, no upsell clutter'],
   ['checkout','Checkout','templates/checkout.html','templates/checkout.html','Checkout 2026, decluttered: express pay first, one membership moment, a summary that reads'],
   ['wishlist','Wishlist','templates/wishlist.html','templates/wishlist.html','Wishlist 2026'],
@@ -204,16 +205,40 @@ const CHANGES={
         ['Personal','A home per customer','Figma Homepage 2.0 profiles 1–6 + the 40 DS personas: each module is chosen by the customer’s data (the Brain: on-site behaviour, CRM, purchase history → five experience types).'],
         ['Speed','Skeletons + calm motion','Grey shimmer until each image decodes, modules fade up 16px once, reduced-motion respected. No auto-rotating heroes (NN/g).'],
         ['Rhythm','One spacing system','48 / 80px between modules, 16 / 40px gutters, one type scale (display 44/88 · title 26/40 · body 16/18).']],
+  search:[['Search','The words, understood','“party dress” = Dresses + Party &amp; occasion, shown as chips you can remove. The run: “teen skincare” led with anti-ageing serums, “double duvet set” showed singles, “midi dress” opened on maxis.'],
+          ['Trust','One sponsored card, labelled','Today the first four “blouse” results were sponsored marketplace tops. 2027: one Sponsored card, badge on, never in the first row.']],
   plp:[['USP','One calm USP row','Same rule on every page.']],
-  pdp:[['USP','One calm USP row','Same rule on every page. Next PDP round: the PDP Redesign 2027 decision zone (O-01), one delivery module (O-02), payment CTA rationalisation (O-04).']],
-  bag:[['Trust','One Checkout securely CTA','Live shows "Checkout with Deliver+" / "Checkout without Deliver+". The typical persona on all 5 sites hit HIGH/CRITICAL on pre-added ancillaries. bag-summary.js clean.'],
+  pdp:[['USP','One calm USP row','Same rule on every page. Next PDP round: the PDP Redesign 2027 decision zone (O-01), one delivery module (O-02), payment CTA rationalisation (O-04).'],
+       ['Promise','The date checkout will say','Delivery grid dates come from DS journey.js: working days from today, the same table checkout reads. “Tomorrow” = Thu 19 Nov on both. The run: PDP said “Arrives tomorrow”, checkout said Thu 19 – Fri 20.'],
+       ['One offer','No Unlimited box, no Deliver+','Three paid delivery schemes on the PDP, bag and checkout today. 2027: Unlimited is one row in the checkout delivery list, Deliver+ one opt-in line in checkout.'],
+       ['Words','Sold and sent by · one returns line','One seller wording everywhere (was Sold &amp; Delivered by / Delivered by / Concessionaire Partner). Returns: “We email your label: no printer or delivery note needed.”']],
+  bag:[['Total','One Order Total, the same as checkout','Journey basket from DS journey.js: Subtotal £229.00 · Delivery 99p · Discounts −£33.99 · Order Total £196.00, at the top, in the summary and in checkout. The run: £50.29 / £53.28 / £51.28 for one basket.'],
+       ['Seller','Each parcel says who sends it and when','Sold and sent by Debenhams · Sold and sent by Living and Home, Arrives by Fri 27 Nov, sent free.'],
+       ['Help','Need a hand?','Chat, email, help centre under the summary: the run found Contact Us with no phone, form or chat.'],
+       ['Trust','One Checkout securely CTA','Live shows "Checkout with Deliver+" / "Checkout without Deliver+". The typical persona on all 5 sites hit HIGH/CRITICAL on pre-added ancillaries. bag-summary.js clean.'],
        ['Calm','No pre-added extras, no upsell stack','Bag sections off in 2027: Deliver+ banner, membership card, XCover, Taskrabbit, top-up, samples, Taggstar strip. M&S and John Lewis show 0 upsells in the bag (benchmark).']],
-  checkout:[['Speed','Express pay first','Apple Pay / Google Pay / PayPal above the form (Checkout 2026 Quick Pay).'],
+  checkout:[['Consent','Never pre-ticked','“Email me offers… Unsubscribe at any time.” unticked, email only. Live: email, WhatsApp and SMS from the whole family of brands “unless you untick this box” — every persona hit it.'],
+            ['Codes','Codes that behave','The field clears after Apply, each code is a chip with remove, one money-off + one delivery code together. FREEDEL makes delivery free and picks Next Day for you. Try FASHION, then FREEDEL.'],
+            ['Dates','Each parcel, its own date','Debenhams parcel: the method’s date · Living and Home parcel: Arrives by Fri 27 Nov, sent free by the seller.'],
+            ['Deliver+','Says what it is','“A refund or replacement if a parcel is lost, stolen or damaged. Optional.” under the Figma banner, unticked.'],
+            ['Speed','Express pay first','Apple Pay / Google Pay / PayPal above the form (Checkout 2026 Quick Pay).'],
             ['Trust','One membership moment, opt-in','A single Unlimited pill on Delivery Method; extras collapsed into one optional row; never pre-added.'],
             ['Clarity','An order summary that reads','Items → Subtotal → Delivery (method) → each discount named → Order Total → You saved, once. Grouped for screen readers.'],
             ['Access','Card field you can tab through','Apr 2026 a11y audit: the live card number field traps keyboard focus and checkboxes can’t be toggled.']],
   wishlist:[],
 };
+/* Helen's journey (the CTO's persona run, the simple version): Home → Search → PDP → Bag → Checkout */
+const JOURNEY=[['home','Home','Helen’s home (Homepage 2.0 persona)'],['search','Search “party dress”','category + occasion understood'],['pdp','PDP','the date checkout will say'],['bag','Bag','one Order Total: £196.00'],['checkout','Checkout','same total, opt-in, codes that behave']];
+/* the 9 anomalies on the CTO's infographic → where 2027 answers them ('next' = not in the prototype: content / ops) */
+const CTO=[['01','Two totals in one bag','One sum (DS journey.js) for the bag top, the summary and checkout: £196.00 on all three. No Deliver+ in the bag.','bag'],
+  ['02','Marketing consent pre-ticked','Unticked, email only, one plain line.','checkout'],
+  ['03','Three paid delivery schemes','One offer per moment: Unlimited is a delivery row in checkout, Deliver+ one opt-in line that says what it covers. Nothing on the PDP or bag.','pdp'],
+  ['04','Free Next Day, not selected','FREEDEL picks Next Day for you and says so.','checkout'],
+  ['05','“Arrives tomorrow” that isn’t','PDP and checkout read the same dates in working days; marketplace parcels show their own date.','pdp'],
+  ['06','“Paperless”, then “see the note”','One returns line everywhere: we email your label, no delivery note needed.','pdp'],
+  ['07','One seller, three names','“Sold and sent by” on the PDP, bag, checkout and confirmation.','bag'],
+  ['08','No way to contact anyone','Need a hand? strip (chat, email, help centre) in the bag and checkout. Contact Us page + call back: next.','checkout'],
+  ['09','Results that miss the ask','Search reads category + occasion, one labelled sponsored card.','search']];
 const XT={G:['Guided & interactive','#F28C28'],S:['Social & community','#E23B3B'],V:['Visually similar','#E8C21C'],P:['Personalisation & context','#2D7FF9'],T:['Themes & moments','#2BA84A']};
 const PROF=()=>((window.DG_H2_PROFILES||{}).list)||[];
 function profilesFor(b){const L=PROF().filter(p=>p.brand===b);return {brand:L.filter(p=>p.source==='brand'),hp2:L.filter(p=>p.source==='hp2'),persona:L.filter(p=>p.source==='persona')}}
@@ -228,7 +253,10 @@ function renderPanel(host,S,update){
     +((dr.affinities||[]).length?`<li><b>Affinities</b><small>${esc(dr.affinities.map(a=>a[0]+(a[1]?' ('+a[1]+')':'')).join(' · '))}</small></li>`:'')+(dr.type?`<li><b>Customer type</b><small>${esc(dr.type)}</small></li>`:'');
   const mods=pr?(pr.modules||[]).map((m,i)=>{const x=XT[m.x]||['',''];return `<li><span class="d" style="color:${x[1]}">${String(i+1).padStart(2,'0')}</span><b>${esc(m.title||m.name||m.brand||m.t)} <small style="display:inline;color:${x[1]}">· ${esc(m.t)} · ${esc(x[0])}</small></b><small>${esc(m.why||'')}</small></li>`}).join(''):'';
   const li=r=>`<ul class="bk">${r.map(([d,t,x])=>`<li><span class="d">${d}</span><b>${t}</b><small>${x}</small></li>`).join('')}</ul>`;
-  host.innerHTML=`<h1>Conversion master 2027</h1><p class="intro">The whole journey rebuilt for conversion on the DS: Home → PLP → PDP → Bag → Checkout, every fascia. Flip <b>Today</b> / <b>2027</b> to compare. On Home, pick a customer: every module is chosen from their data.</p>
+  host.innerHTML=`<h1>Conversion master 2027</h1><p class="intro">The whole journey rebuilt for conversion on the DS: Home → Search → PLP → PDP → Bag → Checkout, every fascia. Flip <b>Today</b> / <b>2027</b> to compare. On Home, pick a customer: every module is chosen from their data.</p>
+  <div class="card"><h3>Helen’s journey <small>the CTO run, the simple version</small></h3><p>One dress, one marketplace extra, as a guest on her phone. Tap through, or jump to a step.</p>
+    <ol class="ol">${JOURNEY.map(([p,n,d],i)=>`<li><button class="lnk" data-jr="${p}" style="color:${pg===p?'var(--ink)':'var(--accent)'};font-weight:${pg===p?700:400}">${n}</button> <small style="color:var(--dim)">${d}</small></li>`).join('')}</ol></div>
+  <div class="card"><h3>CTO persona run · 18 Nov <small>9 anomalies</small></h3><ul class="bk">${CTO.map(([n,t,fix,p,st])=>`<li><span class="d"${st==='next'?' style="color:var(--warn)"':''}>${n}</span><b>${t}</b><small>${fix}</small>${p?`<button class="lnk" data-jr="${p}" style="color:var(--accent)">Show in 2027 →</button>`:''}</li>`).join('')}</ul></div>
   <div class="card"><h3>Version</h3><span class="seg" id="verseg"><button data-v="live"${ver==='live'?' class="on"':''}>Today</button><button data-v="new"${ver==='new'?' class="on"':''}>2027</button></span></div>
   <div class="card"><h3>Page <small>or click through the page</small></h3>${PAGES.map(([v,n,src,old,d])=>`<button class="opt${pg===v?' on':''}" data-pg="${v}"><span class="r"></span><span class="t"><b>${n}</b><span>${d}</span></span></button>`).join('')}
     <p style="margin:8px 0 0">Source: <code>${ver==='new'?cur[2]:cur[3]}</code></p></div>
@@ -240,6 +268,7 @@ function renderPanel(host,S,update){
       <p style="margin-top:8px">${Object.entries(XT).map(([k,[n,c]])=>`<span style="display:inline-flex;align-items:center;gap:4px;margin-right:8px;font-size:10.5px"><i style="width:8px;height:8px;border-radius:2px;background:${c}"></i>${n}</span>`).join('')}</p></div>`:''}`:''}
   <div class="card"><h3>What 2027 changes · ${cur[1]}</h3>${(CHANGES[pg]||[]).length?li(CHANGES[pg]):'<p>Same as the master today.</p>'}</div>`;
   host.querySelectorAll('[data-pg]').forEach(b=>b.onclick=()=>setPage(b.dataset.pg));
+  host.querySelectorAll('[data-jr]').forEach(b=>b.onclick=()=>{S.cfg.ver='new';if(b.dataset.jr==='home'&&S.brand==='debenhams')S.cfg.profile='debenhams-helen';setPage(b.dataset.jr)});
   host.querySelectorAll('#verseg button').forEach(b=>b.onclick=()=>{S.cfg.ver=b.dataset.v;save();panel();frame.src=src()});
   const ps=host.querySelector('#prsel');if(ps)ps.onchange=()=>{S.cfg.profile=ps.value;save();panel();frame.src=src()};
 }

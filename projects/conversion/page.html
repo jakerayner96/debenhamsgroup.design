@@ -15,14 +15,17 @@
      checkout → templates/checkout.html · co:'new' | 'live'
    2027 on every page: USP banners in calm mode (conversion.js). in: ?s={brand,page,ver,profile}. */
 (function(){
-  const NEW={home:'templates/home2.html',plp:'projects/plp-alignment/plp.html',pdp:'templates/pdp.html',bag:'templates/bag.html',checkout:'templates/checkout.html',wishlist:'templates/wishlist.html'};
+  const NEW={home:'templates/home2.html',search:'templates/search.html',plp:'projects/plp-alignment/plp.html',pdp:'templates/pdp.html',bag:'templates/bag.html',checkout:'templates/checkout.html',wishlist:'templates/wishlist.html'};
   const OLD=Object.assign({},NEW,{home:'templates/home.html'});
   let S={brand:'debenhams',page:'home',ver:'new',profile:''};
   try{const q=new URLSearchParams(location.search).get('s');if(q)S=Object.assign(S,JSON.parse(q))}catch(e){}
   if(!NEW[S.page])S.page='home';
   const now=S.ver!=='live',T=Object.assign({},S);
   if(S.page==='bag'&&now){T.clean=true;T.bagOff=['oos','qtyerr','dplus','member','xcover','taskrabbit','topup','samples','ts','rewards','gifts','sample','gift'].concat(S.bagOff||[])}
-  if(S.page==='pdp'&&now)T.dplusOff=true;   /* 2027: Deliver+ lives in checkout only (Jake 17 Nov) */
+  if(S.page==='pdp'&&now){T.dplusOff=true;T.memberOff=true}   /* 2027: Deliver+ lives in checkout only (Jake 17 Nov); no Unlimited box on the PDP — one paid delivery offer, in checkout (CTO persona run, 18 Nov) */
+  /* 2027 journey (CTO persona run, 18 Nov): PDP, bag and checkout read DS journey.js — one basket, one order total, one delivery date, one seller wording, opt-in consent */
+  if(now&&['pdp','bag','checkout'].includes(S.page))T.journey=true;
+  if(S.page==='search')T.smart=now;
   if(S.page==='checkout')T.co=now?'new':'live';
   const sp=new URLSearchParams();sp.set('s',JSON.stringify(T));sp.set('brand',S.brand);if(S.page==='plp')sp.set('mode','new');if(S.profile)sp.set('profile',S.profile);
   history.replaceState(null,'',location.pathname+'?'+new URLSearchParams({s:JSON.stringify(S)}).toString());
@@ -30,7 +33,7 @@
   fetch(file,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(file+' '+r.status);return r.text()}).then(h=>{
     h=S.page==='plp'?h.replace(/<head>/i,'<head><base href="'+new URL('../plp-alignment/',location.href).href+'">')
                     :h.replace('<base href="../">','<base href="../../">');
-    const pre=`<script>window.MASTER=${JSON.stringify({page:S.page,state:S,ver:S.ver})};history.replaceState(null,'',location.pathname+'?'+${JSON.stringify(sp.toString())})<\/script>`;
+    const pre=`<script>window.DG_TODAY='2026-11-18T10:38:00';window.MASTER=${JSON.stringify({page:S.page,state:S,ver:S.ver})};history.replaceState(null,'',location.pathname+'?'+${JSON.stringify(sp.toString())})<\/script>`;
     h=h.replace(/<\/head>/i,pre+'</head>').replace(/<\/body>(?![\s\S]*<\/body>)/i,'<script src="'+new URL('conversion.js',location.href).href+'"><\/script></body>');
     document.open();document.write(h);document.close();
   }).catch(err=>{document.body.innerHTML='<p style="font:14px system-ui;padding:24px">Could not open '+file+': '+err.message+'</p>'});

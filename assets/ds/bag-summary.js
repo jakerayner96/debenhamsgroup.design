@@ -49,6 +49,7 @@ window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk,o){o=
      Worry-Free Purchase® · Discounts (link + chevron) · optional rows (o.extra = [[label, value]] — Sales Tax, Gift Card, Donation) · hairline · Order Total.
      o.wf = a fixed Worry-Free amount, o.pay3 = the pay-in-3 amount (else 4% of the subtotal / total ÷ 3). o.live:true keeps the 6 Oct live capture (Discount · Deliver+ add-on · Discounts included). */
   const v26=!o.live;
+  if(o.delNow!=null)c=Object.assign({},c,{delNow:o.delNow,del:o.del!=null?o.del:c.del});   /* o.delNow / o.del: the chosen method's price (DS journey.js, 18 Nov) */
   if(v26){const dn=c.delNow!=null?c.delNow:c.del,wf=c.wf?(o.wf!=null?o.wf:Math.round(t.sub*c.wfRate*100)/100):0,tot=t.sub-t.disc+dn+wf;t.total=tot;
     const dl=c.delNow!=null&&c.delNow<c.del?`<span class="bs-dl"><b>${gbp(dn)}</b><s>${gbp(c.del)}</s></span>`:gbp(dn);
     var sum26=`<div class="bs-sum bs-sum--26"><div class="bs-h">Order Summary</div><div class="bs-body"><div class="bs-rows">${row('Subtotal',gbp(t.sub))}${row('Delivery',dl)}${wf?row(esc(c.wf),gbp(wf)):''}</div>
@@ -66,7 +67,7 @@ window.DG_bagSummaryHTML=window.renderBagSummary=function(brand,items,desk,o){o=
   const pr=o.promo===false?'':promo,th=o.thresh?`<div class="bs-th">${o.thresh}</div>`:'';
   return `<div class="bs${desk?' bs--d':' bs--m'}${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="${vars}">${desk?`<div class="bs-card">${th}${sum}${pay}</div>${pr}`:`${pr}${pr?'<div class="bs-hr"></div>':''}<div class="bs-card bs-flat">${sum}${pay}</div>`}</div>`;
 };
-window.DG_bagTopHTML=window.renderBagTop=function(brand,items,o){o=o||{};const B=window.BAG_LIVE;let c=B[brand]||B.debenhams;if(o.clean)c=Object.assign({},c,{cta:['Checkout securely'],dplus:null,wf:null});const t=sums(c,items||[]);
+window.DG_bagTopHTML=window.renderBagTop=function(brand,items,o){o=o||{};const B=window.BAG_LIVE;let c=B[brand]||B.debenhams;if(o.clean)c=Object.assign({},c,{cta:['Checkout securely'],dplus:null,wf:null});if(o.delNow!=null)c=Object.assign({},c,{delNow:o.delNow,del:o.del!=null?o.del:c.del});const t=sums(c,items||[]);
   /* 17 Nov 2026 fix: the strip shows the SAME Order Total as the summary below it (Bag 2026: + delivery + Worry-Free) — it showed goods only, so the two totals disagreed */
   if(!o.live){const dn=c.delNow!=null?c.delNow:c.del,wf=c.wf?Math.round(t.sub*c.wfRate*100)/100:0;t.goods=t.sub-t.disc+dn+wf}
   return `<div class="bs bs-top${c.small?' bs--sm':''}${c.light?' bs--lt':''}" style="--bs-bg:${c.bg};--bs-fg:${c.fg};--bs-case:${c.up?'uppercase':'none'}"><div class="bs-ot">Order Total: <b>${gbp(t.goods)}</b></div>${o.after||''}<button type="button" class="bs-cta">${esc(c.cta[0])}</button></div>`};

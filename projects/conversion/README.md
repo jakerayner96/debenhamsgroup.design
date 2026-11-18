@@ -13,6 +13,9 @@ The conversion programme's master prototype: the whole journey, **Home → PLP �
 | Bag | `templates/bag.html` with `clean:true` (one Checkout securely CTA) and no pre-added / upsell sections | Two totals (£44.25 / £47.46), Deliver+ ×8, prize draw; all 5 typical personas HIGH/CRITICAL |
 | Checkout | `templates/checkout.html` (`co:'new'`): express pay first, two-line delivery, one opt-in membership moment, a summary that reads, sticky Pay, keyboard-operable | 4 entry routes, discount shown twice, 4 delivery prices, card field focus trap (a11y audit Apr 2026) |
 
+## Helen's journey · the CTO persona run (18 Nov 2026)
+The CTO's run (8 personas to the payment step on debenhams.com) found 9 anomalies. 2027 answers them on one simple journey, **Home → Search “party dress” → PDP → Bag → Checkout**: PDP, bag and checkout read DS `assets/ds/journey.js` — one basket (Coast dress + a Living and Home wreath), one Order Total (£196.00 on the bag top, bag summary and checkout), one delivery date table in working days (PDP “Tomorrow” / “25th Nov” = checkout Thu 19 / Wed 25 Nov), “Sold and sent by” everywhere, one returns sentence, consent unticked, codes that behave (try FASHION then FREEDEL), the Help strip. Search: `templates/search.html`. The panel's **CTO persona run** card links each anomaly to its fix.
+
 ## How it works
 Same pattern as `projects/master`: `page.html` opens the DS template for the page **as it stands** and adds `conversion.js` (journey layer: logo → Home, card → PDP, Add to bag → toast → Bag, Bag CTA → Checkout, Homepage 2.0 `[data-h2-go]` links, calm USP, 240ms page fade). `?s={"brand","page","ver":"new|live","profile"}`.
 

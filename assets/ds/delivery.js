@@ -57,7 +57,8 @@
 
   const ord=n=>n+(n%10===1&&n!==11?'st':n%10===2&&n!==12?'nd':n%10===3&&n!==13?'rd':'th');
   const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const day=(o,d)=>{const t=new Date(o.today||Date.now());t.setDate(t.getDate()+d);return ord(t.getDate())+' '+MON[t.getMonth()]};
+  /* o.journey (18 Nov 2026): dates and day counts come from DS journey.js — working days from the journey's today — so the grid says what checkout says */
+  const day=(o,d)=>{if(o.journey&&window.DG_journey)return DG_journey.short(d);const t=new Date(o.today||Date.now());t.setDate(t.getDate()+d);return ord(t.getDate())+' '+MON[t.getMonth()]};
   const money=p=>p===0?'FREE':p<1?Math.round(p*100)+'p':'£'+p.toFixed(2);
   const CC=o=>esc(o.ccLabel||'Collection');   /* the collect tab / toggle / heading word */
   const CC_LIVE={debenhams:'Collect Nearby',boohoo:'Collect Nearby',warehouse:'Collect Nearby',coast:'Collect Nearby',oasis:'Collect Nearby',
@@ -96,16 +97,16 @@
   const total=o=>{const M=methods(o);return M.home.length+M.collect.length};
   const moreLink=(o,tab,label)=>(total(o)<=2&&o.more2!=='show')?'':`<button class="dgrid-more" data-dg-more="${tab}">${label}</button>`;
   const ret=o=>o.ret===false?'':`<div class="dgrid-ret"><img src="${IC}icons-calendar.svg" alt=""><div>${retCopy(o)}</div></div>`;
-  const retCopy=o=>`<div class="t">Eligible for return within ${esc(o.retDays||21)} days</div><div class="s">Exclusions apply. Please see our <a href="#">returns policy</a></div>`;
+  const retCopy=o=>o.journey&&window.DG_journey?`<div class="t">Return within 21 days from Your Orders</div><div class="s">We email your label: no printer or delivery note needed. <a href="#">Returns policy</a></div>`:`<div class="t">Eligible for return within ${esc(o.retDays||21)} days</div><div class="s">Exclusions apply. Please see our <a href="#">returns policy</a></div>`;
   const sellerOf=o=>!o.seller?null:o.seller==='site'?{name:SITE[o.brand]||SITE.debenhams,site:1}:typeof o.seller==='string'?(SELLERS[o.seller]||null):o.seller;
-  /* Sold & Delivered by — box icon (icons-order); grey placeholder until a size is picked. acc = the accordion-row version: text only, no icon */
+  /* Sold and sent by (was "Sold & Delivered by" — one wording on the PDP, bag and checkout, 18 Nov 2026) — box icon (icons-order); grey placeholder until a size is picked. acc = the accordion-row version: text only, no icon */
   function seller(o,acc){if(o.seller===false)return '';const x=sellerOf(o),cls='dgrid-seller'+(acc?' dgrid-seller--acc':''),ic=acc?'':`<img src="${IC}icons-order.svg" alt="">`;
     if(!x)return `<div class="${cls} is-empty" data-dg-seller>${ic}<span>Select a size to see seller info</span></div>`;
-    return `<div class="${cls}" data-dg-seller>${ic}<span>Sold &amp; Delivered by ${x.site?esc(x.name):`<button type="button" class="lnk" data-dg-sellerinfo>${esc(x.name)}</button>`}</span></div>`}
+    return `<div class="${cls}" data-dg-seller>${ic}<span>Sold and sent by ${x.site?esc(x.name):`<button type="button" class="lnk" data-dg-sellerinfo>${esc(x.name)}</button>`}</span></div>`}
   /* returns / seller pushed out of the box: one .acc row each, for the PDP accordion set */
   function acc(o,k){const h=k==='seller'?'Seller Information':'Returns';
     const b=k==='seller'?seller(Object.assign({},o,{seller:o.seller===false?null:o.seller}),1)
-      :`<p class="dgrid-retacc">Eligible for return within ${esc(o.retDays||21)} days. Exclusions apply. Please see our <a href="#">returns policy</a>.</p>`;
+      :o.journey&&window.DG_journey?`<p class="dgrid-retacc">${DG_journey.returns({site:1})}</p>`:`<p class="dgrid-retacc">Eligible for return within ${esc(o.retDays||21)} days. Exclusions apply. Please see our <a href="#">returns policy</a>.</p>`;
     return `<div class="acc${o.accOpen&&o.accOpen[k]?' open':''}" data-dg-acc="${k}"><button class="acc-h">${h}<img src="${IC}icons-down.svg" alt="" onerror="this.remove()"></button><div class="acc-b">${b}</div></div>`}
   function sellerModal(o){const x=sellerOf(o)||{},lay=o.desk?'mdl--sm':'mdl--up';
     const sec=(h,b)=>b?`<div><dt>${h}</dt><dd>${b}</dd></div>`:'';
@@ -154,7 +155,7 @@
   /* no delivery to the default address (12 Nov, Jake, from live): title, the line in the bulky-note style (.dgrid-note, not the yellow banner), no methods, no See more */
   const NOADDR='We may not offer delivery to your default delivery address';
   function noAddr(o){return `<section class="dgrid" data-dg aria-label="Delivery methods"><div class="dgrid-hd"><h2>${TITLE}</h2></div><p class="dgrid-note">${NOADDR}</p>${o.retIn!=='acc'?ret(o):''}${o.sellerIn!=='acc'?seller(o):''}</section>`}
-  function grid(o){if(o.sizeFirst&&!o.seller)return wait(o);if(o.scen==='noaddr')return noAddr(o);o=Object.assign({layout:'tabs'},o);const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
+  function grid(o){if(o.journey&&window.DG_journey)HOME.forEach(m=>{const j=DG_journey.METH.find(x=>x.id===m.id);if(j)m.d=j.days});if(o.sizeFirst&&!o.seller)return wait(o);if(o.scen==='noaddr')return noAddr(o);o=Object.assign({layout:'tabs'},o);const x=o.layout==='tabs'?tabs(o):{hd:'',body:o.layout==='line'?line(o):list(o)};   /* tabs sit top right, on the title line */
     return `<section class="dgrid${o.layout==='line'?' dgrid--line':''}" data-dg aria-label="Delivery methods">${o.layout==='line'?'':`<div class="dgrid-hd"><h2>${TITLE}</h2>${x.hd}</div>`}${x.body}${o.retIn!=='acc'?ret(o):''}${o.sellerIn!=='acc'?seller(o):''}</section>`}
 
   /* ---- modal ---- */

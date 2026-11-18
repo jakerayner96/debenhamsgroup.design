@@ -54,6 +54,8 @@ footer[data-ftr]{margin-top:var(--gap-10)}
 <script src="assets/ds/carousel.js"></script>
 <script src="assets/ds/export-masks.js"></script>
 <script src="templates/feed.js"></script>
+<script src="templates/products.js"></script>
+<script src="assets/ds/journey.js"></script>
 <script>
 /* in: ?brand=<slug> or ?s={"brand":…}; {protoSet} / {protoPing}. out: {protoReady}, {protoPong,h}. */
 const C=window.DG_CATALOGUE,V=(slug,i=0)=>{const c=C&&C.find(x=>x.slug===slug);return c?c.variants[i].html.replace(/ style="width:[^"]*"/,''):''};
@@ -95,8 +97,13 @@ function seed(){const b=S.brand,deb=b==='debenhams';
     gifts:deb?[{img:IMGB+'benefit.webp',title:'Benefit Natural Beauty Bundle (Worth £24.92)',text:'Receive a free Benefit Natural Beauty Bundle, when you spend £45 on Benefit'}]:[],
     topup:[1,2,3].map(k=>prod(k,{id:'top'+k})),topAt:0,
     samples:deb?{n:2,sel:['boss'],items:[{id:'elie',img:IMGB+'s-eliesaab.webp',brand:'Elie Saab',name:'Le Parfum Absolu Eau De Parfum 1.5ml'},{id:'boss',img:IMGB+'s-boss.webp',brand:'Hugo Boss',name:'Boss Bottled Beyond 1.2ml Eau De Parfum'},{id:'ysl',img:IMGB+'s-ysl.webp',brand:'Yves Saint Laurent',name:'YSL Libre Eau De Parfum 1.2ml Free Gift'}]}:null}}
+/* S.journey (18 Nov 2026, Conversion master 2027): the bag is the journey basket from DS journey.js — the same lines, prices, sellers and
+   delivery the PDP and checkout read — so the bag's Order Total is checkout's Order Total. Nothing pre-added, no gifts / top-up / samples. */
+const J=()=>!!(S.journey&&window.DG_journey);
+function jseed(){const I=DG_journey.basket(S.brand);
+  return {sellers:DG_journey.sellers(I,S.brand).map(g=>({name:g.name,note:g.note||'',items:g.items.map(x=>({id:x.id,type:'std',k:'std',img:x.img,brand:x.brand,name:x.name,price:x.price,was:x.was,variant:x.size+' / '+x.colour,qty:x.qty,max:10}))})),gifts:[],topup:[],topAt:0,samples:null}}
 let BAG=null,KEY='';
-function bag(){const k=S.brand;if(!BAG||KEY!==k){BAG=seed();KEY=k}return BAG}
+function bag(){const k=S.brand+(J()?':j':'');if(!BAG||KEY!==k){BAG=J()?jseed():seed();KEY=k}return BAG}
 /* the cards on show = the bag minus the types switched off in the panel (S.bagOff) */
 function view(){const B=bag();return Object.assign({},B,{sellers:B.sellers.map(s=>Object.assign({},s,{items:s.items.filter(x=>on(x.k))})).filter(s=>s.items.length&&(on('seller2')||!s.second))})}
 function page(){const B=view(),d=desk(),L=DG_bag.lines(B),n=DG_bag.count(B),oos=B.sellers.some(s=>s.items.some(x=>x.type==='oos'));
@@ -104,15 +111,16 @@ function page(){const B=view(),d=desk(),L=DG_bag.lines(B),n=DG_bag.count(B),oos=
   const free=`<div class="thresh thresh--ok"><span class="tick"></span><span>${d?'You have qualified for 49p delivery':'You have qualified for free delivery!'}</span></div>`; /* Bag 2026: desktop card top 49p (the Delivery row), mobile top free */
   const banner=oos?DG_bag.oosBanner():'';
   const secs=[B.gifts.length&&on('gifts')?DG_bag.gifts(B.gifts):'',
-    ...B.sellers.map((s,i)=>(i&&!d?'<hr class="bag-hr">':'')+DG_bag.seller(s.name,s.items,oos?s.items.length:0)),
+    ...B.sellers.map((s,i)=>(i&&!d?'<hr class="bag-hr">':'')+DG_bag.seller(s.name,s.items,oos?s.items.length:0,{note:s.note})),
     B.topup.length&&on('topup')?DG_bag.topup(B.topup,B.topAt):'',
     B.samples&&on('samples')?DG_bag.samples(B.samples):''].filter(Boolean).join('');
   const title=`<h1 class="bag-title">Your Bag (${n})</h1>`;
   const dplusOn=window.BAG_LIVE&&(BAG_LIVE[S.brand]||{}).dplus;
   const dp=!d&&dplusOn&&on('dplus')?`<div class="bag-dp" data-slot="dplus">${V('deliver-plus',5)}</div>`:'';
-  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML(S.brand,L,d,{thresh:d?free:'',promo:d,clean:!!S.clean}):'';
-  const main=d?`<main class="bag-pg"><div class="bag-wrap">${title}${banner}<div class="bag-cols"><div class="bag-col" data-slot="items">${secs}</div><div class="bag-side" data-slot="summary">${sum}</div></div></div></main>`
-    :`<main class="bag-pg"><div class="bag-head">${title}${window.DG_bagTopHTML?DG_bagTopHTML(S.brand,L,{after:banner+free,clean:!!S.clean}):''}</div>${secs}${dp}<div data-slot="summary">${sum}</div></main>`;
+  const jd=J()?DG_journey.METH[0]:null,jo=jd?{delNow:jd.p/100,del:jd.was/100}:{};   /* journey: Super Saver 99p (was £2.99), as the PDP grid and checkout */
+  const sum=window.DG_bagSummaryHTML?DG_bagSummaryHTML(S.brand,L,d,Object.assign({thresh:d&&!J()?free:'',promo:d,clean:!!S.clean},jo)):'';
+  const main=d?`<main class="bag-pg"><div class="bag-wrap">${title}${banner}<div class="bag-cols"><div class="bag-col" data-slot="items">${secs}</div><div class="bag-side" data-slot="summary">${sum}${J()?DG_journey.help():''}</div></div></div></main>`
+    :`<main class="bag-pg"><div class="bag-head">${title}${window.DG_bagTopHTML?DG_bagTopHTML(S.brand,L,Object.assign({after:banner+(J()?'':free),clean:!!S.clean},jo)):''}</div>${secs}${dp}<div data-slot="summary">${sum}</div>${J()?DG_journey.help({flat:1}):''}</main>`;
   return header()+main
     +(window.DG_pcarHTML&&on('recs')?`<section class="recs" data-slot="recs">${DG_pcarHTML({title:'You Might Also Like',per:4,round:S.brand==='plt',eager:EXPORTING,items:DG_feed(S.brand,5,10,3)})}</section>`:'')
     +`<footer data-ftr="${S.brand}"></footer>`}

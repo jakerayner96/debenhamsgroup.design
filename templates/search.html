@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="debenhams">
+<head>
+<meta charset="UTF-8"><link rel="icon" href="/debenhamsgroup.design/assets/brands/favicon-project.svg?v=1" type="image/svg+xml"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../">
+<title>Search results · template</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Jost:wght@400;500;600&family=Archivo:wght@300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ds/tokens.css">
+<link rel="stylesheet" href="assets/ds/components.css">
+<style>
+/* Search results — DS page template (18 Nov 2026, Conversion master 2027 · the CTO's persona run: "teen skincare" led with anti-ageing serums,
+   "double duvet set" showed singles, "midi dress" opened on maxis, the first four "blouse" results were sponsored marketplace tops).
+   DS pieces only: header drop-in (header.js) · Search bar · open (.srch-bar) · Search understood (.srch-understood: what we searched for, as chips you can remove)
+   · DS product cards (.pc) with the DS badge for Sponsored. Only the page scaffolding lives here.
+   S.smart (2027): the query is read as a category + an occasion, results are only that category, ONE sponsored card, labelled, never first.
+   Off (Today): the live behaviour — four sponsored cards first, then the rest in any order. in: ?s={brand,q,smart} · {protoSet} · {protoPing}. out: {protoReady}, {protoPong,h}. */
+*{box-sizing:border-box}html,body{margin:0;background:var(--surface-page)}
+body{font-family:var(--font-family-base);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+.pg{padding:var(--gap-4) var(--gap-4) var(--gap-10)}
+.pg>section{margin-top:var(--gap-4);display:flex;flex-direction:column;gap:var(--gap-4)}
+.res{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap-6) var(--gap-1)}
+@media(min-width:1024px){.pg{max-width:1440px;margin:0 auto;padding:var(--gap-6) var(--gap-12) var(--gap-16)}.pg .srch-bar{max-width:640px}.res{grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap-8) var(--gap-4)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/ds/header.js"></script>
+<script src="assets/ds/footer.js"></script>
+<script src="templates/products.js"></script>
+<script src="projects/plp-alignment/data.js"></script>
+<script>
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+let S={brand:'debenhams',q:'party dress',smart:true},EXPORTING=false;
+try{const s=new URLSearchParams(location.search).get('s');if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
+const desk=()=>innerWidth>=1024,LIB='assets/ds/icons/lib/';
+/* what the query means: a category and an occasion (2027 search reads the words; live matches any of them) */
+const UNDERSTOOD={'party dress':[['Dresses','category'],['Party & occasion','occasion']]};
+/* Debenhams: the PDP product (Coast, the journey's dress) + the PLP set's dresses. idx = PLP data.js index, 'pdp' = the PDP product */
+/* img = the PLP photo when its number differs from the data.js index (the set is offset by one from 21 on) */
+const RANK={debenhams:{smart:['pdp',{i:21,img:22},{i:31,img:32},1,{i:24,img:25},{i:5,spon:1},{i:27,img:28},{i:29,img:30}],
+  live:[{i:9,img:10,spon:1},{i:0,spon:1},{i:3,spon:1},{i:2,spon:1},{i:21,img:22},1,'pdp',{i:31,img:32},{i:24,img:25},{i:27,img:28}]}};
+function item(b,x){const r=typeof x==='object'?x:{i:x};if(r.i==='pdp'){const P=(window.DG_PDP_PRODUCTS||{})[b]||{};return {img:(P.imgs||[])[0],brand:P.brand,name:P.name,price:P.price,was:P.was,spon:r.spon}}
+  const p=((window.PRODUCTS_ALL||{})[b]||[])[r.i]||{};return {img:`projects/plp-alignment/img/${b}/p${r.img??p.img??r.i}.jpg`,brand:p.brand,name:p.name,price:p.price,was:p.was,pct:p.pct,spon:r.spon}}
+function list(){const b=S.brand,R=RANK[b];if(R)return (S.smart?R.smart:R.live).map(x=>item(b,x));
+  return ['pdp',0,1,2,3,4,5,6].map(x=>item(b,x))}
+function card(p){return `<article class="pc"><div class="pc-img"><img class="ph" src="${esc(p.img)}" alt="${esc((p.brand?p.brand+' ':'')+p.name)}" loading="${EXPORTING?'eager':'lazy'}">
+    ${p.spon?`<div class="pc-badges"><span class="badge">Sponsored</span></div>`:''}</div>
+    <div class="pc-info"><div class="pc-titles">${p.brand&&!['plt','warehouse'].includes(S.brand)?`<div class="pc-brand">${esc(p.brand)}</div>`:''}<div class="pc-name">${esc(p.name)}</div></div>
+    <div class="pc-price${p.was?' sale':''}"><span class="now">${esc(p.price)}</span>${p.was?`<span class="was">${esc(p.was)}</span>`:''}</div></div></article>`}
+function page(){const b=S.brand,dev=desk()?'desktop':'mobile',ul=b==='plt',L=list(),U=S.smart?(UNDERSTOOD[S.q]||[]).filter(u=>!(S.off||[]).includes(u[0])):[];
+  const und=S.smart&&U.length?`<div class="srch-understood" aria-label="What we searched for"><p><b>${L.length} results</b> for “${esc(S.q)}”</p><div class="su-chips">${U.map(([t,k])=>`<button type="button" class="su-chip" data-su="${esc(t)}" aria-label="Remove ${esc(t)}"><span>${esc(t)}</span><img src="${LIB}icons-close.svg" alt="" aria-hidden="true"></button>`).join('')}</div></div>`
+    :`<div class="srch-understood"><p><b>${L.length} results</b> for “${esc(S.q)}”</p></div>`;
+  return `<header class="hd${desk()?' hd--desktop':''}${((window.DG_HEADER||{})[b]||{}).inv?' hd--inv':''}" data-hd-brand="${b}" data-hd-kind="main" data-hd-device="${dev}">${window.DG_headerHTML?DG_headerHTML(b,'main',dev):''}</header>
+  <main class="pg">
+    <div class="srch-bar${ul?' srch-bar--underline':''}"><div class="sb-field"><input value="${esc(S.q)}" aria-label="Search"><button class="sb-clr" aria-label="Clear"><img src="${LIB}icons-clear.svg" alt=""></button><button class="sb-go" aria-label="Search"><img src="${LIB}icons-search.svg" alt=""></button></div><button class="sb-x" aria-label="Close search"><img src="${LIB}icons-close.svg" alt=""></button></div>
+    <section>${und}<div class="res">${L.map(card).join('')}</div></section>
+  </main><footer data-ftr="${b}"></footer>`}
+function render(){document.documentElement.setAttribute('data-brand',S.brand);document.documentElement.classList.toggle('exporting',EXPORTING);document.getElementById('app').innerHTML=page();
+  document.querySelectorAll('[data-ftr]').forEach(el=>window.DG_footer&&DG_footer(el,S.brand));document.dispatchEvent(new CustomEvent('dg:render'))}
+render();
+let lw=innerWidth,rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if((lw>=1024)!==desk()){lw=innerWidth;render()}},150)});
+document.addEventListener('click',e=>{const c=e.target.closest('[data-su]');if(c){e.preventDefault();S.off=(S.off||[]).concat(c.dataset.su);render();return}
+  if(e.target.closest('a[href="#"],button'))e.preventDefault()});
+addEventListener('message',e=>{const d=e.data||{};
+  if(d.protoSet){S=Object.assign(S,d.protoSet);EXPORTING=!!d.exporting;render()}
+  if(d.protoPing)parent.postMessage({protoPong:1,h:document.documentElement.scrollHeight},'*')});
+addEventListener('load',()=>parent.postMessage({protoReady:1},'*'));
+</script>
+</body>
+</html>
