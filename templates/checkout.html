@@ -224,7 +224,7 @@ function c26Payment(t){const pid=payId(),P=PMS().sort((a,b)=>C26_ORDER.indexOf(a
 function jPromo(){const C=S.codes||[],m=S.cmsg;
   return `<div class="promo"><label class="fld"><input id="ck-code" placeholder=" " value="" autocomplete="off"><span class="lbl">Enter promo code...</span></label><button type="button" class="bd sec" data-ck="apply">Apply</button></div>`
     +(m&&m.err?`<div class="msg msg--error" role="alert"><i></i><div class="body">${ic('alert')}<span style="flex:1">${esc(m.t)}</span></div></div>`:'')
-    +C.map(c=>`<div class="msg msg--success"><i></i><div class="body">${ic('tick-circle-outline')}<span style="flex:1"><b>${esc(c)}</b> applied · ${esc((DG_journey.CODES[c]||{}).label||'')}</span><button type="button" class="x" data-ck="rmcode" data-v="${esc(c)}" aria-label="Remove ${esc(c)}">${ic('close-12')}</button></div></div>`).join('')
+    +C.map(c=>`<div class="msg msg--success"><i></i><div class="body">${ic('tick-circle-outline')}<span style="flex:1"><b>${esc(c)}</b> applied · ${esc((DG_journey.CODES[c]||{}).label||'')}</span><button type="button" class="x" data-ck="rmcode" data-v="${esc(c)}" aria-label="Remove ${esc(c)}"></button></div></div>`).join('')
     +(m&&!m.err&&m.t?`<p class="c26-p" role="status">${esc(m.t)}</p>`:'')}
 /* Order Summary — Subtotal · Delivery · opt-ins · Discounts (link, expands to the named lines) · hairline · Order Total; then consent + legal */
 function c26Summary(t){const r=(l,v,c)=>`<div class="c26-r${c?' '+c:''}"><dt>${l}</dt><dd>${v}</dd></div>`,o=!!S.discOpen;
