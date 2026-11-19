@@ -859,8 +859,9 @@ a.hd-usp:hover .usp-t{text-decoration:underline;text-underline-offset:2px}
 .sizes-head b{font-weight:var(--w-mid)}
 .sizes-head .guide{display:flex;align-items:center;gap:4px;font-size:14px;white-space:nowrap}
 .sizes .set{display:flex;gap:8px;flex-wrap:wrap}
-.sz{font-family:var(--font-family-base);min-width:60px;height:50px;padding:0 16px;background:var(--surface-raised);border:1px solid var(--border-control,#B5B5B5);border-radius:var(--radius-default);font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);display:inline-flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer}
+.sz{font-family:var(--font-family-base);width:50px;min-width:50px;max-width:50px;flex:0 0 50px;height:50px;padding:0;background:var(--surface-raised);border:1px solid var(--border-control,#B5B5B5);border-radius:var(--radius-default);font-size:16px;font-weight:var(--w-regular);color:var(--text-primary);display:inline-flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer}
 .sz:hover{border-color:var(--text-primary)}
+/* Every size button is a fixed 50 × 50 (Jake 19 Nov 2026, Figma Size Button 601:496) */
 .sz.on{border-color:var(--text-primary);font-weight:var(--w-strong)}   /* Figma 9000:3082: selected = same 1px border in black + bold, never thicker */
 .sz.oos{color:var(--text-disabled)}
 .sz.oos--strike::after{content:"";position:absolute;left:-20%;right:-20%;top:50%;height:1px;background:var(--text-disabled);transform:rotate(-33deg)}
@@ -2711,7 +2712,7 @@ select.rf-input:invalid{color:var(--rf-dim)}
 .qa-opt{display:flex;flex-direction:column;gap:12px}
 .qa-opt .fsel{width:100%}
 .qa-opt .sizes .set{gap:8px}
-.qa-opt .sz{min-width:50px;padding:0 12px}
+.qa-opt .sz{min-width:50px}
 /* price: 16 now (strong, sale red) + was (regular, struck); fashion / home add the saving and the code line at 14 */
 .price-blk--qa{gap:4px}
 .price-blk--qa .price{font-size:16px;line-height:20px;column-gap:8px;row-gap:4px;flex-wrap:wrap;align-items:center}
