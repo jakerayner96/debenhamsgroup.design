@@ -146,7 +146,7 @@
     +(it.sizes||[]).map(s=>`<button type="button" data-wl-size="${esc(s.l)}"${s.l===it.size?' class="on"':''}><span>${esc(s.l)}</span>${s.oos?'<span class="meta">Notify Me</span>':''}</button>`).join('')+'</div></div></div>';
   /* Notify Me */
   H.notify=(it,d)=>`<div class="mdl ${d?'mdl--sm':'mdl--up'}" role="dialog" aria-modal="true" aria-label="Notify Me">${hd('Notify Me')}<div class="mdl-bd">`
-    +`<div class="ntf-prod">${img(it.img)}<div class="ntf-tx">${it.brand?`<b>${esc(it.brand)}</b>`:''}<span>${esc(it.name)}</span><span>${esc(it.price)}</span>${it.size?`<span>Size: <b>${esc(it.size)}</b></span>`:''}${it.colour?`<span>Colour: <b>${esc(it.colour)}</b></span>`:''}</div></div>`
+    +`<div class="ntf-prod">${img(it.img)}<div class="ntf-tx">${it.brand?`<b>${esc(it.brand)}</b>`:''}<span>${esc(it.name)}</span><span class="pc-price${it.was?' sale':''}"><span class="now">${esc(it.price)}</span>${it.was?`<span class="was">${esc(it.was)}</span>`:''}</span>${it.size?`<span>Size: <b>${esc(it.size)}</b></span>`:''}${it.colour?`<span>Colour: <b>${esc(it.colour)}</b></span>`:''}</div></div>`
     +`<p class="ntf-q">Get notified when it’s available?</p><button class="bd pri full" type="button" data-wl="notify-yes"><i class="ico-bell"></i>Notify Me</button>`
     +`<div class="chk-row chk-row--lg"><button class="chk on" type="button" aria-checked="true" data-wl="chk" aria-label="Consent"></button><p class="ntf-legal">By selecting ‘Notify Me’ you confirm that you are aged 16 or over &amp; consent to receiving email alerts about products, offers &amp; marketing communications. Please see our <a href="#">Privacy Policy</a> for more information.</p></div></div></div>`;
   /* Remove From Wishlist confirm (only when the item is in a collection) */
