@@ -408,7 +408,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .launchgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:20px 0 32px}
 .projbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin:24px 0 8px}
 .projbar .psearch{flex:1 1 100%;display:flex;align-items:center;gap:8px;border:1px solid var(--med);border-radius:var(--r-sm);padding:0 12px;color:var(--ink)}
-.projbar .psearch input{flex:1;background:none;border:0;outline:0;color:var(--ink);font:400 15px var(--sans);padding:11px 0}
+.projbar .psearch input{flex:1;background:none;border:0;outline:0;color:var(--ink);font:400 15px var(--sans);padding:11px 0}.projbar .psearch input::placeholder{color:var(--ink);opacity:1}.projbar .psearch[hidden]{display:none}.projbar .psbtn{order:-1;width:40px;height:40px}.projbar .psearch{order:-2}.projbar .psbtn .pi{width:20px;height:20px;-webkit-mask-size:20px;mask-size:20px}.projbar .psbtn[aria-expanded=true]{background:var(--surface-2)}.hsec+.ltiles.four{margin-top:0}.hsec+.projbar{margin-top:0}
 .projbar .prow{display:flex;align-items:center;gap:10px}.projbar .plab{font-size:13px;font-weight:600;color:var(--ink)}
 .projbar .pnew{display:inline-flex;align-items:center;gap:6px;margin-left:auto}.projbar .pnew .pi{width:16px;height:16px;-webkit-mask-size:16px;mask-size:16px}
 .pi{flex:none;display:inline-block;width:24px;height:24px;background:currentColor;-webkit-mask:var(--i) center/24px 24px no-repeat;mask:var(--i) center/24px 24px no-repeat}
@@ -420,13 +420,13 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .pibtn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-sm);color:var(--ink);cursor:pointer}.pibtn:hover{background:var(--surface-2)}
 .pgh .pibtn{width:32px;height:32px;opacity:0;transition:opacity .15s}.pgh .pibtn .pi{width:16px;height:16px;-webkit-mask-size:16px;mask-size:16px}.pgh:hover .pibtn,.pgh .pibtn:focus-visible{opacity:1}@media(hover:none){.pgh .pibtn{opacity:1}}
 .plist{margin:8px 0 16px;border-top:1px solid var(--low)}
-.prow-i{display:grid;grid-template-columns:minmax(0,2fr) 90px 110px minmax(0,1fr) auto 32px;gap:16px;align-items:center;padding:10px 0;border-bottom:1px solid var(--low);position:relative;font-size:14px;color:var(--ink)}
+.prow-i{display:grid;justify-items:start;text-align:left;grid-template-columns:minmax(0,2.2fr) minmax(0,.8fr) minmax(0,1fr) minmax(0,2fr) 32px;gap:16px;align-items:start;padding:12px 0;border-bottom:1px solid var(--low);position:relative;font-size:14px;color:var(--ink)}
 .prow-i.phead{font-size:12px;font-weight:600;padding:8px 0}
-.prow-i .pname{font-size:15px;font-weight:600;min-width:0}.prow-i .pmeta{min-width:0}.prow-i .pfold{display:block}
-.prow-i .plinks{display:flex;gap:16px;white-space:nowrap}.prow-i .lnk{font-size:14px;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.prow-i .pnm{min-width:0;display:flex;flex-direction:column;gap:2px}.prow-i .pnm small{font-size:13px;color:var(--ink)}.prow-i .pname{font-size:15px;font-weight:600;min-width:0}.prow-i .pmeta{min-width:0}.prow-i .pfold{display:block}
+.prow-i .plinks{display:flex;gap:12px;flex-wrap:wrap;row-gap:4px}.prow-i .lnk{font-size:14px;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 .pcard:hover{background:var(--surface)}
 .prow-i .pmore{width:32px;height:32px}.prow-i .pmore .pi{width:16px;height:16px;-webkit-mask-size:16px;mask-size:16px}
-@media(max-width:800px){.prow-i{grid-template-columns:minmax(0,1fr) 32px;gap:4px 12px}.prow-i.phead{display:none}.prow-i .pname{grid-column:1}.prow-i .pmore{grid-column:2;grid-row:1}.prow-i .pmeta,.prow-i .plinks{grid-column:1/-1;font-size:13px}.prow-i .pmeta:empty{display:none}}
+@media(max-width:800px){.prow-i{grid-template-columns:minmax(0,1fr) 32px;gap:4px 12px}.prow-i.phead{display:none}.prow-i .pnm{grid-column:1}.prow-i .pmore{grid-column:2;grid-row:1}.prow-i .pmeta,.prow-i .plinks{grid-column:1/-1;font-size:13px}.prow-i .pmeta:empty{display:none}}
 .pcard{cursor:grab}.pcard.dragging{opacity:.4}
 
 .pedit{font:600 16px var(--sans);color:var(--ink);background:var(--bg);border:1px solid var(--accent);border-radius:var(--r-sm);padding:4px 8px;min-width:0;width:100%}
@@ -1929,16 +1929,16 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   const folderName=id=>id?(fs.folders.find(f=>f.id===id)||{}).name:'Unsorted';
   const lk=(u,t,blank)=>u?`<a class="lnk" href="${u}"${blank?' target="_blank" rel="noopener"':''}>${t}</a>`:'';
   const pcard=x=>`<div class="prow-i pcard" draggable="true" data-p="${esc(x.n)}">
-      <b class="pname">${esc(nm(x))}</b>
+      <span class="pnm"><b class="pname">${esc(nm(x))}</b>${opened[x.n]?`<small>Opened ${ago(opened[x.n])}</small>`:''}${ui.group!=='folder'?`<small>${esc(folderName(folderOf(x)))}</small>`:''}</span>
       <span class="pmeta">${typeOf(x)}</span>
       <span class="pmeta">${x.d?fd(x.d):''}</span>
-      <span class="pmeta">${opened[x.n]?'Opened '+ago(opened[x.n]):''}${ui.group!=='folder'?`<span class="pfold">${esc(folderName(folderOf(x)))}</span>`:''}</span>
       <span class="plinks">${x.u?lk(x.u,'Prototype ↗',1):x.pg?lk('#'+x.pg,'Open →'):lk()}${lk(x.f,'Figma ↗',1)}${lk(x.r,'Repo ↗',1)}</span>
       <button class="pibtn pmore" aria-label="Rename or move ${esc(nm(x))}" aria-haspopup="menu">${ico('icons-more')}</button></div>`;
-  const phead='<div class="prow-i phead"><span>Project</span><span>Type</span><span>Updated</span><span>Opened</span><span>Links</span><span></span></div>';
+  const phead='<div class="prow-i phead"><span>Project</span><span>Type</span><span>Updated</span><span>Links</span><span></span></div>';
   const MOUNTS=['projGrid','homeProjects'].map(id=>document.getElementById(id)).filter(Boolean);
   MOUNTS.forEach(grid=>{grid.classList.remove('launchgrid');grid.classList.add('pfm');grid.insertAdjacentHTML('beforebegin',`<div class="projbar">
-    <label class="psearch">${ico('icons-search')}<input type="search" placeholder="Search projects" aria-label="Search projects"></label>
+    <button class="pibtn psbtn" aria-label="Search projects" aria-expanded="false">${ico('icons-search')}</button>
+    <label class="psearch" hidden>${ico('icons-search')}<input type="search" placeholder="Search projects" aria-label="Search projects"></label>
     <div class="prow"><span class="plab">Sort</span><div class="icoseg" role="group" aria-label="Sort projects">${Object.entries(SORTS).map(([k,v])=>`<button data-s="${k}">${v[0]}</button>`).join('')}</div></div>
     <div class="prow"><span class="plab">Group</span><div class="icoseg" role="group" aria-label="Group projects">${Object.entries(GROUPS).map(([k,v])=>`<button data-g="${k}">${v}</button>`).join('')}</div></div>
     <button class="bd sm pnew">${ico('icons-add')}New folder</button></div>`)});
@@ -1964,7 +1964,12 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
     put('sbProjects',SG.map(g=>(g.name?`<span class="sub">${esc(g.name)}</span>`:'')+g.xs.map(x=>sbLink(Object.assign({},x,{n:esc(nm(x))}))).join('')).join('')+'<a href="#projects">All projects</a>');
   };
   document.querySelectorAll('.projbar').forEach(bar=>{const mount=bar.nextElementSibling;
+    const sb=bar.querySelector('.psbtn'),sl=bar.querySelector('.psearch'),si=sl.querySelector('input');
+    const openS=on=>{sl.hidden=!on;sb.setAttribute('aria-expanded',on);if(on)si.focus();else if(si.value){si.value='';ui.q='';document.querySelectorAll('.projbar input').forEach(i=>i.value='');renderProjects()}};
+    si.addEventListener('keydown',e=>{if(e.key==='Escape'){openS(false);sb.focus()}});
+    si.addEventListener('blur',()=>{if(!si.value)openS(false)});
     bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+      if(b===sb){openS(sl.hidden);return}
       if(b.dataset.s){ui.sort=b.dataset.s;saveUi();renderProjects()}
       else if(b.dataset.g){ui.group=b.dataset.g;saveUi();renderProjects()}
       else if(b.classList.contains('pnew')){const id='f'+Date.now();fs.folders.push({id,name:'New folder'});saveFs();renderProjects();editInline(mount.querySelector(`.pgrp[data-g="${id}"] .pgn`),v=>{fs.folders.find(f=>f.id===id).name=v||'New folder';saveFs()})}});
