@@ -1,10 +1,10 @@
 /* DG Group Design System — Google PDP prompts drop-in (16 Oct 2026). Markup for .ai-prompts (CSS in components.css), mirroring Google Cloud's
    <google-ai-prompts product-id direction> web component. Promoted from the Shopping agent prototype (projects/shopping-agent: name "Deb",
-   prompts from the dev's salesAgentConfig). Only Debenhams has a named agent so far; other fascias read "Ask AI" until they get one.
+   prompts from the dev's salesAgentConfig). Named agents: Debenhams = Deb ("Ask Deb"), boohooMAN = Jordan AI ("Ask Jordan AI", Jake 27 Nov); other fascias read "Ask AI" until they get one.
    Use: DG_aiPromptsHTML(brand, {prompts, dir:'column'|'row', head:true, ask:true, sku}) → html */
 (function(root){
   const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-  const AGENT={debenhams:'Deb'};
+  const AGENT={debenhams:'Deb',boohooman:'Jordan AI'};
   const PROMPTS=['Does this fit true to size?','What shoes would go with this?','Is this suitable for a winter wedding?'];
   const ic=sz=>`<i class="ai-icon" style="width:${sz}px;height:${sz}px"></i>`;
   root.DG_AI_PROMPTS={AGENT,PROMPTS};
