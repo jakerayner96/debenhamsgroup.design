@@ -1801,6 +1801,10 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
    white), 16 from the screen edges; back (22px chevron) left, share (24px) right. The wishlist is on the page (beside the Virtual Stylist chip),
    not in the nav (Jake, 16 Oct). Sticky with no height, so the page starts under it. Pairs with .app-tabbar. */
 .app-top{position:sticky;top:0;z-index:5;height:0;overflow:visible;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif}
+/* In flow (Figma DS App / Top Bar · Glass, 110 tall: status 54 + nav 48 + 8): the bar takes its own space above the page instead of floating over the gallery — Core PDP 2026 app, Jake 27 Nov */
+.app-top.app-top--flow{position:relative;height:auto;padding-bottom:8px;background:var(--surface-page,#FFF)}
+.app-top.app-top--flow .sb{height:54px}
+.app-top.app-top--flow .nav{height:48px}
 .app-top .sb{height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 26px 0 40px;font-size:17px;font-weight:600;color:#000}
 .app-top .sb .sys{display:flex;gap:6px;align-items:center}.app-top .sb svg{display:block}
 .app-top .nav{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
