@@ -406,6 +406,8 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 
 /* project launcher */
 .launchgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:20px 0 32px}
+.projbar{margin:24px 0 0}@media(max-width:600px){.projbar .icoseg{display:grid;grid-template-columns:1fr 1fr;width:100%}.projbar .icoseg button{padding:10px 12px}}
+.launchgrid .projgrp{grid-column:1/-1;font-size:20px;font-weight:600;margin:16px 0 0}.launchgrid .projgrp:first-child{margin-top:0}
 /* The Brand Room › Brand list: one card per brand, logo tile follows the site theme (white logo on black in dark, black on white in light) */
 .brbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 24px}.brbar .icosearch input{width:220px;opacity:1;padding:0 12px;border-color:var(--med)}.brbar .brdls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
 .brgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin:16px 0 40px}
@@ -419,7 +421,7 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .launch{background:var(--surface);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:8px;transition:background .15s}
 .launch:hover{background:var(--surface-2)}
 .launch b{font-size:16px;color:var(--ink);font-weight:600}
-.launch .lt{font-size:13px;color:var(--ink-3)}
+.launch .lt{font-size:13px;color:var(--ink)}
 .launch .lk{display:flex;align-items:center;gap:14px;margin-top:6px}
 .launch .bd.sm,.openrow .bd.sm{text-decoration:none;font-family:inherit}
 .launch .nolive{font-size:13px;color:var(--ink-3)}
@@ -1854,7 +1856,6 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   const card=x=>`<div class="launch"><b>${x.n}</b>${x.d?`<span class="lt">Latest Version · ${fd(x.d)}</span>`:`<span class="lt">${x.st}</span>`}${x.ds?`<p class="ld">${x.ds}</p>`:''}<div class="lk">${x.u?`<a class="bd pri sm" href="${x.u}" target="_blank" rel="noopener">Prototype ↗</a>`:x.pg?`<a class="bd pri sm" href="#${x.pg}">Open →</a>`:'<span class="nolive">no live build</span>'}${x.f?`<a class="lnk" href="${x.f}" target="_blank" rel="noopener">Figma ↗</a>`:(P.includes(x)?'<span class="nolive">no Figma file yet</span>':'')}${x.r?`<a class="lnk" href="${x.r}" target="_blank" rel="noopener">repo ↗</a>`:''}${x.u&&x.pg?`<a class="lnk" href="#${x.pg}">record →</a>`:''}</div></div>`;
   const put=(id,html)=>{const el=document.getElementById(id);if(el)el.innerHTML=html};
 
-  put('sbProjects',P.map(sbLink).join('')+'<a href="#projects">All projects</a>');
   put('sbTools',T.map(sbLink).join('')+'<a href="#tools">All Planning and Tools</a>');
   put('sbBrands','<a href="#b-debenhamsgroup">Debenhams Group</a><a href="#memberships">Deliver+ &amp; Memberships</a><span class="sub">Core brands</span>'+F.filter(f=>CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')
     +'<span class="sub">More fascias</span>'+F.filter(f=>!CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')+'<a href="#brands">All brands</a>');
@@ -1862,7 +1863,35 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   const tlink=(u,t)=>u?`<a class="tl" href="${u}" target="_blank" rel="noopener">${t} ↗</a>`:'<span class="tl none">—</span>';
   const row=x=>`<div class="tr"><span class="nm">${x.n}</span><span class="d">${fd(x.d)}</span>${tlink(x.u||x.r,x.u?'Prototype':'Repo')}${tlink(x.f,'Figma')}</div>`;
   put('homeProjects','<div class="tr h"><span>Project</span><span>Latest Version</span><span>Prototype</span><span>Figma</span></div>'+P.map(row).join('')); /* every project, newest first */
-  put('projGrid',P.map(card).join(''));
+  /* Projects: sort bar (Recently opened default, Last updated, A to Z, By status). "Opened" = the last time a project link was clicked on this site, this browser only */
+  const OK='dg-proj-opened',SK='dg-proj-sort';
+  const rd=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}},wr=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+  let opened=rd(OK)||{};
+  const ts=d=>new Date(d.length<=10?d+'T12:00':d).getTime()||0;
+  const seen=x=>Math.max(opened[x.n]||0,ts(x.d||'1970-01-01'));
+  const ago=t=>{const m=Math.round((Date.now()-t)/60000);if(m<2)return 'just now';if(m<60)return m+' minutes ago';const h=Math.round(m/60);if(h<24)return h+(h==1?' hour':' hours')+' ago';const dd=Math.round(h/24);if(dd<2)return 'yesterday';if(dd<7)return dd+' days ago';return fd(new Date(t).toISOString())};
+  const GRP=[['In progress',['open','wip']],['Live',['merged','shipped','live']],['Decks',['deck']],['Tools and repos',['tool','repo','private']]];
+  const grpOf=x=>{const g=GRP.find(g=>g[1].includes(x.st));return g?g[0]:'Other'};
+  const SORTS={recent:['Recently opened',(a,b)=>seen(b)-seen(a)],updated:['Last updated',(a,b)=>(b.d||'').localeCompare(a.d||'')],az:['A to Z',(a,b)=>a.n.localeCompare(b.n,'en',{sensitivity:'base'})],status:['By status',(a,b)=>(b.d||'').localeCompare(a.d||'')]};
+  let sortBy=rd(SK);if(!SORTS[sortBy])sortBy='recent';
+  const pcard=x=>card(x).replace(/<span class="lt">[^]*?<\/span>/,`<span class="lt">${x.d?'Updated '+fd(x.d):x.st}</span>${opened[x.n]?`<span class="lt">Opened ${ago(opened[x.n])}</span>`:''}`);
+  const grid=document.getElementById('projGrid');
+  if(grid)grid.insertAdjacentHTML('beforebegin',`<div class="projbar"><div class="icoseg" role="group" aria-label="Sort projects">${Object.entries(SORTS).map(([k,v])=>`<button data-s="${k}" aria-pressed="false">${v[0]}</button>`).join('')}</div></div>`);
+  const renderProjects=()=>{
+    const L=P.slice().sort(SORTS[sortBy][1]);
+    document.querySelectorAll('.projbar button').forEach(b=>{const on=b.dataset.s===sortBy;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+    put('projGrid',sortBy==='status'
+      ?GRP.map(g=>g[0]).concat('Other').map(g=>{const xs=L.filter(x=>grpOf(x)===g);return xs.length?`<h3 class="projgrp">${g}</h3>`+xs.map(pcard).join(''):''}).join('')
+      :L.map(pcard).join(''));
+    put('sbProjects',L.map(sbLink).join('')+'<a href="#projects">All projects</a>');
+  };
+  document.querySelectorAll('.projbar button').forEach(b=>b.onclick=()=>{sortBy=b.dataset.s;wr(SK,sortBy);renderProjects()});
+  /* remember every project opened from anywhere on the site: sidebar, home, cards, search */
+  const byUrl={};P.forEach(x=>[x.u,x.f,x.r].forEach(u=>{if(u)byUrl[u]=x}));
+  const mark=x=>{if(!x)return;opened=rd(OK)||{};opened[x.n]=Date.now();wr(OK,opened);setTimeout(renderProjects,300)};
+  document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(a)mark(byUrl[a.getAttribute('href')]||byUrl[a.href])},true);
+  addEventListener('hashchange',()=>mark(P.find(x=>x.pg&&'#'+x.pg===location.hash)));
+  renderProjects();
 
   const main=document.getElementById('main'),end=main.querySelector('section.page:last-of-type');
   const add=html=>main.insertAdjacentHTML('beforeend',html);
