@@ -415,15 +415,22 @@ p code,.lede code{font-family:var(--mono);font-size:.85em;background:var(--wash)
 .pgrp{margin:8px 0 0;border-radius:var(--r);transition:background .15s}.pgrp.drop{background:var(--surface-2);outline:1px dashed var(--med)}
 .pgh{display:flex;align-items:center;gap:4px;padding:12px 0 0}
 .pgh .ptog{display:flex;align-items:center;gap:8px;font:600 20px var(--sans);color:var(--ink);cursor:pointer;padding:4px 0}
-.pgh .ptog .pi{width:16px;height:16px;-webkit-mask-size:16px;mask-size:16px;transition:transform .15s}.pgrp.shut .ptog .pi{transform:rotate(-90deg)}.pgrp.shut .launchgrid{display:none}
+.pgh .ptog .pi{width:16px;height:16px;-webkit-mask-size:16px;mask-size:16px;transition:transform .15s}.pgrp.shut .ptog .pi{transform:rotate(-90deg)}.pgrp.shut .plist{display:none}
 .pgh .pgc{font-size:13px;font-weight:600;min-width:24px;height:24px;padding:0 8px;border-radius:12px;background:var(--surface-2);display:inline-flex;align-items:center;justify-content:center}
 .pibtn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-sm);color:var(--ink);cursor:pointer}.pibtn:hover{background:var(--surface-2)}
 .pgh .pibtn{width:32px;height:32px;opacity:0;transition:opacity .15s}.pgh .pibtn .pi{width:16px;height:16px;-webkit-mask-size:16px;mask-size:16px}.pgh:hover .pibtn,.pgh .pibtn:focus-visible{opacity:1}@media(hover:none){.pgh .pibtn{opacity:1}}
-.pgrp .launchgrid{margin:12px 0 16px}
-.pcard{position:relative;cursor:grab}.pcard.dragging{opacity:.4}
-.pcard .pch{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.pcard .pmore{margin:-8px -10px -8px 0}
+.plist{margin:8px 0 16px;border-top:1px solid var(--low)}
+.prow-i{display:grid;grid-template-columns:minmax(0,2fr) 90px 110px minmax(0,1fr) auto 32px;gap:16px;align-items:center;padding:10px 0;border-bottom:1px solid var(--low);position:relative;font-size:14px;color:var(--ink)}
+.prow-i.phead{font-size:12px;font-weight:600;padding:8px 0}
+.prow-i .pname{font-size:15px;font-weight:600;min-width:0}.prow-i .pmeta{min-width:0}.prow-i .pfold{display:block}
+.prow-i .plinks{display:flex;gap:16px;white-space:nowrap}.prow-i .lnk{font-size:14px;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.pcard:hover{background:var(--surface)}
+.prow-i .pmore{width:32px;height:32px}.prow-i .pmore .pi{width:16px;height:16px;-webkit-mask-size:16px;mask-size:16px}
+@media(max-width:800px){.prow-i{grid-template-columns:minmax(0,1fr) 32px;gap:4px 12px}.prow-i.phead{display:none}.prow-i .pname{grid-column:1}.prow-i .pmore{grid-column:2;grid-row:1}.prow-i .pmeta,.prow-i .plinks{grid-column:1/-1;font-size:13px}.prow-i .pmeta:empty{display:none}}
+.pcard{cursor:grab}.pcard.dragging{opacity:.4}
+
 .pedit{font:600 16px var(--sans);color:var(--ink);background:var(--bg);border:1px solid var(--accent);border-radius:var(--r-sm);padding:4px 8px;min-width:0;width:100%}
-.pmenu{position:absolute;z-index:20;top:44px;right:12px;min-width:220px;max-height:340px;overflow:auto;scrollbar-width:none;background:var(--solid);border:1px solid var(--med);border-radius:var(--r);padding:6px;display:flex;flex-direction:column;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.pmenu{position:absolute;z-index:20;top:40px;right:0;min-width:220px;max-height:340px;overflow:auto;scrollbar-width:none;background:var(--solid);border:1px solid var(--med);border-radius:var(--r);padding:6px;display:flex;flex-direction:column;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .pmenu button{display:flex;align-items:center;gap:6px;text-align:left;font:400 14px var(--sans);color:var(--ink);padding:8px 10px;border-radius:var(--r-sm);cursor:pointer}.pmenu button:hover{background:var(--surface-2)}.pmenu button[aria-current]{font-weight:600}
 .pmenu .pmh{font-size:12px;font-weight:600;color:var(--ink);padding:10px 10px 4px;border-top:1px solid var(--low);margin-top:4px}.pmenu .pi{width:16px;height:16px;-webkit-mask-size:16px;mask-size:16px}
 .pempty{font-size:14px;color:var(--ink);margin:0;padding:16px;border:1px dashed var(--med);border-radius:var(--r);grid-column:1/-1}
@@ -680,8 +687,8 @@ body.sbm .hdrbtns{display:none}
       </div>
     </div>
   </div>
-  <div class="grp">
-    <button onclick="tg(this)"><span class="car">▾</span>Design system</button>
+  <div class="grp closed">
+    <button onclick="tg(this)"><span class="car">▾</span>Design System</button>
     <div class="items" id="dsItems">
       <a href="#foundations">Foundations</a>
       <a href="#f-type">Typography</a>
@@ -694,19 +701,16 @@ body.sbm .hdrbtns{display:none}
       <a class="ext" href="https://jakerayner96.github.io/debenhamsgroup.design/storybook/dist/" target="_blank" rel="noopener" title="Opens our Storybook in a new tab"><span class="ic">▤</span>Storybook</a>
     </div>
   </div>
-  <div class="grp">
-    <button onclick="tg(this)"><span class="car">▾</span>Brand Centre</button>
-    <div class="items" id="sbBrands"><!-- one page per fascia, built from DG_FASCIAS --></div>
-  </div>
-  <div class="grp">
-    <button onclick="tg(this)"><span class="car">▾</span>The Brand Room</button>
-    <div class="items"><a href="#br-brands">Brand list</a><a href="#b-brandroom">Brand page</a></div>
-  </div>
-  <div class="grp">
+  <div class="grp closed">
     <button onclick="tg(this)"><span class="car">▾</span>Projects</button>
     <div class="items" id="sbProjects"><!-- built from DG_PROJECTS --></div>
   </div>
-  <div class="grp">
+  <!-- Customer Profiles is inserted here by personas.js -->
+  <div class="grp closed">
+    <button onclick="tg(this)"><span class="car">▾</span>Brand Centre</button>
+    <div class="items" id="sbBrands"><!-- one page per fascia, built from DG_FASCIAS; The Brand Room inside --></div>
+  </div>
+  <div class="grp closed">
     <button onclick="tg(this)"><span class="car">▾</span>Planning and Tools</button>
     <div class="items" id="sbTools"><!-- built from DG_TOOLS --></div>
   </div>
@@ -719,8 +723,10 @@ body.sbm .hdrbtns{display:none}
   <!-- HOME -->
   <section class="page on" id="home" data-crumb="Home">
     <div class="phero">
-      <h1 class="ptitle">Design System</h1>
+      <h1 class="ptitle">Debenhams Group UX</h1>
     </div>
+
+    <h2 class="hsec">Design System <a class="hall" href="#gallery">All components →</a></h2>
 
     <div class="ltiles four">
       <a class="ltile" href="#gallery">
@@ -741,8 +747,8 @@ body.sbm .hdrbtns{display:none}
       </a>
     </div>
 
-    <h2 class="hsec">Latest projects <a class="hall" href="#projects">All projects →</a></h2>
-    <div class="tbl ptbl" id="homeProjects"></div>
+    <h2 class="hsec">Projects <a class="hall" href="#projects">All projects →</a></h2>
+    <div id="homeProjects"></div>
 
     <h2 class="hsec">Brand Centre <a class="hall" href="#brands">All brands →</a></h2>
     <div class="btiles" id="btiles"></div>
@@ -1879,11 +1885,10 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
 
   put('sbTools',T.map(sbLink).join('')+'<a href="#tools">All Planning and Tools</a>');
   put('sbBrands','<a href="#b-debenhamsgroup">Debenhams Group</a><a href="#memberships">Deliver+ &amp; Memberships</a><span class="sub">Core brands</span>'+F.filter(f=>CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')
-    +'<span class="sub">More fascias</span>'+F.filter(f=>!CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')+'<a href="#brands">All brands</a>');
+    +'<span class="sub">More fascias</span>'+F.filter(f=>!CORE.includes(f[0])).map(([sl,nm])=>`<a href="#b-${sl}">${nm}</a>`).join('')+'<span class="sub">The Brand Room</span><a href="#br-brands">Brand list</a><a href="#b-brandroom">Brand page</a><a href="#brands">All brands</a>');
   /* home: the six most recently worked-on projects as a table */
   const tlink=(u,t)=>u?`<a class="tl" href="${u}" target="_blank" rel="noopener">${t} ↗</a>`:'<span class="tl none">—</span>';
   const row=x=>`<div class="tr"><span class="nm">${x.n}</span><span class="d">${fd(x.d)}</span>${tlink(x.u||x.r,x.u?'Prototype':'Repo')}${tlink(x.f,'Figma')}</div>`;
-  put('homeProjects','<div class="tr h"><span>Project</span><span>Latest Version</span><span>Prototype</span><span>Figma</span></div>'+P.map(row).join('')); /* every project, newest first */
   /* Projects: file manager. Folders (create, rename, delete, collapse, drag projects in), rename a project, type, search, sort, group.
      Your folders, names and "Opened" times live in this browser (localStorage); the defaults below are the starting layout. */
   const OK='dg-proj-opened',FK='dg-proj-fs',UK='dg-proj-ui';
@@ -1922,18 +1927,21 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   if(!SORTS[ui.sort])ui.sort='recent';if(!GROUPS[ui.group])ui.group='folder';
   const folderOf=x=>fs.folders.some(f=>f.id===fs.where[x.n])?fs.where[x.n]:'';
   const folderName=id=>id?(fs.folders.find(f=>f.id===id)||{}).name:'Unsorted';
-  const pcard=x=>{const on=x.u?`<a class="bd pri sm" href="${x.u}" target="_blank" rel="noopener">Prototype ↗</a>`:x.pg?`<a class="bd pri sm" href="#${x.pg}">Open →</a>`:'';
-    return `<div class="launch pcard" draggable="true" data-p="${esc(x.n)}">
-      <div class="pch"><b class="pname">${esc(nm(x))}</b><button class="pibtn pmore" aria-label="Rename or move ${esc(nm(x))}" aria-haspopup="menu">${ico('icons-more')}</button></div>
-      <span class="lt">${typeOf(x)}${x.d?', updated '+fd(x.d):''}</span>${opened[x.n]?`<span class="lt">Opened ${ago(opened[x.n])}</span>`:''}
-      ${ui.group!=='folder'?`<span class="lt">${esc(folderName(folderOf(x)))}</span>`:''}
-      <div class="lk">${on}${x.f?`<a class="lnk" href="${x.f}" target="_blank" rel="noopener">Figma ↗</a>`:''}${x.r?`<a class="lnk" href="${x.r}" target="_blank" rel="noopener">repo ↗</a>`:''}</div></div>`};
-  const grid=document.getElementById('projGrid');
-  if(grid){grid.classList.remove('launchgrid');grid.insertAdjacentHTML('beforebegin',`<div class="projbar">
+  const lk=(u,t,blank)=>u?`<a class="lnk" href="${u}"${blank?' target="_blank" rel="noopener"':''}>${t}</a>`:'<span class="pnone"></span>';
+  const pcard=x=>`<div class="prow-i pcard" draggable="true" data-p="${esc(x.n)}">
+      <b class="pname">${esc(nm(x))}</b>
+      <span class="pmeta">${typeOf(x)}</span>
+      <span class="pmeta">${x.d?fd(x.d):''}</span>
+      <span class="pmeta">${opened[x.n]?'Opened '+ago(opened[x.n]):''}${ui.group!=='folder'?`<span class="pfold">${esc(folderName(folderOf(x)))}</span>`:''}</span>
+      <span class="plinks">${x.u?lk(x.u,'Prototype ↗',1):x.pg?lk('#'+x.pg,'Open →'):lk()}${lk(x.f,'Figma ↗',1)}${lk(x.r,'Repo ↗',1)}</span>
+      <button class="pibtn pmore" aria-label="Rename or move ${esc(nm(x))}" aria-haspopup="menu">${ico('icons-more')}</button></div>`;
+  const phead='<div class="prow-i phead"><span>Project</span><span>Type</span><span>Updated</span><span>Opened</span><span>Links</span><span></span></div>';
+  const MOUNTS=['projGrid','homeProjects'].map(id=>document.getElementById(id)).filter(Boolean);
+  MOUNTS.forEach(grid=>{grid.classList.remove('launchgrid');grid.classList.add('pfm');grid.insertAdjacentHTML('beforebegin',`<div class="projbar">
     <label class="psearch">${ico('icons-search')}<input type="search" placeholder="Search projects" aria-label="Search projects"></label>
     <div class="prow"><span class="plab">Sort</span><div class="icoseg" role="group" aria-label="Sort projects">${Object.entries(SORTS).map(([k,v])=>`<button data-s="${k}">${v[0]}</button>`).join('')}</div></div>
     <div class="prow"><span class="plab">Group</span><div class="icoseg" role="group" aria-label="Group projects">${Object.entries(GROUPS).map(([k,v])=>`<button data-g="${k}">${v}</button>`).join('')}</div></div>
-    <button class="bd sm pnew">${ico('icons-add')}New folder</button></div>`)}
+    <button class="bd sm pnew">${ico('icons-add')}New folder</button></div>`)});
   const groupsFor=L=>{
     if(ui.group==='none')return [{id:'all',name:'',xs:L}];
     if(ui.group==='type')return TYPES.map(t=>({id:'t:'+t,name:t,xs:L.filter(x=>typeOf(x)===t)}));
@@ -1945,21 +1953,22 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
     const L=P.slice().sort(SORTS[ui.sort][1]).filter(x=>!q||(nm(x)+' '+x.n+' '+(x.k||'')+' '+typeOf(x)+' '+folderName(folderOf(x))).toLowerCase().includes(q));
     document.querySelectorAll('.projbar [data-s]').forEach(b=>{const on=b.dataset.s===ui.sort;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
     document.querySelectorAll('.projbar [data-g]').forEach(b=>{const on=b.dataset.g===ui.group;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
-    const nf=document.querySelector('.projbar .pnew');if(nf)nf.hidden=ui.group!=='folder';
+    document.querySelectorAll('.projbar .pnew').forEach(nf=>nf.hidden=ui.group!=='folder');
     const G=groupsFor(L).filter(g=>g.xs.length||(g.folder&&!q));
-    put('projGrid',G.length?G.map(g=>{const shut=!q&&fs.closed[ui.group+':'+g.id];
+    const html=(G.length?G.map(g=>{const shut=!q&&fs.closed[ui.group+':'+g.id];
       return `<section class="pgrp${shut?' shut':''}" data-g="${esc(g.id)}">${g.name?`<div class="pgh"><button class="ptog" aria-expanded="${!shut}">${ico('icons-down')}<span class="pgn">${esc(g.name)}</span><span class="pgc">${g.xs.length}</span></button>${g.folder?`<button class="pibtn pren" aria-label="Rename folder ${esc(g.name)}">${ico('icons-edit')}</button><button class="pibtn pdel" aria-label="Delete folder ${esc(g.name)}">${ico('icons-delete')}</button>`:''}</div>`:''}
-        <div class="launchgrid">${g.xs.map(pcard).join('')||'<p class="pempty">Empty. Drag a project here, or use its ⋯ menu.</p>'}</div></section>`}).join(''):'<p class="pempty">No projects match.</p>');
+        <div class="plist">${g.xs.length?phead+g.xs.map(pcard).join(''):'<p class="pempty">Empty. Drag a project here.</p>'}</div></section>`}).join(''):'<p class="pempty">No projects match.</p>');
+    MOUNTS.forEach(m=>m.innerHTML=html);
     /* sidebar: same order, under folder headings */
     const SG=groupsFor(P.slice().sort(SORTS[ui.sort][1])).filter(g=>g.xs.length);
     put('sbProjects',SG.map(g=>(g.name?`<span class="sub">${esc(g.name)}</span>`:'')+g.xs.map(x=>sbLink(Object.assign({},x,{n:esc(nm(x))}))).join('')).join('')+'<a href="#projects">All projects</a>');
   };
-  const bar=document.querySelector('.projbar');
-  if(bar){bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('.projbar').forEach(bar=>{const mount=bar.nextElementSibling;
+    bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
       if(b.dataset.s){ui.sort=b.dataset.s;saveUi();renderProjects()}
       else if(b.dataset.g){ui.group=b.dataset.g;saveUi();renderProjects()}
-      else if(b.classList.contains('pnew')){const id='f'+Date.now();fs.folders.push({id,name:'New folder'});saveFs();renderProjects();editInline(document.querySelector(`.pgrp[data-g="${id}"] .pgn`),v=>{fs.folders.find(f=>f.id===id).name=v||'New folder';saveFs()})}});
-    bar.querySelector('input').addEventListener('input',e=>{ui.q=e.target.value;renderProjects()})}
+      else if(b.classList.contains('pnew')){const id='f'+Date.now();fs.folders.push({id,name:'New folder'});saveFs();renderProjects();editInline(mount.querySelector(`.pgrp[data-g="${id}"] .pgn`),v=>{fs.folders.find(f=>f.id===id).name=v||'New folder';saveFs()})}});
+    bar.querySelector('input').addEventListener('input',e=>{ui.q=e.target.value;document.querySelectorAll('.projbar input').forEach(i=>{if(i!==e.target)i.value=ui.q});renderProjects()})});
   /* inline rename: Enter saves, Escape cancels */
   function editInline(el,save){if(!el)return;const old=el.textContent;const inp=document.createElement('input');inp.className='pedit';inp.value=old;el.replaceWith(inp);inp.focus();inp.select();let done=false;
     const fin=ok=>{if(done)return;done=true;if(ok)save(inp.value.trim());renderProjects()};
@@ -1968,7 +1977,7 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   let menu=null;const closeMenu=()=>{if(menu){menu.remove();menu=null}};
   document.addEventListener('click',e=>{if(menu&&!menu.contains(e.target))closeMenu()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
-  if(grid)grid.addEventListener('click',e=>{
+  MOUNTS.forEach(grid=>{grid.addEventListener('click',e=>{
     const mb=e.target.closest('.pmore');
     if(mb){e.stopPropagation();const c=mb.closest('.pcard'),n=c.dataset.p,cur=fs.where[n]||'';closeMenu();
       menu=document.createElement('div');menu.className='pmenu';menu.setAttribute('role','menu');
@@ -1976,10 +1985,10 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
         [{id:'',name:'Unsorted'}].concat(fs.folders).map(f=>`<button data-a="move" data-f="${esc(f.id)}" role="menuitem"${f.id===cur?' aria-current="true"':''}>${esc(f.name)}${f.id===cur?' (here)':''}</button>`).join('')+`<button data-a="newmove" role="menuitem">${ico('icons-add')}New folder</button>`;
       c.appendChild(menu);
       menu.addEventListener('click',ev=>{const it=ev.target.closest('button');if(!it)return;ev.stopPropagation();const a=it.dataset.a;closeMenu();
-        if(a==='rename')editInline(document.querySelector(`.pcard[data-p="${CSS.escape(n)}"] .pname`),v=>{if(v&&v!==n)fs.names[n]=v;else delete fs.names[n];saveFs()});
+        if(a==='rename')editInline(grid.querySelector(`.pcard[data-p="${CSS.escape(n)}"] .pname`),v=>{if(v&&v!==n)fs.names[n]=v;else delete fs.names[n];saveFs()});
         if(a==='reset'){delete fs.names[n];saveFs();renderProjects()}
         if(a==='move'){if(it.dataset.f)fs.where[n]=it.dataset.f;else delete fs.where[n];saveFs();renderProjects()}
-        if(a==='newmove'){const id='f'+Date.now();fs.folders.push({id,name:'New folder'});fs.where[n]=id;ui.group='folder';saveFs();saveUi();renderProjects();editInline(document.querySelector(`.pgrp[data-g="${id}"] .pgn`),v=>{fs.folders.find(f=>f.id===id).name=v||'New folder';saveFs()})}});
+        if(a==='newmove'){const id='f'+Date.now();fs.folders.push({id,name:'New folder'});fs.where[n]=id;ui.group='folder';saveFs();saveUi();renderProjects();editInline(grid.querySelector(`.pgrp[data-g="${id}"] .pgn`),v=>{fs.folders.find(f=>f.id===id).name=v||'New folder';saveFs()})}});
       return}
     const g=e.target.closest('.pgrp');if(!g)return;const gid=g.dataset.g;
     if(e.target.closest('.ptog')){const k=ui.group+':'+gid;if(fs.closed[k])delete fs.closed[k];else fs.closed[k]=1;saveFs();renderProjects()}
@@ -1987,11 +1996,11 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
     else if(e.target.closest('.pdel')){const f=fs.folders.find(f=>f.id===gid);if(f&&confirm(`Delete the folder "${f.name}"? Its projects move to Unsorted.`)){fs.folders=fs.folders.filter(x=>x.id!==gid);Object.keys(fs.where).forEach(k=>{if(fs.where[k]===gid)delete fs.where[k]});saveFs();renderProjects()}}
   });
   /* drag a card onto a folder */
-  if(grid){let drag=null;
+  {let drag=null;
     grid.addEventListener('dragstart',e=>{const c=e.target.closest&&e.target.closest('.pcard');if(!c)return;drag=c.dataset.p;e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',drag);c.classList.add('dragging')});
     grid.addEventListener('dragend',()=>{drag=null;grid.querySelectorAll('.dragging,.drop').forEach(x=>x.classList.remove('dragging','drop'))});
     grid.addEventListener('dragover',e=>{if(!drag||ui.group!=='folder')return;const g=e.target.closest('.pgrp');if(!g)return;e.preventDefault();grid.querySelectorAll('.drop').forEach(x=>x!==g&&x.classList.remove('drop'));g.classList.add('drop')});
-    grid.addEventListener('drop',e=>{const g=e.target.closest('.pgrp');if(!drag||!g||ui.group!=='folder')return;e.preventDefault();const id=g.dataset.g;if(id)fs.where[drag]=id;else delete fs.where[drag];saveFs();drag=null;renderProjects()})}
+    grid.addEventListener('drop',e=>{const g=e.target.closest('.pgrp');if(!drag||!g||ui.group!=='folder')return;e.preventDefault();const id=g.dataset.g;if(id)fs.where[drag]=id;else delete fs.where[drag];saveFs();drag=null;renderProjects()})}});
   /* remember every project opened from anywhere on the site: sidebar, home, cards, search */
   const byUrl={};P.forEach(x=>[x.u,x.f,x.r].forEach(u=>{if(u)byUrl[u]=x}));
   const mark=x=>{if(!x)return;opened=rd(OK)||{};opened[x.n]=Date.now();wr(OK,opened);setTimeout(renderProjects,300)};
@@ -2221,8 +2230,8 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   const logo=b=>`<img class="ppl-logo" src="assets/brands/${b.slug}.svg" alt="${esc(b.name)}">`;
   const host=b=>b.site.replace('https://www.','');
   /* sidebar group: Customers */
-  const grp=document.getElementById('sbBrands')?.closest('.grp');
-  if(grp)grp.insertAdjacentHTML('afterend',`<div class="grp"><button onclick="tg(this)"><span class="car">▾</span>Customers</button><div class="items" id="sbCustomers"><a href="#personas">Meet our customers</a>${B.map(b=>`<a href="#pp-${b.slug}">${esc(b.name)}</a>`).join('')}<a href="#persona-tests">Test a prototype</a></div></div>`);
+  const grp=document.getElementById('sbProjects')?.closest('.grp');
+  if(grp)grp.insertAdjacentHTML('afterend',`<div class="grp closed"><button onclick="tg(this)"><span class="car">▾</span>Customer Profiles</button><div class="items" id="sbCustomers"><a href="#personas">Meet our customers</a>${B.map(b=>`<a href="#pp-${b.slug}">${esc(b.name)}</a>`).join('')}<a href="#persona-tests">Test a prototype</a></div></div>`);
   const stats=`<div class="pp-stats">${M.stats.map(([n,l])=>`<div class="pp-stat"><b data-n="${esc(n)}">${esc(n)}</b><span>${esc(l)}</span></div>`).join('')}</div>`;
   const brandBlock=(b,h)=>`<section class="pp-brand" data-pb="${b.slug}"><div class="pp-bh" data-brand="${b.slug}"><h2>${h?`<a href="#pp-${b.slug}">${esc(b.name)}</a>`:esc(b.name)}</h2><a class="pp-full" href="${esc(b.full.url)}" target="_blank" rel="noopener">${esc(b.full.label)}</a></div>${DG_personaGrid(b.slug)}</section>`;
   /* share chart for one site: the eight headline figures as bars (typical + catch-all shown as labels — they aren't 12-month cohort shares) */
