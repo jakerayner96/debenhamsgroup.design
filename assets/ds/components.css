@@ -1687,10 +1687,9 @@ html.exporting .ftr-chev{-webkit-mask:none;mask:none;background:url(icons/lib/ic
 .dmeth .nw{white-space:nowrap}
 .dmeth-d{margin-top:-2px;font-size:12px;line-height:15px;font-weight:var(--w-regular,300)}
 .dmeth-a{font-size:14px;line-height:18px;font-weight:var(--w-regular,300)}
-/* parts (arrival · cut-off): each part pulls a 12px "·" in front of itself; the one that starts a line has it clipped, so a wrap never starts with a dot */
-.dmeth-a:has(>span+span){display:flex;flex-wrap:wrap;overflow:hidden}
-.dmeth-a:has(>span+span)>span+span{margin-left:-12px;margin-right:12px}.dmeth-a:has(>span+span)>span+span::before{content:"·";display:inline-block;width:12px;text-align:center}
-.dmeth-a:has(>span+span)>span:first-child{margin-right:12px}
+/* parts (arrival, cut-off): separated by a comma, never a dot (master rule 25 Nov 2026); a wrap starts on the next part cleanly */
+.dmeth-a:has(>span+span){display:flex;flex-wrap:wrap;column-gap:4px}
+.dmeth-a:has(>span+span)>span:not(:last-child)::after{content:","}
 .dmeth-p{display:flex;align-items:center;gap:var(--gap-2,8px);flex:none;white-space:nowrap;font-size:16px;line-height:20px}
 .dmeth-p b{font-weight:var(--w-strong,600)}.dmeth-p s{font-weight:var(--w-regular,300)}
 /* --sm = the PDP size (delivery grid box + Delivery Options modal), one step under the 16px box title: name + price 14/18, arrival + descriptor 12/16. 29 Oct 2026 */

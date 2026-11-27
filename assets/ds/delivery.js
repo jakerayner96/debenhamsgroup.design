@@ -145,7 +145,7 @@
   function line(o){const M=methods(o),f=fastest(pdpPool(M.home)),cc=cheapest(M.collect);if(!f)return '';
     const to=o.known&&o.pc?` to <b>${esc(o.pc)}</b>`:` with ${esc(f.s)}`;
     return `<div class="dgrid-one"><img src="${IC}${f.d===1?'icons-delivery-fast':'icons-delivery'}.svg" alt=""><div><p>Get it <b>${when(o,f,0)}</b>${to}</p>
-      <span class="s">${[cutoff(o,f),f.prem?`Free with ${esc(o.prog||'Premier')}`:money(f.p)].filter(Boolean).join(' · ')}${cc?` · or collect from ${cc.prem?'free':money(cc.p)}`:''}</span></div></div>${bulkyNote(o)}
+      <span class="s">${[cutoff(o,f),f.prem?`Free with ${esc(o.prog||'Premier')}`:money(f.p)].filter(Boolean).join(', ')}${cc?`, or collect from ${cc.prem?'free':money(cc.p)}`:''}</span></div></div>${bulkyNote(o)}
       <button class="dgrid-more" data-dg-more="home">${M.collect.length?'Delivery &amp; collection options':'Delivery options'}</button>`}
 
   /* size first (12 Nov, Jake): o.sizeFirst + no size picked (o.seller empty) → no title, no methods, no divider — the grey box icon
