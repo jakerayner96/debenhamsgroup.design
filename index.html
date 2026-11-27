@@ -1927,7 +1927,7 @@ window.toggleSb=function(){document.body.classList.toggle(matchMedia('(max-width
   if(!SORTS[ui.sort])ui.sort='recent';if(!GROUPS[ui.group])ui.group='folder';
   const folderOf=x=>fs.folders.some(f=>f.id===fs.where[x.n])?fs.where[x.n]:'';
   const folderName=id=>id?(fs.folders.find(f=>f.id===id)||{}).name:'Unsorted';
-  const lk=(u,t,blank)=>u?`<a class="lnk" href="${u}"${blank?' target="_blank" rel="noopener"':''}>${t}</a>`:'<span class="pnone"></span>';
+  const lk=(u,t,blank)=>u?`<a class="lnk" href="${u}"${blank?' target="_blank" rel="noopener"':''}>${t}</a>`:'';
   const pcard=x=>`<div class="prow-i pcard" draggable="true" data-p="${esc(x.n)}">
       <b class="pname">${esc(nm(x))}</b>
       <span class="pmeta">${typeOf(x)}</span>
