@@ -1167,7 +1167,9 @@ span.bell{display:block;background:var(--text-disabled);-webkit-mask:url(icons/l
 .glance{display:flex;flex-direction:column;gap:16px;list-style:none;margin:0;padding:0}
 .glance li{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:var(--w-regular)}
 .glance li i{width:24px;height:24px;border-radius:99px;border:1px solid var(--border-default);display:grid;place-items:center;flex:none;font-style:normal;font-size:12px}
-.glance--chips{flex-direction:row;flex-wrap:wrap;gap:12px 16px}.glance--chips li{font-size:14px}
+.glance--chips{flex-direction:row;flex-wrap:wrap;gap:12px 16px}.glance--chips li{font-size:14px;line-height:18px}.glance--chips li i img{width:14px;height:14px}
+/* app: the chips run on one line and scroll sideways, bleeding off the right edge (Core PDP 2026, Jake 27 Nov) */
+.glance--scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:calc(var(--gap-4,16px) * -1);padding-right:var(--gap-4,16px)}.glance--scroll::-webkit-scrollbar{display:none}.glance--scroll li{flex:none;white-space:nowrap}
 .acc-b ul.glance--chips{flex-direction:row;padding-left:0;margin:0;gap:12px 16px} /* chips keep wrapping inside an accordion body (.acc-b ul is a column) — Figma PDP At A Glance, 3 Nov */
 .linkchips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .linkchips a{background:var(--surface-sunken);border:1px solid var(--border-subtle);border-radius:var(--radius-default);padding:8px 12px;font-size:14px;color:var(--text-primary);text-decoration:none}
