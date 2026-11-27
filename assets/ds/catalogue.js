@@ -290,6 +290,13 @@ const DG_CATALOGUE = [
   ],
   dev:{title:'Molecules/CT Product Card', status:'match', note:'Dev card layouts default · 1-column · dropdown, flags quickAdd · hideBadges · hideColourSwatches · showRatings · sponsoredStatus · useSquareImage — the same layer model. Molecules/Product Card (CMS) is the simpler content card.'} },
 
+{ slug:'rec-links', name:'Recommendations links', group:'Product', tier:'molecule', css:'.rec-links', figma:'vVJJ1bgaTGCbGd68bsNiVT · 202-6567',
+  summary:'The related-searches block at the bottom of the PDP: a centred Recommendations title over a wrap of search chips.',
+  use:['Last block on the PDP, under the recommendation carousels.','Six to ten related searches, plain words.'],
+  avoid:['Restyling the chips per page: the fill comes from --rec-chip-bg per fascia.','Icons or counts in the chips.'],
+  anatomy:['Title 18 · fascia head weight · centred','Chips 40 tall · 10 sides · 8 apart · fascia radius · 14 regular black','Fill: Debenhams mint #E8F4F2 · other fascias Neutral (boohooMAN #F2F2F2)'],
+  variants:[{name:'Default', html:'<div class="rec-links"><p class="rec-links-t">Recommendations</p><div class="rec-links-row"><a href="#">Slim Fit Jeans</a><a href="#">Slim Fit Chino Trousers</a><a href="#">Black Jorts</a><a href="#">Relaxed Fit Jeans</a><a href="#">Slim Fit Joggers</a><a href="#">Slim Fit T-Shirts</a><a href="#">Balloon Jeans</a></div></div>'}],
+  dev:{title:'—', status:'ours', note:'Rec Links Container in Figma (Mobile / Rec Links Container2). Added to the DS 27 Nov 2026 for Core PDP 2026.'} },
 { slug:'badges', name:'Badges', group:'Product', tier:'atom', css:'.badge', figma:'d0zY0vt8hoz0gq8ycTimxS · 25-11775',
   summary:'Overlay tags on imagery: Plus, Petite, Tall, Sale. They stack bottom-left and lift when the AI strip is present.',
   use:['Fit and range information on the image.'],

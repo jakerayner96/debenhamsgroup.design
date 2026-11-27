@@ -3241,3 +3241,13 @@ button.co-tile,label.co-tile{width:100%;box-sizing:border-box;cursor:pointer;fon
 .help-act img{width:24px;height:24px;flex:none}
 /* bag seller section: the arrival line under "Sold and sent by" (marketplace parcels say when and who sends them) */
 .bag-sec-note{margin:var(--gap-1,4px) 0 0;font-size:14px;line-height:20px;font-weight:var(--w-regular,400);color:var(--text-primary)}
+
+/* Recommendations links (Core PDP 2026, Figma vVJJ1bgaTGCbGd68bsNiVT 202:6567 · Jake 27 Nov): the bottom-of-PDP block of related searches.
+   Centred title (18, fascia head weight) · wrap of chips 40 tall, 10 sides, 8 apart, fascia radius, 14 regular black text.
+   Chip fill per fascia: --rec-chip-bg (Debenhams mint #E8F4F2; everyone else the fascia Neutral, e.g. boohooMAN #F2F2F2). */
+.rec-links{display:flex;flex-direction:column;gap:16px;padding:0 16px;text-align:center;font-family:var(--font-family-base)}
+.rec-links-t{margin:0;font-size:18px;line-height:23px;font-weight:var(--w-head,var(--w-strong));color:var(--text-primary)}
+.rec-links-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.rec-links-row a{display:inline-flex;align-items:center;height:40px;padding:0 10px;border-radius:var(--radius-default,4px);background:var(--rec-chip-bg,var(--neutral,#F2F2F2));color:var(--text-primary);font-size:14px;line-height:18px;font-weight:var(--w-regular);text-decoration:none;white-space:nowrap}
+.rec-links-row a:hover{background:var(--rec-chip-bg-hover,var(--neutral-pressed,#E7E7E7))}
+[data-brand="debenhams"]{--rec-chip-bg:#E8F4F2;--rec-chip-bg-hover:#D9EDE9}
